@@ -1,0 +1,4 @@
+static/build
+binaries/
+*.mjs
+*.mjs.map
