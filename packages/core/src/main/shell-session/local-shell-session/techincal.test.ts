@@ -73,7 +73,7 @@ describe("technical unit tests for local shell sessions", () => {
           expect(options.env).toMatchObject({
             MY_TEST_ENV_VAR: "true",
           });
-
+        
           return {
             cols: 80,
             rows: 40,
@@ -88,7 +88,7 @@ describe("technical unit tests for local shell sessions", () => {
             resume: jest.fn(),
             write: jest.fn(),
             on: jest.fn(),
-
+            clear: jest.fn(), // Add the clear method
           };
         });
 

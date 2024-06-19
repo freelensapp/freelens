@@ -66,7 +66,7 @@
     "welcomeRoute": "/welcome"
   },
   "engines": {
-    "node": ">=16 <17"
+    "node": ">=16 <=18"
   },
   "jest": {
     "collectCoverage": false,
@@ -284,7 +284,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
     "monaco-editor": "^0.38.0",
-    "node-pty": "0.10.1",
+    "node-pty": "1.0.0",
     "npm": "^9.6.7",
     "path-to-regexp": "^6.2.0",
     "proper-lockfile": "^4.1.2",
