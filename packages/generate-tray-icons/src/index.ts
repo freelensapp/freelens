@@ -83,7 +83,7 @@ const getBaseIconImage = async (system: TargetSystems) => {
   const dom = new JSDOM(`<body>${svgData}</body>`);
   const root = dom.window.document.body.getElementsByTagName("svg")[0];
 
-  root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
+  //root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
 
   return Buffer.from(root.outerHTML);
 }
@@ -141,7 +141,8 @@ async function getIconImage(system: TargetSystems, filePath: string) {
   const svgData = await readFile(filePath, { encoding: "utf-8" });
   const root = new JSDOM(svgData).window.document.getElementsByTagName("svg")[0];
 
-  root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
+  //root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
+  root.innerHTML += getSvgStyling("dark");
 
   return Buffer.from(root.outerHTML);
 }
