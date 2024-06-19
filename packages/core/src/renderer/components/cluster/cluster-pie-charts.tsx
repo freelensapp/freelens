@@ -101,7 +101,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
           Math.max(0, cpuAllocatableCapacity - (cpuLimits ?? cpuAllocatableCapacity)),
         ],
         backgroundColor: [
-          "#3d90ce",
+          "#00a7a0",
           defaultColor,
         ],
         id: "cpuLimits",
@@ -148,7 +148,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
           Math.max(0, memoryAllocatableCapacity - (memoryLimits ?? memoryAllocatableCapacity)),
         ],
         backgroundColor: [
-          "#3d90ce",
+          "#00a7a0",
           defaultColor,
         ],
         id: "memoryLimits",
@@ -197,7 +197,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
           legendColors={[
             "#c93dce",
             "#4caf50",
-            "#3d90ce",
+            "#00a7a0",
             "#032b4d",
             defaultColor,
           ]}
@@ -211,7 +211,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
           legendColors={[
             "#c93dce",
             "#4caf50",
-            "#3d90ce",
+            "#00a7a0",
             "#032b4d",
             defaultColor,
           ]}

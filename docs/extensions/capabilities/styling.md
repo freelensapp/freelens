@@ -74,11 +74,11 @@ They are all located inside `:root` and are defined in [app.scss](https://github
 as well as in [the theme modules](https://github.com/lensapp/lens/tree/master/src/renderer/themes):
 
 ```
---blue: #3d90ce;
+--blue: #00a7a0;
 --magenta: #c93dce;
 --golden: #ffc63d;
 --halfGray: #87909c80;
---primary: #3d90ce;
+--primary: #00a7a0;
 --textColorPrimary: #555555;
 --textColorSecondary: #51575d;
 --textColorAccent: #333333;

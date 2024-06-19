@@ -26,7 +26,7 @@ const catalogCatalogEntityInjectable = getInjectable({
         path: url,
         icon: {
           material: "view_list",
-          background: "#3d90ce",
+          background: "#00a7a0",
         },
       },
       status: {

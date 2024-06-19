@@ -50,7 +50,7 @@ const NonInjectedContainerCharts = observer(({
         id: "cpuUsage",
         label: `Usage`,
         tooltip: `CPU cores usage`,
-        borderColor: "#3D90CE",
+        borderColor: "#00a7a0",
         data: cpuUsage.map(([x, y]) => ({ x, y })),
       },
       {

@@ -1,13 +1,13 @@
 :root {
-  --md-primary-fg-color:        #3d90ce;
-  --md-accent-fg-color:         #3d90ce;
+  --md-primary-fg-color:        #00a7a0;
+  --md-accent-fg-color:         #00a7a0;
 }
 
 :root > * {
   /* Footer */
   --md-footer-bg-color:         #e8e8e8;
   --md-footer-bg-color--dark:   #cccdcf;
-  --md-footer-fg-color:         #3d90ce;
+  --md-footer-fg-color:         #00a7a0;
   --md-footer-fg-color--light:  #fff;
 
   /* Background */
@@ -18,7 +18,7 @@
   /* Footer */
   --md-footer-bg-color:         #2e3136;
   --md-footer-bg-color--dark:   #262b2f;
-  --md-footer-fg-color:         #3d90ce;
+  --md-footer-fg-color:         #00a7a0;
   --md-footer-fg-color--light:  #fff;
 
   /* Background */
