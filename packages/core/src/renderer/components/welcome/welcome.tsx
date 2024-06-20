@@ -95,14 +95,14 @@ const NonInjectedWelcome = observer(({
               view for managing all your cloud-native resources.
               <br />
               <br />
-              {"If you have any questions or feedback, please join our "}
+              {"If you have any questions or feedback, please join us on our "}
               <a
                 href={forumsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="link"
               >
-                Lens Forums
+                Github repository
               </a>
               .
             </p>

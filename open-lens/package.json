@@ -1,8 +1,8 @@
 {
   "name": "open-lens",
   "private": true,
-  "productName": "OpenLens",
-  "description": "OpenLens - Open Source IDE for Kubernetes",
+  "productName": "Freelens",
+  "description": "Freelens - Open Source IDE for Kubernetes",
   "homepage": "https://github.com/lensapp/lens",
   "version": "6.5.0",
   "repository": {
@@ -14,9 +14,9 @@
     "url": "https://github.com/lensapp/lens/issues"
   },
   "main": "static/build/main.js",
-  "copyright": "© 2023 OpenLens Authors",
+  "copyright": "© 2024 Freelens Authors",
   "license": "MIT",
-  "author": "OpenLens Authors <info@k8slens.dev>",
+  "author": "Freelens Authors <info@k8slens.dev>",
   "scripts": {
     "clean": "rimraf binaries/ dist/ static/build",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.ts --progress",
