@@ -13,8 +13,6 @@ Below is a screenshot and video from the original Open Lens repository.
 
 The primary aim is currently to maintain the current open source code with its functionality and fix bugs.
 
-## Development
-
 ### Prequisites
 
 * Nodejs v16 || v18
