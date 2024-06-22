@@ -13,6 +13,22 @@ Below is a screenshot and video from the original Open Lens repository.
 
 The primary aim is currently to maintain the current open source code with its functionality and fix bugs.
 
+## Development
+
+### Prequisites
+
+* Nodejs v16 || v18
+
+### Build app
+
+```sh
+npm run all:install
+npm run build
+npm run build:app
+```
+
+At the moment tested only on Windows 10 with Node.js 18, we soon want to re-establish the various workflows including automatic release, fixing security alerts, use of github issues, projects, wikis etc..
+
 ## Contributing
 
 Anyone is welcome to collaborate to advance the Freelens project.
