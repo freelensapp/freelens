@@ -160,14 +160,14 @@ abstract class BinaryDownloader {
   }
 }
 
-class LensK8sProxyDownloader extends BinaryDownloader {
+class FreeLensK8sProxyDownloader extends BinaryDownloader {
   protected readonly url: string;
 
   constructor(args: Omit<BinaryDownloaderArgs, "binaryName">, bar: MultiBar) {
-    const binaryName = getBinaryName("lens-k8s-proxy", { forPlatform: args.platform });
+    const binaryName = getBinaryName("freelens-k8s-proxy", { forPlatform: args.platform });
 
     super({ ...args, binaryName }, bar);
-    this.url = `https://github.com/lensapp/lens-k8s-proxy/releases/download/v${args.version}/lens-k8s-proxy-${args.platform}-${args.downloadArch}`;
+    this.url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}`;
   }
 }
 
@@ -251,7 +251,7 @@ const downloaders: BinaryDownloader[] = [];
 
 const downloadX64Binaries = () => {
   downloaders.push(
-    new LensK8sProxyDownloader({
+    new FreeLensK8sProxyDownloader({
       version: packageInfo.config.k8sProxyVersion,
       platform: normalizedPlatform,
       downloadArch: "amd64",
@@ -277,7 +277,7 @@ const downloadX64Binaries = () => {
 
 const downloadArm64Binaries = () => {
   downloaders.push(
-    new LensK8sProxyDownloader({
+    new FreeLensK8sProxyDownloader({
       version: packageInfo.config.k8sProxyVersion,
       platform: normalizedPlatform,
       downloadArch: "arm64",
