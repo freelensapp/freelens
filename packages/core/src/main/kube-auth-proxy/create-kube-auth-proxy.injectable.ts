@@ -7,7 +7,7 @@ import type { Cluster } from "../../common/cluster/cluster";
 import spawnInjectable from "../child-process/spawn.injectable";
 import { loggerInjectionToken } from "@k8slens/logger";
 import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
-import lensK8sProxyPathInjectable from "./lens-k8s-proxy-path.injectable";
+import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
 import getPortFromStreamInjectable from "../utils/get-port-from-stream.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import randomBytesInjectable from "../../common/utils/random-bytes.injectable";
@@ -37,7 +37,7 @@ const createKubeAuthProxyInjectable = getInjectable({
   id: "create-kube-auth-proxy",
 
   instantiate: (di, cluster): CreateKubeAuthProxy => {
-    const lensK8sProxyPath = di.inject(lensK8sProxyPathInjectable);
+    const freeLensK8sProxyPath = di.inject(freeLensK8sProxyPathInjectable);
     const spawn = di.inject(spawnInjectable);
     const logger = di.inject(loggerInjectionToken);
     const waitUntilPortIsUsed = di.inject(waitUntilPortIsUsedInjectable);
@@ -74,7 +74,7 @@ const createKubeAuthProxyInjectable = getInjectable({
         const apiUrl = await clusterApiUrl();
         const certificate = di.inject(kubeAuthProxyCertificateInjectable, apiUrl.hostname);
 
-        proxyProcess = spawn(lensK8sProxyPath, [], {
+        proxyProcess = spawn(freeLensK8sProxyPath, [], {
           env: {
             ...env,
             KUBECONFIG: cluster.kubeConfigPath.get(),

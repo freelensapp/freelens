@@ -35,7 +35,7 @@
     "postinstall": "electron-rebuild"
   },
   "config": {
-    "k8sProxyVersion": "0.3.0",
+    "k8sProxyVersion": "1.0.0",
     "bundledKubectlVersion": "1.23.3",
     "bundledHelmVersion": "3.11.0",
     "sentryDsn": "",
@@ -108,8 +108,8 @@
           "to": "./${arch}/kubectl"
         },
         {
-          "from": "binaries/client/linux/${arch}/lens-k8s-proxy",
-          "to": "./${arch}/lens-k8s-proxy"
+          "from": "binaries/client/linux/${arch}/freelens-k8s-proxy",
+          "to": "./${arch}/freelens-k8s-proxy"
         },
         {
           "from": "binaries/client/linux/${arch}/helm",
@@ -133,8 +133,8 @@
           "to": "./${arch}/kubectl"
         },
         {
-          "from": "binaries/client/darwin/${arch}/lens-k8s-proxy",
-          "to": "./${arch}/lens-k8s-proxy"
+          "from": "binaries/client/darwin/${arch}/freelens-k8s-proxy",
+          "to": "./${arch}/freelens-k8s-proxy"
         },
         {
           "from": "binaries/client/darwin/${arch}/helm",
@@ -152,8 +152,8 @@
           "to": "./${arch}/kubectl.exe"
         },
         {
-          "from": "binaries/client/windows/${arch}/lens-k8s-proxy.exe",
-          "to": "./${arch}/lens-k8s-proxy.exe"
+          "from": "binaries/client/windows/${arch}/freelens-k8s-proxy.exe",
+          "to": "./${arch}/freelens-k8s-proxy.exe"
         },
         {
           "from": "binaries/client/windows/${arch}/helm.exe",
