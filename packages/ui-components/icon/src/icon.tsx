@@ -156,6 +156,8 @@ export interface BaseIconProps {
   sticker?: boolean;
   disabled?: boolean;
   "data-testid"?: string;
+
+  welcomeLogo?: boolean;
 }
 
 export interface IconProps extends React.HTMLAttributes<any>, BaseIconProps {
@@ -187,6 +189,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
     small,
     big,
     disabled,
+    welcomeLogo,
     sticker,
     active,
     focusable = true,
@@ -222,7 +225,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
   let iconContent: StrictReactNode;
   const iconProps: Partial<IconProps> = {
     className: cssNames(
-      "Icon",
+      !welcomeLogo ? "Icon" : undefined,
       className,
       {
         svg,
