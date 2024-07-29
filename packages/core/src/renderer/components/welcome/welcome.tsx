@@ -74,6 +74,7 @@ const NonInjectedWelcome = observer(({
           <Icon
             svg="logo-lens"
             className="logo"
+            welcomeLogo={true}
             data-testid="no-welcome-banners-icon"
           />
         )}
