@@ -21,7 +21,7 @@ const server = new WebpackDevServer({
     "Access-Control-Allow-Origin": "*",
   },
   allowedHosts: ".lens.app",
-  host: "localhost",
+  host: "127.0.0.1",
   port: webpackDevServerPort,
   static: buildDir, // aka `devServer.contentBase` in webpack@4
   hot: "only", // use HMR only without errors
