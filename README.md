@@ -9,10 +9,6 @@ Below is a screenshot and video from the original Open Lens repository.
 
 [![Screenshot](.github/screenshot.png)](https://www.youtube.com/watch?v=eeDwdVXattc)
 
-## Development
-
-The primary aim is currently to maintain the current open source code with its functionality and fix bugs.
-
 ### Prequisites
 
 * Nodejs v16 || v18
@@ -26,6 +22,18 @@ npm run build:app
 ```
 
 At the moment tested only on Windows 10 with Node.js 18, we soon want to re-establish the various workflows including automatic release, fixing security alerts, use of github issues, projects, wikis etc..
+
+## Development
+
+The primary aim is currently to maintain the current open source code with its functionality and fix bugs.
+
+### Run app
+
+To run app in developer's mode:
+
+```sh
+npm run start-dev
+```
 
 ## Contributing
 
