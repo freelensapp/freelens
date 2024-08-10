@@ -1,0 +1,75 @@
+name: Integration tests
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test-integration:
+    name: integration tests on ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory (Bash)
+        if: ${{ runner.os != 'Windows' }}
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Get npm cache directory (Pwsh)
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${env:GITHUB_ENV}
+
+      - uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Python setuptools (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install python-setuptools
+
+      - name: Install RPM (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        run: sudo apt-get install -y --no-install-recommends rpm
+
+      - name: Install minikube (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        uses: medyagh/setup-minikube@master
+        with:
+          kubernetes-version: v1.30.1
+
+      - name: Install required dependencies
+        run: npm ci
+
+      - run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
+        name: Run integration tests (Linux)
+        if: ${{ runner.os == 'Linux' }}
+
+      - run: npm run test:integration
+        name: Run integration tests (non-Linux)
+        if: ${{ runner.os != 'Linux' }}

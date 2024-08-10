@@ -13,9 +13,9 @@ import { noop } from "lodash";
 import { disposer } from "@k8slens/utilities";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
-  "win32": "./dist/win-unpacked/OpenLens.exe",
+  "win32": "./dist/win-unpacked/Freelens.exe",
   "linux": "./dist/linux-unpacked/open-lens",
-  "darwin": `./dist/mac${ process.arch === "arm64" ? "-arm64" : "" }/OpenLens.app/Contents/MacOS/OpenLens`,
+  "darwin": `./dist/mac${ process.arch === "arm64" ? "-arm64" : "" }/Freelens.app/Contents/MacOS/Freelens`,
 };
 
 async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promise<Page> {

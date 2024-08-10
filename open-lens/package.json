@@ -119,7 +119,7 @@
     },
     "rpm": {
       "fpm": [
-        "--rpm-rpmbuild-define=%define _build_id_links none"
+        "--rpm-rpmbuild-define=_build_id_links none"
       ]
     },
     "mac": {

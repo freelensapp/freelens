@@ -7,7 +7,7 @@ This repository is a fork of [Open Lens](https://github.com/lensapp/lens/tree/ma
 Freelens is a standalone application for MacOS, Windows and Linux operating systems.
 Below is a screenshot and video from the original Open Lens repository.
 
-[![Screenshot](.github/screenshot.png)](https://www.youtube.com/watch?v=eeDwdVXattc)
+![Screenshot](.github/screenshot.png)
 
 ### Prequisites
 
