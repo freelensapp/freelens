@@ -65,9 +65,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Build Electron app (dir target only)
-        working-directory: ./open-lens
-        run: npm run build:app -- dir
+      - name: Build Electron app
+        run: npm run build:app -- -- -- dir --x64
 
       - run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
         name: Run integration tests (Linux)
