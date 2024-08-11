@@ -53,10 +53,6 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: brew install python-setuptools
 
-      - name: Install RPM (Linux)
-        if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install -y --no-install-recommends rpm
-
       - name: Install minikube (Linux)
         if: ${{ runner.os == 'Linux' }}
         uses: medyagh/setup-minikube@master
@@ -68,7 +64,7 @@ jobs:
 
       - name: Build
         working-directory: ./open-lens
-        run: npm run build:app -- dir
+        run: npm run build:app -- zip
 
       - run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
         name: Run integration tests (Linux)
