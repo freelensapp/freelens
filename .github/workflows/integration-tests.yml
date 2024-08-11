@@ -66,6 +66,10 @@ jobs:
       - name: Install required dependencies
         run: npm ci
 
+      - name: Build
+        working-directory: ./open-lens
+        run: npm run build:app -- dir
+
       - run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
         name: Run integration tests (Linux)
         if: ${{ runner.os == 'Linux' }}
@@ -73,3 +77,12 @@ jobs:
       - run: npm run test:integration
         name: Run integration tests (non-Linux)
         if: ${{ runner.os != 'Linux' }}
+
+      - name: Check untracked files (Bash)
+        if: ${{ runner.os != 'Windows' }}
+        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
+
+      - name: Check untracked files (Pwsh)
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: git ls-files --others --exclude-standard | ForEach-Object { git diff --no-index --stat --exit-code NUL $_ }

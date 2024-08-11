@@ -17,7 +17,6 @@ Below is a screenshot and video from the original Open Lens repository.
 
 ```sh
 npm install
-npm run build
 npm run build:app
 ```
 
