@@ -63,8 +63,11 @@ jobs:
         run: npm ci
 
       - name: Build
+        run: npm run build
+
+      - name: Build Electron app (dir target only)
         working-directory: ./open-lens
-        run: npm run build:app -- zip
+        run: npm run build:app -- dir
 
       - run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
         name: Run integration tests (Linux)
@@ -73,6 +76,9 @@ jobs:
       - run: npm run test:integration
         name: Run integration tests (non-Linux)
         if: ${{ runner.os != 'Linux' }}
+
+      - name: Clean after tests
+        run: npm run clean
 
       - name: Check untracked files (Bash)
         if: ${{ runner.os != 'Windows' }}
