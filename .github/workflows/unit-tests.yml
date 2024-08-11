@@ -56,9 +56,6 @@ jobs:
       - name: Install required dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
       - name: Run test units
         run: npm run test:unit
 
