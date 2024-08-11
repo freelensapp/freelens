@@ -11,18 +11,18 @@ Below is a screenshot and video from the original Open Lens repository.
 
 ### Prequisites
 
-* Nodejs v16 || v18
+* Nodejs v18
 
 ### Build app
 
 ```sh
-npm run all:install
+npm install
 npm run build
 npm run build:app
 ```
-At this point, for example on Windows, simply go to the "freelens\open-lens\dist\win-unpacked" directory and run Freelens.exe.
 
-At the moment tested only on Windows 10 with Node.js 18, we soon want to re-establish the various workflows including automatic release, fixing security alerts, use of github issues, projects, wikis etc..
+At this point, for example on Windows, simply go to the
+"freelens\open-lens\dist\win-unpacked" directory and run Freelens.exe.
 
 ## Development
 
