@@ -35,16 +35,21 @@ jobs:
       - name: Get npm cache directory
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - uses: actions/cache@v4
-        id: npm-cache
+      - name: Use cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install required dependencies
-        run: npm ci
+      - name: Install dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: npm ci
 
       - name: Lint
         run: npm run lint
