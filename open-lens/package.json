@@ -82,8 +82,10 @@
   },
   "build": {
     "npmRebuild": false,
+    "detectUpdateChannel": false,
     "electronVersion": "22.3.3",
     "generateUpdatesFilesForAllChannels": true,
+    "beforeBuild": "build-hooks/beforeBuild",
     "files": [
       "static/**/*",
       "!node_modules/@k8slens/core/node_modules/**/*",
