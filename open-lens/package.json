@@ -99,8 +99,6 @@
       "category": "Network",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
       "target": [
-        "deb",
-        "rpm",
         "AppImage"
       ],
       "extraResources": [
