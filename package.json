@@ -13,6 +13,7 @@
     "build": "lerna run --stream build",
     "build:app": "cd open-lens && npm run build:app",
     "build:docs": "lerna run --stream build:docs",
+    "rebuild": "lerna run --stream rebuild",
     "clean": "lerna run clean --stream",
     "clean:node_modules": "lerna clean -y && rimraf node_modules",
     "dev": "cross-env NODE_ENV=development lerna run build --stream --skip-nx-cache",
