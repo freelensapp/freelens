@@ -39,11 +39,11 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Get npm cache directory (macOS, Linux)
-        if: ${{ runner.os != 'Windows' }}
+        if: runner.os != 'Windows'
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
       - name: Get npm cache directory (Windows)
-        if: ${{ runner.os == 'Windows' }}
+        if: runner.os == 'Windows'
         shell: pwsh
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${env:GITHUB_ENV}
 
@@ -56,11 +56,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Python setuptools (macOS)
-        if: ${{ runner.os == 'macOS' }}
+        if: runner.os == 'macOS'
         run: brew install python-setuptools
 
       - name: Install minikube (Linux)
-        if: ${{ runner.os == 'Linux' }}
+        if: runner.os == 'Linux'
         uses: medyagh/setup-minikube@master
         with:
           kubernetes-version: v1.30.1
@@ -80,21 +80,21 @@ jobs:
         run: npm run build:app -- -- -- dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
-        if: ${{ runner.os == 'Linux' }}
+        if: runner.os == 'Linux'
         run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
 
       - name: Run integration tests (macOS, Windows)
-        if: ${{ runner.os != 'Linux' }}
+        if: runner.os != 'Linux'
         run: npm run test:integration
 
       - name: Clean after tests
         run: npm run clean
 
       - name: Check untracked files (macOS, Linux)
-        if: ${{ runner.os != 'Windows' }}
+        if: runner.os != 'Windows'
         run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
 
       - name: Check untracked files (Windows)
-        if: ${{ runner.os == 'Windows' }}
+        if: runner.os == 'Windows'
         shell: pwsh
         run: git ls-files --others --exclude-standard | ForEach-Object { git diff --no-index --stat --exit-code NUL $_ }
