@@ -38,14 +38,9 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory (macOS, Linux)
-        if: runner.os != 'Windows'
+      - name: Get npm cache directory
+        shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
-
-      - name: Get npm cache directory (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${env:GITHUB_ENV}
 
       - name: Use cache
         uses: actions/cache@v4
@@ -90,11 +85,6 @@ jobs:
       - name: Clean after tests
         run: npm run clean
 
-      - name: Check untracked files (macOS, Linux)
-        if: runner.os != 'Windows'
+      - name: Check untracked files
+        shell: bash
         run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
-
-      - name: Check untracked files (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: git ls-files --others --exclude-standard | ForEach-Object { git diff --no-index --stat --exit-code NUL $_ }
