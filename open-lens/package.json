@@ -29,6 +29,7 @@
     "prebuild:app": "run-script-os",
     "prebuild:app:default": "exit 0",
     "prebuild:app:win32": "rimraf node_modules/win-ca/pem",
+    "rebuild": "electron-rebuild -f",
     "start": "concurrently -i -k \"npm run dev-run -C\" npm:dev:*",
     "dev-run": "nodemon --watch ./static/build/main.js --exec \"electron --remote-debugging-port=9223 --inspect .\"",
     "dev:main": "cross-env NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
@@ -85,7 +86,6 @@
     "detectUpdateChannel": false,
     "electronVersion": "22.3.3",
     "generateUpdatesFilesForAllChannels": true,
-    "beforeBuild": "build-hooks/beforeBuild",
     "files": [
       "static/**/*",
       "!node_modules/@k8slens/core/node_modules/**/*",
