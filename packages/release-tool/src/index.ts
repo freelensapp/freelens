@@ -321,7 +321,7 @@ async function getRelevantPRs(previousReleasedVersion: string, baseBranch: strin
 }
 
 function formatPrEntry(pr: ExtendedGithubPrData) {
-  return `- ${pr.title} (**[#${pr.number}](https://github.com/lensapp/lens/pull/${pr.number})**) https://github.com/${pr.authorLogin}`;
+  return `- ${pr.title} (**[#${pr.number}](https://github.com/freelensapp/freelens/pull/${pr.number})**) https://github.com/${pr.authorLogin}`;
 }
 
 const isEnhancementPr = (pr: ExtendedGithubPrData) => pr.labels.some(label => label.name === "enhancement");
@@ -345,7 +345,7 @@ async function pickWhichPRsToUse(prs: ExtendedGithubPrData[]): Promise<ExtendedG
     choices: prs.map(pr => ({
       checked: true,
       key: pr.number,
-      name: `#${pr.number}: ${pr.title} (https://github.com/lensapp/lens/pull/${pr.number})`,
+      name: `#${pr.number}: ${pr.title} (https://github.com/freelensapp/freelens/pull/${pr.number})`,
       value: pr.number,
       short: `#${pr.number}`,
     })),

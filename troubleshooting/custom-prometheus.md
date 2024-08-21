@@ -36,7 +36,7 @@ This file is currently for jsonnet versions >= 0.8.0
 To install it copy the file or use [Jsonnet Bundler](https://github.com/jsonnet-bundler/jsonnet-bundler).
 
 ```bash
-jb init && jb install https://github.com/lensapp/lens/jsonnet/lens@master
+jb init && jb install https://github.com/freelensapp/freelens/jsonnet/lens@master
 ```
 
 When the installation was successful include it into your definitions. Using the [example](https://github.com/coreos/kube-prometheus#compiling)

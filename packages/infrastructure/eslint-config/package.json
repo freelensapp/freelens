@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lensapp/lens"
+    "url": "https://github.com/freelensapp/freelens"
   },
   "publishConfig": {
     "access": "public",
