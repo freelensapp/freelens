@@ -14,7 +14,7 @@ import type { ObservableHistory } from "mobx-observable-history";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observableHistoryInjectionToken } from "@k8slens/routing";
 
-const issuesTrackerUrl = "https://github.com/lensapp/lens/issues";
+const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";
 const forumsUrl = "https://forums.k8slens.dev";
 
 export interface ErrorBoundaryProps {

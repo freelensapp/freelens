@@ -2,7 +2,7 @@
 
 ## The Repository
 
-This repository is a fork of [Open Lens](https://github.com/lensapp/lens/tree/master), core of [Lens Desktop](https://k8slens.dev), with the aim of carrying forward its open source version.
+This repository is a fork of [Open Lens](https://github.com/freelensapp/freelens/tree/master), core of [Lens Desktop](https://k8slens.dev), with the aim of carrying forward its open source version.
 
 Freelens is a standalone application for MacOS, Windows and Linux operating systems.
 Below is a screenshot and video from the original Open Lens repository.

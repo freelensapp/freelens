@@ -2,15 +2,15 @@
   "name": "@k8slens/core",
   "productName": "",
   "description": "Lens Desktop Core",
-  "homepage": "https://github.com/lensapp/lens",
+  "homepage": "https://github.com/freelensapp/freelens",
   "version": "6.5.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lensapp/lens.git"
+    "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/lensapp/lens/issues"
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
   "publishConfig": {
     "access": "public",

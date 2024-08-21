@@ -29,7 +29,7 @@ const ExtensionsNotice = () => (
       </a>
       {" and list of "}
       <a
-        href="https://github.com/lensapp/lens-extensions/blob/main/README.md"
+        href="https://github.com/freelensapp/freelens-extensions/blob/main/README.md"
         target="_blank"
         rel="noreferrer"
       >

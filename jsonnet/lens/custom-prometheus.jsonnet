@@ -1,6 +1,6 @@
 {
   // Add Lens metric relabelings for custom prometheus instances installed with kube-prometheus
-  // https://github.com/lensapp/lens/blob/master/troubleshooting/custom-prometheus.md
+  // https://github.com/freelensapp/freelens/blob/master/troubleshooting/custom-prometheus.md
   nodeExporter+:: {
     serviceMonitor+: {
       spec+: {
