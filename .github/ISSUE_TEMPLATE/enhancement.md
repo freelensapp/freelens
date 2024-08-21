@@ -18,4 +18,4 @@ labels: enhancement
 **Environment you are Lens application on:**
 
 - Kubernetes distribution: [EKS, AKS, GKE, Rancher, ...]
-- Desktop OS: <the OS Lens app runs on in your case>
+- Desktop OS: <the OS Freelens app runs on in your case>
