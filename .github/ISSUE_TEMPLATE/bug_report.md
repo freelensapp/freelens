@@ -24,8 +24,8 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
-- Lens Version:
-- OS: [e.g. OSX]
+- Freelens Version:
+- OS: [e.g. Window, MacOS, Linux]
 - Installation method (e.g. snap or AppImage in Linux):
 
 **Logs:**
