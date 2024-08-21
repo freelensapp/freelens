@@ -2,7 +2,7 @@
   "name": "open-lens",
   "private": true,
   "productName": "Freelens",
-  "description": "Freelens - Open Source IDE for Kubernetes",
+  "description": "Freelens - FOSS IDE for Kubernetes",
   "homepage": "https://github.com/freelensapp/freelens",
   "version": "6.5.0",
   "repository": {
@@ -16,7 +16,7 @@
   "main": "static/build/main.js",
   "copyright": "© 2024 Freelens Authors",
   "license": "MIT",
-  "author": "Freelens Authors <info@k8slens.dev>",
+  "author": "Freelens Authors",
   "scripts": {
     "clean": "rimraf binaries/ dist/ static/build",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.ts --progress",
