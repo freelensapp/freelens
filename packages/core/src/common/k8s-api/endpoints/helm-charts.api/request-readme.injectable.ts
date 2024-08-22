@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@k8slens/utilities";
-import { urlBuilderFor } from "@k8slens/utilities";
+import type { AsyncResult } from "@freelens/utilities";
+import { urlBuilderFor } from "@freelens/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 const requestReadmeEndpoint = urlBuilderFor("/v2/charts/:repo/:name/readme");

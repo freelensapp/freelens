@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import serviceAccountsRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/service-accounts/service-accounts-route.injectable";
 import userManagementSidebarItemInjectable from "../user-management-sidebar-item.injectable";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
 import routeIsActiveInjectable from "../../../routes/route-is-active.injectable";
 import navigateToServiceAccountsInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/service-accounts/navigate-to-service-accounts.injectable";
 

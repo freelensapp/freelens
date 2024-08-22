@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import syncGeneralCatalogEntitiesInjectable from "../../catalog-sources/sync-general-catalog-entities.injectable";
-import { onLoadOfApplicationInjectionToken } from "@k8slens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelens/application";
 
 const setupSyncingOfGeneralCatalogEntitiesInjectable = getInjectable({
   id: "setup-syncing-of-general-catalog-entities",

@@ -5,13 +5,13 @@
 
 import "./drop-file-input.scss";
 import React from "react";
-import type { IClassName } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
+import type { IClassName } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
 import { observable, makeObservable } from "mobx";
 import { observer } from "mobx-react";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import autoBindReact from "auto-bind/react";
 
 export interface DropFileInputProps<T extends HTMLElement> extends React.DOMAttributes<T> {

@@ -1,8 +1,8 @@
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
 import type { IpcMain, IpcMainEvent } from "electron";
-import { EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@k8slens/messaging";
+import { EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelens/messaging";
 import { createContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@k8slens/feature-core";
+import { registerFeature } from "@freelens/feature-core";
 import { messagingFeatureForMain } from "../feature";
 
 describe("enlist message channel listener in main", () => {

@@ -5,12 +5,12 @@
 
 import "./wizard.scss";
 import React from "react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames, prevDefault } from "@k8slens/utilities";
-import { Button } from "@k8slens/button";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames, prevDefault } from "@freelens/utilities";
+import { Button } from "@freelens/button";
 import { Stepper } from "../stepper";
 import { SubTitle } from "../layout/sub-title";
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 import { debounce } from "lodash";
 
 export interface WizardCommonProps<D> {

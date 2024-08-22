@@ -9,7 +9,7 @@ import type { HotbarData } from "../common/hotbar";
 import type { HotbarItem } from "../common/types";
 import v640HotbarStoreMigrationInjectable from "./welcome-page-migration.injectable";
 import { defaultHotbarCells } from "../common/types";
-import { array } from "@k8slens/utilities";
+import { array } from "@freelens/utilities";
 
 function fillWithEmpties(items: (HotbarItem | null)[])  {
   const emptyHotBarItems = array.filled(defaultHotbarCells, null);

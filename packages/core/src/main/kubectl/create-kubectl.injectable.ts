@@ -16,7 +16,7 @@ import kubectlVersionMapInjectable from "./version-map.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import unlinkInjectable from "../../common/fs/unlink.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";

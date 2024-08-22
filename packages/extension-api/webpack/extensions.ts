@@ -22,7 +22,7 @@ export default function generateExtensionTypes(): webpack.Configuration {
       // need to be an absolute path
       path: path.resolve("./dist/"),
       // can be use in commonjs environments
-      // e.g. require('@k8slens/extensions')
+      // e.g. require('@freelens/extensions')
       libraryTarget: "commonjs",
     },
     cache: isDevelopment,
@@ -35,9 +35,9 @@ export default function generateExtensionTypes(): webpack.Configuration {
     ],
     stats: "errors-warnings",
     externals: [
-      "@k8slens/core/common",
-      "@k8slens/core/main",
-      "@k8slens/core/renderer",
+      "@freelens/core/common",
+      "@freelens/core/main",
+      "@freelens/core/renderer",
     ],
     module: {
       rules: [
@@ -51,7 +51,7 @@ export default function generateExtensionTypes(): webpack.Configuration {
           options: {
             // !! ts-loader will use tsconfig.json at folder root
             // !! changes in tsconfig.json may have side effects
-            // !! on '@k8slens/extensions' module
+            // !! on '@freelens/extensions' module
             compilerOptions: {
               declaration: true, // output .d.ts
               sourceMap: false, // to override sourceMap: true in tsconfig.json

@@ -9,12 +9,12 @@ import { merge } from "lodash";
 import { stringify } from "querystring";
 import type { Patch } from "rfc6902";
 import type { PartialDeep, ValueOf } from "type-fest";
-import { EventEmitter } from "@k8slens/event-emitter";
-import type { Logger } from "@k8slens/logger";
-import type Fetch from "@k8slens/node-fetch";
-import type { RequestInit, Response } from "@k8slens/node-fetch";
-import type { Defaulted } from "@k8slens/utilities";
-import { isObject, isString, json } from "@k8slens/utilities";
+import { EventEmitter } from "@freelens/event-emitter";
+import type { Logger } from "@freelens/logger";
+import type Fetch from "@freelens/node-fetch";
+import type { RequestInit, Response } from "@freelens/node-fetch";
+import type { Defaulted } from "@freelens/utilities";
+import { isObject, isString, json } from "@freelens/utilities";
 
 export interface JsonApiData {}
 

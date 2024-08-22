@@ -13,8 +13,8 @@ import getRandomIdForEditResourceTabInjectable from "../../../renderer/component
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
-import { Namespace } from "@k8slens/kube-object";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@k8slens/notifications";
+import { Namespace } from "@freelens/kube-object";
+import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import hostedClusterIdInjectable from "../../../renderer/cluster-frame-context/hosted-cluster-id.injectable";
@@ -22,9 +22,9 @@ import type { ApiKubePatch } from "../../../renderer/k8s/api-kube-patch.injectab
 import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
 import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injectable";
 import apiKubeGetInjectable from "../../../renderer/k8s/api-kube-get.injectable";
-import type { BaseKubeJsonApiObjectMetadata, KubeObjectScope, KubeJsonApiData } from "@k8slens/kube-object";
-import { JsonApiErrorParsed } from "@k8slens/json-api";
-import type { ShowNotification } from "@k8slens/notifications";
+import type { BaseKubeJsonApiObjectMetadata, KubeObjectScope, KubeJsonApiData } from "@freelens/kube-object";
+import { JsonApiErrorParsed } from "@freelens/json-api";
+import type { ShowNotification } from "@freelens/notifications";
 import React from "react";
 
 describe("cluster/namespaces - edit namespace from new tab", () => {

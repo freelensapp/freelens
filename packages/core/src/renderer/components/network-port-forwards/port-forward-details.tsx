@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
 import type { PortForwardItem } from "../../port-forward";
 import { portForwardAddress } from "../../port-forward";
 import { Drawer, DrawerItem } from "../drawer";
-import { cssNames } from "@k8slens/utilities";
-import type { PodApi, ServiceApi } from "@k8slens/kube-api";
+import { cssNames } from "@freelens/utilities";
+import type { PodApi, ServiceApi } from "@freelens/kube-api";
 import { PortForwardMenu } from "./port-forward-menu";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { serviceApiInjectable, podApiInjectable } from "@k8slens/kube-api-specifics";
+import { serviceApiInjectable, podApiInjectable } from "@freelens/kube-api-specifics";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 

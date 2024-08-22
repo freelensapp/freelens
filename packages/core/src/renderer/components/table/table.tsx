@@ -7,8 +7,8 @@ import "./table.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames, isDefined } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames, isDefined } from "@freelens/utilities";
 import type { TableRowElem, TableRowProps } from "./table-row";
 import { TableRow } from "./table-row";
 import type { TableHeadElem } from "./table-head";
@@ -21,7 +21,7 @@ import { getSorted } from "./sorting";
 import type { TableModel } from "./table-model/table-model";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import tableModelInjectable from "./table-model/table-model.injectable";
-import type { ItemObject } from "@k8slens/list-layout";
+import type { ItemObject } from "@freelens/list-layout";
 import assert from "assert";
 import orderByUrlParamInjectable from "./order-by-url-param.injectable";
 import sortByUrlParamInjectable from "./sort-by-url-param.injectable";
@@ -313,4 +313,3 @@ export const Table = withInjectables<Dependencies, TableProps<ItemObject>>(NonIn
     sortByUrlParam: di.inject(sortByUrlParamInjectable),
   }),
 }) as <Item>(props: TableProps<Item>) => React.ReactElement;
-

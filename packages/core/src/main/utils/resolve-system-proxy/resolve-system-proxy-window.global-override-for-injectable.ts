@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import type { BrowserWindow, Session, WebContents } from "electron";
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
 

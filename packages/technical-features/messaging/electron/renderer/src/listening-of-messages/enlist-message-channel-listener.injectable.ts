@@ -1,7 +1,7 @@
 import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IpcRendererEvent } from "electron";
-import { enlistMessageChannelListenerInjectionToken } from "@k8slens/messaging";
+import { enlistMessageChannelListenerInjectionToken } from "@freelens/messaging";
 
 const enlistMessageChannelListenerInjectable = getInjectable({
   id: "enlist-message-channel-listener-for-renderer",

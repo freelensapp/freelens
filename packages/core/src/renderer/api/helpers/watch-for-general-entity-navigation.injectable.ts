@@ -7,9 +7,9 @@ import { reaction, when } from "mobx";
 import type { GeneralEntity } from "../../../common/catalog-entities";
 import generalCategoryInjectable from "../../../common/catalog/categories/general.injectable";
 import isActiveRouteInjectable from "../../navigation/is-route-active.injectable";
-import { observableHistoryInjectionToken } from "@k8slens/routing";
-import type { Disposer } from "@k8slens/utilities";
-import { disposer } from "@k8slens/utilities";
+import { observableHistoryInjectionToken } from "@freelens/routing";
+import type { Disposer } from "@freelens/utilities";
+import { disposer } from "@freelens/utilities";
 import catalogEntityRegistryInjectable from "../catalog/entity/registry.injectable";
 
 export type WatchForGeneralEntityNavigation = () => Disposer;

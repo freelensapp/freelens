@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PodMetricsData } from "@k8slens/kube-object";
-import { PodMetrics } from "@k8slens/kube-object";
+import type { PodMetricsData } from "@freelens/kube-object";
+import { PodMetrics } from "@freelens/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

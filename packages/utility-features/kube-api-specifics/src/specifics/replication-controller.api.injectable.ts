@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
-import { ReplicationControllerApi } from "@k8slens/kube-api";
+import { ReplicationControllerApi } from "@freelens/kube-api";
 import { kubeApiInjectionToken } from "./token";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@k8slens/logger";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
 import { maybeKubeApiInjectable } from "./maybe-kube-api.injectable";
 import { storesAndApisCanBeCreatedInjectionToken } from "./can-be-created-token";
 

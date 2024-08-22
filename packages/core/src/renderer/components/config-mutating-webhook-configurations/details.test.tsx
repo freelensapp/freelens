@@ -4,8 +4,8 @@
  */
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { MutatingWebhookConfigurationData } from "@k8slens/kube-object";
-import { MutatingWebhookConfiguration } from "@k8slens/kube-object";
+import type { MutatingWebhookConfigurationData } from "@freelens/kube-object";
+import { MutatingWebhookConfiguration } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";

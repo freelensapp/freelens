@@ -5,8 +5,8 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import type { RuntimeClassData } from "@k8slens/kube-object";
-import { RuntimeClass } from "@k8slens/kube-object";
+import type { RuntimeClassData } from "@freelens/kube-object";
+import { RuntimeClass } from "@freelens/kube-object";
 
 export class RuntimeClassApi extends KubeApi<RuntimeClass, RuntimeClassData> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

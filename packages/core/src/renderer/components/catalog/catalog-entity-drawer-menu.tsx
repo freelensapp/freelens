@@ -4,14 +4,14 @@
  */
 
 import React from "react";
-import { cssNames, hasDefiniteField } from "@k8slens/utilities";
+import { cssNames, hasDefiniteField } from "@freelens/utilities";
 import type { MenuActionsProps } from "../menu/menu-actions";
 import { MenuActions } from "../menu/menu-actions";
 import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
 import { observer } from "mobx-react";
 import { observable } from "mobx";
 import { MenuItem } from "../menu";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
 import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";

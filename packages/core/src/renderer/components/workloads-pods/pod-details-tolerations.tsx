@@ -6,7 +6,7 @@
 import "./pod-details-tolerations.scss";
 import React from "react";
 import { DrawerParamToggler, DrawerItem } from "../drawer";
-import type  { Toleration, KubeObject } from "@k8slens/kube-object";
+import type  { Toleration, KubeObject } from "@freelens/kube-object";
 import { PodTolerations } from "./pod-tolerations";
 
 export interface KubeObjectWithTolerations extends KubeObject {

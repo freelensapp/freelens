@@ -4,7 +4,7 @@
  */
 
 import type { ClusterId } from "../cluster-types";
-import type { MessageChannel } from "@k8slens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
 
 export const clusterVisibilityChannel: MessageChannel<ClusterId | null> = {
   id: "cluster-visibility",

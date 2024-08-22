@@ -5,7 +5,7 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { Namespace } from "@k8slens/kube-object";
+import { Namespace } from "@freelens/kube-object";
 
 export class NamespaceApi extends KubeApi<Namespace> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

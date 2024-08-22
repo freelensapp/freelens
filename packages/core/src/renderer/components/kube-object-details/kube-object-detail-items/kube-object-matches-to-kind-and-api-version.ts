@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { KubeObject } from "@k8slens/kube-object";
+import type { KubeObject } from "@freelens/kube-object";
 
 export const kubeObjectMatchesToKindAndApiVersion =
   (kind: string, apiVersions: string[]) =>

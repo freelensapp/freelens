@@ -10,8 +10,8 @@ import type { Readable } from "stream";
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
-import type { Disposer } from "@k8slens/utilities";
-import { bytesToUnits, noop } from "@k8slens/utilities";
+import type { Disposer } from "@freelens/utilities";
+import { bytesToUnits, noop } from "@freelens/utilities";
 import computeKubeconfigDiffInjectable from "./compute-diff.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 

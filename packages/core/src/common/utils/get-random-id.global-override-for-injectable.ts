@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@k8slens/test-utils";
-import { getRandomIdInjectionToken } from "@k8slens/random";
+import { getGlobalOverride } from "@freelens/test-utils";
+import { getRandomIdInjectionToken } from "@freelens/random";
 
 export default getGlobalOverride(getRandomIdInjectionToken, () => () => "some-irrelevant-random-id");

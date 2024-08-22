@@ -6,10 +6,10 @@
 import React from "react";
 import { waitFor, fireEvent } from "@testing-library/react";
 import { DeploymentScaleDialog } from "./dialog";
-import type { DeploymentApi } from "@k8slens/kube-api";
-import { Deployment } from "@k8slens/kube-object";
+import type { DeploymentApi } from "@freelens/kube-api";
+import { Deployment } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { deploymentApiInjectable } from "@k8slens/kube-api-specifics";
+import { deploymentApiInjectable } from "@freelens/kube-api-specifics";
 import type { OpenDeploymentScaleDialog } from "./open.injectable";
 import openDeploymentScaleDialogInjectable from "./open.injectable";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";

@@ -5,9 +5,9 @@
 
 import "./drawer-param-toggler.scss";
 import React from "react";
-import { Icon } from "@k8slens/icon";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
+import { Icon } from "@freelens/icon";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
 
 export interface DrawerParamTogglerProps {
   label: string | number;

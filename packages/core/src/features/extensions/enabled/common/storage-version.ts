@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getRequestChannel } from "@k8slens/messaging";
+import { getRequestChannel } from "@freelens/messaging";
 import { getInitializable } from "../../../../common/initializable-state/create";
 
 export const enabledExtensionsPersistentStorageVersionInitializable = getInitializable<string>(

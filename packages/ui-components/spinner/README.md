@@ -1,15 +1,15 @@
-# @k8slens/spinner
+# @freelens/spinner
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/spinner
+$ npm install @freelens/spinner
 ```
 
 ```typescript
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 ```
 
 ## Extendability

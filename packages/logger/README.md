@@ -1,19 +1,19 @@
-# @k8slens/logger
+# @freelens/logger
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/logger
+$ npm install @freelens/logger
 ```
 
 ```typescript
-import { loggerFeature } from "@k8slens/logger";
-import type { Logger } from "@k8slens/logger";
-import { loggerInjectionToken } from "@k8slens/logger";
-import { winstonLoggerInjectable } from "@k8slens/logger";
-import { prefixedLoggerInjectable } from "@k8slens/logger";
+import { loggerFeature } from "@freelens/logger";
+import type { Logger } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
+import { winstonLoggerInjectable } from "@freelens/logger";
+import { prefixedLoggerInjectable } from "@freelens/logger";
 ```
 
 ## Extendability

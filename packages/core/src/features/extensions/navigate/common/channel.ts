@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MessageChannel } from "@k8slens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
 
 export interface NavigateForExtensionArgs {
   extId: string;

@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
-import { Icon } from "@k8slens/icon";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { Icon } from "@freelens/icon";
 
 import eventsRouteInjectable from "../../../common/front-end-routing/routes/cluster/events/events-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";

@@ -5,7 +5,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { EditResourceModel } from "./edit-resource-model/edit-resource-model.injectable";
 import editResourceModelInjectable from "./edit-resource-model/edit-resource-model.injectable";

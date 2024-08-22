@@ -1,19 +1,19 @@
-# @k8slens/tooltip
+# @freelens/tooltip
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/tooltip
+$ npm install @freelens/tooltip
 ```
 
 ```typescript
-import { Tooltip, TooltipPosition } from "@k8slens/tooltip";
-import { withTooltip } from "@k8slens/tooltip";
+import { Tooltip, TooltipPosition } from "@freelens/tooltip";
+import { withTooltip } from "@freelens/tooltip";
 
-import type { TooltipProps } from "@k8slens/tooltip";
-import type { TooltipDecoratorProps } from "@k8slens/tooltip";
+import type { TooltipProps } from "@freelens/tooltip";
+import type { TooltipDecoratorProps } from "@freelens/tooltip";
 
 ```
 

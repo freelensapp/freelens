@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 
 export function NoMetrics() {
   return (

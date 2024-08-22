@@ -6,8 +6,8 @@
 import type { DiContainer } from "@ogre-tools/injectable";
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { runInAction } from "mobx";
-import type { Environments } from "@k8slens/legacy-global-di";
-import { setLegacyGlobalDiForExtensionApi } from "@k8slens/legacy-global-di";
+import type { Environments } from "@freelens/legacy-global-di";
+import { setLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
 
 export function registerLensCore(di: DiContainer, environment: Environments) {
   setLegacyGlobalDiForExtensionApi(di, environment);

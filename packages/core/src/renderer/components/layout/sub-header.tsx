@@ -5,8 +5,8 @@
 
 import "./sub-header.scss";
 import React from "react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
 
 export interface SubHeaderProps {
   className?: string;

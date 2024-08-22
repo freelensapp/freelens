@@ -5,8 +5,8 @@
 
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type { ClusterId } from "../cluster-types";
-import type { AsyncResult, Result } from "@k8slens/utilities";
-import { getRequestChannel } from "@k8slens/messaging";
+import type { AsyncResult, Result } from "@freelens/utilities";
+import { getRequestChannel } from "@freelens/messaging";
 
 export interface KubectlApplyAllArgs {
   clusterId: ClusterId;

@@ -4,10 +4,10 @@ import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { EnlistRequestChannelListener } from "./enlist-request-channel-listener.injectable";
 import enlistRequestChannelListenerInjectable from "./enlist-request-channel-listener.injectable";
-import type { RequestChannel, RequestChannelHandler } from "@k8slens/messaging";
-import { getPromiseStatus } from "@k8slens/test-utils";
+import type { RequestChannel, RequestChannelHandler } from "@freelens/messaging";
+import { getPromiseStatus } from "@freelens/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@k8slens/feature-core";
+import { registerFeature } from "@freelens/feature-core";
 import { messagingFeatureForMain } from "../feature";
 
 type TestRequestChannel = RequestChannel<unknown, unknown>;

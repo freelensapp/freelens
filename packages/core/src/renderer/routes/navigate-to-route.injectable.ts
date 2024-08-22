@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToUrlInjectionToken } from "../../common/front-end-routing/navigate-to-url-injection-token";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import currentlyInClusterFrameInjectable from "./currently-in-cluster-frame.injectable";
-import { buildURL } from "@k8slens/utilities";
+import { buildURL } from "@freelens/utilities";
 
 const navigateToRouteInjectable = getInjectable({
   id: "navigate-to-route",

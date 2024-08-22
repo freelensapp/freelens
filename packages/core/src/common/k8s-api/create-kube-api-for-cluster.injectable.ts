@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@k8slens/logger";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
 import { apiKubePrefix } from "../vars";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
 import apiBaseInjectable from "./api-base.injectable";
 import type { KubeApiConstructor } from "./create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
-import { KubeApi } from "@k8slens/kube-api";
-import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@k8slens/kube-object";
+import { KubeApi } from "@freelens/kube-api";
+import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelens/kube-object";
 
 export interface CreateKubeApiForLocalClusterConfig {
   metadata: {

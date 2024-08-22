@@ -10,7 +10,7 @@ import * as uuid from "uuid";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
 import { noop } from "lodash";
-import { disposer } from "@k8slens/utilities";
+import { disposer } from "@freelens/utilities";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
   "win32": "./dist/win-unpacked/Freelens.exe",

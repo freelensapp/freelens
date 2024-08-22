@@ -4,18 +4,18 @@
  */
 import React from "react";
 import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { Deployment } from "@k8slens/kube-object";
+import type { Deployment } from "@freelens/kube-object";
 import { MenuItem } from "../menu";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import type { OpenDeploymentScaleDialog } from "./scale/open.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { deploymentApiInjectable } from "@k8slens/kube-api-specifics";
+import { deploymentApiInjectable } from "@freelens/kube-api-specifics";
 import openDeploymentScaleDialogInjectable from "./scale/open.injectable";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { ShowCheckedErrorNotification } from "@k8slens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@k8slens/notifications";
-import type { DeploymentApi } from "@k8slens/kube-api";
+import type { ShowCheckedErrorNotification } from "@freelens/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { DeploymentApi } from "@freelens/kube-api";
 
 export interface DeploymentMenuProps extends KubeObjectMenuProps<Deployment> {}
 

@@ -5,8 +5,8 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import type { ClusterRoleData } from "@k8slens/kube-object";
-import { ClusterRole } from "@k8slens/kube-object";
+import type { ClusterRoleData } from "@freelens/kube-object";
+import { ClusterRole } from "@freelens/kube-object";
 
 export class ClusterRoleApi extends KubeApi<ClusterRole, ClusterRoleData> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

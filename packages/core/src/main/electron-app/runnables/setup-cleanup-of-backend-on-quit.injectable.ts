@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeElectronIsReadyInjectionToken } from "@k8slens/application-for-electron-main";
+import { beforeElectronIsReadyInjectionToken } from "@freelens/application-for-electron-main";
 import { onQuitOfBackEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
-import { runManyFor } from "@k8slens/run-many";
+import { runManyFor } from "@freelens/run-many";
 import { once } from "lodash";
 
 const setupCleanupOfBackendOnQuitInjectable = getInjectable({

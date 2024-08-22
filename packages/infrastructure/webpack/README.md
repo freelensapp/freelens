@@ -1,11 +1,11 @@
-# @k8slens/webpack
+# @freelens/webpack
 
 This package contains webpack configurations for Lens packages.
 
 ## Install
 
 ```
-$ npm install @k8slens/webpack
+$ npm install @freelens/webpack
 ```
 
 ## Features
@@ -17,14 +17,14 @@ This configuration should be used when creating package that will be executed wi
 
 **webpack.config.js**
 ```javascript
-module.exports = require("@k8slens/webpack").configForNode;
+module.exports = require("@freelens/webpack").configForNode;
 ```
 ### React package
 This configuration should be used when creating package tha will be executed within **Browser** environment.
 
 **webpack.config.js**
 ```javascript
-module.exports = require("@k8slens/webpack").configForReact;
+module.exports = require("@freelens/webpack").configForReact;
 ```
 
 ### Multi export package
@@ -35,7 +35,7 @@ This configuration should be used when package contains **multiple entrypoint** 
 ```javascript
 const packageJson = require("./package.json");
 
-module.exports = require("@k8slens/webpack").getMultiExportConfig(packageJson);
+module.exports = require("@freelens/webpack").getMultiExportConfig(packageJson);
 ```
 
 **package.json**
@@ -73,4 +73,3 @@ module.exports = require("@k8slens/webpack").getMultiExportConfig(packageJson);
 
 1. `lens-build` which builds the packages
 2. `lens-remove-build` which removes the build directory from packages. It's useful for cleaning up.
-

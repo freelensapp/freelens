@@ -5,10 +5,10 @@
 
 import { action, makeObservable, observable, when } from "mobx";
 import type { ClusterId } from "../../../common/cluster-types";
-import type { Disposer } from "@k8slens/utilities";
-import { onceDefined } from "@k8slens/utilities";
+import type { Disposer } from "@freelens/utilities";
+import { onceDefined } from "@freelens/utilities";
 import assert from "assert";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { getClusterFrameUrl } from "../../../common/utils";
 import type { GetClusterById } from "../../../features/cluster/storage/common/get-by-id.injectable";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/node-fetch",
+  "name": "@freelens/node-fetch",
   "version": "6.5.0",
   "description": "Node fetch for Lens",
   "license": "MIT",

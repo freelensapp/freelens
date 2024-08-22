@@ -11,8 +11,8 @@ import { defaultHotbarCells } from "./types";
 import { broadcastMessage } from "../../../../common/ipc";
 import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
 import * as uuid from "uuid";
-import type { Logger } from "@k8slens/logger";
-import { tuple } from "@k8slens/utilities";
+import type { Logger } from "@freelens/logger";
+import { tuple } from "@freelens/utilities";
 
 export interface HotbarDependencies {
   readonly logger: Logger;

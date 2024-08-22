@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import lensProxyCertificateInjectable from "./lens-proxy-certificate.injectable";
 
 export default getGlobalOverride(lensProxyCertificateInjectable, () => {
@@ -16,4 +16,3 @@ export default getGlobalOverride(lensProxyCertificateInjectable, () => {
     set: () => {},
   };
 });
-

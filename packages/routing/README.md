@@ -1,16 +1,16 @@
-# @k8slens/routing
+# @freelens/routing
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/routing
+$ npm install @freelens/routing
 ```
 
 ```typescript
-import { observableHistoryInjectable } from "@k8slens/routing";
-import { searchParamsOptions } from "@k8slens/routing";
+import { observableHistoryInjectable } from "@freelens/routing";
+import { searchParamsOptions } from "@freelens/routing";
 ```
 
 ## Extendability

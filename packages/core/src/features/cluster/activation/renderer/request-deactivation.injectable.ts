@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { requestFromChannelInjectionToken } from "@k8slens/messaging";
+import { requestFromChannelInjectionToken } from "@freelens/messaging";
 import { deactivateClusterChannel } from "../common/channels";
 import { requestClusterDeactivationInjectionToken } from "../common/request-token";
 

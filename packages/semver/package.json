@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/semver",
+  "name": "@freelens/semver",
   "version": "6.5.0",
   "description": "CLI over semver package for picking parts of a version",
   "license": "MIT",

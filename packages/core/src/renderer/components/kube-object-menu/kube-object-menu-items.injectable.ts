@@ -4,7 +4,7 @@
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 
-import type { KubeObject } from "@k8slens/kube-object";
+import type { KubeObject } from "@freelens/kube-object";
 import { computed } from "mobx";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";

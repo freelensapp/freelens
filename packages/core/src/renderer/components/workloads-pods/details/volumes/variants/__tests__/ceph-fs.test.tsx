@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import type { CephfsSource } from "@k8slens/kube-object";
-import { Pod } from "@k8slens/kube-object";
+import type { CephfsSource } from "@freelens/kube-object";
+import { Pod } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../../../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../../../../stores-apis-can-be-created.injectable";
 import type { DiRender } from "../../../../../test-utils/renderFor";

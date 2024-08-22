@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HorizontalPodAutoscaler, HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricStatus } from "@k8slens/kube-object";
+import type { HorizontalPodAutoscaler, HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricStatus } from "@freelens/kube-object";
 import { getMetricName } from "./get-metric-name";
 import { HorizontalPodAutoscalerV1MetricParser } from "./metric-parser-v1";
 import { HorizontalPodAutoscalerV2MetricParser } from "./metric-parser-v2";

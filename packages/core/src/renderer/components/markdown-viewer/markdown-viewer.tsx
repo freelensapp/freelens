@@ -10,7 +10,7 @@ import "./markdown-viewer.scss";
 import React, { Component } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { cssNames } from "@k8slens/utilities";
+import { cssNames } from "@freelens/utilities";
 
 DOMPurify.addHook("afterSanitizeAttributes", function (node) {
   // Set all elements owning target to target=_blank

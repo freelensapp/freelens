@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { LensExtensionId, InstalledExtension } from "@k8slens/legacy-extensions";
+import type { LensExtensionId, InstalledExtension } from "@freelens/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { extensionDisplayName } from "../../../extensions/lens-extension";

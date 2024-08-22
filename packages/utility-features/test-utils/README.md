@@ -1,3 +1,3 @@
-# @k8slens/test-utils
+# @freelens/test-utils
 
 This package contains many useful utilities for testing.

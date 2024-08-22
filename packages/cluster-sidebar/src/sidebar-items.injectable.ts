@@ -2,7 +2,7 @@ import { getInjectable, InjectionInstanceWithMeta } from "@ogre-tools/injectable
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { SidebarItemDeclaration, sidebarItemInjectionToken, SidebarItemRegistration } from "./tokens";
 import { computed } from "mobx";
-import { byOrderNumber } from "@k8slens/utilities";
+import { byOrderNumber } from "@freelens/utilities";
 
 const getSidebarItemsHierarchy = (
   registrations: InjectionInstanceWithMeta<SidebarItemRegistration>[],

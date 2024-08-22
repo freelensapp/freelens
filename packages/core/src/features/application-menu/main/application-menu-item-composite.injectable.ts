@@ -11,8 +11,8 @@ import type { RootComposite } from "../../../common/utils/composite/interfaces";
 import type { Discriminable } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import { isShown } from "../../../common/utils/composable-responsibilities/showable/showable";
-import type { Orderable } from "@k8slens/utilities";
-import { byOrderNumber } from "@k8slens/utilities";
+import type { Orderable } from "@freelens/utilities";
+import { byOrderNumber } from "@freelens/utilities";
 
 export type MenuItemRoot = Discriminable<"root"> & RootComposite<"root"> & Orderable;
 

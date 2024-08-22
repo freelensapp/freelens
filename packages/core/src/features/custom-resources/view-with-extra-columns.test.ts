@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectMetadata, KubeObjectScope } from "@k8slens/kube-object";
-import { KubeObject, CustomResourceDefinition } from "@k8slens/kube-object";
+import type { KubeObjectMetadata, KubeObjectScope } from "@freelens/kube-object";
+import { KubeObject, CustomResourceDefinition } from "@freelens/kube-object";
 import type { RenderResult } from "@testing-library/react";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";

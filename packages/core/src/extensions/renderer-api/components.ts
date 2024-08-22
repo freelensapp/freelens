@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { asLegacyGlobalFunctionForExtensionApi, asLegacyGlobalForExtensionApi } from "@k8slens/legacy-global-di";
+import { asLegacyGlobalFunctionForExtensionApi, asLegacyGlobalForExtensionApi } from "@freelens/legacy-global-di";
 import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
 import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
 import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store.injectable";
@@ -23,7 +23,7 @@ import {
   showInfoNotificationInjectable,
   showShortInfoNotificationInjectable,
   showSuccessNotificationInjectable,
-} from "@k8slens/notifications";
+} from "@freelens/notifications";
 import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
 import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
 import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
@@ -37,7 +37,7 @@ export * from "../../renderer/components/layout/wizard-layout";
 export * from "../../renderer/components/layout/tab-layout";
 
 // form-controls
-export * from "@k8slens/button";
+export * from "@freelens/button";
 export * from "../../renderer/components/checkbox";
 export * from "../../renderer/components/radio";
 export * from "../../renderer/components/select";
@@ -64,8 +64,8 @@ export const ConfirmDialog = Object.assign(_ConfirmDialog, {
   confirm: asLegacyGlobalFunctionForExtensionApi(confirmInjectable),
 });
 
-export * from "@k8slens/icon";
-export * from "@k8slens/tooltip";
+export * from "@freelens/icon";
+export * from "@freelens/tooltip";
 export * from "../../renderer/components/tabs";
 export * from "../../renderer/components/table";
 export * from "../../renderer/components/badge";
@@ -82,7 +82,7 @@ export {
   type NotificationMessage,
   type ShowNotification,
   type NotificationsStore,
-} from"@k8slens/notifications";
+} from"@freelens/notifications";
 
 export const Notifications = {
   ok: asLegacyGlobalFunctionForExtensionApi(showSuccessNotificationInjectable),
@@ -92,7 +92,7 @@ export const Notifications = {
   shortInfo: asLegacyGlobalFunctionForExtensionApi(showShortInfoNotificationInjectable),
 };
 
-export * from "@k8slens/spinner";
+export * from "@freelens/spinner";
 export * from "../../renderer/components/stepper";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-details-list";

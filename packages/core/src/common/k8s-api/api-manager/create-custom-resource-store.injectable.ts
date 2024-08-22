@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
-import type { KubeApi } from "@k8slens/kube-api";
-import type { KubeObject } from "@k8slens/kube-object";
+import { loggerInjectionToken } from "@freelens/logger";
+import type { KubeApi } from "@freelens/kube-api";
+import type { KubeObject } from "@freelens/kube-object";
 import type { KubeObjectStoreDependencies } from "../kube-object.store";
 import { CustomResourceStore } from "./resource.store";
 

@@ -5,7 +5,7 @@
 
 
 import autoBind from "auto-bind";
-import type { ItemObject } from "@k8slens/list-layout";
+import type { ItemObject } from "@freelens/list-layout";
 
 export type ForwardedPortStatus = "Active" | "Disabled";
 export interface ForwardedPort {

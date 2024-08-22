@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/ensure-binaries",
+  "name": "@freelens/ensure-binaries",
   "version": "6.5.0",
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
   "main": "dist/index.js",

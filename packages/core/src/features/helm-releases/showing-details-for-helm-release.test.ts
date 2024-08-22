@@ -15,7 +15,7 @@ import type { RequestHelmReleaseUpdate } from "../../common/k8s-api/endpoints/he
 import requestHelmReleaseUpdateInjectable from "../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
 import type { RequestDetailedHelmRelease } from "../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
 import requestDetailedHelmReleaseInjectable from "../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@k8slens/notifications";
+import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelens/notifications";
 import getRandomUpgradeChartTabIdInjectable from "../../renderer/components/dock/upgrade-chart/get-random-upgrade-chart-tab-id.injectable";
 import type { RequestHelmCharts } from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import type { RequestHelmChartVersions } from "../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";

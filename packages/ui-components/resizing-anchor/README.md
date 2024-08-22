@@ -1,15 +1,15 @@
-# @k8slens/resizing-anchor
+# @freelens/resizing-anchor
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/resizing-anchor
+$ npm install @freelens/resizing-anchor
 ```
 
 ```typescript
-import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@k8slens/resizing-anchor";
+import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelens/resizing-anchor";
 ```
 
 ## Extendability

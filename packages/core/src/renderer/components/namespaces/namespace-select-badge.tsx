@@ -13,7 +13,7 @@ import type {
 } from "./namespace-select-filter-model/filter-by-namespace.injectable";
 import filterByNamespaceInjectable
   from "./namespace-select-filter-model/filter-by-namespace.injectable";
-import { prevDefault, cssNames } from "@k8slens/utilities";
+import { prevDefault, cssNames } from "@freelens/utilities";
 
 export interface NamespaceSelectBadgeProps extends BadgeProps {
   namespace: string;

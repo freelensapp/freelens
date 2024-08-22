@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { onQuitOfBackEndInjectionToken } from "../runnable-tokens/phases";
 import shellSessionProcessesInjectable from "../../shell-session/processes.injectable";
-import { prefixedLoggerInjectable } from "@k8slens/logger";
+import { prefixedLoggerInjectable } from "@freelens/logger";
 
 const cleanUpShellSessionsInjectable = getInjectable({
   id: "clean-up-shell-sessions",

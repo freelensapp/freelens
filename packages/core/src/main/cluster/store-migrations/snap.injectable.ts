@@ -7,11 +7,11 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
 import type { ClusterModel } from "../../../common/cluster-types";
 import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
-import { applicationInformationToken } from "@k8slens/application";
+import { applicationInformationToken } from "@freelens/application";
 
 const clusterStoreSnapMigrationInjectable = getInjectable({
   id: "cluster-store-snap-migration",
@@ -57,4 +57,3 @@ const clusterStoreSnapMigrationInjectable = getInjectable({
 });
 
 export default clusterStoreSnapMigrationInjectable;
-

@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { CommandContainer } from "./command-container";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 
 const commandContainerClusterFrameChildComponentInjectable = getInjectable({
   id: "command-container-cluster-frame-child-component",

@@ -2,9 +2,9 @@ import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 
 import { computed, IComputedValue, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from "mobx";
 
-import type { MessageChannel } from "@k8slens/messaging";
-import { getMessageChannelListenerInjectable } from "@k8slens/messaging";
-import { sendMessageToChannelInjectionToken } from "@k8slens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
 import { computedChannelAdministrationChannel } from "./computed-channel-administration-channel.injectable";
 
 export type ComputedChannelFactory = <T>(channel: MessageChannel<T>, pendingValue: T) => IComputedValue<T>;

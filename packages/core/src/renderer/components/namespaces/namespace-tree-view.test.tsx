@@ -5,14 +5,14 @@
 import type { DiContainer } from "@ogre-tools/injectable";
 import { fireEvent } from "@testing-library/react";
 import React from "react";
-import { Namespace } from "@k8slens/kube-object";
+import { Namespace } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import { NamespaceTreeView } from "./namespace-tree-view";
 import type { NamespaceTree } from "./store";
-import type { StrictReactNode } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
 
 jest.mock("react-router-dom", () => ({
   Link: ({ children }: { children: StrictReactNode }) => children,

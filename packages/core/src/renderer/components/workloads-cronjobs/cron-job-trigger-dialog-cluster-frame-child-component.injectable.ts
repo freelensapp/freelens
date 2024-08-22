@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { CronJobTriggerDialog } from "./trigger-dialog/view";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 
 const cronJobTriggerDialogClusterFrameChildComponentInjectable = getInjectable({
   id: "cron-job-trigger-dialog-cluster-frame-child-component",

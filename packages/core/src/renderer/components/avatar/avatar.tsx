@@ -8,8 +8,8 @@ import styles from "./avatar.module.scss";
 import type { ImgHTMLAttributes, MouseEventHandler } from "react";
 import React from "react";
 import randomColor from "randomcolor";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
 import { computeDefaultShortName } from "../../../common/catalog/helpers";
 
 export interface AvatarProps {

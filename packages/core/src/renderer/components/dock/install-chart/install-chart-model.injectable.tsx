@@ -4,7 +4,7 @@
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import installChartTabStoreInjectable from "./store.injectable";
-import { waitUntilDefined } from "@k8slens/utilities";
+import { waitUntilDefined } from "@freelens/utilities";
 import type { IChartInstallData, InstallChartTabStore } from "./store";
 import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
 import React from "react";
@@ -279,4 +279,3 @@ export class InstallChartModel {
     this.dependencies.closeTab();
   };
 }
-

@@ -5,8 +5,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Patch } from "rfc6902";
 import apiBaseInjectable from "../../api-base.injectable";
-import type { AsyncResult, Result } from "@k8slens/utilities";
-import type { KubeJsonApiData } from "@k8slens/kube-object";
+import type { AsyncResult, Result } from "@freelens/utilities";
+import type { KubeJsonApiData } from "@freelens/kube-object";
 
 export type RequestKubeObjectPatch = (name: string, kind: string, ns: string | undefined, patch: Patch) => AsyncResult<KubeJsonApiData, string>;
 

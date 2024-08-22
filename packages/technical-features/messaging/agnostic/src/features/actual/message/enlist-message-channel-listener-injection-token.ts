@@ -1,4 +1,4 @@
-import type { Disposer } from "@k8slens/utilities";
+import type { Disposer } from "@freelens/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
 
 import type { MessageChannel, MessageChannelListener } from "./message-channel-listener-injection-token";

@@ -4,7 +4,7 @@
  */
 import React from "react";
 import { getInjectable } from "@ogre-tools/injectable";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Sidebar } from "../../components/layout/sidebar";
 import { Dock } from "../../components/dock";

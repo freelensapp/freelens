@@ -7,11 +7,11 @@ import "./tab-layout.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
 import { Tab, Tabs } from "../tabs";
-import { ErrorBoundary } from "@k8slens/error-boundary";
-import type { SidebarItemDeclaration } from "@k8slens/cluster-sidebar";
+import { ErrorBoundary } from "@freelens/error-boundary";
+import type { SidebarItemDeclaration } from "@freelens/cluster-sidebar";
 
 export interface TabLayoutProps {
   tabs?: SidebarItemDeclaration[];

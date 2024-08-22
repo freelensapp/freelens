@@ -6,9 +6,9 @@
 import "./pod-details-container.scss";
 
 import React from "react";
-import type { Container, PodContainerStatus, Pod } from "@k8slens/kube-object";
+import type { Container, PodContainerStatus, Pod } from "@freelens/kube-object";
 import { DrawerItem } from "../drawer";
-import { cssNames, isDefined } from "@k8slens/utilities";
+import { cssNames, isDefined } from "@freelens/utilities";
 import { StatusBrick } from "../status-brick";
 import { Badge } from "../badge";
 import { ContainerEnvironment } from "./pod-container-env";
@@ -21,8 +21,8 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import type { IComputedValue } from "mobx";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
-import type { PodDetailsContainerMetricsComponent } from "@k8slens/metrics";
-import { podDetailsContainerMetricsInjectionToken } from "@k8slens/metrics";
+import type { PodDetailsContainerMetricsComponent } from "@freelens/metrics";
+import { podDetailsContainerMetricsInjectionToken } from "@freelens/metrics";
 
 export interface PodDetailsContainerProps {
   pod: Pod;

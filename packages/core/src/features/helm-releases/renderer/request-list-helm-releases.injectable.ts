@@ -2,8 +2,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { ChannelRequester } from "@k8slens/messaging";
-import { requestFromChannelInjectionToken } from "@k8slens/messaging";
+import type { ChannelRequester } from "@freelens/messaging";
+import { requestFromChannelInjectionToken } from "@freelens/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { listHelmReleasesChannel } from "../common/channels";
 

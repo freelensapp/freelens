@@ -4,7 +4,7 @@
  */
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Button } from "@k8slens/button";
+import { Button } from "@freelens/button";
 import showDialogForAddingCustomHelmRepositoryInjectable from "./dialog-visibility/show-dialog-for-adding-custom-helm-repository.injectable";
 
 interface Dependencies {
@@ -29,4 +29,3 @@ export const AddingOfCustomHelmRepositoryOpenButton = withInjectables<Dependenci
     }),
   },
 );
-

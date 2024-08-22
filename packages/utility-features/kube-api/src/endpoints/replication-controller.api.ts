@@ -5,8 +5,8 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { ReplicationController } from "@k8slens/kube-object";
-import type { Scale } from "@k8slens/kube-object";
+import { ReplicationController } from "@freelens/kube-object";
+import type { Scale } from "@freelens/kube-object";
 
 export class ReplicationControllerApi extends KubeApi<ReplicationController> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

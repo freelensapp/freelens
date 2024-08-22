@@ -5,11 +5,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { Link } from "react-router-dom";
-import { nodeApiInjectable } from "@k8slens/kube-api-specifics";
+import { nodeApiInjectable } from "@freelens/kube-api-specifics";
 import { Badge } from "../../badge";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import { stopPropagation } from "@k8slens/utilities";
-import { podListLayoutColumnInjectionToken } from "@k8slens/list-layout";
+import { stopPropagation } from "@freelens/utilities";
+import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
 
 export const podsNodeColumnInjectable = getInjectable({
   id: "pods-node-column",

@@ -1,6 +1,6 @@
 /* c8 ignore start */
 import { getInjectable } from "@ogre-tools/injectable";
-import { RequestChannel, RequestFromChannel, requestFromChannelInjectionToken } from "@k8slens/messaging";
+import { RequestChannel, RequestFromChannel, requestFromChannelInjectionToken } from "@freelens/messaging";
 
 const requestFromChannelInjectable = getInjectable({
   id: "request-from-channel",

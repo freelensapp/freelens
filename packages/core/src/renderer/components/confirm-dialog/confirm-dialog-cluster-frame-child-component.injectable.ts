@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { ConfirmDialog } from "./confirm-dialog";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 
 const confirmDialogClusterFrameChildComponentInjectable = getInjectable({
   id: "confirm-dialog-cluster-frame-child-component",

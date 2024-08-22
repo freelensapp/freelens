@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 
 export function ToBottom({ onClick }: { onClick: () => void }) {
   return (

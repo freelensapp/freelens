@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@k8slens/logger";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "@k8slens/kube-api";
-import { maybeKubeApiInjectable } from "@k8slens/kube-api-specifics";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "@freelens/kube-api";
+import { maybeKubeApiInjectable } from "@freelens/kube-api-specifics";
 
 export interface CreateKubeApi {
   <Api>(ctor: new (deps: KubeApiDependencies, opts: DerivedKubeApiOptions) => Api, opts?: DerivedKubeApiOptions): Api;

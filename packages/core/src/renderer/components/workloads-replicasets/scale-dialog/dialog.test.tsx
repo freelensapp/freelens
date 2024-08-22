@@ -5,10 +5,10 @@
 import { ReplicaSetScaleDialog } from "./dialog";
 import { waitFor, fireEvent } from "@testing-library/react";
 import React from "react";
-import type { ReplicaSetApi } from "@k8slens/kube-api";
-import { ReplicaSet } from "@k8slens/kube-object";
+import type { ReplicaSetApi } from "@freelens/kube-api";
+import { ReplicaSet } from "@freelens/kube-object";
 import type { OpenReplicaSetScaleDialog } from "./open.injectable";
-import { replicaSetApiInjectable } from "@k8slens/kube-api-specifics";
+import { replicaSetApiInjectable } from "@freelens/kube-api-specifics";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";

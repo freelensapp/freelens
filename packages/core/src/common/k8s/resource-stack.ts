@@ -5,15 +5,15 @@
 import hb from "handlebars";
 import type { KubernetesCluster } from "../catalog-entities";
 import yaml from "js-yaml";
-import { getLegacyGlobalDiForExtensionApi } from "@k8slens/legacy-global-di";
+import { getLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
 import productNameInjectable from "../vars/product-name.injectable";
-import type { AsyncResult } from "@k8slens/utilities";
-import type { Logger } from "@k8slens/logger";
+import type { AsyncResult } from "@freelens/utilities";
+import type { Logger } from "@freelens/logger";
 import type { KubectlApplyAll, KubectlDeleteAll } from "../kube-helpers/channels";
 import type { ReadDirectory } from "../fs/read-directory.injectable";
 import type { JoinPaths } from "../path/join-paths.injectable";
 import type { ReadFile } from "../fs/read-file.injectable";
-import { hasTypedProperty, isObject } from "@k8slens/utilities";
+import { hasTypedProperty, isObject } from "@freelens/utilities";
 
 export interface ResourceApplyingStack {
   kubectlApplyFolder(folderPath: string, templateContext?: any, extraArgs?: string[]): Promise<string>;

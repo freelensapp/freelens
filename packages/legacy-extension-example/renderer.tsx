@@ -1,4 +1,4 @@
-import { Common, Renderer } from "@k8slens/extensions";
+import { Common, Renderer } from "@freelens/extensions";
 
 export default class ExampleLensExtension extends Renderer.LensExtension {
   protected onActivate(): void | Promise<void> {

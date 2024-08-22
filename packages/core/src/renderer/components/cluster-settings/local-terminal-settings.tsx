@@ -8,10 +8,10 @@ import { observer } from "mobx-react";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
-import type { ShowNotification } from "@k8slens/notifications";
-import { Icon } from "@k8slens/icon";
+import type { ShowNotification } from "@freelens/notifications";
+import { Icon } from "@freelens/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { showErrorNotificationInjectable } from "@k8slens/notifications";
+import { showErrorNotificationInjectable } from "@freelens/notifications";
 import type { ValidateDirectory } from "../../../common/fs/validate-directory.injectable";
 import validateDirectoryInjectable from "../../../common/fs/validate-directory.injectable";
 import type { ResolveTilde } from "../../../common/path/resolve-tilde.injectable";
@@ -22,7 +22,7 @@ import type { OpenPathPickingDialog } from "../../../features/path-picking-dialo
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import type { LocalTerminalSettingPresenter } from "./local-terminal-setting-presenter.injectable";
 import localTerminalSettingPresenterInjectable from "./local-terminal-setting-presenter.injectable";
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 import { action, runInAction } from "mobx";
 
 export interface ClusterLocalTerminalSettingProps {

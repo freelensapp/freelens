@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isObject, cpuUnitsToNumber, unitsToBytes } from "@k8slens/utilities";
+import { isObject, cpuUnitsToNumber, unitsToBytes } from "@freelens/utilities";
 import { TypedRegEx } from "typed-regex";
 import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";

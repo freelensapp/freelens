@@ -8,13 +8,13 @@ import "./limit-range-details.scss";
 import React from "react";
 import { observer } from "mobx-react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { LimitRangeItem } from "@k8slens/kube-object";
-import { LimitPart, LimitRange, Resource } from "@k8slens/kube-object";
+import type { LimitRangeItem } from "@freelens/kube-object";
+import { LimitPart, LimitRange, Resource } from "@freelens/kube-object";
 import { DrawerItem } from "../drawer/drawer-item";
 import { Badge } from "../badge";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface LimitRangeDetailsProps extends KubeObjectDetailsProps<LimitRange> {
 }

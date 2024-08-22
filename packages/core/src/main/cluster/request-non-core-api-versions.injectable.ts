@@ -4,7 +4,7 @@
  */
 import type { V1APIGroupList } from "@kubernetes/client-node";
 import { getInjectable } from "@ogre-tools/injectable";
-import { iter } from "@k8slens/utilities";
+import { iter } from "@freelens/utilities";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 

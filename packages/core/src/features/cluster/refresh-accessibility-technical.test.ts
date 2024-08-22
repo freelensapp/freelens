@@ -24,7 +24,7 @@ import clusterConnectionInjectable from "../../main/cluster/cluster-connection.i
 import type { KubeAuthProxy } from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import type { Mocked } from "../../test-utils/mock-interface";
-import { flushPromises } from "@k8slens/test-utils";
+import { flushPromises } from "@freelens/test-utils";
 import addClusterInjectable from "./storage/common/add.injectable";
 
 describe("Refresh Cluster Accessibility Technical Tests", () => {

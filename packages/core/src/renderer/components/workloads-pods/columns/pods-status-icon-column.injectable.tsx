@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { podListLayoutColumnInjectionToken } from "@k8slens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 
 const columnId = "qos";
@@ -22,4 +22,3 @@ export const podsQosColumnInjectable = getInjectable({
   }),
   injectionToken: podListLayoutColumnInjectionToken,
 });
-

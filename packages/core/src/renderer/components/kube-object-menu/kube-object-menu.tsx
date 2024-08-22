@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { cssNames } from "@k8slens/utilities";
-import type { KubeObject } from "@k8slens/kube-object";
+import { cssNames } from "@freelens/utilities";
+import type { KubeObject } from "@freelens/kube-object";
 import type { MenuActionsProps } from "../menu";
 import { MenuItem, MenuActions } from "../menu";
 import identity from "lodash/identity";
@@ -24,7 +24,7 @@ import type { IComputedValue } from "mobx";
 import { observable, runInAction } from "mobx";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
 import type { Navigate } from "../../navigation/navigate.injectable";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 import { observer } from "mobx-react";

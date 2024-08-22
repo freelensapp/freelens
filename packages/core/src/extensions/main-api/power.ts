@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { powerMonitor } from "electron";
-import type { Disposer } from "@k8slens/utilities";
+import type { Disposer } from "@freelens/utilities";
 
 /**
  * Event listener for system power events

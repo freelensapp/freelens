@@ -5,9 +5,9 @@
 
 import "./line-progress.scss";
 import React from "react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames } from "@k8slens/utilities";
-import { withTooltip } from "@k8slens/tooltip";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames } from "@freelens/utilities";
+import { withTooltip } from "@freelens/tooltip";
 
 export interface LineProgressProps extends React.HTMLProps<HTMLDivElement> {
   value: number;

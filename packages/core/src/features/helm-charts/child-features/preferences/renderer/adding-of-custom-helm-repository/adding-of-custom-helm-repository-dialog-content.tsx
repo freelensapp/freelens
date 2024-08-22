@@ -17,8 +17,8 @@ import type { IObservableValue } from "mobx";
 import { action } from "mobx";
 import submitCustomHelmRepositoryInjectable from "./submit-custom-helm-repository.injectable";
 import hideDialogForAddingCustomHelmRepositoryInjectable from "./dialog-visibility/hide-dialog-for-adding-custom-helm-repository.injectable";
-import { Button } from "@k8slens/button";
-import { Icon } from "@k8slens/icon";
+import { Button } from "@freelens/button";
+import { Icon } from "@freelens/icon";
 import maximalCustomHelmRepoOptionsAreShownInjectable from "./maximal-custom-helm-repo-options-are-shown.injectable";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Checkbox } from "../../../../../../renderer/components/checkbox";
@@ -151,4 +151,3 @@ export const AddingOfCustomHelmRepositoryDialogContent = withInjectables<Depende
 
 const keyExtensions = ["key", "keystore", "jks", "p12", "pfx", "pem"];
 const certExtensions = ["crt", "cer", "ca-bundle", "p7b", "p7c", "p7s", "p12", "pfx", "pem"];
-

@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import type { HelmRepo } from "../../../../common/helm/helm-repo";
 
 const addHelmRepositoryInjectable = getInjectable({

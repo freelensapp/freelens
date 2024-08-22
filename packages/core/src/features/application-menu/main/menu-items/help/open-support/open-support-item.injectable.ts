@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import { supportUrl } from "../../../../../../common/vars";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 const openSupportItemInjectable = getInjectable({
   id: "open-support-menu-item",

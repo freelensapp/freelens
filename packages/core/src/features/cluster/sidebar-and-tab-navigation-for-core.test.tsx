@@ -8,7 +8,7 @@ import React from "react";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
 import { computed, runInAction } from "mobx";
 import { noop } from "lodash/fp";
 import routeIsActiveInjectable from "../../renderer/routes/route-is-active.injectable";
@@ -20,7 +20,7 @@ import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import storageSaveDelayInjectable from "../../renderer/utils/create-storage/storage-save-delay.injectable";
-import { flushPromises } from "@k8slens/test-utils";
+import { flushPromises } from "@freelens/test-utils";
 import { testUsingFakeTime, advanceFakeTime } from "../../test-utils/use-fake-time";
 
 describe("cluster - sidebar and tab navigation for core", () => {

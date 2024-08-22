@@ -4,12 +4,12 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { Router } from "react-router";
-import { historyInjectionToken } from "@k8slens/routing";
+import { historyInjectionToken } from "@freelens/routing";
 import React from "react";
 
 import {
   reactApplicationHigherOrderComponentInjectionToken,
-} from "@k8slens/react-application";
+} from "@freelens/react-application";
 
 const routingReactApplicationHocInjectable = getInjectable({
   id: "routing-react-application-hoc",

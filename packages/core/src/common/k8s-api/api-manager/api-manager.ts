@@ -7,10 +7,10 @@ import type { KubeObjectStore } from "../kube-object.store";
 
 import type { IComputedValue } from "mobx";
 import { autorun,  action, observable } from "mobx";
-import type { KubeApi } from "@k8slens/kube-api";
-import type { KubeObject, ObjectReference } from "@k8slens/kube-object";
-import { parseKubeApi, createKubeApiURL } from "@k8slens/kube-api";
-import { getOrInsertWith, iter } from "@k8slens/utilities";
+import type { KubeApi } from "@freelens/kube-api";
+import type { KubeObject, ObjectReference } from "@freelens/kube-object";
+import { parseKubeApi, createKubeApiURL } from "@freelens/kube-api";
+import { getOrInsertWith, iter } from "@freelens/utilities";
 import type { CreateCustomResourceStore } from "./create-custom-resource-store.injectable";
 
 export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any>

@@ -12,7 +12,7 @@ import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { Router } from "react-router";
 import { DefaultProps } from "../../mui-base-theme";
 import { ClusterFrame } from "./cluster-frame";
-import { historyInjectionToken } from "@k8slens/routing";
+import { historyInjectionToken } from "@freelens/routing";
 import { computed } from "mobx";
 import { Cluster } from "../../../common/cluster/cluster";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";

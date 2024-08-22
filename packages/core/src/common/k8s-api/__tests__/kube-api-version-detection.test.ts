@@ -3,15 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { ApiManager } from "../api-manager";
-import type { IngressApi } from "@k8slens/kube-api";
-import { HorizontalPodAutoscalerApi } from "@k8slens/kube-api";
-import { Ingress } from "@k8slens/kube-object";
+import type { IngressApi } from "@freelens/kube-api";
+import { HorizontalPodAutoscalerApi } from "@freelens/kube-api";
+import { Ingress } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import type { Fetch } from "../../fetch/fetch.injectable";
 import fetchInjectable from "../../fetch/fetch.injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@k8slens/test-utils";
+import { flushPromises } from "@freelens/test-utils";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
@@ -20,8 +20,8 @@ import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hos
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { ingressApiInjectable, maybeKubeApiInjectable } from "@k8slens/kube-api-specifics";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@k8slens/logger";
+import { ingressApiInjectable, maybeKubeApiInjectable } from "@freelens/kube-api-specifics";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
 import { Cluster } from "../../cluster/cluster";
 
 describe("KubeApi", () => {

@@ -2,8 +2,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { ClusterRole, ClusterRoleData } from "@k8slens/kube-object";
-import type { ClusterRoleApi } from "@k8slens/kube-api";
+import type { ClusterRole, ClusterRoleData } from "@freelens/kube-object";
+import type { ClusterRoleApi } from "@freelens/kube-api";
 import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
 
 export class ClusterRoleStore extends KubeObjectStore<ClusterRole, ClusterRoleApi, ClusterRoleData> {

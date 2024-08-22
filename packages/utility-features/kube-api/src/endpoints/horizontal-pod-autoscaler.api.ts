@@ -5,7 +5,7 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { HorizontalPodAutoscaler } from "@k8slens/kube-object";
+import { HorizontalPodAutoscaler } from "@freelens/kube-object";
 
 export class HorizontalPodAutoscalerApi extends KubeApi<HorizontalPodAutoscaler> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

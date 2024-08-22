@@ -6,7 +6,7 @@
 import type { Readable } from "stream";
 import URLParse from "url-parse";
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface GetPortFromStreamArgs {
   /**
@@ -74,4 +74,3 @@ const getPortFromStreamInjectable = getInjectable({
 });
 
 export default getPortFromStreamInjectable;
-

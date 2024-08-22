@@ -11,7 +11,7 @@ const lensCreateResourceTemplatesInjectable = getInjectable({
 
   instantiate: (di): RawTemplates => {
     const parsePath = di.inject(parsePathInjectable);
-    const templatesContext = require.context("@k8slens/resource-templates/templates", true, /^\.\/.*\.(yaml|yml)$/);
+    const templatesContext = require.context("@freelens/resource-templates/templates", true, /^\.\/.*\.(yaml|yml)$/);
 
     return {
       label: "lens",

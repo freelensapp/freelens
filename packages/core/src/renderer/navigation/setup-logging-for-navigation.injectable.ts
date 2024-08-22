@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import { beforeFrameStartsSecondInjectionToken } from "../before-frame-starts/tokens";
-import { observableHistoryInjectionToken } from "@k8slens/routing";
+import { observableHistoryInjectionToken } from "@freelens/routing";
 
 const setupLoggingForNavigationInjectable = getInjectable({
   id: "setup-logging-for-navigation",

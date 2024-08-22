@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/event-emitter",
+  "name": "@freelens/event-emitter",
   "private": false,
   "version": "1.0.0",
   "description": "Event emitter",
@@ -19,7 +19,7 @@
   "types": "dist/index.d.ts",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@k8slens.dev"
+    "email": "info@freelens.dev"
   },
   "license": "MIT",
   "homepage": "https://github.com/freelensapp/freelens",
@@ -31,9 +31,9 @@
     "lint:fix": "lens-lint --fix"
   },
   "devDependencies": {
-    "@k8slens/eslint-config": "^6.5.0",
-    "@k8slens/jest": "^6.5.0",
-    "@k8slens/typescript": "^6.5.0",
-    "@k8slens/webpack": "^6.5.0"
+    "@freelens/eslint-config": "^6.5.0",
+    "@freelens/jest": "^6.5.0",
+    "@freelens/typescript": "^6.5.0",
+    "@freelens/webpack": "^6.5.0"
   }
 }

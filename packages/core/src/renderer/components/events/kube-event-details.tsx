@@ -7,18 +7,18 @@ import styles from "./kube-event-details.module.scss";
 
 import React from "react";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { KubeObject } from "@k8slens/kube-object";
+import { KubeObject } from "@freelens/kube-object";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { cssNames } from "@k8slens/utilities";
+import { cssNames } from "@freelens/utilities";
 import { LocaleDate } from "../locale-date";
 import type { EventStore } from "./store";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import eventStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface KubeEventDetailsProps {
   object: KubeObject;
@@ -103,6 +103,3 @@ export const KubeEventDetails = withInjectables<Dependencies, KubeEventDetailsPr
     logger: di.inject(loggerInjectionToken),
   }),
 });
-
-
-

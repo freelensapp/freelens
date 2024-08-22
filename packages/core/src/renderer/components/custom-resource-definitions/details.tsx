@@ -8,16 +8,16 @@ import "./details.scss";
 import React from "react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
-import { CustomResourceDefinition } from "@k8slens/kube-object";
+import { CustomResourceDefinition } from "@freelens/kube-object";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { Input } from "../input";
 import { MonacoEditor } from "../monaco-editor";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface CustomResourceDefinitionDetailsProps extends KubeObjectDetailsProps<CustomResourceDefinition> {
 }

@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
-import { beforeElectronIsReadyInjectionToken } from "@k8slens/application-for-electron-main";
+import { beforeElectronIsReadyInjectionToken } from "@freelens/application-for-electron-main";
 
 const setupLensProxyCertificateInjectable = getInjectable({
   id: "setup-lens-proxy-certificate",
