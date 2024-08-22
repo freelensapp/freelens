@@ -8,7 +8,6 @@
   "scripts": {
     "build": "lerna run --stream build",
     "build:app": "cd freelens && npm run build:app",
-    "build:docs": "lerna run --stream build:docs",
     "rebuild": "lerna run --stream rebuild",
     "clean": "lerna run clean --stream",
     "clean:node_modules": "lerna clean -y && rimraf node_modules",
