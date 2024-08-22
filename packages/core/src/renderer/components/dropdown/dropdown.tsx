@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
 import type { HTMLAttributes } from "react";
 import React, { useState } from "react";
 import { Menu } from "../menu";

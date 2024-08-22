@@ -5,7 +5,7 @@
 
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
-import type { StrictReactNode } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
 
 export interface SidebarItemRegistration {
   id?: undefined;

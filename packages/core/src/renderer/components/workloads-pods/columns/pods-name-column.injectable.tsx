@@ -2,12 +2,12 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getConvertedParts } from "@k8slens/utilities";
+import { getConvertedParts } from "@freelens/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import type { Pod } from "@k8slens/kube-object";
-import { Tooltip } from "@k8slens/tooltip";
-import { podListLayoutColumnInjectionToken } from "@k8slens/list-layout";
+import type { Pod } from "@freelens/kube-object";
+import { Tooltip } from "@freelens/tooltip";
+import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
 
 const columnId = "name";
 
@@ -34,4 +34,3 @@ export const podsNameColumnInjectable = getInjectable({
   }),
   injectionToken: podListLayoutColumnInjectionToken,
 });
-

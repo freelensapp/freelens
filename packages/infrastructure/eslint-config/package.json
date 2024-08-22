@@ -1,10 +1,10 @@
 {
-  "name": "@k8slens/eslint-config",
+  "name": "@freelens/eslint-config",
   "version": "6.5.0",
   "description": "Lens eslint and prettier configurations",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@k8slens.dev"
+    "email": "info@freelens.dev"
   },
   "license": "MIT",
   "bin": {

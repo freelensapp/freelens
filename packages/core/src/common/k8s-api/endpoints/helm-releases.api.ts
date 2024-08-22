@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ItemObject } from "@k8slens/list-layout";
+import type { ItemObject } from "@freelens/list-layout";
 import type { HelmReleaseData } from "../../../features/helm-releases/common/channels";
 
 export interface HelmReleaseUpdateDetails {

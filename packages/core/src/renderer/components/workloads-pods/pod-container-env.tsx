@@ -7,10 +7,10 @@ import "./pod-container-env.scss";
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import type { Container } from "@k8slens/kube-object";
+import type { Container } from "@freelens/kube-object";
 import { DrawerItem } from "../drawer";
 import { autorun } from "mobx";
-import { object } from "@k8slens/utilities";
+import { object } from "@freelens/utilities";
 import _ from "lodash";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { ConfigMapStore } from "../config-maps/store";

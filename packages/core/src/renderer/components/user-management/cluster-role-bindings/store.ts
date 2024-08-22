@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Subject, ClusterRoleBinding, ClusterRoleBindingData } from "@k8slens/kube-object";
+import type { Subject, ClusterRoleBinding, ClusterRoleBindingData } from "@freelens/kube-object";
 import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
-import { HashSet } from "@k8slens/utilities";
+import { HashSet } from "@freelens/utilities";
 import { hashSubject } from "../hashers";
-import type { ClusterRoleBindingApi } from "@k8slens/kube-api";
+import type { ClusterRoleBindingApi } from "@freelens/kube-api";
 
 export class ClusterRoleBindingStore extends KubeObjectStore<ClusterRoleBinding, ClusterRoleBindingApi, ClusterRoleBindingData> {
   protected sortItems(items: ClusterRoleBinding[]) {
@@ -34,4 +34,3 @@ export class ClusterRoleBindingStore extends KubeObjectStore<ClusterRoleBinding,
     return this.updateSubjects(clusterRoleBinding, currentSubjects.toJSON());
   }
 }
-

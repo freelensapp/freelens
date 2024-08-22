@@ -10,17 +10,17 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
-import type { ClusterRole, ServiceAccount, Subject } from "@k8slens/kube-object";
+import type { ClusterRole, ServiceAccount, Subject } from "@freelens/kube-object";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { EditableList } from "../../../editable-list";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import { SubTitle } from "../../../layout/sub-title";
 import { onMultiSelectFor, Select } from "../../../select";
 import { Wizard, WizardStep } from "../../../wizard";
-import { ObservableHashSet, iter } from "@k8slens/utilities";
+import { ObservableHashSet, iter } from "@freelens/utilities";
 import { Input } from "../../../input";
-import { TooltipPosition } from "@k8slens/tooltip";
+import { TooltipPosition } from "@freelens/tooltip";
 import type { ClusterRoleBindingDialogState } from "./state.injectable";
 import type { ClusterRoleStore } from "../../cluster-roles/store";
 import type { ServiceAccountStore } from "../../service-accounts/store";
@@ -37,8 +37,8 @@ import type { ShowDetails } from "../../../kube-detail-params/show-details.injec
 import type { ClusterRoleBindingStore } from "../store";
 import clusterRoleBindingStoreInjectable from "../store.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
-import type { ShowCheckedErrorNotification } from "@k8slens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@k8slens/notifications";
+import type { ShowCheckedErrorNotification } from "@freelens/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
 
 export interface ClusterRoleBindingDialogProps extends Partial<DialogProps> {
 }

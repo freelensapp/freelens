@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RequestChannelHandler } from "@k8slens/messaging";
-import { requestFromChannelInjectionToken } from "@k8slens/messaging";
+import type { RequestChannelHandler } from "@freelens/messaging";
+import { requestFromChannelInjectionToken } from "@freelens/messaging";
 import { initialClusterStatesChannel } from "../common/channels";
 
 export type RequestInitialClusterStates = RequestChannelHandler<typeof initialClusterStatesChannel>;

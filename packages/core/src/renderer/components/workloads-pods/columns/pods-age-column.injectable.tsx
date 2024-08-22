@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
-import { podListLayoutColumnInjectionToken } from "@k8slens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
 
 const columnId = "age";
 

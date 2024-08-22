@@ -6,7 +6,7 @@
 import styles from "./notice.module.scss";
 import type { DOMAttributes } from "react";
 import React from "react";
-import { cssNames } from "@k8slens/utilities";
+import { cssNames } from "@freelens/utilities";
 
 export interface NoticeProps extends DOMAttributes<any> {
   className?: string;

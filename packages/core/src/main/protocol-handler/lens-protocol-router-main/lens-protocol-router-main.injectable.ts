@@ -7,7 +7,7 @@ import extensionLoaderInjectable from "../../../extensions/extension-loader/exte
 import { LensProtocolRouterMain } from "./lens-protocol-router-main";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
 import broadcastMessageInjectable from "../../../common/ipc/broadcast-message.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import isExtensionEnabledInjectable from "../../../features/extensions/enabled/common/is-enabled.injectable";
 
 const lensProtocolRouterMainInjectable = getInjectable({

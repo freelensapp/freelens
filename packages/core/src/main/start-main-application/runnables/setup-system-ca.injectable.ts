@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeApplicationIsLoadingInjectionToken } from "@k8slens/application";
+import { beforeApplicationIsLoadingInjectionToken } from "@freelens/application";
 import injectSystemCAsInjectable from "../../../features/certificate-authorities/common/inject-system-cas.injectable";
 
 const setupSystemCaInjectable = getInjectable({

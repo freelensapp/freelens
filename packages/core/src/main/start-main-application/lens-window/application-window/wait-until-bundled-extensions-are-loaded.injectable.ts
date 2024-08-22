@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import ipcMainInjectionToken from "../../../../common/ipc/ipc-main-injection-token";
 import { bundledExtensionsLoaded } from "../../../../common/ipc/extension-handling";
-import { delay } from "@k8slens/utilities";
+import { delay } from "@freelens/utilities";
 
 const waitUntilBundledExtensionsAreLoadedInjectable = getInjectable({
   id: "wait-until-bundled-extensions-are-loaded",

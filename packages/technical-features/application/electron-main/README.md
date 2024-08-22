@@ -1,16 +1,16 @@
-# @k8slens/application-for-electron-main
+# @freelens/application-for-electron-main
 
-This Feature extends `@k8slens/application` with Electron specifics.
+This Feature extends `@freelens/application` with Electron specifics.
 
 # Usage
 ```bash
-$ npm install @k8slens/application-for-electron-main
+$ npm install @freelens/application-for-electron-main
 ```
 
 ```typescript
-import { applicationFeature, startApplicationInjectionToken } from "@k8slens/application";
-import { applicationFeatureForElectronMain } from "@k8slens/application-for-electron-main";
-import { registerFeature } from "@k8slens/feature-core";
+import { applicationFeature, startApplicationInjectionToken } from "@freelens/application";
+import { applicationFeatureForElectronMain } from "@freelens/application-for-electron-main";
+import { registerFeature } from "@freelens/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 
 const di = createContainer("some-container");

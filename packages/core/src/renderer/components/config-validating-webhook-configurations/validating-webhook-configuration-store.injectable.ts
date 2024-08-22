@@ -6,8 +6,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
 import { ValidatingWebhookConfigurationStore } from "./validating-webhook-configuration-store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
-import { storesAndApisCanBeCreatedInjectionToken, validatingWebhookConfigurationApiInjectable } from "@k8slens/kube-api-specifics";
+import { loggerInjectionToken } from "@freelens/logger";
+import { storesAndApisCanBeCreatedInjectionToken, validatingWebhookConfigurationApiInjectable } from "@freelens/kube-api-specifics";
 import assert from "assert";
 
 const validatingWebhookConfigurationStoreInjectable = getInjectable({

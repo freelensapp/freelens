@@ -12,16 +12,16 @@ import { observer } from "mobx-react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
-import type { Deployment } from "@k8slens/kube-object";
-import { Icon } from "@k8slens/icon";
+import type { Deployment } from "@freelens/kube-object";
+import { Icon } from "@freelens/icon";
 import { Slider } from "../../slider";
-import { cssNames } from "@k8slens/utilities";
+import { cssNames } from "@freelens/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { deploymentApiInjectable } from "@k8slens/kube-api-specifics";
+import { deploymentApiInjectable } from "@freelens/kube-api-specifics";
 import deploymentScaleDialogStateInjectable from "./dialog-state.injectable";
-import type { ShowCheckedErrorNotification } from "@k8slens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@k8slens/notifications";
-import type { DeploymentApi } from "@k8slens/kube-api";
+import type { ShowCheckedErrorNotification } from "@freelens/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { DeploymentApi } from "@freelens/kube-api";
 
 export interface DeploymentScaleDialogProps extends Partial<DialogProps> {
 }

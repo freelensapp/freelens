@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { DiContainer } from "@ogre-tools/injectable";
-import { winstonLoggerInjectable } from "@k8slens/logger";
+import { winstonLoggerInjectable } from "@freelens/logger";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type winston from "winston";
 import { MESSAGE } from "triple-beam";
-import { noop } from "@k8slens/utilities";
+import { noop } from "@freelens/utilities";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
 import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-transport.injectable";

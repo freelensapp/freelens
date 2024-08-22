@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { StatefulSetScaleDialog } from "./dialog";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 
 const statefulsetScaleDialogClusterFrameChildComponentInjectable = getInjectable({
   id: "statefulset-scale-dialog-cluster-frame-child-component",

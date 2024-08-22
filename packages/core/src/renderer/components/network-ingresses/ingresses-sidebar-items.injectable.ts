@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
 import navigateToIngressesInjectable from "../../../common/front-end-routing/routes/cluster/network/ingresses/navigate-to-ingresses.injectable";
 import ingressesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/ingresses/ingresses-route.injectable";

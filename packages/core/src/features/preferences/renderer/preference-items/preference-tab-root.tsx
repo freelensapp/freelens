@@ -8,7 +8,7 @@ import type { RootComposite } from "../../../../common/utils/composite/interface
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { ChildrenAreSeparated } from "./preference-item-injection-token";
 import styles from "./preference-tab-root.module.scss";
-import type { Orderable } from "@k8slens/utilities";
+import type { Orderable } from "@freelens/utilities";
 
 export type PreferenceTabsRoot =
   & Discriminable<"preference-tabs-root">

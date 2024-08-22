@@ -2,8 +2,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { KubeApi, PodApi } from "@k8slens/kube-api";
-import { Pod } from "@k8slens/kube-object";
+import { KubeApi, PodApi } from "@freelens/kube-api";
+import { Pod } from "@freelens/kube-object";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import type { Fetch } from "../../fetch/fetch.injectable";
 import fetchInjectable from "../../fetch/fetch.injectable";
@@ -11,9 +11,9 @@ import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remot
 import createKubeApiForRemoteClusterInjectable from "../create-kube-api-for-remote-cluster.injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@k8slens/test-utils";
+import { flushPromises } from "@freelens/test-utils";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
-import type { KubeStatusData } from "@k8slens/kube-object";
+import type { KubeStatusData } from "@freelens/kube-object";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
@@ -22,7 +22,7 @@ import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hos
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import apiKubeInjectable from "../../../renderer/k8s/api-kube.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { podApiInjectable } from "@k8slens/kube-api-specifics";
+import { podApiInjectable } from "@freelens/kube-api-specifics";
 
 // NOTE: this is fine because we are testing something that only exported
 // eslint-disable-next-line no-restricted-imports

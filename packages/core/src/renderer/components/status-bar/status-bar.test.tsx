@@ -8,7 +8,7 @@ import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
 import type { RenderResult } from "@testing-library/react";
-import { getRandomIdInjectionToken } from "@k8slens/random";
+import { getRandomIdInjectionToken } from "@freelens/random";
 
 describe("<StatusBar />", () => {
   let builder: ApplicationBuilder;

@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { transports } from "winston";
 import directoryForLogsInjectable from "../../common/app-paths/directory-for-logs.injectable";
-import { loggerTransportInjectionToken } from "@k8slens/logger";
+import { loggerTransportInjectionToken } from "@freelens/logger";
 
 const fileLoggerTransportInjectable = getInjectable({
   id: "file-logger-transport",

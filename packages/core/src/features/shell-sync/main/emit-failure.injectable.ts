@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { sendMessageToChannelInjectionToken } from "@k8slens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
 import { shellSyncFailedChannel } from "../common/failure-channel";
 
 const emitShellSyncFailedInjectable = getInjectable({

@@ -10,7 +10,7 @@ import type { NodeShellSessionDependencies } from "./node-shell-session";
 import { NodeShellSession } from "./node-shell-session";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import computeShellEnvironmentInjectable from "../../../features/shell-sync/main/compute-shell-environment.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";

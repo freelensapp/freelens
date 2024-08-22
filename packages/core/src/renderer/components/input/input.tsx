@@ -7,11 +7,11 @@ import "./input.scss";
 
 import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import React from "react";
-import type { StrictReactNode, SingleOrMany } from "@k8slens/utilities";
-import { debouncePromise, isPromiseSettledFulfilled, cssNames } from "@k8slens/utilities";
-import { Icon } from "@k8slens/icon";
-import type { TooltipProps } from "@k8slens/tooltip";
-import { Tooltip } from "@k8slens/tooltip";
+import type { StrictReactNode, SingleOrMany } from "@freelens/utilities";
+import { debouncePromise, isPromiseSettledFulfilled, cssNames } from "@freelens/utilities";
+import { Icon } from "@freelens/icon";
+import type { TooltipProps } from "@freelens/tooltip";
+import { Tooltip } from "@freelens/tooltip";
 import * as Validators from "./input_validators";
 import type { InputValidator, InputValidation, InputValidationResult, SyncValidationMessage } from "./input_validators";
 import uniqueId from "lodash/uniqueId";

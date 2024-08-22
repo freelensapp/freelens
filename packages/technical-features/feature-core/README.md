@@ -1,17 +1,17 @@
-# @k8slens/feature-core
+# @freelens/feature-core
 
 Feature is set of injectables that are registered and deregistered simultaneously.
 
 ## Install
 ```bash
-$ npm install @k8slens/feature-core
+$ npm install @freelens/feature-core
 ```
 
 ## Usage
 
 ```typescript
 import { createContainer } from "@ogre-tools/injectable"
-import { getFeature, registerFeature, deregisterFeature } from "@k8slens/feature-core"
+import { getFeature, registerFeature, deregisterFeature } from "@freelens/feature-core"
 
 // Notice that this Feature is usually exported from another NPM package.
 const someFeature = getFeature({

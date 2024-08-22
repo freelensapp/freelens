@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { iter } from "@k8slens/utilities";
+import { iter } from "@freelens/utilities";
 import { TooltipPosition } from "./tooltip";
 
 export type RectangleDimensions = {

@@ -6,7 +6,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { KubeAuthUpdate } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export type BroadcastConnectionUpdate = (update: KubeAuthUpdate) => void;
 

@@ -1,6 +1,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { pipeline } from "@ogre-tools/fp";
-import { SendMessageToChannel, sendMessageToChannelInjectionToken } from "@k8slens/messaging";
+import { SendMessageToChannel, sendMessageToChannelInjectionToken } from "@freelens/messaging";
 import getWebContentsInjectable from "./get-web-contents.injectable";
 import { flatMap, reject } from "lodash/fp";
 import type { WebContents } from "electron";

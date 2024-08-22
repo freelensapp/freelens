@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import persistentVolumesRouteInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volumes/persistent-volumes-route.injectable";
 import storageSidebarItemInjectable from "../storage/storage-sidebar-item.injectable";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToPersistentVolumesInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volumes/navigate-to-persistent-volumes.injectable";
 

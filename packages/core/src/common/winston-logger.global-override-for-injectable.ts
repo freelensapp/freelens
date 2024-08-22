@@ -4,9 +4,9 @@
  */
 
 import type winston from "winston";
-import { getGlobalOverride } from "@k8slens/test-utils";
-import { noop } from "@k8slens/utilities";
-import { winstonLoggerInjectable } from "@k8slens/logger";
+import { getGlobalOverride } from "@freelens/test-utils";
+import { noop } from "@freelens/utilities";
+import { winstonLoggerInjectable } from "@freelens/logger";
 
 export default getGlobalOverride(winstonLoggerInjectable, () => ({
   log: noop,

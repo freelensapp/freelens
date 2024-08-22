@@ -11,11 +11,11 @@ import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import { logErrorInjectionToken, loggerInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@k8slens/logger";
+import { logErrorInjectionToken, loggerInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
 import type { ApiManager } from "../api-manager";
 import apiManagerInjectable from "../api-manager/manager.injectable";
-import { KubeApi } from "@k8slens/kube-api";
-import { KubeObject } from "@k8slens/kube-object";
+import { KubeApi } from "@freelens/kube-api";
+import { KubeObject } from "@freelens/kube-object";
 import { KubeObjectStore } from "../kube-object.store";
 
 // eslint-disable-next-line no-restricted-imports
@@ -24,7 +24,7 @@ import { Cluster } from "../../cluster/cluster";
 import { runInAction } from "mobx";
 import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 import assert from "assert";
-import { maybeKubeApiInjectable } from "@k8slens/kube-api-specifics";
+import { maybeKubeApiInjectable } from "@freelens/kube-api-specifics";
 
 class TestApi extends KubeApi<KubeObject> {
   protected checkPreferredVersion() {

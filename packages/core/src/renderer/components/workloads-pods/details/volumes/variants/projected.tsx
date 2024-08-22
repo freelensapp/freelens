@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { displayMode } from "@k8slens/utilities";
+import { displayMode } from "@freelens/utilities";
 import { DrawerItem, DrawerTitle } from "../../../../drawer";
 import type { VolumeVariantComponent } from "../variant-helpers";
 

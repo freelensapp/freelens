@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Subject } from "@k8slens/kube-object";
+import type { Subject } from "@freelens/kube-object";
 import { MD5 } from "crypto-js";
 
 export function hashSubject(subject: Subject): string {

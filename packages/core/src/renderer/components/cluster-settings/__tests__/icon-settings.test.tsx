@@ -12,8 +12,8 @@ import { renderFor } from "../../test-utils/renderFor";
 import { ClusterIconSetting } from "../icon-settings";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ClusterIconSettingComponentProps } from "@k8slens/cluster-settings";
-import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@k8slens/cluster-settings";
+import type { ClusterIconSettingComponentProps } from "@freelens/cluster-settings";
+import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelens/cluster-settings";
 import { runInAction } from "mobx";
 import { getInjectable, type DiContainer } from "@ogre-tools/injectable";
 

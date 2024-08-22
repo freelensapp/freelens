@@ -1,16 +1,16 @@
-import { registerFeature } from "@k8slens/feature-core";
+import { registerFeature } from "@freelens/feature-core";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { reactApplicationFeature } from "./feature";
 import { runInAction, computed, observable, IObservableValue } from "mobx";
-import { startApplicationInjectionToken } from "@k8slens/application";
+import { startApplicationInjectionToken } from "@freelens/application";
 import type { RenderResult } from "@testing-library/react";
 import { render, act } from "@testing-library/react";
 import renderInjectable from "./render-application/render.injectable";
 import { reactApplicationChildrenInjectionToken } from "./react-application/react-application-children-injection-token";
 import React from "react";
-import { Discover, discoverFor } from "@k8slens/react-testing-library-discovery";
+import { Discover, discoverFor } from "@freelens/react-testing-library-discovery";
 import {
   ReactApplicationHigherOrderComponent,
   reactApplicationHigherOrderComponentInjectionToken,

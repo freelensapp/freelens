@@ -1,4 +1,4 @@
-# @k8slens/legacy-extensions
+# @freelens/legacy-extensions
 
 This package contains stuff related to creating Lens-applications.
 

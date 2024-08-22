@@ -4,7 +4,7 @@
  */
 import type { CoreV1Api } from "@kubernetes/client-node";
 import { getInjectable } from "@ogre-tools/injectable";
-import { isDefined } from "@k8slens/utilities";
+import { isDefined } from "@freelens/utilities";
 
 export type ListNamespaces = () => Promise<string[]>;
 export type CreateListNamespaces = (api: CoreV1Api) => ListNamespaces;

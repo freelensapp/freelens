@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import extractTarInjectable from "./extract-tar.injectable";
 
 export default getGlobalOverride(extractTarInjectable, () => async () => {

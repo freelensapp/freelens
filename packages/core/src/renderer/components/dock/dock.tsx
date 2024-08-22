@@ -6,11 +6,11 @@
 import "./dock.scss";
 import React from "react";
 import { observer } from "mobx-react";
-import { cssNames } from "@k8slens/utilities";
-import { Icon } from "@k8slens/icon";
+import { cssNames } from "@freelens/utilities";
+import { Icon } from "@freelens/icon";
 import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
-import { ResizeDirection, ResizingAnchor } from "@k8slens/resizing-anchor";
+import { ResizeDirection, ResizingAnchor } from "@freelens/resizing-anchor";
 import { CreateResource } from "./create-resource/view";
 import { DockTabs } from "./dock-tabs";
 import type { DockStore, DockTab } from "./dock/store";
@@ -24,7 +24,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import createResourceTabInjectable from "./create-resource/create-resource-tab.injectable";
 import dockStoreInjectable from "./dock/store.injectable";
 import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
-import { ErrorBoundary } from "@k8slens/error-boundary";
+import { ErrorBoundary } from "@freelens/error-boundary";
 
 export interface DockProps {
   className?: string;
@@ -215,4 +215,3 @@ export const Dock = withInjectables<Dependencies, DockProps>(
     }),
   },
 );
-

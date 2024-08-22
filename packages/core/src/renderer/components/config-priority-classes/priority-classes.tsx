@@ -7,7 +7,7 @@ import "./priority-classes.scss";
 
 import * as React from "react";
 import { observer } from "mobx-react";
-import type { PriorityClass } from "@k8slens/kube-object";
+import type { PriorityClass } from "@freelens/kube-object";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { KubeObjectListLayout } from "../kube-object-list-layout";

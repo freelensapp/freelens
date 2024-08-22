@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "@k8slens/utilities";
-import type { KubeApi } from "@k8slens/kube-api";
-import { KubeObject } from "@k8slens/kube-object";
+import { noop } from "@freelens/utilities";
+import type { KubeApi } from "@freelens/kube-api";
+import { KubeObject } from "@freelens/kube-object";
 import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 import { KubeObjectStore } from "../kube-object.store";
 

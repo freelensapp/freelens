@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PrometheusProvider, PrometheusService } from "@k8slens/prometheus";
+import type { PrometheusProvider, PrometheusService } from "@freelens/prometheus";
 import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { CoreV1Api } from "@kubernetes/client-node";
 import type { GetPrometheusProviderByKind } from "../../prometheus/get-by-kind.injectable";
 import type { IComputedValue } from "mobx";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import type { LoadProxyKubeconfig } from "../load-proxy-kubeconfig.injectable";
 
 export interface PrometheusDetails {

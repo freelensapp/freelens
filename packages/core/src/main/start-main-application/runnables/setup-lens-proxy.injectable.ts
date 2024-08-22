@@ -5,11 +5,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import forceAppExitInjectable from "../../electron-app/features/force-app-exit.injectable";
 import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
-import { beforeApplicationIsLoadingInjectionToken } from "@k8slens/application";
+import { beforeApplicationIsLoadingInjectionToken } from "@freelens/application";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
 import { Agent } from "https";

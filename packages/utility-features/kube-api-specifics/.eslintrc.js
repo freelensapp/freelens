@@ -1,5 +1,5 @@
 module.exports = {
-  extends: "@k8slens/eslint-config/eslint",
+  extends: "@freelens/eslint-config/eslint",
   parserOptions: {
     project: "./tsconfig.json",
   },

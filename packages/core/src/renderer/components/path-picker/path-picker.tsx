@@ -9,8 +9,8 @@ import { observer } from "mobx-react";
 import React from "react";
 import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
-import { cssNames } from "@k8slens/utilities";
-import { Button } from "@k8slens/button";
+import { cssNames } from "@freelens/utilities";
+import { Button } from "@freelens/button";
 
 export interface PathPickOpts {
   message: string;

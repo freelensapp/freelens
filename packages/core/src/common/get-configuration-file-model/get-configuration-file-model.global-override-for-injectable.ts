@@ -5,7 +5,7 @@
 
 import assert from "assert";
 import path from "path";
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
 import type Config from "conf";
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";

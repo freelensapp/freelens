@@ -4,7 +4,7 @@
  */
 
 import { debounce } from "lodash";
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import catalogSyncBroadcasterInjectable from "./broadcaster.injectable";
 
 export default getGlobalOverride(catalogSyncBroadcasterInjectable, () => debounce(() => {}));

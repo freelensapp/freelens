@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { VerticalPodAutoscaler } from "@k8slens/kube-object";
+import { VerticalPodAutoscaler } from "@freelens/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

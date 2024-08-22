@@ -1,6 +1,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
-import { onLoadOfApplicationInjectionToken } from "@k8slens/application";
-import { getMessageChannel, sendMessageToChannelInjectionToken } from "@k8slens/messaging";
+import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { getMessageChannel, sendMessageToChannelInjectionToken } from "@freelens/messaging";
 
 export const frameCommunicationAdminChannel = getMessageChannel<undefined>("frame-communication-admin-channel");
 

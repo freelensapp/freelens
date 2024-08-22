@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult } from "@k8slens/utilities";
+import type { AsyncResult } from "@freelens/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
@@ -48,4 +48,3 @@ const computeShellEnvironmentInjectable = getInjectable({
 });
 
 export default computeShellEnvironmentInjectable;
-

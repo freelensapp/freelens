@@ -6,8 +6,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import getPersistentVolumesByStorageClassInjectable from "../storage-volumes/get-persistent-volumes-by-storage-class.injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
-import { storageClassApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@k8slens/kube-api-specifics";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { storageClassApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
+import { loggerInjectionToken } from "@freelens/logger";
 import clusterFrameContextForClusterScopedResourcesInjectable from "../../cluster-frame-context/for-cluster-scoped-resources.injectable";
 import { StorageClassStore } from "./store";
 

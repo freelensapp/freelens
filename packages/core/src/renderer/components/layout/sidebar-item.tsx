@@ -8,11 +8,11 @@ import styles from  "./sidebar-items.module.scss";
 import React from "react";
 import { observer } from "mobx-react";
 import { NavLink } from "react-router-dom";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
-import type { SidebarItemDeclaration } from "@k8slens/cluster-sidebar";
+import type { SidebarItemDeclaration } from "@freelens/cluster-sidebar";
 import type { StorageLayer } from "../../utils/storage-helper";
 
 interface Dependencies {

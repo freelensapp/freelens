@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { Notifications } from "./notifications";
-import { clusterFrameChildComponentInjectionToken } from "@k8slens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
 
 export const notificationsClusterFrameChildComponentInjectable = getInjectable({
   id: "notifications-cluster-frame-child-component",

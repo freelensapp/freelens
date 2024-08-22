@@ -12,9 +12,9 @@ import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { disposeOnUnmount, observer } from "mobx-react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { ReplicaSet } from "@k8slens/kube-object";
+import { ReplicaSet } from "@freelens/kube-object";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -22,7 +22,7 @@ import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import type { ReplicaSetStore } from "./store";
 import replicaSetStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface ReplicaSetDetailsProps extends KubeObjectDetailsProps<ReplicaSet> {
 }

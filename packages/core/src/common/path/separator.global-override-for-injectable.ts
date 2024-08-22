@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import fileSystemSeparatorInjectable from "./separator.injectable";
 
 export default getGlobalOverride(fileSystemSeparatorInjectable, () => path.posix.sep);

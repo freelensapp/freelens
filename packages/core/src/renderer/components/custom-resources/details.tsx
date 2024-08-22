@@ -7,17 +7,17 @@ import "./details.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames, safeJSONPathValue } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames, safeJSONPathValue } from "@freelens/utilities";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Input } from "../input";
-import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@k8slens/kube-object";
-import { CustomResourceDefinition, KubeObject } from "@k8slens/kube-object";
-import type { Logger } from "@k8slens/logger";
+import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelens/kube-object";
+import { CustomResourceDefinition, KubeObject } from "@freelens/kube-object";
+import type { Logger } from "@freelens/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 export interface CustomResourceDetailsProps extends KubeObjectDetailsProps<KubeObject> {
   crd?: CustomResourceDefinition;

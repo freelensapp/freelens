@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/error-boundary",
+  "name": "@freelens/error-boundary",
   "private": false,
   "version": "1.0.0",
   "description": "Highly extendable error-boundary in the Lens.",
@@ -23,7 +23,7 @@
   "types": "dist/index.d.ts",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@k8slens.dev"
+    "email": "info@freelens.dev"
   },
   "license": "MIT",
   "homepage": "https://github.com/freelensapp/freelens",
@@ -33,9 +33,9 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@k8slens/button": "^1.0.0-alpha.5",
-    "@k8slens/routing": "^1.0.0-alpha.5",
-    "@k8slens/utilities": "^1.0.0-alpha.1",
+    "@freelens/button": "^1.0.0-alpha.5",
+    "@freelens/routing": "^1.0.0-alpha.5",
+    "@freelens/utilities": "^1.0.0-alpha.1",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
     "auto-bind": "^4.0.0",
@@ -49,9 +49,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@k8slens/eslint-config": "^6.5.0",
-    "@k8slens/react-testing-library-discovery": "^1.0.0",
-    "@k8slens/webpack": "^6.5.0",
+    "@freelens/eslint-config": "^6.5.0",
+    "@freelens/react-testing-library-discovery": "^1.0.0",
+    "@freelens/webpack": "^6.5.0",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0"
   }

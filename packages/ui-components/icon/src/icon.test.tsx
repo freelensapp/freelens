@@ -4,17 +4,17 @@
  */
 
 import React from "react";
-import type { Logger } from "@k8slens/logger";
-import { loggerFeature, loggerInjectionToken } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
+import { loggerFeature, loggerInjectionToken } from "@freelens/logger";
 import { createContainer } from "@ogre-tools/injectable";
-import type { DiRender } from "@k8slens/test-utils";
-import { renderFor } from "@k8slens/test-utils";
+import type { DiRender } from "@freelens/test-utils";
+import { renderFor } from "@freelens/test-utils";
 import { Icon } from "./icon";
 import { runInAction } from "mobx";
-import { registerFeature } from "@k8slens/feature-core";
+import { registerFeature } from "@freelens/feature-core";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { setLegacyGlobalDiForExtensionApi } from "@k8slens/legacy-global-di";
+import { setLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
   let logger: jest.MockedObject<Logger>;

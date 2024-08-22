@@ -8,10 +8,10 @@ import { getApplicationBuilder } from "../../../../renderer/components/test-util
 import type { IObservableValue } from "mobx";
 import { runInAction, computed, observable } from "mobx";
 import React from "react";
-import { KubeObject } from "@k8slens/kube-object";
+import { KubeObject } from "@freelens/kube-object";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import type { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
-import type { KubeApi } from "@k8slens/kube-api";
+import type { KubeApi } from "@freelens/kube-api";
 import showDetailsInjectable from "../../../../renderer/components/kube-detail-params/show-details.injectable";
 import assert from "assert";
 import type { FakeExtensionOptions } from "../../../../renderer/components/test-utils/get-extension-fake";

@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/resource-templates",
+  "name": "@freelens/resource-templates",
   "version": "1.0.0",
   "private": false,
   "publishConfig": {
@@ -8,7 +8,7 @@
   },
   "copyright": "© 2023 OpenLens Authors",
   "license": "MIT",
-  "author": "OpenLens Authors <info@k8slens.dev>",
+  "author": "OpenLens Authors <info@freelens.dev>",
   "files": [
     "templates/**/*"
   ]

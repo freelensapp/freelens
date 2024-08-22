@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { isObject } from "@k8slens/utilities";
+import { isObject } from "@freelens/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { enabledExtensionsMigrationDeclarationInjectionToken } from "./migrations";
 

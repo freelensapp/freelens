@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Pod } from "@k8slens/kube-object";
+import type { Pod } from "@freelens/kube-object";
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type { SpecificKubeListLayoutColumn } from "./kube-list-layout-column";
 

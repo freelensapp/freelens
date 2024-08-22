@@ -5,8 +5,8 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { Runnable } from "@k8slens/run-many";
-import { runManyFor } from "@k8slens/run-many";
+import type { Runnable } from "@freelens/run-many";
+import { runManyFor } from "@freelens/run-many";
 import type { DiContainer, InjectionToken } from "@ogre-tools/injectable";
 import { createContainer, getInjectionToken } from "@ogre-tools/injectable";
 import type { ImplInitializableInjectionTokensArgs, Initializable } from "./create";

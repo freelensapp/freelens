@@ -1,16 +1,16 @@
-# @k8slens/keyboard-shortcuts
+# @freelens/keyboard-shortcuts
 
 This Feature enables keyboard shortcuts in Lens
 
 # Usage
 
 ```bash
-$ npm install @k8slens/keyboard-shortcuts
+$ npm install @freelens/keyboard-shortcuts
 ```
 
 ```typescript
-import { keyboardShortcutsFeature } from "@k8slens/keyboard-shortcuts";
-import { registerFeature } from "@k8slens/feature-core";
+import { keyboardShortcutsFeature } from "@freelens/keyboard-shortcuts";
+import { registerFeature } from "@freelens/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 
 const di = createContainer("some-container");

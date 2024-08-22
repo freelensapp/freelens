@@ -6,8 +6,8 @@
 import * as path from "path";
 import type { LensExtension } from "./lens-extension";
 import type { StaticThis } from "../common/utils/singleton";
-import { getOrInsertWith } from "@k8slens/utilities";
-import { getLegacyGlobalDiForExtensionApi } from "@k8slens/legacy-global-di";
+import { getOrInsertWith } from "@freelens/utilities";
+import { getLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import assert from "assert";
 import type { Options } from "conf";

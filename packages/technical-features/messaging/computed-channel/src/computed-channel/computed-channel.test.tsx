@@ -1,16 +1,16 @@
 import React from "react";
 import { act } from "@testing-library/react";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { getMessageBridgeFake, MessageBridgeFake } from "@k8slens/messaging-fake-bridge";
-import { startApplicationInjectionToken } from "@k8slens/application";
+import { getMessageBridgeFake, MessageBridgeFake } from "@freelens/messaging-fake-bridge";
+import { startApplicationInjectionToken } from "@freelens/application";
 import { computed, IComputedValue, IObservableValue, observable, reaction, runInAction } from "mobx";
-import type { MessageChannel } from "@k8slens/messaging";
-import { getMessageChannelListenerInjectable } from "@k8slens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelens/messaging";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerFeature } from "@k8slens/feature-core";
-import { testUtils } from "@k8slens/messaging";
+import { registerFeature } from "@freelens/feature-core";
+import { testUtils } from "@freelens/messaging";
 import { computedChannelInjectionToken, computedChannelObserverInjectionToken } from "./computed-channel.injectable";
-import { runWithThrownMobxReactions, renderFor } from "@k8slens/test-utils";
+import { runWithThrownMobxReactions, renderFor } from "@freelens/test-utils";
 import { observer } from "mobx-react";
 import {
   computedChannelAdministrationChannel,

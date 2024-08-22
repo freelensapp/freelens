@@ -11,7 +11,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import { formatJSONValue, safeJSONPathValue } from "@k8slens/utilities";
+import { formatJSONValue, safeJSONPathValue } from "@freelens/utilities";
 import { TabLayout } from "../layout/tab-layout-2";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
@@ -20,7 +20,7 @@ import type { CustomResourceDefinitionStore } from "../custom-resource-definitio
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { TableCellProps } from "@k8slens/list-layout";
+import type { TableCellProps } from "@freelens/list-layout";
 
 enum columnId {
   name = "name",
@@ -139,4 +139,3 @@ export const CustomResources = withInjectables<Dependencies>(NonInjectedCustomRe
     customResourceDefinitionStore: di.inject(customResourceDefinitionStoreInjectable),
   }),
 });
-

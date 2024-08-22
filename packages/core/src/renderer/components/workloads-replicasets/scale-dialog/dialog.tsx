@@ -12,16 +12,16 @@ import { observer } from "mobx-react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import { Slider } from "../../slider";
-import { cssNames } from "@k8slens/utilities";
-import type { ReplicaSet } from "@k8slens/kube-object";
+import { cssNames } from "@freelens/utilities";
+import type { ReplicaSet } from "@freelens/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { replicaSetApiInjectable } from "@k8slens/kube-api-specifics";
+import { replicaSetApiInjectable } from "@freelens/kube-api-specifics";
 import replicaSetScaleDialogStateInjectable from "./state.injectable";
-import type { ShowCheckedErrorNotification } from "@k8slens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@k8slens/notifications";
-import type { ReplicaSetApi } from "@k8slens/kube-api";
+import type { ShowCheckedErrorNotification } from "@freelens/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { ReplicaSetApi } from "@freelens/kube-api";
 
 export interface ReplicaSetScaleDialogProps extends Partial<DialogProps> {
 }

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
-import type { MessageChannel } from "@k8slens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
 
 export type ClusterFrameNavigationChannel = MessageChannel<string>;
 

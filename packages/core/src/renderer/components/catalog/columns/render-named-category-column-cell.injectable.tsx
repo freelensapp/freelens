@@ -8,8 +8,8 @@ import React from "react";
 import activeHotbarInjectable from "../../../../features/hotbar/storage/common/active.injectable";
 import { Avatar } from "../../avatar";
 import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
-import { Icon } from "@k8slens/icon";
-import { prevDefault } from "@k8slens/utilities";
+import { Icon } from "@freelens/icon";
+import { prevDefault } from "@freelens/utilities";
 
 const renderNamedCategoryColumnCellInjectable = getInjectable({
   id: "render-named-category-column-cell",

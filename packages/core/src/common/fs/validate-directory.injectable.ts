@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@k8slens/utilities";
-import { isErrnoException } from "@k8slens/utilities";
+import type { AsyncResult } from "@freelens/utilities";
+import { isErrnoException } from "@freelens/utilities";
 import type { Stats } from "fs-extra";
 import { lowerFirst } from "lodash/fp";
 import statInjectable from "./stat.injectable";

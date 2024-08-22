@@ -1,14 +1,14 @@
-# @k8slens/react-application
+# @freelens/react-application
 
 # Usage
 
 ```bash
-$ npm install @k8slens/react-application
+$ npm install @freelens/react-application
 ```
 
 ```typescript
-import { reactApplicationFeature } from "@k8slens/react-application";
-import { registerFeature } from "@k8slens/feature-core";
+import { reactApplicationFeature } from "@freelens/react-application";
+import { registerFeature } from "@freelens/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 
 const di = createContainer("some-container");

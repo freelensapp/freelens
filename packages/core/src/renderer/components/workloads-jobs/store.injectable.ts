@@ -6,8 +6,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import getPodsByOwnerIdInjectable from "../workloads-pods/get-pods-by-owner-id.injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
-import { jobApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@k8slens/kube-api-specifics";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { jobApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
+import { loggerInjectionToken } from "@freelens/logger";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import { JobStore } from "./store";
 

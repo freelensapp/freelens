@@ -8,17 +8,17 @@ import "./notifications.scss";
 import React from "react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { JsonApiErrorParsed } from "@k8slens/json-api";
-import type { Disposer } from "@k8slens/utilities";
-import { cssNames, prevDefault } from "@k8slens/utilities";
+import { JsonApiErrorParsed } from "@freelens/json-api";
+import type { Disposer } from "@freelens/utilities";
+import { cssNames, prevDefault } from "@freelens/utilities";
 import type {
   CreateNotificationOptions,
   Notification,
   NotificationMessage,
   NotificationsStore,
 } from "./notifications.store";
-import { Animate } from "@k8slens/animate";
-import { Icon } from "@k8slens/icon";
+import { Animate } from "@freelens/animate";
+import { Icon } from "@freelens/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { notificationsStoreInjectable } from "./notifications-store.injectable";
 

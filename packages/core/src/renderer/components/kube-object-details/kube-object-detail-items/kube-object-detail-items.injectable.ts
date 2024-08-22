@@ -7,7 +7,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { kubeObjectDetailItemInjectionToken } from "./kube-object-detail-item-injection-token";
-import { byValue } from "@k8slens/utilities";
+import { byValue } from "@freelens/utilities";
 
 const kubeObjectDetailItemsInjectable = getInjectable({
   id: "kube-object-detail-items",

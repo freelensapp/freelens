@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ServiceAccountData } from "@k8slens/kube-object";
-import { ServiceAccount } from "@k8slens/kube-object";
+import type { ServiceAccountData } from "@freelens/kube-object";
+import { ServiceAccount } from "@freelens/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { GetSingleElement } from "@k8slens/react-testing-library-discovery";
-import { getSingleElement } from "@k8slens/react-testing-library-discovery";
+import type { GetSingleElement } from "@freelens/react-testing-library-discovery";
+import { getSingleElement } from "@freelens/react-testing-library-discovery";
 import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

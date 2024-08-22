@@ -2,15 +2,15 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { disposer, isPromiseLike } from "@k8slens/utilities";
+import { disposer, isPromiseLike } from "@freelens/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Options } from "conf/dist/source";
 import { isEqual, kebabCase } from "lodash";
 import type { IEqualsComparer } from "mobx";
 import { reaction } from "mobx";
-import { loggerInjectionToken } from "@k8slens/logger";
-import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@k8slens/messaging";
-import type { MessageChannel } from "@k8slens/messaging";
+import { loggerInjectionToken } from "@freelens/logger";
+import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import type { MessageChannel } from "@freelens/messaging";
 import { persistentStorageIpcChannelPrefixesInjectionToken } from "./channel-prefix";
 import { shouldPersistentStorageDisableSyncInIpcListenerInjectionToken } from "./disable-sync";
 import { persistStateToConfigInjectionToken } from "./save-to-file";

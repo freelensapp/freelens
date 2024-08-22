@@ -4,7 +4,7 @@
  */
 import { appPathsChannel } from "../../common/app-paths/app-paths-channel";
 import appPathsInjectable from "../../common/app-paths/app-paths.injectable";
-import { getRequestChannelListenerInjectable } from "@k8slens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelens/messaging";
 
 const appPathsRequestChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "app-paths-request-channel-listener",

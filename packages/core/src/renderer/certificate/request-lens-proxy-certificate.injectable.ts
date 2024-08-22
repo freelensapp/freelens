@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
-import { requestFromChannelInjectionToken } from "@k8slens/messaging";
+import { requestFromChannelInjectionToken } from "@freelens/messaging";
 
 const requestLensProxyCertificateInjectable = getInjectable({
   id: "request-lens-proxy-certificate",

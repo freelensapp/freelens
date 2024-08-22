@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StatefulSetApi } from "@k8slens/kube-api";
-import { StatefulSet } from "@k8slens/kube-object";
+import type { StatefulSetApi } from "@freelens/kube-api";
+import { StatefulSet } from "@freelens/kube-object";
 import { StatefulSetScaleDialog } from "./dialog";
 import { waitFor, fireEvent } from "@testing-library/react";
 import React from "react";
 import type { OpenStatefulSetScaleDialog } from "./open-dialog.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { statefulSetApiInjectable } from "@k8slens/kube-api-specifics";
+import { statefulSetApiInjectable } from "@freelens/kube-api-specifics";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import openStatefulSetScaleDialogInjectable from "./open-dialog.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";

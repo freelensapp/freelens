@@ -5,11 +5,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import getPodsByOwnerIdInjectable from "../workloads-pods/get-pods-by-owner-id.injectable";
-import { replicaSetApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@k8slens/kube-api-specifics";
+import { replicaSetApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
 import { ReplicaSetStore } from "./store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@k8slens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 
 const replicaSetStoreInjectable = getInjectable({
   id: "replica-set-store",

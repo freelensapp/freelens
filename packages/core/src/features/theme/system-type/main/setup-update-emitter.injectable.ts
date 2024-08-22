@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
-import { onLoadOfApplicationInjectionToken } from "@k8slens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelens/application";
 import operatingSystemThemeInjectable from "../../../../main/theme/operating-system-theme.injectable";
 import emitSystemThemeTypeUpdateInjectable from "./emit-update.injectable";
 

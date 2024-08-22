@@ -1,6 +1,6 @@
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { applicationFeatureForElectronMain } from "../feature";
-import { registerFeature } from "@k8slens/feature-core";
+import { registerFeature } from "@freelens/feature-core";
 import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
 import { getPromiseStatus } from "@ogre-tools/test-utils";
 import electronAppInjectable from "../electron/electron-app.injectable";

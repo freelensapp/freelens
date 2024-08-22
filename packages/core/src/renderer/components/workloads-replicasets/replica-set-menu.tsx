@@ -4,9 +4,9 @@
  */
 import React from "react";
 import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { ReplicaSet } from "@k8slens/kube-object";
+import type { ReplicaSet } from "@freelens/kube-object";
 import { MenuItem } from "../menu";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { OpenReplicaSetScaleDialog } from "./scale-dialog/open.injectable";
 import openReplicaSetScaleDialogInjectable from "./scale-dialog/open.injectable";

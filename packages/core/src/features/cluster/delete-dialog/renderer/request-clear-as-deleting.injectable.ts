@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { ClusterId } from "../../../../common/cluster-types";
-import { requestFromChannelInjectionToken } from "@k8slens/messaging";
+import { requestFromChannelInjectionToken } from "@freelens/messaging";
 import { clearClusterAsDeletingChannel } from "../common/clear-as-deleting-channel";
 
 export type RequestClearClusterAsDeleting = (clusterId: ClusterId) => Promise<void>;

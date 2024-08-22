@@ -9,8 +9,8 @@ import releaseSecretsInjectable from "./release-secrets.injectable";
 import requestListHelmReleasesInjectable from "../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import assert from "assert";
-import { iter } from "@k8slens/utilities";
-import { prefixedLoggerInjectable } from "@k8slens/logger";
+import { iter } from "@freelens/utilities";
+import { prefixedLoggerInjectable } from "@freelens/logger";
 import { toHelmRelease } from "./to-helm-release";
 
 const releasesInjectable = getInjectable({

@@ -9,11 +9,11 @@ import React from "react";
 import { computed, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import { DrawerItem } from "../drawer";
-import { cssNames } from "@k8slens/utilities";
-import { Namespace } from "@k8slens/kube-object";
+import { cssNames } from "@freelens/utilities";
+import { Namespace } from "@freelens/kube-object";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Link } from "react-router-dom";
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
@@ -24,8 +24,8 @@ import type { LimitRangeStore } from "../config-limit-ranges/store";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import limitRangeStoreInjectable from "../config-limit-ranges/store.injectable";
 import resourceQuotaStoreInjectable from "../config-resource-quotas/store.injectable";
-import type { Logger } from "@k8slens/logger";
-import { loggerInjectionToken } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelens/logger";
 import { NamespaceTreeView } from "./namespace-tree-view";
 import namespaceStoreInjectable from "./store.injectable";
 import type { NamespaceStore } from "./store";
@@ -127,4 +127,3 @@ export const NamespaceDetails = withInjectables<Dependencies, NamespaceDetailsPr
     logger: di.inject(loggerInjectionToken),
   }),
 });
-

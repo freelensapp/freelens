@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/extensions",
+  "name": "@freelens/extensions",
   "productName": "OpenLens extensions",
   "description": "OpenLens - Open Source Kubernetes IDE: extensions",
   "version": "6.5.0",
@@ -24,7 +24,7 @@
     "clean": "rimraf dist/"
   },
   "dependencies": {
-    "@k8slens/core": "6.5.0"
+    "@freelens/core": "6.5.0"
   },
   "devDependencies": {
     "@types/node": "^16.18.25",

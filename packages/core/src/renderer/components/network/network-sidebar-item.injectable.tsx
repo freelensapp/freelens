@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
-import { Icon } from "@k8slens/icon";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { Icon } from "@freelens/icon";
 import React from "react";
 import { noop } from "lodash/fp";
 

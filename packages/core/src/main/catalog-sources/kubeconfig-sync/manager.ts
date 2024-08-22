@@ -6,9 +6,9 @@
 import type { IComputedValue, ObservableMap } from "mobx";
 import { action, observable, computed, makeObservable, observe } from "mobx";
 import type { CatalogEntity } from "../../../common/catalog";
-import type { Disposer } from "@k8slens/utilities";
-import { iter } from "@k8slens/utilities";
-import type { Logger } from "@k8slens/logger";
+import type { Disposer } from "@freelens/utilities";
+import { iter } from "@freelens/utilities";
+import type { Logger } from "@freelens/logger";
 import type { WatchKubeconfigFileChanges } from "./watch-file-changes.injectable";
 import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
 

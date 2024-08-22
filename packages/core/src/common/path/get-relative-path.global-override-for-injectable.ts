@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import getRelativePathInjectable from "./get-relative-path.injectable";
 
 export default getGlobalOverride(getRelativePathInjectable, () => path.posix.relative);

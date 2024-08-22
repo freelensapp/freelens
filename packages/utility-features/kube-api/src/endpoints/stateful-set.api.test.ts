@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeJsonApi, StatefulSetApi } from "@k8slens/kube-api";
-import { flushPromises } from "@k8slens/test-utils";
+import { KubeJsonApi, StatefulSetApi } from "@freelens/kube-api";
+import { flushPromises } from "@freelens/test-utils";
 import asyncFn from "@async-fn/jest";
 import type { AsyncFnMock } from "@async-fn/jest";
 

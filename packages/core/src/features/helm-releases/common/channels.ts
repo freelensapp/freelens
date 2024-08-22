@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getRequestChannel } from "@k8slens/messaging";
-import type { Result } from "@k8slens/utilities";
-import type { KubeJsonApiData } from "@k8slens/kube-object";
+import { getRequestChannel } from "@freelens/messaging";
+import type { Result } from "@freelens/utilities";
+import type { KubeJsonApiData } from "@freelens/kube-object";
 
 export interface GetHelmReleaseArgs {
   clusterId: string;

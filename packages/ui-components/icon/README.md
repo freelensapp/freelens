@@ -1,19 +1,19 @@
-# @k8slens/error-boundary
+# @freelens/error-boundary
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @k8slens/icon
+$ npm install @freelens/icon
 ```
 
 ```typescript
-import "@k8slens/icon/styles";
+import "@freelens/icon/styles";
 
-import type { BaseIconProps } from "@k8slens/icon";
-import type { IconProps } from "@k8slens/icon";
-import { Icon } from "@k8slens/icon";
+import type { BaseIconProps } from "@freelens/icon";
+import type { IconProps } from "@freelens/icon";
+import { Icon } from "@freelens/icon";
 ```
 
 ## Extendability

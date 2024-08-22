@@ -4,7 +4,7 @@
  */
 
 import moment from "moment";
-import { formatDuration, isObject, isString } from "@k8slens/utilities";
+import { formatDuration, isObject, isString } from "@freelens/utilities";
 import type { Patch } from "rfc6902";
 import autoBind from "auto-bind";
 import type { KubeObjectMetadata, KubeObjectScope, KubeJsonApiData } from "./api-types";

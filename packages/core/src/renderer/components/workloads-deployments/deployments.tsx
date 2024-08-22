@@ -7,9 +7,9 @@ import "./deployments.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { Deployment } from "@k8slens/kube-object";
+import type { Deployment } from "@freelens/kube-object";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { cssNames } from "@k8slens/utilities";
+import { cssNames } from "@freelens/utilities";
 import kebabCase from "lodash/kebabCase";
 import orderBy from "lodash/orderBy";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";

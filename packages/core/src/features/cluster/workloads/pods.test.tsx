@@ -7,10 +7,10 @@ import type { RenderResult } from "@testing-library/react";
 import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import { type ApplicationBuilder, getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
-import type { PodMetrics, PodStatus } from "@k8slens/kube-object";
-import { Pod } from "@k8slens/kube-object";
-import type { PodMetricsApi } from "@k8slens/kube-api";
-import { podMetricsApiInjectable } from "@k8slens/kube-api-specifics";
+import type { PodMetrics, PodStatus } from "@freelens/kube-object";
+import { Pod } from "@freelens/kube-object";
+import type { PodMetricsApi } from "@freelens/kube-api";
+import { podMetricsApiInjectable } from "@freelens/kube-api-specifics";
 import type { RequestMetrics } from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 

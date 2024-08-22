@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@k8slens/test-utils";
+import { getGlobalOverride } from "@freelens/test-utils";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 
 export default getGlobalOverride(computeUnixShellEnvironmentInjectable, () => async () => {

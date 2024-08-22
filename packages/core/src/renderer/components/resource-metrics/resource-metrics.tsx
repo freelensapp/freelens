@@ -7,9 +7,9 @@ import "./resource-metrics.scss";
 
 import React, { createContext, useState } from "react";
 import { Radio, RadioGroup } from "../radio";
-import type { KubeObject } from "@k8slens/kube-object";
-import { cssNames } from "@k8slens/utilities";
-import { Spinner } from "@k8slens/spinner";
+import type { KubeObject } from "@freelens/kube-object";
+import { cssNames } from "@freelens/utilities";
+import { Spinner } from "@freelens/spinner";
 import type { MetricsTab } from "../chart/options";
 import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";

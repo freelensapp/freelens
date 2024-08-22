@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@k8slens/legacy-global-di";
+import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
 import removeWeblinkInjectable from "../../features/weblinks/common/remove.injectable";
 import type { CatalogEntityContextMenuContext, CatalogEntityMetadata, CatalogEntityStatus } from "../catalog";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";

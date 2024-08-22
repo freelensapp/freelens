@@ -5,8 +5,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
-import { Button } from "@k8slens/button";
-import { showSuccessNotificationInjectable } from "@k8slens/notifications";
+import { Button } from "@freelens/button";
+import { showSuccessNotificationInjectable } from "@freelens/notifications";
 
 const aboutPortForwardingInjectable = getInjectable({
   id: "about-port-forwarding",

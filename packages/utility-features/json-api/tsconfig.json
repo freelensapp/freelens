@@ -1,5 +1,5 @@
 {
-  "extends": "@k8slens/typescript/config/base.json",
+  "extends": "@freelens/typescript/config/base.json",
   "include": ["**/*.ts"],
   "compilerOptions": {
     "moduleResolution": "node"

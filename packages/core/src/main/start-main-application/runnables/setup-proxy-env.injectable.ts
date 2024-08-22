@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeElectronIsReadyInjectionToken } from "@k8slens/application-for-electron-main";
+import { beforeElectronIsReadyInjectionToken } from "@freelens/application-for-electron-main";
 import getCommandLineSwitchInjectable from "../../electron-app/features/get-command-line-switch.injectable";
 
 const setupProxyEnvInjectable = getInjectable({

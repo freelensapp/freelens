@@ -5,9 +5,9 @@
 
 import type { IComputedValue } from "mobx";
 import { observable } from "mobx";
-import type { PodLogsQuery, Pod } from "@k8slens/kube-object";
-import { waitUntilDefined, getOrInsertWith, interval } from "@k8slens/utilities";
-import type { IntervalFn } from "@k8slens/utilities";
+import type { PodLogsQuery, Pod } from "@freelens/kube-object";
+import { waitUntilDefined, getOrInsertWith, interval } from "@freelens/utilities";
+import type { IntervalFn } from "@freelens/utilities";
 import type { TabId } from "../dock/store";
 import type { CallForLogs } from "./call-for-logs.injectable";
 import type { LogTabData } from "./tab-store";

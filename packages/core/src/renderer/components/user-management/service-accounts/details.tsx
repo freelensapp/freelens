@@ -10,11 +10,11 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import type { Secret, ServiceAccount } from "@k8slens/kube-object";
+import type { Secret, ServiceAccount } from "@freelens/kube-object";
 import { DrawerItem, DrawerTitle } from "../../drawer";
-import { Icon } from "@k8slens/icon";
+import { Icon } from "@freelens/icon";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
-import { Spinner } from "@k8slens/spinner";
+import { Spinner } from "@freelens/spinner";
 import { ServiceAccountsSecret } from "./secret";
 import type { SecretStore } from "../../config-secrets/store";
 import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";

@@ -9,7 +9,7 @@ import { SearchInput } from "../input";
 
 import type { UseTableOptions } from "react-table";
 import { ReactTable } from "../table/react-table";
-import type { StrictReactNode } from "@k8slens/utilities";
+import type { StrictReactNode } from "@freelens/utilities";
 
 export type SearchFilter<T> = (item: T) => string | number;
 

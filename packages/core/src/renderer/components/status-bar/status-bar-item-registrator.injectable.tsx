@@ -11,9 +11,9 @@ import type { StatusBarItem } from "./status-bar-item-injection-token";
 import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
 import type { StatusBarRegistration } from "./status-bar-registration";
 import React from "react";
-import { getRandomIdInjectionToken } from "@k8slens/random";
-import { loggerInjectionToken } from "@k8slens/logger";
-import type { Logger } from "@k8slens/logger";
+import { getRandomIdInjectionToken } from "@freelens/random";
+import { loggerInjectionToken } from "@freelens/logger";
+import type { Logger } from "@freelens/logger";
 
 const statusBarItemRegistratorInjectable = getInjectable({
   id: "status-bar-item-registrator",
@@ -82,5 +82,3 @@ const toItemInjectableFor = (extension: LensRendererExtension, getRandomId: () =
     })];
   };
 };
-
-

@@ -2,10 +2,10 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { SidebarItemRegistration } from "@k8slens/cluster-sidebar";
-import { sidebarItemInjectionToken } from "@k8slens/cluster-sidebar";
-import type { CustomResourceDefinition } from "@k8slens/kube-object";
-import { iter, noop, computedAnd } from "@k8slens/utilities";
+import type { SidebarItemRegistration } from "@freelens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import type { CustomResourceDefinition } from "@freelens/kube-object";
+import { iter, noop, computedAnd } from "@freelens/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash";
 import { computed } from "mobx";

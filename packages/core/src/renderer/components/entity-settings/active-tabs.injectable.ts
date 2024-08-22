@@ -4,9 +4,9 @@
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import { byOrderNumber } from "@k8slens/utilities";
+import { byOrderNumber } from "@freelens/utilities";
 import type { CatalogEntity } from "../../api/catalog-entity";
-import { observableHistoryInjectionToken } from "@k8slens/routing";
+import { observableHistoryInjectionToken } from "@freelens/routing";
 import type { RegisteredEntitySetting } from "./extension-registrator.injectable";
 import catalogEntitySettingItemsInjectable from "./settings.injectable";
 

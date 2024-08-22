@@ -1,8 +1,8 @@
 import { getInjectable, instantiationDecoratorToken, createInstantiationTargetDecorator } from "@ogre-tools/injectable";
-import { startApplicationInjectionToken } from "@k8slens/application";
+import { startApplicationInjectionToken } from "@freelens/application";
 import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
 import { beforeAnythingInjectionToken, beforeElectronIsReadyInjectionToken } from "./time-slots";
-import { runManySyncFor } from "@k8slens/run-many";
+import { runManySyncFor } from "@freelens/run-many";
 
 const startElectronApplicationInjectable = getInjectable({
   id: "start-electron-application",

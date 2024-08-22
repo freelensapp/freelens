@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode, SingleOrMany } from "@k8slens/utilities";
+import type { StrictReactNode, SingleOrMany } from "@freelens/utilities";
 
 export interface ItemObject {
   getId: () => string;

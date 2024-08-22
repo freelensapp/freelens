@@ -11,12 +11,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Badge } from "../badge";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { ReplicationController } from "@k8slens/kube-object";
-import { replicationControllerApiInjectable } from "@k8slens/kube-api-specifics";
-import { showErrorNotificationInjectable } from "@k8slens/notifications";
-import type { ShowNotification } from "@k8slens/notifications";
+import type { ReplicationController } from "@freelens/kube-object";
+import { replicationControllerApiInjectable } from "@freelens/kube-api-specifics";
+import { showErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowNotification } from "@freelens/notifications";
 import { Slider } from "../slider";
-import type { ReplicationControllerApi } from "@k8slens/kube-api";
+import type { ReplicationControllerApi } from "@freelens/kube-api";
 
 export interface ReplicationControllerDetailsProps extends KubeObjectDetailsProps<ReplicationController> {
 }

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { podListLayoutColumnInjectionToken } from "@k8slens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
 
 const columnId = "restarts";
 
@@ -20,4 +20,3 @@ export const podsRestartsColumnInjectable = getInjectable({
   }),
   injectionToken: podListLayoutColumnInjectionToken,
 });
-

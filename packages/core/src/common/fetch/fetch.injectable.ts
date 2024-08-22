@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import fetch from "@k8slens/node-fetch";
+import fetch from "@freelens/node-fetch";
 
 export type Fetch = typeof fetch;
 

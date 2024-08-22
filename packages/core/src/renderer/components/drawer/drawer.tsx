@@ -8,15 +8,15 @@ import "./drawer.scss";
 import React from "react";
 import { clipboard } from "electron";
 import { createPortal } from "react-dom";
-import type { StrictReactNode } from "@k8slens/utilities";
-import { cssNames, noop } from "@k8slens/utilities";
-import { Icon } from "@k8slens/icon";
-import { Animate } from "@k8slens/animate";
-import type { AnimateName } from "@k8slens/animate";
-import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@k8slens/resizing-anchor";
+import type { StrictReactNode } from "@freelens/utilities";
+import { cssNames, noop } from "@freelens/utilities";
+import { Icon } from "@freelens/icon";
+import { Animate } from "@freelens/animate";
+import type { AnimateName } from "@freelens/animate";
+import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelens/resizing-anchor";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { historyInjectionToken } from "@k8slens/routing";
+import { historyInjectionToken } from "@freelens/routing";
 import type { History } from "history";
 import type { StorageLayer } from "../../utils/storage-helper";
 
@@ -255,4 +255,3 @@ export const Drawer = withInjectables<Dependencies, DrawerProps>(NonInjectedDraw
     drawerStorage: di.inject(drawerStorageInjectable),
   }),
 });
-

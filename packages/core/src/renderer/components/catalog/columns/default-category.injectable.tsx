@@ -6,7 +6,7 @@
 import styles from "../catalog.module.scss";
 import React from "react";
 import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
-import { KubeObject } from "@k8slens/kube-object";
+import { KubeObject } from "@freelens/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import getLabelBadgesInjectable from "../get-label-badges.injectable";
 

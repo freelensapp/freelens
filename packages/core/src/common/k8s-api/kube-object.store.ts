@@ -4,16 +4,16 @@
  */
 
 import { action, computed, makeObservable, observable, reaction } from "mobx";
-import type { Disposer } from "@k8slens/utilities";
-import { waitUntilDefined, includes, rejectPromiseBy, object } from "@k8slens/utilities";
-import type { KubeJsonApiDataFor, KubeObject } from "@k8slens/kube-object";
-import { KubeStatus } from "@k8slens/kube-object";
-import type { IKubeWatchEvent, KubeApiQueryParams, KubeApi, KubeApiWatchCallback } from "@k8slens/kube-api";
+import type { Disposer } from "@freelens/utilities";
+import { waitUntilDefined, includes, rejectPromiseBy, object } from "@freelens/utilities";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelens/kube-object";
+import { KubeStatus } from "@freelens/kube-object";
+import type { IKubeWatchEvent, KubeApiQueryParams, KubeApi, KubeApiWatchCallback } from "@freelens/kube-api";
 import { ItemStore } from "../item.store";
-import { parseKubeApi } from "@k8slens/kube-api";
-import type { RequestInit } from "@k8slens/node-fetch";
+import { parseKubeApi } from "@freelens/kube-api";
+import type { RequestInit } from "@freelens/node-fetch";
 import type { Patch } from "rfc6902";
-import type { Logger } from "@k8slens/logger";
+import type { Logger } from "@freelens/logger";
 import assert from "assert";
 import type { PartialDeep } from "type-fest";
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RoleBindingData } from "@k8slens/kube-object";
-import { RoleBinding } from "@k8slens/kube-object";
+import type { RoleBindingData } from "@freelens/kube-object";
+import { RoleBinding } from "@freelens/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

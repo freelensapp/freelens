@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent } from "@testing-library/react";
-import type { Toleration } from "@k8slens/kube-object";
+import type { Toleration } from "@freelens/kube-object";
 import { PodTolerations } from "../pod-tolerations";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";

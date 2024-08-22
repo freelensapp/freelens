@@ -1,5 +1,5 @@
 {
-  "name": "@k8slens/react-testing-library-discovery",
+  "name": "@freelens/react-testing-library-discovery",
   "private": false,
   "version": "1.0.0",
   "description": "A way to discover HTML-elements using react-testing-library",
@@ -19,7 +19,7 @@
   "types": "dist/index.d.ts",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@k8slens.dev"
+    "email": "info@freelens.dev"
   },
   "license": "MIT",
   "homepage": "https://github.com/freelensapp/freelens",
@@ -30,7 +30,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@k8slens/webpack": "^6.5.0-alpha.4",
+    "@freelens/webpack": "^6.5.0-alpha.4",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5"
