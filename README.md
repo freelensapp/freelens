@@ -21,7 +21,7 @@ npm run build:app
 ```
 
 At this point, for example on Windows, simply go to the
-"freelens\open-lens\dist\win-unpacked" directory and run Freelens.exe.
+"freelens\freelens\dist\win-unpacked" directory and run Freelens.exe.
 
 ## Development
 
