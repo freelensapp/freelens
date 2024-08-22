@@ -21,7 +21,6 @@
   },
   "scripts": {
     "build": "webpack --config webpack/extensions.ts",
-    "build:docs": "typedoc",
     "clean": "rimraf dist/"
   },
   "dependencies": {
