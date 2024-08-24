@@ -4,7 +4,7 @@
   "description": "Lens eslint and prettier configurations",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@freelens.dev"
+    "email": "freelens@freelens.app"
   },
   "license": "MIT",
   "bin": {
