@@ -8,7 +8,7 @@
   },
   "copyright": "© 2023 OpenLens Authors",
   "license": "MIT",
-  "author": "OpenLens Authors <info@freelens.dev>",
+  "author": "OpenLens Authors <freelens@freelens.app>",
   "files": [
     "templates/**/*"
   ]

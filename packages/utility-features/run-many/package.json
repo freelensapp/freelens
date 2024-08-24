@@ -15,7 +15,7 @@
   "types": "dist/index.d.ts",
   "author": {
     "name": "OpenLens Authors",
-    "email": "info@freelens.dev"
+    "email": "freelens@freelens.app"
   },
   "license": "MIT",
   "homepage": "https://github.com/freelensapp/freelens",
