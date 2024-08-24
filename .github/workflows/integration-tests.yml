@@ -76,11 +76,21 @@ jobs:
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
-        run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          retry_on: timeout
+          command: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test:integration
 
       - name: Run integration tests (macOS, Windows)
         if: runner.os != 'Linux'
-        run: npm run test:integration
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          retry_on: timeout
+          command: npm run test:integration
 
       - name: Clean after tests
         run: npm run clean
