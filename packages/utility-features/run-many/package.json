@@ -1,6 +1,6 @@
 {
   "name": "@freelens/run-many",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "commonjs",
   "description": "A package containing runMany and runManySync",
   "publishConfig": {
@@ -25,8 +25,8 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "peerDependencies": {
-    "@freelens/test-utils": "^1.0.0-alpha.3",
-    "@freelens/utilities": "^1.0.0-alpha.1",
+    "@freelens/test-utils": "^0.1.0",
+    "@freelens/utilities": "^0.1.0",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
     "type-fest": "^2.19.0",
@@ -34,7 +34,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@freelens/webpack": "^6.5.0",
+    "@freelens/webpack": "^0.1.0",
     "@types/uuid": "^9.0.1"
   }
 }

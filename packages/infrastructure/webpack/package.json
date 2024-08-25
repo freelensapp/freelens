@@ -1,7 +1,7 @@
 {
   "name": "@freelens/webpack",
   "private": false,
-  "version": "6.5.0",
+  "version": "0.1.0",
   "description": "Webpack configurations and scripts for Lens packages.",
   "type": "commonjs",
   "publishConfig": {
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelens/typescript": "^6.5.0",
+    "@freelens/typescript": "^0.1.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/test-utils": "^17.2.0",
     "ts-node": "^10.9.1",

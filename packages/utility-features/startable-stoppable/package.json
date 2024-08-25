@@ -1,7 +1,7 @@
 {
   "name": "@freelens/startable-stoppable",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "TBD",
   "type": "commonjs",
   "publishConfig": {
@@ -28,7 +28,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "devDependencies": {
-    "@freelens/eslint-config": "^6.5.0",
-    "@freelens/webpack": "^6.5.0"
+    "@freelens/eslint-config": "^0.1.0",
+    "@freelens/webpack": "^0.1.0"
   }
 }

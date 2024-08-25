@@ -1,7 +1,7 @@
 {
   "name": "@freelens/jest",
   "private": false,
-  "version": "6.5.0",
+  "version": "0.1.0",
   "description": "Jest configuration and scripts for Lens packages.",
   "type": "commonjs",
   "publishConfig": {
