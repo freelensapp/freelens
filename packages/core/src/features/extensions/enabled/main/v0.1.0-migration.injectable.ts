@@ -9,7 +9,7 @@ import { enabledExtensionsMigrationDeclarationInjectionToken } from "./migration
 const enabledExtensionsMigrationV650Injectable = getInjectable({
   id: "enabled-extensions-migration-v650",
   instantiate: () => ({
-    version: "6.5.0",
+    version: "0.1.0",
     run: (store) => {
       const extensions = store.get("extensions");
 

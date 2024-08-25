@@ -1,7 +1,7 @@
 {
   "name": "@freelens/json-api",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "JSON api client",
   "type": "commonjs",
   "publishConfig": {
@@ -32,19 +32,19 @@
     "lint:fix": "lens-lint --fix"
   },
   "dependencies": {
-    "@freelens/node-fetch": "^6.5.0"
+    "@freelens/node-fetch": "^0.1.0"
   },
   "peerDependencies": {
-    "@freelens/event-emitter": "^1.0.0-alpha.1",
-    "@freelens/logger": "^1.0.0-alpha.5",
-    "@freelens/utilities": "^1.0.0-alpha.1",
+    "@freelens/event-emitter": "^0.1.0",
+    "@freelens/logger": "^0.1.0",
+    "@freelens/utilities": "^0.1.0",
     "lodash": "^4.17.15",
     "rfc6902": "^5.0.1"
   },
   "devDependencies": {
-    "@freelens/eslint-config": "^6.5.0",
-    "@freelens/jest": "^6.5.0",
-    "@freelens/typescript": "^6.5.0",
+    "@freelens/eslint-config": "^0.1.0",
+    "@freelens/jest": "^0.1.0",
+    "@freelens/typescript": "^0.1.0",
     "@types/node": "^16.18.25",
     "type-fest": "^2.14.0"
   }

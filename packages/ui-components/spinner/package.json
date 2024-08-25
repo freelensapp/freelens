@@ -1,7 +1,7 @@
 {
   "name": "@freelens/spinner",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Highly extendable spinner in the Lens.",
   "type": "commonjs",
   "files": [
@@ -33,11 +33,11 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelens/utilities": "^1.0.0-alpha.1",
+    "@freelens/utilities": "^0.1.0",
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "@freelens/eslint-config": "^6.5.0",
-    "@freelens/webpack": "^6.5.0"
+    "@freelens/eslint-config": "^0.1.0",
+    "@freelens/webpack": "^0.1.0"
   }
 }

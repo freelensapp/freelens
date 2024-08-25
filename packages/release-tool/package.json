@@ -1,6 +1,6 @@
 {
   "name": "@freelens/release-tool",
-  "version": "6.5.0",
+  "version": "0.1.0",
   "description": "Release tool for lens monorepo",
   "license": "MIT",
   "private": true,
