@@ -24,7 +24,7 @@ describe("Extension/App versions compatibility checks", () => {
     expect(isCompatible({ extLensEngineVersion: "6.0.0", extensionApiVersion: "5.6.0" })).toBeFalsy();
   });
 
-  it("supports short version format for manifest.engines.lens", () => {
+  it("supports short version format for manifest.engines.freelens", () => {
     expect(isCompatible({ extLensEngineVersion: "5.5", extensionApiVersion: "5.5.1" })).toBeTruthy();
   });
 
@@ -57,7 +57,7 @@ function getExtensionManifestMock(lensEngine = "1.0"): LensExtensionManifest {
     name: "some-extension",
     version: "1.0",
     engines: {
-      lens: lensEngine,
+      freelens: lensEngine,
     },
   };
 }

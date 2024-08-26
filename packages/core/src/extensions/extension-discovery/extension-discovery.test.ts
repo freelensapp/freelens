@@ -69,7 +69,7 @@ describe("ExtensionDiscovery", () => {
         name: "my-extension",
         version: "1.0.0",
         engines: {
-          lens: "5.0.0",
+          freelens: "0.1.0",
         },
       };
     });
@@ -102,7 +102,7 @@ describe("ExtensionDiscovery", () => {
           name: "my-extension",
           version: "1.0.0",
           engines: {
-            lens: "5.0.0",
+            freelens: "0.1.0",
           },
         },
         manifestPath: "/some-directory-for-user-data/node_modules/my-extension/package.json",
