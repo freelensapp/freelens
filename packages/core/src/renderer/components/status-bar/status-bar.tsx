@@ -13,7 +13,7 @@ import statusBarItemsInjectable from "./status-bar-items.injectable";
 import type { IComputedValue, IObservableValue } from "mobx";
 import type { StatusBarStatus } from "./current-status.injectable";
 import statusBarCurrentStatusInjectable from "./current-status.injectable";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface StatusBarProps {}
 

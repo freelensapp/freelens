@@ -9,10 +9,10 @@ import downloadPlatformUpdateInjectable from "./download-platform-update.injecta
 import type { AppUpdater } from "electron-updater";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getPromiseStatus } from "@freelens/test-utils";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { noop } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { noop } from "@freelensapp/utilities";
 
 describe("download-platform-update", () => {
   let downloadPlatformUpdate: DownloadPlatformUpdate;

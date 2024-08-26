@@ -7,8 +7,8 @@ import type { IObservableValue } from "mobx";
 import { runInAction, computed, observable } from "mobx";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelens/react-testing-library-discovery";
-import { discoverFor } from "@freelens/react-testing-library-discovery";
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import React from "react";
 
 describe("preferences: extension adding preference tabs", () => {

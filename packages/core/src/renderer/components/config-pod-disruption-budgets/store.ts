@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { PodDisruptionBudgetApi } from "@freelens/kube-api";
-import type { PodDisruptionBudget } from "@freelens/kube-object";
+import type { PodDisruptionBudgetApi } from "@freelensapp/kube-api";
+import type { PodDisruptionBudget } from "@freelensapp/kube-object";
 
 export class PodDisruptionBudgetStore extends KubeObjectStore<PodDisruptionBudget, PodDisruptionBudgetApi> {
 }

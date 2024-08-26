@@ -11,10 +11,10 @@ import showDetailsInjectable from "../../renderer/components/kube-detail-params/
 import createPageParamInjectable from "../../renderer/navigation/create-page-param.injectable";
 import isActiveRouteInjectable from "../../renderer/navigation/is-route-active.injectable";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelens/legacy-global-di";
+import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export type { PageParamInit, PageParam } from "../../renderer/navigation/page-param";
-export type { URLParams } from "@freelens/utilities";
+export type { URLParams } from "@freelensapp/utilities";
 
 export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);
 export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);

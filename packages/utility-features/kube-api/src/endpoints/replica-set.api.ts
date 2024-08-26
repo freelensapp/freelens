@@ -5,7 +5,7 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { ReplicaSet } from "@freelens/kube-object";
+import { ReplicaSet } from "@freelensapp/kube-object";
 
 export class ReplicaSetApi extends KubeApi<ReplicaSet> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

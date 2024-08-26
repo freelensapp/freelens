@@ -5,7 +5,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import type { StatefulSet } from "@freelens/kube-object";
+import type { StatefulSet } from "@freelensapp/kube-object";
 
 const statefulSetDialogStateInjectable = getInjectable({
   id: "stateful-set-dialog-state",

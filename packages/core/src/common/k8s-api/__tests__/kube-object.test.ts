@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeObject } from "@freelens/kube-object";
+import { KubeObject } from "@freelensapp/kube-object";
 
 describe("KubeObject", () => {
   describe("isJsonApiData", () => {

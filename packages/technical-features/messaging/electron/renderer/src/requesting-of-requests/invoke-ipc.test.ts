@@ -1,5 +1,5 @@
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { messagingFeatureForRenderer } from "../feature";
 import { ipcRenderer } from "electron";
 import invokeIpcInjectable from "./invoke-ipc.injectable";

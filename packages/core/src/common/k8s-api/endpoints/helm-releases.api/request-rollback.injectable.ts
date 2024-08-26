@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor } from "@freelens/utilities";
+import { urlBuilderFor } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 export type RequestHelmReleaseRollback = (name: string, namespace: string, revision: number) => Promise<void>;

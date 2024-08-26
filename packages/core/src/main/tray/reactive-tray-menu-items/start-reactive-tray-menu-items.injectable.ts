@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import reactiveTrayMenuItemsInjectable from "./reactive-tray-menu-items.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import startTrayInjectable from "../electron-tray/start-tray.injectable";
 
 const startReactiveTrayMenuItemsInjectable = getInjectable({

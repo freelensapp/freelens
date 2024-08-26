@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { platformSpecificRequestSystemCAsInjectionToken } from "../common/request-system-cas-token";
 
 const pemEncoding = (hexEncodedCert: String) => {

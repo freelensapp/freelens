@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { KubeObject } from "@freelens/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 import type { KubeObjectDetailsProps } from "./kube-object-details";
 import type React from "react";
 import type { IComputedValue } from "mobx";

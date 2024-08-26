@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { TableCellProps } from "@freelens/list-layout";
-import type { StrictReactNode } from "@freelens/utilities";
+import type { TableCellProps } from "@freelensapp/list-layout";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { CatalogEntity } from "../../../common/catalog";
 
 /**

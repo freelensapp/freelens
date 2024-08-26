@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import setLoginItemSettingsInjectable from "../../../main/electron-app/features/set-login-item-settings.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import userPreferencesStateInjectable from "../common/state.injectable";
 
 const setupSyncOpenAtLoginWithOsInjectable = getInjectable({

@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
-import { Icon } from "@freelens/icon";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { Icon } from "@freelensapp/icon";
 
 import eventsRouteInjectable from "../../../common/front-end-routing/routes/cluster/events/events-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { computed } from "mobx";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import forceUpdateModalRootFrameComponentInjectable from "./force-update-modal-root-frame-component.injectable";
 
 export default getGlobalOverride(

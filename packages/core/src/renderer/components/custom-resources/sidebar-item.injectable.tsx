@@ -2,11 +2,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
-import { noop } from "@freelens/utilities";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 
 const customResourcesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-custom-resources",

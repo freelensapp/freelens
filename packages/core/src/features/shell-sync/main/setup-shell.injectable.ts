@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
 import electronAppInjectable from "../../../main/electron-app/electron-app.injectable";
 import computeShellEnvironmentInjectable from "./compute-shell-environment.injectable";
 import emitShellSyncFailedInjectable from "./emit-failure.injectable";
-import { unionPATHs } from "@freelens/utilities";
+import { unionPATHs } from "@freelensapp/utilities";
 import userShellSettingInjectable from "../../user-preferences/common/shell-setting.injectable";
 
 const setupShellInjectable = getInjectable({

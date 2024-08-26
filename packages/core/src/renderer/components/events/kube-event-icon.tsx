@@ -6,9 +6,9 @@
 import "./kube-event-icon.scss";
 
 import React from "react";
-import { Icon } from "@freelens/icon";
-import type { KubeObject, KubeEvent } from "@freelens/kube-object";
-import { cssNames } from "@freelens/utilities";
+import { Icon } from "@freelensapp/icon";
+import type { KubeObject, KubeEvent } from "@freelensapp/kube-object";
+import { cssNames } from "@freelensapp/utilities";
 import { KubeObjectAge } from "../kube-object/age";
 import type { EventStore } from "./store";
 import { withInjectables } from "@ogre-tools/injectable-react";

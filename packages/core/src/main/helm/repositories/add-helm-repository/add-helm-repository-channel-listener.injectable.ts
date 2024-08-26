@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { addHelmRepositoryChannel } from "../../../../common/helm/add-helm-repository-channel";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import addHelmRepositoryInjectable from "./add-helm-repository.injectable";
 
 const addHelmRepositoryChannelListenerInjectable =

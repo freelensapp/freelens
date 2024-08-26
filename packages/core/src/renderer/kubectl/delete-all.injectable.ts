@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { kubectlDeleteAllChannel, kubectlDeleteAllInjectionToken } from "../../common/kube-helpers/channels";
-import { requestFromChannelInjectionToken } from "@freelens/messaging";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 
 const kubectlDeleteAllInjectable = getInjectable({
   id: "kubectl-delete-all",

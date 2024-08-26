@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeJsonApi, DeploymentApi } from "@freelens/kube-api";
+import { KubeJsonApi, DeploymentApi } from "@freelensapp/kube-api";
 
 describe("DeploymentApi", () => {
   let deploymentApi: DeploymentApi;

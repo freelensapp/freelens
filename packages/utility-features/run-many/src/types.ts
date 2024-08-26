@@ -4,7 +4,7 @@
  */
 
 import type { Injectable } from "@ogre-tools/injectable";
-import type { SingleOrMany } from "@freelens/utilities";
+import type { SingleOrMany } from "@freelensapp/utilities";
 
 export type Run<Param> = (parameter: Param) => Promise<void> | void;
 

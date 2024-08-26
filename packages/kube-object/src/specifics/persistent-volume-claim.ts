@@ -4,7 +4,7 @@
  */
 
 import type { Pod } from "./pod";
-import { object } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
 import type { TypedLocalObjectReference, LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { ResourceRequirements } from "../types/resource-requirements";

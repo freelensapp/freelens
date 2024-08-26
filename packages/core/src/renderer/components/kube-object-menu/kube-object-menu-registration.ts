@@ -5,7 +5,7 @@
 
 import type { IComputedValue } from "mobx";
 import type React from "react";
-import type { KubeObject } from "@freelens/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 
 export interface KubeObjectMenuItemProps {
   object: KubeObject;

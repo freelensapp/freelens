@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { HorizontalPodAutoscalerApi } from "@freelens/kube-api";
-import type { HorizontalPodAutoscaler } from "@freelens/kube-object";
+import type { HorizontalPodAutoscalerApi } from "@freelensapp/kube-api";
+import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
 
 export class HorizontalPodAutoscalerStore extends KubeObjectStore<HorizontalPodAutoscaler, HorizontalPodAutoscalerApi> {
 }

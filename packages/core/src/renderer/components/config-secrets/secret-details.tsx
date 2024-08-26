@@ -10,18 +10,18 @@ import { autorun, observable, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
-import { Button } from "@freelens/button";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelens/notifications";
-import { base64, toggle } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import { Button } from "@freelensapp/button";
+import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { base64, toggle } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Secret } from "@freelens/kube-object";
-import type { Logger } from "@freelens/logger";
+import { Secret } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
 import type { SecretStore } from "./store";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import secretStoreInjectable from "./store.injectable";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface SecretDetailsProps extends KubeObjectDetailsProps<Secret> {
 }

@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { parse as parseQueryString } from "query-string";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 const queryParametersInjectable = getInjectable({
   id: "query-parameters",

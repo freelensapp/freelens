@@ -9,7 +9,7 @@ import createStorageInjectable from "../../utils/create-storage/create-storage.i
 import notifyErrorPortForwardingInjectable from "../notify-error-port-forwarding.injectable";
 import requestActivePortForwardInjectable from "./request-active-port-forward.injectable";
 import apiBaseInjectable from "../../../common/k8s-api/api-base.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 const portForwardStoreInjectable = getInjectable({
   id: "port-forward-store",

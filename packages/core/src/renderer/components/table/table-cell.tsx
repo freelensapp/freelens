@@ -6,11 +6,11 @@
 import "./table-cell.scss";
 
 import React from "react";
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import { Checkbox } from "../checkbox";
 import autoBindReact from "auto-bind/react";
-import type { TableCellProps } from "@freelens/list-layout";
+import type { TableCellProps } from "@freelensapp/list-layout";
 
 export type TableCellElem = React.ReactElement<TableCellProps>;
 

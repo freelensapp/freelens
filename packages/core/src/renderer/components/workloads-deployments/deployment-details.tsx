@@ -10,7 +10,7 @@ import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import { DrawerItem } from "../drawer";
 import { Badge } from "../badge";
-import { Deployment } from "@freelens/kube-object";
+import { Deployment } from "@freelensapp/kube-object";
 import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
@@ -18,13 +18,13 @@ import type { DeploymentStore } from "./store";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import type { ReplicaSetStore } from "../workloads-replicasets/store";
 import { DeploymentReplicaSets } from "./deployment-replicasets";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
 import deploymentStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface DeploymentDetailsProps extends KubeObjectDetailsProps<Deployment> {
 }

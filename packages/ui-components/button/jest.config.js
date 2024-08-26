@@ -1,3 +1,3 @@
-const { configForReact } = require("@freelens/jest").monorepoPackageConfig(__dirname);
+const { configForReact } = require("@freelensapp/jest").monorepoPackageConfig(__dirname);
 
 module.exports = configForReact;

@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
-import type { ReplicaSet } from "@freelens/kube-object";
+import type { ReplicaSet } from "@freelensapp/kube-object";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 export interface ReplicaSetPodMetricData {

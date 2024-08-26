@@ -7,11 +7,11 @@ import { getInjectable } from "@ogre-tools/injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import processExecPathInjectable from "./execPath.injectable";
 import processEnvInjectable from "./env.injectable";
-import { object } from "@freelens/utilities";
-import type { AsyncResult } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export interface UnixShellEnvOptions {
   signal: AbortSignal;

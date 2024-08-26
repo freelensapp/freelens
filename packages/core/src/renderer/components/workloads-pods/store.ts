@@ -7,9 +7,9 @@ import countBy from "lodash/countBy";
 import { observable } from "mobx";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import { cpuUnitsToNumber, unitsToBytes } from "@freelens/utilities";
-import type { Pod, PodMetrics, KubeObject, NamespaceScopedMetadata } from "@freelens/kube-object";
-import type { PodApi, PodMetricsApi } from "@freelens/kube-api";
+import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
+import type { Pod, PodMetrics, KubeObject, NamespaceScopedMetadata } from "@freelensapp/kube-object";
+import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
 
 export interface PodStoreDependencies extends KubeObjectStoreDependencies {
   readonly podMetricsApi: PodMetricsApi;

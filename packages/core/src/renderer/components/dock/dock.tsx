@@ -6,11 +6,11 @@
 import "./dock.scss";
 import React from "react";
 import { observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
-import { ResizeDirection, ResizingAnchor } from "@freelens/resizing-anchor";
+import { ResizeDirection, ResizingAnchor } from "@freelensapp/resizing-anchor";
 import { CreateResource } from "./create-resource/view";
 import { DockTabs } from "./dock-tabs";
 import type { DockStore, DockTab } from "./dock/store";
@@ -24,7 +24,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import createResourceTabInjectable from "./create-resource/create-resource-tab.injectable";
 import dockStoreInjectable from "./dock/store.injectable";
 import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
-import { ErrorBoundary } from "@freelens/error-boundary";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
 
 export interface DockProps {
   className?: string;

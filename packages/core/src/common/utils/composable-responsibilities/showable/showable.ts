@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isBoolean } from "@freelens/utilities";
+import { isBoolean } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 
 export interface Showable {

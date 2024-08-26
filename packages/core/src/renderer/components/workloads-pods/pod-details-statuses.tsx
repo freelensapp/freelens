@@ -7,7 +7,7 @@ import "./pod-details-statuses.scss";
 import React from "react";
 import countBy from "lodash/countBy";
 import kebabCase from "lodash/kebabCase";
-import type { Pod } from "@freelens/kube-object";
+import type { Pod } from "@freelensapp/kube-object";
 
 export interface PodDetailsStatusesProps {
   pods: Pod[];

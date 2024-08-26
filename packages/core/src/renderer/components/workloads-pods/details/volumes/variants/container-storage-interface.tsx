@@ -5,8 +5,8 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { SecretApi } from "@freelens/kube-api";
-import { secretApiInjectable } from "@freelens/kube-api-specifics";
+import type { SecretApi } from "@freelensapp/kube-api";
+import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
 import { DrawerItem } from "../../../../drawer";
 import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 import { LocalRef } from "../variant-helpers";

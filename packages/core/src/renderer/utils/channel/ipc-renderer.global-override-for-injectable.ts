@@ -4,7 +4,7 @@
  */
 import type { IpcRenderer } from "electron";
 import ipcRendererInjectable from "./ipc-renderer.injectable";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 
 export default getGlobalOverride(ipcRendererInjectable, () => ({
   invoke: () => {},

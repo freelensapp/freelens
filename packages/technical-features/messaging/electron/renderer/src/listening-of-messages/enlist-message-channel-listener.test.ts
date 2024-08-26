@@ -1,8 +1,8 @@
 import type { IpcRendererEvent, IpcRenderer } from "electron";
 import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
-import { EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelens/messaging";
+import { EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { createContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { messagingFeatureForRenderer } from "../feature";
 
 describe("enlist message channel listener in renderer", () => {

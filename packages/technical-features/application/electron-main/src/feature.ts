@@ -1,6 +1,6 @@
-import { getFeature } from "@freelens/feature-core";
+import { getFeature } from "@freelensapp/feature-core";
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
-import { applicationFeature } from "@freelens/application";
+import { applicationFeature } from "@freelensapp/application";
 
 export const applicationFeatureForElectronMain = getFeature({
   id: "application-for-electron-main",

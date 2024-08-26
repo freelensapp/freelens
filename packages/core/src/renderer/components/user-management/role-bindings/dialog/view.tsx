@@ -10,17 +10,17 @@ import { computed, observable, makeObservable, action } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { NamespaceSelect } from "../../../namespaces/namespace-select";
-import type { ClusterRole, Role, ServiceAccount, Subject } from "@freelens/kube-object";
+import type { ClusterRole, Role, ServiceAccount, Subject } from "@freelensapp/kube-object";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { EditableList } from "../../../editable-list";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { SubTitle } from "../../../layout/sub-title";
 import type { SelectOption } from "../../../select";
 import { onMultiSelectFor, Select } from "../../../select";
 import { Wizard, WizardStep } from "../../../wizard";
 import { Input } from "../../../input";
-import { ObservableHashSet, iter } from "@freelens/utilities";
+import { ObservableHashSet, iter } from "@freelensapp/utilities";
 import type { RoleBindingDialogState } from "./state.injectable";
 import type { RoleBindingStore } from "../store";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -35,10 +35,10 @@ import showDetailsInjectable from "../../../kube-detail-params/show-details.inje
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";
 import roleStoreInjectable from "../../roles/store.injectable";
 import serviceAccountStoreInjectable from "../../service-accounts/store.injectable";
-import { roleApiInjectable } from "@freelens/kube-api-specifics";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
-import type { RoleApi } from "@freelens/kube-api";
+import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { RoleApi } from "@freelensapp/kube-api";
 
 export interface RoleBindingDialogProps extends Partial<DialogProps> {
 }

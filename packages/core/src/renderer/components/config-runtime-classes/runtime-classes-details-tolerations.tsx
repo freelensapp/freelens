@@ -6,7 +6,7 @@
 import "./runtime-classes-details-tolerations.scss";
 import React from "react";
 import { DrawerParamToggler, DrawerItem } from "../drawer";
-import type { Toleration, KubeObject } from "@freelens/kube-object";
+import type { Toleration, KubeObject } from "@freelensapp/kube-object";
 import { RuntimeClassTolerations } from "./runtime-classes-tolerations";
 
 export interface KubeObjectWithTolerations extends KubeObject {

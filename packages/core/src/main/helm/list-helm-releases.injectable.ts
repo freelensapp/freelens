@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
-import type { AsyncResult } from "@freelens/utilities";
-import { isObject } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
+import { isObject } from "@freelensapp/utilities";
 import type { ListedHelmRelease } from "../../features/helm-releases/common/channels";
 
 export type ListHelmReleases = (pathToKubeconfig: string, namespace?: string) => AsyncResult<ListedHelmRelease[], string>;

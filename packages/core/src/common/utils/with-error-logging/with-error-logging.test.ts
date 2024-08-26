@@ -8,7 +8,7 @@ import withErrorLoggingInjectable from "./with-error-logging.injectable";
 import { pipeline } from "@ogre-tools/fp";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getPromiseStatus } from "@freelens/test-utils";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import logErrorInjectable from "../../log-error.injectable";
 
 describe("with-error-logging", () => {

@@ -5,8 +5,8 @@
 
 import "./animate.scss";
 import React, { useEffect, useState } from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames, noop } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { RequestAnimationFrame } from "./request-animation-frame.injectable";
 import { requestAnimationFrameInjectable } from "./request-animation-frame.injectable";

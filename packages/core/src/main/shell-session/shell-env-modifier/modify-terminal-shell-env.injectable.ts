@@ -6,7 +6,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import type { ClusterId } from "../../../common/cluster-types";
-import { isDefined } from "@freelens/utilities";
+import { isDefined } from "@freelensapp/utilities";
 import mainExtensionsInjectable from "../../../extensions/main-extensions.injectable";
 import catalogEntityRegistryInjectable from "../../catalog/entity-registry.injectable";
 

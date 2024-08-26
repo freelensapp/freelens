@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { formatDuration } from "@freelens/utilities";
+import { formatDuration } from "@freelensapp/utilities";
 import moment from "moment";
 import type { ObjectReference, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";

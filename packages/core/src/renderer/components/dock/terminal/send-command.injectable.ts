@@ -4,10 +4,10 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { when } from "mobx";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { TerminalChannels } from "../../../../common/terminal/channels";
-import { waitUntilDefined, noop } from "@freelens/utilities";
-import { showSuccessNotificationInjectable } from "@freelens/notifications";
+import { waitUntilDefined, noop } from "@freelensapp/utilities";
+import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import selectDockTabInjectable from "../dock/select-dock-tab.injectable";
 import type { TabId } from "../dock/store";
 import createTerminalTabInjectable from "./create-terminal-tab.injectable";

@@ -4,12 +4,12 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
-import type { RequestInit } from "@freelens/node-fetch";
+import type { RequestInit } from "@freelensapp/node-fetch";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
 import fetchInjectable from "../fetch/fetch.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelens/json-api";
-import { JsonApi } from "@freelens/json-api";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelensapp/json-api";
+import { JsonApi } from "@freelensapp/json-api";
 
 export type CreateJsonApi = <Data = JsonApiData, Params extends JsonApiParams<Data> = JsonApiParams<Data>>(config: JsonApiConfig, reqInit?: RequestInit) => JsonApi<Data, Params>;
 

@@ -6,12 +6,12 @@ import { ipcMain } from "electron";
 import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
 import { Disposers } from "../lens-extension";
 import type { LensMainExtension } from "../lens-main-extension";
-import type { Disposer } from "@freelens/utilities";
+import type { Disposer } from "@freelensapp/utilities";
 import { once } from "lodash";
 import { ipcMainHandle } from "../../common/ipc";
-import type { Logger } from "@freelens/logger";
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
-import { loggerInjectionToken } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
+import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 interface Dependencies {
   readonly logger: Logger;

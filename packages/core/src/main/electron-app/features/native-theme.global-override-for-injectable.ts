@@ -4,7 +4,7 @@
  */
 
 import EventEmitter from "events";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import nativeThemeInjectable from "./native-theme.injectable";
 
 export default getGlobalOverride(nativeThemeInjectable, () => Object.assign(new EventEmitter(), {

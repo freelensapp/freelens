@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
-import { getOrInsert } from "@freelens/utilities";
+import { getOrInsert } from "@freelensapp/utilities";
 import type TypedEventEmitter from "typed-emitter";
 import EventEmitter from "events";
 import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";

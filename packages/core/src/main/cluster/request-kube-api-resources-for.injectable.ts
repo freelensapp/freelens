@@ -6,7 +6,7 @@ import type { V1APIResourceList } from "@kubernetes/client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import type { KubeResourceListGroup } from "./api-versions-requester";
 

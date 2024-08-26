@@ -12,17 +12,17 @@ import { observer } from "mobx-react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
-import type { CronJob } from "@freelens/kube-object";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelens/notifications";
-import { cssNames } from "@freelens/utilities";
+import type { CronJob } from "@freelensapp/kube-object";
+import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { cssNames } from "@freelensapp/utilities";
 import { Input } from "../../input";
 import { systemName, maxLength } from "../../input/input_validators";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import closeCronJobTriggerDialogInjectable from "./close.injectable";
-import { jobApiInjectable } from "@freelens/kube-api-specifics";
+import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
 import cronJobTriggerDialogStateInjectable from "./state.injectable";
-import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
-import type { JobApi } from "@freelens/kube-api";
+import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { JobApi } from "@freelensapp/kube-api";
 
 export interface CronJobTriggerDialogProps extends Partial<DialogProps> {
 }

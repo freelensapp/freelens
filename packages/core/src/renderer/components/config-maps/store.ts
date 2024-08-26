@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { ConfigMap, ConfigMapData } from "@freelens/kube-object";
-import type { ConfigMapApi } from "@freelens/kube-api";
+import type { ConfigMap, ConfigMapData } from "@freelensapp/kube-object";
+import type { ConfigMapApi } from "@freelensapp/kube-api";
 
 export class ConfigMapStore extends KubeObjectStore<ConfigMap, ConfigMapApi, ConfigMapData> {
 }

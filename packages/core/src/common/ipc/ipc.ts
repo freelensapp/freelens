@@ -9,10 +9,10 @@
 
 import { ipcMain, ipcRenderer, webContents } from "electron";
 import { toJS } from "../utils/toJS";
-import type { Disposer } from "@freelens/utilities";
-import { getLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
+import type { Disposer } from "@freelensapp/utilities";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import ipcMainInjectionToken from "./ipc-main-injection-token";
 import clusterFramesInjectable from "../cluster-frames.injectable";
 

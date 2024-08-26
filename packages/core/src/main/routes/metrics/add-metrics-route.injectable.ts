@@ -10,10 +10,10 @@ import { ClusterMetadataKey } from "../../../common/cluster-types";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { clusterRoute } from "../../router/route";
 import { isObject } from "lodash";
-import { isRequestError, object } from "@freelens/utilities";
+import { isRequestError, object } from "@freelensapp/utilities";
 import type { GetMetrics } from "../../get-metrics.injectable";
 import getMetricsInjectable from "../../get-metrics.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import prometheusHandlerInjectable from "../../cluster/prometheus-handler/prometheus-handler.injectable";
 import { runInAction } from "mobx";
 

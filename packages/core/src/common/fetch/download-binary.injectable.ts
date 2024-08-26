@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RequestInit, Response } from "@freelens/node-fetch";
-import type { AsyncResult } from "@freelens/utilities";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
+import type { AsyncResult } from "@freelensapp/utilities";
 import fetchInjectable from "./fetch.injectable";
 
 export interface DownloadBinaryOptions {

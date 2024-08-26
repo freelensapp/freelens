@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/spinner",
+  "name": "@freelensapp/spinner",
   "private": false,
   "version": "0.1.0",
   "description": "Highly extendable spinner in the Lens.",
@@ -33,11 +33,11 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelens/utilities": "^0.1.0",
+    "@freelensapp/utilities": "^0.1.0",
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "@freelens/eslint-config": "^0.1.0",
-    "@freelens/webpack": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.0",
+    "@freelensapp/webpack": "^0.1.0"
   }
 }

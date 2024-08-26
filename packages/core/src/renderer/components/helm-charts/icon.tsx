@@ -5,7 +5,7 @@
 
 import styles from "./icon.module.css";
 
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import React, { useState } from "react";
 
 export interface HelmChartIconProps {

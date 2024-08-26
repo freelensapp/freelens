@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { EventEmitter } from "@freelens/event-emitter";
+import { EventEmitter } from "@freelensapp/event-emitter";
 import type { AppEvent } from "./event-bus";
 
 const appEventBusInjectable = getInjectable({

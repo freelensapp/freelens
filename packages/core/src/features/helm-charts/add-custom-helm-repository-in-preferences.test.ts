@@ -15,8 +15,8 @@ import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/ge
 import type { HelmRepo } from "../../common/helm/helm-repo";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
 import isPathInjectable from "../../renderer/components/input/validators/is-path.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
-import type { AsyncResult } from "@freelens/utilities";
+import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { AsyncResult } from "@freelensapp/utilities";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 
 describe("add custom helm repository in preferences", () => {

@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { nodeEnvInjectionToken } from "../../../common/vars/node-env-injection-token";
-import { loggerInjectionToken } from "@freelens/logger";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 
 const setupDeveloperToolsInDevelopmentEnvironmentInjectable = getInjectable({
   id: "setup-developer-tools-in-development-environment",

@@ -5,7 +5,7 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
-import { byOrderNumber } from "@freelens/utilities";
+import { byOrderNumber } from "@freelensapp/utilities";
 import type { CatalogEntity } from "../../../api/catalog-entity";
 import { catalogEntityDetailItemInjectionToken } from "./token";
 

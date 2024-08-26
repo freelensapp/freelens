@@ -6,7 +6,7 @@
 import "./table-head.scss";
 
 import React from "react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export type TableHeadElem = React.ReactElement<TableHeadProps>;
 

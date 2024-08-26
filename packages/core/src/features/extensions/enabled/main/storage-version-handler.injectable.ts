@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { enabledExtensionsPersistentStorageVersionChannel, enabledExtensionsPersistentStorageVersionInitializable } from "../common/storage-version";
 
 const enabledExtensionsPersistentStorageVersionChannelHandler = getRequestChannelListenerInjectable({

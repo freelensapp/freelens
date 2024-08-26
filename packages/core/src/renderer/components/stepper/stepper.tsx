@@ -5,7 +5,7 @@
 
 import "./stepper.scss";
 import React from "react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface StepperProps extends React.HTMLProps<any> {
   step: number;

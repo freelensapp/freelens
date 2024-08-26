@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
-import { isNumber } from "@freelens/utilities";
+import { isNumber } from "@freelensapp/utilities";
 import assert from "assert";
 import type { ChildProcess } from "child_process";
 

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Runnable } from "@freelens/run-many";
+import type { Runnable } from "@freelensapp/run-many";
 import type { DiContainerForInjection, Injectable, InjectionToken } from "@ogre-tools/injectable";
 import { getInjectionToken, getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";

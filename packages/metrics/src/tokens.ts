@@ -18,7 +18,7 @@ import type {
   Pod,
   ReplicaSet,
   StatefulSet,
-} from "@freelens/kube-object";
+} from "@freelensapp/kube-object";
 
 export type ClusterOverviewUIBlock = {
   id: string;

@@ -1,11 +1,11 @@
-# @freelens/webpack
+# @freelensapp/webpack
 
 This package contains webpack configurations for Lens packages.
 
 ## Install
 
 ```
-$ npm install @freelens/webpack
+$ npm install @freelensapp/webpack
 ```
 
 ## Features
@@ -17,14 +17,14 @@ This configuration should be used when creating package that will be executed wi
 
 **webpack.config.js**
 ```javascript
-module.exports = require("@freelens/webpack").configForNode;
+module.exports = require("@freelensapp/webpack").configForNode;
 ```
 ### React package
 This configuration should be used when creating package tha will be executed within **Browser** environment.
 
 **webpack.config.js**
 ```javascript
-module.exports = require("@freelens/webpack").configForReact;
+module.exports = require("@freelensapp/webpack").configForReact;
 ```
 
 ### Multi export package
@@ -35,7 +35,7 @@ This configuration should be used when package contains **multiple entrypoint** 
 ```javascript
 const packageJson = require("./package.json");
 
-module.exports = require("@freelens/webpack").getMultiExportConfig(packageJson);
+module.exports = require("@freelensapp/webpack").getMultiExportConfig(packageJson);
 ```
 
 **package.json**

@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { PodLogsQuery } from "@freelens/kube-object";
-import type { ResourceDescriptor } from "@freelens/kube-api";
-import { loggerInjectionToken } from "@freelens/logger";
+import type { PodLogsQuery } from "@freelensapp/kube-object";
+import type { ResourceDescriptor } from "@freelensapp/kube-api";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import openSaveFileDialogInjectable from "../../../utils/save-file.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import callForLogsInjectable from "./call-for-logs.injectable";
 
 const downloadAllLogsInjectable = getInjectable({

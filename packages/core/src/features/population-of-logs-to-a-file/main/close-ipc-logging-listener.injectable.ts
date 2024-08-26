@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getMessageChannelListenerInjectable } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
 import {
   closeIpcFileLoggerChannel,

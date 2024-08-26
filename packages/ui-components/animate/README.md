@@ -1,19 +1,19 @@
-# @freelens/animate
+# @freelensapp/animate
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @freelens/animate
+$ npm install @freelensapp/animate
 ```
 
 ```typescript
-import { animateFeature } from "@freelens/animate";
-import { animateFeature, requestAnimationFrameInjectable } from "@freelens/animate";
-import { Animate } from "@freelens/animate";
-import type { AnimateName } from "@freelens/animate";
-import type { RequestAnimationFrame } from "@freelens/animate";
+import { animateFeature } from "@freelensapp/animate";
+import { animateFeature, requestAnimationFrameInjectable } from "@freelensapp/animate";
+import { Animate } from "@freelensapp/animate";
+import type { AnimateName } from "@freelensapp/animate";
+import type { RequestAnimationFrame } from "@freelensapp/animate";
 ```
 
 ## Extendability

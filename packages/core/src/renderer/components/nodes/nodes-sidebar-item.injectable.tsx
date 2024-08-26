@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
-import { Icon } from "@freelens/icon";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { Icon } from "@freelensapp/icon";
 import React from "react";
 
 import nodesRouteInjectable from "../../../common/front-end-routing/routes/cluster/nodes/nodes-route.injectable";

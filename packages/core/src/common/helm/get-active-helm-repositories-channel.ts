@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { HelmRepo } from "./helm-repo";
-import type { AsyncResult } from "@freelens/utilities";
-import { getRequestChannel } from "@freelens/messaging";
+import type { AsyncResult } from "@freelensapp/utilities";
+import { getRequestChannel } from "@freelensapp/messaging";
 
 export const getActiveHelmRepositoriesChannel = getRequestChannel<
   void,

@@ -5,13 +5,13 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { AgentOptions } from "https";
 import { Agent } from "https";
-import type { RequestInit } from "@freelens/node-fetch";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import type { RequestInit } from "@freelensapp/node-fetch";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
-import type { KubeApiOptions } from "@freelens/kube-api";
-import { KubeApi } from "@freelens/kube-api";
-import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelens/kube-object";
+import type { KubeApiOptions } from "@freelensapp/kube-api";
+import { KubeApi } from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
 
 export interface CreateKubeApiForRemoteClusterConfig {
   cluster: {

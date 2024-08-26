@@ -6,8 +6,8 @@
 import React from "react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import { onMultiSelectFor, Select } from "../select/select";
-import { Icon } from "@freelens/icon";
-import { Button } from "@freelens/button";
+import { Icon } from "@freelensapp/icon";
+import { Button } from "@freelensapp/button";
 import { SubTitle } from "../layout/sub-title";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { observable, reaction, makeObservable } from "mobx";

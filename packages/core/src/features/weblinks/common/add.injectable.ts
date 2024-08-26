@@ -7,7 +7,7 @@ import { action } from "mobx";
 import weblinksStateInjectable from "./state.injectable";
 import type { WeblinkData } from "./storage.injectable";
 import * as uuid from "uuid";
-import { getOrInsert } from "@freelens/utilities";
+import { getOrInsert } from "@freelensapp/utilities";
 
 export interface WeblinkCreateOptions {
   id?: string;

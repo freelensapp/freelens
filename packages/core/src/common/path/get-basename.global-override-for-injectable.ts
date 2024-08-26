@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import getBasenameOfPathInjectable from "./get-basename.injectable";
 
 export default getGlobalOverride(getBasenameOfPathInjectable, () => path.posix.basename);

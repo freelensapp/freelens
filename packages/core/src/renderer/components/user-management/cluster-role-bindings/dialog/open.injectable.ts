@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { ClusterRoleBinding } from "@freelens/kube-object";
+import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 import editClusterRoleBindingNameStateInjectable from "./edit-name-state.injectable";
 import clusterRoleBindingDialogStateInjectable from "./state.injectable";
 

@@ -4,11 +4,11 @@
  */
 
 import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.injectable";
-import type { DaemonSet, Pod } from "@freelens/kube-object";
-import { PodStatusPhase } from "@freelens/kube-object";
+import type { DaemonSet, Pod } from "@freelensapp/kube-object";
+import { PodStatusPhase } from "@freelensapp/kube-object";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { DaemonSetApi } from "@freelens/kube-api";
+import type { DaemonSetApi } from "@freelensapp/kube-api";
 
 export interface DaemonSetStoreDependencies extends KubeObjectStoreDependencies {
   readonly getPodsByOwnerId: GetPodsByOwnerId;

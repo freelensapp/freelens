@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { kebabCase } from "lodash";
-import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 
 const columnId = "status";
 

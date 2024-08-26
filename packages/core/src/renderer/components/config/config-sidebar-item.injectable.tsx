@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import React from "react";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { noop } from "lodash/fp";
 
 const configSidebarItemInjectable = getInjectable({

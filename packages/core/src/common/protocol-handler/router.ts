@@ -6,7 +6,7 @@
 import type { match } from "react-router";
 import { matchPath } from "react-router";
 import { countBy } from "lodash";
-import { isDefined, iter } from "@freelens/utilities";
+import { isDefined, iter } from "@freelensapp/utilities";
 import { pathToRegexp } from "path-to-regexp";
 import type Url from "url-parse";
 import { RoutingError, RoutingErrorType } from "./error";
@@ -15,7 +15,7 @@ import type { LensExtension } from "../../extensions/lens-extension";
 import type { RouteHandler, RouteParams } from "./registration";
 import { when } from "mobx";
 import { ipcRenderer } from "electron";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
 
 // IPC channel for protocol actions. Main broadcasts the open-url events to this channel.

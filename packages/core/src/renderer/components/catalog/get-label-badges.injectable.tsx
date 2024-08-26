@@ -7,7 +7,7 @@ import React from "react";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { CatalogEntity } from "../../api/catalog-entity";
 import searchUrlPageParamInjectable from "../input/search-url-page-param.injectable";
-import { KubeObject } from "@freelens/kube-object";
+import { KubeObject } from "@freelensapp/kube-object";
 import { Badge } from "../badge";
 
 export type GetLabelBadges = (entity: CatalogEntity, onClick?: (evt: React.MouseEvent<any, MouseEvent>) => void) => JSX.Element[];

@@ -7,24 +7,24 @@ import "./pod-container-port.scss";
 
 import React from "react";
 import { disposeOnUnmount, observer } from "mobx-react";
-import type { ContainerPort, Pod } from "@freelens/kube-object";
+import type { ContainerPort, Pod } from "@freelensapp/kube-object";
 import { action, makeObservable, observable, reaction } from "mobx";
-import { cssNames } from "@freelens/utilities";
-import type { ShowNotification } from "@freelens/notifications";
-import { Button } from "@freelens/button";
+import { cssNames } from "@freelensapp/utilities";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { Button } from "@freelensapp/button";
 import type { ForwardedPort, PortForwardStore } from "../../port-forward";
 import { predictProtocol } from "../../port-forward";
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import aboutPortForwardingInjectable from "../../port-forward/about-port-forwarding.injectable";
 import notifyErrorPortForwardingInjectable from "../../port-forward/notify-error-port-forwarding.injectable";
 import type { OpenPortForward } from "../../port-forward/open-port-forward.injectable";
 import openPortForwardInjectable from "../../port-forward/open-port-forward.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface PodContainerPortProps {
   pod: Pod;

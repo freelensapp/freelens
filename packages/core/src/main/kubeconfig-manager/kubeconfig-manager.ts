@@ -5,9 +5,9 @@
 
 import type { KubeConfig } from "@kubernetes/client-node";
 import { dumpConfigYaml } from "../../common/kube-helpers";
-import { isErrnoException } from "@freelens/utilities";
+import { isErrnoException } from "@freelensapp/utilities";
 import type { PartialDeep } from "type-fest";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";

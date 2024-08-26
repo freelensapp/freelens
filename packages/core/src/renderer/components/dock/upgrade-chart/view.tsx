@@ -7,10 +7,10 @@ import "./upgrade-chart.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import type { DockTab } from "../dock/store";
 import { InfoPanel } from "../info-panel";
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 import { Badge } from "../../badge";
 import { EditorPanel } from "../editor-panel";
 import type { SelectOption } from "../../select";

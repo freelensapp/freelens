@@ -1,6 +1,6 @@
-import { bundledExtensionInjectionToken } from "@freelens/legacy-extensions";
+import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
-import exampleBundledExtensionManifest from "@freelens/legacy-extension-example/package.json";
+import exampleBundledExtensionManifest from "@freelensapp/legacy-extension-example/package.json";
 
 const exampleBundledExtensionInjectable = getInjectable({
   id: "example-bundled-extension",
@@ -12,8 +12,8 @@ const exampleBundledExtensionInjectable = getInjectable({
      * Futhermore there might be code that runs "during load" and shouldn't be executed until everything is
      * setup for the extensions (ie globals).
      */
-    main: () => require("@freelens/legacy-extension-example/main").default,
-    renderer: () => require("@freelens/legacy-extension-example/renderer").default,
+    main: () => require("@freelensapp/legacy-extension-example/main").default,
+    renderer: () => require("@freelensapp/legacy-extension-example/renderer").default,
   }),
   injectionToken: bundledExtensionInjectionToken,
 });

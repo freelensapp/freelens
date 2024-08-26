@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionManifest } from "@freelens/legacy-extensions";
+import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import { isCompatibleExtension } from "../extension-discovery/is-compatible-extension/is-compatible-extension";
 
 describe("Extension/App versions compatibility checks", () => {

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Pod } from "@freelens/kube-object";
+import { Pod } from "@freelensapp/kube-object";
 
 describe("Pod tests", () => {
   it("getAllContainers() should never throw", () => {

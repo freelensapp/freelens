@@ -8,7 +8,7 @@ import type { PageParamInit } from "../navigation/page-param";
 import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import { map } from "lodash/fp";
 import createPageParamInjectable from "../navigation/create-page-param.injectable";
-import { object } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
 import type { PageRegistration } from "./page-registration";
 
 export interface ExtensionPageParametersInstantiationParam {

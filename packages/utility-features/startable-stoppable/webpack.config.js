@@ -1,1 +1,1 @@
-module.exports = require("@freelens/webpack").configForNode;
+module.exports = require("@freelensapp/webpack").configForNode;

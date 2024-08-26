@@ -4,15 +4,15 @@
  */
 import React, { useEffect } from "react";
 import { Observer, observer } from "mobx-react";
-import { ErrorBoundary } from "@freelens/error-boundary";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
 import type { NamespaceStore } from "../../components/namespaces/store";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import namespaceStoreInjectable  from "../../components/namespaces/store.injectable";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
-import { disposer } from "@freelens/utilities";
+import { disposer } from "@freelensapp/utilities";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { ClusterFrameChildComponent } from "@freelens/react-application";
-import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
+import type { ClusterFrameChildComponent } from "@freelensapp/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import watchHistoryStateInjectable from "../../remote-helpers/watch-history-state.injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import type { IComputedValue } from "mobx";

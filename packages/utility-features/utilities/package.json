@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/utilities",
+  "name": "@freelensapp/utilities",
   "description": "A collection of useful types",
   "version": "0.1.0",
   "type": "commonjs",
@@ -41,7 +41,7 @@
     "typed-regex": "^0.0.8"
   },
   "devDependencies": {
-    "@freelens/webpack": "^0.1.0",
+    "@freelensapp/webpack": "^0.1.0",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.191",
     "@types/react": "^17.0.2",

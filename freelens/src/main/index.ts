@@ -4,17 +4,17 @@ import {
   mainExtensionApi as Main,
   commonExtensionApi as Common,
   registerLensCore,
-} from "@freelens/core/main";
+} from "@freelensapp/core/main";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerFeature } from "@freelens/feature-core";
-import { applicationFeature, startApplicationInjectionToken } from '@freelens/application'
-import { applicationFeatureForElectronMain } from '@freelens/application-for-electron-main'
-import { messagingFeatureForMain } from "@freelens/messaging-for-main";
-import { loggerFeature } from "@freelens/logger";
-import { randomFeature } from "@freelens/random";
-import { kubeApiSpecificsFeature } from "@freelens/kube-api-specifics";
-import { prometheusFeature } from "@freelens/prometheus";
+import { registerFeature } from "@freelensapp/feature-core";
+import { applicationFeature, startApplicationInjectionToken } from '@freelensapp/application'
+import { applicationFeatureForElectronMain } from '@freelensapp/application-for-electron-main'
+import { messagingFeatureForMain } from "@freelensapp/messaging-for-main";
+import { loggerFeature } from "@freelensapp/logger";
+import { randomFeature } from "@freelensapp/random";
+import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
+import { prometheusFeature } from "@freelensapp/prometheus";
 
 const environment = "main";
 
@@ -63,7 +63,7 @@ startApplication().catch((error) => {
 export {
   Mobx,
   Pty,
-} from "@freelens/core/main";
+} from "@freelensapp/core/main";
 
 export const LensExtensions = {
   Main,

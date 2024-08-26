@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { OptionVariant } from "@freelens/utilities";
+import type { OptionVariant } from "@freelensapp/utilities";
 import type { LabelSelector, BaseKubeObjectCondition, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { CrossVersionObjectReference } from "../types/cross-version-object-reference";

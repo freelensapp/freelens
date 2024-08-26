@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../common/cluster/cluster";
-import { FormData } from "@freelens/node-fetch";
+import { FormData } from "@freelensapp/node-fetch";
 import type { RequestMetricsParams } from "../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
-import { object } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
 import k8sRequestInjectable from "./k8s-request.injectable";
 
 export type GetMetrics = (cluster: Cluster, prometheusPath: string, queryParams: RequestMetricsParams & { query: string }) => Promise<unknown>;

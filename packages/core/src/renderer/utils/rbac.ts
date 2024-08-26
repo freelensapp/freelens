@@ -5,7 +5,7 @@
 
 import type { KubeResource } from "../../common/rbac";
 import { apiResourceRecord } from "../../common/rbac";
-import { object } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
 
 export const ResourceNames: Record<KubeResource, string> = {
   "namespaces": "Namespaces",

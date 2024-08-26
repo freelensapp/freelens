@@ -1,7 +1,7 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { enlistMessageChannelListenerInjectionToken } from "../message/enlist-message-channel-listener-injection-token";
 
-import { getStartableStoppable, StartableStoppable } from "@freelens/startable-stoppable";
+import { getStartableStoppable, StartableStoppable } from "@freelensapp/startable-stoppable";
 
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { IComputedValue, reaction } from "mobx";

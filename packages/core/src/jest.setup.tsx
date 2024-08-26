@@ -9,7 +9,7 @@ import { TextEncoder, TextDecoder as TextDecoderNode } from "util";
 import glob from "glob";
 import path from "path";
 import { enableMapSet, setAutoFreeze } from "immer";
-import type * as K8slensTooltip from "@freelens/tooltip";
+import type * as K8slensTooltip from "@freelensapp/tooltip";
 import React from "react";
 
 declare global {
@@ -55,8 +55,8 @@ global.ResizeObserver = class {
 };
 
 jest.mock("./renderer/components/monaco-editor/monaco-editor");
-jest.mock("@freelens/tooltip", () => ({
-  ...jest.requireActual("@freelens/tooltip"),
+jest.mock("@freelensapp/tooltip", () => ({
+  ...jest.requireActual("@freelensapp/tooltip"),
   withTooltip: (Target => ({ tooltip, tooltipOverrideDisabled, ...props }: any) => {
     if (tooltip) {
       const testId = props["data-testid"];

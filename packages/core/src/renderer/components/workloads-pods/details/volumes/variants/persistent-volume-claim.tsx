@@ -5,8 +5,8 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { PersistentVolumeClaimApi } from "@freelens/kube-api";
-import { persistentVolumeClaimApiInjectable } from "@freelens/kube-api-specifics";
+import type { PersistentVolumeClaimApi } from "@freelensapp/kube-api";
+import { persistentVolumeClaimApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 import { LocalRef } from "../variant-helpers";
 

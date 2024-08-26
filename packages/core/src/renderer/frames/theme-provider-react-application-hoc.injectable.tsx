@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { reactApplicationHigherOrderComponentInjectionToken } from "@freelens/react-application";
+import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
 import { ThemeProvider } from "@material-ui/core";
 import { defaultMuiBaseTheme } from "../mui-base-theme";
 

@@ -470,7 +470,7 @@ async function pickRelevantPrs(prs: ExtendedGithubPrData[], isMasterBranch: bool
 }
 
 async function setExtensionApiDepAsExact(coreVersion: SemVer) {
-  await pipeExecFile("npm", ["install", "--save-exact", "--workspace=@freelens/extensions", `@freelens/core@${coreVersion.format()}`]);
+  await pipeExecFile("npm", ["install", "--save-exact", "--workspace=@freelensapp/extensions", `@freelensapp/core@${coreVersion.format()}`]);
 }
 
 async function createRelease(): Promise<void> {

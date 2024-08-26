@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, observable } from "mobx";
-import { delay, getOrInsert, isErrnoException } from "@freelens/utilities";
+import { delay, getOrInsert, isErrnoException } from "@freelensapp/utilities";
 import { readFile } from "fs/promises";
 import { hasCorrectExtension } from "./has-correct-extension";
 import type { RawTemplate, RawTemplates } from "./create-resource-templates.injectable";
@@ -15,7 +15,7 @@ import homeDirectoryPathInjectable from "../../../../common/os/home-directory-pa
 import getDirnameOfPathInjectable from "../../../../common/path/get-dirname.injectable";
 import parsePathInjectable from "../../../../common/path/parse.injectable";
 import { waitForPath } from "../../../../common/utils/wait-for-path";
-import { prefixedLoggerInjectable } from "@freelens/logger";
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 
 const userCreateResourceTemplatesInjectable = getInjectable({
   id: "user-create-resource-templates",

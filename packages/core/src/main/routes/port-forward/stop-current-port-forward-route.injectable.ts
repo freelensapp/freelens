@@ -6,7 +6,7 @@ import { getRouteInjectable } from "../../router/router.injectable";
 import { apiPrefix } from "../../../common/vars";
 import { PortForward } from "./functionality/port-forward";
 import { clusterRoute } from "../../router/route";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 const stopCurrentPortForwardRouteInjectable = getRouteInjectable({
   id: "stop-current-port-forward-route",

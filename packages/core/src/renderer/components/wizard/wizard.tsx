@@ -5,12 +5,12 @@
 
 import "./wizard.scss";
 import React from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames, prevDefault } from "@freelens/utilities";
-import { Button } from "@freelens/button";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, prevDefault } from "@freelensapp/utilities";
+import { Button } from "@freelensapp/button";
 import { Stepper } from "../stepper";
 import { SubTitle } from "../layout/sub-title";
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 import { debounce } from "lodash";
 
 export interface WizardCommonProps<D> {

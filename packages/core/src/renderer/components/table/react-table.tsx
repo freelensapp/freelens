@@ -7,8 +7,8 @@ import styles from "./react-table.module.scss";
 import React, { useCallback, useMemo } from "react";
 import type { Row, UseTableOptions } from "react-table";
 import { useFlexLayout, useSortBy, useTable } from "react-table";
-import { Icon } from "@freelens/icon";
-import { cssNames } from "@freelens/utilities";
+import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface ReactTableProps<Data extends object> extends UseTableOptions<Data> {
   headless?: boolean;

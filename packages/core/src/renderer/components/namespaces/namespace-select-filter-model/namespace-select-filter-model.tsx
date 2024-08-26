@@ -7,9 +7,9 @@ import type { IComputedValue } from "mobx";
 import { observable, action, computed, comparer } from "mobx";
 import type { NamespaceStore } from "../store";
 import type { ActionMeta, MultiValue } from "react-select";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import type { SelectOption } from "../../select";
-import { observableCrate } from "@freelens/utilities";
+import { observableCrate } from "@freelensapp/utilities";
 import type { IsMultiSelectionKey } from "./is-selection-key.injectable";
 import type { ClusterContext } from "../../../cluster-frame-context/cluster-frame-context";
 

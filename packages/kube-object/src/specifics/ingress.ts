@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { hasTypedProperty, isString, iter } from "@freelens/utilities";
+import { hasTypedProperty, isString, iter } from "@freelensapp/utilities";
 import type { RequireExactlyOne } from "type-fest";
 import type { TypedLocalObjectReference, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";

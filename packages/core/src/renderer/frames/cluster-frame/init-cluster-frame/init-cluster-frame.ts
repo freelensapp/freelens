@@ -4,11 +4,11 @@
  */
 import type { Cluster } from "../../../../common/cluster/cluster";
 import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
-import type { ShowNotification } from "@freelens/notifications";
+import type { ShowNotification } from "@freelensapp/notifications";
 import { when } from "mobx";
 import { requestSetClusterFrameId } from "../../../ipc";
 import type { EmitAppEvent } from "../../../../common/app-event-bus/emit-event.injectable";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 
 interface Dependencies {
   hostedCluster: Cluster;

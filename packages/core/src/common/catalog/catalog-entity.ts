@@ -7,8 +7,8 @@ import EventEmitter from "events";
 import type TypedEmitter from "typed-emitter";
 import { observable, makeObservable } from "mobx";
 import { once } from "lodash";
-import type { Disposer, StrictReactNode } from "@freelens/utilities";
-import { iter } from "@freelens/utilities";
+import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
+import { iter } from "@freelensapp/utilities";
 import type { CategoryColumnRegistration, TitleCellProps } from "../../renderer/components/catalog/custom-category-columns";
 
 export type { CategoryColumnRegistration, TitleCellProps };

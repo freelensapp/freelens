@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import endpointsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/endpoints/endpoints-route.injectable";
 import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToEndpointsInjectable from "../../../common/front-end-routing/routes/cluster/network/endpoints/navigate-to-endpoints.injectable";
 

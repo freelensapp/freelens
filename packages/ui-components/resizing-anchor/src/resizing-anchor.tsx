@@ -7,7 +7,7 @@ import "./resizing-anchor.scss";
 import React from "react";
 import { action, observable, makeObservable } from "mobx";
 import _ from "lodash";
-import { cssNames, noop } from "@freelens/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 
 export enum ResizeDirection {

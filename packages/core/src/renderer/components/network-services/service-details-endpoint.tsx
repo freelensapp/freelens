@@ -6,12 +6,12 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Table, TableHead, TableCell, TableRow } from "../table";
-import { prevDefault } from "@freelens/utilities";
-import type { Logger } from "@freelens/logger";
-import { Endpoints } from "@freelens/kube-object";
+import { prevDefault } from "@freelensapp/utilities";
+import type { Logger } from "@freelensapp/logger";
+import { Endpoints } from "@freelensapp/kube-object";
 import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 
 export interface ServiceDetailsEndpointProps {

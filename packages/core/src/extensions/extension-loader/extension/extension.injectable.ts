@@ -4,10 +4,10 @@
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
-import { disposer } from "@freelens/utilities";
+import { disposer } from "@freelensapp/utilities";
 import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
-import type { LegacyLensExtension } from "@freelens/legacy-extensions";
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
 
 export interface Extension {
   register: () => void;

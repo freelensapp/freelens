@@ -7,7 +7,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import customResourceDefinitionStoreInjectable from "./store.injectable";
-import { storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
+import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 
 const customResourceDefinitionsInjectable = getInjectable({
   id: "custom-resource-definitions",

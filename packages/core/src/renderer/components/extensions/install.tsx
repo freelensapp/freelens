@@ -5,13 +5,13 @@
 
 import styles from "./install.module.scss";
 import React, { useEffect, useRef, useState } from "react";
-import { prevDefault } from "@freelens/utilities";
-import { Button } from "@freelens/button";
-import { Icon } from "@freelens/icon";
+import { prevDefault } from "@freelensapp/utilities";
+import { Button } from "@freelensapp/button";
+import { Icon } from "@freelensapp/icon";
 import { observer } from "mobx-react";
 import { Input, InputValidators } from "../input";
 import { SubTitle } from "../layout/sub-title";
-import { TooltipPosition } from "@freelens/tooltip";
+import { TooltipPosition } from "@freelensapp/tooltip";
 import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";

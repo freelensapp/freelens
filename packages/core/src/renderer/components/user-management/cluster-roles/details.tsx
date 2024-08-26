@@ -10,7 +10,7 @@ import React from "react";
 
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
-import type { ClusterRole } from "@freelens/kube-object";
+import type { ClusterRole } from "@freelensapp/kube-object";
 
 export interface ClusterRoleDetailsProps extends KubeObjectDetailsProps<ClusterRole> {
 }

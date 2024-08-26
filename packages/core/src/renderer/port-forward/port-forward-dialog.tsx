@@ -12,19 +12,19 @@ import type { DialogProps } from "../components/dialog";
 import { Dialog } from "../components/dialog";
 import { Wizard, WizardStep } from "../components/wizard";
 import { Input } from "../components/input";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import type { PortForwardStore } from "./port-forward-store/port-forward-store";
 import { Checkbox } from "../components/checkbox";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { PortForwardDialogData, PortForwardDialogModel } from "./port-forward-dialog-model/port-forward-dialog-model";
 import portForwardDialogModelInjectable from "./port-forward-dialog-model/port-forward-dialog-model.injectable";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import portForwardStoreInjectable from "./port-forward-store/port-forward-store.injectable";
 import aboutPortForwardingInjectable from "./about-port-forwarding.injectable";
 import notifyErrorPortForwardingInjectable from "./notify-error-port-forwarding.injectable";
 import type { OpenPortForward } from "./open-port-forward.injectable";
 import openPortForwardInjectable from "./open-port-forward.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface PortForwardDialogProps extends Partial<DialogProps> {}
 

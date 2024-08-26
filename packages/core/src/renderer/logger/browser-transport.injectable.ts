@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import BrowserConsole from "winston-transport-browserconsole";
-import { loggerTransportInjectionToken } from "@freelens/logger";
+import { loggerTransportInjectionToken } from "@freelensapp/logger";
 
 const browserLoggerTransportInjectable = getInjectable({
   id: "browser-logger-transport",

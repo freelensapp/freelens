@@ -1,8 +1,8 @@
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelens/feature-core";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { registerFeature } from "@freelensapp/feature-core";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { messagingFeatureForRenderer } from "../feature";
-import type { MessageChannel } from "@freelens/messaging";
+import type { MessageChannel } from "@freelensapp/messaging";
 import sendToIpcInjectable from "./send-to-ipc.injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";

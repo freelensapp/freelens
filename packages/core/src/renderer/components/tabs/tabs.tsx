@@ -6,9 +6,9 @@
 import "./tabs.scss";
 import type { DOMAttributes } from "react";
 import React from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import autoBindReact from "auto-bind/react";
 
 const TabsContext = React.createContext<TabsContextValue<unknown>>({});

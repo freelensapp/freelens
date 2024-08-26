@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isErrnoException } from "@freelens/utilities";
+import { isErrnoException } from "@freelensapp/utilities";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
@@ -13,7 +13,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { userPreferencesMigrationInjectionToken } from "../../../features/user-preferences/common/migrations-token";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
 import homeDirectoryPathInjectable from "../../../common/os/home-directory-path.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import type { ClusterStoreModel } from "../../../features/cluster/storage/common/storage.injectable";
 import type { UserPreferencesModel, KubeconfigSyncEntry } from "../common/preferences-helpers";

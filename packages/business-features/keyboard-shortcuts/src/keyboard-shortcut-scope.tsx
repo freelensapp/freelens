@@ -1,4 +1,4 @@
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import React from "react";
 
 export interface KeyboardShortcutScopeProps {

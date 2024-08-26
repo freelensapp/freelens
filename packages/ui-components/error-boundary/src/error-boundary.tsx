@@ -8,11 +8,11 @@ import "./error-boundary.scss";
 import type { ErrorInfo } from "react";
 import React from "react";
 import { observer } from "mobx-react";
-import { Button } from "@freelens/button";
-import type { StrictReactNode } from "@freelens/utilities";
+import { Button } from "@freelensapp/button";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { ObservableHistory } from "mobx-observable-history";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";
 const forumsUrl = "https://forums.k8slens.dev";

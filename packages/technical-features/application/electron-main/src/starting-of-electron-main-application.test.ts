@@ -1,7 +1,7 @@
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { applicationFeatureForElectronMain } from "./feature";
-import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelens/application";
+import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelensapp/application";
 import asyncFn, { AsyncFnMock } from "@async-fn/jest";
 import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";
 import * as timeSlots from "./start-application/time-slots";

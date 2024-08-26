@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { SemVer } from "semver";
 import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
-import { kubectlVersions } from "@freelens/kubectl-versions";
+import { kubectlVersions } from "@freelensapp/kubectl-versions";
 
 const kubectlVersionMapInjectable = getInjectable({
   id: "kubectl-version-map",

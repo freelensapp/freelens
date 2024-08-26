@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { IpcMain } from "electron";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import ipcMainInjectable from "./ipc-main.injectable";
 
 export default getGlobalOverride(ipcMainInjectable, () => ({

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ItemObject } from "@freelens/list-layout";
+import type { ItemObject } from "@freelensapp/list-layout";
 import autoBind from "auto-bind";
 import orderBy from "lodash/orderBy";
 import { action, computed, observable, when, makeObservable } from "mobx";

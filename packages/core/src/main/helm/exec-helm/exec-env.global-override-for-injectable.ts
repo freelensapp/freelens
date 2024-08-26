@@ -4,7 +4,7 @@
  */
 
 import { computed } from "mobx";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import execHelmEnvInjectable from "./exec-env.injectable";
 
 export default getGlobalOverride(execHelmEnvInjectable, () => computed(() => ({})));

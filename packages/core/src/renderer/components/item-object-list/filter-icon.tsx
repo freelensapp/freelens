@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import type { IconProps } from "@freelens/icon";
-import { Icon } from "@freelens/icon";
+import type { IconProps } from "@freelensapp/icon";
+import { Icon } from "@freelensapp/icon";
 import { FilterType } from "./page-filters/store";
 
 export interface FilterIconProps extends Partial<IconProps> {

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
 import { BrowserWindow } from "electron";
 import type { ElectronWindow } from "./create-lens-window.injectable";
@@ -13,7 +13,7 @@ import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import pathExistsSyncInjectable from "../../../../common/fs/path-exists-sync.injectable";
-import { applicationInformationToken } from "@freelens/application";
+import { applicationInformationToken } from "@freelensapp/application";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
 
 export type ElectronWindowTitleBarStyle = "hiddenInset" | "hidden" | "default" | "customButtonsOnHover";

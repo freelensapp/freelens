@@ -5,8 +5,8 @@
 
 import styles from "./drawer-title.module.css";
 import React from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface DrawerTitleProps {
   className?: string;

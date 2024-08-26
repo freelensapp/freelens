@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import setupShellInjectable from "../../../features/shell-sync/main/setup-shell.injectable";
 
 const initializeExtensionsInjectable = getInjectable({

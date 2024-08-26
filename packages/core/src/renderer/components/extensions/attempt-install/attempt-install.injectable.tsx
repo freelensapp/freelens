@@ -12,18 +12,18 @@ import getExtensionDestFolderInjectable from "./get-extension-dest-folder.inject
 import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import type { Disposer } from "@freelens/utilities";
-import { disposer } from "@freelens/utilities";
-import type { ShowNotification } from "@freelens/notifications";
-import { Button } from "@freelens/button";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { Button } from "@freelensapp/button";
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
 import React from "react";
 import { remove as removeDir } from "fs-extra";
 import { shell } from "electron";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
-import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelens/notifications";
-import type { LensExtensionId } from "@freelens/legacy-extensions";
+import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 
 export interface InstallRequest {
   fileName: string;

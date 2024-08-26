@@ -9,7 +9,7 @@ import type { LensExtension } from "../../../extensions/lens-extension";
 import { observable, when } from "mobx";
 import type { LensProtocolRouterDependencies, RouteAttempt } from "../../../common/protocol-handler";
 import { ProtocolHandlerInvalid } from "../../../common/protocol-handler";
-import { disposer, noop } from "@freelens/utilities";
+import { disposer, noop } from "@freelensapp/utilities";
 import type { BroadcastMessage } from "../../../common/ipc/broadcast-message.injectable";
 
 export interface FallbackHandler {

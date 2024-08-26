@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { EndpointsData } from "@freelens/kube-object";
-import { Endpoints } from "@freelens/kube-object";
+import type { EndpointsData } from "@freelensapp/kube-object";
+import { Endpoints } from "@freelensapp/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

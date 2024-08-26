@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { KubeObjectDetails } from "./kube-object-details";
-import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 
 const kubeObjectDetailsClusterFrameChildComponentInjectable = getInjectable({
   id: "kube-object-details-cluster-frame-child-component",

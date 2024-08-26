@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/semver",
+  "name": "@freelensapp/semver",
   "version": "0.1.0",
   "description": "CLI over semver package for picking parts of a version",
   "license": "MIT",

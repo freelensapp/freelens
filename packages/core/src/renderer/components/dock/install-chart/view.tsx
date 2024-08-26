@@ -10,9 +10,9 @@ import { observer } from "mobx-react";
 import { InfoPanel } from "../info-panel";
 import { Badge } from "../../badge";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
-import { prevDefault } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
-import { Button } from "@freelens/button";
+import { prevDefault } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
+import { Button } from "@freelensapp/button";
 import { LogsDialog } from "../../dialog/logs-dialog";
 import { Select } from "../../select";
 import { Input } from "../../input";
@@ -20,7 +20,7 @@ import { EditorPanel } from "../editor-panel";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { InstallChartModel } from "./install-chart-model.injectable";
 import installChartModelInjectable from "./install-chart-model.injectable";
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 
 export interface InstallChartProps {
   tabId: string;

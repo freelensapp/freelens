@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
-import { requestFromChannelInjectionToken } from "@freelens/messaging";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import activeHelmRepositoriesInjectable from "../../active-helm-repositories.injectable";
-import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { addHelmRepositoryChannel } from "../../../../../../../common/helm/add-helm-repository-channel";
 
 const addHelmRepositoryInjectable = getInjectable({

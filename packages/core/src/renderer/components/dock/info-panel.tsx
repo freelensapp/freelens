@@ -8,16 +8,16 @@ import "./info-panel.scss";
 import React, { Component } from "react";
 import { computed, observable, reaction, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
-import { Button } from "@freelens/button";
-import { Icon } from "@freelens/icon";
-import { Spinner } from "@freelens/spinner";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import { Button } from "@freelensapp/button";
+import { Icon } from "@freelensapp/icon";
+import { Spinner } from "@freelensapp/spinner";
 import type { DockStore, TabId } from "./dock/store";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelens/notifications";
+import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import dockStoreInjectable from "./dock/store.injectable";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface InfoPanelProps extends OptionalProps {
   tabId: TabId;

@@ -11,12 +11,12 @@ import { isObservableArray } from "mobx";
 import type { MenuRegistration } from "../features/application-menu/main/menu-registration";
 import type { TrayMenuRegistration } from "../main/tray/tray-menu-registration";
 import type { ShellEnvModifier } from "../main/shell-session/shell-env-modifier/shell-env-modifier-registration";
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
+import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import type { InstalledExtension } from "./common-api";
 import type { CatalogEntityRegistry } from "../main/catalog";
 import type { NavigateForExtension } from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
 import catalogEntityRegistryInjectable from "../main/catalog/entity-registry.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import navigateForExtensionInjectable from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
 import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
 

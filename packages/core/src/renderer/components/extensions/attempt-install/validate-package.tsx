@@ -2,10 +2,10 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelens/utilities";
+import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
 import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
 import path from "path";
-import type { LensExtensionManifest } from "@freelens/legacy-extensions";
+import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
   const tarFiles = await listTarEntries(filePath);

@@ -13,10 +13,10 @@ import type { Cluster } from "../../../common/cluster/cluster";
 import { Avatar } from "../avatar";
 import { FilePicker, OverSizeLimitStyle } from "../file-picker";
 import { MenuActions, MenuItem } from "../menu";
-import type { ShowNotification } from "@freelens/notifications";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
-import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelens/cluster-settings";
-import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelens/cluster-settings";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelensapp/cluster-settings";
+import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
 
 export interface ClusterIconSettingProps {
   cluster: Cluster;

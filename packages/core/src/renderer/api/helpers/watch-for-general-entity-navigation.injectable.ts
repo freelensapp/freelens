@@ -7,9 +7,9 @@ import { reaction, when } from "mobx";
 import type { GeneralEntity } from "../../../common/catalog-entities";
 import generalCategoryInjectable from "../../../common/catalog/categories/general.injectable";
 import isActiveRouteInjectable from "../../navigation/is-route-active.injectable";
-import { observableHistoryInjectionToken } from "@freelens/routing";
-import type { Disposer } from "@freelens/utilities";
-import { disposer } from "@freelens/utilities";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
 import catalogEntityRegistryInjectable from "../catalog/entity/registry.injectable";
 
 export type WatchForGeneralEntityNavigation = () => Disposer;

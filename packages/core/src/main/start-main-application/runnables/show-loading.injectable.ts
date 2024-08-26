@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import shouldStartHiddenInjectable from "../../electron-app/features/should-start-hidden.injectable";
 import splashWindowInjectable from "../lens-window/splash-window/splash-window.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 
 const showLoadingInjectable = getInjectable({
   id: "show-loading",

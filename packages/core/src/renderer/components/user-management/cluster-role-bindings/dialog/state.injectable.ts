@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import type { ClusterRoleBinding } from "@freelens/kube-object";
+import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 
 export type ClusterRoleBindingDialogState = {
   isOpen: false;

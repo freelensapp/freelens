@@ -7,9 +7,9 @@ import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluste
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
 import { windowActionHandleChannel, windowLocationChangedChannel, windowOpenAppMenuAsContextMenuChannel, type WindowAction } from "../../common/ipc/window";
 import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
-import type { InstalledExtension, LensExtensionId } from "@freelens/legacy-extensions";
+import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import type { Location } from "history";
-import { getLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 import { toJS } from "../../common/utils";
 

@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
-import type { Namespace } from "@freelens/kube-object";
+import type { Namespace } from "@freelensapp/kube-object";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -20,8 +20,8 @@ import namespaceStoreInjectable from "../store.injectable";
 import addNamespaceDialogStateInjectable
   from "./state.injectable";
 import type { NamespaceStore } from "../store";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import autoBindReact from "auto-bind/react";
 
 export interface AddNamespaceDialogProps extends DialogProps {

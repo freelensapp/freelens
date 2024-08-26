@@ -9,12 +9,12 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { disposeOnUnmount, observer } from "mobx-react";
 import { reaction } from "mobx";
-import { Animate, requestAnimationFrameInjectable } from "@freelens/animate";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames, noop, stopPropagation } from "@freelens/utilities";
+import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop, stopPropagation } from "@freelensapp/utilities";
 import type { ObservableHistory } from "mobx-observable-history";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 // todo: refactor + handle animation-end in props.onClose()?
 

@@ -7,7 +7,7 @@ import type { InputProps } from "./input";
 import fse from "fs-extra";
 import { TypedRegEx } from "typed-regex";
 import type { SetRequired } from "type-fest";
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export type InputValidationResult<IsAsync extends boolean> =
   IsAsync extends true

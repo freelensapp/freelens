@@ -7,7 +7,7 @@ import { observable } from "mobx";
 import type { DaemonSetStore } from "../workloads-daemonsets/store";
 import daemonSetStoreInjectable from "../workloads-daemonsets/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { DaemonSet, Pod } from "@freelens/kube-object";
+import { DaemonSet, Pod } from "@freelensapp/kube-object";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";

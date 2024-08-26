@@ -5,7 +5,7 @@
 
 import type { CatalogEntity } from "./catalog-entity";
 import GraphemeSplitter from "grapheme-splitter";
-import { hasOwnProperty, hasTypedProperty, isObject, isString, iter } from "@freelens/utilities";
+import { hasOwnProperty, hasTypedProperty, isObject, isString, iter } from "@freelensapp/utilities";
 
 function getNameParts(name: string): string[] {
   const byWhitespace = name.split(/\s+/);

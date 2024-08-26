@@ -1,4 +1,4 @@
 {
-  "extends": "@freelens/typescript/config/base.json",
+  "extends": "@freelensapp/typescript/config/base.json",
   "include": ["**/*.ts", "**/*.tsx"],
 }

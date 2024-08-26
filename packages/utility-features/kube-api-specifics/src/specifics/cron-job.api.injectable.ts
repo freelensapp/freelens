@@ -5,9 +5,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import { storesAndApisCanBeCreatedInjectionToken } from "./can-be-created-token";
-import { CronJobApi } from "@freelens/kube-api";
+import { CronJobApi } from "@freelensapp/kube-api";
 import { kubeApiInjectionToken } from "./token";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import { maybeKubeApiInjectable } from "./maybe-kube-api.injectable";
 
 export const cronJobApiInjectable = getInjectable({

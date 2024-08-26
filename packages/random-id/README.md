@@ -1,15 +1,15 @@
-# @freelens/random
+# @freelensapp/random
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @freelens/random
+$ npm install @freelensapp/random
 ```
 
 ```typescript
-export type { ... } from "@freelens/random";
+export type { ... } from "@freelensapp/random";
 ```
 
 ## Extendability

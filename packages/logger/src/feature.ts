@@ -1,4 +1,4 @@
-import { getFeature } from "@freelens/feature-core";
+import { getFeature } from "@freelensapp/feature-core";
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 
 export const loggerFeature = getFeature({

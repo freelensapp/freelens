@@ -1,3 +1,3 @@
-# @freelens/run-many
+# @freelensapp/run-many
 
 This package contains the functions `runMany` and `runManySync`

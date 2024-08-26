@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
-import { IngressClassApi } from "@freelens/kube-api";
+import { IngressClassApi } from "@freelensapp/kube-api";
 import { kubeApiInjectionToken } from "./token";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import { maybeKubeApiInjectable } from "./maybe-kube-api.injectable";
 import { storesAndApisCanBeCreatedInjectionToken } from "./can-be-created-token";
 

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelens/legacy-global-di";
+import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import { resolveSystemProxyInjectionToken } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
 
 /**

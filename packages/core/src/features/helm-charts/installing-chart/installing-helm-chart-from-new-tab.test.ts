@@ -28,7 +28,7 @@ import requestHelmChartReadmeInjectable from "../../../common/k8s-api/endpoints/
 import requestHelmChartValuesInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import type { RequestDetailedHelmRelease } from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
 import requestDetailedHelmReleaseInjectable from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
-import { flushPromises } from "@freelens/test-utils";
+import { flushPromises } from "@freelensapp/test-utils";
 import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import listClusterHelmReleasesInjectable from "../../../main/helm/helm-service/list-helm-releases.injectable";
 

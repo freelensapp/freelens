@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import extensionApiVersionInjectable from "./extension-api-version.injectable";
 
 export default getGlobalOverride(extensionApiVersionInjectable, () => "6.0.0");

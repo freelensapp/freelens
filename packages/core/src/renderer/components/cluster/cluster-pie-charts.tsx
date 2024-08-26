@@ -7,12 +7,12 @@ import styles from "./cluster-pie-charts.module.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import { Spinner } from "@freelens/spinner";
-import { Icon } from "@freelens/icon";
+import { Spinner } from "@freelensapp/spinner";
+import { Icon } from "@freelensapp/icon";
 import type { PieChartData } from "../chart";
 import { PieChart } from "../chart";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
-import { bytesToUnits, cssNames } from "@freelens/utilities";
+import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import type { LensTheme } from "../../themes/lens-theme";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
@@ -22,7 +22,7 @@ import activeThemeInjectable from "../../themes/active.injectable";
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import { isNumber } from "lodash";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
-import type { Node } from "@freelens/kube-object";
+import type { Node } from "@freelensapp/kube-object";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 

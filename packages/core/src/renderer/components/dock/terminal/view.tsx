@@ -7,7 +7,7 @@ import "./terminal-window.scss";
 
 import React from "react";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import type { Terminal } from "./terminal";
 import type { TerminalStore } from "./store";
 import type { LensTheme } from "../../../themes/lens-theme";

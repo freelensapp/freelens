@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { shouldShowResourceInjectionToken } from "../../../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
-import { byOrderNumber } from "@freelens/utilities";
+import { byOrderNumber } from "@freelensapp/utilities";
 import { workloadInjectionToken } from "./workload-injection-token";
 
 const workloadsInjectable = getInjectable({

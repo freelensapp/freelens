@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { ForwardedPort } from "./port-forward-item";
 import { portForwardAddress } from "./port-forward-utils";
 

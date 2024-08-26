@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { syncBoxChannel } from "./channels";
-import { getMessageChannelListenerInjectable } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
 import syncBoxStateInjectable from "./sync-box-state.injectable";
 
 const syncBoxChannelListenerInjectable = getMessageChannelListenerInjectable({

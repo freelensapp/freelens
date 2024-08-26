@@ -4,7 +4,7 @@
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import kubeObjectStatusTextsInjectable from "./kube-object-status-texts.injectable";
-import type { KubeObject } from "@freelens/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 import { conforms, eq, includes } from "lodash/fp";
 import { computed } from "mobx";
 

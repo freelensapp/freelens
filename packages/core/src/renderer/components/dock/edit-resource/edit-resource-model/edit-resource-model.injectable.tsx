@@ -5,20 +5,20 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
-import { waitUntilDefined } from "@freelens/utilities";
+import { waitUntilDefined } from "@freelensapp/utilities";
 import editResourceTabStoreInjectable from "../store.injectable";
 import type { EditingResource, EditResourceTabStore } from "../store";
 import { action, computed, observable, runInAction } from "mobx";
-import type { KubeObject, RawKubeObject } from "@freelens/kube-object";
+import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
 import yaml from "js-yaml";
 import assert from "assert";
 import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
 import { createPatch } from "rfc6902";
-import type { ShowNotification } from "@freelens/notifications";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 import React from "react";
-import { createKubeApiURL, parseKubeApi } from "@freelens/kube-api";
+import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 
 const editResourceModelInjectable = getInjectable({
   id: "edit-resource-model",

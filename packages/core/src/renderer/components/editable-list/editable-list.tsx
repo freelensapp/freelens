@@ -8,10 +8,10 @@ import "./editable-list.scss";
 import { observer } from "mobx-react";
 import React from "react";
 
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import type { InputProps, InputValidator } from "../input";
 import { Input } from "../input";
-import type { StrictReactNode, SingleOrMany } from "@freelens/utilities";
+import type { StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
 
 export interface EditableListProps<T> {

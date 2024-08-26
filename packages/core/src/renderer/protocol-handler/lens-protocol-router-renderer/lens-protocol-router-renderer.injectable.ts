@@ -5,8 +5,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import { LensProtocolRouterRenderer } from "./lens-protocol-router-renderer";
-import { loggerInjectionToken } from "@freelens/logger";
-import { showErrorNotificationInjectable, showShortInfoNotificationInjectable } from "@freelens/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable, showShortInfoNotificationInjectable } from "@freelensapp/notifications";
 import isExtensionEnabledInjectable from "../../../features/extensions/enabled/common/is-enabled.injectable";
 
 const lensProtocolRouterRendererInjectable = getInjectable({

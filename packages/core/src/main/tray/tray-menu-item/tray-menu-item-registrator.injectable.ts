@@ -14,8 +14,8 @@ import type { TrayMenuRegistration } from "../tray-menu-registration";
 import { withErrorSuppression } from "../../../common/utils/with-error-suppression/with-error-suppression";
 import type { WithErrorLoggingFor } from "../../../common/utils/with-error-logging/with-error-logging.injectable";
 import withErrorLoggingInjectable from "../../../common/utils/with-error-logging/with-error-logging.injectable";
-import { getRandomIdInjectionToken } from "@freelens/random";
-import { isBoolean, isString } from "@freelens/utilities";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { isBoolean, isString } from "@freelensapp/utilities";
 
 const trayMenuItemRegistratorInjectable = getInjectable({
   id: "tray-menu-item-registrator",

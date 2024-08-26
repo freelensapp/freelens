@@ -6,11 +6,11 @@
 import type { IComputedValue, IReactionDisposer } from "mobx";
 import { action, comparer, computed, makeObservable, reaction } from "mobx";
 import type { StorageLayer } from "../../utils/storage-helper";
-import { noop, toggle } from "@freelens/utilities";
+import { noop, toggle } from "@freelensapp/utilities";
 import type { KubeObjectStoreDependencies, KubeObjectStoreLoadingParams } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { NamespaceApi } from "@freelens/kube-api";
-import { Namespace } from "@freelens/kube-object";
+import type { NamespaceApi } from "@freelensapp/kube-api";
+import { Namespace } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 
 export interface NamespaceTree {

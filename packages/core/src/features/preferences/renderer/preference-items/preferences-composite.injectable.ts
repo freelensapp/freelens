@@ -12,7 +12,7 @@ import { preferenceTabsRoot } from "./preference-tab-root";
 import logErrorInjectable from "../../../../common/log-error.injectable";
 import { isShown } from "../../../../common/utils/composable-responsibilities/showable/showable";
 import { getCompositeFor } from "../../../../common/utils/composite/get-composite/get-composite";
-import { byOrderNumber } from "@freelens/utilities";
+import { byOrderNumber } from "@freelensapp/utilities";
 
 const preferencesCompositeInjectable = getInjectable({
   id: "preferences-composite",

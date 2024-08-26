@@ -4,7 +4,7 @@
  */
 
 import operatingSystemThemeInjectable from "../../../../main/theme/operating-system-theme.injectable";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { initialSystemThemeTypeChannel } from "../common/channels";
 
 const initialSystemThemeTypeHandler = getRequestChannelListenerInjectable({

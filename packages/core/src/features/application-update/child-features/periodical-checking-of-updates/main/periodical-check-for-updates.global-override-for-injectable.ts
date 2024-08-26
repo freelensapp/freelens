@@ -4,7 +4,7 @@
  */
 
 import periodicalCheckForUpdatesInjectable from "./periodical-check-for-updates.injectable";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 
 export default getGlobalOverride(periodicalCheckForUpdatesInjectable, () => ({
   start: () => {},

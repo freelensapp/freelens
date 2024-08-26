@@ -7,13 +7,13 @@ import styles from "./sidebar.module.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import { SidebarItem } from "./sidebar-item";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import { SidebarCluster } from "./sidebar-cluster";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { SidebarItemDeclaration } from "@freelens/cluster-sidebar";
-import { sidebarItemsInjectable } from "@freelens/cluster-sidebar";
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import type { IComputedValue } from "mobx";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 

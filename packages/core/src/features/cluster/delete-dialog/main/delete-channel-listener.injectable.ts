@@ -8,8 +8,8 @@ import directoryForLensLocalStorageInjectable from "../../../../common/directory
 import removePathInjectable from "../../../../common/fs/remove.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import clusterConnectionInjectable from "../../../../main/cluster/cluster-connection.injectable";
-import { noop } from "@freelens/utilities";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { noop } from "@freelensapp/utilities";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { deleteClusterChannel } from "../common/delete-channel";
 import clustersStateInjectable from "../../storage/common/state.injectable";
 

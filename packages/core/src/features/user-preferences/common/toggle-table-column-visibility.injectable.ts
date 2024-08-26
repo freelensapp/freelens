@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getOrInsertSet, toggle } from "@freelens/utilities";
+import { getOrInsertSet, toggle } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import userPreferencesStateInjectable from "./state.injectable";

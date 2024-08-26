@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { MessageChannel } from "@freelens/messaging";
+import type { MessageChannel } from "@freelensapp/messaging";
 
 export type RootFrameHasRenderedChannel = MessageChannel<void>;
 

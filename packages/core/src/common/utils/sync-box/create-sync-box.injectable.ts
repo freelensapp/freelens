@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { IObservableValue } from "mobx";
 import { computed } from "mobx";
 import { syncBoxChannel } from "./channels";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import syncBoxStateInjectable from "./sync-box-state.injectable";
 import type { SyncBox } from "./sync-box-injection-token";
 import { toJS } from "../toJS";

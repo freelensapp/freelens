@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectionToken } from "@ogre-tools/injectable";
-import type { KubeObject } from "@freelens/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
 import type { IComputedValue } from "mobx";
 

@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { setAutoFreeze, enableMapSet } from "immer";
-import { beforeElectronIsReadyInjectionToken } from "@freelens/application-for-electron-main";
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 
 const setupImmerInjectable = getInjectable({
   id: "setup-immer",

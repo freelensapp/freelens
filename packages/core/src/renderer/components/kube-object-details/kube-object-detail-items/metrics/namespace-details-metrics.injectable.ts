@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { namespaceDetailsMetricsInjectionToken } from "@freelens/metrics";
+import { namespaceDetailsMetricsInjectionToken } from "@freelensapp/metrics";
 import { getInjectable } from "@ogre-tools/injectable";
 import { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
 import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-injection-token";

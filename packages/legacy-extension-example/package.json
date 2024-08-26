@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/legacy-extension-example",
+  "name": "@freelensapp/legacy-extension-example",
   "private": false,
   "description": "An example bundled Lens extensions using the v1 API",
   "version": "0.1.0",
@@ -36,7 +36,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "devDependencies": {
-    "@freelens/extensions": "^0.1.0",
+    "@freelensapp/extensions": "^0.1.0",
     "@types/node": "^16.18.25",
     "typescript": "^4.9.5",
     "webpack": "^5.81.0",

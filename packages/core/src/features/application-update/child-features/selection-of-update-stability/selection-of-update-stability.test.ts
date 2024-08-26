@@ -19,7 +19,7 @@ import downloadPlatformUpdateInjectable from "../../main/download-update/downloa
 import selectedUpdateChannelInjectable from "../../common/selected-update-channel.injectable";
 import type { IComputedValue } from "mobx";
 import setUpdateOnQuitInjectable from "../../../../main/electron-app/features/set-update-on-quit.injectable";
-import { showInfoNotificationInjectable } from "@freelens/notifications";
+import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import processCheckingForUpdatesInjectable from "../../main/process-checking-for-updates.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
 import getBuildVersionInjectable

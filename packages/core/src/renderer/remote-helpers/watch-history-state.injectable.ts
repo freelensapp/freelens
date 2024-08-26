@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import { emitWindowLocationChanged } from "../ipc";
 import { reaction } from "mobx";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 const watchHistoryStateInjectable = getInjectable({
   id: "watch-history-state",

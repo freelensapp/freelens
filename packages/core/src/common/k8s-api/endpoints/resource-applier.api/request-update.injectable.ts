@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
-import type { AsyncResult, Result } from "@freelens/utilities";
-import type { KubeJsonApiData } from "@freelens/kube-object";
+import type { AsyncResult, Result } from "@freelensapp/utilities";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 export type RequestKubeObjectCreation = (resourceDescriptor: string) => AsyncResult<KubeJsonApiData, string>;
 

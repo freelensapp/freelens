@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { waitUntilDefined } from "@freelens/utilities";
+import { waitUntilDefined } from "@freelensapp/utilities";
 import upgradeChartTabStoreInjectable from "./store.injectable";
 
 const upgradeChartTabDataInjectable = getInjectable({

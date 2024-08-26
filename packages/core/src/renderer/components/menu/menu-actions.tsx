@@ -8,18 +8,18 @@ import "./menu-actions.scss";
 import React, { isValidElement } from "react";
 import { observable, makeObservable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
-import type { IconProps } from "@freelens/icon";
-import { Icon } from "@freelens/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import type { IconProps } from "@freelensapp/icon";
+import { Icon } from "@freelensapp/icon";
 import type { MenuProps } from "./menu";
 import { Menu, MenuItem } from "./menu";
 import isString from "lodash/isString";
-import type { TooltipDecoratorProps } from "@freelens/tooltip";
+import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import { getRandomIdInjectionToken } from "@freelens/random";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 import autoBindReact from "auto-bind/react";
 
 export interface MenuActionsProps extends Partial<MenuProps> {

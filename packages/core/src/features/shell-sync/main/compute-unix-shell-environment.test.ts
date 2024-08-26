@@ -6,7 +6,7 @@
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 import EventEmitter from "events";
-import { flushPromises } from "@freelens/test-utils";
+import { flushPromises } from "@freelensapp/test-utils";
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";

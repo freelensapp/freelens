@@ -9,8 +9,8 @@ import { getApplicationBuilder } from "../../renderer/components/test-utils/get-
 import navigateToTelemetryPreferencesInjectable from "./common/navigate-to-telemetry-preferences.injectable";
 import sentryDataSourceNameInjectable from "../../common/vars/sentry-dsn-url.injectable";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
-import type { Discover } from "@freelens/react-testing-library-discovery";
-import { discoverFor } from "@freelens/react-testing-library-discovery";
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("preferences - navigation to telemetry preferences", () => {
   let builder: ApplicationBuilder;

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Pod } from "@freelens/kube-object";
+import { Pod } from "@freelensapp/kube-object";
 
 export const dockerPod = new Pod({
   apiVersion: "v1",

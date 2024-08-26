@@ -20,8 +20,8 @@ import closeAddClusterRoleDialogInjectable from "./close.injectable";
 import clusterRoleStoreInjectable from "../store.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import addClusterRoleDialogStateInjectable from "./state.injectable";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface AddClusterRoleDialogProps extends Partial<DialogProps> {
 }

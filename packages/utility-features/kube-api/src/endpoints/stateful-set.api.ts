@@ -7,7 +7,7 @@ import moment from "moment";
 
 import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { StatefulSet } from "@freelens/kube-object";
+import { StatefulSet } from "@freelensapp/kube-object";
 
 export class StatefulSetApi extends KubeApi<StatefulSet> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

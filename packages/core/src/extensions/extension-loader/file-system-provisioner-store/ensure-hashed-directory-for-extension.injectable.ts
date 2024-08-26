@@ -5,7 +5,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 
-import { getOrInsert } from "@freelens/utilities";
+import { getOrInsert } from "@freelensapp/utilities";
 import randomBytesInjectable from "../../../common/utils/random-bytes.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import directoryForExtensionDataInjectable from "./directory-for-extension-data.injectable";

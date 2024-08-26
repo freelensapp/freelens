@@ -5,9 +5,9 @@
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import type { ExecFileWithInput } from "./exec-file-with-input.injectable";
 import execFileWithInputInjectable from "./exec-file-with-input.injectable";
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
-import { getPromiseStatus } from "@freelens/test-utils";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import EventEmitter from "events";
 
 describe("exec-file-with-input", () => {

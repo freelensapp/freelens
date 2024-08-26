@@ -1,16 +1,16 @@
-# @freelens/application
+# @freelensapp/application
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @freelens/application-for-electron-main
+$ npm install @freelensapp/application-for-electron-main
 ```
 
 ```typescript
-import { applicationFeature, startApplicationInjectionToken } from "@freelens/application";
-import { registerFeature } from "@freelens/feature-core";
+import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
+import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 
 const di = createContainer("some-container");

@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
-import { Icon } from "@freelens/icon";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { Icon } from "@freelensapp/icon";
 import { noop } from "lodash/fp";
 
 const helmSidebarItemInjectable = getInjectable({

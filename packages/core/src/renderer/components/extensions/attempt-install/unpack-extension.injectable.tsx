@@ -6,8 +6,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import type { Disposer } from "@freelens/utilities";
-import { noop } from "@freelens/utilities";
+import type { Disposer } from "@freelensapp/utilities";
+import { noop } from "@freelensapp/utilities";
 import { extensionDisplayName } from "../../../../extensions/lens-extension";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import path from "path";
@@ -16,8 +16,8 @@ import { when } from "mobx";
 import React from "react";
 import type { InstallRequestValidated } from "./create-temp-files-and-validate.injectable";
 import extractTarInjectable from "../../../../common/fs/extract-tar.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { showInfoNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showInfoNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export type UnpackExtension = (request: InstallRequestValidated, disposeDownloading?: Disposer) => Promise<void>;
 

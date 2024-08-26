@@ -9,10 +9,10 @@ import { runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
-import { Button } from "@freelens/button";
-import type { ShowNotification } from "@freelens/notifications";
+import { Button } from "@freelensapp/button";
+import type { ShowNotification } from "@freelensapp/notifications";
 import { Dialog } from "../dialog";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { Select } from "../select";
 import { Checkbox } from "../checkbox";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -26,7 +26,7 @@ import type { RequestDeleteCluster } from "../../../features/cluster/delete-dial
 import requestDeleteClusterInjectable from "../../../features/cluster/delete-dialog/renderer/request-delete.injectable";
 import type { SaveKubeconfig } from "./save-kubeconfig.injectable";
 import saveKubeconfigInjectable from "./save-kubeconfig.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { isCurrentContext } from "./is-current-context";
 import type { IsInLocalKubeconfig } from "./is-in-local-kubeconfig.injectable";
 import isInLocalKubeconfigInjectable from "./is-in-local-kubeconfig.injectable";

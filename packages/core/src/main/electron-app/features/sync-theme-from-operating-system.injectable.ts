@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { getStartableStoppable } from "@freelens/startable-stoppable";
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import operatingSystemThemeStateInjectable from "../../theme/operating-system-theme-state.injectable";
 import nativeThemeInjectable from "./native-theme.injectable";
 import getElectronThemeInjectable from "./get-electron-theme.injectable";
