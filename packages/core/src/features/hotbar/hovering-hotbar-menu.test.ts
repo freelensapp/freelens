@@ -28,7 +28,7 @@ describe("hovering hotbar menu tests", () => {
 
   describe("when hovering over the hotbar menu", () => {
     beforeEach(() => {
-      userEvent.hover(result.getByTestId("hotbar-menu-badge-for-default"));
+      userEvent.hover(result.getByTestId("hotbar-menu-badge-for-Default"));
     });
 
     it("renders", () => {
@@ -36,7 +36,7 @@ describe("hovering hotbar menu tests", () => {
     });
 
     it("should render the hotbar name", () => {
-      expect(result.getByTestId("hotbar-menu-badge-tooltip-for-default")).toBeInTheDocument();
+      expect(result.getByTestId("hotbar-menu-badge-tooltip-for-Default")).toBeInTheDocument();
     });
   });
 });
