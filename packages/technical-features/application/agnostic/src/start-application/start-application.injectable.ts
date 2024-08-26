@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { runManyFor } from "@freelens/run-many";
+import { runManyFor } from "@freelensapp/run-many";
 import * as timeSlots from "./time-slots";
 
 export type StartApplication = () => Promise<void>;

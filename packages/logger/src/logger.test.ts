@@ -1,5 +1,5 @@
 import { createContainer, getInjectable } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { loggerFeature } from "./feature";
 import { winstonLoggerInjectable } from "./winston-logger.injectable";
 import TransportStream from "winston-transport";
@@ -13,7 +13,7 @@ import {
   logWarningInjectionToken,
 } from "./logger.injectable";
 
-import { getFeature } from "@freelens/feature-core/src/feature";
+import { getFeature } from "@freelensapp/feature-core/src/feature";
 import { loggerTransportInjectionToken } from "./transports";
 import { prefixedLoggerInjectable } from "./prefixed-logger.injectable";
 

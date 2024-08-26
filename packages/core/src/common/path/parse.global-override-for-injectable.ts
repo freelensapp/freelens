@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import parsePathInjectable from "./parse.injectable";
 
 export default getGlobalOverride(parsePathInjectable, () => path.posix.parse);

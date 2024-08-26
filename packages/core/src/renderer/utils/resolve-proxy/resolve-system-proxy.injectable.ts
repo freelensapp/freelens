@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { resolveSystemProxyInjectionToken } from "../../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
-import { requestFromChannelInjectionToken } from "@freelens/messaging";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { resolveSystemProxyChannel } from "../../../common/utils/resolve-system-proxy/resolve-system-proxy-channel";
 
 const resolveSystemProxyInjectable = getInjectable({

@@ -6,7 +6,7 @@
 import styles from "./download-logs-dropdown.module.scss";
 
 import React, { useState } from "react";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { MenuItem } from "../../menu";
 import { Dropdown } from "../../dropdown/dropdown";
 

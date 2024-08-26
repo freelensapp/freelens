@@ -5,7 +5,7 @@
 import { getInjectable, createInstantiationTargetDecorator, instantiationDecoratorToken } from "@ogre-tools/injectable";
 import { pick } from "lodash";
 import { inspect } from "util";
-import { parseKubeApi } from "@freelens/kube-api";
+import { parseKubeApi } from "@freelensapp/kube-api";
 import showDetailsInjectable from "../../../renderer/components/kube-detail-params/show-details.injectable";
 import emitTelemetryInjectable from "./emit-telemetry.injectable";
 

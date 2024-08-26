@@ -6,7 +6,7 @@
 // Metrics api
 
 import moment from "moment";
-import { isDefined, object } from "@freelens/utilities";
+import { isDefined, object } from "@freelensapp/utilities";
 
 export interface MetricData {
   status: string;

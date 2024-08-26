@@ -22,16 +22,16 @@ import electronUpdaterIsActiveInjectable from "./electron-app/features/electron-
 import setUpdateOnQuitInjectable from "./electron-app/features/set-update-on-quit.injectable";
 import waitUntilBundledExtensionsAreLoadedInjectable from "./start-main-application/lens-window/application-window/wait-until-bundled-extensions-are-loaded.injectable";
 import initializeClusterManagerInjectable from "./cluster/initialize-manager.injectable";
-import type { GlobalOverride } from "@freelens/test-utils";
+import type { GlobalOverride } from "@freelensapp/test-utils";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
-import { setLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
+import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerFeature } from "@freelens/feature-core";
-import { messagingFeature, testUtils as messagingTestUtils } from "@freelens/messaging";
-import { loggerFeature } from "@freelens/logger";
-import { randomFeature } from "@freelens/random";
-import { kubeApiSpecificsFeature } from "@freelens/kube-api-specifics";
-import { notificationsFeature } from "@freelens/notifications";
+import { registerFeature } from "@freelensapp/feature-core";
+import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
+import { loggerFeature } from "@freelensapp/logger";
+import { randomFeature } from "@freelensapp/random";
+import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
+import { notificationsFeature } from "@freelensapp/notifications";
 
 export function getDiForUnitTesting() {
   const environment = "main";

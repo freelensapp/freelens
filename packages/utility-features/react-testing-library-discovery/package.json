@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/react-testing-library-discovery",
+  "name": "@freelensapp/react-testing-library-discovery",
   "private": false,
   "version": "0.1.0",
   "description": "A way to discover HTML-elements using react-testing-library",
@@ -30,7 +30,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelens/webpack": "^0.1.0",
+    "@freelensapp/webpack": "^0.1.0",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5"

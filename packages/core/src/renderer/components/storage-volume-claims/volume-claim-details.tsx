@@ -11,17 +11,17 @@ import { DrawerItem, DrawerTitle } from "../drawer";
 import { Badge } from "../badge";
 import { Link } from "react-router-dom";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { StorageClassApi } from "@freelens/kube-api";
-import { PersistentVolumeClaim } from "@freelens/kube-object";
-import type { Logger } from "@freelens/logger";
+import type { StorageClassApi } from "@freelensapp/kube-api";
+import { PersistentVolumeClaim } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { PodStore } from "../workloads-pods/store";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { stopPropagation } from "@freelens/utilities";
-import { storageClassApiInjectable } from "@freelens/kube-api-specifics";
-import { loggerInjectionToken } from "@freelens/logger";
+import { stopPropagation } from "@freelensapp/utilities";
+import { storageClassApiInjectable } from "@freelensapp/kube-api-specifics";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface PersistentVolumeClaimDetailsProps extends KubeObjectDetailsProps<PersistentVolumeClaim> {
 }

@@ -1,4 +1,4 @@
-import { Common, Renderer } from "@freelens/extensions";
+import { Common, Renderer } from "@freelensapp/extensions";
 
 export default class ExampleLensExtension extends Renderer.LensExtension {
   protected onActivate(): void | Promise<void> {

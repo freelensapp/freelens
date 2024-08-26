@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import cancelIdleCallbackInjectable from "./cancel-idle-callback.injectable";
 
 export default getGlobalOverride(cancelIdleCallbackInjectable, () => () => {});

@@ -13,14 +13,14 @@ import { TabLayout } from "../layout/tab-layout-2";
 import type { EventStore } from "./store";
 import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import type { KubeEvent, KubeEventData } from "@freelens/kube-object";
+import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
 import type { TableSortParams, TableSortCallbacks } from "../table";
 import type { HeaderCustomizer } from "../item-object-list";
-import { Tooltip } from "@freelens/tooltip";
+import { Tooltip } from "@freelensapp/tooltip";
 import { Link } from "react-router-dom";
-import type { IClassName } from "@freelens/utilities";
-import { cssNames, stopPropagation } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import type { IClassName } from "@freelensapp/utilities";
+import { cssNames, stopPropagation } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import navigateToEventsInjectable  from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
@@ -31,7 +31,7 @@ import eventStoreInjectable from "./store.injectable";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { KubeEventApi } from "@freelens/kube-api";
+import type { KubeEventApi } from "@freelensapp/kube-api";
 
 enum columnId {
   message = "message",

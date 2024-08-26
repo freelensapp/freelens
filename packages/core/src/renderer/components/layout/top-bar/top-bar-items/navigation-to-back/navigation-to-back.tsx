@@ -5,7 +5,7 @@
 import React from "react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import topBarPrevEnabledInjectable from "./prev-enabled.injectable";
 import goBackInjectable from "./go-back/go-back.injectable";
 import { observer } from "mobx-react";

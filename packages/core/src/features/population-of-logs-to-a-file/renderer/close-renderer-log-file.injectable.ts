@@ -2,9 +2,9 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import { winstonLoggerInjectable } from "@freelens/logger";
+import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { closeIpcFileLoggerChannel } from "../common/ipc-file-logger-channel";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";

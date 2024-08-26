@@ -8,7 +8,7 @@ import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-
 import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
 import createFirstApplicationWindowInjectable from "../lens-window/application-window/create-first-application-window.injectable";
 import splashWindowInjectable from "../lens-window/splash-window/splash-window.injectable";
-import { afterApplicationIsLoadedInjectionToken } from "@freelens/application";
+import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
 
 const getDeepLinkUrl = (commandLineArguments: string[]) => (
   commandLineArguments

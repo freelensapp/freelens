@@ -5,8 +5,8 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { ConfigMapApi } from "@freelens/kube-api";
-import { configMapApiInjectable } from "@freelens/kube-api-specifics";
+import type { ConfigMapApi } from "@freelensapp/kube-api";
+import { configMapApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 import { LocalRef } from "../variant-helpers";
 

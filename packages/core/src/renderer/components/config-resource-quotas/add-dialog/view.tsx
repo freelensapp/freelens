@@ -14,19 +14,19 @@ import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
-import type { ResourceQuotaValues } from "@freelens/kube-object";
-import type { ResourceQuotaApi } from "@freelens/kube-api";
+import type { ResourceQuotaValues } from "@freelensapp/kube-object";
+import type { ResourceQuotaApi } from "@freelensapp/kube-api";
 import { Select } from "../../select";
-import { Icon } from "@freelens/icon";
-import { Button } from "@freelens/button";
+import { Icon } from "@freelensapp/icon";
+import { Button } from "@freelensapp/button";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
 import { SubTitle } from "../../layout/sub-title";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import closeAddQuotaDialogInjectable from "./close.injectable";
 import isAddQuotaDialogOpenInjectable from "./is-open.injectable";
-import { resourceQuotaApiInjectable } from "@freelens/kube-api-specifics";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import { resourceQuotaApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface AddQuotaDialogProps extends DialogProps {
 }

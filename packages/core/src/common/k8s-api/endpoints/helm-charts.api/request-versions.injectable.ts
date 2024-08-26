@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor, isDefined } from "@freelens/utilities";
+import { urlBuilderFor, isDefined } from "@freelensapp/utilities";
 import { HelmChart } from "../helm-charts.api";
 import type { RawHelmChart } from "../helm-charts.api";
 import apiBaseInjectable from "../../api-base.injectable";

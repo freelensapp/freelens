@@ -7,10 +7,10 @@ import "./deployment-replicasets.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { ReplicaSet } from "@freelens/kube-object";
+import type { ReplicaSet } from "@freelensapp/kube-object";
 import { KubeObjectMenu } from "../kube-object-menu";
-import { Spinner } from "@freelens/spinner";
-import { prevDefault, stopPropagation } from "@freelens/utilities";
+import { Spinner } from "@freelensapp/spinner";
+import { prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { DrawerTitle } from "../drawer";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";

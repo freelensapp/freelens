@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { LocationDescriptor } from "history";
 import { action } from "mobx";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { createPath } from "history";
 
 export type Navigate = (location: LocationDescriptor) => void;

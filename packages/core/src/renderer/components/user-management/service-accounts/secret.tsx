@@ -8,10 +8,10 @@ import "./secret.scss";
 import moment from "moment";
 import React from "react";
 
-import type { Secret } from "@freelens/kube-object";
-import type { StrictReactNode } from "@freelens/utilities";
-import { prevDefault } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import type { Secret } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { prevDefault } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 
 export interface ServiceAccountsSecretProps {
   secret: Secret | string;

@@ -1,12 +1,12 @@
-import "@freelens/core/styles";
-import "@freelens/button/styles";
-import "@freelens/error-boundary/styles";
-import "@freelens/tooltip/styles";
-import "@freelens/resizing-anchor/styles";
-import "@freelens/icon/styles";
-import "@freelens/animate/styles";
-import "@freelens/notifications/styles";
-import "@freelens/spinner/styles";
+import "@freelensapp/core/styles";
+import "@freelensapp/button/styles";
+import "@freelensapp/error-boundary/styles";
+import "@freelensapp/tooltip/styles";
+import "@freelensapp/resizing-anchor/styles";
+import "@freelensapp/icon/styles";
+import "@freelensapp/animate/styles";
+import "@freelensapp/notifications/styles";
+import "@freelensapp/spinner/styles";
 
 import { runInAction } from "mobx";
 import {
@@ -14,26 +14,26 @@ import {
   commonExtensionApi as Common,
   registerLensCore,
   metricsFeature,
-} from "@freelens/core/renderer";
+} from "@freelensapp/core/renderer";
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import {
   applicationFeature,
   startApplicationInjectionToken
-} from "@freelens/application";
+} from "@freelensapp/application";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { messagingFeatureForRenderer } from "@freelens/messaging-for-renderer";
-import { keyboardShortcutsFeature } from "@freelens/keyboard-shortcuts";
-import { reactApplicationFeature } from "@freelens/react-application";
-import { routingFeature } from "@freelens/routing";
-import { loggerFeature } from "@freelens/logger";
-import { animateFeature } from "@freelens/animate";
-import { clusterSidebarFeature } from "@freelens/cluster-sidebar";
-import { randomFeature } from "@freelens/random";
-import { kubeApiSpecificsFeature } from "@freelens/kube-api-specifics";
-import { notificationsFeature } from "@freelens/notifications";
+import { messagingFeatureForRenderer } from "@freelensapp/messaging-for-renderer";
+import { keyboardShortcutsFeature } from "@freelensapp/keyboard-shortcuts";
+import { reactApplicationFeature } from "@freelensapp/react-application";
+import { routingFeature } from "@freelensapp/routing";
+import { loggerFeature } from "@freelensapp/logger";
+import { animateFeature } from "@freelensapp/animate";
+import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
+import { randomFeature } from "@freelensapp/random";
+import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
+import { notificationsFeature } from "@freelensapp/notifications";
 
 const environment = "renderer";
 
@@ -87,7 +87,7 @@ export {
   ReactRouterDom,
   Mobx,
   MobxReact,
-} from "@freelens/core/renderer";
+} from "@freelensapp/core/renderer";
 
 export const LensExtensions = {
   Renderer,

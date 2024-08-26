@@ -4,8 +4,8 @@
  */
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import { getInjectable } from "@ogre-tools/injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
-import { loggerInjectionToken } from "@freelens/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import readFileBufferInjectable from "../../../../common/fs/read-file-buffer.injectable";
 
 export type ReadFileNotify = (filePath: string, showError?: boolean) => Promise<Buffer | null>;

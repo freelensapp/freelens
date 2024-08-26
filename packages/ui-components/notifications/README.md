@@ -1,19 +1,19 @@
-# @freelens/notifications
+# @freelensapp/notifications
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @freelens/notifications
+$ npm install @freelensapp/notifications
 ```
 
 ```typescript
-export type { notificationsName, notificationsProps } from "@freelens/button";
-export type { notifications } from "@freelens/button";
-export { defaultEnterDurationFornotificationsdInjectable } from "@freelens/button";
-export { defaultLeaveDurationFornotificationsdInjectable } from "@freelens/button";
-export { requestAnimationFrameInjectable } from "@freelens/button";
+export type { notificationsName, notificationsProps } from "@freelensapp/button";
+export type { notifications } from "@freelensapp/button";
+export { defaultEnterDurationFornotificationsdInjectable } from "@freelensapp/button";
+export { defaultLeaveDurationFornotificationsdInjectable } from "@freelensapp/button";
+export { requestAnimationFrameInjectable } from "@freelensapp/button";
 ```
 
 ## Extendability

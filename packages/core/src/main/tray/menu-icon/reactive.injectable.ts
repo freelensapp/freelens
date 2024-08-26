@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
-import { getStartableStoppable } from "@freelens/startable-stoppable";
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import electronTrayInjectable from "../electron-tray/electron-tray.injectable";
 import trayIconInjectable from "./tray-icon.injectable";
 

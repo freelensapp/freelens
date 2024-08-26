@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash/fp";
-import type { PrometheusProvider } from "@freelens/prometheus";
+import type { PrometheusProvider } from "@freelensapp/prometheus";
 import prometheusProvidersInjectable from "./providers.injectable";
 
 export type GetPrometheusProviderByKind = (kind: string) => PrometheusProvider;

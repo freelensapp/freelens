@@ -1,3 +1,3 @@
-const { monorepoRootConfig } = require("@freelens/jest");
+const { monorepoRootConfig } = require("@freelensapp/jest");
 
 module.exports = monorepoRootConfig(__dirname);

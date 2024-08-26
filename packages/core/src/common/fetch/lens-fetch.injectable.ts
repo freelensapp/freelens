@@ -4,10 +4,10 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
-import type { RequestInit, Response } from "@freelens/node-fetch";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injectable";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import fetch from "@freelens/node-fetch";
+import fetch from "@freelensapp/node-fetch";
 
 export type LensRequestInit = Omit<RequestInit, "agent">;
 

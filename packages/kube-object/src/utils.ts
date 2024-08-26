@@ -11,7 +11,7 @@ import {
   bindPredicate,
   isTypedArray,
   isRecord,
-} from "@freelens/utilities";
+} from "@freelensapp/utilities";
 import type {
   KubeJsonApiData,
   KubeObjectMetadata,

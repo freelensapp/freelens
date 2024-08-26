@@ -8,7 +8,7 @@ import "./release-details.scss";
 import React from "react";
 
 import { Drawer } from "../../drawer";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";

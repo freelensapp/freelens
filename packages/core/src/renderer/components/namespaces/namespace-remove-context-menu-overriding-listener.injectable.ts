@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { Namespace } from "@freelens/kube-object";
+import type { Namespace } from "@freelensapp/kube-object";
 import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 import { staticKubeObjectHandlerInjectionToken } from "../../kube-object/handler";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";

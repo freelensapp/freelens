@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
-import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 
 const columnId = "namespace";
 

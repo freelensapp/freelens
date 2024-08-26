@@ -8,12 +8,12 @@ import { validatePackage } from "./validate-package";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import React from "react";
 import type { InstallRequest } from "./attempt-install.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import tempDirectoryPathInjectable from "../../../../common/os/temp-directory-path.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
-import type { LensExtensionId, LensExtensionManifest } from "@freelens/legacy-extensions";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 
 export interface InstallRequestValidated {
   fileName: string;

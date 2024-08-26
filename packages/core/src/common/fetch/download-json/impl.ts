@@ -2,9 +2,9 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import type { Fetch } from "../fetch.injectable";
-import type { RequestInit, Response } from "@freelens/node-fetch";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
 
 export interface DownloadJsonOptions {
   signal?: AbortSignal | null | undefined;

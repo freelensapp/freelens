@@ -4,20 +4,20 @@
  */
 
 import React from "react";
-import { PodDisruptionBudget } from "@freelens/kube-object";
+import { PodDisruptionBudget } from "@freelensapp/kube-object";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { PodDisruptionBudgets } from "../pod-disruption-budgets";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import selectedNamespacesStorageInjectable from "../../../../features/namespace-filtering/renderer/storage.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import podDisruptionBudgetStoreInjectable from "../store.injectable";
 import siblingTabsInjectable from "../../../routes/sibling-tabs.injectable";
 import { Cluster } from "../../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../../cluster-frame-context/hosted-cluster.injectable";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { maybeKubeApiInjectable } from "@freelens/kube-api-specifics";
+import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 
 describe("<PodDisruptionBudgets />", () => {
   let di: DiContainer;

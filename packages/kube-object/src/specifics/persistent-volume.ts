@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { unitsToBytes } from "@freelens/utilities";
+import { unitsToBytes } from "@freelensapp/utilities";
 import type { TypedLocalObjectReference, LabelSelector, ObjectReference, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { ResourceRequirements } from "../types/resource-requirements";

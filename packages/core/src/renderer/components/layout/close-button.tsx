@@ -7,7 +7,7 @@ import styles from "./close-button.module.scss";
 
 import type { HTMLAttributes } from "react";
 import React from "react";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 
 export interface CloseButtonProps extends HTMLAttributes<HTMLDivElement> {
 }

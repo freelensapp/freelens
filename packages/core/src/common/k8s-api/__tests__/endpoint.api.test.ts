@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { formatEndpointSubset } from "@freelens/kube-object";
+import { formatEndpointSubset } from "@freelensapp/kube-object";
 
 describe("endpoint tests", () => {
   describe("EndpointSubset", () => {

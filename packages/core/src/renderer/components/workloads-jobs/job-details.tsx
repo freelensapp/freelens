@@ -15,16 +15,16 @@ import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import type { JobStore } from "./store";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Job } from "@freelens/kube-object";
+import { Job } from "@freelensapp/kube-object";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import jobStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface JobDetailsProps extends KubeObjectDetailsProps<Job> {
 }

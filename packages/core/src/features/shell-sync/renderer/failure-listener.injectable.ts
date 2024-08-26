@@ -2,8 +2,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getMessageChannelListenerInjectable } from "@freelens/messaging";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { shellSyncFailedChannel } from "../common/failure-channel";
 
 const shellSyncFailureListenerInjectable = getMessageChannelListenerInjectable({

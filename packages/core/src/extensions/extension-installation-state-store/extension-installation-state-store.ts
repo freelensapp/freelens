@@ -4,12 +4,12 @@
  */
 
 import { action, computed, observable } from "mobx";
-import { disposer } from "@freelens/utilities";
-import type { ExtendableDisposer } from "@freelens/utilities";
+import { disposer } from "@freelensapp/utilities";
+import type { ExtendableDisposer } from "@freelensapp/utilities";
 import * as uuid from "uuid";
 import { broadcastMessage } from "../../common/ipc";
 import { ipcRenderer } from "electron";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 
 export enum ExtensionInstallationState {
   INSTALLING = "installing",

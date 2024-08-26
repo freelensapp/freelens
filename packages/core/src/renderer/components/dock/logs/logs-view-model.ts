@@ -7,13 +7,13 @@ import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import type { TabId } from "../dock/store";
 import type { SearchStore } from "../../../search-store/search-store";
-import type { Pod, PodLogsQuery } from "@freelens/kube-object";
-import { isDefined } from "@freelens/utilities";
+import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
+import { isDefined } from "@freelensapp/utilities";
 import assert from "assert";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { LoadLogs } from "./load-logs.injectable";
-import type { ResourceDescriptor } from "@freelens/kube-api";
+import type { ResourceDescriptor } from "@freelensapp/kube-api";
 
 export interface LogTabViewModelDependencies {
   getLogs: (tabId: TabId) => string[];

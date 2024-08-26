@@ -9,7 +9,7 @@ import lensProtocolRouterRendererInjectable from "../../protocol-handler/lens-pr
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 import registerIpcListenersInjectable from "../../ipc/register-ipc-listeners.injectable";
 import loadExtensionsInjectable from "../load-extensions.injectable";
-import { delay } from "@freelens/utilities";
+import { delay } from "@freelensapp/utilities";
 import { broadcastMessage } from "../../../common/ipc";
 import { bundledExtensionsLoaded } from "../../../common/ipc/extension-handling";
 

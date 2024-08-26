@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import type { KubeObjectDetailMetrics } from "@freelens/metrics";
+import type { KubeObjectDetailMetrics } from "@freelensapp/metrics";
 import type { InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
@@ -12,7 +12,7 @@ import type { KubeObjectDetailItem } from "../kube-object-detail-item-injection-
 import { DetailsMetricsContainer } from "./details-metrics-container";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
-import type { KubeObject } from "@freelens/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 
 export type GetMetricsKubeObjectDetailItem = <K extends KubeObject>(token: InjectionToken<KubeObjectDetailMetrics<K>, void>, metricResourceType: ClusterMetricsResourceType) => KubeObjectDetailItem;
 

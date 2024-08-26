@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import syncThemeFromOperatingSystemInjectable from "../../electron-app/features/sync-theme-from-operating-system.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 
 const startSyncingThemeFromOperatingSystemInjectable = getInjectable({
   id: "start-syncing-theme-from-operating-system",

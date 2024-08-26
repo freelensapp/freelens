@@ -11,17 +11,17 @@ import { DrawerItem, DrawerTitle } from "../drawer";
 import { Badge } from "../badge";
 import { disposeOnUnmount, observer } from "mobx-react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { StorageClass } from "@freelens/kube-object";
+import { StorageClass } from "@freelensapp/kube-object";
 import type { StorageClassStore } from "./store";
 import { VolumeDetailsList } from "../storage-volumes/volume-details-list";
 import type { PersistentVolumeStore } from "../storage-volumes/store";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import storageClassStoreInjectable from "./store.injectable";
 import persistentVolumeStoreInjectable from "../storage-volumes/store.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface StorageClassDetailsProps extends KubeObjectDetailsProps<StorageClass> {
 }

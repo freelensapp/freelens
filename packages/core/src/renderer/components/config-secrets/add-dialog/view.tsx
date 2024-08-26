@@ -14,22 +14,22 @@ import { Dialog } from "../../dialog";
 import { Wizard, WizardStep } from "../../wizard";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
-import type { SecretApi } from "@freelens/kube-api";
-import { reverseSecretTypeMap, SecretType } from "@freelens/kube-object";
+import type { SecretApi } from "@freelensapp/kube-api";
+import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
 import { SubTitle } from "../../layout/sub-title";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
 import { Select } from "../../select";
-import { Icon } from "@freelens/icon";
-import { base64, iter, object } from "@freelens/utilities";
+import { Icon } from "@freelensapp/icon";
+import { base64, iter, object } from "@freelensapp/utilities";
 import upperFirst from "lodash/upperFirst";
 import type { ShowDetails } from "../../kube-detail-params/show-details.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import closeAddSecretDialogInjectable from "./close.injectable";
-import { secretApiInjectable } from "@freelens/kube-api-specifics";
+import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
 import showDetailsInjectable from "../../kube-detail-params/show-details.injectable";
 import isAddSecretDialogOpenInjectable from "./is-open.injectable";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface AddSecretDialogProps extends Partial<DialogProps> {
 }

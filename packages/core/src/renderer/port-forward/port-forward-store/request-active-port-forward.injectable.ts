@@ -5,8 +5,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../../common/k8s-api/api-base.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { urlBuilderFor } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { urlBuilderFor } from "@freelensapp/utilities";
 import type { ForwardedPort } from "../port-forward-item";
 
 export type RequestActivePortForward = (portForward: ForwardedPort) => Promise<ForwardedPort | undefined>;

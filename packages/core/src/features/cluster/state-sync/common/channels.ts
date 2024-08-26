@@ -4,7 +4,7 @@
  */
 
 import type { ClusterId, ClusterState } from "../../../../common/cluster-types";
-import type { MessageChannel, RequestChannel } from "@freelens/messaging";
+import type { MessageChannel, RequestChannel } from "@freelensapp/messaging";
 
 export interface ClusterStateSync {
   clusterId: ClusterId;

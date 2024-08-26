@@ -4,23 +4,23 @@
  */
 
 import React from "react";
-import type { KubeMetaField } from "@freelens/kube-object";
-import { KubeObject } from "@freelens/kube-object";
+import type { KubeMetaField } from "@freelensapp/kube-object";
+import { KubeObject } from "@freelensapp/kube-object";
 import { DrawerItem, DrawerItemLabels } from "../drawer";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import { Link } from "react-router-dom";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { KubeObjectAge } from "../kube-object/age";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import { observer } from "mobx-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { NamespaceApi } from "@freelens/kube-api";
-import { namespaceApiInjectable } from "@freelens/kube-api-specifics";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { NamespaceApi } from "@freelensapp/kube-api";
+import { namespaceApiInjectable } from "@freelensapp/kube-api-specifics";
 
 export interface KubeObjectMetaProps {
   object: KubeObject;

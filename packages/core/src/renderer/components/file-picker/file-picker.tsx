@@ -8,12 +8,12 @@ import "./file-picker.scss";
 import React from "react";
 import fse from "fs-extra";
 import path from "path";
-import { Icon } from "@freelens/icon";
-import { Spinner } from "@freelens/spinner";
+import { Icon } from "@freelensapp/icon";
+import { Spinner } from "@freelensapp/spinner";
 import { observable, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import _ from "lodash";
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface FileUploadProps {
     uploadDir: string;

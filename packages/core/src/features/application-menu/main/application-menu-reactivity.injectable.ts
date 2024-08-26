@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { autorun } from "mobx";
-import { getStartableStoppable } from "@freelens/startable-stoppable";
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import populateApplicationMenuInjectable from "./populate-application-menu.injectable";
 import applicationMenuItemCompositeInjectable from "./application-menu-item-composite.injectable";
 

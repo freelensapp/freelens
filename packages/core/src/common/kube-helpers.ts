@@ -7,7 +7,7 @@ import { KubeConfig } from "@kubernetes/client-node";
 import yaml from "js-yaml";
 import type { Cluster, Context, User } from "@kubernetes/client-node/dist/config_types";
 import { newClusters, newContexts, newUsers } from "@kubernetes/client-node/dist/config_types";
-import { isDefined } from "@freelens/utilities";
+import { isDefined } from "@freelensapp/utilities";
 import Joi from "joi";
 import type { PartialDeep } from "type-fest";
 

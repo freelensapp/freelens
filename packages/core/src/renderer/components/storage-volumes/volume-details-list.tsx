@@ -7,11 +7,11 @@ import "./volume-details-list.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { PersistentVolume } from "@freelens/kube-object";
+import type { PersistentVolume } from "@freelensapp/kube-object";
 import { TableRow } from "../table/table-row";
-import { cssNames, prevDefault } from "@freelens/utilities";
+import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { TableCell } from "../table/table-cell";
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 import { DrawerTitle } from "../drawer/drawer-title";
 import { Table } from "../table/table";
 import { TableHead } from "../table/table-head";

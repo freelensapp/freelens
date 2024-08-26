@@ -5,7 +5,7 @@
 
 import React from "react";
 import { SecretDetails } from "../secret-details";
-import { Secret, SecretType } from "@freelens/kube-object";
+import { Secret, SecretType } from "@freelensapp/kube-object";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";

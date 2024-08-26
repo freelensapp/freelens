@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import type { ExtendableDisposer } from "@freelens/utilities";
+import type { ExtendableDisposer } from "@freelensapp/utilities";
 import { InputValidators } from "../input";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -12,8 +12,8 @@ import attemptInstallByInfoInjectable from "./attempt-install-by-info.injectable
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import readFileNotifyInjectable from "./read-file-notify/read-file-notify.injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
-import { loggerInjectionToken } from "@freelens/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
 import { withTimeout } from "../../../common/fetch/timeout-controller";
 

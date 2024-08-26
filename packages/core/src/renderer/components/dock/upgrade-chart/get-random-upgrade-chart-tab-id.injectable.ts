@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { getRandomIdInjectionToken } from "@freelens/random";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 
 const getRandomUpgradeChartTabIdInjectable = getInjectable({
   id: "get-random-upgrade-chart-tab-id",

@@ -2,10 +2,10 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { applicationInformationToken } from "@freelens/application";
+import { applicationInformationToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
-import { bundledExtensionInjectionToken } from "@freelens/legacy-extensions";
-import { object } from "@freelens/utilities";
+import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
+import { object } from "@freelensapp/utilities";
 import semanticBuildVersionInjectable from "../../../../../vars/common/semantic-build-version.injectable";
 
 const specificVersionsInjectable = getInjectable({
@@ -20,7 +20,7 @@ const specificVersionsInjectable = getInjectable({
     }
 
     const corePackageVersions = object.entries(applicationInformation.dependencies)
-      .filter(([name]) => name.startsWith("@freelens/"))
+      .filter(([name]) => name.startsWith("@freelensapp/"))
       .map(([name, version]) => `${name}: ${version}`);
     const bundledExtensionVersions = bundledExtensions
       .map(ext => `${ext.manifest.name}: ${ext.manifest.version}`);

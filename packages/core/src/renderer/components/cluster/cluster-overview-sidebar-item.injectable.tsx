@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import React from "react";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import clusterOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/overview/cluster-overview-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";

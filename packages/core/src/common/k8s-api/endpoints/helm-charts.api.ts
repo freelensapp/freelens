@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { array } from "@freelens/utilities";
+import { array } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import Joi from "joi";
 

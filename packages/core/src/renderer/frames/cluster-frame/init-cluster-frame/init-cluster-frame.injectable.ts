@@ -10,8 +10,8 @@ import hostedClusterInjectable from "../../../cluster-frame-context/hosted-clust
 import assert from "assert";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
 import loadExtensionsInjectable from "../../load-extensions.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 const initClusterFrameInjectable = getInjectable({
   id: "init-cluster-frame",

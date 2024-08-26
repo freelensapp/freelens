@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { getOrInsertWith } from "@freelens/utilities";
+import { getOrInsertWith } from "@freelensapp/utilities";
 import type { LogEntry, transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
 

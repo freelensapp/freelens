@@ -5,7 +5,7 @@
 import React from "react";
 import { DrawerTitle } from "../../../drawer";
 import { PodDetailsContainer } from "../../pod-details-container";
-import type { Pod } from "@freelens/kube-object";
+import type { Pod } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 
 interface PodDetailsContainersProps {

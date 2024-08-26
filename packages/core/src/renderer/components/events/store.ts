@@ -7,11 +7,11 @@ import groupBy from "lodash/groupBy";
 import compact from "lodash/compact";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { KubeEvent, KubeObject } from "@freelens/kube-object";
-import { Pod } from "@freelens/kube-object";
+import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
+import { Pod } from "@freelensapp/kube-object";
 import type { GetPodById } from "../workloads-pods/get-pod-by-id.injectable";
 import autoBind from "auto-bind";
-import type { KubeEventApi } from "@freelens/kube-api";
+import type { KubeEventApi } from "@freelensapp/kube-api";
 
 export interface EventStoreDependencies extends KubeObjectStoreDependencies {
   getPodById: GetPodById;

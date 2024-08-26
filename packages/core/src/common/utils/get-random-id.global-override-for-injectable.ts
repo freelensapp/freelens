@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@freelens/test-utils";
-import { getRandomIdInjectionToken } from "@freelens/random";
+import { getGlobalOverride } from "@freelensapp/test-utils";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 
 export default getGlobalOverride(getRandomIdInjectionToken, () => () => "some-irrelevant-random-id");

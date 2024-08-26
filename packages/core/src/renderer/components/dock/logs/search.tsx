@@ -8,7 +8,7 @@ import "./search.scss";
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { SearchInput } from "../../input";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import type { LogTabViewModel } from "./logs-view-model";
 
 export interface PodLogSearchProps {

@@ -4,7 +4,7 @@
  */
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getRandomIdInjectionToken } from "@freelens/random";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 
 describe("multiple separators originating from extension", () => {
   let builder: ApplicationBuilder;

@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import navigateToPortForwardsInjectable from "../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import React from "react";
-import { Button } from "@freelens/button";
+import { Button } from "@freelensapp/button";
 
 const notifyErrorPortForwardingInjectable = getInjectable({
   id: "notify-error-port-forwarding",

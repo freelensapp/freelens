@@ -4,7 +4,7 @@
  */
 import { syncBoxInitialValueChannel } from "../../../common/utils/sync-box/channels";
 import { syncBoxInjectionToken } from "../../../common/utils/sync-box/sync-box-injection-token";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 
 const syncBoxInitialValueChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "sync-box-initial-value-channel-listener",

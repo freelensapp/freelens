@@ -5,8 +5,8 @@
 import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelens/react-testing-library-discovery";
-import { discoverFor } from "@freelens/react-testing-library-discovery";
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import React from "react";
 import type { Navigate } from "../../renderer/navigation/navigate.injectable";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";

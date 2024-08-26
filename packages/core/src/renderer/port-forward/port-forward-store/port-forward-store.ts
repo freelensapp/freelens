@@ -6,12 +6,12 @@
 import { action, makeObservable, observable, reaction } from "mobx";
 import { ItemStore } from "../../../common/item.store";
 import type { StorageLayer } from "../../utils/storage-helper";
-import { disposer } from "@freelens/utilities";
+import { disposer } from "@freelensapp/utilities";
 import type { ForwardedPort } from "../port-forward-item";
 import { PortForwardItem } from "../port-forward-item";
 import { waitUntilFree } from "tcp-port-used";
-import type { Logger } from "@freelens/logger";
-import type { JsonApi } from "@freelens/json-api";
+import type { Logger } from "@freelensapp/logger";
+import type { JsonApi } from "@freelensapp/json-api";
 import type { RequestActivePortForward } from "./request-active-port-forward.injectable";
 import autoBind from "auto-bind";
 

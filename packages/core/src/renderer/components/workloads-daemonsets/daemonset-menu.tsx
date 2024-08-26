@@ -4,16 +4,16 @@
  */
 import React from "react";
 import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { DaemonSet } from "@freelens/kube-object";
+import type { DaemonSet } from "@freelensapp/kube-object";
 import { MenuItem } from "../menu";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { daemonSetApiInjectable } from "@freelens/kube-api-specifics";
+import { daemonSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
-import type { DaemonSetApi } from "@freelens/kube-api";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { DaemonSetApi } from "@freelensapp/kube-api";
 
 export interface DaemonSetMenuProps extends KubeObjectMenuProps<DaemonSet> {}
 

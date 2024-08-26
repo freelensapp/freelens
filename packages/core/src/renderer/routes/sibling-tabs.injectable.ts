@@ -4,7 +4,7 @@
  */
 import { computed } from "mobx";
 import { getInjectable } from "@ogre-tools/injectable";
-import { sidebarItemsInjectable } from "@freelens/cluster-sidebar";
+import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 
 const siblingTabsInjectable = getInjectable({
   id: "sibling-tabs",

@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { ResourceQuotaApi } from "@freelens/kube-api";
-import type { ResourceQuota } from "@freelens/kube-object";
+import type { ResourceQuotaApi } from "@freelensapp/kube-api";
+import type { ResourceQuota } from "@freelensapp/kube-object";
 
 export class ResourceQuotaStore extends KubeObjectStore<ResourceQuota, ResourceQuotaApi> {
 }

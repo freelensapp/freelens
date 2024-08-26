@@ -5,14 +5,14 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";
-import type { CustomResourceDefinition } from "@freelens/kube-object";
-import { KubeApi } from "@freelens/kube-api";
-import { KubeObject } from "@freelens/kube-object";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import type { CustomResourceDefinition } from "@freelensapp/kube-object";
+import { KubeApi } from "@freelensapp/kube-api";
+import { KubeObject } from "@freelensapp/kube-object";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
 import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
-import { maybeKubeApiInjectable } from "@freelens/kube-api-specifics";
+import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 
 const setupAutoCrdApiCreationsInjectable = getInjectable({
   id: "setup-auto-crd-api-creations",

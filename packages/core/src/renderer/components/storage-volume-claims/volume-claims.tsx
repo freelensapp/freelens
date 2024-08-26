@@ -9,8 +9,8 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { unitsToBytes, stopPropagation } from "@freelens/utilities";
-import type { StorageClassApi } from "@freelens/kube-api";
+import { unitsToBytes, stopPropagation } from "@freelensapp/utilities";
+import type { StorageClassApi } from "@freelensapp/kube-api";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../kube-object/age";
@@ -21,7 +21,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import persistentVolumeClaimStoreInjectable from "./store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { storageClassApiInjectable } from "@freelens/kube-api-specifics";
+import { storageClassApiInjectable } from "@freelensapp/kube-api-specifics";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 
 enum columnId {

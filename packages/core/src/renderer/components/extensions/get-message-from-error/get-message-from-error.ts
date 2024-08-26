@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { hasTypedProperty, isDefined } from "@freelens/utilities";
+import { hasTypedProperty, isDefined } from "@freelensapp/utilities";
 
 export function getMessageFromError(error: unknown): string {
   if (!error || typeof error !== "object") {

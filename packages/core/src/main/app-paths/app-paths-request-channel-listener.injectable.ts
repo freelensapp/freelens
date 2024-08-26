@@ -4,7 +4,7 @@
  */
 import { appPathsChannel } from "../../common/app-paths/app-paths-channel";
 import appPathsInjectable from "../../common/app-paths/app-paths.injectable";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 
 const appPathsRequestChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "app-paths-request-channel-listener",

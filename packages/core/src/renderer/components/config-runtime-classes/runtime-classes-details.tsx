@@ -9,7 +9,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { DrawerItem } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { RuntimeClass } from "@freelens/kube-object";
+import type { RuntimeClass } from "@freelensapp/kube-object";
 import { Badge } from "../badge";
 import { RuntimeClassDetailsTolerations } from "./runtime-classes-details-tolerations";
 

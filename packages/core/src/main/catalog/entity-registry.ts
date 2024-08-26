@@ -6,7 +6,7 @@
 import { action, computed, type IComputedValue, type IObservableArray, makeObservable, observable } from "mobx";
 import type { CatalogEntity } from "../../common/catalog";
 import type { HasCategoryForEntity } from "../../common/catalog/has-category-for-entity.injectable";
-import { iter } from "@freelens/utilities";
+import { iter } from "@freelensapp/utilities";
 
 interface Dependencies {
   readonly hasCategoryForEntity: HasCategoryForEntity;

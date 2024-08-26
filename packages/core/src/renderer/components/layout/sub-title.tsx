@@ -5,8 +5,8 @@
 
 import "./sub-title.scss";
 import React from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface SubTitleProps {
   className?: string;

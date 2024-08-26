@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { orderBy } from "lodash";
 import type { CatalogCategory, CatalogEntity } from "../../../../common/catalog";

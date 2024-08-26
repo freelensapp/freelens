@@ -7,7 +7,7 @@ import asyncFn from "@async-fn/jest";
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import type { Runnable } from "./types";
 import { runManyFor } from "./run-many-for";
-import { getPromiseStatus, flushPromises } from "@freelens/test-utils";
+import { getPromiseStatus, flushPromises } from "@freelensapp/test-utils";
 import { runInAction } from "mobx";
 
 describe("runManyFor", () => {

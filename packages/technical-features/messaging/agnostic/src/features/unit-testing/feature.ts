@@ -1,5 +1,5 @@
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
-import { getFeature } from "@freelens/feature-core";
+import { getFeature } from "@freelensapp/feature-core";
 import { messagingFeature } from "../actual/feature";
 
 export const messagingFeatureForUnitTesting = getFeature({

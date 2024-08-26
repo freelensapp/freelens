@@ -4,13 +4,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import type { KubeApiResource } from "../../common/rbac";
 import type { Cluster } from "../../common/cluster/cluster";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
-import { backoffCaller, withConcurrencyLimit, byOrderNumber } from "@freelens/utilities";
+import { backoffCaller, withConcurrencyLimit, byOrderNumber } from "@freelensapp/utilities";
 import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 
 export type RequestApiResources = (cluster: Cluster) => AsyncResult<KubeApiResource[], Error>;

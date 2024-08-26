@@ -5,51 +5,51 @@
 
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
-import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelens/legacy-global-di";
+import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export { Singleton } from "../../common/utils/singleton";
 
 export {
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   prevDefault,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   stopPropagation,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   cssNames,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   disposer,
-} from "@freelens/utilities";
+} from "@freelensapp/utilities";
 
 export type {
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   IClassName,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   IgnoredClassNames,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   Disposer,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   Disposable,
   /**
-   * @deprecated Switch to using the `@freelens/utilities` package
+   * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   ExtendableDisposer,
-} from "@freelens/utilities";
+} from "@freelensapp/utilities";
 
 export type { OpenLinkInBrowser } from "../../common/utils/open-link-in-browser.injectable";
 

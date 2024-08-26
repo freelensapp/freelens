@@ -5,7 +5,7 @@
 
 import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
 import kubernetesClusterCategoryInjectable from "../../common/catalog/categories/kubernetes-cluster.injectable";
-import { asLegacyGlobalForExtensionApi } from "@freelens/legacy-global-di";
+import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export {
   KubernetesCluster,

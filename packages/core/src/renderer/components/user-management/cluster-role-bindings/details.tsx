@@ -9,8 +9,8 @@ import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 
-import type { ClusterRoleBinding } from "@freelens/kube-object";
-import { ObservableHashSet, prevDefault } from "@freelens/utilities";
+import type { ClusterRoleBinding } from "@freelensapp/kube-object";
+import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
 import { AddRemoveButtons } from "../../add-remove-buttons";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";

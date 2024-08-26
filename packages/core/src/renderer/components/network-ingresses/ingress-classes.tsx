@@ -12,9 +12,9 @@ import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IngressClassStore } from "./ingress-class-store";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
-import type { IngressClass } from "@freelens/kube-object";
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import type { IngressClass } from "@freelensapp/kube-object";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 
 enum columnId {
   name = "name",

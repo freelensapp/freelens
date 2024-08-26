@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { match, RouteProps } from "react-router";
 import { matchPath } from "react-router";
-import { observableHistoryInjectionToken } from "@freelens/routing";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 export type MatchRoute = <Params extends { [K in keyof Params]?: string }>(route: string | string[] | RouteProps) => match<Params> | null;
 

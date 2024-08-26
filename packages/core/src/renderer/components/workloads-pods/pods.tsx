@@ -14,9 +14,9 @@ import type { EventStore } from "../events/store";
 import type { PodStore } from "./store";
 import eventStoreInjectable from "../events/store.injectable";
 import podStoreInjectable from "./store.injectable";
-import type { SpecificKubeListLayoutColumn } from "@freelens/list-layout";
-import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
-import type { Pod } from "@freelens/kube-object";
+import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import type { Pod } from "@freelensapp/kube-object";
 
 interface Dependencies {
   eventStore: EventStore;

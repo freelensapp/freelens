@@ -4,7 +4,7 @@
  */
 
 import type { ClusterId } from "../../../../common/cluster-types";
-import { getRequestChannel } from "@freelens/messaging";
+import { getRequestChannel } from "@freelensapp/messaging";
 
 export interface ActivateCluster {
   clusterId: ClusterId;

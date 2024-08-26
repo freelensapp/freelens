@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React, { useState } from "react";
-import type { EnvVarKeySelector } from "@freelens/kube-object";
-import { Icon } from "@freelens/icon";
-import { base64, cssNames, isObject } from "@freelens/utilities";
+import type { EnvVarKeySelector } from "@freelensapp/kube-object";
+import { Icon } from "@freelensapp/icon";
+import { base64, cssNames, isObject } from "@freelensapp/utilities";
 import type { SecretStore } from "../config-secrets/store";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import secretStoreInjectable from "../config-secrets/store.injectable";

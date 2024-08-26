@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import getAbsolutePathInjectable from "./get-absolute-path.injectable";
 
 export default getGlobalOverride(getAbsolutePathInjectable, () => path.posix.resolve);

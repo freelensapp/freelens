@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Avatar } from "../avatar";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 

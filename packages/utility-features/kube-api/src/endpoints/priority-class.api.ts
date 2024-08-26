@@ -5,8 +5,8 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import type { PriorityClassData } from "@freelens/kube-object";
-import { PriorityClass } from "@freelens/kube-object";
+import type { PriorityClassData } from "@freelensapp/kube-object";
+import { PriorityClass } from "@freelensapp/kube-object";
 
 export class PriorityClassApi extends KubeApi<PriorityClass, PriorityClassData> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

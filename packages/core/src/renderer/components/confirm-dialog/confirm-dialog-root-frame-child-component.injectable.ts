@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { rootFrameChildComponentInjectionToken } from "@freelens/react-application";
+import { rootFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { computed } from "mobx";
 import { ConfirmDialog } from "./confirm-dialog";
 

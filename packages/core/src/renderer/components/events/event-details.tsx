@@ -11,17 +11,17 @@ import { DrawerItem, DrawerTitle } from "../drawer";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { KubeEvent } from "@freelens/kube-object";
+import { KubeEvent } from "@freelensapp/kube-object";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { DurationAbsoluteTimestamp } from "./duration-absolute";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { cssNames } from "@freelens/utilities";
-import { loggerInjectionToken } from "@freelens/logger";
+import { cssNames } from "@freelensapp/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface EventDetailsProps extends KubeObjectDetailsProps<KubeEvent> {
 }

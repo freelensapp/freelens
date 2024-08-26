@@ -9,7 +9,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { DrawerItem } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { PriorityClass } from "@freelens/kube-object";
+import type { PriorityClass } from "@freelensapp/kube-object";
 
 export interface PriorityClassesDetailsProps extends KubeObjectDetailsProps<PriorityClass> {
 }

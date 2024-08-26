@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { JsonApiError } from "@freelens/json-api";
-import { JsonApi } from "@freelens/json-api";
-import type { Response } from "@freelens/node-fetch";
-import type { KubeJsonApiData } from "@freelens/kube-object";
+import type { JsonApiError } from "@freelensapp/json-api";
+import { JsonApi } from "@freelensapp/json-api";
+import type { Response } from "@freelensapp/node-fetch";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 export interface KubeJsonApiError extends JsonApiError {
   code: number;

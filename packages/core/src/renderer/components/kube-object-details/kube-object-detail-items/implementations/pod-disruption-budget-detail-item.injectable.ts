@@ -7,7 +7,7 @@ import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-i
 import { computed } from "mobx";
 import { PodDisruptionBudgetDetails } from "../../../config-pod-disruption-budgets";
 import currentKubeObjectInDetailsInjectable from "../../current-kube-object-in-details.injectable";
-import { PodDisruptionBudget } from "@freelens/kube-object";
+import { PodDisruptionBudget } from "@freelensapp/kube-object";
 
 const podDisruptionBudgetDetailItemInjectable = getInjectable({
   id: "pod-disruption-budget-detail-item",

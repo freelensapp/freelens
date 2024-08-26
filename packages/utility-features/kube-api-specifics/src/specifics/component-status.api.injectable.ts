@@ -5,10 +5,10 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import { storesAndApisCanBeCreatedInjectionToken } from "./can-be-created-token";
-import { ComponentStatusApi } from "@freelens/kube-api";
+import { ComponentStatusApi } from "@freelensapp/kube-api";
 import { kubeApiInjectionToken } from "./token";
 import { maybeKubeApiInjectable } from "./maybe-kube-api.injectable";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelens/logger";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 
 export const componentStatusApiInjectable = getInjectable({
   id: "component-status-api",

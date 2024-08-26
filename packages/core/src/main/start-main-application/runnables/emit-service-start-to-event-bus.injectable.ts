@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
-import { afterApplicationIsLoadedInjectionToken } from "@freelens/application";
+import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
 
 const emitServiceStartToEventBusInjectable = getInjectable({
   id: "emit-service-start-to-event-bus",

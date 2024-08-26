@@ -5,7 +5,7 @@
 
 import React from "react";
 import { findByTestId, findByText } from "@testing-library/react";
-import { NetworkPolicy } from "@freelens/kube-object";
+import { NetworkPolicy } from "@freelensapp/kube-object";
 import { NetworkPolicyDetails } from "../network-policy-details";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelens/kube-object";
-import type { StrictReactNode } from "@freelens/utilities";
+import type { KubeObject } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { TableSortCallback, SearchFilter, TableCellProps } from "./list-layout-column";
 
 export interface BaseKubeObjectListLayoutColumn<K extends KubeObject> {

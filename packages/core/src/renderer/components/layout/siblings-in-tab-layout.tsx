@@ -8,8 +8,8 @@ import { observer } from "mobx-react";
 import React from "react";
 import siblingTabsInjectable from "../../routes/sibling-tabs.injectable";
 import { TabLayout } from "./tab-layout-2";
-import type { SidebarItemDeclaration } from "@freelens/cluster-sidebar";
-import type { StrictReactNode } from "@freelens/utilities";
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 interface SiblingTabLayoutProps {
   children: StrictReactNode;

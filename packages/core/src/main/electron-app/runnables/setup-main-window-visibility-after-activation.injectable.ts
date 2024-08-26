@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import electronAppInjectable from "../electron-app.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
 
 const setupMainWindowVisibilityAfterActivationInjectable = getInjectable({

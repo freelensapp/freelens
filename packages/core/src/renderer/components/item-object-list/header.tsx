@@ -7,9 +7,9 @@ import "./item-list-layout.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { IClassName, StrictReactNode } from "@freelens/utilities";
-import { cssNames, isDefined } from "@freelens/utilities";
-import type { ItemObject } from "@freelens/list-layout";
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, isDefined } from "@freelensapp/utilities";
+import type { ItemObject } from "@freelensapp/list-layout";
 import type { Filter } from "./page-filters/store";
 import type { HeaderCustomizer, HeaderPlaceholders, ItemListStore, SearchFilter } from "./list-layout";
 import { SearchInputUrl } from "../input";

@@ -5,7 +5,7 @@
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import { Job } from "@freelens/kube-object";
+import { Job } from "@freelensapp/kube-object";
 
 export class JobApi extends KubeApi<Job> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

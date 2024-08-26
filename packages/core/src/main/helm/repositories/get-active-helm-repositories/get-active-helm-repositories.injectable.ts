@@ -8,8 +8,8 @@ import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectab
 import readYamlFileInjectable from "../../../../common/fs/read-yaml-file.injectable";
 import getHelmEnvInjectable from "../../get-helm-env/get-helm-env.injectable";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { AsyncResult } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 interface HelmRepositoryFromYaml {
   name: string;

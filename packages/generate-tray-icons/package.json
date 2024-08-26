@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/generate-tray-icons",
+  "name": "@freelensapp/generate-tray-icons",
   "version": "0.1.0",
   "description": "CLI generating tray icons for building a lens-like application",
   "license": "MIT",

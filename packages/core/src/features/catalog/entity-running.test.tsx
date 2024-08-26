@@ -12,7 +12,7 @@ import type { CatalogEntityActionContext } from "../../common/catalog";
 import { CatalogCategory, categoryVersion, CatalogEntity } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import { flushPromises } from "@freelens/test-utils";
+import { flushPromises } from "@freelensapp/test-utils";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import type { CatalogEntityOnBeforeRun, CatalogEntityRegistry } from "../../renderer/api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";

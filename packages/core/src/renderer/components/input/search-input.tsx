@@ -7,8 +7,8 @@ import "./search-input.scss";
 
 import React, { createRef } from "react";
 import { observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 import type { InputProps } from "./input";
 import { Input } from "./input";
 import { withInjectables } from "@ogre-tools/injectable-react";

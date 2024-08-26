@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor } from "@freelens/utilities";
-import type { AsyncResult } from "@freelens/utilities";
+import { urlBuilderFor } from "@freelensapp/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 interface HelmReleaseUpdatePayload {

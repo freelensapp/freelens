@@ -14,14 +14,14 @@ import directoryForUserDataInjectable from "../../../common/app-paths/directory-
 import { Cluster } from "../../../common/cluster/cluster";
 import type { Fetch } from "../../../common/fetch/fetch.injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
-import { Namespace } from "@freelens/kube-object";
+import { Namespace } from "@freelensapp/kube-object";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { Disposer } from "@freelens/utilities";
-import { disposer } from "@freelens/utilities";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
 import { renderFor } from "../test-utils/renderFor";
 import { NamespaceSelectFilter } from "./namespace-select-filter";
 import type { NamespaceStore } from "./store";

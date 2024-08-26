@@ -6,10 +6,10 @@
 import "./terminal-dock-tab.scss";
 import React from "react";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import type { DockTabProps } from "../dock-tab";
 import { DockTab } from "../dock-tab";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import type { TerminalStore } from "./store";
 import type { DockStore } from "../dock/store";
 import { reaction } from "mobx";

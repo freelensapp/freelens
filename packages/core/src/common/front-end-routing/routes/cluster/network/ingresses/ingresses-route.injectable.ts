@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { shouldShowResourceInjectionToken } from "../../../../../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
-import { computedOr } from "@freelens/utilities";
+import { computedOr } from "@freelensapp/utilities";
 import { frontEndRouteInjectionToken } from "../../../../front-end-route-injection-token";
 
 const ingressesRouteInjectable = getInjectable({

@@ -5,8 +5,8 @@
 
 import { render } from "@testing-library/react";
 import React from "react";
-import type { ProjectedSource } from "@freelens/kube-object";
-import { Pod } from "@freelens/kube-object";
+import type { ProjectedSource } from "@freelensapp/kube-object";
+import { Pod } from "@freelensapp/kube-object";
 import { Projected } from "./projected";
 
 describe("<Projected />", () => {

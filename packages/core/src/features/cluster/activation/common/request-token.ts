@@ -4,7 +4,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
-import type { ChannelRequester } from "@freelens/messaging";
+import type { ChannelRequester } from "@freelensapp/messaging";
 import type { activateClusterChannel, deactivateClusterChannel } from "./channels";
 
 export type RequestClusterActivation = ChannelRequester<typeof activateClusterChannel>;

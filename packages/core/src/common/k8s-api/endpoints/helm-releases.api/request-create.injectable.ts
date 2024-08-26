@@ -5,7 +5,7 @@
 import yaml from "js-yaml";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmReleaseUpdateDetails } from "../helm-releases.api";
-import { urlBuilderFor } from "@freelens/utilities";
+import { urlBuilderFor } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 interface HelmReleaseCreatePayload {

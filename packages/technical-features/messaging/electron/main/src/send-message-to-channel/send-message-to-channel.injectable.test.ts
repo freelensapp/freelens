@@ -1,7 +1,7 @@
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { messagingFeatureForMain } from "../feature";
-import { getMessageChannel, sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { getMessageChannel, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import getWebContentsInjectable from "./get-web-contents.injectable";
 import type { WebContents } from "electron";
 import allowCommunicationListenerInjectable from "./allow-communication-listener.injectable";

@@ -4,7 +4,7 @@
  */
 
 import type { OpenDialogOptions } from "electron";
-import type { RequestChannel } from "@freelens/messaging";
+import type { RequestChannel } from "@freelensapp/messaging";
 
 export type PathPickingResponse = {
   canceled: true;

@@ -7,16 +7,16 @@ import styles from "./network-policy-details.module.scss";
 
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { PolicyIpBlock, NetworkPolicyPeer, NetworkPolicyPort, LabelMatchExpression, LabelSelector } from "@freelens/kube-object";
-import { NetworkPolicy } from "@freelens/kube-object";
+import type { PolicyIpBlock, NetworkPolicyPeer, NetworkPolicyPort, LabelMatchExpression, LabelSelector } from "@freelensapp/kube-object";
+import { NetworkPolicy } from "@freelensapp/kube-object";
 import { Badge } from "../badge";
 import { SubTitle } from "../layout/sub-title";
 import { observer } from "mobx-react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { isEmpty } from "lodash";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface NetworkPolicyDetailsProps extends KubeObjectDetailsProps<NetworkPolicy> {
 }

@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { PriorityClassApi } from "@freelens/kube-api";
-import type { PriorityClass } from "@freelens/kube-object";
+import type { PriorityClassApi } from "@freelensapp/kube-api";
+import type { PriorityClass } from "@freelensapp/kube-object";
 
 export class PriorityClassStore extends KubeObjectStore<PriorityClass, PriorityClassApi> {
 }

@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import type { TooltipProps } from "./tooltip";
 import { Tooltip } from "./tooltip";
-import { isReactNode, StrictReactNode } from "@freelens/utilities";
+import { isReactNode, StrictReactNode } from "@freelensapp/utilities";
 import uniqueId from "lodash/uniqueId";
 
 export interface TooltipDecoratorProps {

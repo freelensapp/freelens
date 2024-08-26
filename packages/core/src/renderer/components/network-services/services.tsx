@@ -13,7 +13,7 @@ import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../kube-object/age";
 import type { ServiceStore } from "./store";
-import type { Service } from "@freelens/kube-object";
+import type { Service } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import serviceStoreInjectable from "./store.injectable";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";

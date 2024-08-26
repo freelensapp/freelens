@@ -4,8 +4,8 @@
  */
 
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { NetworkPolicyApi } from "@freelens/kube-api";
-import type { NetworkPolicy } from "@freelens/kube-object";
+import type { NetworkPolicyApi } from "@freelensapp/kube-api";
+import type { NetworkPolicy } from "@freelensapp/kube-object";
 
 export class NetworkPolicyStore extends KubeObjectStore<NetworkPolicy, NetworkPolicyApi> {
 }

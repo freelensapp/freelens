@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getMessageChannelListenerInjectable } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
 import systemThemeConfigurationInjectable from "../../../../renderer/themes/system-theme.injectable";
 import { systemThemeTypeUpdateChannel } from "../common/channels";
 

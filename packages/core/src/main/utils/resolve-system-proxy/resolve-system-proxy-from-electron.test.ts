@@ -8,7 +8,7 @@ import resolveSystemProxyFromElectronInjectable from "./resolve-system-proxy-fro
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getPromiseStatus } from "@freelens/test-utils";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { BrowserWindow, Session, WebContents } from "electron";

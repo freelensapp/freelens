@@ -1,6 +1,6 @@
 import { createContainer, DiContainer, Injectable } from "@ogre-tools/injectable";
 import asyncFn, { AsyncFnMock } from "@async-fn/jest";
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import {
   getMessageChannel,
   getMessageChannelListenerInjectable,
@@ -11,13 +11,13 @@ import {
   RequestChannel,
   requestFromChannelInjectionToken,
   sendMessageToChannelInjectionToken,
-} from "@freelens/messaging";
+} from "@freelensapp/messaging";
 
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
-import { getPromiseStatus } from "@freelens/test-utils";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import { getMessageBridgeFake } from "./get-message-bridge-fake";
-import { startApplicationInjectionToken } from "@freelens/application";
+import { startApplicationInjectionToken } from "@freelensapp/application";
 
 type SomeMessageChannel = MessageChannel<string>;
 type SomeRequestChannel = RequestChannel<string, number>;

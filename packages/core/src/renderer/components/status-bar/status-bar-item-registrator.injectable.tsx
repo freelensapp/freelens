@@ -11,9 +11,9 @@ import type { StatusBarItem } from "./status-bar-item-injection-token";
 import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
 import type { StatusBarRegistration } from "./status-bar-registration";
 import React from "react";
-import { getRandomIdInjectionToken } from "@freelens/random";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { Logger } from "@freelens/logger";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
 
 const statusBarItemRegistratorInjectable = getInjectable({
   id: "status-bar-item-registrator",

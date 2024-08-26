@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { getRandomIdInjectionToken } from "@freelens/random";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import { workloadOverviewDetailInjectionToken } from "./workload-overview-detail-injection-token";

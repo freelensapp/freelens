@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Namespace } from "@freelens/kube-object";
+import type { Namespace } from "@freelensapp/kube-object";
 import requestDeleteNormalNamespaceInjectable from "./request-delete-normal-namespace.injectable";
 import requestDeleteSubNamespaceAnchorInjectable from "./request-delete-sub-namespace.injectable";
 

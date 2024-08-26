@@ -5,13 +5,13 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { base64 } from "@freelens/utilities";
+import { base64 } from "@freelensapp/utilities";
 import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
 import React from "react";
 import type { SecretStore } from "../config-secrets/store";
 import secretStoreInjectable from "../config-secrets/store.injectable";
-import { Secret, SecretType } from "@freelens/kube-object";
+import { Secret, SecretType } from "@freelensapp/kube-object";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { SecretKey } from "./secret-key";

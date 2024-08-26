@@ -4,9 +4,9 @@
  */
 
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
-import { asLegacyGlobalForExtensionApi } from "@freelens/legacy-global-di";
+import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import type { AppEvent } from "../../common/app-event-bus/event-bus";
-import type { EventEmitter, EventEmitterCallback, EventEmitterOptions } from "@freelens/event-emitter";
+import type { EventEmitter, EventEmitterCallback, EventEmitterOptions } from "@freelensapp/event-emitter";
 
 export type {
   AppEvent,

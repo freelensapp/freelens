@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isObject, hasTypedProperty, hasOptionalTypedProperty, isString, isNumber } from "@freelens/utilities";
+import { isObject, hasTypedProperty, hasOptionalTypedProperty, isString, isNumber } from "@freelensapp/utilities";
 import type { KubeStatusData } from "./api-types";
 
 /**

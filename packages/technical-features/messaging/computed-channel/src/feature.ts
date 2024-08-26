@@ -1,6 +1,6 @@
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
-import { getFeature } from "@freelens/feature-core";
-import { messagingFeature } from "@freelens/messaging";
+import { getFeature } from "@freelensapp/feature-core";
+import { messagingFeature } from "@freelensapp/messaging";
 
 export const computedChannelFeature = getFeature({
   id: "computed-channel",

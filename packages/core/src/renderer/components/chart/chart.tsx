@@ -9,7 +9,7 @@ import React from "react";
 import type { PluginServiceRegistrationOptions } from "chart.js";
 import ChartJS from "chart.js";
 import { remove } from "lodash";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import { StatusBrick } from "../status-brick";
 import { Badge } from "../badge";
 

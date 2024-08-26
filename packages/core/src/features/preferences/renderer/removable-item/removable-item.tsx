@@ -7,8 +7,8 @@ import styles from "./removable-item.module.scss";
 import type { DOMAttributes } from "react";
 import React from "react";
 
-import { cssNames } from "@freelens/utilities";
-import { Icon } from "@freelens/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { Icon } from "@freelensapp/icon";
 
 export interface RemovableItemProps extends DOMAttributes<any>{
   icon?: string;

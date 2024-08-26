@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { MetricCurrentTarget, V2Beta1ContainerResourceMetricSource, V2Beta1ContainerResourceMetricStatus, V2Beta1ExternalMetricSource, V2Beta1ExternalMetricStatus, V2Beta1ObjectMetricSource, V2Beta1ObjectMetricStatus, V2Beta1PodsMetricSource, V2Beta1PodsMetricStatus, V2Beta1ResourceMetricSource, V2Beta1ResourceMetricStatus } from "@freelens/kube-object";
+import type { MetricCurrentTarget, V2Beta1ContainerResourceMetricSource, V2Beta1ContainerResourceMetricStatus, V2Beta1ExternalMetricSource, V2Beta1ExternalMetricStatus, V2Beta1ObjectMetricSource, V2Beta1ObjectMetricStatus, V2Beta1PodsMetricSource, V2Beta1PodsMetricStatus, V2Beta1ResourceMetricSource, V2Beta1ResourceMetricStatus } from "@freelensapp/kube-object";
 
 export class HorizontalPodAutoscalerV1MetricParser {
   public getResource({ current, target }: { current: V2Beta1ResourceMetricStatus | undefined; target: V2Beta1ResourceMetricSource }): MetricCurrentTarget {

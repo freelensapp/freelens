@@ -7,7 +7,7 @@ import type { PortForwardArgs, PortForwardDependencies } from "./port-forward";
 import { PortForward } from "./port-forward";
 import bundledKubectlInjectable from "../../../kubectl/bundled-kubectl.injectable";
 import getPortFromStreamInjectable from "../../../utils/get-port-from-stream.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export type CreatePortForward = (pathToKubeConfig: string, args: PortForwardArgs) => PortForward;
 

@@ -9,17 +9,17 @@ import React from "react";
 import type { IObservableValue } from "mobx";
 import { observable, makeObservable, computed } from "mobx";
 import { observer } from "mobx-react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames, noop, prevDefault } from "@freelens/utilities";
-import type { ButtonProps } from "@freelens/button";
-import { Button } from "@freelens/button";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop, prevDefault } from "@freelensapp/utilities";
+import type { ButtonProps } from "@freelensapp/button";
+import { Button } from "@freelensapp/button";
 import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
-import { Icon } from "@freelens/icon";
-import type { ShowNotification } from "@freelens/notifications";
+import { Icon } from "@freelensapp/icon";
+import type { ShowNotification } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import confirmDialogStateInjectable from "./state.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface ConfirmDialogProps extends Partial<DialogProps> {
 }

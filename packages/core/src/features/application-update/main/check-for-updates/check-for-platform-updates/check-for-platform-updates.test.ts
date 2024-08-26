@@ -10,9 +10,9 @@ import type { AppUpdater, UpdateCheckResult } from "electron-updater";
 import type { CheckForPlatformUpdates } from "./check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./check-for-platform-updates.injectable";
 import type { UpdateChannel, ReleaseChannel } from "../../../common/update-channels";
-import { getPromiseStatus } from "@freelens/test-utils";
-import { loggerInjectionToken } from "@freelens/logger";
-import { noop } from "@freelens/utilities";
+import { getPromiseStatus } from "@freelensapp/test-utils";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { noop } from "@freelensapp/utilities";
 
 describe("check-for-platform-updates", () => {
   let checkForPlatformUpdates: CheckForPlatformUpdates;

@@ -12,11 +12,11 @@ import asyncFn from "@async-fn/jest";
 import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
 import execFileInjectable, { type ExecFile } from "../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { Logger } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
-import { showErrorNotificationInjectable } from "@freelens/notifications";
-import { noop } from "@freelens/utilities";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { noop } from "@freelensapp/utilities";
 
 describe("listing active helm repositories in preferences", () => {
   let builder: ApplicationBuilder;

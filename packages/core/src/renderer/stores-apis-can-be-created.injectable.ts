@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
+import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
 
 const storesAndApisCanBeCreatedInjectable = getInjectable({

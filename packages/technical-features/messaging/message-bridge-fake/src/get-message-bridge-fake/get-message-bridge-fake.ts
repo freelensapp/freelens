@@ -5,7 +5,7 @@ import type {
   MessageChannelListener,
   RequestChannel,
   RequestChannelHandler,
-} from "@freelens/messaging";
+} from "@freelensapp/messaging";
 
 import {
   enlistMessageChannelListenerInjectionToken,
@@ -13,7 +13,7 @@ import {
   RequestFromChannel,
   requestFromChannelInjectionToken,
   sendMessageToChannelInjectionToken,
-} from "@freelens/messaging";
+} from "@freelensapp/messaging";
 
 import { pipeline } from "@ogre-tools/fp";
 import { filter, map } from "lodash/fp";

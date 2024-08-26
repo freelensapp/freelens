@@ -4,8 +4,8 @@
  */
 import type { DiContainer } from "@ogre-tools/injectable";
 import { MESSAGE } from "triple-beam";
-import type { SendMessageToChannel } from "@freelens/messaging";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import type { SendMessageToChannel } from "@freelensapp/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";

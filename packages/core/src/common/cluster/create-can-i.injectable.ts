@@ -5,7 +5,7 @@
 
 import type { AuthorizationV1Api, V1ResourceAttributes } from "@kubernetes/client-node";
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 /**
  * Requests the permissions for actions on the kube cluster

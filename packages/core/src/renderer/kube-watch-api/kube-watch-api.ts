@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { comparer, reaction } from "mobx";
-import type { Disposer } from "@freelens/utilities";
-import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelens/utilities";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelensapp/utilities";
 import { once } from "lodash";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import type { KubeObjectStoreLoadAllParams, KubeObjectStoreSubscribeParams } from "../../common/k8s-api/kube-object.store";
 import type { ClusterContext } from "../cluster-frame-context/cluster-frame-context";
 

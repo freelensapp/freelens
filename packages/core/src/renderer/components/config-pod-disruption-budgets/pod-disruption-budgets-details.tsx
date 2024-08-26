@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { DrawerItem } from "../drawer";
 import { Badge } from "../badge";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { PodDisruptionBudget } from "@freelens/kube-object";
+import type { PodDisruptionBudget } from "@freelensapp/kube-object";
 
 export interface PodDisruptionBudgetDetailsProps extends KubeObjectDetailsProps<PodDisruptionBudget> {
 }

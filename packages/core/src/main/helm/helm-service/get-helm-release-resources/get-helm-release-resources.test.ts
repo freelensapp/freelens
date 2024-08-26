@@ -12,8 +12,8 @@ import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { ExecFileWithInput } from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
 import execFileWithInputInjectable from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
-import type { AsyncResult } from "@freelens/utilities";
-import type { KubeJsonApiData } from "@freelens/kube-object";
+import type { AsyncResult } from "@freelensapp/utilities";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 describe("get helm release resources", () => {
   let getHelmReleaseResources: GetHelmReleaseResources;

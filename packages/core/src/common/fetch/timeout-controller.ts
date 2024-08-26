@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { formatDuration } from "@freelens/utilities";
+import { formatDuration } from "@freelensapp/utilities";
 
 /**
  * Creates an AbortController with an associated timeout

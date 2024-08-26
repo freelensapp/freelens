@@ -4,10 +4,10 @@
  */
 
 import { kebabCase } from "lodash";
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import electronAppInjectable from "./electron-app.injectable";
 import EventEmitter from "events";
-import { getOrInsert } from "@freelens/utilities";
+import { getOrInsert } from "@freelensapp/utilities";
 
 export default getGlobalOverride(electronAppInjectable, () => {
   const commandLineArgs: string[] = [];

@@ -2,9 +2,9 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getStartableStoppable } from "@freelens/startable-stoppable";
-import type { Disposer } from "@freelens/utilities";
-import { delay, disposer } from "@freelens/utilities";
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
+import type { Disposer } from "@freelensapp/utilities";
+import { delay, disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { random } from "lodash";
 import { reaction, runInAction } from "mobx";

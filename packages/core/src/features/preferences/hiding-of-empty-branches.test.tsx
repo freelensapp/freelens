@@ -10,8 +10,8 @@ import { runInAction } from "mobx";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { preferenceItemInjectionToken } from "./renderer/preference-items/preference-item-injection-token";
-import type { Discover } from "@freelens/react-testing-library-discovery";
-import { discoverFor } from "@freelens/react-testing-library-discovery";
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("preferences - hiding-of-empty-branches, given in preferences page", () => {
   let builder: ApplicationBuilder;

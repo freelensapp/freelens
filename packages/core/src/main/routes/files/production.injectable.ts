@@ -9,7 +9,7 @@ import staticFilesDirectoryInjectable from "../../../common/vars/static-files-di
 import type { LensApiRequest } from "../../router/route";
 import path from "path";
 import { contentTypes } from "../../router/router-content-types";
-import { prefixedLoggerInjectable } from "@freelens/logger";
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 
 const prodStaticFileRouteHandlerInjectable = getInjectable({
   id: "prod-static-file-route-handler",

@@ -5,8 +5,8 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { PodVolumeVariants, Pod, SecretReference, LocalObjectReference } from "@freelens/kube-object";
-import type { KubeApiQueryParams, ResourceDescriptor } from "@freelens/kube-api";
+import type { PodVolumeVariants, Pod, SecretReference, LocalObjectReference } from "@freelensapp/kube-object";
+import type { KubeApiQueryParams, ResourceDescriptor } from "@freelensapp/kube-api";
 import { DrawerItem } from "../../../drawer";
 import type { GetDetailsUrl } from "../../../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../../../kube-detail-params/get-details-url.injectable";

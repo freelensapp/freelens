@@ -8,7 +8,7 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { observable, reaction, makeObservable } from "mobx";
 import { Badge } from "../badge/badge";
-import { Icon } from "@freelens/icon";
+import { Icon } from "@freelensapp/icon";
 import { Notice } from "../extensions/notice";
 
 export interface ShowMetricsSettingProps {

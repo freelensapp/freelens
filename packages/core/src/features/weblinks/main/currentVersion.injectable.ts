@@ -7,7 +7,7 @@ import { docsUrl, forumsUrl } from "../../../common/vars";
 import { getInjectable } from "@ogre-tools/injectable";
 import { weblinkStoreMigrationInjectionToken } from "../../../features/weblinks/common/migration-token";
 import { lensDocumentationWeblinkId, lensForumsWeblinkId } from "../../../features/weblinks/main/links";
-import { applicationInformationToken } from "@freelens/application";
+import { applicationInformationToken } from "@freelensapp/application";
 import type { WeblinkData } from "../common/storage.injectable";
 
 const currentVersionWeblinkStoreMigrationInjectable = getInjectable({

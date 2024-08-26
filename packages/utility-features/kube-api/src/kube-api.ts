@@ -16,27 +16,27 @@ import type {
   KubeObject,
   KubeObjectScope,
   Scale,
-} from "@freelens/kube-object";
+} from "@freelensapp/kube-object";
 import {
   isJsonApiData,
   isJsonApiDataList,
   isPartialJsonApiData,
   KubeStatus,
   isKubeStatusData,
-} from "@freelens/kube-object";
+} from "@freelensapp/kube-object";
 import byline from "byline";
 import type { IKubeWatchEvent } from "./kube-watch-event";
 import type { KubeJsonApi } from "./kube-json-api";
-import type { Disposer } from "@freelens/utilities";
-import { isDefined, noop, WrappedAbortController } from "@freelens/utilities";
-import type { RequestInit, Response } from "@freelens/node-fetch";
+import type { Disposer } from "@freelensapp/utilities";
+import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Patch } from "rfc6902";
 import assert from "assert";
 import type { PartialDeep } from "type-fest";
-import type { LogFunction } from "@freelens/logger";
+import type { LogFunction } from "@freelensapp/logger";
 import { matches } from "lodash/fp";
 import { makeObservable, observable } from "mobx";
-import type { ScaleCreateOptions } from "@freelens/kube-object/src/types/scale";
+import type { ScaleCreateOptions } from "@freelensapp/kube-object/src/types/scale";
 
 /**
  * The options used for creating a `KubeApi`

@@ -7,7 +7,7 @@ import { observable, makeObservable } from "mobx";
 import EventEmitter from "events";
 import type TypedEventEmitter from "typed-emitter";
 import type { Arguments } from "typed-emitter";
-import type { Defaulted } from "@freelens/utilities";
+import type { Defaulted } from "@freelensapp/utilities";
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
 interface WebsocketApiParams {

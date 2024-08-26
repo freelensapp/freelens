@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerTransportInjectionToken } from "@freelens/logger";
+import { loggerTransportInjectionToken } from "@freelensapp/logger";
 import type winston from "winston";
 import { MESSAGE } from "triple-beam";
 
@@ -14,7 +14,7 @@ import {
   ipcFileLoggerChannel,
 } from "../common/ipc-file-logger-channel";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 
 /**
  * Winston uses symbol property for the actual message.

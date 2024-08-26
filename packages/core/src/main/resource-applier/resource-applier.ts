@@ -9,14 +9,14 @@ import tempy from "tempy";
 import type { Patch } from "rfc6902";
 import type { KubernetesObject } from "@kubernetes/client-node";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
-import type { AsyncResult } from "@freelens/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export interface ResourceApplierDependencies {
   emitAppEvent: EmitAppEvent;

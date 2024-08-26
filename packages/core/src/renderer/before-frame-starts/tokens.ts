@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectionToken } from "@ogre-tools/injectable";
-import type { Runnable } from "@freelens/run-many";
+import type { Runnable } from "@freelensapp/run-many";
 
 // NOTE: these are run before any other token, mostly to set up things that all other runnables need
 export const beforeFrameStartsFirstInjectionToken = getInjectionToken<Runnable>({

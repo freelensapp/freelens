@@ -4,7 +4,7 @@
  */
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { Pod } from "@freelens/kube-object";
+import type { Pod } from "@freelensapp/kube-object";
 import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";

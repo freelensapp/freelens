@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import statInjectable from "../../../../../../common/fs/stat.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface SyncKind {
   type: "file" | "folder" | "unknown";

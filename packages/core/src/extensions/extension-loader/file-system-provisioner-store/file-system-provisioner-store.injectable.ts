@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
 import createPersistentStorageInjectable from "../../../features/persistent-storage/common/create.injectable";
 import { action } from "mobx";
-import { object } from "@freelens/utilities";
+import { object } from "@freelensapp/utilities";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 
 const fileSystemProvisionerStoreInjectable = getInjectable({

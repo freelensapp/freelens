@@ -9,13 +9,13 @@ import React from "react";
 import { observer } from "mobx-react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { PodSecurityPolicy } from "@freelens/kube-object";
+import { PodSecurityPolicy } from "@freelensapp/kube-object";
 import { Badge } from "../badge";
 import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { Logger } from "@freelens/logger";
+import type { Logger } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { StrictReactNode } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface PodSecurityPolicyDetailsProps extends KubeObjectDetailsProps<PodSecurityPolicy> {
 }

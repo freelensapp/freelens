@@ -1,11 +1,11 @@
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { startApplicationInjectionToken } from "@freelens/application";
-import { registerFeature } from "@freelens/feature-core";
+import { startApplicationInjectionToken } from "@freelensapp/application";
+import { registerFeature } from "@freelensapp/feature-core";
 import { messagingFeatureForRenderer } from "./feature";
 import { runInAction } from "mobx";
 import ipcRendererInjectable from "./ipc/ipc-renderer.injectable";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { frameCommunicationAdminChannel } from "./allow-communication-to-iframe.injectable";
 
 describe("allow communication to iframe", () => {

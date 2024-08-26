@@ -13,13 +13,13 @@ import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-
 import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import { pipeline } from "@ogre-tools/fp";
 import { groupBy, map } from "lodash/fp";
-import type { KubeJsonApiData } from "@freelens/kube-object";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import type { GetResourceDetailsUrl } from "./get-resource-details-url.injectable";
 import getResourceDetailsUrlInjectable from "./get-resource-details-url.injectable";
 import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
 import updateReleaseInjectable from "../../update-release/update-release.injectable";
-import type { ShowCheckedErrorNotification, ShowNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelens/notifications";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import React from "react";
 import createUpgradeChartTabInjectable from "../../../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
@@ -30,7 +30,7 @@ import activeThemeInjectable from "../../../../themes/active.injectable";
 import hostedClusterIdInjectable from "../../../../cluster-frame-context/hosted-cluster-id.injectable";
 import helmChartRepoInjectable from "../../helm-chart-repo.injectable";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-import { waitUntilDefined } from "@freelens/utilities";
+import { waitUntilDefined } from "@freelensapp/utilities";
 
 const releaseDetailsModelInjectable = getInjectable({
   id: "release-details-model",

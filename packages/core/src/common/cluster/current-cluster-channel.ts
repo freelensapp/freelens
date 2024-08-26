@@ -4,7 +4,7 @@
  */
 
 import type { ClusterId } from "../cluster-types";
-import type { MessageChannel } from "@freelens/messaging";
+import type { MessageChannel } from "@freelensapp/messaging";
 
 export const currentClusterMessageChannel: MessageChannel<ClusterId> = {
   id: "current-visible-cluster",

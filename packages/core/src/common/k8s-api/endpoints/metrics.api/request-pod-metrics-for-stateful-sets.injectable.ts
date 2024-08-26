@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
-import type { StatefulSet } from "@freelens/kube-object";
+import type { StatefulSet } from "@freelensapp/kube-object";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 export interface StatefulSetPodMetricData {

@@ -6,8 +6,8 @@
 import "./no-items.scss";
 
 import React from "react";
-import type { IClassName, StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
 
 export interface NoItemsProps {
   className?: IClassName;

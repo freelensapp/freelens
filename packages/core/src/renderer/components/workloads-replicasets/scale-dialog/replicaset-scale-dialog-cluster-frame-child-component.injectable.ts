@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { clusterFrameChildComponentInjectionToken } from "@freelens/react-application";
+import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { ReplicaSetScaleDialog } from "./dialog";
 
 const replicasetScaleDialogClusterFrameChildComponentInjectable = getInjectable({

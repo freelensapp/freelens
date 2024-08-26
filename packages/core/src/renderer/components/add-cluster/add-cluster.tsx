@@ -14,9 +14,9 @@ import React from "react";
 import * as uuid from "uuid";
 import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
 import { docsUrl } from "../../../common/vars";
-import { isDefined, iter } from "@freelens/utilities";
-import { Button } from "@freelens/button";
-import type { ShowNotification } from "@freelens/notifications";
+import { isDefined, iter } from "@freelensapp/utilities";
+import { Button } from "@freelensapp/button";
+import type { ShowNotification } from "@freelensapp/notifications";
 import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -27,7 +27,7 @@ import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.inje
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelens/notifications";
+import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 interface Option {
   config: KubeConfig;

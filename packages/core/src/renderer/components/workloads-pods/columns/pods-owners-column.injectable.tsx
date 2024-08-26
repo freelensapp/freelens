@@ -2,14 +2,14 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { stopPropagation } from "@freelens/utilities";
+import { stopPropagation } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../../badge";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import { podListLayoutColumnInjectionToken } from "@freelens/list-layout";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 
 export const podsOwnersColumnInjectable = getInjectable({
   id: "pods-owners-column",

@@ -6,10 +6,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
-import { storesAndApisCanBeCreatedInjectionToken, deploymentApiInjectable } from "@freelens/kube-api-specifics";
+import { storesAndApisCanBeCreatedInjectionToken, deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
 import { DeploymentStore } from "./store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 const deploymentStoreInjectable = getInjectable({
   id: "deployment-store",

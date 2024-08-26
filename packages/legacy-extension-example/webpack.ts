@@ -24,7 +24,7 @@ const webpack = [
     },
     externals: [
       {
-        "@freelens/extensions": "var global.LensExtensions",
+        "@freelensapp/extensions": "var global.LensExtensions",
         react: "var global.React",
         "react-dom": "var global.ReactDOM",
         mobx: "var global.Mobx",
@@ -60,7 +60,7 @@ const webpack = [
     },
     externals: [
       {
-        "@freelens/extensions": "var global.LensExtensions",
+        "@freelensapp/extensions": "var global.LensExtensions",
         react: "var global.React",
         "react-dom": "var global.ReactDOM",
         mobx: "var global.Mobx",

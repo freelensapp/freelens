@@ -7,7 +7,7 @@ import "./daemonsets.scss";
 
 import React from "react";
 import { observer } from "mobx-react";
-import type { DaemonSet } from "@freelens/kube-object";
+import type { DaemonSet } from "@freelensapp/kube-object";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { Badge } from "../badge";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";

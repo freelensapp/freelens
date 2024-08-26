@@ -1,11 +1,11 @@
-# @freelens/typescript
+# @freelensapp/typescript
 
 This package contains typescript configurations for Lens packages.
 
 ## Install
 
 ```
-$ npm install @freelens/typescript
+$ npm install @freelensapp/typescript
 ```
 
 ## Features
@@ -16,6 +16,6 @@ Base configuration for minimal duplication.
 **tsconfig.json**
 ```json
 {
-  "extends": "@freelens/typescript/config/base.json"
+  "extends": "@freelensapp/typescript/config/base.json"
 }
 ```

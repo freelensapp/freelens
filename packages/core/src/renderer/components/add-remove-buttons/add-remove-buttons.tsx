@@ -6,10 +6,10 @@
 import "./add-remove-buttons.scss";
 
 import React from "react";
-import type { StrictReactNode } from "@freelens/utilities";
-import { cssNames } from "@freelens/utilities";
-import { Button } from "@freelens/button";
-import { Icon } from "@freelens/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import { Button } from "@freelensapp/button";
+import { Icon } from "@freelensapp/icon";
 
 export interface AddRemoveButtonsProps extends React.HTMLAttributes<any> {
   onAdd?: () => void;

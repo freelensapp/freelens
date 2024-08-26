@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeApplicationIsLoadingInjectionToken } from "@freelens/application";
+import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import userPreferencesPersistentStorageInjectable from "../common/storage.injectable";
 import userPreferencesStorageFileNameMigrationInjectable from "./file-name-migration.injectable";
 import { buildVersionInitializationInjectable } from "../../vars/build-version/main/init.injectable";

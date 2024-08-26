@@ -8,7 +8,7 @@ import type { ChildOfParentComposite, ParentOfChildComposite } from "../../../..
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { Labelable } from "../../../../common/utils/composable-responsibilities/labelable/labelable";
 import type { MaybeShowable } from "../../../../common/utils/composable-responsibilities/showable/showable";
-import type { Orderable, MaybeOrderable } from "@freelens/utilities";
+import type { Orderable, MaybeOrderable } from "@freelensapp/utilities";
 import type { GetSeparator } from "../../../../common/utils/add-separator/add-separator";
 import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 

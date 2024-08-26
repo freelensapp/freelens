@@ -9,13 +9,13 @@ import type { KubeConfig } from "@kubernetes/client-node";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 import { ShellOpenError, ShellSession } from "../shell-session";
 import { get, once } from "lodash";
-import { NodeApi } from "@freelens/kube-api";
+import { NodeApi } from "@freelensapp/kube-api";
 import { TerminalChannels } from "../../../common/terminal/channels";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import { initialNodeShellImage } from "../../../common/cluster-types";
 import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
-import type { Pod } from "@freelens/kube-object";
+import type { Pod } from "@freelensapp/kube-object";
 
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;

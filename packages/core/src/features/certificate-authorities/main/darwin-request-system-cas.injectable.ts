@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { AsyncResult } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { AsyncResult } from "@freelensapp/utilities";
 import { platformSpecificRequestSystemCAsInjectionToken } from "../common/request-system-cas-token";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet#other_assertions

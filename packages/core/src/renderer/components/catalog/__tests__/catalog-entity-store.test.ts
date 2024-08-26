@@ -12,7 +12,7 @@ import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registr
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { CatalogEntityStore } from "../catalog-entity-store.injectable";
 import catalogEntityStoreInjectable from "../catalog-entity-store.injectable";
-import { noop } from "@freelens/utilities";
+import { noop } from "@freelensapp/utilities";
 import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 
 class TestEntityOne extends CatalogEntity {

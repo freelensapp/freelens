@@ -6,7 +6,7 @@
 import React from "react";
 import yaml from "js-yaml";
 import { DrawerItem, DrawerParamToggler } from "../drawer";
-import type { DaemonSet, Deployment, Job, Pod, ReplicaSet, StatefulSet } from "@freelens/kube-object";
+import type { DaemonSet, Deployment, Job, Pod, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 import { MonacoEditor } from "../monaco-editor";
 
 export interface PodDetailsAffinitiesProps {

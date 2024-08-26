@@ -6,8 +6,8 @@
 import "./button.scss";
 import type { ButtonHTMLAttributes } from "react";
 import React from "react";
-import { cssNames, StrictReactNode } from "@freelens/utilities";
-import { withTooltip } from "@freelens/tooltip";
+import { cssNames, StrictReactNode } from "@freelensapp/utilities";
+import { withTooltip } from "@freelensapp/tooltip";
 
 export interface ButtonProps extends ButtonHTMLAttributes<any> {
   label?: StrictReactNode;

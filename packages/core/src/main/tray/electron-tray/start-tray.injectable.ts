@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import electronTrayInjectable from "./electron-tray.injectable";
 
 const startTrayInjectable = getInjectable({

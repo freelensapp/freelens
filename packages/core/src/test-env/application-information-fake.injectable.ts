@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { applicationInformationToken } from "@freelens/application";
+import { applicationInformationToken } from "@freelensapp/application";
 
 export const applicationInformationFakeInjectable = getInjectable({
   id: "application-information-fake",

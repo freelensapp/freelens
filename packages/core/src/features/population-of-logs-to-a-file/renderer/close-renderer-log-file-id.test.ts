@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type winston from "winston";
-import type { SendMessageToChannel } from "@freelens/messaging";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import type { SendMessageToChannel } from "@freelensapp/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { winstonLoggerInjectable } from "@freelens/logger";
+import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import closeRendererLogFileInjectable from "./close-renderer-log-file.injectable";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";

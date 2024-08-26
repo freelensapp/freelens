@@ -5,8 +5,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import type { HelmRepo } from "../../../../common/helm/helm-repo";
-import { loggerInjectionToken } from "@freelens/logger";
-import type { AsyncResult } from "@freelens/utilities";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 const removeHelmRepositoryInjectable = getInjectable({
   id: "remove-helm-repository",

@@ -4,7 +4,7 @@
  */
 
 import { createMemoryHistory } from "history";
-import { getGlobalOverride } from "@freelens/test-utils";
-import { historyInjectionToken } from "@freelens/routing";
+import { getGlobalOverride } from "@freelensapp/test-utils";
+import { historyInjectionToken } from "@freelensapp/routing";
 
 export default getGlobalOverride(historyInjectionToken, () => createMemoryHistory());

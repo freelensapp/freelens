@@ -9,12 +9,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { reaction } from "mobx";
 import { observer } from "mobx-react";
-import type { Pod, Secret } from "@freelens/kube-object";
+import type { Pod, Secret } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { secretApiInjectable } from "@freelens/kube-api-specifics";
+import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { SecretApi } from "@freelens/kube-api";
+import type { SecretApi } from "@freelensapp/kube-api";
 
 export interface PodDetailsSecretsProps {
   pod: Pod;

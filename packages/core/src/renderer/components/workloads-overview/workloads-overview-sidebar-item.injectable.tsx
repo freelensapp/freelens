@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import workloadsOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/overview/workloads-overview-route.injectable";
 import workloadsSidebarItemInjectable from "../workloads/workloads-sidebar-item.injectable";
-import { sidebarItemInjectionToken } from "@freelens/cluster-sidebar";
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToWorkloadsOverviewInjectable from "../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
 

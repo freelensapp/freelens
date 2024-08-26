@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
-import { prometheusProviderInjectionToken } from "@freelens/prometheus";
+import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
 
 const prometheusProvidersInjectable = getInjectable({
   id: "prometheus-providers",

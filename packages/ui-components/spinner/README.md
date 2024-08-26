@@ -1,15 +1,15 @@
-# @freelens/spinner
+# @freelensapp/spinner
 
 This package contains stuff related to creating Lens-applications. 
 
 # Usage
 
 ```bash
-$ npm install @freelens/spinner
+$ npm install @freelensapp/spinner
 ```
 
 ```typescript
-import { Spinner } from "@freelens/spinner";
+import { Spinner } from "@freelensapp/spinner";
 ```
 
 ## Extendability

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@freelens/test-utils";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import hardwareAccelerationShouldBeDisabledInjectable from "./hardware-acceleration-should-be-disabled.injectable";
 
 export default getGlobalOverride(hardwareAccelerationShouldBeDisabledInjectable, () => false);

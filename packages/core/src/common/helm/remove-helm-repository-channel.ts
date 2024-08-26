@@ -2,8 +2,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { AsyncResult } from "@freelens/utilities";
-import { getRequestChannel } from "@freelens/messaging";
+import type { AsyncResult } from "@freelensapp/utilities";
+import { getRequestChannel } from "@freelensapp/messaging";
 import type { HelmRepo } from "./helm-repo";
 
 export const removeHelmRepositoryChannel = getRequestChannel<

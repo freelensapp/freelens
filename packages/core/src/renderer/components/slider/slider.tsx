@@ -8,7 +8,7 @@
 import "./slider.scss";
 
 import React, { Component } from "react";
-import { cssNames } from "@freelens/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import type { SliderClassKey, SliderProps as MaterialSliderProps } from "@material-ui/core/Slider";
 import MaterialSlider from "@material-ui/core/Slider";
 import assert from "assert";

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import React from "react";
 
 interface FormControlLabelProps {

@@ -5,8 +5,8 @@
 
 import "./radio.scss";
 import React, { useContext, useRef } from "react";
-import type { StrictReactNode, SingleOrMany } from "@freelens/utilities";
-import { cssNames, noop } from "@freelens/utilities";
+import type { StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
 
 export interface RadioGroupProps<T> {
   className?: string;

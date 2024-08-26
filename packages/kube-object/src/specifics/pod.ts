@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isDefined } from "@freelens/utilities";
+import { isDefined } from "@freelensapp/utilities";
 import type { RequireExactlyOne } from "type-fest";
 import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type {

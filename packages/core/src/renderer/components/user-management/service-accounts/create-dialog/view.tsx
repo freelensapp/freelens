@@ -23,8 +23,8 @@ import closeCreateServiceAccountDialogInjectable from "./close.injectable";
 import serviceAccountStoreInjectable from "../store.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import createServiceAccountDialogStateInjectable from "./state.injectable";
-import type { ShowCheckedErrorNotification } from "@freelens/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelens/notifications";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface CreateServiceAccountDialogProps extends Partial<DialogProps> {
 }

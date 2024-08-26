@@ -9,13 +9,13 @@ import React from "react";
 import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";
-import type { ShowNotification } from "@freelens/notifications";
-import { Button } from "@freelens/button";
-import { Icon } from "@freelens/icon";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { Button } from "@freelensapp/button";
+import { Icon } from "@freelensapp/icon";
 import { clipboard } from "electron";
 import { kebabCase } from "lodash/fp";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { showSuccessNotificationInjectable } from "@freelens/notifications";
+import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 
 export interface LogsDialogProps extends DialogProps {
   title: string;

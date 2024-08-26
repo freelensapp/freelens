@@ -4,10 +4,10 @@
  */
 import React from "react";
 import { getInjectable } from "@ogre-tools/injectable";
-import { rootFrameChildComponentInjectionToken } from "@freelens/react-application";
+import { rootFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { ClusterManager } from "./cluster-manager";
 import { computed } from "mobx";
-import { ErrorBoundary } from "@freelens/error-boundary";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
 
 const clusterManagerRootFrameChildComponentInjectable = getInjectable({
   id: "cluster-manager-root-frame-child-component",

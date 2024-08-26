@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { onLoadOfApplicationInjectionToken } from "@freelens/application";
-import { requestFromChannelInjectionToken } from "@freelens/messaging";
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectablesForInitializable } from "../../../../../common/initializable-state/create";
 import { updatingIsEnabledChannel, updatingIsEnabledInitializable } from "../common/token";
 

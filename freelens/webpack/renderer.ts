@@ -22,7 +22,7 @@ import {
   htmlTemplate,
   publicPath,
 } from "./vars";
-import corePackageJson from "@freelens/core/package.json";
+import corePackageJson from "@freelensapp/core/package.json";
 
 const renderer: webpack.Configuration = {
   target: "electron-renderer",
@@ -119,7 +119,7 @@ const renderer: webpack.Configuration = {
       patterns: [
         {
           from: path.resolve(
-            path.dirname(require.resolve("@freelens/core/package.json")),
+            path.dirname(require.resolve("@freelensapp/core/package.json")),
             corePackageJson.exports["./fonts"]
           ),
           to: "fonts/[name][ext]",

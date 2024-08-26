@@ -1,4 +1,4 @@
-import type { StrictReactNode } from "@freelens/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { useEffect } from "react";
 

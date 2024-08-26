@@ -1,5 +1,5 @@
 {
-  "name": "@freelens/test-utils",
+  "name": "@freelensapp/test-utils",
   "version": "0.1.0",
   "description": "A collection of utilities for testing",
   "type": "commonjs",
@@ -33,7 +33,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@freelens/webpack": "^0.1.0",
+    "@freelensapp/webpack": "^0.1.0",
     "@types/lodash": "^4.14.191"
   }
 }

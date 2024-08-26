@@ -1,7 +1,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IpcMainEvent } from "electron";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
-import { enlistMessageChannelListenerInjectionToken } from "@freelens/messaging";
+import { enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 
 const enlistMessageChannelListenerInjectable = getInjectable({
   id: "enlist-message-channel-listener",

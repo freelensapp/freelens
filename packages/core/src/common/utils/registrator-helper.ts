@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { iter } from "@freelens/utilities";
+import { iter } from "@freelensapp/utilities";
 import type { DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
 
 // Register new injectables and deregister removed injectables by id

@@ -6,8 +6,8 @@
 import styles from "./cluster-no-metrics.module.scss";
 
 import React from "react";
-import { Icon } from "@freelens/icon";
-import { cssNames } from "@freelens/utilities";
+import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
 import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";

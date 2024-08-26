@@ -1,6 +1,6 @@
 import { createContainer, DiContainer, Injectable } from "@ogre-tools/injectable";
 
-import { registerFeature } from "@freelens/feature-core";
+import { registerFeature } from "@freelensapp/feature-core";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
 
@@ -20,7 +20,7 @@ import {
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 
 import { getMessageChannel } from "./features/actual/message/get-message-channel";
-import { applicationFeature, startApplicationInjectionToken } from "@freelens/application";
+import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 
 describe("listening-of-messages", () => {
   let di: DiContainer;

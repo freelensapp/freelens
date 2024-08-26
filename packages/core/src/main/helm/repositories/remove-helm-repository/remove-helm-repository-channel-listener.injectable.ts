@@ -4,7 +4,7 @@
  */
 import removeHelmRepositoryInjectable from "./remove-helm-repository.injectable";
 import { removeHelmRepositoryChannel } from "../../../../common/helm/remove-helm-repository-channel";
-import { getRequestChannelListenerInjectable } from "@freelens/messaging";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 
 const removeHelmRepositoryChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "remove-helm-repository-channel-listener",

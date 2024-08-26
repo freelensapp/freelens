@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { ApiManager } from "./api-manager";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { kubeObjectStoreInjectionToken } from "./kube-object-store-token";
-import { kubeApiInjectionToken, storesAndApisCanBeCreatedInjectionToken } from "@freelens/kube-api-specifics";
+import { kubeApiInjectionToken, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { computed } from "mobx";
 import { customResourceDefinitionApiInjectionToken } from "./crd-api-token";
 import createCustomResourceStoreInjectable from "./create-custom-resource-store.injectable";

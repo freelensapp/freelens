@@ -1,8 +1,8 @@
 import { reaction } from "mobx";
-import { getMessageChannelListenerInjectable } from "@freelens/messaging";
-import { sendMessageToChannelInjectionToken } from "@freelens/messaging";
+import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { computedChannelObserverInjectionToken } from "./computed-channel.injectable";
-import { getMessageChannel } from "@freelens/messaging";
+import { getMessageChannel } from "@freelensapp/messaging";
 
 export type ComputedChannelAdminMessage = {
   channelId: string;
