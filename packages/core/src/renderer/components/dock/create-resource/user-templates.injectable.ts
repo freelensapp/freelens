@@ -28,7 +28,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
     const logger = di.inject(prefixedLoggerInjectable, "USER-CREATE-RESOURCE-TEMPLATES");
     const parsePath = di.inject(parsePathInjectable);
 
-    const userTemplatesFolder = joinPaths(homeDirectoryPath, ".k8slens", "templates");
+    const userTemplatesFolder = joinPaths(homeDirectoryPath, ".freelens", "templates");
     const groupTemplates = (templates: Map<string, string>): RawTemplates[] => {
       const res = new Map<string, RawTemplate[]>();
 

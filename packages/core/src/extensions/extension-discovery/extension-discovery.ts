@@ -108,7 +108,7 @@ export class ExtensionDiscovery {
   }
 
   get localFolderPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.homeDirectoryPath, ".k8slens", "extensions");
+    return this.dependencies.joinPaths(this.dependencies.homeDirectoryPath, ".freelens", "extensions");
   }
 
   get packageJsonPath(): string {

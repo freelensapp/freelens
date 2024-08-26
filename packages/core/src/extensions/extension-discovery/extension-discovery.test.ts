@@ -63,7 +63,7 @@ describe("ExtensionDiscovery", () => {
     let addHandler!: (filePath: string) => void;
 
     readJsonFileMock.mockImplementation((p) => {
-      expect(p).toBe(joinPaths(homeDirectoryPath, ".k8slens/extensions/my-extension/package.json"));
+      expect(p).toBe(joinPaths(homeDirectoryPath, ".freelens/extensions/my-extension/package.json"));
 
       return {
         name: "my-extension",
