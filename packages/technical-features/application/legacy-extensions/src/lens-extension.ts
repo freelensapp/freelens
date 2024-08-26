@@ -10,7 +10,7 @@ export type BundledLensExtensionConstructor = new (
 export interface BaseInstalledExtension {
   readonly id: LensExtensionId;
   // Absolute path to the non-symlinked source folder,
-  // e.g. "/Users/user/.k8slens/extensions/helloworld"
+  // e.g. "/Users/user/.freelens/extensions/helloworld"
   readonly absolutePath: string;
   // Absolute to the symlinked package.json file
   readonly manifestPath: string;
