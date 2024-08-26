@@ -36,7 +36,7 @@ describe("ExtensionDiscovery", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(installExtensionInjectable, () => () => Promise.resolve());
-    di.override(extensionApiVersionInjectable, () => "5.0.0");
+    di.override(extensionApiVersionInjectable, () => "0.1.0");
     di.override(pathExistsSyncInjectable, () => () => { throw new Error("tried call pathExistsSync without override"); });
     di.override(readJsonSyncInjectable, () => () => { throw new Error("tried call readJsonSync without override"); });
     di.override(writeJsonSyncInjectable, () => () => { throw new Error("tried call writeJsonSync without override"); });
