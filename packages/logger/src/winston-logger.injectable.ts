@@ -10,7 +10,11 @@ export const winstonLoggerInjectable = getInjectable({
   id: "winston-logger",
   instantiate: (di) =>
     createLogger({
-      format: format.combine(format.splat(), format.simple(), format.timestamp({ format: 'DD/MM/YYYY HH:mm:ss' })),
+      format: format.combine(
+        format.splat(),
+        format.simple(),
+        format.timestamp({ format: "DD/MM/YYYY HH:mm:ss" })
+      ),
       transports: di.injectMany(loggerTransportInjectionToken),
     }),
 });
