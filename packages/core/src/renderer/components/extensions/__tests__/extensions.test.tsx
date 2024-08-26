@@ -65,7 +65,7 @@ describe("Extensions", () => {
       manifest: {
         name: "test",
         version: "1.2.3",
-        engines: { lens: "^5.5.0" },
+        engines: { freelens: "^0.1.0" },
       },
       absolutePath: "/absolute/path",
       manifestPath: "/symlinked/path/package.json",

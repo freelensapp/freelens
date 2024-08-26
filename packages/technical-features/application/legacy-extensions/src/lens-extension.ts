@@ -69,11 +69,11 @@ export interface LensExtensionManifest extends BundledLensExtensionManifest {
   renderer?: string; // path to %ext/dist/renderer.js
 
   /**
-   * Supported Lens version engine by extension could be defined in `manifest.engines.lens`
+   * Supported Lens version engine by extension could be defined in `manifest.engines.freelens`
    * Only MAJOR.MINOR version is taken in consideration.
    */
   engines: {
-    lens: string; // "semver"-package format
+    freelens: string; // "semver"-package format
     [x: string]: string | undefined;
   };
 }

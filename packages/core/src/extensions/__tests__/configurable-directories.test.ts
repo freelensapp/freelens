@@ -44,7 +44,7 @@ describe("configurable directories for extension files", () => {
             storeName: "some-specific-store-name",
             version: "0",
             engines: {
-              lens: "0",
+              freelens: "0",
             },
           },
         },
@@ -79,7 +79,7 @@ describe("configurable directories for extension files", () => {
             storeName: undefined,
             version: "0",
             engines: {
-              lens: "0",
+              freelens: "0",
             },
           },
         },

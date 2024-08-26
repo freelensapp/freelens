@@ -27,7 +27,7 @@ export const getExtensionFakeForMain = ({ id, name, mainOptions = {}}: FakeExten
         name,
         version: "1.0.0",
         engines: {
-          lens: "^5.5.0",
+          freelens: "^0.1.0",
         },
       },
       manifestPath: "irrelevant",
@@ -48,7 +48,7 @@ export const getExtensionFakeForRenderer = ({ id, name, rendererOptions = {}}: F
         name,
         version: "1.0.0",
         engines: {
-          lens: "^5.5.0",
+          freelens: "^0.1.0",
         },
       },
       manifestPath: "irrelevant",
