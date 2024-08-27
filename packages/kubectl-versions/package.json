@@ -13,7 +13,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
-    "name": "OpenLens Authors",
+    "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
   "license": "MIT",
