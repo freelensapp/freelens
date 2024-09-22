@@ -9,6 +9,11 @@ Below is a screenshot and video from the original Open Lens repository.
 
 ![Screenshot](.github/screenshot.png)
 
+### Release download
+
+Actually you can download a release from the project nightly builds repository:
+https://github.com/freelensapp/freelens-nightly-builds/releases
+
 ### Prequisites
 
 * Nodejs v18
