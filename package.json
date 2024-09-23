@@ -5,6 +5,10 @@
     "packages/**/*",
     "freelens"
   ],
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
   "scripts": {
     "build": "lerna run --stream build",
     "build:app": "cd freelens && npm run build:app",

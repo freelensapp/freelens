@@ -48,7 +48,10 @@
   ],
   "copyright": "© 2023 OpenLens Authors",
   "license": "MIT",
-  "author": "OpenLens Authors <freelens@freelens.app>",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/library-bundle.ts --progress && linkable-push",
     "clean": "rimraf dist static/build",
