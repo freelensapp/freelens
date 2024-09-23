@@ -16,7 +16,10 @@
   "main": "static/build/main.js",
   "copyright": "© 2024 Freelens Authors",
   "license": "MIT",
-  "author": "Freelens Authors",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
   "scripts": {
     "clean": "rimraf binaries/ dist/ static/build",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.ts --progress",
