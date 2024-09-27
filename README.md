@@ -14,6 +14,10 @@ Below is a screenshot and video from the original Open Lens repository.
 Actually you can download a release from the project nightly builds repository:
 https://github.com/freelensapp/freelens-nightly-builds/releases
 
+### Node-Pod-Menu extension
+
+To view container logs and shell into them and nodes you can install the very useful extension [freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu)
+
 ### Prequisites
 
 * Nodejs v18
