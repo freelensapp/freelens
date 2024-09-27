@@ -1,9 +1,9 @@
 {
   "name": "@freelensapp/extensions",
-  "productName": "OpenLens extensions",
-  "description": "OpenLens - Open Source Kubernetes IDE: extensions",
+  "productName": "Freelens extensions",
+  "description": "Freelens - Open Source Kubernetes IDE: extensions",
   "version": "0.1.0",
-  "copyright": "© 2022 OpenLens Authors",
+  "copyright": "© 2024 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
   "types": "dist/extension-api.d.ts",
@@ -13,7 +13,8 @@
     "dist/**/*.js"
   ],
   "author": {
-    "name": "OpenLens Authors"
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
   },
   "publishConfig": {
     "access": "public",
