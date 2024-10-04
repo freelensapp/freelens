@@ -1,5 +1,5 @@
 {
-  // Add Lens metric relabelings for custom prometheus instances installed with kube-prometheus
+  // Add Freelens metric relabelings for custom prometheus instances installed with kube-prometheus
   // https://github.com/freelensapp/freelens/blob/master/troubleshooting/custom-prometheus.md
   nodeExporter+:: {
     serviceMonitor+: {
