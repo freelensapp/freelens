@@ -31,12 +31,12 @@ metricRelabelings:
 
 ### Jsonnet
 
-The required label replacements are bundled in [jsonnet/lens/custom-prometheus](../jsonnet/lens/custom-prometheus.jsonnet).
+The required label replacements are bundled in [jsonnet/freelens/custom-prometheus](../jsonnet/freelens/custom-prometheus.jsonnet).
 This file is currently for jsonnet versions >= 0.8.0
 To install it copy the file or use [Jsonnet Bundler](https://github.com/jsonnet-bundler/jsonnet-bundler).
 
 ```bash
-jb init && jb install https://github.com/freelensapp/freelens/jsonnet/lens@master
+jb init && jb install https://github.com/freelensapp/freelens/jsonnet/freelens@master
 ```
 
 When the installation was successful include it into your definitions. Using the [example](https://github.com/coreos/kube-prometheus#compiling)
