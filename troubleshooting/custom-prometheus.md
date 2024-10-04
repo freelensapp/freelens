@@ -1,6 +1,6 @@
 # Using Custom Prometheus
 
-When using custom prometheus with Lens app, Lens expects certain things for prometheus rules and labels. Below is listed the changes required to see metrics properly.
+When using custom prometheus with Freelens app, Lens expects certain things for prometheus rules and labels. Below is listed the changes required to see metrics properly.
 
 ## kube-prometheus
 
