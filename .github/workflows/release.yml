@@ -79,14 +79,29 @@ jobs:
 
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install python-setuptools
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: brew install python-setuptools
 
       - name: Install NPM dependencies
-        run: npm ci
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: npm ci
 
       - name: Rebuild for arm64 (macOS, Linux)
         if: runner.os != 'Windows'
@@ -217,19 +232,25 @@ jobs:
       - name: Build NPM packages
         run: npm run build
 
+      - name: Reset Git working directory
+        run: git reset --hard
+
       - name: Publish NPM packages
-        run: |
-          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-          if [[ ${GITHUB_REF_NAME} == *-* ]]; then
-            dist_tag=next
-          else
-            dist_tag=latest
-          fi
-          npx lerna \
-            publish from-package \
-            --no-push \
-            --no-git-tag-version \
-            --yes \
-            --dist-tag ${dist_tag}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: |
+            case "${GITHUB_REF_NAME}" in
+              *-*) dist_tag=next;;
+              *) dist_tag=latest;;
+            esac
+            npx lerna \
+              publish from-package \
+              --no-push \
+              --no-git-tag-version \
+              --yes \
+              --dist-tag ${dist_tag}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
