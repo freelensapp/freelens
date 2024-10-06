@@ -149,8 +149,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish-release:
-    name: publish release
+  publish-github-release:
+    name: publish GitHub release
 
     needs:
       - make-draft-release
@@ -170,6 +170,23 @@ jobs:
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-npm-release:
+    name: publish NPM release
+
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-github-release
+
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v4
