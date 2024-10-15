@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -60,7 +61,7 @@ export interface DownloadMirror {
 
 export const defaultPackageMirror = "default";
 const defaultDownloadMirrorData: DownloadMirror = {
-  url: "https://storage.googleapis.com/kubernetes-release/release",
+  url: "https://dl.k8s.io/release",
   label: "Default (Google)",
   platforms: new Set(["darwin", "win32", "linux"]),
 };
