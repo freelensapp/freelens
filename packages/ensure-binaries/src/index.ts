@@ -101,6 +101,11 @@ abstract class BinaryDownloader {
     const stream = await fetch(this.url, {
       signal: controller.signal,
     });
+
+    if (!stream.ok) {
+      throw new Error(`${this.url}: ${stream.status} ${stream.statusText}`);
+    }
+
     const total = Number(stream.headers.get("content-length"));
     const bar = this.bar;
     let fileHandle: FileHandle | undefined = undefined;
