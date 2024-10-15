@@ -99,7 +99,8 @@
       "LICENSE"
     ],
     "linux": {
-      "category": "Network",
+      "appId": "io.freelens.freelensapp",
+      "category": "Development",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
       "target": [
         "AppImage"
@@ -119,14 +120,35 @@
         }
       ]
     },
+    "deb": {
+      "packageCategory": "devel"
+    },
     "rpm": {
+      "packageCategory": "devel",
       "fpm": [
         "--rpm-rpmbuild-define=_build_id_links none"
       ]
     },
+    "appImage": {
+      "executableArgs": [
+        "--no-sandbox"
+      ],
+      "license": "../LICENSE"
+    },
+    "flatpak": {
+      "useWaylandFlags": true,
+      "license": "../LICENSE"
+    },
+    "snap": {
+      "allowNativeWayland": true,
+      "confinement": "classic"
+    },
     "mac": {
+      "appId": "io.freelens.freelensapp",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
+      "category": "public.app-category.developer-tools",
+      "darkModeSupport": true,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "extraResources": [
@@ -148,6 +170,7 @@
       "license": "../LICENSE"
     },
     "win": {
+      "appId": "io.freelens.freelensapp",
       "target": [
         "nsis"
       ],

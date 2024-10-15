@@ -20,12 +20,22 @@ To view container logs and shell into them and nodes you can install the very us
 
 ### Prequisites
 
-* Nodejs v18
+Use [NVM](https://github.com/nvm-sh/nvm) or
+[mise-en-place](https://mise.jdx.dev/) to install required Node.js version.
+
+From the root of this repository:
+
+```sh
+nvm install
+# or
+mise install
+```
 
 ### Build app
 
 ```sh
-npm install
+npm ci
+npm run build
 npm run build:app
 ```
 
