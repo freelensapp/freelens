@@ -37,7 +37,7 @@
     "dev-run": "nodemon --watch ./static/build/main.js --exec \"electron --remote-debugging-port=9223 --inspect .\"",
     "dev:main": "cross-env NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
     "dev:renderer": "cross-env NODE_ENV=development ts-node ./webpack/dev-server.ts",
-    "test:integration": "jest -xyz --runInBand --modulePaths=[\"<rootDir>/integration/\"]",
+    "test:integration": "jest -xyz --runInBand --detectOpenHandles --modulePaths=[\"<rootDir>/integration/\"]",
     "build:tray-icons": "npm run --workspace @freelensapp/generate-tray-icons generate -- --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg",
     "download:binaries": "npm run --workspace @freelensapp/ensure-binaries ensure -- --package package.json --base-dir binaries/client",
     "postinstall": "electron-rebuild"

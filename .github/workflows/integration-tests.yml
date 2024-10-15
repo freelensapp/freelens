@@ -101,6 +101,8 @@ jobs:
           max_attempts: 3
           retry_on: timeout
           command: npm run test:integration
+        env:
+          DEBUG: pw:browser
 
       - name: Clean after tests
         run: npm run clean
