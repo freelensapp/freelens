@@ -60,18 +60,13 @@ export interface DownloadMirror {
 
 export const defaultPackageMirror = "default";
 const defaultDownloadMirrorData: DownloadMirror = {
-  url: "https://dl.k8s.io/release/",
-  label: "Default (Kubernetes)",
+  url: "https://storage.googleapis.com/kubernetes-release/release",
+  label: "Default (Google)",
   platforms: new Set(["darwin", "win32", "linux"]),
 };
 
 export const packageMirrors = new Map<string, DownloadMirror>([
   [defaultPackageMirror, defaultDownloadMirrorData],
-  ["google", {
-    url: "https://storage.googleapis.com/kubernetes-release/release",
-    label: "Google",
-    platforms: new Set(["darwin", "win32", "linux"]),  
-  }],
   ["china", {
     url: "https://mirror.azure.cn/kubernetes/kubectl",
     label: "China (Azure)",
