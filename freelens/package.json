@@ -140,8 +140,7 @@
       "license": "../LICENSE"
     },
     "snap": {
-      "allowNativeWayland": true,
-      "base": "core20"
+      "allowNativeWayland": true
     },
     "mac": {
       "appId": "io.freelens.freelensapp",
