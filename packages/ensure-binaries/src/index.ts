@@ -27,7 +27,7 @@ const options = arg({
 
 type Options = typeof options;
 
-const assertOption = <Key extends keyof Options>(key: Key): NonNullable<Options[Key]> => {
+function assertOption<Key extends keyof Options>(key: Key): NonNullable<Options[Key]> {
   const raw = options[key];
 
   if (raw === undefined) {
@@ -38,7 +38,7 @@ const assertOption = <Key extends keyof Options>(key: Key): NonNullable<Options[
   return raw;
 };
 
-const joinWithInitCwd = (relativePath: string): string => {
+function joinWithInitCwd(relativePath: string): string {
   const { INIT_CWD } = process.env;
 
   if (!INIT_CWD) {
@@ -59,13 +59,13 @@ function setTimeoutFor(controller: AbortController, timeout: number): void {
 
 const pipeline = promisify(_pipeline);
 
-const getBinaryName = (binaryName: string, { forPlatform }: { forPlatform : string }) => {
+function getBinaryExtension({ forPlatform }: { forPlatform : string }): string {
   if (forPlatform === "windows") {
-    return `${binaryName}.exe`;
+    return ".exe";
   }
 
-  return binaryName;
-};
+  return "";
+}
 
 interface BinaryDownloaderArgs {
   readonly version: string;
@@ -171,8 +171,9 @@ class FreeLensK8sProxyDownloader extends BinaryDownloader {
   protected readonly url: string;
 
   constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryName = getBinaryName("freelens-k8s-proxy", { forPlatform: args.platform });
-    const url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}`;
+    const binaryExtension = getBinaryExtension({ forPlatform: args.platform });
+    const binaryName = "freelens-k8s-proxy" + binaryExtension;
+    const url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}${binaryExtension}`;
 
     super({ ...args, binaryName, url }, bar);
     this.url = url;
@@ -183,7 +184,7 @@ class KubectlDownloader extends BinaryDownloader {
   protected readonly url: string;
 
   constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryName = getBinaryName("kubectl", { forPlatform: args.platform });
+    const binaryName = "kubectl" + getBinaryExtension({ forPlatform: args.platform });
     const url = `https://dl.k8s.io/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
 
     super({ ...args, binaryName, url }, bar);
@@ -195,7 +196,7 @@ class HelmDownloader extends BinaryDownloader {
   protected readonly url: string;
 
   constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryName = getBinaryName("helm", { forPlatform: args.platform });
+    const binaryName = "helm" + getBinaryExtension({ forPlatform: args.platform });
     const url = `https://get.helm.sh/helm-v${args.version}-${args.platform}-${args.downloadArch}.tar.gz`;
 
     super({ ...args, binaryName, url }, bar);
@@ -285,7 +286,7 @@ const downloadX64Binaries = () => {
   );
 }
 
-const downloadArm64Binaries = () => {
+function downloadArm64Binaries() {
   downloaders.push(
     new FreeLensK8sProxyDownloader({
       version: packageInfo.config.k8sProxyVersion,
