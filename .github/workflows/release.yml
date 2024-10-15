@@ -121,7 +121,7 @@ jobs:
         if: runner.os == 'macOS'
         run:
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD; do test -n "${!var}" || unset $var; done;
-          npm run build:app -- -- -- dmg --publish never --${{ matrix.arch }}
+          npm run build:app -- -- -- dmg pkg --publish never --${{ matrix.arch }}
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -151,6 +151,9 @@ jobs:
           rm -f *.blockmap
           find . -name '*.dmg' ! -name '*-arm64.dmg' ! -name '*-amd64.dmg' | while read -r f; do
             mv -f "$f" "${f%.dmg}-amd64.dmg"
+          done
+          find . -name '*.pkg' ! -name '*-arm64.pkg' ! -name '*-amd64.pkg' | while read -r f; do
+            mv -f "$f" "${f%.pkg}-amd64.pkg"
           done
           find . -name '*Setup*' | while read -r f; do
             mv -f "$f" "${f/ Setup /-}"
