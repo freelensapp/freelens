@@ -43,15 +43,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             arch: arm64
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             arch: x64
-          - os: macos-latest
+          - os: macos-14
             arch: arm64
-          - os: macos-latest
+          - os: macos-14
             arch: x64
-          - os: windows-latest
+          - os: windows-2022
             arch: x64
 
     runs-on: ${{ matrix.os }}
