@@ -178,7 +178,7 @@ class KubectlDownloader extends BinaryDownloader {
     const binaryName = getBinaryName("kubectl", { forPlatform: args.platform });
 
     super({ ...args, binaryName }, bar);
-    this.url = `https://storage.googleapis.com/kubernetes-release/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
+    this.url = `https://dl.k8s.io/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
   }
 }
 
