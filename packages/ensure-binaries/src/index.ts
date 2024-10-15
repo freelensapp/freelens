@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -73,6 +74,7 @@ interface BinaryDownloaderArgs {
   readonly fileArch: string;
   readonly binaryName: string;
   readonly baseDir: string;
+  readonly url: string;
 }
 
 abstract class BinaryDownloader {
@@ -168,33 +170,36 @@ abstract class BinaryDownloader {
 class FreeLensK8sProxyDownloader extends BinaryDownloader {
   protected readonly url: string;
 
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName">, bar: MultiBar) {
+  constructor(args: Omit<Omit<BinaryDownloaderArgs, "binaryName">, "url">, bar: MultiBar) {
     const binaryName = getBinaryName("freelens-k8s-proxy", { forPlatform: args.platform });
+    const url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}`;
 
-    super({ ...args, binaryName }, bar);
-    this.url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}`;
+    super({ ...args, binaryName, url }, bar);
+    this.url = url;
   }
 }
 
 class KubectlDownloader extends BinaryDownloader {
   protected readonly url: string;
 
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName">, bar: MultiBar) {
+  constructor(args: Omit<Omit<BinaryDownloaderArgs, "binaryName">, "url">, bar: MultiBar) {
     const binaryName = getBinaryName("kubectl", { forPlatform: args.platform });
+    const url = `https://dl.k8s.io/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
 
-    super({ ...args, binaryName }, bar);
-    this.url = `https://storage.googleapis.com/kubernetes-release/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
+    super({ ...args, binaryName, url }, bar);
+    this.url = url;
   }
 }
 
 class HelmDownloader extends BinaryDownloader {
   protected readonly url: string;
 
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName">, bar: MultiBar) {
+  constructor(args: Omit<Omit<BinaryDownloaderArgs, "binaryName">, "url">, bar: MultiBar) {
     const binaryName = getBinaryName("helm", { forPlatform: args.platform });
+    const url = `https://get.helm.sh/helm-v${args.version}-${args.platform}-${args.downloadArch}.tar.gz`;
 
-    super({ ...args, binaryName }, bar);
-    this.url = `https://get.helm.sh/helm-v${args.version}-${args.platform}-${args.downloadArch}.tar.gz`;
+    super({ ...args, binaryName, url }, bar);
+    this.url = url;
   }
 
   protected getTransformStreams(file: WriteStream) {
@@ -249,7 +254,7 @@ const multiBar = new MultiBar({
   hideCursor: true,
   autopadding: true,
   noTTYOutput: true,
-  format: "[{bar}] {percentage}% | {downloadArch} {binaryName}",
+  format: "[{bar}] {percentage}% | {url}",
 });
 
 const downloaders: BinaryDownloader[] = [];
