@@ -144,6 +144,9 @@
         }
       ]
     },
+    "pkg": {
+      "license": "../LICENSE"
+    },
     "win": {
       "target": [
         "nsis"
