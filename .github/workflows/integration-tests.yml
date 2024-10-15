@@ -63,7 +63,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: medyagh/setup-minikube@master
         with:
-          kubernetes-version: v1.31.1
+          kubernetes-version: v1.31.0
 
       - name: Install NPM dependencies
         uses: nick-fields/retry@v3
