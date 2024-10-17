@@ -99,7 +99,7 @@
       "LICENSE"
     ],
     "linux": {
-      "appId": "io.freelens.freelensapp",
+      "appId": "app.freelens.Freelens",
       "category": "Development",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
       "target": [
@@ -144,7 +144,7 @@
       "confinement": "classic"
     },
     "mac": {
-      "appId": "io.freelens.freelensapp",
+      "appId": "app.freelens.Freelens",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "category": "public.app-category.developer-tools",
@@ -170,7 +170,7 @@
       "license": "../LICENSE"
     },
     "win": {
-      "appId": "io.freelens.freelensapp",
+      "appId": "app.freelens.Freelens",
       "target": [
         "nsis"
       ],
@@ -194,7 +194,8 @@
       "oneClick": false,
       "allowElevation": true,
       "createStartMenuShortcut": true,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "license": "../LICENSE"
     },
     "protocols": {
       "name": "Lens Protocol Handler",
