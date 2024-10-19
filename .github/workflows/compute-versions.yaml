@@ -56,3 +56,4 @@ jobs:
           committer_name: GitHub Actions
           message: Update kubectl versions
           pull: --rebase --autostash
+          new_branch: kubectl-compute-versions
