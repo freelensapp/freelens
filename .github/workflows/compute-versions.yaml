@@ -1,0 +1,58 @@
+name: Compute versions
+
+on:
+  schedule:
+    - cron: "26 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  compute-versions:
+    name: compute versions
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Use cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install NPM dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: npm ci
+
+      - name: Compute versions
+        run: npm run compute-versions
+
+      - name: Commit and push to branch
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: packages/kubectl-versions/build/versions.json
+          author_email: actions@github.com
+          author_name: GitHub Actions
+          committer_email: actions@github.com
+          committer_name: GitHub Actions
+          message: Update kubectl versions
+          pull: --rebase --autostash
