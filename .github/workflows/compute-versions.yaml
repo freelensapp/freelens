@@ -49,7 +49,16 @@ jobs:
       - name: Compute versions
         run: npm run compute-versions
 
+      - name: Check for changes
+        run: |
+          if git diff --exit-code; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
+
       - name: Commit and push to branch
+        if: env.changes == 'true'
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -58,6 +67,7 @@ jobs:
           target_branch: update/kubectl-compute-versions
 
       - name: Create pull request
+        if: env.changes == 'true'
         uses: devops-infra/action-pull-request@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
