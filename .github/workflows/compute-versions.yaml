@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -47,13 +49,17 @@ jobs:
         run: npm run compute-versions
 
       - name: Commit and push to branch
-        uses: EndBug/add-and-commit@v9
+        uses: devops-infra/action-commit-push@master
         with:
-          add: packages/kubectl-versions/build/versions.json
-          author_email: actions@github.com
-          author_name: GitHub Actions
-          committer_email: actions@github.com
-          committer_name: GitHub Actions
-          message: Update kubectl versions
-          pull: --rebase --autostash
-          new_branch: kubectl-compute-versions
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_prefix: Update kubectl versions
+          force: true
+          target_branch: update/kubectl-compute-versions
+
+      - name: Create pull request
+        uses: devops-infra/action-pull-request@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target_branch: dex4er
+          body: "**Automated pull request**<br><br>Update kubectl versions"
+          title: Update kubectl versions
