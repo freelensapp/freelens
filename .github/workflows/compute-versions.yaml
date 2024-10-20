@@ -43,7 +43,7 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 3
-          retry_on: error
+          retry_on: any
           command: npm ci
 
       - name: Compute versions
@@ -61,6 +61,6 @@ jobs:
         uses: devops-infra/action-pull-request@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          target_branch: dex4er
+          target_branch: main
           body: "**Automated pull request**<br><br>Update kubectl versions"
           title: Update kubectl versions
