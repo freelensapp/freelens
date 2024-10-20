@@ -50,7 +50,7 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 3
-          retry_on: error
+          retry_on: any
           command: brew install python-setuptools
 
       - name: Install NPM dependencies
@@ -58,7 +58,7 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 3
-          retry_on: error
+          retry_on: any
           command: npm ci
 
       - name: Run test units

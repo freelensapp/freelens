@@ -1,0 +1,66 @@
+name: Compute versions
+
+on:
+  schedule:
+    - cron: "26 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  compute-versions:
+    name: compute versions
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Use cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install NPM dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: npm ci
+
+      - name: Compute versions
+        run: npm run compute-versions
+
+      - name: Commit and push to branch
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_prefix: Update kubectl versions
+          force: true
+          target_branch: update/kubectl-compute-versions
+
+      - name: Create pull request
+        uses: devops-infra/action-pull-request@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target_branch: main
+          body: "**Automated pull request**<br><br>Update kubectl versions"
+          title: Update kubectl versions

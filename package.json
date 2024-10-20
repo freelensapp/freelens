@@ -27,6 +27,7 @@
     "test:unit:watch": "jest --watch",
     "test:integration": "lerna run --stream test:integration --no-bail",
     "bump-version": "lerna version --no-git-tag-version --no-push",
+    "compute-versions": "lerna run --stream compute-versions",
     "precreate-release-pr": "npm run --workspace @freelensapp/release-tool build",
     "create-release-pr": "npm run --workspace @freelensapp/release-tool create"
   },
