@@ -84,6 +84,9 @@ jobs:
           cd freelens/dist
           dpkg -X *.deb x
           cat x/usr/share/applications/freelens.desktop
+          rm -rf x
+          rpm2cpio *.rpm | ( mkdir -p x; cd x ; cpio -idmv )
+          cat x/usr/share/applications/freelens.desktop
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
