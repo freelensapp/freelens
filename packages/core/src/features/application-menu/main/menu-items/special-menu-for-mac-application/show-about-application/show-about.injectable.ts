@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -9,7 +10,6 @@ import appNameInjectable from "../../../../../../common/vars/app-name.injectable
 import productNameInjectable from "../../../../../../common/vars/product-name.injectable";
 import extensionApiVersionInjectable from "../../../../../../common/vars/extension-api-version.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
-import specificVersionsInjectable from "./about-bundled-extensions.injectable";
 import { buildVersionInitializable } from "../../../../../vars/build-version/common/token";
 
 const showAboutInjectable = getInjectable({
@@ -23,7 +23,6 @@ const showAboutInjectable = getInjectable({
     const appName = di.inject(appNameInjectable);
     const productName = di.inject(productNameInjectable);
     const applicationCopyright = di.inject(applicationCopyrightInjectable);
-    const specificVersions = di.inject(specificVersionsInjectable);
 
     return () => {
       const appInfo = [
@@ -32,26 +31,15 @@ const showAboutInjectable = getInjectable({
         `Electron: ${process.versions.electron}`,
         `Chrome: ${process.versions.chrome}`,
         `Node: ${process.versions.node}`,
+        `Platform: ${process.platform}`,
+        `Architecture: ${process.arch}`,
         applicationCopyright,
       ];
-
-      if (specificVersions.length > 0) {
-        appInfo.push(
-          "",
-          "",
-          ...specificVersions,
-        );
-      }
 
       showMessagePopup(
         `${isWindows ? " ".repeat(2) : ""}${appName}`,
         productName,
         appInfo.join("\r\n"),
-        {
-          textWidth: specificVersions.length > 0
-            ? 300
-            : undefined,
-        },
       );
     };
   },
