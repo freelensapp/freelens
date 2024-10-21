@@ -77,16 +77,7 @@ jobs:
         run: npm run build
 
       - name: Build Electron app
-        run: npm run build:app -- -- -- dir deb rpm --${{ matrix.arch }}
-
-      - name: Debug
-        run: |
-          cd freelens/dist
-          dpkg -X *.deb x
-          cat x/usr/share/applications/freelens.desktop
-          rm -rf x
-          rpm2cpio *.rpm | ( mkdir -p x; cd x ; cpio -idmv )
-          cat x/usr/share/applications/freelens.desktop
+        run: npm run build:app -- -- -- dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
