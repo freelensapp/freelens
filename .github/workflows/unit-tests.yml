@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - name: Use cache
+      - name: Use npm cache
         uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
@@ -53,7 +53,7 @@ jobs:
           retry_on: any
           command: brew install python-setuptools
 
-      - name: Install NPM dependencies
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
