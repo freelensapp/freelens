@@ -77,7 +77,7 @@ jobs:
         run: npm run build
 
       - name: Build Electron app
-        run: npm run build:app -- -- -- dir deb --${{ matrix.arch }}
+        run: npm run build:app -- -- -- dir deb rpm --${{ matrix.arch }}
 
       - name: Debug
         run: |
