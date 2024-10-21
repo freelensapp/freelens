@@ -102,11 +102,6 @@
       "appId": "app.freelens.Freelens",
       "category": "Development",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
-      "desktop": {
-        "entry": {
-          "Exec": "/usr/bin/bash -c 'if [ \"$XDG_SESSION_TYPE\" == \"wayland\" ]; then exec /opt/Freelens/freelens --enable-features=UseOzonePlatform --ozone-platform=wayland %U; elif [ \"$XDG_SESSION_TYPE\" == \"x11\" ]; then exec /opt/Freelens/freelens %U; fi'"
-        }
-      },
       "target": [
         "AppImage"
       ],
@@ -126,16 +121,23 @@
       ]
     },
     "deb": {
+      "executableArgs": [
+        "--ozone-platform-hint=auto"
+      ],
       "packageCategory": "devel"
     },
     "rpm": {
-      "packageCategory": "devel",
+      "executableArgs": [
+        "--ozone-platform-hint=auto"
+      ],
       "fpm": [
         "--rpm-rpmbuild-define=_build_id_links none"
-      ]
+      ],
+      "packageCategory": "devel"
     },
     "appImage": {
       "executableArgs": [
+        "--ozone-platform-hint=auto",
         "--no-sandbox"
       ],
       "license": "../LICENSE"
