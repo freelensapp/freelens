@@ -14,7 +14,14 @@ jobs:
   compute-versions:
     name: compute versions
 
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-20.04
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
@@ -34,9 +41,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install npm dependencies
         uses: nick-fields/retry@v3
