@@ -121,16 +121,23 @@
       ]
     },
     "deb": {
+      "executableArgs": [
+        "--ozone-platform-hint=auto"
+      ],
       "packageCategory": "devel"
     },
     "rpm": {
-      "packageCategory": "devel",
+      "executableArgs": [
+        "--ozone-platform-hint=auto"
+      ],
       "fpm": [
         "--rpm-rpmbuild-define=_build_id_links none"
-      ]
+      ],
+      "packageCategory": "devel"
     },
     "appImage": {
       "executableArgs": [
+        "--ozone-platform-hint=auto",
         "--no-sandbox"
       ],
       "license": "../LICENSE"
