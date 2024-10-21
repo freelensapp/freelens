@@ -31,6 +31,7 @@ const showAboutInjectable = getInjectable({
         `Electron: ${process.versions.electron}`,
         `Chrome: ${process.versions.chrome}`,
         `Node: ${process.versions.node}`,
+        `Platform: ${process.platform}`,
         `Architecture: ${process.arch}`,
         applicationCopyright,
       ];
