@@ -77,7 +77,13 @@ jobs:
         run: npm run build
 
       - name: Build Electron app
-        run: npm run build:app -- -- -- dir --${{ matrix.arch }}
+        run: npm run build:app -- -- -- dir deb --${{ matrix.arch }}
+
+      - name: Debug
+        run: |
+          cd freelens/dist
+          dpkg -X *.deb x
+          cat x/usr/share/applications/freelens.desktop
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
