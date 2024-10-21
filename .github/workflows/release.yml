@@ -15,7 +15,7 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -95,7 +95,7 @@ jobs:
           retry_on: any
           command: brew install python-setuptools
 
-      - name: Install NPM dependencies
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
@@ -177,7 +177,7 @@ jobs:
     permissions:
       contents: write
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -200,7 +200,14 @@ jobs:
     permissions:
       contents: write
 
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-20.04
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
@@ -224,7 +231,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install NPM dependencies
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20

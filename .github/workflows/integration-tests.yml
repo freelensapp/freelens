@@ -42,13 +42,13 @@ jobs:
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - name: Use cache
+      - name: Use npm cache
         uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -65,13 +65,40 @@ jobs:
         with:
           kubernetes-version: v1.31.0
 
-      - name: Install NPM dependencies
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
           command: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+
+      - name: Detect Playwright version
+        shell: bash
+        run: echo "PLAYWRIGHT_VERSION=$(npm ll -p --depth=0 playwright | cut -d@ -f2)" >> $GITHUB_ENV
+
+      - name: Put $HOME in env (Windows)
+        if: runner.os == 'windows'
+        run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Use Playwright cache
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ${{ runner.os == 'Windows' && format('{0}{1}', env.HOME, '\AppData\Local\ms-playwright') || runner.os == 'Linux' && '~/.cache/ms-playwright' || '~/Library/Caches/ms-playwright' }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
+
+      - name: Install Playwright with dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Install Playwright's dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
 
       - name: Build
         run: npm run build
