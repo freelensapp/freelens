@@ -79,11 +79,11 @@ jobs:
         shell: bash
         run: echo "PLAYWRIGHT_VERSION=$(npm ll -p --depth=0 playwright | cut -d@ -f2)" >> $GITHUB_ENV
 
-      - name: Put $HOME in env
+      - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Cache Playwright binaries
+      - name: Use Playwright cache
         uses: actions/cache@v4
         id: playwright-cache
         with:
