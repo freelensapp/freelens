@@ -69,13 +69,8 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit: --cleanup=verbatim
           default_author: github_actions
-          message: |
-            Automated update of kubectl versions
-
-
-            request-checks: true
+          message: Automated update of kubectl versions
           new_branch: update/kubectl-compute-versions
           pull: --rebase --autostash
           push: origin update/kubectl-compute-versions --set-upstream --force
