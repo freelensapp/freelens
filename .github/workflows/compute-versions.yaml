@@ -86,5 +86,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           target_branch: main
+          label: kubectl
           title: Automated update of kubectl versions
           get_diff: true
