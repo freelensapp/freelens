@@ -66,12 +66,19 @@ jobs:
 
       - name: Commit and push to branch
         if: env.changes == 'true'
-        uses: devops-infra/action-commit-push@master
+        uses: EndBug/add-and-commit@v9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_prefix: Update kubectl versions
-          force: true
-          target_branch: update/kubectl-compute-versions
+          commit: --cleanup=verbatim
+          default_author: github_actions
+          message: |
+            Automated update of kubectl versions
+
+
+            request-checks: true
+          new_branch: update/kubectl-compute-versions
+          pull: --rebase --autostash
+          push: origin update/kubectl-compute-versions --set-upstream --force
 
       - name: Create pull request
         if: env.changes == 'true'
@@ -79,5 +86,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           target_branch: main
-          body: "**Automated pull request**<br><br>Update kubectl versions"
-          title: Update kubectl versions
+          label: kubectl
+          title: Automated update of kubectl versions
+          get_diff: true
