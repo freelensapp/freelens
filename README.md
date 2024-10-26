@@ -60,4 +60,8 @@ Anyone is welcome to collaborate to advance the Freelens project.
 
 ## License
 
-This source code is available to everyone under the [MIT license](./LICENSE).
+Copyright (c) 2024 Freelens Authors.
+
+Copyright (c) 2022 OpenLens Authors.
+
+[MIT License](https://opensource.org/licenses/MIT)
