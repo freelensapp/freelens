@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - v*
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -26,15 +27,15 @@ jobs:
 
       - name: Create draft release
         if: github.ref_name == 'main' && github.event_name != 'pull_request'
-        run: gh release create ${GITHUB_REF_NAME} --draft --title "Release ${GITHUB_REF_NAME}"
+        run: |
+          gh release create ${GITHUB_REF_NAME} \
+            --draft \
+            --title "Release ${GITHUB_REF_NAME}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-app:
     name: build app
-
-    permissions:
-      contents: write
 
     needs:
       - make-draft-release
@@ -69,8 +70,8 @@ jobs:
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - uses: actions/cache@v4
-        id: npm-cache
+      - name: Use npm cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -84,7 +85,9 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+          command: |
+            sudo apt-get install -y --no-install-recommends \
+              gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -103,25 +106,30 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: Rebuild for arm64 (macOS, Linux)
-        if: runner.os != 'Windows'
-        run: |
-          if [[ ${{ runner.os }} == Linux && ${{ matrix.arch }} == arm64 ]]; then
-            export CC=aarch64-linux-gnu-gcc
-            export CXX=aarch64-linux-gnu-g++
-          fi
-          npm run rebuild -- -- -a ${{ matrix.arch }}
+      - name: Rebuild for arch (Linux arm64)
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: npm run rebuild -- -- -a arm64
+        env:
+          CC: aarch64-linux-gnu-gcc
+          CXX: aarch64-linux-gnu-g++
+
+      - name: Rebuild for arch (macOS x64)
+        if: runner.os == 'macOS' && matrix.arch == 'x64'
+        run: npm run rebuild -- -- -a x64
 
       - name: Build
         run: npm run build
-        env:
-          DOWNLOAD_ALL_ARCHITECTURES: "${{ runner.os != 'Windows' }}"
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
-        run:
-          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD; do test -n "${!var}" || unset $var; done;
-          npm run build:app -- -- -- dmg pkg --publish never --${{ matrix.arch }}
+        run: |
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          npm run build:app -- -- -- \
+            dmg pkg \
+            --publish never \
+            --${{ matrix.arch }}
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -131,35 +139,86 @@ jobs:
 
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
-        run: npm run build:app -- -- -- AppImage deb rpm --publish never --${{ matrix.arch }}
+        run: |
+          npm run build:app -- -- -- \
+            AppImage deb rpm \
+            --publish never \
+            --${{ matrix.arch }}
 
-      - name: Build Electron app (Windows)
-        if: runner.os == 'Windows'
+      - name: Build Electron app (Windows x64)
+        if: runner.os == 'Windows' && matrix.arch == 'x64'
         shell: bash
-        run:
-          for var in CSC_LINK CSC_KEY_PASSWORD; do test -n "${!var}" || unset $var; done;
-          npm run build:app -- -- -- nsis --publish never --${{ matrix.arch }}
+        run: |
+          for var in CSC_LINK CSC_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          npm run build:app -- -- -- \
+            msi nsis \
+            --publish never \
+            --${{ matrix.arch }}
         env:
           CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
 
-      - name: Tweak binaries before upload
+      - name: Tweak binaries
         shell: bash
         run: |
           find . -name '*pty.node' -print0 | xargs -0 file
-          cd freelens/dist
-          rm -f *.blockmap
-          find . -name '*.dmg' ! -name '*-arm64.dmg' ! -name '*-amd64.dmg' | while read -r f; do
-            mv -f "$f" "${f%.dmg}-amd64.dmg"
-          done
-          find . -name '*.pkg' ! -name '*-arm64.pkg' ! -name '*-amd64.pkg' | while read -r f; do
-            mv -f "$f" "${f%.pkg}-amd64.pkg"
-          done
-          find . -name '*Setup*' | while read -r f; do
-            mv -f "$f" "${f/ Setup /-}"
+          rm -f freelens/dist/*.blockmap
+
+      - name: Normalize filenames before upload
+        shell: bash
+        run: |
+          perl << 'END'
+          chdir "freelens/dist" or die $!;
+          my %arch = (x64 => "amd64", arm64 => "arm64");
+          my $arch = $arch{$ENV{ARCH}};
+          while (<Freelens*>) {
+            my $src = $_;
+            s/ Setup /-/;
+            s/[ _]/-/g;
+            if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
+              s/\.(dmg|exe|msi|pkg)$/-$arch.$1/;
+            }
+            s/[.-](aarch64|arm64)/-arm64/;
+            s/[.-](amd64|x86-64)/-amd64/;
+            s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
+            s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
+            s/-(amd64|arm64).(exe|msi|)$/-windows-$1.$2/;
+            my $dst = $_;
+            if ($src ne $dst) {
+              print "rename $src to $dst\n";
+              rename $src, $dst or die $!;
+            }
+          }
+          END
+        env:
+          ARCH: ${{ matrix.arch }}
+
+      - name: Make checksums for binaries (Linux, Windows)
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            sha256sum "$f" | tee "$f.sha256"
           done
 
-      - name: Upload binaries
+      - name: Make checksums for binaries (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            shasum -a 256 "$f" | tee "$f.sha256"
+          done
+
+      - name: List files before upload
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            echo "$(ls -l "$f")" "|" "$(file -b "$f")"
+          done
+
+      - name: Upload files
         if: github.ref_name == 'main' && github.event_name != 'pull_request'
         shell: bash
         run: |
@@ -173,9 +232,6 @@ jobs:
     needs:
       - make-draft-release
       - build-app
-
-    permissions:
-      contents: write
 
     runs-on: ubuntu-20.04
 
@@ -197,9 +253,6 @@ jobs:
       - build-app
       - publish-github-release
 
-    permissions:
-      contents: write
-
     strategy:
       fail-fast: false
       matrix:
@@ -219,12 +272,12 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
 
-      - name: Get NPM cache directory
+      - name: Get npm cache directory
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - uses: actions/cache@v4
-        id: npm-cache
+      - name: Use npm cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -239,7 +292,7 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: Build NPM packages
+      - name: Build
         run: npm run build
 
       - name: Reset Git working directory
