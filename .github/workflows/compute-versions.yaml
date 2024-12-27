@@ -56,6 +56,11 @@ jobs:
       - name: Compute versions
         run: npm run compute-versions
 
+      - name: Bundle the latest kubectl version
+        run: |
+          version=$(cat packages/kubectl-versions/build/versions.json | yq -pj '.[-1][-1]')
+          yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
+
       - name: Check for changes
         run: |
           if git diff --exit-code; then
