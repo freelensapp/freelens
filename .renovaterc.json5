@@ -1,0 +1,63 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled"
+  ],
+  "addLabels": [
+    "renovate"
+  ],
+  "packageRules": [
+    // ignore all NPM dependencies as we are not yet ready for upgrading them
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    // bundled freelens-k8s-proxy
+    {
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "fileMatch": [
+        "^freelens/package\\.json$"
+      ],
+      "matchStrings": [
+        "\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "freelensapp/freelens-k8s-proxy",
+      "versioningTemplate": "semver"
+    },
+    // bundled helm
+    {
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "fileMatch": [
+        "^freelens/package\\.json$"
+      ],
+      "matchStrings": [
+        "\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "helm/helm",
+      "versioningTemplate": "semver"
+    },
+    // renovate hints after comment
+    {
+      "customType": "regex",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "fileMatch": [
+        "^\\.github/workflows/.*\\.ya?ml$",
+        "^\\.trunk/trunk.yaml",
+        "^\\.tool-versions$"
+      ],
+      "matchStrings": [
+        "(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ]
+}
