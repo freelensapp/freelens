@@ -43,7 +43,7 @@
     "postinstall": "electron-rebuild"
   },
   "config": {
-    "k8sProxyVersion": "1.1.0",
+    "k8sProxyVersion": "1.2.0",
     "bundledKubectlVersion": "1.32.0",
     "bundledHelmVersion": "3.16.2",
     "sentryDsn": "",
