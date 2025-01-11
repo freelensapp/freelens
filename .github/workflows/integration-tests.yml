@@ -100,7 +100,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: Build
+      - name: Build NPM packages (macOS x64, Linux arm64)
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: npm run build
+        env:
+          DOWNLOAD_ALL_ARCHITECTURES: "true"
+
+      - name: Build NPM packages (macOS arm64, Linux x64, Windows)
+        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: npm run build
 
       - name: Build Electron app
