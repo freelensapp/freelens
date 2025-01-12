@@ -92,7 +92,7 @@ Anyone is welcome to collaborate to advance the Freelens project.
 
 ## License
 
-Copyright (c) 2024 Freelens Authors.
+Copyright (c) 2024-2025 Freelens Authors.
 
 Copyright (c) 2022 OpenLens Authors.
 
