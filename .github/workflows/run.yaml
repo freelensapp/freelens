@@ -1,0 +1,39 @@
+name: Automated run
+
+on:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  rebase:
+    name: Run
+
+    runs-on: ubuntu-24.04
+    environment: automated
+
+    if: >-
+      github.event.issue.pull_request != '' && 
+      (
+        contains(github.event.comment.body, '/run')
+      )
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run workflow
+        run: |
+          gh pr view "${pr_url##*/}" --json headRefName --jq .headRefName |
+          xargs -r gh workflow run "${comment_body##*/run }.yaml" --ref
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          pr_url: ${{ github.event.issue.pull_request.url }}
+          comment_body: ${{ github.event.comment.body }}

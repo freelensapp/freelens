@@ -1,6 +1,9 @@
-name: Compute versions
+name: Automated kubectl versions
 
 on:
+  issue_comment:
+    types:
+      - created
   schedule:
     - cron: "26 6 * * *"
   workflow_dispatch: {}
@@ -11,8 +14,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  compute-versions:
-    name: compute versions
+  kubectl-versions:
+    name: kubectl versions
 
     strategy:
       fail-fast: false
@@ -22,12 +25,18 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    environment: automated
+
+    if: >-
+      github.event_name != 'issue_comment' ||
+      contains(github.event.comment.body, '/rerun')
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -53,13 +62,15 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: Compute versions
-        run: npm run compute-versions
+      - name: kubectl versions
+        run: npm run kubectl-versions
 
       - name: Bundle the latest kubectl version
         run: |
-          version=$(cat packages/kubectl-versions/build/versions.json | yq -pj '.[-1][-1]')
+          cat packages/kubectl-versions/build/versions.json | yq -pj '.[-1][-1]' > .github/version.log
+          version=$(cat .github/version.log)
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
+          echo "Bundled kubectl version $version" > .github/pr_body.log
 
       - name: Check for changes
         run: |
@@ -73,18 +84,30 @@ jobs:
         if: env.changes == 'true'
         uses: EndBug/add-and-commit@v9
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
           message: Automated update of kubectl versions
-          new_branch: update/kubectl-compute-versions
-          push: origin update/kubectl-compute-versions --set-upstream --force
+          new_branch: automated/kubectl-versions
+          push: origin automated/kubectl-versions --set-upstream --force
 
       - name: Create pull request
         if: env.changes == 'true'
         uses: devops-infra/action-pull-request@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           target_branch: main
           label: kubectl
           title: Automated update of kubectl versions
           get_diff: true
+
+      - name: Update pull request description
+        if: env.changes == 'true'
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated update of kubectl versions (bundled $(cat .github/version.log))" --body-file .github/pr_body.log
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Close pull request
+        if: env.changes == 'false'
+        run: gh pr list --head automated/kubectl-versions --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

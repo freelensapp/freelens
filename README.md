@@ -1,11 +1,16 @@
 # Freelens
 
-## The Repository
+<!-- markdownlint-disable MD013 -->
+
+[![GitHub](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
+[![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
+[![npm](https://img.shields.io/npm/v/@freelensapp/core.svg)](https://www.npmjs.com/package/@freelensapp/core)
+
+<!-- markdownlint-enable MD013 -->
 
 Freelens is a standalone application for MacOS, Windows, and Linux operating
 systems.
-
-This repository is a fork of [Open Lens](https://github.com/freelensapp/freelens/tree/master), core of [Lens Desktop](https://k8slens.dev), with the aim of carrying forward its open source version.
 
 ![Screenshot](.github/screenshot.png)
 
@@ -18,14 +23,15 @@ of the [milestone
 However, you can download testing packages from the project for nightly
 builds: <https://github.com/freelensapp/freelens-nightly-builds/releases>
 
-### Windows
+### MacOS
 
-The EXE and MSI packages are not yet signed then you must override Microsoft
-Defender SmartScreen to install them.
+Download either PKG (installer) or DMG (image) package. Both arm64 (M1 chip
+or newer) and amd64 (Intel) variants are available.
 
-Only x64 (amd64) version of the Windows binaries are provided.
+### Linux
 
-### AppImage
+Download DEB or RPM (package) or AppImage (executable). Both arm64 (aarch64)
+and amd64 (x86_64) variants are available.
 
 Linux AppImage file requires `libz.so` and `libfuse.so.2`. You can add them,
 ie. by running:
@@ -42,11 +48,22 @@ Run the application with additional arguments:
 ./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto
 ```
 
+Snap and FatPack packages will be announced later.
+
+### Windows
+
+Download EXE or MSI installers.
+
+The EXE and MSI are not yet signed then you must override Microsoft Defender
+SmartScreen to install them.
+
+Only x64 (amd64) version of the Windows binaries are provided.
+
 ### Node-Pod-Menu extension
 
 To view container logs and shell into them and nodes you can install the very
 useful extension
-[freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu)
+[freelens-node-pod-menu](https://github.com/freelensapp/freelens)
 
 ## Development
 
@@ -91,6 +108,11 @@ npm run start-dev
 Anyone is welcome to collaborate to advance the Freelens project.
 
 ## License
+
+This repository is a fork of [Open
+Lens](https://github.com/freelensapp/freelens/tree/master), core of [Lens
+Desktop](https://k8slens.dev), with the aim of carrying forward its open
+source version.
 
 Copyright (c) 2024-2025 Freelens Authors.
 
