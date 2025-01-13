@@ -10,7 +10,6 @@ import { ExtensionInstall } from "./install";
 import { InstalledExtensions } from "./installed-extensions";
 import { Notice } from "./notice";
 import { SettingLayout } from "../layout/setting-layout";
-import { docsUrl } from "../../../common/vars";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { InstallOnDrop } from "./install-on-drop.injectable";
 import installOnDropInjectable from "./install-on-drop.injectable";
@@ -19,23 +18,7 @@ import Gutter from "../gutter/gutter";
 const ExtensionsNotice = () => (
   <Notice className={styles.notice}>
     <p>
-      {"Add new features via Lens Extensions. Check out the "}
-      <a
-        href={`${docsUrl}/extensions/lens-extensions`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        docs
-      </a>
-      {" and list of "}
-      <a
-        href="https://github.com/freelensapp/freelens-extensions/blob/main/README.md"
-        target="_blank"
-        rel="noreferrer"
-      >
-        available extensions
-      </a>
-      .
+      {"Add new features via Freelens Extensions."}
     </p>
   </Notice>
 );

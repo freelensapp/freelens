@@ -440,23 +440,7 @@ exports[`extensions - navigation using application menu when navigating to exten
                 class="notice"
               >
                 <p>
-                  Add new features via Lens Extensions. Check out the 
-                  <a
-                    href="https://github.com/freelensapp/freelens/extensions/lens-extensions"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    docs
-                  </a>
-                   and list of 
-                  <a
-                    href="https://github.com/freelensapp/freelens-extensions/blob/main/README.md"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    available extensions
-                  </a>
-                  .
+                  Add new features via Freelens Extensions.
                 </p>
               </div>
               <section>
