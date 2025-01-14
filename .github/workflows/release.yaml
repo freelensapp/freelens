@@ -26,7 +26,6 @@ jobs:
         run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
 
       - name: Create draft release
-        if: github.ref_name == 'main' && github.event_name != 'pull_request'
         run: |
           gh release create ${GITHUB_REF_NAME} \
             --draft \
@@ -56,6 +55,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    environment: signing
 
     steps:
       - name: Checkout
@@ -66,7 +66,7 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory
+      - name: Get NPM cache directory
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
@@ -96,9 +96,9 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: brew install python-setuptools
+          command: brew install bash python-setuptools
 
-      - name: Install npm dependencies
+      - name: Install NPM dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
@@ -130,7 +130,7 @@ jobs:
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
         run: |
-          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD; do
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
             test -n "${!var}" || unset $var
           done
           npm run build:app -- -- -- \
@@ -143,6 +143,27 @@ jobs:
           APPLETEAMID: ${{ secrets.APPLETEAMID }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
+          CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+
+      - name: Notarize PKG (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 15
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
 
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
@@ -226,7 +247,6 @@ jobs:
           done
 
       - name: Upload files
-        if: github.ref_name == 'main' && github.event_name != 'pull_request'
         shell: bash
         run: |
           gh release upload ${GITHUB_REF_NAME} freelens/dist/Freelens*.*
@@ -247,7 +267,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Publish GitHub release
-        if: github.ref_name == 'main' && github.event_name != 'pull_request'
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -268,6 +287,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    environment: publish
 
     steps:
       - name: Checkout
@@ -279,11 +299,11 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
 
-      - name: Get npm cache directory
+      - name: Get NPM cache directory
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - name: Use npm cache
+      - name: Use NPM cache
         uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
@@ -291,7 +311,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install npm dependencies
+      - name: Install NPM dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
