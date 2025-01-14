@@ -22,30 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
-      - name: Get npm cache directory
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
-
-      - name: Use cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies for linters
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 5
-          max_attempts: 3
-          retry_on: error
-          command: npm ci
-
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
         with:
