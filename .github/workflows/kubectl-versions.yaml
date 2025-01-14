@@ -63,7 +63,7 @@ jobs:
           command: npm ci
 
       - name: kubectl versions
-        run: npm run kubectl-versions
+        run: npm run compute-versions
 
       - name: Bundle the latest kubectl version
         run: |
