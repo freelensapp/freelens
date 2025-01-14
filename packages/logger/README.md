@@ -2,10 +2,10 @@
 
 This package contains stuff related to creating Lens-applications. 
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/logger
+```sh
+npm install @freelensapp/logger
 ```
 
 ```typescript

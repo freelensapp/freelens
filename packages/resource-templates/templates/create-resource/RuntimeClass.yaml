@@ -5,7 +5,7 @@ metadata:
 handler: runc
 scheduling:
   nodeSelector:
-    eks.amazonaws.com/capacityType: "SPOT"
+    eks.amazonaws.com/capacityType: SPOT
   tolerations:
   - key: eks.amazonaws.com/capacityType
     value: SPOT

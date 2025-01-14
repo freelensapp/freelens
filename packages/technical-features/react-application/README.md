@@ -1,9 +1,9 @@
 # @freelensapp/react-application
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/react-application
+```sh
+npm install @freelensapp/react-application
 ```
 
 ```typescript

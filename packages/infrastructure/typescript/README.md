@@ -4,8 +4,8 @@ This package contains typescript configurations for Lens packages.
 
 ## Install
 
-```
-$ npm install @freelensapp/typescript
+```sh
+npm install @freelensapp/typescript
 ```
 
 ## Features
