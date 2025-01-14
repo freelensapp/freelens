@@ -1,6 +1,6 @@
 # Lens Code Style
 
-**Note:** This package contains Eslint and Prettier configurations, name of package is `@freelensapp/eslint-config` just because Eslint has arbitrary requirement (https://eslint.org/docs/latest/extend/shareable-configs).
+**Note:** This package contains Eslint and Prettier configurations, name of package is `@freelensapp/eslint-config` just because Eslint has arbitrary requirement (<https://eslint.org/docs/latest/extend/shareable-configs>).
 
 ## Usage
 
@@ -8,7 +8,7 @@
 2. Create `.prettierrc` that contains `"@freelensapp/eslint-config/prettier"`
 3. Add a `.eslintrc.js` that extends `@freelensapp/eslint-config/eslint`, for example:
 
-```
+```js
 module.exports = {
   extends: "@freelensapp/eslint-config/eslint",
   parserOptions: {
@@ -19,7 +19,7 @@ module.exports = {
 
 4. Add linting and formatting scripts to `package.json`
 
-```
+```json
 {
   "scripts": {
     "lint": "lens-lint",

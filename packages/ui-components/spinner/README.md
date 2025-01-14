@@ -2,10 +2,10 @@
 
 This package contains stuff related to creating Lens-applications. 
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/spinner
+```sh
+npm install @freelensapp/spinner
 ```
 
 ```typescript

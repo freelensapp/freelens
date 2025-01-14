@@ -2,10 +2,10 @@
 
 This Feature enables keyboard shortcuts in Lens
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/keyboard-shortcuts
+```sh
+npm install @freelensapp/keyboard-shortcuts
 ```
 
 ```typescript

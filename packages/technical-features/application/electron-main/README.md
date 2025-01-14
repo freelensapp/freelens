@@ -2,9 +2,9 @@
 
 This Feature extends `@freelensapp/application` with Electron specifics.
 
-# Usage
-```bash
-$ npm install @freelensapp/application-for-electron-main
+## Usage
+```sh
+npm install @freelensapp/application-for-electron-main
 ```
 
 ```typescript
@@ -22,7 +22,7 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication();
 ```
 
-# Extendability
+## Extendability
 
 ### Timeslots
 

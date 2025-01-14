@@ -2,10 +2,10 @@
 
 This package contains stuff related to creating Lens-applications. 
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/application-for-electron-main
+```sh
+npm install @freelensapp/application-for-electron-main
 ```
 
 ```typescript
@@ -25,14 +25,14 @@ startApplication();
 
 ## Features
 
-#### Start application
+### Start application
 `startApplicationInjectionToken`
 
 Starts the application and calls timeslots in specified order. Check for timeslots for more info.
 
 ## Extendability
 
-#### Timeslots
+### Timeslots
 
 1. `beforeApplicationIsLoadingInjectionToken`
 2. `onLoadOfApplicationInjectionToken`

@@ -12,6 +12,6 @@ spec:
   storageClassName: slow
   selector:
     matchLabels:
-      release: "stable"
+      release: stable
     matchExpressions:
       - {key: environment, operator: In, values: [dev]}

@@ -5,7 +5,7 @@ metadata:
 data:
   # property-like keys; each key maps to a simple value
   player_initial_lives: "3"
-  ui_properties_file_name: "user-interface.properties"
+  ui_properties_file_name: user-interface.properties
 
   # file-like keys
   game.properties: |
@@ -14,4 +14,4 @@ data:
   user-interface.properties: |
     color.good=purple
     color.bad=yellow
-    allow.textmode=true   
+    allow.textmode=true

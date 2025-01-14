@@ -3,6 +3,7 @@ name: Enhancement Request
 about: Suggest an enhancement to the Lens application
 labels: enhancement
 ---
+<!-- markdownlint-disable -->
 <!-- Please only use this template for submitting enhancement requests -->
 <!--
     Check already existing enhancement request on this list: https://github.com/freelensapp/freelens/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement

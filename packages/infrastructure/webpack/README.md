@@ -4,8 +4,8 @@ This package contains webpack configurations for Lens packages.
 
 ## Install
 
-```
-$ npm install @freelensapp/webpack
+```sh
+npm install @freelensapp/webpack
 ```
 
 ## Features

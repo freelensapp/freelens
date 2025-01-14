@@ -2,10 +2,10 @@
 
 This package contains stuff related to creating Lens-applications. 
 
-# Usage
+## Usage
 
-```bash
-$ npm install @freelensapp/tooltip
+```sh
+npm install @freelensapp/tooltip
 ```
 
 ```typescript

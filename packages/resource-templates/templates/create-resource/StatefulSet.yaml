@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: nginx # has to match .spec.template.metadata.labels
-  serviceName: "nginx"
+  serviceName: nginx
   replicas: 3 # by default is 1
   template:
     metadata:
@@ -27,8 +27,8 @@ spec:
   - metadata:
       name: www
     spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "my-storage-class"
+      accessModes: [ ReadWriteOnce ]
+      storageClassName: my-storage-class
       resources:
         requests:
           storage: 1Gi

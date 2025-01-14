@@ -5,19 +5,19 @@ PACKAGE_JSON_PATHS=$(find freelens/* packages/* -type f -name package.json -not 
 exitCode=0
 
 while IFS= read -r PACKAGE_JSON_PATH; do
-  PACKAGE_NAME=$(<"${PACKAGE_JSON_PATH}" jq .name)
-  PACKAGE_IS_PRIVATE=$(<"${PACKAGE_JSON_PATH}" jq .private)
+	PACKAGE_NAME=$(jq .name "${PACKAGE_JSON_PATH}")
+	PACKAGE_IS_PRIVATE=$(jq .private "${PACKAGE_JSON_PATH}")
 
-  if [[ "${PACKAGE_IS_PRIVATE}" == "true" ]]; then
-    continue
-  fi
+	if [[ ${PACKAGE_IS_PRIVATE} == "true" ]]; then
+		continue
+	fi
 
-  PACKAGE_HAS_PUBLISH_CONFIG=$(<"${PACKAGE_JSON_PATH}" jq '.publishConfig != null')
+	PACKAGE_HAS_PUBLISH_CONFIG=$(jq '.publishConfig != null' "${PACKAGE_JSON_PATH}")
 
-  if [[ "${PACKAGE_HAS_PUBLISH_CONFIG}" == "false" ]]; then
-    echo "${PACKAGE_NAME} is missing publish config"
-    exitCode=1
-  fi
-done <<< "${PACKAGE_JSON_PATHS}"
+	if [[ ${PACKAGE_HAS_PUBLISH_CONFIG} == "false" ]]; then
+		echo "${PACKAGE_NAME} is missing publish config"
+		exitCode=1
+	fi
+done <<<"${PACKAGE_JSON_PATHS}"
 
 exit "${exitCode}"
