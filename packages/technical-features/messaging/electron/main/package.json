@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging-for-main",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Implementations for 'messaging' in Electron main",
   "type": "commonjs",
   "publishConfig": {
@@ -41,7 +41,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.0",
-    "@freelensapp/webpack": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.1",
+    "@freelensapp/webpack": "^0.1.1"
   }
 }

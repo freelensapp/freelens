@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/random",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Highly extendable random in the Lens.",
   "type": "commonjs",
   "files": [
@@ -38,7 +38,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.0",
-    "@freelensapp/webpack": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.1",
+    "@freelensapp/webpack": "^0.1.1"
   }
 }

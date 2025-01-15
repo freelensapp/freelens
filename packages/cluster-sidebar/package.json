@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/cluster-sidebar",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Injection tokens for adding new sidebar items within the Cluster View",
   "type": "commonjs",
   "publishConfig": {
@@ -40,9 +40,9 @@
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.0",
-    "@freelensapp/jest": "^0.1.0",
-    "@freelensapp/typescript": "^0.1.0",
-    "@freelensapp/webpack": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.1",
+    "@freelensapp/jest": "^0.1.1",
+    "@freelensapp/typescript": "^0.1.1",
+    "@freelensapp/webpack": "^0.1.1"
   }
 }
