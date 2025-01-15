@@ -16,22 +16,24 @@ systems.
 
 ## Downloads
 
-The official packages have not yet been released. You can track the progress
-of the [milestone
-0.1.1](https://github.com/freelensapp/freelens/milestone/1).
-
-However, you can download testing packages from the project for nightly
-builds: <https://github.com/freelensapp/freelens-nightly-builds/releases>
+See the [releases](https://github.com/freelensapp/freelens/releases) page and
+download the right package for your system.
 
 ### MacOS
 
 Download either PKG (installer) or DMG (image) package. Both arm64 (M1 chip
 or newer) and amd64 (Intel) variants are available.
 
+All binary packages are built on MacOS 14 and should be compatible with new
+systems.
+
 ### Linux
 
 Download DEB or RPM (package) or AppImage (executable). Both arm64 (aarch64)
 and amd64 (x86_64) variants are available.
+
+All binary packages are built on Ubuntu 20.04 and should be compatible with
+new systems.
 
 Linux AppImage file requires `libz.so` and `libfuse.so.2`. You can add them,
 ie. by running:
@@ -63,12 +65,17 @@ Only x64 (amd64) version of the Windows binaries are provided.
 
 To view container logs and shell into them and nodes you can install the very
 useful extension
-[freelens-node-pod-menu](https://github.com/freelensapp/freelens)
+[freelens-node-pod-menu](https://github.com/freelensapp/freelens).
+
+To install it, open `Freelens` -> `Extensions` menu, then put
+`@freelensapp/freelens-node-pod-menu` name as an input and push the `Install`
+button.
 
 ## Development
 
-The primary aim is currently to maintain the current open source code with
-its functionality and fix bugs.
+You can build the application using this repository or download the [nightly
+builds](https://github.com/freelensapp/freelens-nightly-builds/releases) from
+the separate reposity.
 
 ### Prerequisites
 
