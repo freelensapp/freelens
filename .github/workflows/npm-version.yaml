@@ -1,0 +1,100 @@
+name: Automated npm version
+
+on:
+  workflow_dispatch:
+    inputs:
+      newversion:
+        description: New version (X.Y.Z | major | minor | patch | premajor | preminor | prepatch | prerelease)
+        required: true
+        default: patch
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  npm-version:
+    name: npm version
+
+    runs-on: ubuntu-20.04
+    environment: automated
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Use cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies for plugin
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_on: error
+          command: npm ci
+
+      - name: Set version
+        run: |
+          npx lerna version --no-git-tag-version --yes --loglevel=error "$newversion" | tee .github/update.log
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
+          jq -r .version freelens/package.json > .gitlog/version.log
+        env:
+          newversion: ${{ github.event.inputs.newversion }}
+
+      - name: Check for changes
+        run: |
+          if git diff --exit-code; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
+
+      - name: Commit and push to branch
+        if: env.changes == 'true'
+        uses: EndBug/add-and-commit@v9
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          default_author: github_actions
+          message: Automated npm version ${{ github.event.inputs.newversion }}
+          new_branch: automated/npm-version
+          fetch: false
+          push: origin automated/npm-version --set-upstream --force
+
+      - name: Create pull request
+        id: pr
+        if: env.changes == 'true'
+        uses: devops-infra/action-pull-request@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          target_branch: main
+          label: automated
+          title: Automated npm version v${{ github.event.inputs.newversion }}
+          get_diff: false
+
+      - name: Update pull request description
+        if: env.changes == 'true'
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated npm version v$(cat .github/version.log)" --body-file .github/pr_body.log
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Close pull request
+        if: env.changes == 'false'
+        run: gh pr list --head automated/npm-version --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
