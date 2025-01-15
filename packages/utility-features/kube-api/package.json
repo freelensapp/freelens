@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-api",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Kube api",
   "type": "commonjs",
   "publishConfig": {
@@ -32,7 +32,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "dependencies": {
-    "@freelensapp/node-fetch": "^0.1.0"
+    "@freelensapp/node-fetch": "^0.1.1"
   },
   "peerDependencies": {
     "@freelensapp/json-api": "^0.1.0",
@@ -48,8 +48,8 @@
     "rfc6902": "^5.0.1"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.0",
-    "@freelensapp/jest": "^0.1.0",
-    "@freelensapp/typescript": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.1",
+    "@freelensapp/jest": "^0.1.1",
+    "@freelensapp/typescript": "^0.1.1"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging-fake-bridge",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fake implementation to bridge multiple dependency injection containers.",
   "type": "commonjs",
   "publishConfig": {
@@ -41,7 +41,7 @@
     "mobx": "^6.9.0"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.0",
-    "@freelensapp/webpack": "^0.1.0"
+    "@freelensapp/eslint-config": "^0.1.1",
+    "@freelensapp/webpack": "^0.1.1"
   }
 }
