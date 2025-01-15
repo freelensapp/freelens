@@ -39,7 +39,7 @@ jobs:
       - name: Get version from package.json
         id: package-json
         run: |
-          echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+          echo "version=$(jq -r .version freelens/package.json)" >> $GITHUB_OUTPUT
 
       - name: Create tag from the main branch
         if: steps.package-json.outputs.version
