@@ -22,7 +22,7 @@
     "email": "freelens@freelens.app"
   },
   "license": "MIT",
-  "homepage": "https://github.com/freelensapp/freelens",
+  "homepage": "https://freelens.app",
   "scripts": {
     "clean": "rimraf dist/",
     "build": "lens-webpack-build",

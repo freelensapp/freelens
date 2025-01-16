@@ -9,8 +9,8 @@
 
 <!-- markdownlint-enable MD013 -->
 
-Freelens is a standalone application for MacOS, Windows, and Linux operating
-systems.
+[Freelens](https://freelens.app) is a standalone application for MacOS,
+Windows, and Linux operating systems.
 
 ![Screenshot](.github/screenshot.png)
 
