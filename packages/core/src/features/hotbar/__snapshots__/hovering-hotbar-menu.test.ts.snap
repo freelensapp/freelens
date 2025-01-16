@@ -173,7 +173,7 @@ exports[`hovering hotbar menu tests renders 1`] = `
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -521,7 +521,7 @@ exports[`hovering hotbar menu tests when hovering over the hotbar menu renders 1
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >

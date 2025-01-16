@@ -173,7 +173,7 @@ exports[`<StatusBar /> when StatusBar's status is set to "error" renders 1`] = `
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -521,7 +521,7 @@ exports[`<StatusBar /> when StatusBar's status is set to "warning" renders 1`] =
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -869,7 +869,7 @@ exports[`<StatusBar /> when an extension is enabled specifying the side the elem
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -1259,7 +1259,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -1607,7 +1607,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -1955,7 +1955,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -2303,7 +2303,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -2651,7 +2651,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -2999,7 +2999,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -3347,7 +3347,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -3695,7 +3695,7 @@ exports[`<StatusBar /> when an extension is enabled with no status items renders
                   If you have any questions or feedback, please join us on our 
                   <a
                     class="link"
-                    href="https://github.com/freelensapp/freelens"
+                    href="https://github.com/freelensapp/freelens/discussions"
                     rel="noreferrer"
                     target="_blank"
                   >
