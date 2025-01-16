@@ -42,7 +42,6 @@ const installExtensionInjectable = getInjectable({
       const child = fork(pathToNpmCli, args, {
         cwd: extensionPackageRootDirectory,
         silent: true,
-        env: {},
       });
       let stderr = "";
 
