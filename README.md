@@ -81,6 +81,15 @@ the separate reposity.
 
 ### Prerequisites
 
+Install a compiler, ie.
+
+```sh
+# Debian/Ubuntu
+apt install build-essential python3-setuptools
+# MacOS
+brew install bash python3-setuptools
+```
+
 Use [NVM](https://github.com/nvm-sh/nvm) or
 [mise-en-place](https://mise.jdx.dev/) to install the required Node.js
 version.
@@ -103,6 +112,37 @@ npm run build:app
 
 At this point, for example on Windows, simply go to the
 "freelens\freelens\dist\win-unpacked" directory and run `Freelens.exe`.
+
+### Cross compilation
+
+You can build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
+
+On Linux install cross-compiler (MacOS has it already):
+
+```sh
+# Debian/Ubuntu
+apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+```
+
+then rebuild binary modules and build with download for all architectures:
+
+```sh
+# Debian/Ubuntu
+env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ npm run rebuild -- -- -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+# MacOS
+npm run rebuild -- -- -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+```
+
+and generate binary packages:
+
+```sh
+# Debian/Ubuntu
+npm run build:app -- -- -- AppImage deb --publish never --arm64
+# MacOS
+npm run build:app -- -- -- dmg pkg --publish never --x86
+```
 
 ### Run app
 
