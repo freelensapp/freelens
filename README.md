@@ -2,10 +2,11 @@
 
 <!-- markdownlint-disable MD013 -->
 
-[![GitHub](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
+[![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![npm](https://img.shields.io/npm/v/@freelensapp/core.svg)](https://www.npmjs.com/package/@freelensapp/core)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
-[![npm](https://img.shields.io/npm/v/@freelensapp/core.svg)](https://www.npmjs.com/package/@freelensapp/core)
 
 <!-- markdownlint-enable MD013 -->
 
