@@ -153,11 +153,11 @@
         "--ozone-platform-hint=auto",
         "--no-sandbox"
       ],
-      "license": "../LICENSE"
+      "license": "../LICENSE-binaries"
     },
     "flatpak": {
       "useWaylandFlags": true,
-      "license": "../LICENSE"
+      "license": "../LICENSE-binaries"
     },
     "snap": {
       "allowNativeWayland": true,
@@ -187,7 +187,7 @@
       ]
     },
     "pkg": {
-      "license": "../LICENSE"
+      "license": "../LICENSE-binaries"
     },
     "win": {
       "appId": "app.freelens.Freelens",
@@ -215,7 +215,7 @@
       "allowElevation": true,
       "createStartMenuShortcut": true,
       "allowToChangeInstallationDirectory": true,
-      "license": "../LICENSE"
+      "license": "../LICENSE-binaries"
     },
     "protocols": {
       "name": "Lens Protocol Handler",
