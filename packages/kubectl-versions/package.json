@@ -17,7 +17,7 @@
     "email": "freelens@freelens.app"
   },
   "license": "MIT",
-  "homepage": "https://github.com/freelensapp/freelens",
+  "homepage": "https://freelens.app",
   "scripts": {
     "precompute-versions": "swc ./build/compute-versions.ts -o ./build/compute-versions.mjs",
     "compute-versions": "node ./build/compute-versions.mjs",

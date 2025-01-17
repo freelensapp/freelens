@@ -2,15 +2,17 @@
 
 <!-- markdownlint-disable MD013 -->
 
-[![GitHub](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
+[![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
+[![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![npm](https://img.shields.io/npm/v/@freelensapp/core.svg)](https://www.npmjs.com/package/@freelensapp/core)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
-[![npm](https://img.shields.io/npm/v/@freelensapp/core.svg)](https://www.npmjs.com/package/@freelensapp/core)
 
 <!-- markdownlint-enable MD013 -->
 
-Freelens is a standalone application for MacOS, Windows, and Linux operating
-systems.
+[Freelens](https://freelens.app) is a standalone application for MacOS,
+Windows, and Linux operating systems.
 
 ![Screenshot](.github/screenshot.png)
 
@@ -79,6 +81,15 @@ the separate reposity.
 
 ### Prerequisites
 
+Install a compiler, ie.
+
+```sh
+# Debian/Ubuntu
+apt install build-essential python3-setuptools
+# MacOS
+brew install bash python3-setuptools
+```
+
 Use [NVM](https://github.com/nvm-sh/nvm) or
 [mise-en-place](https://mise.jdx.dev/) to install the required Node.js
 version.
@@ -101,6 +112,37 @@ npm run build:app
 
 At this point, for example on Windows, simply go to the
 "freelens\freelens\dist\win-unpacked" directory and run `Freelens.exe`.
+
+### Cross compilation
+
+You can build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
+
+On Linux install cross-compiler (MacOS has it already):
+
+```sh
+# Debian/Ubuntu
+apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+```
+
+then rebuild binary modules and build with download for all architectures:
+
+```sh
+# Debian/Ubuntu
+env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ npm run rebuild -- -- -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+# MacOS
+npm run rebuild -- -- -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+```
+
+and generate binary packages:
+
+```sh
+# Debian/Ubuntu
+npm run build:app -- -- -- AppImage deb --publish never --arm64
+# MacOS
+npm run build:app -- -- -- dmg pkg --publish never --x86
+```
 
 ### Run app
 

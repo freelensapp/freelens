@@ -18,5 +18,5 @@ export const apiKubePrefix = "/api-kube"; // k8s cluster apis
 // Links
 export const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues" as string;
 export const supportUrl = "https://github.com/freelensapp/freelens" as string;
-export const docsUrl = "https://github.com/freelensapp/freelens" as string;
-export const forumsUrl = "https://github.com/freelensapp/freelens" as string;
+export const docsUrl = "https://github.com/freelensapp/freelens/wiki" as string;
+export const forumsUrl = "https://github.com/freelensapp/freelens/discussions" as string;
