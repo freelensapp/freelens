@@ -87,7 +87,7 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated trunk upgrade
+          message: Automated trunk upgrade [skip ci]
           new_branch: automated/trunk-upgrade
           fetch: false
           push: origin automated/trunk-upgrade --set-upstream --force
@@ -100,7 +100,7 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           target_branch: main
           label: automated
-          title: Automated trunk upgrade
+          title: Automated trunk upgrade [skip ci]
           get_diff: false
 
       - name: Update pull request description
