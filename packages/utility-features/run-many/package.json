@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "commonjs",
   "description": "A package containing runMany and runManySync",
   "publishConfig": {
@@ -34,7 +34,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@freelensapp/webpack": "^0.1.1",
+    "@freelensapp/webpack": "^0.1.2",
     "@types/uuid": "^9.0.1"
   }
 }

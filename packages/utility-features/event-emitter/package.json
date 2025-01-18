@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/event-emitter",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Event emitter",
   "type": "commonjs",
   "publishConfig": {
@@ -31,9 +31,9 @@
     "lint:fix": "lens-lint --fix"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.1",
-    "@freelensapp/jest": "^0.1.1",
-    "@freelensapp/typescript": "^0.1.1",
-    "@freelensapp/webpack": "^0.1.1"
+    "@freelensapp/eslint-config": "^0.1.2",
+    "@freelensapp/jest": "^0.1.2",
+    "@freelensapp/typescript": "^0.1.2",
+    "@freelensapp/webpack": "^0.1.2"
   }
 }

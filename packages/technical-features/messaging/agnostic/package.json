@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An abstraction for messaging between Lens environments",
   "type": "commonjs",
   "publishConfig": {
@@ -41,7 +41,7 @@
     "mobx": "^6.7.0"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.1",
-    "@freelensapp/webpack": "^0.1.1"
+    "@freelensapp/eslint-config": "^0.1.2",
+    "@freelensapp/webpack": "^0.1.2"
   }
 }
