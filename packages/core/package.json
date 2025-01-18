@@ -3,7 +3,7 @@
   "productName": "",
   "description": "Freelens Core",
   "homepage": "https://freelens.app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
@@ -105,9 +105,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "1.6.4",
-    "@freelensapp/messaging-fake-bridge": "^0.1.1",
-    "@freelensapp/react-testing-library-discovery": "^0.1.1",
-    "@freelensapp/test-utils": "^0.1.1",
+    "@freelensapp/messaging-fake-bridge": "^0.1.2",
+    "@freelensapp/react-testing-library-discovery": "^0.1.2",
+    "@freelensapp/test-utils": "^0.1.2",
     "@ogre-tools/linkable": "^17.2.0",
     "@sentry/types": "^6.19.7",
     "@side/jest-runtime": "^1.1.0",

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-api-specifics",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Kube api",
   "type": "commonjs",
   "publishConfig": {
@@ -39,8 +39,8 @@
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.1",
-    "@freelensapp/jest": "^0.1.1",
-    "@freelensapp/typescript": "^0.1.1"
+    "@freelensapp/eslint-config": "^0.1.2",
+    "@freelensapp/jest": "^0.1.2",
+    "@freelensapp/typescript": "^0.1.2"
   }
 }

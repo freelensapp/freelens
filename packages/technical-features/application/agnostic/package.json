@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Package for creating Lens applications",
   "type": "commonjs",
   "files": [
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^0.1.1",
-    "@freelensapp/webpack": "^0.1.1"
+    "@freelensapp/eslint-config": "^0.1.2",
+    "@freelensapp/webpack": "^0.1.2"
   }
 }
