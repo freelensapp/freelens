@@ -37,6 +37,8 @@ and amd64 (x86_64) variants are available.
 All binary packages are built on Ubuntu 20.04 and should be compatible with
 new systems.
 
+#### AppImage
+
 Linux AppImage file requires `libz.so` and `libfuse.so.2`. You can add them,
 ie. by running:
 
@@ -52,7 +54,32 @@ Run the application with additional arguments:
 ./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto
 ```
 
-Snap and FatPack packages will be announced later.
+#### APT repository
+
+Debian 12 or Ubuntu 24.04 or newer:
+
+<!-- markdownlint-disable MD013 -->
+```sh
+curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources
+```
+<!-- markdownlint-enable MD013 -->
+
+Older:
+
+<!-- markdownlint-disable MD013 -->
+```sh
+mkdir -p /etc/apt/keyrings
+curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
+curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.list | sudo tee /etc/apt/sources.list.d/freelens.list
+```
+<!-- markdownlint-enable MD013 -->
+
+Then:
+
+```sh
+sudo apt update
+sudo apt install freelens
+```
 
 ### Windows
 

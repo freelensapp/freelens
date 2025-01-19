@@ -1,0 +1,1 @@
+deb [signed-by=/etc/apt/keyrings/freelens.asc] https://github.com/freelensapp/freelens/releases/latest/download ./

@@ -1,0 +1,54 @@
+name: Release APT repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-apt:
+    name: Release APT repository
+
+    runs-on: ubuntu-24.04
+    environment: apt-signing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: GPG configuration
+        run: |
+          mkdir -p -m 0700 $HOME/.gnupg
+          echo "use-agent" > $HOME/.gnupg/gpg.conf
+          echo "pinentry-program $GITHUB_WORKSPACE/.github/scripts/pinentry.sh" > $HOME/.gnupg/gpg-agent.conf
+          echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
+          gpgconf --launch gpg-agent
+          echo "$GPG_PRIVATE_KEY" | gpg --import
+          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Release APT repository
+        run: |
+          set -x
+          gh release download $tag -p "*.deb" -D tmp
+          pushd tmp
+            apt-ftparchive packages . | tee Packages | gzip -9c > Packages.gz
+            apt-ftparchive release . > Release
+            gpg --clearsign -o InRelease Release
+            gpg --armor --detach-sign --sign -o Release.gpg Release
+            gh release upload $tag InRelease Packages Packages.gz Release Release.gpg --clobber
+          popd
+        env:
+          tag: ${{ github.event.inputs.tag }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
