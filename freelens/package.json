@@ -137,6 +137,10 @@
       "executableArgs": [
         "--ozone-platform-hint=auto"
       ],
+      "fpm": [
+        "../apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
+        "../apt/freelens.list=/etc/apt/sources.list.d/freelens.list"
+      ],
       "packageCategory": "devel"
     },
     "rpm": {
