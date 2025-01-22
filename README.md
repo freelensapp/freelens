@@ -23,16 +23,27 @@ download the right package for your system.
 
 ### MacOS
 
-Download either PKG (installer) or DMG (image) package. Both arm64 (M1 chip
-or newer) and amd64 (Intel) variants are available.
+Download either PKG (installer) or DMG (image) package from the
+[releases](https://github.com/freelensapp/freelens/releases) page. Both
+arm64 (M1 chip or newer) and amd64 (Intel) variants are available.
 
 All binary packages are built on MacOS 14 and should be compatible with new
 systems.
 
+#### Homebrew
+
+Run from the command line:
+
+```sh
+brew tap freelensapp/tap
+brew install --cask freelens
+```
+
 ### Linux
 
-Download DEB or RPM (package) or AppImage (executable). Both arm64 (aarch64)
-and amd64 (x86_64) variants are available.
+Download DEB or RPM (package) or AppImage (executable) from the
+[releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
+(aarch64) and amd64 (x86_64) variants are available.
 
 All binary packages are built on Ubuntu 20.04 and should be compatible with
 new systems.
@@ -83,7 +94,8 @@ sudo apt install freelens
 
 ### Windows
 
-Download EXE or MSI installers.
+Download EXE or MSI installers from the
+[releases](https://github.com/freelensapp/freelens/releases) page.
 
 The EXE and MSI are not yet signed then you must override Microsoft Defender
 SmartScreen to install them.
