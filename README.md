@@ -90,6 +90,16 @@ SmartScreen to install them.
 
 Only x64 (amd64) version of the Windows binaries are provided.
 
+#### WinGet
+
+Run from the command line:
+
+```powershell
+winget install Freelensapp.Freelens
+```
+
+It supports `--silent` option for suppressing all UI.
+
 ### Node-Pod-Menu extension
 
 To view container logs and shell into them and nodes you can install the very
