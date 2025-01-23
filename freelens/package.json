@@ -138,8 +138,8 @@
         "--ozone-platform-hint=auto"
       ],
       "fpm": [
-        "../apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
-        "../apt/freelens.list=/etc/apt/sources.list.d/freelens.list",
+        "./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
+        "./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources",
         "./build/app.freelens.Freelens.metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
       ],
       "packageCategory": "devel"
