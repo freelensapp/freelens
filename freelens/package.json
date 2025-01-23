@@ -139,7 +139,8 @@
       ],
       "fpm": [
         "../apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
-        "../apt/freelens.list=/etc/apt/sources.list.d/freelens.list"
+        "../apt/freelens.list=/etc/apt/sources.list.d/freelens.list",
+        "./build/app.freelens.Freelens.metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
       ],
       "packageCategory": "devel"
     },
@@ -160,7 +161,8 @@
         "--ozone-platform-hint=auto"
       ],
       "fpm": [
-        "--rpm-rpmbuild-define=_build_id_links none"
+        "--rpm-rpmbuild-define=_build_id_links none",
+        "./build/app.freelens.Freelens.metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
       ],
       "packageCategory": "devel"
     },
