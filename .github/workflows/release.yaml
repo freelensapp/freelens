@@ -167,7 +167,7 @@ jobs:
             auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
             xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
             uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
-            sleep 15
+            sleep 60
             if [[ -n $uuid ]]; then
               xcrun notarytool log $uuid $auth
               xcrun stapler staple $pkgname
