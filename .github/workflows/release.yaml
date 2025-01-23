@@ -45,17 +45,25 @@ jobs:
         include:
           - os: ubuntu-20.04
             arch: arm64
+            concurrency: linux-arm64
           - os: ubuntu-20.04
             arch: x64
+            concurrency: linux-amd64
           - os: macos-14
             arch: arm64
+            concurrency: macos
           - os: macos-14
             arch: x64
+            concurrency: macos
           - os: windows-2022
             arch: x64
+            concurrency: windows
 
     runs-on: ${{ matrix.os }}
     environment: signing
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
 
     steps:
       - name: Checkout
@@ -159,7 +167,7 @@ jobs:
             auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
             xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
             uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
-            sleep 15
+            sleep 60
             if [[ -n $uuid ]]; then
               xcrun notarytool log $uuid $auth
               xcrun stapler staple $pkgname
