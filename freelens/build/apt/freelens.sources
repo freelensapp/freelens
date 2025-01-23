@@ -1,0 +1,4 @@
+Types: deb
+URIs: https://github.com/freelensapp/freelens/releases/latest/download
+Suites: ./
+Signed-By: /etc/apt/keyrings/freelens.asc

@@ -68,30 +68,19 @@ Run the application with additional arguments:
 
 #### APT repository
 
-Debian 12 or Ubuntu 24.04 or newer:
+Run from the command line:
 
 <!-- markdownlint-disable MD013 -->
-```sh
-curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources
-```
-<!-- markdownlint-enable MD013 -->
-
-Older:
-
-<!-- markdownlint-disable MD013 -->
-```sh
-mkdir -p /etc/apt/keyrings
-curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
-curl -L https://github.com/freelensapp/freelens/raw/refs/heads/main/apt/freelens.list | sudo tee /etc/apt/sources.list.d/freelens.list
-```
-<!-- markdownlint-enable MD013 -->
-
-Then:
 
 ```sh
+sudo mkdir -p /etc/apt/keyrings
+curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
+curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources
 sudo apt update
 sudo apt install freelens
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Windows
 
