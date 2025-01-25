@@ -124,7 +124,7 @@ Anyone is welcome to collaborate to advance the Freelens project.
 ## License
 
 This repository is a fork of [Open
-Lens](https://github.com/freelensapp/freelens/tree/master), core of [Lens
+Lens](https://github.com/lensapp/lens/tree/master), core of [Lens
 Desktop](https://k8slens.dev), with the aim of carrying forward its open
 source version.
 
