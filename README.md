@@ -11,9 +11,12 @@
 
 <!-- markdownlint-enable MD013 -->
 
-[Freelens](https://freelens.app) is Free and Open-Source UI for Kubernetes.
-It is a standalone application for MacOS, Windows, and Linux operating
-systems.
+[Freelens](https://freelens.app) is a free and open-source user interface
+designed for managing Kubernetes clusters. It provides a standalone
+application that is compatible with MacOS, Windows, and Linux operating
+systems, making it accessible to a wide range of users. The application aims
+to simplify the complexities of Kubernetes management by offering an
+intuitive and user-friendly interface.
 
 ![Screenshot](.github/screenshot.png)
 

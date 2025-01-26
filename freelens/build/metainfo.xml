@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>app.freelens.Freelens</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Freelens</name>
+  <developer_name>Freelens Authors</developer_name>
+  <url type="homepage">https://freelens.app/</url>
+  <url type="bugtracker">https://github.com/freelensapp/freelens/issues</url>
+  <url type="vcs-browser">https://github.com/freelensapp/freelens</url>
+  <summary>FOSS UI for Kubernetes</summary>
+  <description>
+    <p>is a free and open-source user interface
+designed for managing Kubernetes clusters. It provides a standalone
+application that is compatible with MacOS, Windows, and Linux operating
+systems, making it accessible to a wide range of users. The application aims
+to simplify the complexities of Kubernetes management by offering an
+intuitive and user-friendly interface.</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The main window</caption>
+      <image>https://freelensapp.github.io/images/freelens-screenshot.png</image>
+    </screenshot>
+  </screenshots>
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </recommends>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  <launchable type="desktop-id">app.freelens.Freelens</launchable>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.2" date="2025-01-18">
+      <description translatable="no">The latest release.</description>
+    </release>
+  </releases>
+</component>

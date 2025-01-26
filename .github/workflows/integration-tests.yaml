@@ -22,10 +22,13 @@ jobs:
         include:
           - os: ubuntu-20.04
             arch: x64
+            targets: AppImage deb rpm
           - os: macos-14
             arch: arm64
+            targets: dmg pkg
           - os: windows-2022
             arch: x64
+            targets: msi nsis
 
     runs-on: ${{ matrix.os }}
 
@@ -111,7 +114,7 @@ jobs:
         run: npm run build
 
       - name: Build Electron app
-        run: npm run build:app -- -- -- dir --${{ matrix.arch }}
+        run: npm run build:app -- -- -- dir ${{ matrix.targets }} --publish=never --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
