@@ -41,7 +41,7 @@ const unpackExtensionInjectable = getInjectable({
           <em>{message}</em>
         </p>
       ));
-    }
+    };
 
     return async (request, disposeDownloading) => {
       const {
