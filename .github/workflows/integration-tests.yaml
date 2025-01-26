@@ -114,7 +114,7 @@ jobs:
         run: npm run build
 
       - name: Build Electron app
-        run: npm run build:app -- -- -- --publish=never dir ${{ matrix.targets }} --${{ matrix.arch }}
+        run: npm run build:app -- -- -- dir ${{ matrix.targets }} --publish=never --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
