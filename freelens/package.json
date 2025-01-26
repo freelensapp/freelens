@@ -137,10 +137,13 @@
       "executableArgs": [
         "--ozone-platform-hint=auto"
       ],
+      "afterInstall": "./build/after-install-deb.sh",
+      "afterRemove": "./build/after-remove-deb.sh",
       "fpm": [
+        "./build/profile.aa=/etc/apparmor.d/freelens",
         "./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
         "./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources",
-        "./build/app.freelens.Freelens.metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
+        "./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
       ],
       "packageCategory": "devel"
     },
