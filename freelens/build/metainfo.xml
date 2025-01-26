@@ -8,9 +8,10 @@
   <url type="homepage">https://freelens.app/</url>
   <url type="bugtracker">https://github.com/freelensapp/freelens/issues</url>
   <url type="vcs-browser">https://github.com/freelensapp/freelens</url>
-  <summary>FOSS UI for Kubernetes</summary>
+  <url type="contribute">https://github.com/freelensapp/freelens/blob/main/CONTRIBUTING.md</url>
+  <summary>Free and open-source UI for Kubernetes</summary>
   <description>
-    <p>is a free and open-source user interface
+    <p>Freelens is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
 application that is compatible with MacOS, Windows, and Linux operating
 systems, making it accessible to a wide range of users. The application aims
@@ -26,6 +27,7 @@ intuitive and user-friendly interface.</p>
   <recommends>
     <control>pointing</control>
     <control>keyboard</control>
+    <control>touch</control>
   </recommends>
   <requires>
     <display_length compare="ge">768</display_length>

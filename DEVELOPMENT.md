@@ -102,7 +102,7 @@ minor version.
 
 Additional repositories for distribution of the packages:
 
-* [Flathub](https://github.com/freelensapp/freelensapp.github.io)
+* [Flathub](https://github.com/flathub/app.freelens.Freelens)
 * [Homebrew](https://github.com/freelensapp/homebrew-tap)
 * [Snapcraft](https://github.com/freelensapp/freelens-snap)
 * [WinGet](https://github.com/freelensapp/freelens-winget)
