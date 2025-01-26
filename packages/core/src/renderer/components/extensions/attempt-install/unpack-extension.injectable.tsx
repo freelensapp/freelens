@@ -32,6 +32,17 @@ const unpackExtensionInjectable = getInjectable({
     const showInfoNotification = di.inject(showInfoNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
+    const displayErrorMessage = (message: string, displayName: string) => {
+      showErrorNotification((
+        <p>
+          {"Installing extension "}
+          <b>{displayName}</b>
+          {" has failed: "}
+          <em>{message}</em>
+        </p>
+      ));
+    };
+
     return async (request, disposeDownloading) => {
       const {
         id,
@@ -72,18 +83,26 @@ const unpackExtensionInjectable = getInjectable({
         await fse.move(unpackedRootFolder, extensionFolder, { overwrite: true });
 
         // wait for the loader has actually install it
-        await when(() => extensionLoader.userExtensions.get().has(id));
+        await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10000 })
+          .then(() => {
+            // Enable installed extensions by default.
+            extensionLoader.setIsEnabled(id, true);
 
-        // Enable installed extensions by default.
-        extensionLoader.setIsEnabled(id, true);
-
-        showInfoNotification((
-          <p>
-            {"Extension "}
-            <b>{displayName}</b>
-            {" successfully installed!"}
-          </p>
-        ));
+            showInfoNotification((
+              <p>
+                {"Extension "}
+                <b>{displayName}</b>
+                {" successfully installed!"}
+              </p>
+            ));
+          })
+          .catch(error => {
+            // There was an error during plugin installation
+            logger.info(
+              `[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`,
+              { error });
+            displayErrorMessage("There was an error during the installation", displayName);
+          });
       } catch (error) {
         const message = getMessageFromError(error);
 
@@ -91,14 +110,7 @@ const unpackExtensionInjectable = getInjectable({
           `[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`,
           { error },
         );
-        showErrorNotification((
-          <p>
-            {"Installing extension "}
-            <b>{displayName}</b>
-            {" has failed: "}
-            <em>{message}</em>
-          </p>
-        ));
+        displayErrorMessage(message, displayName);
       } finally {
       // Remove install state once finished
         extensionInstallationStateStore.clearInstalling(id);
