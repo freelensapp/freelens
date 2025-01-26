@@ -15,6 +15,18 @@ if [[ $1 == "configure" ]]; then
 	else
 		chmod 0755 /opt/Freelens/chrome-sandbox || true
 	fi
+
+	if hash apparmor_parser 2>/dev/null; then
+		if apparmor_parser --skip-kernel-load --debug /etc/apparmor.d/freelens >/dev/null 2>&1; then
+			if hash aa-enabled 2>/dev/null && aa-enabled --quiet 2>/dev/null; then
+				apparmor_parser --replace --write-cache --skip-read-cache /etc/apparmor.d/freelens
+			fi
+		else
+			if grep -qs "^[a-z]" /etc/apparmor.d/freelens; then
+				sed -i "s/^/# /" /etc/apparmor.d/freelens
+			fi
+		fi
+	fi
 fi
 
 # Older APT doesn't work with Github releases.

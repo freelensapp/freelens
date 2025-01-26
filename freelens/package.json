@@ -140,7 +140,7 @@
       "afterInstall": "./build/after-install-deb.sh",
       "afterRemove": "./build/after-remove-deb.sh",
       "fpm": [
-        "./build/profile.aa=/etc/apparmor.d/freelens",
+        "./build/apparmor-profile.aa=/etc/apparmor.d/freelens",
         "./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
         "./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources",
         "./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
