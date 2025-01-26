@@ -101,7 +101,7 @@ const unpackExtensionInjectable = getInjectable({
             logger.info(
               `[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`,
               { error });
-            displayErrorMessage("There was an error during plugin installation", displayName);
+            displayErrorMessage("There was an error during the installation", displayName);
           });
       } catch (error) {
         const message = getMessageFromError(error);
