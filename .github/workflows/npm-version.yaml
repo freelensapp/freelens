@@ -55,7 +55,7 @@ jobs:
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           jq -r .version freelens/package.json > .github/version.log
           version=$(cat .github/version.log)
-          yq -px -ox -i '.component.releases.release.["+@version"] = "'"$version"'" | .component.releases.release.["+@date"] = "'$(LC_ALL=C date +%Y-%m-%d)'"' freelens/build/app.freelens.Freelens.metainfo.xml
+          yq -px -ox -i '.component.releases.release.["+@version"] = "'"$version"'" | .component.releases.release.["+@date"] = "'$(LC_ALL=C date +%Y-%m-%d)'"' freelens/build/metainfo.xml
         env:
           newversion: ${{ github.event.inputs.newversion }}
 
