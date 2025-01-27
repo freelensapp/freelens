@@ -108,7 +108,7 @@ It supports `--silent` option for suppressing all UI.
 
 To view container logs and shell into them and nodes you can install the very
 useful extension
-[freelens-node-pod-menu](https://github.com/freelensapp/freelens).
+[freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu).
 
 To install it, open `Freelens` -> `Extensions` menu, then put
 `@freelensapp/freelens-node-pod-menu` name as an input and push the `Install`
