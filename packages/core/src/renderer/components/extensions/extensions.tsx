@@ -17,8 +17,11 @@ import Gutter from "../gutter/gutter";
 
 const ExtensionsNotice = () => (
   <Notice className={styles.notice}>
+    <p>{"Add new features via Freelens Extensions."}</p>
     <p>
-      {"Add new features via Freelens Extensions."}
+      We recommend
+      <b>{" @freelensapp/freelens-node-pod-menu "}</b>
+      which adds back the node and pod menu functionality.
     </p>
   </Notice>
 );
