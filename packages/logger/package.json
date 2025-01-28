@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/logger",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Highly extendable logger in the Lens.",
   "type": "commonjs",
   "files": [
@@ -38,9 +38,9 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.2",
-    "@freelensapp/jest": "^0.1.2",
-    "@freelensapp/react-testing-library-discovery": "^0.1.2",
-    "@freelensapp/webpack": "^0.1.2"
+    "@freelensapp/eslint-config": "^0.1.3",
+    "@freelensapp/jest": "^0.1.3",
+    "@freelensapp/react-testing-library-discovery": "^0.1.3",
+    "@freelensapp/webpack": "^0.1.3"
   }
 }
