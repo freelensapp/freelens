@@ -13,10 +13,10 @@
 
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
-application that is compatible with MacOS, Windows, and Linux operating
-systems, making it accessible to a wide range of users. The application aims
-to simplify the complexities of Kubernetes management by offering an
-intuitive and user-friendly interface.
+application compatible with macOS, Windows, and Linux operating systems,
+making it accessible to a wide range of users. The application aims to
+simplify the complexities of Kubernetes management by offering an intuitive
+and user-friendly interface.
 
 ![Screenshot](freelens/build/screenshots/main.png)
 
@@ -25,18 +25,18 @@ intuitive and user-friendly interface.
 See the [releases](https://github.com/freelensapp/freelens/releases) page and
 download the right package for your system.
 
-### MacOS
+### macOS
 
-Download either PKG (installer) or DMG (image) package from the
-[releases](https://github.com/freelensapp/freelens/releases) page. Both
-arm64 (M1 chip or newer) and amd64 (Intel) variants are available.
+Download either the PKG (installer) or DMG (image) package from the
+[releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
+(M1 chip or newer) and amd64 (Intel) variants are available.
 
-All binary packages are built on MacOS 14 and should be compatible with new
+All binary packages are built on macOS 14 and should be compatible with newer
 systems.
 
 #### Homebrew
 
-Run from the command line:
+Run the following command:
 
 ```sh
 brew tap freelensapp/tap
@@ -54,8 +54,8 @@ new systems.
 
 #### AppImage
 
-Linux AppImage file requires `libz.so` and `libfuse.so.2`. You can add them,
-ie. by running:
+The Linux AppImage file requires libz.so and libfuse.so.2. You can add them
+by running:
 
 ```sh
 sudo ln -fs /usr/lib/*/libz.so.1 /usr/local/lib/libz.so
@@ -71,11 +71,11 @@ Run the application with additional arguments:
 
 #### Flatpak
 
-The package is provided on
+The package is available on the
 [Flathub](https://flathub.org/apps/app.freelens.Freelens) App Store for
 Linux.
 
-Run from command like:
+Run the following commands:
 
 ```sh
 flatpak install flathub app.freelens.Freelens
@@ -84,12 +84,11 @@ flatpak run app.freelens.Freelens
 
 #### APT repository
 
-Run from the command line:
+Run the following commands:
 
 <!-- markdownlint-disable MD013 -->
 
 ```sh
-sudo mkdir -p /etc/apt/keyrings
 curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
 curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources
 sudo apt update
@@ -100,55 +99,56 @@ sudo apt install freelens
 
 ### Windows
 
-Download EXE or MSI installers from the
+Download the EXE or MSI installers from the
 [releases](https://github.com/freelensapp/freelens/releases) page.
 
-The EXE and MSI are not yet signed then you must override Microsoft Defender
+The EXE and MSI are not yet signed, so you must override Microsoft Defender
 SmartScreen to install them.
 
-Only x64 (amd64) version of the Windows binaries are provided.
+Only the x64 (amd64) version of the Windows binaries is provided.
 
 #### WinGet
 
-The package is provided as a part of
+The package is available in
 [WinGet](https://winstall.app/apps/Freelensapp.Freelens) Community
-repository.
+[repository](https://github.com/microsoft/winget-pkgs).
 
-Run from the command line:
+Run the following command:
 
 ```powershell
 winget install Freelensapp.Freelens
 ```
 
-It supports `--silent` option for suppressing all UI.
+The `--silent` option is supported to suppress all UI.
 
 ### Node-Pod-Menu extension
 
-To view container logs and shell into them and nodes you can install the very
-useful extension
-[freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu).
+To view container logs and shell into them and nodes, you can install the
+[freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu)
+extension.
 
-To install it, open `Freelens` -> `Extensions` menu, then put
-`@freelensapp/freelens-node-pod-menu` name as an input and push the `Install`
+To install it, open the `Freelens` -> `Extensions` menu, enter the name
+`@freelensapp/freelens-node-pod-menu` as input, and click the `Install`
 button.
 
 ## Development
 
 Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
-from the source.
+from source.
 
 ## Contributing
 
-Anyone is welcome to collaborate to advance the Freelens project.
+Anyone is welcome to collaborate to advance the Freelens project. Read
+[CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
 ![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
 
 ## License
 
 This repository is a fork of [Open
-Lens](https://github.com/lensapp/lens/tree/master), core of [Lens
-Desktop](https://k8slens.dev), with the aim of carrying forward its open
-source version.
+Lens](https://github.com/lensapp/lens/tree/master), the core of [Lens
+Desktop](https://k8slens.dev), with the aim of carrying forward its
+open-source version.
 
 Copyright (c) 2024-2025 Freelens Authors.
 

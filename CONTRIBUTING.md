@@ -1,14 +1,14 @@
 # Contributing to Freelens
 
-Thank you for considering contributing to Freelens! We are open to
-cooperation. Here are some guidelines to help you get started.
+Thank you for considering contributing to Freelens! We value your support and
+are open to collaboration. Here are some guidelines to help you get started.
 
 ## How to Contribute
 
 ### Reporting Issues
 
 If you find a bug or have a feature request, please check the [existing
-issues](https://github.com/freelensapp/freelens/issues) to see if it's
+issues](https://github.com/freelensapp/freelens/issues) to see if it has
 already been reported. If not, you can create a new issue. Please provide as
 much detail as possible, including:
 
@@ -34,8 +34,8 @@ Please ensure your pull request adheres to the following guidelines:
 
 ## Development Environment Setup
 
-Read [DEVELOPMENT.md](DEVELOPMENT.md) document to learn how to build and run
-the application from source files.
+Read the [DEVELOPMENT.md](DEVELOPMENT.md) document to learn how to build and
+run the application from source files.
 
 ## Style Guides
 
@@ -44,12 +44,12 @@ the application from source files.
 - Follow the existing coding style.
 - Use [ESLint](https://eslint.org/) to lint your code.
 - Use [Prettier](https://prettier.io/) for code formatting.
-- Verify with [Trunk Check](https://docs.trunk.io/cli).
+- Verify your changes with [Trunk Check](https://docs.trunk.io/cli).
 
 ### Commit Messages
 
-- Use clear and descriptive commit messages.
-- Reference related issues or pull requests.
+- Write clear and descriptive commit messages.
+- Reference related issues or pull requests when applicable.
 
 ## Community
 
