@@ -3,8 +3,9 @@
 <!-- markdownlint-disable MD013 -->
 
 [![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
+[![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90)](https://github.com/freelensapp/freelens)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
-[![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens)
+[![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 
@@ -68,6 +69,19 @@ Run the application with additional arguments:
 ./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto
 ```
 
+#### Flatpak
+
+The package is provided on
+[Flathub](https://flathub.org/apps/app.freelens.Freelens) App Store for
+Linux.
+
+Run from command like:
+
+```sh
+flatpak install flathub app.freelens.Freelens
+flatpak run app.freelens.Freelens
+```
+
 #### APT repository
 
 Run from the command line:
@@ -96,6 +110,10 @@ Only x64 (amd64) version of the Windows binaries are provided.
 
 #### WinGet
 
+The package is provided as a part of
+[WinGet](https://winstall.app/apps/Freelensapp.Freelens) Community
+repository.
+
 Run from the command line:
 
 ```powershell
@@ -122,6 +140,8 @@ from the source.
 ## Contributing
 
 Anyone is welcome to collaborate to advance the Freelens project.
+
+![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
 
 ## License
 
