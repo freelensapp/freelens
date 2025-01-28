@@ -33,9 +33,9 @@ intuitive and user-friendly interface.</p>
     <display_length compare="ge">768</display_length>
   </requires>
   <launchable type="desktop-id">app.freelens.Freelens</launchable>
-  <content_rating type="oars-1.1"/>
+  <content_rating type="oars-1.1"></content_rating>
   <releases>
-    <release version="0.1.2" date="2025-01-18">
+    <release version="0.1.3" date="2025-01-28">
       <description translatable="no">The latest release.</description>
     </release>
   </releases>

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/eslint-config",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Lens eslint and prettier configurations",
   "author": {
     "name": "Freelens Authors",

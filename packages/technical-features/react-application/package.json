@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/react-application",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Package for React Application",
   "type": "commonjs",
   "files": [
@@ -46,9 +46,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^0.1.2",
-    "@freelensapp/react-testing-library-discovery": "^0.1.2",
-    "@freelensapp/webpack": "^0.1.2",
+    "@freelensapp/eslint-config": "^0.1.3",
+    "@freelensapp/react-testing-library-discovery": "^0.1.3",
+    "@freelensapp/webpack": "^0.1.3",
     "@testing-library/react": "^12.1.5"
   }
 }
