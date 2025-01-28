@@ -82,6 +82,17 @@ flatpak install flathub app.freelens.Freelens
 flatpak run app.freelens.Freelens
 ```
 
+The application is sandboxed. It includes bundled `kubectl` and `helm`
+commands and uses the `~/.kube/config` file by default. The `~/.freelens`
+directory is stored in the sandbox.
+
+Flatpak adds wrappers for the `aws`, `gke-gcloud-auth-plugin`, and
+`kubelogin` tools, running them as commands from the host system.
+
+The terminal uses `/bin/sh` by default, but it can be switched in the
+settings to, for example, `/bin/bash` for a sandboxed environment or
+`/app/bin/host-spawn` for a host environment.
+
 #### APT repository
 
 Run the following commands:
