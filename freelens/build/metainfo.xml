@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
+<!-- Copyright (c) 2025 Freelens Authors -->
+<component type="desktop-application">
   <id>app.freelens.Freelens</id>
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
   <name>Freelens</name>
+  <summary>Free IDE for Kubernetes</summary>
   <developer_name>Freelens Authors</developer_name>
   <url type="homepage">https://freelens.app/</url>
   <url type="bugtracker">https://github.com/freelensapp/freelens/issues</url>
   <url type="vcs-browser">https://github.com/freelensapp/freelens</url>
   <url type="contribute">https://github.com/freelensapp/freelens/blob/main/CONTRIBUTING.md</url>
-  <summary>Free and open-source UI for Kubernetes</summary>
   <description>
-    <p>Freelens is a free and open-source user interface
-designed for managing Kubernetes clusters. It provides a standalone
-application that is compatible with MacOS, Windows, and Linux operating
-systems, making it accessible to a wide range of users. The application aims
-to simplify the complexities of Kubernetes management by offering an
-intuitive and user-friendly interface.</p>
+    <p>Freelens is a Kubernetes IDE that provides a graphical interface for managing and monitoring Kubernetes clusters.</p>
+    <p>It simplifies cluster operations by offering:</p>
+    <ul>
+      <li>A dashboard with real-time cluster insights</li>
+      <li>Support for multiple clusters</li>
+      <li>Built-in terminal access to nodes and pods</li>
+      <li>Visualization of workloads, networking, storage, and configurations</li>
+      <li>Extension support to add custom functionality</li>
+    </ul>
+    <p>Freelens is maintained by the community.</p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>The main window</caption>
-      <image>https://freelensapp.github.io/images/freelens-screenshot.png</image>
+      <caption>Troubleshooting the pod</caption>
+      <image>https://freelensapp.github.io/images/freelens-screenshot-linux.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Cluster overview</caption>
+      <image>https://freelensapp.github.io/images/freelens-screenshot-linux-cluster.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Catalog</caption>
+      <image>https://freelensapp.github.io/images/freelens-screenshot-linux-catalog.png</image>
     </screenshot>
   </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#4aa49f</color>
+    <color type="primary" scheme_preference="dark">#37383e</color>
+  </branding>
   <recommends>
     <control>pointing</control>
     <control>keyboard</control>
@@ -33,6 +50,11 @@ intuitive and user-friendly interface.</p>
     <display_length compare="ge">768</display_length>
   </requires>
   <launchable type="desktop-id">app.freelens.Freelens.desktop</launchable>
+  <provides>
+    <binary>freelens</binary>
+  </provides>
+  <icon type="stock">app.freelens.Freelens</icon>
+  <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>
     <release version="0.1.3" date="2025-01-28">
