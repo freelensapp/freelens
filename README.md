@@ -6,6 +6,10 @@
 [![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90)](https://github.com/freelensapp/freelens)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
+[![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
+[![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
+[![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
+[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 
@@ -39,7 +43,6 @@ systems.
 Run the following command:
 
 ```sh
-brew tap freelensapp/tap
 brew install --cask freelens
 ```
 
@@ -86,7 +89,7 @@ The application is sandboxed. It includes bundled `kubectl` and `helm`
 commands and uses the `~/.kube/config` file by default. The `~/.freelens`
 directory is stored in the sandbox.
 
-Flatpak adds wrappers for the `aws`, `gke-gcloud-auth-plugin`, and
+Flatpak adds wrappers for the `aws`, `doctl`, `gke-gcloud-auth-plugin`, and
 `kubelogin` tools, running them as commands from the host system.
 
 The terminal uses `/bin/sh` by default, but it can be switched in the
@@ -105,8 +108,6 @@ curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/f
 sudo apt update
 sudo apt install freelens
 ```
-
-<!-- markdownlint-enable MD013 -->
 
 ### Windows
 
