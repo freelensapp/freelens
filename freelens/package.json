@@ -100,7 +100,8 @@
     ],
     "linux": {
       "appId": "app.freelens.Freelens",
-      "category": "Development",
+      "executableName": "app.freelens.Freelens",
+      "category": "Development;Network",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
       "target": [
         "AppImage"
@@ -186,6 +187,7 @@
     },
     "mac": {
       "appId": "app.freelens.Freelens",
+      "executableName": "app.freelens.Freelens",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "category": "public.app-category.developer-tools",
@@ -212,6 +214,7 @@
     },
     "win": {
       "appId": "app.freelens.Freelens",
+      "executableName": "app.freelens.Freelens",
       "target": [
         "nsis"
       ],
