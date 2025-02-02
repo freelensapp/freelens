@@ -53,7 +53,7 @@
   <provides>
     <binary>freelens</binary>
   </provides>
-  <icon type="stock">app.freelens.Freelens</icon>
+  <icon type="stock">freelens</icon>
   <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>
