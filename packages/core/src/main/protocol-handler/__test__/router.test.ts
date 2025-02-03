@@ -55,20 +55,20 @@ describe("protocol router tests", () => {
   });
 
   it("should broadcast invalid host on non internal or non extension URLs", async () => {
-    await lpr.route("lens://foobar");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInvalid, "invalid host", "lens://foobar");
+    await lpr.route("freelens://foobar");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInvalid, "invalid host", "freelens://foobar");
   });
 
   it("should broadcast internal route when called with valid host", async () => {
     lpr.addInternalHandler("/", noop);
 
     try {
-      expect(await lpr.route("lens://app")).toBeUndefined();
+      expect(await lpr.route("freelens://app")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
-    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "lens://app", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "freelens://app", "matched");
   });
 
   it("should broadcast external route when called with valid host", async () => {
@@ -98,20 +98,20 @@ describe("protocol router tests", () => {
     lpr.addInternalHandler("/", noop);
 
     try {
-      expect(await lpr.route("lens://app")).toBeUndefined();
+      expect(await lpr.route("freelens://app")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
-    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "lens://app", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "freelens://app", "matched");
 
     try {
-      expect(await lpr.route("lens://extension/@mirantis/minikube")).toBeUndefined();
+      expect(await lpr.route("freelens://extension/@mirantis/minikube")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
-    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerExtension, "lens://extension/@mirantis/minikube", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerExtension, "freelens://extension/@mirantis/minikube", "matched");
   });
 
   it("should call handler if matches", async () => {
@@ -120,13 +120,13 @@ describe("protocol router tests", () => {
     lpr.addInternalHandler("/page", () => { called = true; });
 
     try {
-      expect(await lpr.route("lens://app/page")).toBeUndefined();
+      expect(await lpr.route("freelens://app/page")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
     expect(called).toBe(true);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "lens://app/page", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page", "matched");
   });
 
   it("should call most exact handler", async () => {
@@ -136,13 +136,13 @@ describe("protocol router tests", () => {
     lpr.addInternalHandler("/page/:id", params => { called = params.pathname.id; });
 
     try {
-      expect(await lpr.route("lens://app/page/foo")).toBeUndefined();
+      expect(await lpr.route("freelens://app/page/foo")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
     expect(called).toBe("foo");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "lens://app/page/foo", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo", "matched");
   });
 
   it("should call most exact handler for an extension", async () => {
@@ -176,13 +176,13 @@ describe("protocol router tests", () => {
     enabledExtensions.set(extId, { name: "@foobar/icecream", enabled: true });
 
     try {
-      expect(await lpr.route("lens://extension/@foobar/icecream/page/foob")).toBeUndefined();
+      expect(await lpr.route("freelens://extension/@foobar/icecream/page/foob")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
     expect(called).toBe("foob");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "lens://extension/@foobar/icecream/page/foob", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "freelens://extension/@foobar/icecream/page/foob", "matched");
   });
 
   it("should work with non-org extensions", async () => {
@@ -241,14 +241,14 @@ describe("protocol router tests", () => {
     }
 
     try {
-      expect(await lpr.route("lens://extension/icecream/page")).toBeUndefined();
+      expect(await lpr.route("freelens://extension/icecream/page")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
 
     expect(called).toBe(1);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "lens://extension/icecream/page", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "freelens://extension/icecream/page", "matched");
   });
 
   it("should throw if urlSchema is invalid", () => {
@@ -264,13 +264,13 @@ describe("protocol router tests", () => {
     lpr.addInternalHandler("/page/bar", () => { called = 4; });
 
     try {
-      expect(await lpr.route("lens://app/page/foo/bar/bat")).toBeUndefined();
+      expect(await lpr.route("freelens://app/page/foo/bar/bat")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
     expect(called).toBe(3);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "lens://app/page/foo/bar/bat", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo/bar/bat", "matched");
   });
 
   it("should call most exact handler with 2 found handlers", async () => {
@@ -281,12 +281,12 @@ describe("protocol router tests", () => {
     lpr.addInternalHandler("/page/bar", () => { called = 4; });
 
     try {
-      expect(await lpr.route("lens://app/page/foo/bar/bat")).toBeUndefined();
+      expect(await lpr.route("freelens://app/page/foo/bar/bat")).toBeUndefined();
     } catch (error) {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
     expect(called).toBe(1);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "lens://app/page/foo/bar/bat", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo/bar/bat", "matched");
   });
 });

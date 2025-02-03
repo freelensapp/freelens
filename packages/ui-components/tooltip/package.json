@@ -2,7 +2,7 @@
   "name": "@freelensapp/tooltip",
   "private": false,
   "version": "0.1.3",
-  "description": "Highly extendable tooltip in the Lens.",
+  "description": "Highly extendable tooltip in the Freelens.",
   "type": "commonjs",
   "files": [
     "dist"

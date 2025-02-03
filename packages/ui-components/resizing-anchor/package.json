@@ -2,7 +2,7 @@
   "name": "@freelensapp/resizing-anchor",
   "private": false,
   "version": "0.1.3",
-  "description": "Highly extendable resizing-anchor in the Lens.",
+  "description": "Highly extendable resizing-anchor in the Freelens.",
   "type": "commonjs",
   "files": [
     "dist"

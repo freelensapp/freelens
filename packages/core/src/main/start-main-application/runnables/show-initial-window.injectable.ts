@@ -13,7 +13,7 @@ import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application
 const getDeepLinkUrl = (commandLineArguments: string[]) => (
   commandLineArguments
     .map(arg => arg.toLowerCase())
-    .find(arg => arg.startsWith("lens://"))
+    .find(arg => arg.startsWith("freelens://"))
 );
 
 const showInitialWindowInjectable = getInjectable({

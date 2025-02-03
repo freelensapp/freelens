@@ -70,6 +70,7 @@ jobs:
           cat packages/kubectl-versions/build/versions.json | yq -pj '.[-1][-1]' > .github/version.log
           version=$(cat .github/version.log)
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
+          yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' packages/core/package.json
           echo "Bundled kubectl version $version" > .github/pr_body.log
 
       - name: Check for changes

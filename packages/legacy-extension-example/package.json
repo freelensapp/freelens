@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/legacy-extension-example",
   "private": false,
-  "description": "An example bundled Lens extensions using the v1 API",
+  "description": "An example bundled Freelens extensions using the v1 API",
   "version": "0.1.3",
   "type": "commonjs",
   "files": [

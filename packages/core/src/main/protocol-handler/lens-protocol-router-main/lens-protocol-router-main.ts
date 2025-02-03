@@ -64,7 +64,7 @@ export class LensProtocolRouterMain extends proto.LensProtocolRouter {
     try {
       const url = new URLParse(rawUrl, true);
 
-      if (url.protocol.toLowerCase() !== "lens:") {
+      if (url.protocol.toLowerCase() !== "freelens:") {
         throw new proto.RoutingError(proto.RoutingErrorType.INVALID_PROTOCOL, url);
       }
 
