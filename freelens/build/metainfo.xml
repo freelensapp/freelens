@@ -49,7 +49,7 @@
   <requires>
     <display_length compare="ge">768</display_length>
   </requires>
-  <launchable type="desktop-id">app.freelens.Freelens.desktop</launchable>
+  <launchable type="desktop-id">freelens.desktop</launchable>
   <provides>
     <binary>freelens</binary>
   </provides>
