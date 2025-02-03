@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/node-fetch",
   "version": "0.1.3",
-  "description": "Node fetch for Lens",
+  "description": "Node fetch for Freelens",
   "license": "MIT",
   "private": false,
   "publishConfig": {

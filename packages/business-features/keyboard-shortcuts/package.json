@@ -2,7 +2,7 @@
   "name": "@freelensapp/keyboard-shortcuts",
   "private": false,
   "version": "0.1.3",
-  "description": "Keyboard shortcuts for Lens",
+  "description": "Keyboard shortcuts for Freeens",
   "type": "commonjs",
   "files": [
     "dist"
