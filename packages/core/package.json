@@ -61,7 +61,7 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "config": {
-    "k8sProxyVersion": "1.2.1",
+    "k8sProxyVersion": "1.2.2",
     "bundledKubectlVersion": "1.32.1",
     "bundledHelmVersion": "3.17.0",
     "sentryDsn": "",
