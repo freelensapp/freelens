@@ -96,7 +96,7 @@
     ],
     "afterSign": "build/notarize.js",
     "extraResources": [
-      "LICENSE"
+      "build/license.txt"
     ],
     "linux": {
       "appId": "app.freelens.Freelens",
