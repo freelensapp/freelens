@@ -38,7 +38,7 @@
     </screenshot>
   </screenshots>
   <branding>
-    <color type="primary" scheme_preference="light">#b4d3d1</color>
+    <color type="primary" scheme_preference="light">#f1f1f1</color>
     <color type="primary" scheme_preference="dark">#37383e</color>
   </branding>
   <recommends>
@@ -49,7 +49,7 @@
   <requires>
     <display_length compare="ge">768</display_length>
   </requires>
-  <launchable type="desktop-id">app.freelens.Freelens.desktop</launchable>
+  <launchable type="desktop-id">freelens.desktop</launchable>
   <provides>
     <binary>freelens</binary>
   </provides>
