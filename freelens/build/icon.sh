@@ -8,7 +8,7 @@ magick -background none icon.svg -define icon:auto-resize=16,20,24,32,40,48,60,6
 
 ## Linux
 for i in 16 22 24 32 36 48 64 72 96 128 192 256 512; do
-	border=$(("${i}000" * 51 / 1000000))
+	border=$(("${i}000" * 38 / 1000000))
 	size=$((i - 2 * border))
 	magick -background none icon.svg -density 300 -resize "${size}x${size}" -bordercolor transparent -border "${border}" -verbose "icons/${i}x${i}.png"
 done
