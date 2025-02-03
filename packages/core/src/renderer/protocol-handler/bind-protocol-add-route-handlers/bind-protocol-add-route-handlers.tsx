@@ -58,7 +58,7 @@ export const bindProtocolAddRouteHandlers = ({
           <p>
             {"Unknown Action for "}
             <code>
-              lens://app/
+              freelens://app/
               {tail}
             </code>
             . Are you on the latest version?

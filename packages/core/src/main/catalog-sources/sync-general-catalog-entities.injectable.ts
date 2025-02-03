@@ -19,7 +19,7 @@ const syncGeneralCatalogEntitiesInjectable = getInjectable({
 
     return () => {
       catalogEntityRegistry.addComputedSource(
-        "lens:general",
+        "freelens:general",
         reactiveGeneralCatalogEntities,
       );
     };

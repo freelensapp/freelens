@@ -2,7 +2,7 @@
   "name": "freelens",
   "private": true,
   "productName": "Freelens",
-  "description": "Freelens - FOSS IDE for Kubernetes",
+  "description": "Freelens - Free IDE for Kubernetes",
   "homepage": "https://freelens.app",
   "version": "0.1.3",
   "repository": {
@@ -239,9 +239,9 @@
       "license": "build/license.txt"
     },
     "protocols": {
-      "name": "Lens Protocol Handler",
+      "name": "Freelens Protocol Handler",
       "schemes": [
-        "lens"
+        "freelens"
       ],
       "role": "Viewer"
     }

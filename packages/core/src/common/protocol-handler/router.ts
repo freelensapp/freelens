@@ -81,7 +81,7 @@ export abstract class LensProtocolRouter {
 
   /**
    * Attempts to route the given URL to all internal routes that have been registered
-   * @param url the parsed URL that initiated the `lens://` protocol
+   * @param url the parsed URL that initiated the `freelens://` protocol
    * @returns true if a route has been found
    */
   protected _routeToInternal(url: Url<Record<string, string | undefined>>): RouteAttempt {
@@ -255,7 +255,7 @@ export abstract class LensProtocolRouter {
   }
 
   /**
-   * Add a handler under the `lens://app` tree of routing.
+   * Add a handler under the `freelens://app` tree of routing.
    * @param pathSchema the URI path schema to match against for this handler
    * @param handler a function that will be called if a protocol path matches
    */

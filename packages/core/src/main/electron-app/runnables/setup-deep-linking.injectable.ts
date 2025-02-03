@@ -22,7 +22,7 @@ const setupDeepLinkingInjectable = getInjectable({
       const showApplicationWindow = di.inject(showApplicationWindowInjectable);
       const firstInstanceCommandLineArguments = di.inject(commandLineArgumentsInjectable);
 
-      logger.info(`📟 Setting protocol client for lens://`);
+      logger.info(`📟 Setting protocol client for freelens://`);
 
       if (app.setAsDefaultProtocolClient("lens")) {
         logger.info("📟 Protocol client register succeeded ✅");
@@ -65,5 +65,5 @@ export default setupDeepLinkingInjectable;
 const getDeepLinkUrl = (commandLineArguments: string[]) => (
   commandLineArguments
     .map(toLower)
-    .find(startsWith("lens://"))
+    .find(startsWith("freelens://"))
 );
