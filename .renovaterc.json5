@@ -28,7 +28,8 @@
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
       "fileMatch": [
-        "^freelens/package\\.json$"
+        "^freelens/package\\.json$",
+        "^packages/core/package\\.json$"
       ],
       "matchStrings": [
         "\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
@@ -42,7 +43,8 @@
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
       "fileMatch": [
-        "^freelens/package\\.json$"
+        "^freelens/package\\.json$",
+        "^packages/core/package\\.json$"
       ],
       "matchStrings": [
         "\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
