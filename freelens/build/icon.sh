@@ -4,7 +4,7 @@
 magick -background none icon.svg -density 300 -resize 408x408 -bordercolor transparent -border 52 -verbose icon.png
 
 ## Windows
-magick -background none icon.svg -define icon:auto-resize=16,20,24,32,40,48,60,64,72,80,96,256 -verbose icon.ico
+magick -background none icon.svg -define icon:auto-resize=256,16,20,24,32,40,48,60,64,72,80,96 -verbose icon.ico
 
 ## Linux
 for i in 16 22 24 32 36 48 64 72 96 128 192 256 512; do
