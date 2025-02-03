@@ -61,9 +61,9 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "config": {
-    "k8sProxyVersion": "1.1.0",
-    "bundledKubectlVersion": "1.31.1",
-    "bundledHelmVersion": "3.16.2",
+    "k8sProxyVersion": "1.2.1",
+    "bundledKubectlVersion": "1.32.1",
+    "bundledHelmVersion": "3.17.0",
     "sentryDsn": "",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.lens.app:*/; img-src * data:",
     "welcomeRoute": "/welcome"
