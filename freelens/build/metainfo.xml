@@ -38,7 +38,7 @@
     </screenshot>
   </screenshots>
   <branding>
-    <color type="primary" scheme_preference="light">#4aa49f</color>
+    <color type="primary" scheme_preference="light">#b4d3d1</color>
     <color type="primary" scheme_preference="dark">#37383e</color>
   </branding>
   <recommends>
@@ -53,7 +53,19 @@
   <provides>
     <binary>freelens</binary>
   </provides>
-  <icon type="stock">app.freelens.Freelens</icon>
+  <categories>
+    <category>Development</category>
+    <category>Network</category>
+  </categories>
+  <keywords>
+    <keyword>cloud</keyword>
+    <keyword>cluster</keyword>
+    <keyword>devops</keyword>
+    <keyword>helm</keyword>
+    <keyword>ide</keyword>
+    <keyword>kubernetes</keyword>
+  </keywords>
+  <icon type="stock">freelens</icon>
   <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>

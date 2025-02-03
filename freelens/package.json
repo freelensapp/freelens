@@ -100,7 +100,7 @@
     ],
     "linux": {
       "appId": "app.freelens.Freelens",
-      "category": "Development",
+      "category": "Development;Network",
       "artifactName": "${productName}-${version}.${arch}.${ext}",
       "target": [
         "AppImage"
