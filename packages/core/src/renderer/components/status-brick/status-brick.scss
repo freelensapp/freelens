@@ -10,11 +10,24 @@
   width: $brickSize;
   height: $brickSize;
   margin-right: $margin;
-  background: var(--colorOk);
+  background: var(--colorVague);
   border-radius: 2px;
 
   &:last-child {
     margin-right: 0;
   }
+
+  &.running {
+    background: var(--colorOk);
+  }
+
+  &.waiting {
+    background: var(--colorWarning);
+  }
+
+  &.terminated {
+    background: var(--colorTerminated);
+  }
+
 }
 
