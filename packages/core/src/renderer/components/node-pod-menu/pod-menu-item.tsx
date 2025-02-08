@@ -56,7 +56,9 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = props => {
                 const status = statuses.find((status) => status.name === name);
                 const brick = status ? (
                   <StatusBrick
-                    className={cssNames(Object.keys(status.state ? status.state : {})[0])}
+                    className={cssNames(Object.keys(status.state ? status.state : {})[0], {
+                      ready: status.ready,
+                    })}
                   />
                 ) : null;
   
