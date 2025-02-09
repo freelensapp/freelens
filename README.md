@@ -132,16 +132,6 @@ winget install Freelensapp.Freelens
 
 The `--silent` option is supported to suppress all UI.
 
-### Node-Pod-Menu extension
-
-To view container logs and shell into them and nodes, you can install the
-[freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu)
-extension.
-
-To install it, open the `Freelens` -> `Extensions` menu, enter the name
-`@freelensapp/freelens-node-pod-menu` as input, and click the `Install`
-button.
-
 ## Development
 
 Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
