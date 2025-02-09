@@ -6,7 +6,7 @@ import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { fireEvent, screen, within } from "@testing-library/react";
 
 jest.mock("../../menu", () => {
-  const actualMenu = jest.requireActual("../menu");
+  const actualMenu = jest.requireActual("../../menu");
 
   return {
     ...actualMenu,
