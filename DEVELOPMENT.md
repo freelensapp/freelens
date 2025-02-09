@@ -88,12 +88,11 @@ npm run start-dev
 This application uses additional components hosted in separate repositories:
 
 * [freelens-k8s-proxy](https://github.com/freelensapp/freelens-k8s-proxy/)
-* [freelens-node-pod-menu](https://github.com/freelensapp/freelens-node-pod-menu/)
 
 It bundles binaries for:
 
-* helm
-* kubectl
+* [helm](https://helm.sh/)
+* [kubectl](https://kubernetes.io/docs/reference/kubectl/)
 
 The [Renovate](https://github.com/freelensapp/freelens/issues/64) bot keeps
 the versions up-to-date.
