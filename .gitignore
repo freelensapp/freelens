@@ -12,6 +12,7 @@ coverage/
 dist/
 node_modules/
 out/
+icon.iconset/
 
 .yalc/
 
