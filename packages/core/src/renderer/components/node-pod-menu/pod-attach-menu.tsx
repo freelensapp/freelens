@@ -10,11 +10,11 @@ import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/h
 import { App } from "../../../extensions/common-api";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
-import { nanoid } from "nanoid";
 import { Pod } from "@freelensapp/kube-object/src/specifics";
 import os from "os";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";
+import { v4 as uuidv4 } from "uuid";
 
 export interface PodAttachMenuProps {
   object: any;
@@ -37,7 +37,16 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
   } = props;
 
   if (!object) return null;
-  const pod = new Pod(object);
+  let pod: Pod;
+
+  try {
+    pod = new Pod(object);
+  } catch (ex) {
+    console.log(ex);
+
+    return null;
+  }
+
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
 
@@ -62,7 +71,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
       commandParts.push("-c", containerName);
     }
 
-    const shellId = nanoid();
+    const shellId = uuidv4();
 
     createTerminalTab({
       title: `Pod: ${pod.getName()} (namespace: ${pod.getNs()}) [Attached]`,

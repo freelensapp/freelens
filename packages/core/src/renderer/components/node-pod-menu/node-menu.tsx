@@ -38,8 +38,16 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
   } = props;
 
   if (!object) return null;
+  let node: Node;
 
-  const node = new Node(object);
+  try {
+    node = new Node(object);
+  } catch (ex) {
+    console.log(ex);
+
+    return null;
+  }
+
   const nodeName = node.getName();
   const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
 

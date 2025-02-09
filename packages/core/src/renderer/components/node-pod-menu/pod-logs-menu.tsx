@@ -30,7 +30,16 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
   } = props;
 
   if (!object) return null;
-  const pod = new Pod(object);
+  let pod: Pod;
+
+  try {
+    pod = new Pod(object);
+  } catch (ex) {
+    console.log(ex);
+
+    return null;
+  }
+
   const containers = pod.getAllContainers();
   const statuses = pod.getContainerStatuses();
 
@@ -52,10 +61,7 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
       toolbar={toolbar}
       containers={containers}
       statuses={statuses}
-      onMenuItemClick={(x) => {
-        console.log("ok");
-        showLogs(x);
-      }}
+      onMenuItemClick={showLogs}
     />
   );
 };

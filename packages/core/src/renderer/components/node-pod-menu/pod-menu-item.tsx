@@ -33,7 +33,7 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = props => {
     onMenuItemClick,
   } = props;
 
-  if (!containers.length) return null;
+  if (!containers || !containers.length) return null;
 
   return (
     <>
