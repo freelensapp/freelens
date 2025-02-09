@@ -442,13 +442,6 @@ exports[`extensions - navigation using application menu when navigating to exten
                 <p>
                   Add new features via Freelens Extensions.
                 </p>
-                <p>
-                  We recommend
-                  <b>
-                     @freelensapp/freelens-node-pod-menu 
-                  </b>
-                  which adds back the node and pod menu functionality.
-                </p>
               </div>
               <section>
                 <div
