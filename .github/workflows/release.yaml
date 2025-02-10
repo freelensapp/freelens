@@ -142,14 +142,19 @@ jobs:
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
-        run: |
-          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
-            test -n "${!var}" || unset $var
-          done
-          npm run build:app -- -- -- \
-            dmg pkg \
-            --publish never \
-            --${{ matrix.arch }}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: |
+            for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
+              test -n "${!var}" || unset $var
+            done
+            npm run build:app -- -- -- \
+              dmg pkg \
+              --publish never \
+              --${{ matrix.arch }}
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -161,18 +166,23 @@ jobs:
 
       - name: Notarize PKG (macOS)
         if: runner.os == 'macOS'
-        run: |
-          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
-            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
-            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
-            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
-            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
-            sleep 60
-            if [[ -n $uuid ]]; then
-              xcrun notarytool log $uuid $auth
-              xcrun stapler staple $pkgname
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: |
+            if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+              pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+              auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+              xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+              uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+              sleep 60
+              if [[ -n $uuid ]]; then
+                xcrun notarytool log $uuid $auth
+                xcrun stapler staple $pkgname
+              fi
             fi
-          fi
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -200,6 +210,19 @@ jobs:
         env:
           CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+
+      - name: Azure Trusted Signing (Windows x64)
+        if: runner.os == 'Windows' && matrix.arch == 'x64' && github.ref_name == 'main' && github.event_name != 'pull_request'
+        uses: azure/trusted-signing-action@v0.5.1
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files-folder: ${{ github.workspace }}\freelens\dist
+          files-folder-filter: exe,msi
 
       - name: Tweak binaries
         shell: bash
