@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging-for-renderer",
   "private": false,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Implementations for 'messaging' in Electron renderer",
   "type": "commonjs",
   "publishConfig": {
@@ -42,7 +42,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^0.1.3",
-    "@freelensapp/webpack": "^0.1.3"
+    "@freelensapp/eslint-config": "^0.1.4",
+    "@freelensapp/webpack": "^0.1.4"
   }
 }
