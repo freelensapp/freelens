@@ -224,15 +224,15 @@ metadata:
                 expect(rendered.baseElement).toMatchSnapshot();
               });
 
-              it("calls for save with just the adding version label", () => {
+              it("calls for save with just the adding version annotation", () => {
                 expect(apiKubePatchMock).toHaveBeenCalledWith(
                   "/api/some-api-version/namespaces/some-uid",
                   {
                     data: [{
                       op: "add",
-                      path: "/metadata/labels",
+                      path: "/metadata/annotations",
                       value: {
-                        "k8slens-edit-resource-version": "some-api-version",
+                        "edit.resource.freelens.app/version": "some-api-version",
                       },
                     }],
                   },
@@ -596,9 +596,9 @@ metadata:
                         },
                         {
                           op: "add",
-                          path: "/metadata/labels",
+                          path: "/metadata/annotations",
                           value: {
-                            "k8slens-edit-resource-version": "some-api-version",
+                            "edit.resource.freelens.app/version": "some-api-version",
                           },
                         },
                         {
@@ -836,7 +836,7 @@ metadata:
 `);
                 });
 
-                it("when selecting to save, calls for save of second namespace with just the add edit version label", () => {
+                it("when selecting to save, calls for save of second namespace with just the add edit version annotation", () => {
                   apiKubePatchMock.mockClear();
 
                   const saveButton = rendered.getByTestId(
@@ -850,9 +850,9 @@ metadata:
                     {
                       data: [{
                         op: "add",
-                        path: "/metadata/labels",
+                        path: "/metadata/annotations",
                         value: {
-                          "k8slens-edit-resource-version": "some-api-version",
+                          "edit.resource.freelens.app/version": "some-api-version",
                         },
                       }],
                     },
@@ -916,7 +916,7 @@ metadata:
 `);
                   });
 
-                  it("when selecting to save, calls for save of first namespace with just the new edit version label", () => {
+                  it("when selecting to save, calls for save of first namespace with just the new edit version annotation", () => {
                     apiKubePatchMock.mockClear();
 
                     const saveButton = rendered.getByTestId(
@@ -930,9 +930,9 @@ metadata:
                       {
                         data: [{
                           op: "add",
-                          path: "/metadata/labels",
+                          path: "/metadata/annotation",
                           value: {
-                            "k8slens-edit-resource-version": "some-api-version",
+                            "edit.resource.freelens.app/version": "some-api-version",
                           },
                         }],
                       },

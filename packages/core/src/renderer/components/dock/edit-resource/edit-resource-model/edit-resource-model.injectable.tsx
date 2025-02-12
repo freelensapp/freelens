@@ -59,7 +59,7 @@ interface Dependencies {
 }
 
 function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
-  const lensVersionLabel = object.metadata.labels?.[EditResourceLabelName];
+  const lensVersionLabel = object.metadata.labels?.[EditResourceAnnotationName];
 
   if (lensVersionLabel) {
     const parsedKubeApi = parseKubeApi(object.metadata.selfLink);
@@ -82,7 +82,7 @@ function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
 /**
  * The label name that Lens uses to receive the desired api version
  */
-export const EditResourceLabelName = "k8slens-edit-resource-version";
+export const EditResourceAnnotationName = "edit.resource.freelens.app/version";
 
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
@@ -139,14 +139,14 @@ export class EditResourceModel {
       return void this.dependencies.showErrorNotification(`Loading resource failed: ${result.error}`);
     }
 
-    if (result?.response?.metadata.labels?.[EditResourceLabelName]) {
+    if (result?.response?.metadata.annotations?.[EditResourceAnnotationName]) {
       const parsed = parseKubeApi(this.selfLink);
 
       if (!parsed) {
         return void this.dependencies.showErrorNotification(`Object's selfLink is invalid: "${this.selfLink}"`);
       }
 
-      parsed.apiVersion = result.response.metadata.labels[EditResourceLabelName];
+      parsed.apiVersion = result.response.metadata.annotations[EditResourceAnnotationName];
 
       result = await this.dependencies.requestKubeResource(createKubeApiURL(parsed));
     }
@@ -188,8 +188,8 @@ export class EditResourceModel {
     const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue);
 
     // Make sure we save this label so that we can use it in the future
-    currentVersion.metadata.labels ??= {};
-    currentVersion.metadata.labels[EditResourceLabelName] = currentVersion.apiVersion.split("/").pop();
+    currentVersion.metadata.annotations ??= {};
+    currentVersion.metadata.annotations[EditResourceAnnotationName] = currentVersion.apiVersion.split("/").pop();
 
     const patches = createPatch(firstVersion, currentVersion);
     const selfLink = getEditSelfLinkFor(currentVersion);
