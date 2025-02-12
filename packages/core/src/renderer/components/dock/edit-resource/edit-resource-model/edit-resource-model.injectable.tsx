@@ -82,7 +82,7 @@ function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
 /**
  * The label name that Lens uses to receive the desired api version
  */
-export const EditResourceAnnotationName = "edit.resource.freelens.app/version";
+export const EditResourceAnnotationName = "edit.freelens.app/version";
 
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}

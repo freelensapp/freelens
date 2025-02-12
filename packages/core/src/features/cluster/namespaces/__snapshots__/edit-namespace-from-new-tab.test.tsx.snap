@@ -7140,7 +7140,7 @@ metadata:
   somePropertyToBeChanged: some-old-value
   selfLink: /api/some-api-version/namespaces/some-uid
   annotations:
-    edit.resource.freelens.app/version: some-api-version
+    edit.freelens.app/version: some-api-version
 
               </textarea>
             </div>

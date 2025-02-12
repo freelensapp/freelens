@@ -232,7 +232,7 @@ metadata:
                       op: "add",
                       path: "/metadata/annotations",
                       value: {
-                        "edit.resource.freelens.app/version": "some-api-version",
+                        "edit.freelens.app/version": "some-api-version",
                       },
                     }],
                   },
@@ -598,7 +598,7 @@ metadata:
                           op: "add",
                           path: "/metadata/annotations",
                           value: {
-                            "edit.resource.freelens.app/version": "some-api-version",
+                            "edit.freelens.app/version": "some-api-version",
                           },
                         },
                         {
@@ -852,7 +852,7 @@ metadata:
                         op: "add",
                         path: "/metadata/annotations",
                         value: {
-                          "edit.resource.freelens.app/version": "some-api-version",
+                          "edit.freelens.app/version": "some-api-version",
                         },
                       }],
                     },
@@ -932,7 +932,7 @@ metadata:
                           op: "add",
                           path: "/metadata/annotation",
                           value: {
-                            "edit.resource.freelens.app/version": "some-api-version",
+                            "edit.freelens.app/version": "some-api-version",
                           },
                         }],
                       },
