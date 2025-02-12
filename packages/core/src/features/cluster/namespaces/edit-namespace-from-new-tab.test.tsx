@@ -930,7 +930,7 @@ metadata:
                       {
                         data: [{
                           op: "add",
-                          path: "/metadata/annotation",
+                          path: "/metadata/annotations",
                           value: {
                             "edit.freelens.app/version": "some-api-version",
                           },
