@@ -59,9 +59,9 @@ interface Dependencies {
 }
 
 function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
-  const lensVersionLabel = object.metadata.labels?.[EditResourceAnnotationName];
+  const lensVersionAnnotation = object.metadata.annotations?.[EditResourceAnnotationName];
 
-  if (lensVersionLabel) {
+  if (lensVersionAnnotation) {
     const parsedKubeApi = parseKubeApi(object.metadata.selfLink);
 
     if (!parsedKubeApi) {
@@ -72,7 +72,7 @@ function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
 
     return createKubeApiURL({
       ...parsedApi,
-      apiVersion: lensVersionLabel,
+      apiVersion: lensVersionAnnotation,
     });
   }
 
@@ -80,7 +80,7 @@ function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
 }
 
 /**
- * The label name that Lens uses to receive the desired api version
+ * The annotation name that Lens uses to receive the desired api version
  */
 export const EditResourceAnnotationName = "edit.freelens.app/version";
 
@@ -187,7 +187,7 @@ export class EditResourceModel {
     const currentVersion = yaml.load(currentValue) as RawKubeObject;
     const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue);
 
-    // Make sure we save this label so that we can use it in the future
+    // Make sure we save this annotation so that we can use it in the future
     currentVersion.metadata.annotations ??= {};
     currentVersion.metadata.annotations[EditResourceAnnotationName] = currentVersion.apiVersion.split("/").pop();
 
