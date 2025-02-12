@@ -114,9 +114,6 @@ sudo apt install freelens
 Download the EXE or MSI installers from the
 [releases](https://github.com/freelensapp/freelens/releases) page.
 
-The EXE and MSI are not yet signed, so you must override Microsoft Defender
-SmartScreen to install them.
-
 Only the x64 (amd64) version of the Windows binaries is provided.
 
 #### WinGet
