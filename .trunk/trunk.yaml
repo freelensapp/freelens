@@ -21,10 +21,10 @@ lint:
     - actionlint@1.7.7
     - git-diff-check
     - markdownlint@0.44.0
-    - renovate@39.163.0
+    - renovate@39.169.3
     - shellcheck@0.10.0
     - shfmt@3.6.0
-    - trufflehog@3.88.5
+    - trufflehog@3.88.7
     - yamllint@1.35.1
   disabled:
     - checkov
