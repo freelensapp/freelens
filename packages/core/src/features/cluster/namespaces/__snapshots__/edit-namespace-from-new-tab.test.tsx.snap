@@ -7139,8 +7139,8 @@ metadata:
   somePropertyToBeRemoved: some-value
   somePropertyToBeChanged: some-old-value
   selfLink: /api/some-api-version/namespaces/some-uid
-  labels:
-    k8slens-edit-resource-version: some-api-version
+  annotations:
+    freelens.app/resource-version: some-api-version
 
               </textarea>
             </div>
