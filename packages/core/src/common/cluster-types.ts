@@ -178,7 +178,7 @@ export enum ClusterMetricsResourceType {
 /**
  * The default filesystem mountpoints for metrics
  */
-export const initialFilesystemMountpoints = "/";
+export const initialFilesystemMountpoints = "/|/local";
 
 /**
  * The default node shell image
