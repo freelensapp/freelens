@@ -62,11 +62,15 @@ jobs:
           retry_on: any
           command: brew install python-setuptools
 
+      - name: Get Kubernetes version (Linux)
+        if: runner.os == 'Linux'
+        run: echo "kubernetes_version=v$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
+
       - name: Install minikube (Linux)
         if: runner.os == 'Linux'
         uses: medyagh/setup-minikube@master
         with:
-          kubernetes-version: v1.31.0
+          kubernetes-version: ${{ env.kubernetes_version }}
 
       - name: Install npm dependencies
         uses: nick-fields/retry@v3
