@@ -29,7 +29,7 @@ jobs:
 
     if: >-
       github.event_name != 'issue_comment' ||
-      contains(github.event.comment.body, '/rerun')
+      (startsWith(github.event.issue.title, 'Automated update of kubectl versions') && contains(github.event.comment.body, '/rerun'))
 
     steps:
       - name: Checkout
@@ -71,6 +71,7 @@ jobs:
           version=$(cat .github/version.log)
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' packages/core/package.json
+          sed -i 's/kubernetes-version: .*/kubernetes-version: v'"$version"'/' .github/workflows/integration-tests.yaml
           echo "Bundled kubectl version $version" > .github/pr_body.log
 
       - name: Check for changes
