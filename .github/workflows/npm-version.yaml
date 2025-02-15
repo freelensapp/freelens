@@ -51,6 +51,7 @@ jobs:
 
       - name: Set version
         run: |
+          set -eo pipefail
           npx lerna version --no-git-tag-version --yes --loglevel=error "$newversion" | tee .github/update.log
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           jq -r .version freelens/package.json > .github/version.log
