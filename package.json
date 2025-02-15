@@ -1,5 +1,5 @@
 {
-  "name": "lens-monorepo",
+  "name": "freelens-monorepo",
   "private": true,
   "workspaces": [
     "packages/**/*",
