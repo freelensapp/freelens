@@ -147,6 +147,7 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
+          retry_wait_seconds: 600
           command: |
             for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
               test -n "${!var}" || unset $var
@@ -171,6 +172,7 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
+          retry_wait_seconds: 600
           command: |
             if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
               pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
