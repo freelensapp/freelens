@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/cluster-settings",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "Injection token exporter for cluster settings configuration",
   "license": "MIT",
   "type": "commonjs",
@@ -19,7 +19,7 @@
     "build": "lens-webpack-build"
   },
   "devDependencies": {
-    "@freelensapp/webpack": "^0.1.4",
+    "@freelensapp/webpack": "^1.0.0",
     "rimraf": "^4.4.1"
   },
   "peerDependencies": {
