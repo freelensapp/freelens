@@ -137,8 +137,17 @@ from source.
 
 ## Extensions
 
-Anyone can develop extensions for Freelens and many extensions previously used with Open Lens have already been converted.
+Anyone can develop extensions for Freelens and many extensions previously used with Open Lens have already been converted.  
 Visit the [extensions page](https://github.com/freelensapp/freelens/wiki/Extensions) to see them and write in the [appropriate discussion](https://github.com/freelensapp/freelens/discussions/117) if you also want to propose yours.
+
+## Community
+
+Get updates about Freelens & keep in touch with our community  
+
+- Follow us on [LinkedIn](https://www.linkedin.com/company/freelensapp/)
+- Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
+- Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
+- Open an [Issue](https://github.com/freelensapp/freelens/issues)
 
 ## Contributing
 
