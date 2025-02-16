@@ -135,6 +135,11 @@ The `--silent` option is supported to suppress all UI.
 Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
 from source.
 
+## Extensions
+
+Anyone can develop extensions for Freelens and many extensions previously used with Open Lens have already been converted.
+Visit the [extensions page](https://github.com/freelensapp/freelens/wiki/Extensions) to see them and write in the [appropriate discussion](https://github.com/freelensapp/freelens/discussions/117) if you also want to propose yours.
+
 ## Contributing
 
 Anyone is welcome to collaborate to advance the Freelens project. Read
