@@ -8,6 +8,7 @@ import { getGlobalOverride } from "@freelensapp/test-utils";
 import electronAppInjectable from "./electron-app.injectable";
 import EventEmitter from "events";
 import { getOrInsert } from "@freelensapp/utilities";
+import type { ClientCertRequestParams, ProxyConfig } from "electron";
 
 export default getGlobalOverride(electronAppInjectable, () => {
   const commandLineArgs: string[] = [];
@@ -211,6 +212,21 @@ export default getGlobalOverride(electronAppInjectable, () => {
       throw new Error("Method not implemented.");
     }
 
+    resolveProxy(url: string): Promise<string> {
+      void url;
+      throw new Error("Method not implemented.");
+    }
+
+    setClientCertRequestPasswordHandler(handler: (clientCertRequestParams: ClientCertRequestParams) => Promise<string>): void {
+      void handler;
+      throw new Error("Method not implemented.");
+    }
+
+    setProxy(config: ProxyConfig): void {
+      void config;
+      throw new Error("Method not implemented.");
+    }
+
     accessibilitySupportEnabled = false;
     applicationMenu: Electron.Menu | null = null;
     badgeCount = 0;
@@ -265,6 +281,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
         wasOpenedAsHidden: false,
         restoreState: false,
         launchItems: [],
+        status: "",
       };
     }
   };
