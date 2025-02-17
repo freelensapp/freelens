@@ -12,5 +12,6 @@ export default getGlobalOverride(nativeThemeInjectable, () => Object.assign(new 
   inForcedColorsMode: true,
   shouldUseHighContrastColors: false,
   shouldUseInvertedColorScheme: false,
+  prefersReducedTransparency: false,
   themeSource: "dark" as const,
 }));

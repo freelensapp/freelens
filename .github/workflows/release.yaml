@@ -16,7 +16,7 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -43,10 +43,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             arch: arm64
             concurrency: linux-arm64
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             arch: x64
             concurrency: linux-amd64
           - os: macos-14
@@ -298,7 +298,7 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -321,7 +321,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             arch: x64
 
     runs-on: ${{ matrix.os }}

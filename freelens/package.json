@@ -51,7 +51,7 @@
     "welcomeRoute": "/welcome"
   },
   "engines": {
-    "node": ">=16 <=18"
+    "node": "^20.0.0"
   },
   "jest": {
     "collectCoverage": false,
@@ -87,7 +87,7 @@
   "build": {
     "npmRebuild": false,
     "detectUpdateChannel": false,
-    "electronVersion": "22.3.3",
+    "electronVersion": "34.2.0",
     "generateUpdatesFilesForAllChannels": true,
     "files": [
       "static/**/*",
@@ -329,8 +329,8 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
     "monaco-editor": "^0.38.0",
-    "node-pty": "1.0.0",
-    "npm": "^9.6.7",
+    "node-pty": "1.1.0-beta28",
+    "npm": "10.8.2",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.2.0",
     "proper-lockfile": "^4.1.2",
@@ -401,8 +401,8 @@
     "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.2",
-    "electron": "^22.3.10",
-    "electron-builder": "^23.6.0",
+    "electron": "^34.2.0",
+    "electron-builder": "^26.0.6",
     "esbuild-loader": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
     "html-webpack-plugin": "^5.5.1",
@@ -411,6 +411,7 @@
     "jsonfile": "^6.1.0",
     "mini-css-extract-plugin": "^2.7.1",
     "monaco-editor-webpack-plugin": "^7.0.1",
+    "node-abi": "^3.74.0",
     "node-loader": "^2.0.0",
     "nodemon": "^2.0.20",
     "playwright": "^1.33.0",
