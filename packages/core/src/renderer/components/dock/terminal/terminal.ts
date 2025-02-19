@@ -19,11 +19,13 @@ import assert from "assert";
 import { TerminalChannels } from "../../../../common/terminal/channels";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
+import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 
 export interface TerminalDependencies {
   readonly spawningPool: HTMLElement;
   readonly terminalConfig: IComputedValue<TerminalConfig>;
   readonly terminalCopyOnSelect: IComputedValue<boolean>;
+  readonly terminalFonts: TerminalFont[];
   readonly isMac: boolean;
   readonly xtermColorTheme: IComputedValue<Record<string, string>>;
   readonly logger: Logger;
@@ -69,7 +71,10 @@ export class Terminal {
   }
 
   get fontFamily() {
-    return this.dependencies.terminalConfig.get().fontFamily;
+    const nameFromConfig = this.dependencies.terminalConfig.get().fontFamily;
+    const nameFromAlias = this.dependencies.terminalFonts.find(font => font.alias === nameFromConfig)?.name;
+
+    return nameFromAlias || nameFromConfig;
   }
 
   get fontSize() {

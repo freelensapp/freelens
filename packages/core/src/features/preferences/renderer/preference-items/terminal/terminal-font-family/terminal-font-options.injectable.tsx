@@ -37,7 +37,7 @@ const terminalFontPreferencePresenterInjectable = getInjectable({
           </span>
         ),
         value: font.name,
-        isSelected: state.terminalConfig.fontFamily === font.name || state.terminalConfig.fontFamily == font.alias,
+        isSelected: state.terminalConfig.fontFamily === font.name || state.terminalConfig.fontFamily === font.alias,
       }))),
       current: computed(() => state.terminalConfig.fontFamily),
       onSelection: action(selection => {
