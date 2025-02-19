@@ -14,6 +14,7 @@ import xtermColorThemeInjectable from "../../../themes/terminal-colors.injectabl
 import { loggerInjectionToken } from "@freelensapp/logger";
 import terminalConfigInjectable from "../../../../features/user-preferences/common/terminal-config.injectable";
 import terminalCopyOnSelectInjectable from "../../../../features/user-preferences/common/terminal-copy-on-select.injectable";
+import { terminalFontInjectionToken } from "../../../../features/terminal/renderer/fonts/token";
 
 export type CreateTerminal = (tabId: TabId, api: TerminalApi) => Terminal;
 
@@ -24,6 +25,7 @@ const createTerminalInjectable = getInjectable({
       spawningPool: di.inject(terminalSpawningPoolInjectable),
       terminalConfig: di.inject(terminalConfigInjectable),
       terminalCopyOnSelect: di.inject(terminalCopyOnSelectInjectable),
+      terminalFonts: di.injectMany(terminalFontInjectionToken),
       isMac: di.inject(isMacInjectable),
       openLinkInBrowser: di.inject(openLinkInBrowserInjectable),
       xtermColorTheme: di.inject(xtermColorThemeInjectable),

@@ -4,16 +4,16 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import UbuntuMono from "./UbuntuMonoNerdFont-Regular.ttf";
+import BlexMono from "./BlexMonoNerdFont-Regular.ttf";
 
-const ubuntuMonoTerminalFontInjectable = getInjectable({
-  id: "ubuntu-mono-terminal-font",
+const blexMonoTerminalFontInjectable = getInjectable({
+  id: "blex-mono-terminal-font",
   instantiate: () => ({
-    name: "UbuntuMono",
-    alias: "Ubuntu Mono",
-    url: UbuntuMono,
+    name: "BlexMono",
+    alias: "IBM Plex Mono",
+    url: BlexMono,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default ubuntuMonoTerminalFontInjectable;
+export default blexMonoTerminalFontInjectable;

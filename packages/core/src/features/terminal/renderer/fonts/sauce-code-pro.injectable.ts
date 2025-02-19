@@ -4,15 +4,16 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import SourceCodePro from "./SourceCodePro-Regular.ttf";
+import SauceCodePro from "./SauceCodeProNerdFont-Regular.ttf";
 
-const sourceCodeProTerminalFontInjectable = getInjectable({
-  id: "source-code-pro-terminal-font",
+const sauceCodeProTerminalFontInjectable = getInjectable({
+  id: "sauce-code-pro-terminal-font",
   instantiate: () => ({
-    name: "Source Code Pro",
-    url: SourceCodePro,
+    name: "SauceCodePro",
+    alias: "Source Code Pro",
+    url: SauceCodePro,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default sourceCodeProTerminalFontInjectable;
+export default sauceCodeProTerminalFontInjectable;

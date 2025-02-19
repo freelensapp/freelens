@@ -7,6 +7,7 @@ import { getInjectionToken } from "@ogre-tools/injectable";
 
 export interface TerminalFont {
   name: string;
+  alias?: string;
   url: string;
 }
 

@@ -6,8 +6,9 @@
 import debounce from "lodash/debounce";
 import type { IComputedValue } from "mobx";
 import { reaction } from "mobx";
-import { Terminal as XTerm } from "xterm";
-import { FitAddon } from "xterm-addon-fit";
+import { Terminal as XTerm } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import { WebLinksAddon } from "@xterm/addon-web-links";
 import type { TabId } from "../dock/store";
 import type { TerminalApi } from "../../../api/terminal-api";
 import { disposer } from "@freelensapp/utilities";
@@ -16,14 +17,15 @@ import { clipboard } from "electron";
 import type { Logger } from "@freelensapp/logger";
 import assert from "assert";
 import { TerminalChannels } from "../../../../common/terminal/channels";
-import { LinkProvider } from "xterm-link-provider";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
+import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 
 export interface TerminalDependencies {
   readonly spawningPool: HTMLElement;
   readonly terminalConfig: IComputedValue<TerminalConfig>;
   readonly terminalCopyOnSelect: IComputedValue<boolean>;
+  readonly terminalFonts: TerminalFont[];
   readonly isMac: boolean;
   readonly xtermColorTheme: IComputedValue<Record<string, string>>;
   readonly logger: Logger;
@@ -38,6 +40,7 @@ export interface TerminalArguments {
 export class Terminal {
   private readonly xterm: XTerm;
   private readonly fitAddon = new FitAddon();
+  private readonly webLinksAddon = new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link));
   private scrollPos = 0;
   private readonly disposer = disposer();
   public readonly tabId: TabId;
@@ -68,7 +71,10 @@ export class Terminal {
   }
 
   get fontFamily() {
-    return this.dependencies.terminalConfig.get().fontFamily;
+    const nameFromConfig = this.dependencies.terminalConfig.get().fontFamily;
+    const nameFromAlias = this.dependencies.terminalFonts.find(font => font.alias === nameFromConfig)?.name;
+
+    return nameFromAlias || nameFromConfig;
   }
 
   get fontSize() {
@@ -90,6 +96,7 @@ export class Terminal {
     });
     // enable terminal addons
     this.xterm.loadAddon(this.fitAddon);
+    this.xterm.loadAddon(this.webLinksAddon);
 
     this.xterm.open(this.dependencies.spawningPool);
     this.xterm.attachCustomKeyEventHandler(this.keyHandler);
@@ -106,16 +113,7 @@ export class Terminal {
     this.api.on("data", this.onApiData);
     window.addEventListener("resize", this.onResize);
 
-    const linkProvider = new LinkProvider(
-      this.xterm,
-      /https?:\/\/[^\s]+/i,
-      (event, link) => this.dependencies.openLinkInBrowser(link),
-      undefined,
-      0,
-    );
-
     this.disposer.push(
-      this.xterm.registerLinkProvider(linkProvider),
       reaction(() => this.dependencies.xtermColorTheme.get(),
         colors => this.xterm.options.theme = colors,
         {

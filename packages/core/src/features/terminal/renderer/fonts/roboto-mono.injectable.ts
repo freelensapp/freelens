@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import RobotoMono from "./Roboto-Mono.ttf"; // patched font with icons
+import RobotoMono from "./RobotoMonoNerdFont-Regular.ttf"; // patched font with icons
 
 const robotoMonoTerminalFontInjectable = getInjectable({
   id: "roboto-mono-terminal-font",
