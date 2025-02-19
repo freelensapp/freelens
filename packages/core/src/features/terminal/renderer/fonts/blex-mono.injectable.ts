@@ -4,15 +4,15 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import SourceCodePro from "./SourceCodePro-Regular.ttf";
+import BlexMono from "./BlexMonoNerdFont-Regular.ttf";
 
-const sourceCodeProTerminalFontInjectable = getInjectable({
-  id: "source-code-pro-terminal-font",
+const blexMonoTerminalFontInjectable = getInjectable({
+  id: "blex-mono-terminal-font",
   instantiate: () => ({
-    name: "Source Code Pro",
-    url: SourceCodePro,
+    name: "BlexMono",
+    url: BlexMono,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default sourceCodeProTerminalFontInjectable;
+export default blexMonoTerminalFontInjectable;

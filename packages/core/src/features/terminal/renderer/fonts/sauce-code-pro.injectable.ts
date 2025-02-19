@@ -4,15 +4,15 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import IBMPlexMono from "./IBMPlexMono-Regular.ttf";
+import SauceCodePro from "./SauceCodeProNerdFont-Regular.ttf";
 
-const ibmPlexMonoTerminalFontInjectable = getInjectable({
-  id: "ibm-plex-mono-terminal-font",
+const sauceCodeProTerminalFontInjectable = getInjectable({
+  id: "sauce-code-pro-terminal-font",
   instantiate: () => ({
-    name: "IBM Plex Mono",
-    url: IBMPlexMono,
+    name: "SauceCodePro",
+    url: SauceCodePro,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default ibmPlexMonoTerminalFontInjectable;
+export default sauceCodeProTerminalFontInjectable;

@@ -6,8 +6,9 @@
 import debounce from "lodash/debounce";
 import type { IComputedValue } from "mobx";
 import { reaction } from "mobx";
-import { Terminal as XTerm } from "xterm";
-import { FitAddon } from "xterm-addon-fit";
+import { Terminal as XTerm } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import { WebLinksAddon } from "@xterm/addon-web-links";
 import type { TabId } from "../dock/store";
 import type { TerminalApi } from "../../../api/terminal-api";
 import { disposer } from "@freelensapp/utilities";
@@ -16,7 +17,6 @@ import { clipboard } from "electron";
 import type { Logger } from "@freelensapp/logger";
 import assert from "assert";
 import { TerminalChannels } from "../../../../common/terminal/channels";
-import { LinkProvider } from "xterm-link-provider";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
 
@@ -90,6 +90,7 @@ export class Terminal {
     });
     // enable terminal addons
     this.xterm.loadAddon(this.fitAddon);
+    this.xterm.loadAddon(new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link)));
 
     this.xterm.open(this.dependencies.spawningPool);
     this.xterm.attachCustomKeyEventHandler(this.keyHandler);
@@ -106,16 +107,7 @@ export class Terminal {
     this.api.on("data", this.onApiData);
     window.addEventListener("resize", this.onResize);
 
-    const linkProvider = new LinkProvider(
-      this.xterm,
-      /https?:\/\/[^\s]+/i,
-      (event, link) => this.dependencies.openLinkInBrowser(link),
-      undefined,
-      0,
-    );
-
     this.disposer.push(
-      this.xterm.registerLinkProvider(linkProvider),
       reaction(() => this.dependencies.xtermColorTheme.get(),
         colors => this.xterm.options.theme = colors,
         {

@@ -4,15 +4,15 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import UbuntuMono from "./UbuntuMono-Regular.ttf";
+import UbuntuMono from "./UbuntuMonoNerdFont-Regular.ttf";
 
-const ubunutuMonoTerminalFontInjectable = getInjectable({
-  id: "ubunutu-mono-terminal-font",
+const ubuntuMonoTerminalFontInjectable = getInjectable({
+  id: "ubuntu-mono-terminal-font",
   instantiate: () => ({
-    name: "Ubuntu Mono",
+    name: "UbuntuMono",
     url: UbuntuMono,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default ubunutuMonoTerminalFontInjectable;
+export default ubuntuMonoTerminalFontInjectable;
