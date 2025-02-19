@@ -38,6 +38,7 @@ export interface TerminalArguments {
 export class Terminal {
   private readonly xterm: XTerm;
   private readonly fitAddon = new FitAddon();
+  private readonly webLinksAddon = new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link));
   private scrollPos = 0;
   private readonly disposer = disposer();
   public readonly tabId: TabId;
@@ -90,7 +91,7 @@ export class Terminal {
     });
     // enable terminal addons
     this.xterm.loadAddon(this.fitAddon);
-    this.xterm.loadAddon(new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link)));
+    this.xterm.loadAddon(this.webLinksAddon);
 
     this.xterm.open(this.dependencies.spawningPool);
     this.xterm.attachCustomKeyEventHandler(this.keyHandler);
