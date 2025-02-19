@@ -62,16 +62,16 @@ The Linux AppImage file requires libz.so and libfuse.so.2. You can add them
 by running:
 
 ```sh
-sudo ln -fs /usr/lib/*/libz.so.1 /usr/local/lib/libz.so
-sudo ldconfig
-sudo apt install libfuse2
+sudo apt install libfuse2 zlib1g-dev
 ```
 
 Run the application with additional arguments:
 
+<!-- markdownlint-disable MD013 -->
 ```sh
-./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto
+./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### Flatpak
 
