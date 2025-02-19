@@ -10,6 +10,7 @@ const sauceCodeProTerminalFontInjectable = getInjectable({
   id: "sauce-code-pro-terminal-font",
   instantiate: () => ({
     name: "SauceCodePro",
+    alias: "Source Code Pro",
     url: SauceCodePro,
   }),
   injectionToken: terminalFontInjectionToken,

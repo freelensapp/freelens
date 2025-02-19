@@ -10,6 +10,7 @@ const spaceMonoTerminalFontInjectable = getInjectable({
   id: "space-mono-terminal-font",
   instantiate: () => ({
     name: "SpaceMono",
+    alias: "Space Mono",
     url: SpaceMono,
   }),
   injectionToken: terminalFontInjectionToken,

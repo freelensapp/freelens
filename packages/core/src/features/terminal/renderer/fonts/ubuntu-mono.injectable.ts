@@ -10,6 +10,7 @@ const ubuntuMonoTerminalFontInjectable = getInjectable({
   id: "ubuntu-mono-terminal-font",
   instantiate: () => ({
     name: "UbuntuMono",
+    alias: "Ubuntu Mono",
     url: UbuntuMono,
   }),
   injectionToken: terminalFontInjectionToken,

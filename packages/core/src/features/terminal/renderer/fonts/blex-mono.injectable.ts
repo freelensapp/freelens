@@ -10,6 +10,7 @@ const blexMonoTerminalFontInjectable = getInjectable({
   id: "blex-mono-terminal-font",
   instantiate: () => ({
     name: "BlexMono",
+    alias: "IBM Plex Mono",
     url: BlexMono,
   }),
   injectionToken: terminalFontInjectionToken,

@@ -10,6 +10,7 @@ const anonymiceProTerminalFontInjectable = getInjectable({
   id: "anonymice-pro-terminal-font",
   instantiate: () => ({
     name:"AnonymicePro",
+    alias: "Anonymous Pro",
     url: AnonymicePro,
   }),
   injectionToken: terminalFontInjectionToken,

@@ -10,6 +10,7 @@ const jetbrainsMonoTerminalFontInjectable = getInjectable({
   id: "jetbrains-mono-terminal-font",
   instantiate: () => ({
     name: "JetBrainsMono",
+    alias: "JetBrains Mono",
     url: JetBrainsMono,
   }),
   injectionToken: terminalFontInjectionToken,
