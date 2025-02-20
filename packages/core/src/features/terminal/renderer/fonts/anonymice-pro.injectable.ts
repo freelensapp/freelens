@@ -4,15 +4,16 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { terminalFontInjectionToken } from "./token";
-import AnonymousPro from "./AnonymousPro-Regular.ttf";
+import AnonymicePro from "./AnonymiceProNerdFont-Regular.ttf";
 
-const anonymousProTerminalFontInjectable = getInjectable({
-  id: "anonymous-pro-terminal-font",
+const anonymiceProTerminalFontInjectable = getInjectable({
+  id: "anonymice-pro-terminal-font",
   instantiate: () => ({
-    name:"Anonymous Pro",
-    url: AnonymousPro,
+    name:"AnonymicePro",
+    alias: "Anonymous Pro",
+    url: AnonymicePro,
   }),
   injectionToken: terminalFontInjectionToken,
 });
 
-export default anonymousProTerminalFontInjectable;
+export default anonymiceProTerminalFontInjectable;
