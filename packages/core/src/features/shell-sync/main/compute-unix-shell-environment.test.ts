@@ -69,6 +69,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         signalCode: null,
         spawnargs,
         spawnfile,
+        [Symbol.dispose]: jest.fn(),
       });
     });
     di.override(spawnInjectable, () => spawnMock);

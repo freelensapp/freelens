@@ -2,14 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "react",
-    "target": "ES2019",
+    "target": "ES2022",
     "module": "ESNext",
 
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
 
     "moduleResolution": "node16",
     "sourceMap": true,

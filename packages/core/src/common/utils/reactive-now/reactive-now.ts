@@ -38,7 +38,7 @@ function createIntervalTicker(interval: number) {
     sink(Date.now());
     subscriptionHandle = setInterval(function () { return sink(Date.now()); }, interval);
   }, function () {
-    clearInterval(subscriptionHandle);
+    clearInterval(subscriptionHandle as any);
   }, Date.now());
 }
 
