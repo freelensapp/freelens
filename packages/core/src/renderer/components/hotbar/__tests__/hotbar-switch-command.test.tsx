@@ -11,7 +11,7 @@ import React from "react";
 import type { IComputedValue } from "mobx";
 import type { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
 
-describe("when there there is one hotbar", () => {
+describe("when there is one hotbar", () => {
   let result: RenderResult;
   let createHotbar: CreateHotbar;
   let hotbars: IComputedValue<Hotbar[]>;
@@ -45,7 +45,7 @@ describe("when there there is one hotbar", () => {
   });
 });
 
-describe("when there there are two hotbars", () => {
+describe("when there are two hotbars", () => {
   let result: RenderResult;
   let createHotbar: CreateHotbar;
   let hotbars: IComputedValue<Hotbar[]>;
