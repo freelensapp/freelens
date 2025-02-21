@@ -19,12 +19,12 @@ const periodicalCheckForUpdatesInjectable = getInjectable({
     return getStartableStoppable("periodical-check-for-updates", () => {
       processCheckingForUpdates("periodic");
 
-      const intervalId = setInterval(() => {
+      const intervalId = window.setInterval(() => {
         processCheckingForUpdates("periodic");
       }, TWO_HOURS);
 
       return () => {
-        clearInterval(intervalId as any);
+        clearInterval(intervalId);
       };
     });
   },
