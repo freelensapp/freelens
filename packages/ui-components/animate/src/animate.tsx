@@ -69,7 +69,7 @@ const NonInjectedAnimate = (propsAndDeps: AnimateProps & Dependencies) => {
       onLeaveHandler();
 
       // Cleanup after duration
-      const handle = setTimeout(() => {
+      const handle = window.setTimeout(() => {
         setIsVisible(false);
         setShowClassNameEnter(false);
         setShowClassNameLeave(false);
