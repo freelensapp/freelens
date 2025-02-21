@@ -25,7 +25,7 @@ const getEsbuildLoader = (options: Partial<TSLoaderOptions>, testRegExp: RegExp)
   loader: "esbuild-loader",
   options: {
     loader: "tsx",
-    target: "ES2019",
+    target: "ES2022",
     implementation: esbuild,
   },
 });

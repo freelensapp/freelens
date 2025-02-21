@@ -197,8 +197,8 @@ export type ComputeOutputFormat<Format> = Format extends "string"
     : string | Buffer;
 
 export interface ChildProcessException<Format> extends ExecFileException {
-  stderr: ComputeOutputFormat<Format>;
-  stdout: ComputeOutputFormat<Format>;
+  stderr: string;
+  stdout: string;
 }
 
 const isStringOrBuffer = (val: unknown): val is string | Buffer => isString(val) || isBuffer(val);
