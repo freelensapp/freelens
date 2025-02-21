@@ -74,7 +74,7 @@ const NonInjectedHotbarSwitchCommand = observer(({
         value: hotbarAddAction,
         label: "Add hotbar ...",
       },
-      ...ignoreIf(hotbars.get().length > 1, [
+      ...ignoreIf(hotbars.get().length <= 1, [
         {
           value: hotbarRemoveAction,
           label: "Remove hotbar ...",
