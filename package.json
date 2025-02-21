@@ -35,12 +35,11 @@
     "@types/react": "^17"
   },
   "devDependencies": {
-    "@ogre-tools/linkable": "^17.2.0",
-    "adr": "^1.4.3",
+    "@ogre-tools/linkable": "^17.11.1",
     "cross-env": "^7.0.3",
-    "lerna": "^6.6.1",
+    "lerna": "^8.2.0",
     "npm": "10.8.2",
-    "rimraf": "^4.4.1"
+    "rimraf": "^6.0.1"
   },
   "engines": {
     "node": ">=20.0.0"
