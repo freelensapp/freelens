@@ -25,7 +25,7 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
-    "@ogre-tools/linkable": "^17.2.0",
+    "@ogre-tools/linkable": "^17.11.1",
     "@types/webpack-env": "^1.18.0",
     "css-loader": "^6.7.2",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
