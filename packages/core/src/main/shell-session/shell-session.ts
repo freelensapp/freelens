@@ -109,7 +109,7 @@ export interface ShellSessionDependencies {
   readonly isWindows: boolean;
   readonly isMac: boolean;
   readonly logger: Logger;
-  readonly userShellSetting: IComputedValue<string>;
+  readonly userShellSetting: IComputedValue<string | null>;
   readonly appName: string;
   readonly buildVersion: string;
   readonly proxyKubeconfigPath: string;
@@ -321,7 +321,7 @@ export abstract class ShellSession {
   }
 
   protected async getShellEnv() {
-    const shell = this.dependencies.userShellSetting.get();
+    const shell = this.dependencies.userShellSetting.get() || "sh";
     const result = await this.dependencies.computeShellEnvironment(shell);
     const rawEnv = (() => {
       if (result.callWasSuccessful) {

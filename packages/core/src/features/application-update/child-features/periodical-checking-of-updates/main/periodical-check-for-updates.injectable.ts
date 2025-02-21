@@ -24,7 +24,7 @@ const periodicalCheckForUpdatesInjectable = getInjectable({
       }, TWO_HOURS);
 
       return () => {
-        clearInterval(intervalId);
+        clearInterval(intervalId as any);
       };
     });
   },

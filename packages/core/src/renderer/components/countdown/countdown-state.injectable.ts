@@ -23,7 +23,7 @@ const countdownStateInjectable = getInjectable({
     let intervalId: NodeJS.Timer | undefined;
 
     const stop = () => {
-      clearInterval(intervalId);
+      clearInterval(intervalId as any);
     };
 
     const start = () => {

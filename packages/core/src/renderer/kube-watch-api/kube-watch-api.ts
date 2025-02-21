@@ -91,9 +91,11 @@ export interface SubscribableStore {
 export type SubscribeStores = (stores: SubscribableStore[], opts?: KubeWatchSubscribeStoreOptions) => Disposer;
 
 export class KubeWatchApi {
-  readonly #watch = new WatchCount(this.dependencies);
+  readonly #watch: WatchCount;
 
-  constructor(private readonly dependencies: Dependencies) {}
+  constructor(private readonly dependencies: Dependencies) {
+    this.#watch = new WatchCount(this.dependencies);
+  }
 
   private subscribeStore({ store, parent, namespaces, onLoadFailure }: SubscribeStoreParams): Disposer {
     const isNamespaceFilterWatch = !namespaces;
