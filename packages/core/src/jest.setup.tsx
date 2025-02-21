@@ -6,7 +6,7 @@
 import { configure } from "mobx";
 import { setImmediate } from "timers";
 import { TextEncoder, TextDecoder as TextDecoderNode } from "util";
-import glob from "glob";
+import { globSync } from "glob";
 import path from "path";
 import { enableMapSet, setAutoFreeze } from "immer";
 import type * as K8slensTooltip from "@freelensapp/tooltip";
@@ -77,11 +77,11 @@ jest.mock("@freelensapp/tooltip", () => ({
 jest.mock("monaco-editor");
 
 const getInjectables = (environment: "renderer" | "main", filePathGlob: string) => [
-  ...glob.sync(`./{common,extensions,${environment},test-env}/**/${filePathGlob}`, {
+  ...globSync(`./{common,extensions,${environment},test-env}/**/${filePathGlob}`, {
     cwd: __dirname,
   }),
 
-  ...glob.sync(`./features/**/{${environment},common}/**/${filePathGlob}`, {
+  ...globSync(`./features/**/{${environment},common}/**/${filePathGlob}`, {
     cwd: __dirname,
   }),
 ].map(x => path.resolve(__dirname, x));
