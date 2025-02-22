@@ -2,8 +2,9 @@ name: Integration tests
 
 on:
   push:
-    branches:
-      - "**"
+    branches-ignore:
+      - automated/*
+      - renovate/*
   pull_request:
     branches:
       - main
