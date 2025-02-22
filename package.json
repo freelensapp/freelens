@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.2.0",
-    "adr": "^1.4.3",
     "cross-env": "^7.0.3",
     "lerna": "^6.6.1",
     "npm": "10.8.2",
