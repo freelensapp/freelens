@@ -4,20 +4,26 @@
     "config:recommended",
     ":semanticCommitsDisabled"
   ],
+  "prHourlyLimit": 2,
   "addLabels": [
     "renovate"
   ],
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
+    "npm",
     // it must be the oldest possible version to get binary compatibility with older OSes 
     "ubuntu"
   ],
   "packageRules": [
-    // ignore all NPM dependencies as we are not yet ready for upgrading them
+    // non-major updates only
     {
-      "matchManagers": [
-        "npm"
+      "matchDepNames": [
+        "@types/node",
+        "electron",
+      ],
+      "matchUpdateTypes": [
+        "major"
       ],
       "enabled": false
     }
