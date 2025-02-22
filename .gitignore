@@ -14,6 +14,7 @@ node_modules/
 out/
 icon.iconset/
 
+.nx/
 .yalc/
 
 .DS_Store
