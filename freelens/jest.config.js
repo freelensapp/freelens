@@ -5,6 +5,7 @@ module.exports = {
     "\\.(css|scss)$": "identity-obj-proxy",
     "\\.(svg|png|jpg|eot|woff2?|ttf)$": "<rootDir>/__mocks__/assetMock.ts",
     "^jsonpath-plus$": require.resolve("jsonpath-plus"),
+    "^uuid$": require.resolve("uuid"),
   },
   runtime: "@side/jest-runtime",
   testEnvironment: "jsdom",
