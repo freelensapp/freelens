@@ -6,10 +6,12 @@ export const podMetricsWatcherNamespacesInjectable = getInjectable({
   id: "pod-metrics-watcher-namespaces",
   instantiate: (di) => {
     const clusterFrameContext = di.inject(clusterFrameContextForNamespacedResourcesInjectable);
+
     return computed(() => {
       if (clusterFrameContext.hasSelectedAll && clusterFrameContext.isGlobalWatchEnabled()) {
         return undefined;
       }
+
       return [...clusterFrameContext.contextNamespaces];
     });
   },
