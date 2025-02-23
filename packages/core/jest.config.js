@@ -26,6 +26,8 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ["node_modules/"],
+  transformIgnorePatterns: [
+    "/node_modules/(?!node-fetch)/",
+  ],
   verbose: false,
 };
