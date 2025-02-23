@@ -53,18 +53,6 @@
   "engines": {
     "node": "^20.0.0"
   },
-  "jest": {
-    "collectCoverage": false,
-    "verbose": true,
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    }
-  },
   "build": {
     "npmRebuild": false,
     "detectUpdateChannel": false,

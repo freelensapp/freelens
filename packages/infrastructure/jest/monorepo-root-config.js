@@ -1,6 +1,7 @@
 const path = require("path");
 const glob = require("glob");
 const { omit } = require("lodash/fp");
+const { verbose } = require("../../core/jest.config");
 
 const getProjectColor = (projectNumber) => {
   const colors = [
@@ -64,6 +65,8 @@ module.exports = (rootDir) => ({
   projects: getJestConfigsAndPackageJsons(rootDir).map(
     toJestMultiProjectConfig
   ),
+
+  verbose: false,
 
   watchPlugins: [
     "jest-watch-typeahead/filename",

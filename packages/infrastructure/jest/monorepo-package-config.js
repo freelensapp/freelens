@@ -1,11 +1,18 @@
-const path = require('path');
+const path = require("path");
+const { verbose } = require("../../core/jest.config");
 
 module.exports = (rootDir) => {
   const shared = {
-    "resolver": path.join(__dirname, "jest-28-resolver.js"),
+    resolver: path.join(__dirname, "jest-28-resolver.js"),
 
     transform: {
-      "^.+\\.tsx?$": ["ts-jest", { cwd: rootDir, useESM: true }],
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          cwd: rootDir,
+          useESM: true,
+        },
+      ],
     },
 
     clearMocks: true,
@@ -25,6 +32,7 @@ module.exports = (rootDir) => {
 
     moduleNameMapper: {
       "^electron$": "identity-obj-proxy",
+      "^jsonpath-plus$": require.resolve("jsonpath-plus"),
     },
 
     coverageThreshold: {
@@ -35,6 +43,8 @@ module.exports = (rootDir) => {
         statements: 0,
       },
     },
+
+    verbose: false,
   };
 
   const configForNode = {

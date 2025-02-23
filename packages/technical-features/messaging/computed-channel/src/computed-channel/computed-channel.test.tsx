@@ -1,5 +1,5 @@
 import React from "react";
-import { act } from "@testing-library/react";
+import { act, RenderResult } from "@testing-library/react";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { getMessageBridgeFake, MessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { startApplicationInjectionToken } from "@freelensapp/application";
@@ -110,7 +110,7 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
         });
 
         describe("when observing the computed value in a component in di-1", () => {
-          let rendered: any;
+          let rendered: RenderResult;
 
           beforeEach(() => {
             const render = renderFor(di2);

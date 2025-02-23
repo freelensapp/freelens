@@ -22,8 +22,7 @@
     "precompute-versions": "tsc --pretty --project build",
     "compute-versions": "node ./build/compute-versions.mjs",
     "build": "lens-webpack-build",
-    "dev": "webpack --mode=development --watch",
-    "test": "jest --coverage --runInBand"
+    "dev": "webpack --mode=development --watch"
   },
   "peerDependencies": {
     "@ogre-tools/injectable": "^17.2.0"
