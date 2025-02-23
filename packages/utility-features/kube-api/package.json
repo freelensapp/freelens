@@ -27,7 +27,7 @@
     "build": "lens-webpack-build",
     "clean": "rimraf dist/",
     "dev": "webpack --mode=development --watch",
-    "test": "jest --coverage --runInBand --detectOpenHandles --forceExit",
+    "test:unit": "jest --coverage --runInBand --detectOpenHandles --forceExit",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
