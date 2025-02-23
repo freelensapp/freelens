@@ -71,38 +71,6 @@
   "engines": {
     "node": "^20.0.0"
   },
-  "jest": {
-    "collectCoverage": false,
-    "verbose": true,
-    "transform": {
-      "^.+\\.(t|j)sx?$": [
-        "@swc/jest"
-      ]
-    },
-    "testEnvironment": "jsdom",
-    "resolver": "<rootDir>/src/jest-28-resolver.js",
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "identity-obj-proxy",
-      "\\.(svg|png|jpg|eot|woff2?|ttf)$": "<rootDir>/__mocks__/assetMock.ts"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/dist",
-      "<rootDir>/packages",
-      "<rootDir>/static/build"
-    ],
-    "setupFiles": [
-      "<rootDir>/src/jest.setup.tsx",
-      "jest-canvas-mock"
-    ],
-    "globalSetup": "<rootDir>/src/jest.timezone.ts",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/jest-after-env.setup.ts"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!jsonpath-plus)"
-    ],
-    "runtime": "@side/jest-runtime"
-  },
   "devDependencies": {
     "@async-fn/jest": "1.6.4",
     "@freelensapp/messaging-fake-bridge": "^1.0.0",

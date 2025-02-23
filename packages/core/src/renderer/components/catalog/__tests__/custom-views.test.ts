@@ -14,9 +14,15 @@ import customCategoryViewsInjectable from "../custom-views.injectable";
 
 describe("Custom Category Views", () => {
   let di: DiContainer;
+  // console.log("describe");
 
   beforeEach(() => {
-    di = getDiForUnitTesting();
+    try {
+      di = getDiForUnitTesting();
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   });
 
   it("should order items correctly over all extensions", () => {

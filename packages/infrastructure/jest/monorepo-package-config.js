@@ -5,7 +5,7 @@ module.exports = (rootDir) => {
     "resolver": path.join(__dirname, "jest-28-resolver.js"),
 
     transform: {
-      "^.+\\.(t|j)sx?$": ["@swc/jest", { cwd: rootDir }],
+      "^.+\\.tsx?$": ["ts-jest", { cwd: rootDir, useESM: true }],
     },
 
     clearMocks: true,

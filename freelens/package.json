@@ -57,8 +57,11 @@
     "collectCoverage": false,
     "verbose": true,
     "transform": {
-      "^.+\\.(t|j)sx?$": [
-        "@swc/jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
       ]
     }
   },
