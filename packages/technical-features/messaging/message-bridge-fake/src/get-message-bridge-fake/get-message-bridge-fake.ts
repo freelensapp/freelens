@@ -23,7 +23,7 @@ import asyncFn, { AsyncFnMock } from "@async-fn/jest";
 export type MessageBridgeFake = {
   involve: (...dis: DiContainer[]) => void;
   messagePropagation: () => Promise<void>;
-  messagePropagationRecursive: (callback: typeof act) => void;
+  messagePropagationRecursive: (callback: typeof act) => Promise<void>;
   setAsync: (value: boolean) => void;
 };
 
