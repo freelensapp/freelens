@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.2.0",
-    "adr": "^1.4.3",
     "cross-env": "^7.0.3",
     "electron-rebuild": "^3.2.9",
     "lerna": "^6.6.1",
