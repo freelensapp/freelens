@@ -35,18 +35,18 @@ export class CatalogCategoryRegistry {
   }
 
   getById(id: string) {
-    return iter.find(this.categories.values(), (category) => category.getId() === id);
+    return iter.find(this.categories.values(), (category: CatalogCategory) => category.getId() === id);
   }
 
   @computed get items() {
-    return Array.from(this.categories);
+    return Array.from(this.categories) as CatalogCategory[];
   }
 
   @computed get filteredItems() {
     return Array.from(
       iter.reduce(
         this.filters,
-        iter.filter,
+        (acc: IterableIterator<CatalogCategory>, cur: (from: CatalogCategory) => boolean) => iter.filter(acc, cur),
         this.items.values(),
       ),
     );

@@ -71,16 +71,16 @@ const hotbarsPersistentStorageInjectable = getInjectable({
           activeHotbarId.set(data.activeHotbarId);
         }
 
-        const firstHotbarId = iter.first(state.values())?.id;
+        const firstHotbarId = iter.first(state.values() as Hotbar[])?.id;
 
         if (!activeHotbarId.get()) {
           activeHotbarId.set(firstHotbarId);
-        } else if (!iter.find(state.values(), hotbar => hotbar.id === activeHotbarId.get())) {
+        } else if (!iter.find(state.values() as IterableIterator<Hotbar>, hotbar => hotbar.id === activeHotbarId.get())) {
           activeHotbarId.set(firstHotbarId);
         }
       }),
       toJSON: () => ({
-        hotbars: iter.chain(state.values())
+        hotbars: iter.chain(state.values() as IterableIterator<Hotbar>)
           .map(hotbar => hotbar.toJSON())
           .toArray(),
         activeHotbarId: activeHotbarId.get(),

@@ -24,7 +24,7 @@ const removeHotbarInjectable = getInjectable({
       state.delete(hotbar.id);
 
       if (activeHotbarId.get() === hotbar.id) {
-        activeHotbarId.set(iter.first(state.values())?.id);
+        activeHotbarId.set(iter.first(state.values() as IterableIterator<Hotbar>)?.id);
       }
     });
   },
