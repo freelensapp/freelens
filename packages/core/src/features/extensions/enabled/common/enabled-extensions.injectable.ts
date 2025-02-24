@@ -5,7 +5,7 @@
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import enabledExtensionsStateInjectable from "./state.injectable";
+import enabledExtensionsStateInjectable, { type LensExtensionState } from "./state.injectable";
 
 const enabledExtensionsInjectable = getInjectable({
   id: "enabled-extensions",
@@ -13,7 +13,7 @@ const enabledExtensionsInjectable = getInjectable({
     const state = di.inject(enabledExtensionsStateInjectable);
 
     return computed(() => (
-      iter.chain(state.values())
+      iter.chain(state.values() as IterableIterator<LensExtensionState>)
         .filter(({ enabled }) => enabled)
         .map(({ name }) => name)
         .toArray()

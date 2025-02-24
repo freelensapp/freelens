@@ -47,7 +47,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
         label: "Auto Detect Prometheus",
         isSelected: autoDetectPrometheus === this.selectedOption,
       },
-      ...Array.from(this.loadedOptions, ([id, provider]) => ({
+      ...Array.from(this.loadedOptions.entries(), ([id, provider]) => ({
         value: id,
         label: provider.name,
         isSelected: id === this.selectedOption,

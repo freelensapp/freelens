@@ -118,7 +118,7 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         ),
         toStore: val => val.size === 1 && val.has(mainKubeFolderPath)
           ? undefined
-          : Array.from(val, ([filePath, rest]) => ({ filePath, ...rest })),
+          : Array.from(val.entries(), ([filePath, rest]) => ({ filePath, ...rest })),
       }),
       editorConfiguration: getPreferenceDescriptor<Partial<EditorConfiguration>, EditorConfiguration>({
         fromStore: val => merge(defaultEditorConfig, val),

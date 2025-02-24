@@ -9,6 +9,7 @@ import catalogEntityRegistryInjectable from "../../../main/catalog/entity-regist
 import weblinkVerificationsInjectable from "./weblink-verifications.injectable";
 import { computed } from "mobx";
 import { iter } from "@freelensapp/utilities";
+import type { WebLink } from "../../../common/catalog-entities";
 
 const setupSyncingOfWeblinksInjectable = getInjectable({
   id: "setup-syncing-of-weblinks",
@@ -21,7 +22,7 @@ const setupSyncingOfWeblinksInjectable = getInjectable({
 
       weblinkVerificationStartableStoppable.start();
       catalogEntityRegistry.addComputedSource("weblinks", computed(() => (
-        iter.chain(weblinkVerifications.values())
+        iter.chain(weblinkVerifications.values() as IterableIterator<WebLink[]>)
           .map(([weblink]) => weblink)
           .toArray()
       )));

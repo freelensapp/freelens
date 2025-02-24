@@ -34,7 +34,7 @@ export class KubeconfigSyncManager {
     const seenIds = new Set<string>();
 
     return (
-      iter.chain(this.sources.values())
+      iter.chain(this.sources.values() as IterableIterator<[IComputedValue<CatalogEntity[]>, Disposer]>)
         .flatMap(([entities]) => entities.get())
         .filter(entity => {
           const alreadySeen = seenIds.has(entity.getId());

@@ -309,12 +309,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -323,10 +324,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                           All namespaces
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"
@@ -346,7 +348,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -555,12 +557,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                           aria-live="polite"
                           aria-relevant="additions text"
                           class="css-1f43avz-a11yText-A11yText"
+                          role="log"
                         />
                         <div
                           class="Select__control css-13cymwt-control"
                         >
                           <div
-                            class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                            class="Select__value-container Select__value-container--has-value css-hlgwow"
                           >
                             <div
                               class="Select__single-value css-1dimb5e-singleValue"
@@ -568,10 +571,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                               dockerExporter
                             </div>
                             <div
-                              class="Select__input-container css-qbdosj-Input"
+                              class="Select__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
+                                aria-activedescendant=""
                                 aria-autocomplete="list"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -590,7 +594,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                             </div>
                           </div>
                           <div
-                            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="Select__indicators css-1wy0on6"
                           >
                             <span
                               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -630,12 +634,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                           aria-live="polite"
                           aria-relevant="additions text"
                           class="css-1f43avz-a11yText-A11yText"
+                          role="log"
                         />
                         <div
                           class="Select__control css-13cymwt-control"
                         >
                           <div
-                            class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                            class="Select__value-container Select__value-container--has-value css-hlgwow"
                           >
                             <div
                               class="Select__single-value css-1dimb5e-singleValue"
@@ -643,10 +648,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                               docker-exporter
                             </div>
                             <div
-                              class="Select__input-container css-qbdosj-Input"
+                              class="Select__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
+                                aria-activedescendant=""
                                 aria-autocomplete="list"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -665,7 +671,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                             </div>
                           </div>
                           <div
-                            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="Select__indicators css-1wy0on6"
                           >
                             <span
                               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1169,12 +1175,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1183,10 +1190,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                           All namespaces
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"
@@ -1206,7 +1214,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1415,12 +1423,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                           aria-live="polite"
                           aria-relevant="additions text"
                           class="css-1f43avz-a11yText-A11yText"
+                          role="log"
                         />
                         <div
                           class="Select__control css-13cymwt-control"
                         >
                           <div
-                            class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                            class="Select__value-container Select__value-container--has-value css-hlgwow"
                           >
                             <div
                               class="Select__single-value css-1dimb5e-singleValue"
@@ -1428,10 +1437,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                               dockerExporter
                             </div>
                             <div
-                              class="Select__input-container css-qbdosj-Input"
+                              class="Select__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
+                                aria-activedescendant=""
                                 aria-autocomplete="list"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -1450,7 +1460,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                             </div>
                           </div>
                           <div
-                            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="Select__indicators css-1wy0on6"
                           >
                             <span
                               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1490,12 +1500,13 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                           aria-live="polite"
                           aria-relevant="additions text"
                           class="css-1f43avz-a11yText-A11yText"
+                          role="log"
                         />
                         <div
                           class="Select__control css-13cymwt-control"
                         >
                           <div
-                            class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                            class="Select__value-container Select__value-container--has-value css-hlgwow"
                           >
                             <div
                               class="Select__single-value css-1dimb5e-singleValue"
@@ -1503,10 +1514,11 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                               docker-exporter
                             </div>
                             <div
-                              class="Select__input-container css-qbdosj-Input"
+                              class="Select__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
+                                aria-activedescendant=""
                                 aria-autocomplete="list"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -1525,7 +1537,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                             </div>
                           </div>
                           <div
-                            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="Select__indicators css-1wy0on6"
                           >
                             <span
                               class="Select__indicator-separator css-1u9des2-indicatorSeparator"

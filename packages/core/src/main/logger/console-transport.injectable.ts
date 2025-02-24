@@ -7,6 +7,7 @@ import { format, transports } from "winston";
 import { ConsoleFormat } from "./console-format";
 import { loggerTransportInjectionToken } from "@freelensapp/logger";
 import logLevelInjectable from "./level.injectable";
+import type { Format } from "logform";
 
 const consoleLoggerTransportInjectable = getInjectable({
   id: "console-logger-transport",
@@ -26,7 +27,7 @@ const consoleLoggerTransportInjectable = getInjectable({
           breakLength: 120,
           compact: Infinity,
         },
-      }),
+      }) as unknown as Format,
     ),
   }),
   injectionToken: loggerTransportInjectionToken,

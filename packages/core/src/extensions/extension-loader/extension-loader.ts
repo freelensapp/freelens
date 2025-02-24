@@ -59,7 +59,7 @@ export class ExtensionLoader {
   protected readonly nonInstancesByName = observable.set<string>();
 
   protected readonly instancesByName = computed(() => new Map((
-    iter.chain(this.dependencies.extensionInstances.entries())
+    iter.chain(this.dependencies.extensionInstances.entries() as IterableIterator<[LensExtensionId, LegacyLensExtension]>)
       .map(([, instance]) => [instance.name, instance])
   )));
 

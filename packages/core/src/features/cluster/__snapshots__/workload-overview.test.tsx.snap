@@ -322,12 +322,13 @@ exports[`workload overview when navigating to workload overview renders 1`] = `
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -336,10 +337,11 @@ exports[`workload overview when navigating to workload overview renders 1`] = `
                           All namespaces
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"
@@ -359,7 +361,7 @@ exports[`workload overview when navigating to workload overview renders 1`] = `
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"

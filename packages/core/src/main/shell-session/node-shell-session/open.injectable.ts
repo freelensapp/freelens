@@ -24,6 +24,7 @@ import userShellSettingInjectable from "../../../features/user-preferences/commo
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
+import type { IComputedValue } from "mobx";
 
 export interface NodeShellSessionArgs {
   websocket: WebSocket;
@@ -42,7 +43,7 @@ const openNodeShellSessionInjectable = getInjectable({
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
       logger: di.inject(loggerInjectionToken),
-      userShellSetting: di.inject(userShellSettingInjectable),
+      userShellSetting: di.inject(userShellSettingInjectable) as IComputedValue<string>,
       appName: di.inject(appNameInjectable),
       buildVersion: di.inject(buildVersionInitializable.stateToken),
       shellSessionEnvs: di.inject(shellSessionEnvsInjectable),

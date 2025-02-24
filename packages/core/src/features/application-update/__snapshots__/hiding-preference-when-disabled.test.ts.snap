@@ -200,12 +200,13 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container css-1fdsijx-ValueContainer"
+                          class="Select__value-container css-hlgwow"
                         >
                           <div
                             class="Select__placeholder css-1jqq78o-placeholder"
@@ -214,10 +215,11 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                             Select...
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-describedby="react-select-theme-input-placeholder"
                               aria-expanded="false"
@@ -237,7 +239,7 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -291,12 +293,13 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -304,10 +307,11 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                             Default Url
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -326,7 +330,7 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -436,12 +440,13 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -449,10 +454,11 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                             Etc/GMT
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -471,7 +477,7 @@ exports[`hiding Update Channel preference with updating is not enabled renders 1
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -864,12 +870,13 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container css-1fdsijx-ValueContainer"
+                          class="Select__value-container css-hlgwow"
                         >
                           <div
                             class="Select__placeholder css-1jqq78o-placeholder"
@@ -878,10 +885,11 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                             Select...
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-describedby="react-select-theme-input-placeholder"
                               aria-expanded="false"
@@ -901,7 +909,7 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -955,12 +963,13 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -968,10 +977,11 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                             Default Url
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -990,7 +1000,7 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1100,12 +1110,13 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -1113,10 +1124,11 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                             Stable
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -1135,7 +1147,7 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1189,12 +1201,13 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -1202,10 +1215,11 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                             Etc/GMT
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -1224,7 +1238,7 @@ exports[`showing Update Channel preference with updating is enabled renders 1`] 
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"

@@ -6,7 +6,7 @@
 import styles from "./dock-tabs.module.scss";
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Tabs } from "../tabs/tabs";
+import { Tabs } from "../tabs";
 import { DockTab } from "./dock-tab";
 import type { DockTab as DockTabModel } from "./dock/store";
 import { TabKind } from "./dock/store";
@@ -78,8 +78,10 @@ export const DockTabs = ({ tabs, autoFocus, selectedTab, onChangeTab }: DockTabs
   });
 
   useResizeObserver(elem.current, () => {
-    scrollActiveTabIntoView();
-    updateScrollbarVisibility();
+    requestAnimationFrame(() => {
+      scrollActiveTabIntoView();
+      updateScrollbarVisibility();
+    });
   });
 
   return (

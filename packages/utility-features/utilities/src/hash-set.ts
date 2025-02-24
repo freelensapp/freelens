@@ -218,7 +218,7 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
 
   values(): IterableIterator<T> {
     let nextIndex = 0;
-    const observableValues = Array.from(this.#hashmap.values());
+    const observableValues: T[] = Array.from(this.#hashmap.values());
 
     return makeIterableIterator<T>({
       next: () => {

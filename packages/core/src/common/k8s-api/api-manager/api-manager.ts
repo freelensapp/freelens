@@ -44,7 +44,7 @@ export class ApiManager {
       const apis = iter.chain(this.dependencies.apis.get().values())
         .concat(this.externalApis.values());
       const removedApis = new Set(this.apis.values());
-      const newState = new Map(this.apis);
+      const newState: Map<string, KubeApi> = new Map(this.apis);
 
       for (const api of apis) {
         removedApis.delete(api);

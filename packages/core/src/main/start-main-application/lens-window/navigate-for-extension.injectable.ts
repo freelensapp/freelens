@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { iter } from "@freelensapp/utilities";
-import clusterFramesInjectable from "../../../common/cluster-frames.injectable";
+import clusterFramesInjectable, { type ClusterFrameInfo } from "../../../common/cluster-frames.injectable";
 import showApplicationWindowInjectable from "./show-application-window.injectable";
 import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
 import assert from "assert";
@@ -40,7 +40,7 @@ const navigateForExtensionInjectable = getInjectable({
 
       const frameInfo = iter.find(
         clusterFrames.values(),
-        (frameInfo) => frameInfo.frameId === frameId,
+        (frameInfo: ClusterFrameInfo) => frameInfo.frameId === frameId,
       );
 
       applicationWindow.send({

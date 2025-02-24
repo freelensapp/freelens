@@ -148,14 +148,14 @@ export class CatalogEntityRegistry {
   readonly items = computed(() => {
     this.processRawEntities();
 
-    return Array.from(this._entities.values());
+    return Array.from(this._entities.values()) as CatalogEntity[];
   });
 
   @computed get filteredItems() {
     return Array.from(
       iter.reduce(
         this.filters,
-        iter.filter,
+        (acc: IterableIterator<CatalogEntity>, cur: (from: CatalogEntity) => boolean) => iter.filter(acc, cur),
         this.items.get().values(),
       ),
     );

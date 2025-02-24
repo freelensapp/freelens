@@ -7,6 +7,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import isExtensionEnabledInjectable from "../features/extensions/enabled/common/is-enabled.injectable";
 import extensionInstancesInjectable from "./extension-loader/extension-instances.injectable";
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
 
 const extensionsInjectable = getInjectable({
   id: "extensions",
@@ -15,7 +16,7 @@ const extensionsInjectable = getInjectable({
     const isExtensionEnabled = di.inject(isExtensionEnabledInjectable);
 
     return computed(() => (
-      iter.chain(extensionInstances.values())
+      iter.chain(extensionInstances.values() as IterableIterator<LegacyLensExtension>)
         .filter(extension => extension.isBundled || isExtensionEnabled(extension.id))
         .toArray()
     ));
