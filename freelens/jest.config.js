@@ -21,3 +21,4 @@ module.exports = {
   transformIgnorePatterns: ["node_modules/"],
   verbose: false,
 };
+window.setImmediate = window.setTimeout;
