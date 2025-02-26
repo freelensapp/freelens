@@ -96,9 +96,11 @@ interface Dependencies {
 }
 
 export class ReleaseDetailsModel {
-  readonly id = `${this.dependencies.targetRelease.namespace}/${this.dependencies.targetRelease.name}`;
+  readonly id: string;
 
-  constructor(protected readonly dependencies: Dependencies) {}
+  constructor(protected readonly dependencies: Dependencies) {
+    this.id = `${this.dependencies.targetRelease.namespace}/${this.dependencies.targetRelease.name}`;
+  }
 
   private readonly detailedRelease = observable.box<DetailedHelmRelease | undefined>();
 

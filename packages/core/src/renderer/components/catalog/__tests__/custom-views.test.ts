@@ -16,7 +16,12 @@ describe("Custom Category Views", () => {
   let di: DiContainer;
 
   beforeEach(() => {
-    di = getDiForUnitTesting();
+    try {
+      di = getDiForUnitTesting();
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   });
 
   it("should order items correctly over all extensions", () => {

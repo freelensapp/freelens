@@ -1,3 +1,4 @@
+import type { act } from "@testing-library/react";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type {
   MessageChannel,
@@ -22,7 +23,7 @@ import asyncFn, { AsyncFnMock } from "@async-fn/jest";
 export type MessageBridgeFake = {
   involve: (...dis: DiContainer[]) => void;
   messagePropagation: () => Promise<void>;
-  messagePropagationRecursive: (callback: () => any) => any;
+  messagePropagationRecursive: (callback: typeof act) => Promise<void>;
   setAsync: (value: boolean) => void;
 };
 

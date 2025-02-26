@@ -6,6 +6,7 @@ import { createHash } from "crypto";
 import { mkdirp, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
+import { setImmediate } from "timers";
 import * as uuid from "uuid";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
@@ -58,6 +59,9 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 
 async function attemptStart() {
   const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
+
+  // Fixes `electron.launch: setImmediate is not defined`
+  global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
   await remove(CICD).catch(noop);

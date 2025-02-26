@@ -1,7 +1,4 @@
 {
   "extends": "@freelensapp/typescript/config/base.json",
-  "include": ["**/*.ts", "../kube-api-specifics/src/token.ts"],
-  "compilerOptions": {
-    "moduleResolution": "node"
-  }
+  "include": ["**/*.ts", "../kube-api-specifics/src/token.ts"]
 }

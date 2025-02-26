@@ -25,10 +25,12 @@ describe("KubeApi", () => {
     fetchMock = asyncFn();
 
     logger = {
-      info: jest.fn(),
       debug: jest.fn(),
       error: jest.fn(),
-    } as any;
+      info: jest.fn(),
+      silly: jest.fn(),
+      warn: jest.fn(),
+    };
 
     kubeJsonApi = new KubeJsonApi(
       {
@@ -52,7 +54,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new DeploymentApi({
-        logger,
+        logError: jest.fn(),
+        logInfo: jest.fn(),
+        logWarn: jest.fn(),
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -232,7 +236,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -360,7 +366,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new NamespaceApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -450,7 +458,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
       stream = new PassThrough();
@@ -473,6 +483,10 @@ describe("KubeApi", () => {
         });
 
         await flushPromises();
+      });
+
+      afterEach(async () => {
+        stopWatch();
       });
 
       it("requests the watch", () => {
@@ -786,7 +800,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -916,7 +932,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -1047,7 +1065,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
-        logger,
+        logError: logger.error,
+        logInfo: logger.info,
+        logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
     });

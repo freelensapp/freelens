@@ -39,42 +39,47 @@ describe("Extensions", () => {
   let downloadBinary: jest.MockedFunction<DownloadBinary>;
 
   beforeEach(() => {
-    const di = getDiForUnitTesting();
+    try {
+      const di = getDiForUnitTesting();
 
-    di.override(directoryForUserDataInjectable, () => "some-directory-for-user-data");
-    di.override(directoryForDownloadsInjectable, () => "some-directory-for-downloads");
-    di.override(currentlyInClusterFrameInjectable, () => false);
+      di.override(directoryForUserDataInjectable, () => "some-directory-for-user-data");
+      di.override(directoryForDownloadsInjectable, () => "some-directory-for-downloads");
+      di.override(currentlyInClusterFrameInjectable, () => false);
 
-    render = renderFor(di);
+      render = renderFor(di);
 
-    installExtensionFromInput = jest.fn();
-    di.override(installExtensionFromInputInjectable, () => installExtensionFromInput);
+      installExtensionFromInput = jest.fn();
+      di.override(installExtensionFromInputInjectable, () => installExtensionFromInput);
 
-    deleteFileMock = jest.fn();
-    di.override(removePathInjectable, () => deleteFileMock);
+      deleteFileMock = jest.fn();
+      di.override(removePathInjectable, () => deleteFileMock);
 
-    downloadBinary = jest.fn().mockImplementation((url) => { throw new Error(`Unexpected call to downloadJson for url=${url}`); });
-    di.override(downloadBinaryInjectable, () => downloadBinary);
+      downloadBinary = jest.fn().mockImplementation((url) => { throw new Error(`Unexpected call to downloadJson for url=${url}`); });
+      di.override(downloadBinaryInjectable, () => downloadBinary);
 
-    extensionLoader = di.inject(extensionLoaderInjectable);
-    extensionDiscovery = di.inject(extensionDiscoveryInjectable);
-    extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
+      extensionLoader = di.inject(extensionLoaderInjectable);
+      extensionDiscovery = di.inject(extensionDiscoveryInjectable);
+      extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
 
-    extensionLoader.addExtension({
-      id: "extensionId",
-      manifest: {
-        name: "test",
-        version: "1.2.3",
-        engines: { freelens: "^0.1.0" },
-      },
-      absolutePath: "/absolute/path",
-      manifestPath: "/symlinked/path/package.json",
-      isBundled: false,
-      isEnabled: true,
-      isCompatible: true,
-    });
+      extensionLoader.addExtension({
+        id: "extensionId",
+        manifest: {
+          name: "test",
+          version: "1.2.3",
+          engines: { freelens: "^0.1.0" },
+        },
+        absolutePath: "/absolute/path",
+        manifestPath: "/symlinked/path/package.json",
+        isBundled: false,
+        isEnabled: true,
+        isCompatible: true,
+      });
 
-    extensionDiscovery.uninstallExtension = jest.fn(() => Promise.resolve());
+      extensionDiscovery.uninstallExtension = jest.fn(() => Promise.resolve());
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   });
 
   it("disables uninstall and disable buttons while uninstalling", async () => {

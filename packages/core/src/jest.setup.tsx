@@ -4,7 +4,6 @@
  */
 
 import { configure } from "mobx";
-import { setImmediate } from "timers";
 import { TextEncoder, TextDecoder as TextDecoderNode } from "util";
 import glob from "glob";
 import path from "path";
@@ -34,8 +33,6 @@ enableMapSet(); // allow to merge maps and sets
 
 // Mock __non_webpack_require__ for tests
 globalThis.__non_webpack_require__ = jest.fn();
-
-global.setImmediate = setImmediate;
 
 global.fail = ((error = "Test failed without explicit error") => {
   console.error(error);

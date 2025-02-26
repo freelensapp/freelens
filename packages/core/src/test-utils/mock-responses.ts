@@ -13,7 +13,7 @@ export const createMockResponseFromString = (url: string, data: string, statusCo
     blob: jest.fn(async () => { throw new Error("blob() is not supported"); }),
     body: new PassThrough(),
     bodyUsed: false,
-    headers: new Headers() as NodeFetchHeaders,
+    headers: new Headers() as unknown as NodeFetchHeaders,
     json: jest.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
@@ -23,8 +23,7 @@ export const createMockResponseFromString = (url: string, data: string, statusCo
     text: jest.fn(async () => data),
     type: "basic",
     url,
-    formData: jest.fn(async () => { throw new Error("formData() is not supported"); }),
-  };
+  } as any;
 
   return res;
 };
@@ -37,7 +36,7 @@ export const createMockResponseFromStream = (url: string, stream: NodeJS.Readabl
     blob: jest.fn(async () => { throw new Error("blob() is not supported"); }),
     body: stream,
     bodyUsed: false,
-    headers: new Headers() as NodeFetchHeaders,
+    headers: new Headers() as unknown as NodeFetchHeaders,
     json: jest.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
@@ -55,8 +54,7 @@ export const createMockResponseFromStream = (url: string, stream: NodeJS.Readabl
     }),
     type: "basic",
     url,
-    formData: jest.fn(async () => { throw new Error("formData() is not supported"); }),
-  };
+  } as any;
 
   return res;
 };

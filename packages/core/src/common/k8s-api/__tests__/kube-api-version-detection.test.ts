@@ -30,26 +30,31 @@ describe("KubeApi", () => {
   let di: DiContainer;
 
   beforeEach(async () => {
-    di = getDiForUnitTesting();
+    try {
+      di = getDiForUnitTesting();
 
-    fetchMock = asyncFn();
-    di.override(fetchInjectable, () => fetchMock);
+      fetchMock = asyncFn();
+      di.override(fetchInjectable, () => fetchMock);
 
-    di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
-    di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
-    di.override(storesAndApisCanBeCreatedInjectable, () => true);
+      di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
+      di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
+      di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+      di.override(hostedClusterInjectable, () => new Cluster({
+        contextName: "some-context-name",
+        id: "some-cluster-id",
+        kubeConfigPath: "/some-path-to-a-kubeconfig",
+      }));
 
-    apiManager = di.inject(apiManagerInjectable);
+      apiManager = di.inject(apiManagerInjectable);
 
-    const setupAutoRegistration = di.inject(setupAutoRegistrationInjectable);
+      const setupAutoRegistration = di.inject(setupAutoRegistrationInjectable);
 
-    setupAutoRegistration.run();
+      setupAutoRegistration.run();
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   });
 
   describe("on first call to IngressApi.get()", () => {
@@ -57,14 +62,20 @@ describe("KubeApi", () => {
     let getCall: Promise<Ingress | null>;
 
     beforeEach(async () => {
-      ingressApi = di.inject(ingressApiInjectable);
-      getCall = ingressApi.get({
-        name: "foo",
-        namespace: "default",
-      });
+      try {
+        ingressApi = di.inject(ingressApiInjectable);
 
-      // This is needed because of how JS promises work
-      await flushPromises();
+        getCall = ingressApi.get({
+          name: "foo",
+          namespace: "default",
+        });
+
+        // This is needed because of how JS promises work
+        await flushPromises();
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
     });
 
     it("requests version list from the api group from the initial apiBase", () => {
