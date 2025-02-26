@@ -3,11 +3,11 @@
     "baseUrl": ".",
     "jsx": "react",
     "target": "ES2022",
-    "module": "ESNext",
+    "module": "ES2022",
 
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
 
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,

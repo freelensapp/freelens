@@ -3,6 +3,7 @@ import type { Configuration } from "webpack";
 import { MakePeerDependenciesExternalPlugin } from "./plugins/make-peer-dependencies-external";
 import { ProtectFromImportingNonDependencies } from "./plugins/protect-from-importing-non-dependencies";
 import { LinkablePushPlugin } from "./plugins/linkable-push-plugin";
+import nodeExternals from "webpack-node-externals";
 
 export type Paths = {
   entrypointFilePath: string;
@@ -19,7 +20,7 @@ export const getNodeConfig = ({
   mode: "production",
 
   performance: {
-    maxEntrypointSize: 100000,
+    maxEntrypointSize: 500000,
     hints: "error",
   },
 
@@ -62,7 +63,15 @@ export const getNodeConfig = ({
     },
   },
 
+  optimization: {
+    minimize: false,
+  },
+
   externalsPresets: { node: true },
+
+  externals: [
+    nodeExternals({ modulesFromFile: true }),
+  ],
 
   node: {
     __dirname: true,

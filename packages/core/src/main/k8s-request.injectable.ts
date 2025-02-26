@@ -40,7 +40,7 @@ const k8sRequestInjectable = getInjectable({
 
       const response = await lensFetch(`/${cluster.id}${pathnameAndQuery}`, {
         ...init,
-        signal: controller?.signal ?? signal,
+        signal: controller?.signal ?? signal as any,
       });
 
       if (response.status < 200 || response.status >= 300) {

@@ -30,10 +30,12 @@
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
     "fast-xml-parser": "^4.2.2",
-    "node-fetch": "^3.3.2",
     "semver": "^7.3.8",
     "ts-node": "^10.9.1",
     "typed-regex": "^0.0.8",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
