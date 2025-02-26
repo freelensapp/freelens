@@ -1,5 +1,4 @@
 const path = require("path");
-const { verbose } = require("../../core/jest.config");
 
 module.exports = (rootDir) => {
   const shared = {

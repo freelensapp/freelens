@@ -1,7 +1,6 @@
 const path = require("path");
 const glob = require("glob");
 const { omit } = require("lodash/fp");
-const { verbose } = require("../../core/jest.config");
 
 const getProjectColor = (projectNumber) => {
   const colors = [
