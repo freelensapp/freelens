@@ -43,8 +43,6 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
   try {
     node = new Node(object);
   } catch (ex) {
-    console.log(ex);
-
     return null;
   }
 
