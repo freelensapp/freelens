@@ -14,7 +14,6 @@ import customCategoryViewsInjectable from "../custom-views.injectable";
 
 describe("Custom Category Views", () => {
   let di: DiContainer;
-  // console.log("describe");
 
   beforeEach(() => {
     try {
