@@ -7,7 +7,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
     entry: { index: './index.ts' },
     target: 'node',
     mode: 'production',
-    performance: { maxEntrypointSize: 100000, hints: 'error' },
+    performance: { maxEntrypointSize: 500000, hints: 'error' },
     resolve: { extensions: [ '.ts', '.tsx', '.js' ] },
     plugins: [
       MakePeerDependenciesExternalPlugin {},
@@ -33,7 +33,9 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
       filename: [Function: filename],
       library: { type: 'commonjs2' }
     },
+    optimization: { minimize: false },
     externalsPresets: { node: true },
+    externals: [ [Function (anonymous)] ],
     node: { __dirname: true, __filename: true },
     module: { rules: [ { test: /\\.ts(x)?$/, loader: 'ts-loader' } ] }
   },
@@ -42,7 +44,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
     entry: { index: './some-entrypoint/index.ts' },
     target: 'node',
     mode: 'production',
-    performance: { maxEntrypointSize: 100000, hints: 'error' },
+    performance: { maxEntrypointSize: 500000, hints: 'error' },
     resolve: { extensions: [ '.ts', '.tsx', '.js' ] },
     plugins: [
       MakePeerDependenciesExternalPlugin {},
@@ -68,7 +70,9 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
       filename: [Function: filename],
       library: { type: 'commonjs2' }
     },
+    optimization: { minimize: false },
     externalsPresets: { node: true },
+    externals: [ [Function (anonymous)] ],
     node: { __dirname: true, __filename: true },
     module: { rules: [ { test: /\\.ts(x)?$/, loader: 'ts-loader' } ] }
   },
@@ -77,7 +81,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
     entry: { index: './some-other-entrypoint/index.ts' },
     target: 'node',
     mode: 'production',
-    performance: { maxEntrypointSize: 100000, hints: 'error' },
+    performance: { maxEntrypointSize: 500000, hints: 'error' },
     resolve: { extensions: [ '.ts', '.tsx', '.js' ] },
     plugins: [
       MakePeerDependenciesExternalPlugin {},
@@ -118,7 +122,9 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
       filename: [Function: filename],
       library: { type: 'commonjs2' }
     },
+    optimization: { minimize: false },
     externalsPresets: { node: true },
+    externals: [ [Function (anonymous)] ],
     node: { __dirname: true, __filename: true },
     module: {
       rules: [
