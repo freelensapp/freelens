@@ -156,6 +156,11 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 
 ![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
 
+## Expenses and Donations
+
+Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.  
+For more information, see our dedicated page in our Wiki: [Expenses and Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+
 ## License
 
 This repository is a fork of [Open
