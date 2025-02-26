@@ -21,9 +21,3 @@ module.exports = {
   transformIgnorePatterns: ["node_modules/"],
   verbose: false,
 };
-
-if (typeof window !== 'undefined') {
-  window.setImmediate = window.setTimeout;
-} else if (typeof global !== 'undefined') {
-  global.setImmediate = global.setTimeout;
-}
