@@ -58,10 +58,16 @@ describe("KubeApi", () => {
 
     beforeEach(async () => {
       ingressApi = di.inject(ingressApiInjectable);
-      getCall = ingressApi.get({
-        name: "foo",
-        namespace: "default",
-      });
+
+      try {
+        getCall = ingressApi.get({
+          name: "foo",
+          namespace: "default",
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
 
       // This is needed because of how JS promises work
       await flushPromises();
