@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
-    "rimraf": "^4.4.1"
+    "rimraf": "^6.0.0"
   },
   "peerDependencies": {
     "@ogre-tools/injectable": "^17.2.0"
