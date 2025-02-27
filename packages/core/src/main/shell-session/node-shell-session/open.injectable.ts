@@ -10,6 +10,7 @@ import type { NodeShellSessionDependencies } from "./node-shell-session";
 import { NodeShellSession } from "./node-shell-session";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import defaultShellInjectable from "../../../features/preferences/renderer/preference-items/terminal/terminal-shell-path/default-shell/default-shell.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import computeShellEnvironmentInjectable from "../../../features/shell-sync/main/compute-shell-environment.injectable";
@@ -41,6 +42,7 @@ const openNodeShellSessionInjectable = getInjectable({
     const dependencies: Omit<NodeShellSessionDependencies, "proxyKubeconfigPath" | "loadProxyKubeconfig" | "directoryContainingKubectl"> = {
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
+      defaultShell: di.inject(defaultShellInjectable),
       logger: di.inject(loggerInjectionToken),
       userShellSetting: di.inject(userShellSettingInjectable),
       appName: di.inject(appNameInjectable),
