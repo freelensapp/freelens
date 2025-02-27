@@ -5,6 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import defaultShellInjectable from "../../../features/preferences/renderer/preference-items/terminal/terminal-shell-path/default-shell/default-shell.injectable";
 import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
 import electronAppInjectable from "../../../main/electron-app/electron-app.injectable";
 import computeShellEnvironmentInjectable from "./compute-shell-environment.injectable";
@@ -26,7 +27,13 @@ const setupShellInjectable = getInjectable({
 
       logger.info("🐚 Syncing shell environment");
 
-      const result = await computeShellEnvironment(resolvedUserShellSetting.get() || "sh");
+      let userShell = resolvedUserShellSetting.get();
+
+      if (!userShell) {
+        userShell = di.inject(defaultShellInjectable);
+      }
+
+      const result = await computeShellEnvironment(userShell);
 
       if (!result.callWasSuccessful) {
         logger.error(`[SHELL-SYNC]: ${result.error}`);
