@@ -26,6 +26,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     environment: automated
+    timeout-minutes: 10
 
     if: >-
       github.event_name != 'issue_comment' ||

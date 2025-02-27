@@ -17,6 +17,7 @@ jobs:
     permissions: write-all
 
     runs-on: ubuntu-22.04
+    timeout-minutes: 360
 
     steps:
       - name: Checkout
