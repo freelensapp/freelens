@@ -18,7 +18,7 @@ const defaultShellInjectable = getInjectable({
     const isWindows = di.inject(isWindowsInjectable);
 
     if (isFlatpakPackage) {
-      return "/app/bin/host-spawn"
+      return "/app/bin/host-spawn";
     }
 
     if (process.env.SHELL) {

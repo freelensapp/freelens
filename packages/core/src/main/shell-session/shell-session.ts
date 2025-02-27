@@ -108,6 +108,7 @@ export enum WebSocketCloseEvent {
 export interface ShellSessionDependencies {
   readonly isWindows: boolean;
   readonly isMac: boolean;
+  readonly defaultShell: string;
   readonly logger: Logger;
   readonly userShellSetting: IComputedValue<string | null>;
   readonly appName: string;
@@ -321,7 +322,7 @@ export abstract class ShellSession {
   }
 
   protected async getShellEnv() {
-    const shell = this.dependencies.userShellSetting.get();
+    const shell = this.dependencies.userShellSetting.get() || this.dependencies.defaultShell;
     const result = await this.dependencies.computeShellEnvironment(shell);
     const rawEnv = (() => {
       if (result.callWasSuccessful) {
