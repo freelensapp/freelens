@@ -6,7 +6,7 @@
 import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import defaultShellInjectable from "../../../features/preferences/renderer/preference-items/terminal/terminal-shell-path/default-shell/default-shell.injectable";
+import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 
 export type EnvironmentVariables = Partial<Record<string, string>>;

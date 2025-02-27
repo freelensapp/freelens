@@ -11,7 +11,7 @@ import directoryForBinariesInjectable from "../../../common/app-paths/directory-
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import defaultShellInjectable from "../../../features/preferences/renderer/preference-items/terminal/terminal-shell-path/default-shell/default-shell.injectable";
+import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type WebSocket from "ws";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";

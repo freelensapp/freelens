@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import isFlatpakPackageInjectable from "../../../../../../../common/vars/is-flatpak-package.injectable";
-import isLinuxInjectable from "../../../../../../../common/vars/is-linux.injectable";
-import isMacInjectable from "../../../../../../../common/vars/is-mac.injectable";
-import isWindowsInjectable from "../../../../../../../common/vars/is-windows.injectable";
+import isFlatpakPackageInjectable from "./is-flatpak-package.injectable";
+import isLinuxInjectable from "./is-linux.injectable";
+import isMacInjectable from "./is-mac.injectable";
+import isWindowsInjectable from "./is-windows.injectable";
 
 const defaultShellInjectable = getInjectable({
   id: "default-shell",
