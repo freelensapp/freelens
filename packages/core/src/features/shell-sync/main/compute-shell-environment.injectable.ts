@@ -6,16 +6,18 @@
 import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import defaultShellInjectable from "../../../features/preferences/renderer/preference-items/terminal/terminal-shell-path/default-shell/default-shell.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 
 export type EnvironmentVariables = Partial<Record<string, string>>;
-export type ComputeShellEnvironment = (shell: string) => AsyncResult<EnvironmentVariables | undefined, string>;
+export type ComputeShellEnvironment = (shell?: string | null) => AsyncResult<EnvironmentVariables | undefined, string>;
 
 const computeShellEnvironmentInjectable = getInjectable({
   id: "compute-shell-environment",
   instantiate: (di): ComputeShellEnvironment => {
     const isWindows = di.inject(isWindowsInjectable);
     const computeUnixShellEnvironment = di.inject(computeUnixShellEnvironmentInjectable);
+    const defaultShell = di.inject(defaultShellInjectable);
 
     if (isWindows) {
       return async () => ({
@@ -27,7 +29,8 @@ const computeShellEnvironmentInjectable = getInjectable({
     return async (shell) => {
       const controller = new AbortController();
       const timeoutHandle = setTimeout(() => controller.abort(), 30_000);
-      const result = await computeUnixShellEnvironment(shell, { signal: controller.signal });
+
+      const result = await computeUnixShellEnvironment(shell || defaultShell, { signal: controller.signal });
 
       clearTimeout(timeoutHandle);
 

@@ -27,13 +27,7 @@ const setupShellInjectable = getInjectable({
 
       logger.info("🐚 Syncing shell environment");
 
-      let userShell = resolvedUserShellSetting.get();
-
-      if (!userShell) {
-        userShell = di.inject(defaultShellInjectable);
-      }
-
-      const result = await computeShellEnvironment(userShell);
+      const result = await computeShellEnvironment(resolvedUserShellSetting.get());
 
       if (!result.callWasSuccessful) {
         logger.error(`[SHELL-SYNC]: ${result.error}`);

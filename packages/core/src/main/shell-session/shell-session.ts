@@ -321,8 +321,8 @@ export abstract class ShellSession {
   }
 
   protected async getShellEnv() {
-    const shell = this.dependencies.userShellSetting.get() || "sh";
-    const result = await this.dependencies.computeShellEnvironment(shell);
+    const userShell = this.dependencies.userShellSetting.get();
+    const result = await this.dependencies.computeShellEnvironment(userShell);
     const rawEnv = (() => {
       if (result.callWasSuccessful) {
         return result.response ?? process.env;
@@ -337,7 +337,7 @@ export abstract class ShellSession {
     delete env.DEBUG; // don't pass DEBUG into shells
 
     if (this.dependencies.isWindows) {
-      env.PTYSHELL = shell || "powershell.exe";
+      env.PTYSHELL = userShell || "powershell.exe";
       env.PATH = pathStr;
       env.LENS_SESSION = "true";
       env.WSLENV = [
@@ -346,8 +346,8 @@ export abstract class ShellSession {
       ]
         .filter(Boolean)
         .join(":");
-    } else if (shell !== undefined) {
-      env.PTYSHELL = shell;
+    } else if (userShell !== undefined) {
+      env.PTYSHELL = userShell;
       env.PATH = pathStr;
     } else {
       env.PTYSHELL = ""; // blank runs the system default shell
