@@ -6,7 +6,7 @@
 import { apiPrefix } from "../../../common/vars";
 import { getRouteInjectable } from "../../router/router.injectable";
 import { CoreV1Api } from "@kubernetes/client-node";
-import { clusterRoute } from "../../router/route";
+import { ClusterLensApiRequest, clusterRoute } from "../../router/route";
 import * as yaml from "js-yaml";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
@@ -17,13 +17,14 @@ const getServiceAccountRouteInjectable = getRouteInjectable({
   instantiate: (di) => clusterRoute({
     method: "get",
     path: `${apiPrefix}/kubeconfig/service-account/{namespace}/{account}`,
-  })(async ({ params, cluster }) => {
+  })(async ({ cluster, params }) => {
     const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, cluster);
     const proxyKubeconfig = await loadProxyKubeconfig();
     const client = proxyKubeconfig.makeApiClient(CoreV1Api);
-    const secretList = await client.listNamespacedSecret(params.namespace);
+    const { namespace } = params;
+    const secretList = await client.listNamespacedSecret({ namespace });
 
-    const secret = secretList.body.items.find(secret => {
+    const secret = secretList.items.find(secret => {
       const { annotations = {}} = secret.metadata ?? {};
 
       return annotations["kubernetes.io/service-account.name"] === params.account;

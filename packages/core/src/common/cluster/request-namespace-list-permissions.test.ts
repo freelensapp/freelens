@@ -5,7 +5,7 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
+import type { AuthorizationV1Api, V1SelfSubjectRulesReview, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IncomingMessage } from "http";
 import { anyObject } from "jest-mock-extended";
@@ -189,12 +189,10 @@ describe("requestNamespaceListPermissions", () => {
       describe(`when api returns ${description}`, () => {
         beforeEach(async () => {
           await createSelfSubjectRulesReviewMock.resolve({
-            body: {
-              status,
-              spec: {},
-            },
+            status,
+            spec: {},
             response: null as unknown as IncomingMessage,
-          });
+          } as V1SelfSubjectRulesReview);
         });
 
         it(`allows the request to complete, and 'canListResource' will return ${expected}`, async () => {
