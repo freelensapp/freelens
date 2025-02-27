@@ -104,7 +104,10 @@
         "libgbm1"
       ],
       "executableArgs": [
-        "--ozone-platform-hint=auto"
+        "--ozone-platform-hint=auto",
+        "--enable-features=WebRTCPipeWireCapturer",
+        "--enable-features=WaylandWindowDecorations",
+        "--disable-gpu-compositing"
       ],
       "afterInstall": "./build/after-install-deb.sh",
       "afterRemove": "./build/after-remove-deb.sh",
@@ -130,7 +133,10 @@
         "(alsa-lib or libalsa2 or libasound2)"
       ],
       "executableArgs": [
-        "--ozone-platform-hint=auto"
+        "--ozone-platform-hint=auto",
+        "--enable-features=WebRTCPipeWireCapturer",
+        "--enable-features=WaylandWindowDecorations",
+        "--disable-gpu-compositing"
       ],
       "fpm": [
         "--rpm-rpmbuild-define=_build_id_links none",
@@ -141,6 +147,9 @@
     "appImage": {
       "executableArgs": [
         "--ozone-platform-hint=auto",
+        "--enable-features=WebRTCPipeWireCapturer",
+        "--enable-features=WaylandWindowDecorations",
+        "--disable-gpu-compositing",
         "--no-sandbox"
       ],
       "license": "build/license.txt"
