@@ -36,7 +36,7 @@
     "react-router": "^5.3.4",
     "readable-stream": "^3.6.2",
     "semver": "^7.3.8",
-    "tar": "^6.1.13",
+    "tar": "^7.4.3",
     "type-fest": "^2.19.0",
     "typed-regex": "^0.0.8"
   },
