@@ -69,7 +69,7 @@ Run the application with additional arguments:
 
 <!-- markdownlint-disable MD013 -->
 ```sh
-./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations
+./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
 ```
 <!-- markdownlint-enable MD013 -->
 
