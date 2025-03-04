@@ -5,7 +5,7 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, CoreV1Api, V1APIGroupList, V1APIVersions, V1NamespaceList, V1SelfSubjectAccessReview, V1SelfSubjectRulesReview } from "@kubernetes/client-node";
+import type { AuthorizationV1Api, CoreV1Api, V1APIGroupList, V1APIVersions, V1NamespaceList, V1SelfSubjectAccessReview, V1SelfSubjectRulesReview } from "@freelensapp/kubernetes-client-node";
 import type { Cluster } from "../../common/cluster/cluster";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";

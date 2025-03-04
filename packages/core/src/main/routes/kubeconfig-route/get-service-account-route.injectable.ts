@@ -5,7 +5,7 @@
 
 import { apiPrefix } from "../../../common/vars";
 import { getRouteInjectable } from "../../router/router.injectable";
-import { CoreV1Api } from "@kubernetes/client-node";
+import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import { clusterRoute } from "../../router/route";
 import * as yaml from "js-yaml";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
