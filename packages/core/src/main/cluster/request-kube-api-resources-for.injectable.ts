@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { V1APIResourceList } from "@kubernetes/client-node";
+import type { V1APIResourceList } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";

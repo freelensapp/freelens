@@ -1,0 +1,28 @@
+{
+  "name": "@freelensapp/kubernetes-client-node",
+  "version": "1.0.0",
+  "description": "Kubernetes client for Freelens",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "copyright": "© 2025 Freelens Authors",
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist/",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^1.0.0",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.0"
+  }
+}

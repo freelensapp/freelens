@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeConfig } from "@kubernetes/client-node";
+import { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { validateKubeConfig, loadConfigFromString } from "../kube-helpers";
 
 const kubeconfig = `

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AuthorizationV1Api } from "@kubernetes/client-node";
+import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { KubeApiResource } from "../rbac";
@@ -25,19 +25,21 @@ const createRequestNamespaceListPermissionsInjectable = getInjectable({
 
     return (api) => async (namespace) => {
       try {
-        const { body: { status }} = await api.createSelfSubjectRulesReview({
-          apiVersion: "authorization.k8s.io/v1",
-          kind: "SelfSubjectRulesReview",
-          spec: { namespace },
+        const data = await api.createSelfSubjectRulesReview({
+          body: {
+            apiVersion: "authorization.k8s.io/v1",
+            kind: "SelfSubjectRulesReview",
+            spec: { namespace },
+          },
         });
 
-        if (!status || status.incomplete) {
-          logger.warn(`[AUTHORIZATION-NAMESPACE-REVIEW]: allowing all resources in namespace="${namespace}" due to incomplete SelfSubjectRulesReview: ${status?.evaluationError}`);
+        if (!data.status || data.status.incomplete) {
+          logger.warn(`[AUTHORIZATION-NAMESPACE-REVIEW]: allowing all resources in namespace="${namespace}" due to incomplete SelfSubjectRulesReview: ${data.status?.evaluationError}`);
 
           return () => true;
         }
 
-        const { resourceRules } = status;
+        const { resourceRules } = data.status;
 
         return (resource) => (
           resourceRules

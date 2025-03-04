@@ -2,9 +2,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { KubeConfig } from "@kubernetes/client-node";
+import { Agent } from "https";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { Cluster } from "./cluster";
+import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
 import loadConfigFromFileInjectable from "../kube-helpers/load-config-from-file.injectable";
 import type { ConfigResult } from "../kube-helpers";
 
@@ -20,6 +22,14 @@ const loadKubeconfigInjectable = getInjectable({
 
     return (async (fullResult = false) => {
       const result = await loadConfigFromFile(cluster.kubeConfigPath.get());
+
+      const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
+    
+      const agent = new Agent({
+        ca: lensProxyCertificate.get().cert,
+      });
+      
+      result.config.applyToHTTPSOptions({ agent });
 
       if (fullResult) {
         return result;

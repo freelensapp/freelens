@@ -5,7 +5,7 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, CoreV1Api, V1APIGroupList, V1APIVersions, V1NamespaceList, V1SelfSubjectAccessReview, V1SelfSubjectRulesReview } from "@kubernetes/client-node";
+import type { AuthorizationV1Api, CoreV1Api, V1APIGroupList, V1APIVersions, V1NamespaceList, V1SelfSubjectAccessReview, V1SelfSubjectRulesReview } from "@freelensapp/kubernetes-client-node";
 import type { Cluster } from "../../common/cluster/cluster";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -479,20 +479,18 @@ const nonCoreApiResponse = {
 } as V1APIGroupList;
 
 const listNamespaceResponse = {
-  body: {
-    items: [
-      {
-        metadata: {
-          name: "default",
-        },
+  items: [
+    {
+      metadata: {
+        name: "default",
       },
-      {
-        metadata: {
-          name: "my-namespace",
-        },
+    },
+    {
+      metadata: {
+        name: "my-namespace",
       },
-    ],
-  } as PartialDeep<V1NamespaceList>,
+    },
+  ] as PartialDeep<V1NamespaceList>,
 } as Awaited<ReturnType<CoreV1Api["listNamespace"]>>;
 
 const coreApiKindsResponse = {
@@ -590,48 +588,40 @@ const discoveryK8sIoKindsResponse = {
 type CreateSelfSubjectRulesReviewRes = Awaited<ReturnType<AuthorizationV1Api["createSelfSubjectRulesReview"]>>;
 
 const defaultIncompletePermissions = {
-  body: {
-    status: {
-      incomplete: true,
-    },
+  status: {
+    incomplete: true,
   } as PartialDeep<V1SelfSubjectRulesReview>,
 } as CreateSelfSubjectRulesReviewRes;
 
 const emptyPermissions = {
-  body: {
-    status: {
-      resourceRules: [],
-    },
+  status: {
+    resourceRules: [],
   } as PartialDeep<V1SelfSubjectRulesReview>,
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultSingleListPermissions = {
-  body: {
-    status: {
-      resourceRules: [{
-        apiGroups: [""],
-        resources: ["pods"],
-        verbs: ["list"],
-      }],
-    },
+  status: {
+    resourceRules: [{
+      apiGroups: [""],
+      resources: ["pods"],
+      verbs: ["list"],
+    }],
   } as PartialDeep<V1SelfSubjectRulesReview>,
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultMultipleListPermissions = {
-  body: {
-    status: {
-      resourceRules: [
-        {
-          apiGroups: [""],
-          resources: ["pods"],
-          verbs: ["get"],
-        },
-        {
-          apiGroups: [""],
-          resources: ["pods"],
-          verbs: ["list"],
-        },
-      ],
-    },
+  status: {
+    resourceRules: [
+      {
+        apiGroups: [""],
+        resources: ["pods"],
+        verbs: ["get"],
+      },
+      {
+        apiGroups: [""],
+        resources: ["pods"],
+        verbs: ["list"],
+      },
+    ],
   } as PartialDeep<V1SelfSubjectRulesReview>,
 } as CreateSelfSubjectRulesReviewRes;

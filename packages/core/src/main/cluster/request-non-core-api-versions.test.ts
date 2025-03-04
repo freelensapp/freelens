@@ -5,7 +5,7 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { V1APIGroupList } from "@kubernetes/client-node";
+import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import type { K8sRequest } from "../k8s-request.injectable";

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CoreV1Api } from "@kubernetes/client-node";
+import type { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import { getInjectionToken } from "@ogre-tools/injectable";
 import { isRequestError } from "@freelensapp/utilities";
 
@@ -57,12 +57,10 @@ export async function findFirstNamespacedService(
   ...selectors: string[]
 ): Promise<PrometheusServiceInfo> {
   try {
-    for (const selector of selectors) {
+    for (const labelSelector of selectors) {
       const {
-        body: {
-          items: [service],
-        },
-      } = await client.listServiceForAllNamespaces(undefined, undefined, undefined, selector);
+        items: [service],
+      } = await client.listServiceForAllNamespaces({ labelSelector });
 
       if (service?.metadata?.namespace && service.metadata.name && service.spec?.ports) {
         return {
@@ -87,7 +85,7 @@ export async function findNamespacedService(
   namespace: string,
 ): Promise<PrometheusServiceInfo> {
   try {
-    const { body: service } = await client.readNamespacedService(name, namespace);
+    const service = await client.readNamespacedService({ name, namespace });
 
     if (!service.metadata?.namespace || !service.metadata.name || !service.spec?.ports) {
       throw new Error(`Service found in namespace="${namespace}" did not have required information`);
