@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { V1APIVersions } from "@kubernetes/client-node";
+import type { V1APIVersions } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";

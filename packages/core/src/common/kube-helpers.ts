@@ -3,10 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeConfig } from "@kubernetes/client-node";
 import { load, dump } from "js-yaml";
-import type { Cluster, Context, User } from "@kubernetes/client-node/dist/config_types";
-import { newClusters, newContexts, newUsers } from "@kubernetes/client-node/dist/config_types";
+import type { Cluster, Context, User } from "@freelensapp/kubernetes-client-node";
+import { newClusters, newContexts, newUsers, KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { isDefined } from "@freelensapp/utilities";
 import Joi from "joi";
 import type { PartialDeep } from "type-fest";

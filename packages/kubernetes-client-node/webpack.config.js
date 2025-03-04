@@ -17,6 +17,15 @@ export default {
     concatenateModules: true,
     minimize: false,
   },
+  async externals({ request }) {
+    if (
+      !request.startsWith(".") &&
+      !request.startsWith("@kubernetes/client-node")
+    ) {
+      return Promise.resolve(`node-commonjs ${request}`);
+    }
+    return Promise.resolve();
+  },
   module: {
     rules: [
       {

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type KubeConfig, HttpError } from "@kubernetes/client-node";
+import { type KubeConfig, HttpError } from "@freelensapp/kubernetes-client-node";
 import { reaction, comparer, runInAction } from "mobx";
 import { ClusterStatus } from "../../common/cluster-types";
 import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";

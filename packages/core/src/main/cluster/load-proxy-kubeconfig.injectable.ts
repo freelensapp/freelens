@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { KubeConfig } from "@kubernetes/client-node";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import loadConfigFromFileInjectable from "../../common/kube-helpers/load-config-from-file.injectable";

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@kubernetes/client-node";
-import { dumpYaml } from "@kubernetes/client-node";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { dumpYaml } from "@freelensapp/kubernetes-client-node";
 import * as lockFile from "proper-lockfile";
 import { getInjectable } from "@ogre-tools/injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
@@ -32,4 +32,3 @@ const saveKubeconfigInjectable = getInjectable({
 });
 
 export default saveKubeconfigInjectable;
-

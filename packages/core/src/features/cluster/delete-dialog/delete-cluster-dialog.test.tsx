@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import "@testing-library/jest-dom/extend-expect";
-import { KubeConfig } from "@kubernetes/client-node";
+import { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { RenderResult } from "@testing-library/react";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";
 import kubectlBinaryNameInjectable from "../../../main/kubectl/binary-name.injectable";
