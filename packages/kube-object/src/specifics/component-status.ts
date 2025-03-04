@@ -11,16 +11,14 @@ export interface ComponentStatusCondition {
   message: string;
 }
 
-export interface ComponentStatus {
-  conditions: ComponentStatusCondition[];
-}
-
 export class ComponentStatus extends KubeObject {
   static kind = "ComponentStatus";
 
   static namespaced = false;
 
   static apiBase = "/api/v1/componentstatuses";
+
+  conditions: ComponentStatusCondition[] = [];
 
   getTruthyConditions() {
     return this.conditions.filter((c) => c.status === "True");

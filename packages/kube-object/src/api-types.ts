@@ -33,9 +33,8 @@ export interface KubeJsonApiData<
   [otherKeys: string]: unknown;
 }
 
-export type KubeJsonApiDataFor<K> = K extends KubeObject<infer Metadata, infer Status, infer Spec>
-  ? KubeJsonApiData<Metadata, Status, Spec>
-  : never;
+export type KubeJsonApiDataFor<K> =
+  K extends KubeObject<infer Metadata, infer Status, infer Spec> ? KubeJsonApiData<Metadata, Status, Spec> : never;
 
 export interface KubeObjectConstructorData {
   readonly kind?: string;
@@ -291,7 +290,10 @@ export interface KubeObjectStatus {
 export type KubeMetaField = keyof KubeJsonApiObjectMetadata;
 
 export class KubeCreationError extends Error {
-  constructor(message: string, public data: unknown) {
+  constructor(
+    message: string,
+    public data: unknown,
+  ) {
     super(message);
   }
 }
@@ -381,8 +383,8 @@ export enum KubeObjectScope {
 export type ScopedNamespace<Namespaced extends KubeObjectScope> = Namespaced extends KubeObjectScope.Namespace
   ? string
   : Namespaced extends KubeObjectScope.Cluster
-  ? undefined
-  : string | undefined;
+    ? undefined
+    : string | undefined;
 
 export interface RawKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,

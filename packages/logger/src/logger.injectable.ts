@@ -29,7 +29,7 @@ const screamingKebabCase = (str: string) => pipeline(str, kebabCase, toUpper);
 
 const getLogFunctionFor = (
   scenario: keyof Logger,
-  namespace: string | undefined
+  namespace: string | undefined,
 ) => {
   const prefix = namespace
     ? `[${screamingKebabCase(namespace.replace(/-feature$/, ""))}]: `

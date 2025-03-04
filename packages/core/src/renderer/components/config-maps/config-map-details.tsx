@@ -91,7 +91,7 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
       return null;
     }
 
-    const data = Array.from(this.data.entries());
+    const data: [string, string][] = Array.from(this.data.entries());
 
     return (
       <div className="ConfigMapDetails">

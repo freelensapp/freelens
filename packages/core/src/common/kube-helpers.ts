@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import yaml from "js-yaml";
+import { load, dump } from "js-yaml";
 import type { Cluster, Context, User } from "@freelensapp/kubernetes-client-node";
 import { newClusters, newContexts, newUsers, KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { isDefined } from "@freelensapp/utilities";
@@ -78,7 +78,7 @@ interface OptionsResult {
 }
 
 function loadToOptions(rawYaml: string): OptionsResult {
-  const parsed = yaml.load(rawYaml);
+  const parsed = load(rawYaml);
   const { error } = kubeConfigSchema.validate(parsed, {
     abortEarly: false,
     allowUnknown: true,
@@ -229,7 +229,7 @@ export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
   };
 
   // skipInvalid: true makes dump ignore undefined values
-  return yaml.dump(config, { skipInvalid: true });
+  return dump(config, { skipInvalid: true });
 }
 
 export type ValidateKubeConfigResult = {

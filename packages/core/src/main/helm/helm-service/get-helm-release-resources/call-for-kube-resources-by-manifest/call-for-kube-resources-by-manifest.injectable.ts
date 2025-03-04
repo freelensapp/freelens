@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { JsonObject } from "type-fest";
-import yaml from "js-yaml";
+import { dump } from "js-yaml";
 import execFileWithInputInjectable from "./exec-file-with-input/exec-file-with-input.injectable";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import { map } from "lodash/fp";
@@ -32,7 +32,7 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
     ) => {
       const input = pipeline(
         resourceManifests,
-        map((manifest) => yaml.dump(manifest)),
+        map((manifest) => dump(manifest)),
         wideJoin("---\n"),
       );
 

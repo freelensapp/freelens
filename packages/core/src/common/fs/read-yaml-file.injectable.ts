@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import readFileInjectable from "./read-file.injectable";
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 
 export type ReadYamlFile = (filePath: string) => Promise<unknown>;
 
@@ -17,7 +17,7 @@ const readYamlFileInjectable = getInjectable({
     return async (filePath: string) => {
       const contents = await readFile(filePath);
 
-      return yaml.load(contents);
+      return load(contents);
     };
   },
 });

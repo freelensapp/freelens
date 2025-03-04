@@ -21,7 +21,7 @@ describe("allow communication to iframe", () => {
       registerFeature(di, messagingFeatureForRenderer);
     });
 
-    di.override(ipcRendererInjectable, () => ({ on: () => {} } as unknown));
+    di.override(ipcRendererInjectable, () => ({ on: () => {} }) as unknown);
 
     sendMessageToChannelMock = jest.fn();
     di.override(sendMessageToChannelInjectionToken, () => sendMessageToChannelMock);

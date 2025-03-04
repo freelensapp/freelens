@@ -1,10 +1,10 @@
 export type LensExtensionId = string;
 
 export type LensExtensionConstructor = new (
-  ext: InstalledExtension
+  ext: InstalledExtension,
 ) => LegacyLensExtension;
 export type BundledLensExtensionConstructor = new (
-  ext: BundledInstalledExtension
+  ext: BundledInstalledExtension,
 ) => LegacyLensExtension;
 
 export interface BaseInstalledExtension {

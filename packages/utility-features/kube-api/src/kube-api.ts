@@ -250,15 +250,15 @@ export type SpecificResourceDescriptor<Scope extends KubeObjectScope> = {
 } & (Scope extends KubeObjectScope.Cluster
   ? {}
   : Scope extends KubeObjectScope.Namespace
-  ? {
-      /**
-       * The namespace that the resource lives in
-       */
-      namespace: string;
-    }
-  : {
-      namespace?: string;
-    });
+    ? {
+        /**
+         * The namespace that the resource lives in
+         */
+        namespace: string;
+      }
+    : {
+        namespace?: string;
+      });
 
 export type NamespacedResourceDescriptor = SpecificResourceDescriptor<KubeObjectScope.Namespace>;
 export type ClusterScopedResourceDescriptor = SpecificResourceDescriptor<KubeObjectScope.Cluster>;
@@ -317,7 +317,10 @@ export class KubeApi<
 
   protected readonly allowedUsableVersions: Partial<Record<string, string[]>> | undefined;
 
-  constructor(protected readonly dependencies: KubeApiDependencies, opts: KubeApiOptions<Object, Data>) {
+  constructor(
+    protected readonly dependencies: KubeApiDependencies,
+    opts: KubeApiOptions<Object, Data>,
+  ) {
     const {
       objectConstructor,
       request = this.dependencies.maybeKubeApi,
@@ -456,7 +459,7 @@ export class KubeApi<
       apiPrefix: this.apiPrefix,
       apiVersion: this.apiVersionWithGroup,
       resource: this.apiResource,
-      namespace: this.isNamespaced ? namespace ?? "default" : undefined,
+      namespace: this.isNamespaced ? (namespace ?? "default") : undefined,
     });
 
     return resourcePath + (query ? `?${stringify(this.normalizeQuery(query))}` : "");
@@ -785,24 +788,27 @@ export class KubeApi<
         // Add mechanism to retry in case timeoutSeconds is set but the watch wasn't timed out.
         // This can happen if e.g. network is offline and AWS NLB is used.
         if (timeout) {
-          setTimeout(() => {
-            // We only retry if we haven't retried, haven't aborted and haven't received k8s error
-            if (requestRetried || abortController.signal.aborted || errorReceived) {
-              return;
-            }
+          setTimeout(
+            () => {
+              // We only retry if we haven't retried, haven't aborted and haven't received k8s error
+              if (requestRetried || abortController.signal.aborted || errorReceived) {
+                return;
+              }
 
-            // Close current request
-            abortController.abort();
+              // Close current request
+              abortController.abort();
 
-            this.dependencies.logInfo(`Watch timeout set, but not retried, retrying now`);
+              this.dependencies.logInfo(`Watch timeout set, but not retried, retrying now`);
 
-            requestRetried = true;
+              requestRetried = true;
 
-            // Clearing out any possible timeout, although we don't expect this to be set
-            clearTimeout(timedRetry);
-            this.watch({ ...opts, namespace, callback, watchId, retry: true });
-            // We wait longer than the timeout, as we expect the request to be retried with timeoutSeconds
-          }, timeout * 1000 * 1.1);
+              // Clearing out any possible timeout, although we don't expect this to be set
+              clearTimeout(timedRetry);
+              this.watch({ ...opts, namespace, callback, watchId, retry: true });
+              // We wait longer than the timeout, as we expect the request to be retried with timeoutSeconds
+            },
+            timeout * 1000 * 1.1,
+          );
         }
 
         if (!response.body || !response.body.readable) {
