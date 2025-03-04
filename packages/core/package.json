@@ -57,7 +57,7 @@
     "clean": "rimraf dist static/build",
     "test:unit": "jest --testPathIgnorePatterns integration",
     "test:watch": "func() { jest ${1} --watch --testPathIgnorePatterns integration; }; func",
-    "lint": "PROD=true eslint --ext js,ts,tsx --max-warnings=0 .",
+    "lint": "npx cross-env PROD=true eslint --ext js,ts,tsx --max-warnings=0 .",
     "lint:fix": "npm run lint -- --fix"
   },
   "config": {
@@ -124,8 +124,8 @@
     "@types/webpack": "^5.28.1",
     "@types/webpack-env": "^1.18.0",
     "@types/webpack-node-externals": "^2.5.3",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
@@ -139,7 +139,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-unused-imports": "^4.0.0",
+    "eslint-plugin-unused-imports": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
     "ignore-loader": "^0.1.2",
     "include-media": "^1.4.10",

@@ -4,7 +4,7 @@
  */
 import hb from "handlebars";
 import type { KubernetesCluster } from "../catalog-entities";
-import yaml from "js-yaml";
+import { loadAll, dump } from "js-yaml";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import productNameInjectable from "../vars/product-name.injectable";
 import type { AsyncResult } from "@freelensapp/utilities";
@@ -121,7 +121,7 @@ export class ResourceStack {
         continue;
       }
 
-      for (const entry of yaml.loadAll(data)) {
+      for (const entry of loadAll(data)) {
         if (typeof entry !== "object" || !entry) {
           continue;
         }
@@ -134,7 +134,7 @@ export class ResourceStack {
           labels["app.kubernetes.io/created-by"] = "resource-stack";
         }
 
-        resources.push(yaml.dump(entry));
+        resources.push(dump(entry));
       }
     }
 

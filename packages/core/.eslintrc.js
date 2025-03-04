@@ -207,8 +207,8 @@ module.exports = {
           },
         ],
         "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-        "unused-imports/no-unused-imports-ts": process.env.PROD === "true" ? "error" : "warn",
-        "unused-imports/no-unused-vars-ts": [
+        "unused-imports/no-unused-imports": process.env.PROD === "true" ? "error" : "warn",
+        "unused-imports/no-unused-vars": [
           "warn", {
             "vars": "all",
             "args": "after-used",

@@ -4,7 +4,7 @@
  */
 
 import { KubeConfig } from "@kubernetes/client-node";
-import yaml from "js-yaml";
+import { load, dump } from "js-yaml";
 import type { Cluster, Context, User } from "@kubernetes/client-node/dist/config_types";
 import { newClusters, newContexts, newUsers } from "@kubernetes/client-node/dist/config_types";
 import { isDefined } from "@freelensapp/utilities";
@@ -79,7 +79,7 @@ interface OptionsResult {
 }
 
 function loadToOptions(rawYaml: string): OptionsResult {
-  const parsed = yaml.load(rawYaml);
+  const parsed = load(rawYaml);
   const { error } = kubeConfigSchema.validate(parsed, {
     abortEarly: false,
     allowUnknown: true,
@@ -230,7 +230,7 @@ export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
   };
 
   // skipInvalid: true makes dump ignore undefined values
-  return yaml.dump(config, { skipInvalid: true });
+  return dump(config, { skipInvalid: true });
 }
 
 export type ValidateKubeConfigResult = {

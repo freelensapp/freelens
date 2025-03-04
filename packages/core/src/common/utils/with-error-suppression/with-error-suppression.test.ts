@@ -39,7 +39,7 @@ describe("with-error-suppression", () => {
       let returnValue: void;
 
       beforeEach(() => {
-        // eslint-disable-next-line unused-imports/no-unused-vars-ts
+        // eslint-disable-next-line unused-imports/no-unused-vars
         toBeDecorated.mockImplementation((_, __) => {
           throw new Error("some-error");
         });

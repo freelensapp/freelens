@@ -6,7 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { AsyncResult } from "@freelensapp/utilities";
 import { isObject } from "@freelensapp/utilities";
 import execHelmInjectable from "../../../exec-helm/exec-helm.injectable";
-import yaml from "js-yaml";
+import { loadAll } from "js-yaml";
 import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
 
 const requestHelmManifestInjectable = getInjectable({
@@ -36,9 +36,9 @@ const requestHelmManifestInjectable = getInjectable({
 
       return {
         callWasSuccessful: true,
-        response: yaml
-          .loadAll(result.response)
-          .filter(isObject) as unknown as KubeJsonApiData[],
+        response:
+          loadAll(result.response)
+            .filter(isObject) as unknown as KubeJsonApiData[],
       };
     };
 

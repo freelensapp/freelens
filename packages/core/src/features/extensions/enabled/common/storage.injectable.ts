@@ -12,11 +12,11 @@ import { enabledExtensionsMigrationDeclarationInjectionToken } from "../main/mig
 import type { LensExtensionState } from "./state.injectable";
 import enabledExtensionsStateInjectable from "./state.injectable";
 import { enabledExtensionsPersistentStorageVersionInitializable } from "./storage-version";
-import z from "zod";
+import { object, boolean, string } from "zod";
 
-const stateModel = z.object({
-  enabled: z.boolean(),
-  name: z.string(),
+const stateModel = object({
+  enabled: boolean(),
+  name: string(),
 });
 
 interface EnabledExtensionsStorageModal {

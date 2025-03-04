@@ -40,7 +40,7 @@ describe("logger", () => {
 
       expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
         "some-message",
-        "some-data"
+        "some-data",
       );
     });
 
@@ -59,7 +59,7 @@ describe("logger", () => {
 
       expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
         "some-message",
-        "some-data"
+        "some-data",
       );
     });
 
@@ -78,7 +78,7 @@ describe("logger", () => {
 
       expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
         "[A-PREFIX]: some-message",
-        "some-data"
+        "some-data",
       );
     });
 
@@ -112,7 +112,7 @@ describe("logger", () => {
 
       expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
         "[SOME]: some-message",
-        "some-data"
+        "some-data",
       );
     });
   });
@@ -128,7 +128,7 @@ describe("logger", () => {
         id: "some-transport",
         instantiate: () => new TransportStream({ log }),
         injectionToken: loggerTransportInjectionToken,
-      })
+      }),
     );
 
     const logger = di.inject(loggerInjectable);

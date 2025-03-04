@@ -42,8 +42,8 @@ export enum ResizeSide {
 export enum ResizeGrowthDirection {
   TOP_TO_BOTTOM = 1,
   BOTTOM_TO_TOP = -1,
-  LEFT_TO_RIGHT = 1,
-  RIGHT_TO_LEFT = -1,
+  LEFT_TO_RIGHT = 2,
+  RIGHT_TO_LEFT = -2,
 }
 
 export interface ResizingAnchorProps {
@@ -280,7 +280,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     const previousExtent = getCurrentExtent();
     const unboundedExtent = previousExtent + delta * growthDirection;
     const boundedExtent = Math.round(
-      Math.max(minExtent, Math.min(maxExtent, unboundedExtent))
+      Math.max(minExtent, Math.min(maxExtent, unboundedExtent)),
     );
 
     onDrag(boundedExtent);

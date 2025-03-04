@@ -24,7 +24,7 @@ describe("get-electron-app-path", () => {
         return "some-existing-app-path";
       },
 
-      // eslint-disable-next-line unused-imports/no-unused-vars-ts
+      // eslint-disable-next-line unused-imports/no-unused-vars
       setPath: (_, __) => undefined,
     } as App;
 

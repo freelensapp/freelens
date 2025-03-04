@@ -10,7 +10,7 @@ import editResourceTabStoreInjectable from "../store.injectable";
 import type { EditingResource, EditResourceTabStore } from "../store";
 import { action, computed, observable, runInAction } from "mobx";
 import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
-import yaml from "js-yaml";
+import { dump, load } from "js-yaml";
 import assert from "assert";
 import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
@@ -166,7 +166,7 @@ export class EditResourceModel {
     }
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject());
+      this.editingResource.firstDraft = dump(resource.toPlainObject());
     });
   };
 
@@ -184,8 +184,8 @@ export class EditResourceModel {
 
   save = async () => {
     const currentValue = this.configuration.value.get();
-    const currentVersion = yaml.load(currentValue) as RawKubeObject;
-    const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue);
+    const currentVersion = load(currentValue) as RawKubeObject;
+    const firstVersion = load(this.editingResource.firstDraft ?? currentValue);
 
     // Make sure we save this annotation so that we can use it in the future
     currentVersion.metadata.annotations ??= {};
@@ -230,7 +230,7 @@ export class EditResourceModel {
     );
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(currentVersion);
+      this.editingResource.firstDraft = dump(currentVersion);
       this.editingResource.resource = selfLink;
     });
 

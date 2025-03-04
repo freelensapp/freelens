@@ -236,7 +236,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
         active,
         focusable,
       },
-      !size ? { smallest, small, big } : {}
+      !size ? { smallest, small, big } : {},
     ),
     onClick: isInteractive ? boundOnClick : undefined,
     onKeyDown: isInteractive ? boundOnKeyDown : undefined,
@@ -251,7 +251,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
 
   // render as inline svg-icon
   if (typeof svg === "string") {
-    const svgIconText = isSvg(svg) ? svg : localSvgIcons.get(svg) ?? "";
+    const svgIconText = isSvg(svg) ? svg : (localSvgIcons.get(svg) ?? "");
 
     iconContent = (
       <span
