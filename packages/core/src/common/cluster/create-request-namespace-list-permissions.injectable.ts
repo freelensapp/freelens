@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AuthorizationV1Api } from "@kubernetes/client-node";
+import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { KubeApiResource } from "../rbac";

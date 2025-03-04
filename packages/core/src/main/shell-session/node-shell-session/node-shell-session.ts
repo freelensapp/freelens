@@ -4,8 +4,8 @@
  */
 
 import { v4 as uuid } from "uuid";
-import { Watch, CoreV1Api } from "@kubernetes/client-node";
-import type { KubeConfig } from "@kubernetes/client-node";
+import { Watch, CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 import { ShellOpenError, ShellSession } from "../shell-session";
 import { get, once } from "lodash";

@@ -5,7 +5,7 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
+import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IncomingMessage } from "http";
 import { anyObject } from "jest-mock-extended";
