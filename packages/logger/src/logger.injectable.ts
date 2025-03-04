@@ -25,7 +25,8 @@ export const loggerInjectionToken = getInjectionToken<Logger>({
   id: "logger-injection-token",
 });
 
-const screamingKebabCase = (str: string): string => pipeline(str, kebabCase, toUpper) as string;
+const screamingKebabCase = (str: string): string =>
+  pipeline(str, kebabCase, toUpper) as string;
 
 const getLogFunctionFor = (
   scenario: keyof Logger,
