@@ -65,6 +65,8 @@ module.exports = (rootDir) => ({
     toJestMultiProjectConfig
   ),
 
+  verbose: false,
+
   watchPlugins: [
     "jest-watch-typeahead/filename",
     "jest-watch-typeahead/testname",

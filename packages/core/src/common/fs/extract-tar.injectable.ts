@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ExtractOptions } from "tar";
 import { extract } from "tar";
+import type { TarOptionsWithAliasesAsyncNoFile } from "tar";
 import getDirnameOfPathInjectable from "../path/get-dirname.injectable";
 
-export type ExtractTar = (filePath: string, opts?: ExtractOptions) => Promise<void>;
+export type ExtractTar = (filePath: string, opts?: TarOptionsWithAliasesAsyncNoFile) => Promise<void>;
 
 const extractTarInjectable = getInjectable({
   id: "extract-tar",

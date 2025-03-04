@@ -17,6 +17,7 @@ jobs:
     permissions: write-all
 
     runs-on: ubuntu-22.04
+    timeout-minutes: 360
 
     steps:
       - name: Checkout
@@ -374,7 +375,7 @@ jobs:
               *-*) dist_tag=next;;
               *) dist_tag=latest;;
             esac
-            npx lerna \
+            npx -y lerna@6 lerna \
               publish from-package \
               --no-push \
               --no-git-tag-version \

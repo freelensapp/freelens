@@ -11,6 +11,7 @@ import directoryForBinariesInjectable from "../../../common/app-paths/directory-
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type WebSocket from "ws";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
@@ -46,6 +47,7 @@ const openLocalShellSessionInjectable = getInjectable({
       directoryForBinaries: di.inject(directoryForBinariesInjectable),
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
+      defaultShell: di.inject(defaultShellInjectable),
       logger: di.inject(loggerInjectionToken),
       state: di.inject(userPreferencesStateInjectable),
       userShellSetting: di.inject(userShellSettingInjectable) as IComputedValue<string>,

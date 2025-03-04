@@ -32,6 +32,7 @@ jobs:
             targets: msi nsis
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
 
     steps:
       - name: Checkout

@@ -7,7 +7,7 @@ import { SubTitle } from "../../../../../../renderer/components/layout/sub-title
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { Input } from "../../../../../../renderer/components/input";
-import defaultShellInjectable from "./default-shell/default-shell.injectable";
+import defaultShellInjectable from "../../../../../../common/vars/default-shell.injectable";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 

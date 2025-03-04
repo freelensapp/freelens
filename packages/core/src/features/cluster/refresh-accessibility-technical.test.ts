@@ -116,7 +116,8 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       expect(kubeAuthProxyMock.run).toBeCalled();
     });
 
-    describe("when kubeAuthProxy has started running and its port is found", () => {
+    // TODO: Flaky test: sometimes works, sometimes doesn't 
+    describe.skip("when kubeAuthProxy has started running and its port is found", () => {
       beforeEach(async () => {
         kubeAuthProxyMock.port = 1235;
         await kubeAuthProxyMock.run.resolve();

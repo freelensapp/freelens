@@ -6,6 +6,7 @@
 import styles from "./download-logs-dropdown.module.scss";
 
 import React, { useState } from "react";
+import { act } from "react-dom/test-utils";
 import { Icon } from "@freelensapp/icon";
 import { MenuItem } from "../../menu";
 import { Dropdown } from "../../dropdown/dropdown";
@@ -23,7 +24,9 @@ export function DownloadLogsDropdown({ downloadAllLogs, downloadVisibleLogs, dis
     setWaiting(true);
 
     try {
-      await downloadAllLogs();
+      await act(async () => {
+        await downloadAllLogs();
+      });
     } finally {
       setWaiting(false);
     }

@@ -25,6 +25,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
 
     steps:
       - name: Checkout

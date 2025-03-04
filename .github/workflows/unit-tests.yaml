@@ -25,6 +25,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -63,6 +64,9 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: npm ci
+
+      - name: Build NPM packages
+        run: npm run build
 
       - name: Run test units
         run: npm run test:unit

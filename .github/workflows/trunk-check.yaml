@@ -18,6 +18,7 @@ jobs:
     name: Trunk Check
 
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout

@@ -1,7 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist/",
+    "module": "ES2022",
+    "outDir": ".",
     "paths": {
       "*": [
         "node_modules/*",
@@ -10,7 +11,7 @@
     },
   },
   "include": [
-    "src/**/*",
+    "./**/*",
   ],
   "exclude": [
     "node_modules",

@@ -71,38 +71,6 @@
   "engines": {
     "node": "^20.0.0"
   },
-  "jest": {
-    "collectCoverage": false,
-    "verbose": true,
-    "transform": {
-      "^.+\\.(t|j)sx?$": [
-        "@swc/jest"
-      ]
-    },
-    "testEnvironment": "jsdom",
-    "resolver": "<rootDir>/src/jest-28-resolver.js",
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "identity-obj-proxy",
-      "\\.(svg|png|jpg|eot|woff2?|ttf)$": "<rootDir>/__mocks__/assetMock.ts"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/dist",
-      "<rootDir>/packages",
-      "<rootDir>/static/build"
-    ],
-    "setupFiles": [
-      "<rootDir>/src/jest.setup.tsx",
-      "jest-canvas-mock"
-    ],
-    "globalSetup": "<rootDir>/src/jest.timezone.ts",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/jest-after-env.setup.ts"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!jsonpath-plus)"
-    ],
-    "runtime": "@side/jest-runtime"
-  },
   "devDependencies": {
     "@async-fn/jest": "1.6.4",
     "@freelensapp/messaging-fake-bridge": "^1.0.0",
@@ -111,9 +79,6 @@
     "@ogre-tools/linkable": "^17.2.0",
     "@sentry/types": "^6.19.7",
     "@side/jest-runtime": "^1.1.0",
-    "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.53",
-    "@swc/jest": "^0.2.26",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
@@ -125,7 +90,6 @@
     "@types/command-line-args": "^5.2.0",
     "@types/crypto-js": "^3.1.47",
     "@types/dompurify": "^2.4.0",
-    "@types/electron-devtools-installer": "^2.2.1",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.1.0",
     "@types/glob-to-regexp": "^0.4.1",
@@ -153,7 +117,6 @@
     "@types/readable-stream": "^2.3.13",
     "@types/semver": "^7.3.13",
     "@types/stoppable": "^1.1.1",
-    "@types/tar": "^6.1.4",
     "@types/tcp-port-used": "^1.0.1",
     "@types/triple-beam": "^1.3.2",
     "@types/url-parse": "^1.4.8",
@@ -192,7 +155,7 @@
     "node-loader": "^2.0.0",
     "nodemon": "^2.0.20",
     "postcss-loader": "^6.2.1",
-    "rimraf": "^4.4.1",
+    "rimraf": "^6.0.0",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.3.2",
@@ -269,7 +232,7 @@
     "crypto-js": "^4.1.1",
     "dompurify": "^2.4.4",
     "electron": "^34.2.0",
-    "electron-devtools-installer": "^3.2.0",
+    "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^4.6.5",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^9.0.1",
@@ -312,7 +275,7 @@
     "selfsigned": "^2.1.1",
     "semver": "^7.3.8",
     "stoppable": "^1.1.0",
-    "tar": "^6.1.13",
+    "tar": "^7.4.3",
     "tcp-port-used": "^1.0.2",
     "tempy": "1.0.1",
     "type-fest": "^2.14.0",

@@ -69,7 +69,7 @@ Run the application with additional arguments:
 
 <!-- markdownlint-disable MD013 -->
 ```sh
-./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations
+./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
 ```
 <!-- markdownlint-enable MD013 -->
 
@@ -146,6 +146,7 @@ Get updates about Freelens & keep in touch with our community
 
 - Follow us on [LinkedIn](https://www.linkedin.com/company/freelensapp/)
 - Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
+- Chat on [Discord](https://discord.gg/NjKZERK95Y)
 - Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
 

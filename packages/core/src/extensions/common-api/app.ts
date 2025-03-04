@@ -4,6 +4,7 @@
  */
 
 import appNameInjectable from "../../common/vars/app-name.injectable";
+import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
 import isLinuxInjectable from "../../common/vars/is-linux.injectable";
 import isMacInjectable from "../../common/vars/is-mac.injectable";
 import isSnapPackageInjectable from "../../common/vars/is-snap-package.injectable";
@@ -32,6 +33,11 @@ export const App = {
     const di = getLegacyGlobalDiForExtensionApi();
 
     return di.inject(appNameInjectable);
+  },
+  get isFlatpak() {
+    const di = getLegacyGlobalDiForExtensionApi();
+
+    return di.inject(isFlatpakPackageInjectable);
   },
   get isSnap() {
     const di = getLegacyGlobalDiForExtensionApi();

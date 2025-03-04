@@ -22,11 +22,9 @@ describe("StatefulSetApi", () => {
       patch: kubeJsonApiPatchMock,
     } as Partial<KubeJsonApi> as KubeJsonApi;
     statefulSetApi = new StatefulSetApi({
-      logger: {
-        info: jest.fn(),
-        debug: jest.fn(),
-        error: jest.fn(),
-      } as any,
+      logError: jest.fn(),
+      logInfo: jest.fn(),
+      logWarn: jest.fn(),
       maybeKubeApi: kubeJsonApi,
     });
   });

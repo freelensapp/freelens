@@ -9,8 +9,8 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
-    "rimraf": "^4.4.1"
+    "rimraf": "^6.0.0"
   },
   "peerDependencies": {
     "@ogre-tools/injectable": "^17.2.0"

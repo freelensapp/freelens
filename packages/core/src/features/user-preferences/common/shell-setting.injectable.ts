@@ -13,7 +13,12 @@ const userShellSettingInjectable = getInjectable({
     const state = di.inject(userPreferencesStateInjectable);
     const userInfo = di.inject(userInfoInjectable);
 
-    return computed(() => state.shell || userInfo.shell!);
+    return computed(() => {
+      console.log(`state.shell: ${state.shell}`);
+      console.log(`userInfo.shell: ${userInfo.shell}`);
+
+      return state.shell || userInfo.shell;
+    });
   },
 });
 

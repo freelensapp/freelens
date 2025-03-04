@@ -9,7 +9,7 @@ import activeHotbarIdInjectable from "./active-id.injectable";
 import hotbarsStateInjectable from "./state.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
 
-export type AddHotbar = (data: CreateHotbarData, { setActive }?: CreateHotbarOptions) => void;
+export type AddHotbar = (data: CreateHotbarData, options?: CreateHotbarOptions) => void;
 
 const addHotbarInjectable = getInjectable({
   id: "add-hotbar",
@@ -18,12 +18,12 @@ const addHotbarInjectable = getInjectable({
     const activeHotbarId = di.inject(activeHotbarIdInjectable);
     const createHotbar = di.inject(createHotbarInjectable);
 
-    return action((data, { setActive = false } = {}) => {
+    return action((data, options = {}) => {
       const hotbar = createHotbar(data);
 
       state.set(hotbar.id, hotbar);
 
-      if (setActive) {
+      if (options?.setActive) {
         activeHotbarId.set(hotbar.id);
       }
     });
