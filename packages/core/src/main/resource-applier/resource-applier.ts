@@ -7,7 +7,7 @@ import type { Cluster } from "../../common/cluster/cluster";
 import * as yaml from "js-yaml";
 import tempy from "tempy";
 import type { Patch } from "rfc6902";
-import type { KubernetesObject } from "@kubernetes/client-node";
+import type { KubernetesObject } from "@freelensapp/kubernetes-client-node";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Logger } from "@freelensapp/logger";
 import type { WriteFile } from "../../common/fs/write-file.injectable";

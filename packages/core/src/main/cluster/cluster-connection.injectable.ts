@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@kubernetes/client-node";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { reaction, comparer, runInAction } from "mobx";
 import { ClusterStatus } from "../../common/cluster-types";
 import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
@@ -230,7 +230,9 @@ class ClusterConnection {
     this.dependencies.logger.info(`[CLUSTER]: refreshAccessibility`, this.cluster.getMeta());
     const proxyConfig = await this.dependencies.loadProxyKubeconfig();
     const api = this.dependencies.createAuthorizationApi(proxyConfig);
+    console.log({api}); // DEBUG
     const canI = this.dependencies.createCanI(api);
+    console.log({canI}); // DEBUG
     const requestNamespaceListPermissions = this.dependencies.createRequestNamespaceListPermissions(api);
 
     const isAdmin = await canI({

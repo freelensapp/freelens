@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@kubernetes/client-node";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { dumpConfigYaml } from "../../common/kube-helpers";
 import { isErrnoException } from "@freelensapp/utilities";
 import type { PartialDeep } from "type-fest";

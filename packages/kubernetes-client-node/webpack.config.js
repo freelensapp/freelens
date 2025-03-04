@@ -36,6 +36,6 @@ export default {
     ]
   },
   resolve: {
-    extensions: [".ts"],
+    extensions: [".ts", ".js"],
   },
 };
