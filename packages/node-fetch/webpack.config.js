@@ -15,7 +15,7 @@ export default {
   target: "electron-renderer",
   optimization: {
     concatenateModules: true,
-    minimize: true,
+    minimize: false,
   },
   externalsPresets: {
     node: true,
@@ -37,5 +37,5 @@ export default {
   },
   resolve: {
     extensions: [".ts"],
-  }
+  },
 };
