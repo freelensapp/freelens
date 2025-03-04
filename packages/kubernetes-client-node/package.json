@@ -8,6 +8,11 @@
   },
   "copyright": "© 2025 Freelens Authors",
   "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "type": "module",
