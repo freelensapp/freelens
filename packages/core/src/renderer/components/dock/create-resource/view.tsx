@@ -6,7 +6,7 @@
 import React from "react";
 import type { SelectOption } from "../../select";
 import { Select } from "../../select";
-import yaml, { dump } from "js-yaml";
+import { dump, loadAll } from "js-yaml";
 import type { IComputedValue } from "mobx";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
@@ -83,7 +83,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
     }
 
     // skip empty documents
-    const resources = yaml.loadAll(this.data).filter(isObject);
+    const resources = loadAll(this.data).filter(isObject);
 
     if (resources.length === 0) {
       return this.props.logger.info("Nothing to create");

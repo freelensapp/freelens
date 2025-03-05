@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import yaml from "js-yaml";
+import { dump } from "js-yaml";
 import { DrawerItem, DrawerParamToggler } from "../drawer";
 import type { DaemonSet, Deployment, Job, Pod, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 import { MonacoEditor } from "../monaco-editor";
@@ -27,7 +27,7 @@ export class PodDetailsAffinities extends React.Component<PodDetailsAffinitiesPr
           <MonacoEditor
             readOnly
             style={{ height: 200 }}
-            value={yaml.dump(affinities)}
+            value={dump(affinities)}
           />
         </DrawerParamToggler>
       </DrawerItem>

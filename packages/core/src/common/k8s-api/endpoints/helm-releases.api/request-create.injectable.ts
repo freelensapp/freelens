@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmReleaseUpdateDetails } from "../helm-releases.api";
 import { urlBuilderFor } from "@freelensapp/utilities";
@@ -31,7 +31,7 @@ const requestCreateHelmReleaseInjectable = getInjectable({
       return apiBase.post(requestCreateEndpoint.compile({}), {
         data: {
           chart: `${repo}/${chart}`,
-          values: yaml.load(values),
+          values: load(values),
           ...data,
         },
       });

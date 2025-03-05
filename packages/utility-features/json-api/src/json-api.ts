@@ -83,9 +83,8 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
-export type ParamsAndQuery<Params, Query> = ValueOf<Query> extends QueryParam
-  ? Params & { query?: Query }
-  : Params & { query?: undefined };
+export type ParamsAndQuery<Params, Query> =
+  ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
   fetch: typeof Fetch;
@@ -95,7 +94,10 @@ export interface JsonApiDependencies {
 export class JsonApiErrorParsed {
   isUsedForNotification = false;
 
-  constructor(private error: JsonApiError | DOMException | KubeJsonApiError, private messages: string[]) {}
+  constructor(
+    private error: JsonApiError | DOMException | KubeJsonApiError,
+    private messages: string[],
+  ) {}
 
   get isAborted() {
     return this.error.code === DOMException.ABORT_ERR;

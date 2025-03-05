@@ -51,7 +51,7 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
 
     return (filePath) => {
       const rootSource = observable.map<string, ObservableMap<string, [Cluster, CatalogEntity]>>();
-      const derivedSource = computed(() => Array.from(iter.flatMap(rootSource.values(), from => iter.map(from.values(), child => child[1]))));
+      const derivedSource = computed(() => Array.from(iter.flatMap(rootSource.values(), (from: ObservableMap) => iter.map(from.values(), (child: [Cluster, CatalogEntity]) => child[1]))));
 
       let watcher: Watcher<true>;
 

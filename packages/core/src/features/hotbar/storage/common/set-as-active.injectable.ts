@@ -19,7 +19,7 @@ const setAsActiveHotbarInjectable = getInjectable({
 
     return action((desc) => {
       if (typeof desc === "number") {
-        const hotbar = iter.nth(hotbarsState.values(), desc);
+        const hotbar = iter.nth(hotbarsState.values() as IterableIterator<Hotbar>, desc);
 
         if (hotbar) {
           activeHotbarId.set(hotbar.id);

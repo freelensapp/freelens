@@ -32,11 +32,15 @@
   "overrides": {
     "underscore": "^1.12.1",
     "react": "^17",
-    "@types/react": "^17"
+    "@types/react": "^17",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0"
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.2.0",
     "cross-env": "^7.0.3",
+    "electron-rebuild": "^3.2.9",
+    "lerna": "^6.6.1",
     "npm": "10.8.2",
     "rimraf": "^6.0.0"
   },

@@ -48,7 +48,7 @@ describe("<Icon> href technical tests", () => {
 
   it("should render an <Icon> with http href", () => {
     const result = render(
-      <Icon data-testid="my-icon" href="http://localhost" />
+      <Icon data-testid="my-icon" href="http://localhost" />,
     );
 
     const icon = result.queryByTestId("my-icon");
@@ -60,7 +60,7 @@ describe("<Icon> href technical tests", () => {
 
   it("should render an <Icon> with https href", () => {
     const result = render(
-      <Icon data-testid="my-icon" href="https://localhost" />
+      <Icon data-testid="my-icon" href="https://localhost" />,
     );
 
     const icon = result.queryByTestId("my-icon");
