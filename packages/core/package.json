@@ -153,7 +153,7 @@
     "monaco-editor-webpack-plugin": "^7.0.1",
     "node-loader": "^2.0.0",
     "nodemon": "^2.0.20",
-    "postcss-loader": "^6.2.1",
+    "postcss-loader": "^8.0.0",
     "rimraf": "^6.0.0",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
