@@ -114,7 +114,7 @@ describe("get-multi-export-config", () => {
         it("has correct declaration directory", () => {
           expect(
             config.plugins!.find(
-              ({ constructor }) => constructor === ForkTsCheckerPlugin
+              (plugin) => plugin?.constructor === ForkTsCheckerPlugin
             )
           ).toHaveProperty(
             "options.typescript.configOverwrite.compilerOptions.declarationDir",
