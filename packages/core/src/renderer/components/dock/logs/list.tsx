@@ -212,12 +212,12 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
       pieces.forEach((piece, index) => {
         const active = isActiveOverlay(rowIndex, index);
         const lastItem = index === pieces.length - 1;
-        const overlayValue = matches.next().value;
+        const overlayValueString = matches.next().value?.[0] ??  "";
         const overlay = !lastItem
           ? (
             <span
               className={cssNames("overlay", { active })}
-              dangerouslySetInnerHTML={{ __html: ansiToHtml(overlayValue) }}
+              dangerouslySetInnerHTML={{ __html: ansiToHtml(overlayValueString) }}
             />
           )
           : null;
