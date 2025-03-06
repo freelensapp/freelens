@@ -4,10 +4,8 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { FileHandle, readFile } from "fs/promises";
-import type { WriteStream } from "fs";
-import { constants } from "fs";
-import { open, mkdir, unlink } from "fs/promises";
+import { type WriteStream, constants } from "fs";
+import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
 import path from "path";
 import { promisify } from "util";
 import { pipeline as _pipeline, Transform, Writable } from "stream";

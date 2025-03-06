@@ -2,11 +2,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { computed, IComputedValue } from "mobx";
+import { createContainer, type DiContainer, getInjectable } from "@ogre-tools/injectable";
+import { computed, type IComputedValue } from "mobx";
 import { noop } from "lodash/fp";
 import sidebarItemsInjectable from "./sidebar-items.injectable";
-import { SidebarItemDeclaration, sidebarItemInjectionToken } from "./tokens";
+import { type SidebarItemDeclaration, sidebarItemInjectionToken } from "./tokens";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { clusterSidebarFeature } from "./feature";
 

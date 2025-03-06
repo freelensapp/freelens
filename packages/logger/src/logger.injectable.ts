@@ -4,7 +4,7 @@
  */
 import { kebabCase, toUpper } from "lodash/fp";
 import {
-  DiContainerForInjection,
+  type DiContainerForInjection,
   getInjectable,
   getInjectionToken,
   lifecycleEnum,
