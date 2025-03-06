@@ -33,7 +33,7 @@ const addWeblinkInjectable = getInjectable({
         throw new Error(`There already exists a weblink with id=${id}`);
       }
 
-      return getOrInsert(state as unknown as Map<string, any>, id, { id, name, url });
+      return getOrInsert(state, id, { id, name, url });
     });
   },
 });

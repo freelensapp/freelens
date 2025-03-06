@@ -90,7 +90,7 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
               cleanup();
               cleanupFns.set(childFilePath, diffChangedKubeconfig({
                 filePath: childFilePath,
-                source: getOrInsertWith(rootSource as unknown as Map<string, any>, childFilePath, observable.map),
+                source: getOrInsertWith(rootSource, childFilePath, observable.map),
                 stats,
                 maxAllowedFileReadSize,
               }));
@@ -108,7 +108,7 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
 
               cleanupFns.set(childFilePath, diffChangedKubeconfig({
                 filePath: childFilePath,
-                source: getOrInsertWith(rootSource as unknown as Map<string, any>, childFilePath, observable.map),
+                source: getOrInsertWith(rootSource, childFilePath, observable.map),
                 stats,
                 maxAllowedFileReadSize,
               }));

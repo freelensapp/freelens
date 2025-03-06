@@ -164,7 +164,7 @@ export class ApiManager {
     }
 
     if (this.apiIsDefaultCrdApi(api)) {
-      return getOrInsertWith(this.defaultCrdStores as unknown as Map<string, CustomResourceStore<KubeObject>>, api.apiBase, () => this.dependencies.createCustomResourceStore(api));
+      return getOrInsertWith(this.defaultCrdStores, api.apiBase, () => this.dependencies.createCustomResourceStore(api));
     }
 
     return undefined;
