@@ -253,7 +253,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
     "monaco-editor": "^0.38.0",
-    "node-pty": "1.1.0-beta28",
+    "node-pty": "1.1.0-beta9",
     "npm": "10.8.2",
     "path-to-regexp": "^6.2.0",
     "proper-lockfile": "^4.1.2",
