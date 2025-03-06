@@ -387,6 +387,6 @@ export class ExtensionLoader {
   }
 
   toJSON(): Map<LensExtensionId, InstalledExtension> {
-    return toJS(this.extensions);
+    return toJS(this.extensions) as unknown as Map<LensExtensionId, InstalledExtension>;
   }
 }

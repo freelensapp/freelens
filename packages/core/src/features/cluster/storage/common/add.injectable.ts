@@ -21,7 +21,7 @@ const addClusterInjectable = getInjectable({
     return action((clusterModel) => {
       emitAppEvent({ name: "cluster", action: "add" });
 
-      return setAndGet(clustersState, clusterModel.id, new Cluster(clusterModel));
+      return setAndGet(clustersState as unknown as Map<string, Cluster>, clusterModel.id, new Cluster(clusterModel));
     });
   },
 });

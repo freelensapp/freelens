@@ -44,7 +44,7 @@ const ensureHashedDirectoryForExtensionInjectable = getInjectable({
 
         const hashedExtensionDirectory = joinPaths(directoryForExtensionData, hashedName);
 
-        dirPath = getOrInsert(registeredExtensions, extensionName, hashedExtensionDirectory);
+        dirPath = getOrInsert(registeredExtensions as unknown as Map<string, string>, extensionName, hashedExtensionDirectory);
       }
 
       await ensureDirectory(dirPath);

@@ -115,7 +115,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
             <Icon
               material={revealSecret ? "visibility" : "visibility_off"}
               tooltip={revealSecret ? "Hide" : "Show"}
-              onClick={() => toggle(this.revealSecret, name)}
+              onClick={() => toggle(this.revealSecret as unknown as Set<string>, name)}
             />
           )}
         </div>

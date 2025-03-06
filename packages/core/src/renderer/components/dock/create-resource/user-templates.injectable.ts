@@ -110,7 +110,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
         });
     })();
 
-    return computed(() => groupTemplates(templates));
+    return computed(() => groupTemplates(templates as unknown as Map<string, any>));
   },
 });
 

@@ -155,7 +155,7 @@ export class CatalogEntityRegistry {
     return Array.from(
       iter.reduce(
         this.filters,
-        iter.filter,
+        iter.filter as any,
         this.items.get().values(),
       ),
     );
