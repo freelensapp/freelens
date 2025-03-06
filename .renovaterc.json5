@@ -20,7 +20,7 @@
     {
       "matchDepNames": [
         "@types/node",
-        "electron",
+        "electron"
       ],
       "matchUpdateTypes": [
         "major"
@@ -30,7 +30,7 @@
     // packages that misuse semver
     {
       "matchDepNames": [
-        "node-pty",
+        "node-pty"
       ],
       "versioning": "deb",
       "enabled": true
@@ -39,7 +39,7 @@
     {
       "groupName": "ogre-tools monorepo",
       "matchSourceUrls": [
-        "https://github.com/lensapp/ogre-tools"
+        "https://github.com/ogre-works/ogre-tools"
       ]
     }
   ],
