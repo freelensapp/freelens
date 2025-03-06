@@ -5,7 +5,7 @@
     "target": "ES2022",
     "module": "ES2022",
 
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Collection"],
 
     "moduleResolution": "node",
     "sourceMap": true,

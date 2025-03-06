@@ -4,11 +4,7 @@
     "jsx": "react",
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Collection"],
     "moduleResolution": "Node",
     "sourceMap": true,
     "strict": true,
@@ -24,7 +20,7 @@
     "verbatimModuleSyntax": true,
     "traceResolution": false,
     "resolveJsonModule": true,
-    "useDefineForClassFields": true,
+    "useDefineForClassFields": true
   },
   "ts-node": {
     "transpileOnly": true,
@@ -32,7 +28,5 @@
       "module": "CommonJS"
     }
   },
-  "exclude": [
-    "node_modules",
-  ]
+  "exclude": ["node_modules"]
 }
