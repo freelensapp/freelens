@@ -148,7 +148,7 @@ describe("kubeconfig-sync.source tests", () => {
       expect(rootSource.size).toBe(1);
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const c = (iter.first(rootSource.values())!)[0];
+      const c = (iter.first(rootSource.values())! as [Cluster, CatalogEntity])[0];
 
       runInAction(() => {
         expect(c.kubeConfigPath.get()).toBe("/bar");

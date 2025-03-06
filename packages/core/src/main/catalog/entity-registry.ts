@@ -34,7 +34,7 @@ export class CatalogEntityRegistry {
   @computed get items(): CatalogEntity[] {
     return Array.from(
       iter.filter(
-        iter.flatMap(this.sources.values(), source => source.get()),
+        iter.flatMap(this.sources.values(), (source: IComputedValue<CatalogEntity[]>) => source.get()),
         entity => this.dependencies.hasCategoryForEntity(entity),
       ),
     );

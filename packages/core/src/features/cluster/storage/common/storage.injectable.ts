@@ -39,7 +39,7 @@ const clustersPersistentStorageInjectable = getInjectable({
 
         for (const clusterModel of clusters) {
           try {
-            let cluster = currentClusters.get(clusterModel.id);
+            let cluster = currentClusters.get(clusterModel.id) as Cluster;
 
             if (cluster) {
               cluster.updateModel(clusterModel);
@@ -56,7 +56,7 @@ const clustersPersistentStorageInjectable = getInjectable({
         clustersState.replace(newClusters);
       }),
       toJSON: () => ({
-        clusters: iter.chain(clustersState.values())
+        clusters: iter.chain(clustersState.values() as IterableIterator<Cluster>)
           .map(cluster => cluster.toJSON())
           .toArray(),
       }),

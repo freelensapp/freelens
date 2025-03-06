@@ -5,9 +5,9 @@ module.exports = {
     "react-app/jest",
     "airbnb-typescript",
     "prettier",
-    "plugin:security/recommended",
+    "plugin:security/recommended-legacy",
     "plugin:xss/recommended",
-    "plugin:no-unsanitized/DOM"
+    "plugin:no-unsanitized/recommended-legacy"
   ],
   plugins: [
     "unused-imports",

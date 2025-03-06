@@ -72,8 +72,8 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
   @computed get allErrors(): string[] {
     return [
       ...this.errors,
-      ...iter.map(this.kubeContexts.values(), ({ error }) => error),
-    ].filter(isDefined);
+      ...iter.map(this.kubeContexts.values(), ({ error }: { error: string }) => error),
+    ].filter(isDefined) as string[];
   }
 
   readonly refreshContexts = debounce(action(() => {

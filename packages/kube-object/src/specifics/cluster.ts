@@ -12,7 +12,7 @@ export enum ClusterStatus {
   ERROR = "Error",
 }
 
-export interface Cluster {
+export interface ClusterSpec {
   spec: {
     clusterNetwork?: {
       serviceDomain?: string;
@@ -46,12 +46,16 @@ export interface Cluster {
   };
 }
 
-export class Cluster extends KubeObject {
+export class Cluster extends KubeObject implements ClusterSpec {
   static kind = "Cluster";
 
   static apiBase = "/apis/cluster.k8s.io/v1alpha1/clusters";
 
   static namespaced = true;
+
+  spec: ClusterSpec["spec"] = { providerSpec: { value: { profile: "" } } };
+
+  status?: ClusterSpec["status"] = { apiEndpoints: [], providerStatus: {} };
 
   getStatus() {
     if (this.metadata.deletionTimestamp) {

@@ -326,12 +326,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -340,10 +341,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -363,7 +365,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1074,12 +1076,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1088,10 +1091,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -1111,7 +1115,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1827,12 +1831,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1841,10 +1846,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -1864,7 +1870,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -2770,12 +2776,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -2784,10 +2791,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -2807,7 +2815,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3774,12 +3782,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -3788,10 +3797,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -3811,7 +3821,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4778,12 +4788,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -4792,10 +4803,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -4815,7 +4827,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -6027,12 +6039,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -6041,10 +6054,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -6064,7 +6078,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -7276,12 +7290,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -7290,10 +7305,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -7313,7 +7329,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -8525,12 +8541,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -8539,10 +8556,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -8562,7 +8580,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -9579,12 +9597,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -9593,10 +9612,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -9616,7 +9636,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -10635,12 +10655,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -10649,10 +10670,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -10672,7 +10694,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -11884,12 +11906,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -11898,10 +11921,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -11921,7 +11945,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -12888,12 +12912,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -12902,10 +12927,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -12925,7 +12951,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -13895,12 +13921,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -13909,10 +13936,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -13932,7 +13960,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -14838,12 +14866,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -14852,10 +14881,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -14875,7 +14905,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -15842,12 +15872,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -15856,10 +15887,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -15879,7 +15911,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -16846,12 +16878,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -16860,10 +16893,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -16883,7 +16917,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -17850,12 +17884,13 @@ exports[`showing details for helm release given application is started when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -17864,10 +17899,11 @@ exports[`showing details for helm release given application is started when navi
                           Namespaces: some-namespace, some-other-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -17887,7 +17923,7 @@ exports[`showing details for helm release given application is started when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"

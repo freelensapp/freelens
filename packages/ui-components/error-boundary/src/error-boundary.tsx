@@ -98,5 +98,5 @@ export const ErrorBoundary = withInjectables<Dependencies, ErrorBoundaryProps>(
       ...props,
       observableHistory: di.inject(observableHistoryInjectionToken),
     }),
-  }
+  },
 );
