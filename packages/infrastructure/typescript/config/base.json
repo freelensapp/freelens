@@ -19,7 +19,7 @@
     "allowJs": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": true,
     "traceResolution": false,
     "resolveJsonModule": true,
     "useDefineForClassFields": true,
