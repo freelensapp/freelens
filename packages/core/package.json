@@ -160,8 +160,6 @@
     "tailwindcss": "^3.3.2",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.24.6",
-    "typedoc-plugin-markdown": "^3.15.1",
     "typescript": "^5.0.0",
     "typescript-plugin-css-modules": "^5.0.1",
     "webpack": "^5.81.0",
