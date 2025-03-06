@@ -26,6 +26,21 @@
         "major"
       ],
       "enabled": false
+    },
+    // packages that misuse semver
+    {
+      "matchDepNames": [
+        "node-pty",
+      ],
+      "versioning": "deb",
+      "enabled": true
+    },
+    // monorepo
+    {
+      "groupName": "ogre-tools monorepo",
+      "matchSourceUrls": [
+        "https://github.com/lensapp/ogre-tools"
+      ]
     }
   ],
   "customManagers": [
