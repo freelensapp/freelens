@@ -37,7 +37,7 @@
     "rimraf": "^6.0.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typed-emitter": "^2.1.0",
     "typedoc": "^0.24.6",
     "typedoc-plugin-markdown": "^3.15.1",

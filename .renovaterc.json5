@@ -20,12 +20,27 @@
     {
       "matchDepNames": [
         "@types/node",
-        "electron",
+        "electron"
       ],
       "matchUpdateTypes": [
         "major"
       ],
       "enabled": false
+    },
+    // packages that misuse semver
+    {
+      "matchDepNames": [
+        "node-pty"
+      ],
+      "versioning": "deb",
+      "enabled": true
+    },
+    // monorepo
+    {
+      "groupName": "ogre-tools monorepo",
+      "matchSourceUrls": [
+        "https://github.com/ogre-works/ogre-tools"
+      ]
     }
   ],
   "customManagers": [
