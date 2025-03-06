@@ -19,7 +19,7 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "dependencies": {
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
     "typescript-plugin-css-modules": "^5.0.1"
