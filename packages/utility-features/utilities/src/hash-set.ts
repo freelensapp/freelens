@@ -19,48 +19,6 @@ export class HashSet<T> implements Set<T> {
     this.#hashmap = new Map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]));
   }
 
-  union<U>(other: ReadonlySetLike<U>): Set<T | U> {
-    const result = new Set<T | U>(this.values());
-
-    for (const value of other as unknown as Iterable<U>) {
-      result.add(value as T & U);
-    }
-
-    return result;
-  }
-
-  intersection<U>(other: ReadonlySetLike<U>): Set<T & U> {
-    const result = new Set<T & U>();
-
-    for (const value of this.values()) {
-      if (other.has(value as unknown as U)) {
-        result.add(value as T & U);
-      }
-    }
-
-    return result;
-  }
-
-  difference<U>(other: ReadonlySetLike<U>): Set<T> {
-    throw new Error("Method not implemented.");
-  }
-
-  symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U> {
-    throw new Error("Method not implemented.");
-  }
-
-  isSubsetOf(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
-  }
-
-  isSupersetOf(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
-  }
-
-  isDisjointFrom(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
-  }
-
   replace(other: ObservableHashSet<T> | ObservableSet<T> | Set<T> | readonly T[]): this {
     if (other === null || other === undefined) {
       return this;
@@ -178,48 +136,6 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
 
   constructor(initialValues: Iterable<T>, protected hasher: (item: T) => string) {
     this.#hashmap = observable.map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]), undefined);
-  }
-
-  union<U>(other: ReadonlySetLike<U>): Set<T | U> {
-    const result = new Set<T | U>(this.values());
-
-    for (const value of other as unknown as Iterable<U>) {
-      result.add(value as T & U);
-    }
-
-    return result;
-  }
-
-  intersection<U>(other: ReadonlySetLike<U>): Set<T & U> {
-    const result = new Set<T & U>();
-
-    for (const value of this.values()) {
-      if (other.has(value as unknown as U)) {
-        result.add(value as T & U);
-      }
-    }
-
-    return result;
-  }
-
-  difference<U>(other: ReadonlySetLike<U>): Set<T> {
-    throw new Error("Method not implemented.");
-  }
-
-  symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U> {
-    throw new Error("Method not implemented.");
-  }
-
-  isSubsetOf(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
-  }
-
-  isSupersetOf(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
-  }
-
-  isDisjointFrom(other: ReadonlySetLike<unknown>): boolean {
-    throw new Error("Method not implemented.");
   }
 
   replace(other: ObservableHashSet<T> | ObservableSet<T> | Set<T> | readonly T[]): this {
