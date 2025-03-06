@@ -15,10 +15,9 @@ import * as utils from "../helpers/utils";
 describe("preferences page tests", () => {
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
+  let app: ElectronApplication;
 
   beforeEach(async () => {
-    let app: ElectronApplication;
-
     ({ window, cleanup, app } = await utils.start());
     await utils.clickWelcomeButton(window);
 
@@ -64,4 +63,8 @@ describe("preferences page tests", () => {
     await window.click("#HelmRepoSelect");
     await window.waitForSelector("div.Select__option");
   }, 10*60*1000);
+
+  afterAll(async () => {
+    await app?.close();
+  });
 });

@@ -31,4 +31,8 @@ describe("Lens command palette", () => {
       await window.waitForSelector(".Select__option >> text=Hotbar: Switch");
     }, 10*60*1000);
   });
+
+  afterAll(async () => {
+    await app?.close();
+  });
 });
