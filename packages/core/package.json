@@ -224,7 +224,7 @@
     "chalk": "^4.1.2",
     "chart.js": "^2.9.4",
     "chokidar": "^3.5.3",
-    "color": "^3.2.1",
+    "color": "^4.2.3",
     "conf": "^10.2.0",
     "crypto-js": "^4.1.1",
     "dompurify": "^3.0.0",
