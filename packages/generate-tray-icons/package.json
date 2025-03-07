@@ -20,13 +20,13 @@
   "devDependencies": {
     "@types/jsdom": "^20.0.1",
     "@types/node": "^20.17.19",
-    "@types/sharp": "^0.31.1",
+    "@types/sharp": "^0.32.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "arg": "^5.0.2",
     "jsdom": "^21.1.0",
     "rimraf": "^6.0.0",
-    "sharp": "^0.32.1"
+    "sharp": "^0.33.0"
   }
 }
