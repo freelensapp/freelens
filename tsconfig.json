@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "allowJs": false,
     "esModuleInterop": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "traceResolution": false,
     "resolveJsonModule": true,
     "useDefineForClassFields": true
