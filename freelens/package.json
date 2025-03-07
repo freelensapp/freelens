@@ -46,7 +46,6 @@
     "k8sProxyVersion": "1.2.4",
     "bundledKubectlVersion": "1.32.2",
     "bundledHelmVersion": "3.17.1",
-    "sentryDsn": "",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.lens.app:*/; img-src * data:",
     "welcomeRoute": "/welcome"
   },
@@ -272,8 +271,6 @@
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
-    "@sentry/electron": "^3.0.8",
-    "@sentry/integrations": "^6.19.3",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-web-links": "^0.11.0",
     "@xterm/xterm": "^5.5.0",
