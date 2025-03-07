@@ -115,7 +115,7 @@ const registratorForPreferenceItemsInjectable = getInjectable({
 
       const itemIsInSpecialTab =
         registration.showInPreferencesTab &&
-        ["telemetry", "application"].includes(
+        ["application"].includes(
           registration.showInPreferencesTab,
         );
 

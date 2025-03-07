@@ -13,7 +13,6 @@ export type ApplicationInformation = {
   k8sProxyVersion: string;
   bundledKubectlVersion: string;
   bundledHelmVersion: string;
-  sentryDsn: string;
   contentSecurityPolicy: string;
   welcomeRoute: string;
   updatingIsEnabled: boolean;
