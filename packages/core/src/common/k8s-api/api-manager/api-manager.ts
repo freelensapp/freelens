@@ -12,7 +12,6 @@ import type { KubeObject, ObjectReference } from "@freelensapp/kube-object";
 import { parseKubeApi, createKubeApiURL } from "@freelensapp/kube-api";
 import { getOrInsertWith, iter } from "@freelensapp/utilities";
 import type { CreateCustomResourceStore } from "./create-custom-resource-store.injectable";
-import type { CustomResourceStore } from "./resource.store";
 
 export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any>
   ? Store
