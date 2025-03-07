@@ -39,7 +39,7 @@
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
     "lodash": "^4.17.15",
-    "mobx": "^6.8.0",
+    "mobx": "^6.13.4",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

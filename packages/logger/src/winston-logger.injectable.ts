@@ -13,7 +13,7 @@ export const winstonLoggerInjectable = getInjectable({
       format: format.combine(
         format.splat(),
         format.simple(),
-        format.timestamp({ format: "DD/MM/YYYY HH:mm:ss" })
+        format.timestamp({ format: "DD/MM/YYYY HH:mm:ss" }),
       ),
       transports: di.injectMany(loggerTransportInjectionToken),
     }),

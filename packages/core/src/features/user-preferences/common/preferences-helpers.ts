@@ -25,7 +25,7 @@ export const defaultTerminalConfig: TerminalConfig = {
 };
 
 export interface BaseEditorConfiguration extends Required<Pick<editor.IStandaloneEditorConstructionOptions, "minimap" | "tabSize" | "fontSize" | "fontFamily">> {
-  lineNumbers: NonNullable<Exclude<editor.IStandaloneEditorConstructionOptions["lineNumbers"], Function>>;
+  lineNumbers: NonNullable<Exclude<editor.IStandaloneEditorConstructionOptions["lineNumbers"], (...args: any[]) => void>>;
 }
 
 export type EditorConfiguration = Required<BaseEditorConfiguration>;

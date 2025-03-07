@@ -191,14 +191,20 @@ describe("kubeconfig-sync.source tests", () => {
 
       expect(rootSource.size).toBe(1);
 
-      const c = rootSource.values().next().value[0] as Cluster;
+      const nextValue = rootSource.values().next().value;
 
-      expect(c.kubeConfigPath.get()).toBe("/bar");
-      expect(c.contextName.get()).toBe("context-name");
+      expect(nextValue).toBeDefined();
 
-      computeKubeconfigDiff("{}", rootSource, filePath);
+      if (nextValue) {
+        const c = nextValue[0] as Cluster;
 
-      expect(rootSource.size).toBe(0);
+        expect(c.kubeConfigPath.get()).toBe("/bar");
+        expect(c.contextName.get()).toBe("context-name");
+
+        computeKubeconfigDiff("{}", rootSource, filePath);
+
+        expect(rootSource.size).toBe(0);
+      }
     });
 
     it("should remove only the cluster that it is removed from the contents", () => {
@@ -244,12 +250,18 @@ describe("kubeconfig-sync.source tests", () => {
       expect(rootSource.size).toBe(2);
 
       {
-        const c = rootSource.values().next().value[0] as Cluster;
+        const nextValue = rootSource.values().next().value;
 
-        runInAction(() => {
-          expect(c.kubeConfigPath.get()).toBe("/bar");
-          expect(["context-name", "context-name-2"].includes(c.contextName.get())).toBe(true);
-        });
+        expect(nextValue).toBeDefined();
+
+        if (nextValue){
+          const c = nextValue[0] as Cluster;
+
+          runInAction(() => {
+            expect(c.kubeConfigPath.get()).toBe("/bar");
+            expect(["context-name", "context-name-2"].includes(c.contextName.get())).toBe(true);
+          });
+        }
       }
 
       const newContents = JSON.stringify({
@@ -286,10 +298,16 @@ describe("kubeconfig-sync.source tests", () => {
       expect(rootSource.size).toBe(1);
 
       {
-        const c = rootSource.values().next().value[0] as Cluster;
+        const nextValue = rootSource.values().next().value;
 
-        expect(c.kubeConfigPath.get()).toBe("/bar");
-        expect(c.contextName.get()).toBe("context-name");
+        expect(nextValue).toBeDefined();
+
+        if (nextValue){
+          const c = nextValue[0] as Cluster;
+
+          expect(c.kubeConfigPath.get()).toBe("/bar");
+          expect(c.contextName.get()).toBe("context-name");
+        }
       }
     });
   });

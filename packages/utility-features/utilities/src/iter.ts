@@ -194,7 +194,7 @@ function find<T>(src: Iterable<T>, match: (i: T) => any): T | undefined {
  * @param reducer A function for producing the next item from an accumulation and the current item
  * @param initial The initial value for the iteration
  */
-function reduce<T, R extends Iterable<any>>(src: Iterable<T>, reducer: (acc: R, cur: T) => R, initial: R): R;
+function reduce<T, R extends Iterable<any>>(src: Iterable<T> | ArrayIterator<T>, reducer: (acc: R, cur: T) => R, initial: R): R;
 
 function reduce<T, R = T>(src: Iterable<T>, reducer: (acc: R, cur: T) => R, initial: R): R {
   let acc = initial;

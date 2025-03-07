@@ -28,7 +28,7 @@
     "@astronautlabs/jsonpath": "^1.1.0",
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21",
-    "mobx": "^6.8.0",
+    "mobx": "^6.13.4",
     "moment": "^2.29.4",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.2.1",

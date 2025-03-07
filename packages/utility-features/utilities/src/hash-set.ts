@@ -19,6 +19,34 @@ export class HashSet<T> implements Set<T> {
     this.#hashmap = new Map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]));
   }
 
+  union<U>(other: ReadonlySetLike<U>): Set<T | U> {
+    throw new Error("Method not implemented.");
+  }
+
+  intersection<U>(other: ReadonlySetLike<U>): Set<T & U> {
+    throw new Error("Method not implemented.");
+  }
+
+  difference<U>(other: ReadonlySetLike<U>): Set<T> {
+    throw new Error("Method not implemented.");
+  }
+
+  symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U> {
+    throw new Error("Method not implemented.");
+  }
+
+  isSubsetOf(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  isSupersetOf(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  isDisjointFrom(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
+  }
+
   replace(other: ObservableHashSet<T> | ObservableSet<T> | Set<T> | readonly T[]): this {
     if (other === null || other === undefined) {
       return this;
@@ -73,7 +101,7 @@ export class HashSet<T> implements Set<T> {
     return this.#hashmap.size;
   }
 
-  entries(): IterableIterator<[T, T]> {
+  entries(): SetIterator<[T, T]> {
     let nextIndex = 0;
     const keys = Array.from(this.keys());
     const values = Array.from(this.values());
@@ -86,14 +114,14 @@ export class HashSet<T> implements Set<T> {
           ? { value: [keys[index], values[index]], done: false }
           : { done: true, value: undefined };
       },
-    });
+    }) as SetIterator<[T, T]>;
   }
 
-  keys(): IterableIterator<T> {
-    return this.values();
+  keys(): SetIterator<T> {
+    return this.values() as SetIterator<T>;
   }
 
-  values(): IterableIterator<T> {
+  values(): SetIterator<T> {
     let nextIndex = 0;
     const observableValues = Array.from(this.#hashmap.values());
 
@@ -103,10 +131,10 @@ export class HashSet<T> implements Set<T> {
           ? { value: observableValues[nextIndex++], done: false }
           : { done: true, value: undefined };
       },
-    });
+    }) as SetIterator<T>;
   }
 
-  [Symbol.iterator](): IterableIterator<T> {
+  [Symbol.iterator](): SetIterator<T> {
     return this.#hashmap.values();
   }
 
@@ -136,6 +164,34 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
 
   constructor(initialValues: Iterable<T>, protected hasher: (item: T) => string) {
     this.#hashmap = observable.map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]), undefined);
+  }
+
+  union<U>(other: ReadonlySetLike<U>): Set<T | U> {
+    throw new Error("Method not implemented.");
+  }
+
+  intersection<U>(other: ReadonlySetLike<U>): Set<T & U> {
+    throw new Error("Method not implemented.");
+  }
+
+  difference<U>(other: ReadonlySetLike<U>): Set<T> {
+    throw new Error("Method not implemented.");
+  }
+
+  symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U> {
+    throw new Error("Method not implemented.");
+  }
+
+  isSubsetOf(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  isSupersetOf(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  isDisjointFrom(other: ReadonlySetLike<unknown>): boolean {
+    throw new Error("Method not implemented.");
   }
 
   replace(other: ObservableHashSet<T> | ObservableSet<T> | Set<T> | readonly T[]): this {
@@ -196,7 +252,7 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
     return this.#hashmap.size;
   }
 
-  entries(): IterableIterator<[T, T]> {
+  entries(): SetIterator<[T, T]> {
     let nextIndex = 0;
     const keys = Array.from(this.keys());
     const values = Array.from(this.values());
@@ -209,14 +265,14 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
           ? { value: [keys[index], values[index]], done: false }
           : { done: true, value: undefined };
       },
-    });
+    }) as SetIterator<[T, T]>;
   }
 
-  keys(): IterableIterator<T> {
-    return this.values();
+  keys(): SetIterator<T> {
+    return this.values() as SetIterator<T>;
   }
 
-  values(): IterableIterator<T> {
+  values(): SetIterator<T> {
     let nextIndex = 0;
     const observableValues = Array.from(this.#hashmap.values());
 
@@ -226,11 +282,11 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
           ? { value: observableValues[nextIndex++], done: false }
           : { done: true, value: undefined };
       },
-    });
+    }) as SetIterator<T>;
   }
 
-  [Symbol.iterator](): IterableIterator<T> {
-    return this.#hashmap.values();
+  [Symbol.iterator](): SetIterator<T> {
+    return this.#hashmap.values() as SetIterator<T>;
   }
 
   get [Symbol.toStringTag](): string {

@@ -503,19 +503,25 @@ describe("KubeApi", () => {
 
       describe("when the request resolves with a stream", () => {
         beforeEach(async () => {
-          await fetchMock.resolveSpecific(([url, init]) => {
-            const isMatch =
-              url ===
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
+          await fetchMock.resolveSpecific(
+            ([url, init]) => {
+              const isMatch =
+                url ===
+                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
 
-            if (isMatch) {
-              init?.signal?.addEventListener("abort", () => {
-                stream.destroy();
-              });
-            }
+              if (isMatch) {
+                init?.signal?.addEventListener("abort", () => {
+                  stream.destroy();
+                });
+              }
 
-            return isMatch;
-          }, createMockResponseFromStream("http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600", stream));
+              return isMatch;
+            },
+            createMockResponseFromStream(
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+              stream,
+            ),
+          );
         });
 
         describe("when some data comes back on the stream", () => {
@@ -601,19 +607,25 @@ describe("KubeApi", () => {
 
       describe("when the request resolves with a stream", () => {
         beforeEach(async () => {
-          await fetchMock.resolveSpecific(([url, init]) => {
-            const isMatch =
-              url ===
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
+          await fetchMock.resolveSpecific(
+            ([url, init]) => {
+              const isMatch =
+                url ===
+                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
 
-            if (isMatch) {
-              init?.signal?.addEventListener("abort", () => {
-                stream.destroy();
-              });
-            }
+              if (isMatch) {
+                init?.signal?.addEventListener("abort", () => {
+                  stream.destroy();
+                });
+              }
 
-            return isMatch;
-          }, createMockResponseFromStream("http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600", stream));
+              return isMatch;
+            },
+            createMockResponseFromStream(
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+              stream,
+            ),
+          );
         });
 
         describe("when some data comes back on the stream", () => {
@@ -698,19 +710,25 @@ describe("KubeApi", () => {
 
       describe("when the request resolves with a stream", () => {
         beforeEach(async () => {
-          await fetchMock.resolveSpecific(([url, init]) => {
-            const isMatch =
-              url ===
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60";
+          await fetchMock.resolveSpecific(
+            ([url, init]) => {
+              const isMatch =
+                url ===
+                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60";
 
-            if (isMatch) {
-              init?.signal?.addEventListener("abort", () => {
-                stream.destroy();
-              });
-            }
+              if (isMatch) {
+                init?.signal?.addEventListener("abort", () => {
+                  stream.destroy();
+                });
+              }
 
-            return isMatch;
-          }, createMockResponseFromStream("http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60", stream));
+              return isMatch;
+            },
+            createMockResponseFromStream(
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60",
+              stream,
+            ),
+          );
         });
 
         describe("when some data comes back on the stream", () => {

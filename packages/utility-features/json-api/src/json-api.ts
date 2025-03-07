@@ -83,9 +83,8 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
-export type ParamsAndQuery<Params, Query> = ValueOf<Query> extends QueryParam
-  ? Params & { query?: Query }
-  : Params & { query?: undefined };
+export type ParamsAndQuery<Params, Query> =
+  ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
   fetch: typeof Fetch;
@@ -95,7 +94,10 @@ export interface JsonApiDependencies {
 export class JsonApiErrorParsed {
   isUsedForNotification = false;
 
-  constructor(private error: JsonApiError | DOMException | KubeJsonApiError, private messages: string[]) {}
+  constructor(
+    private error: JsonApiError | DOMException | KubeJsonApiError,
+    private messages: string[],
+  ) {}
 
   get isAborted() {
     return this.error.code === DOMException.ABORT_ERR;
@@ -247,7 +249,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
 
     if (log.method === "GET" && res.status === 403) {
       this.writeLog({ ...log, error: data });
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
       throw data;
     }
 
@@ -256,7 +258,6 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     this.onError.emit(error, res);
     this.writeLog({ ...log, error });
 
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw error;
   }
 

@@ -142,7 +142,6 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               ? "when all message steps are propagated using a wrapper"
               : "immediately";
 
-            // eslint-disable-next-line jest/valid-title
             describe(scenarioTitle, () => {
               let someWrapper: jest.Mock;
 
@@ -173,7 +172,6 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               ? "when all message steps are propagated not using a wrapper"
               : "immediately";
 
-            // eslint-disable-next-line jest/valid-title
             describe(scenarioName, () => {
               beforeEach((done) => {
                 if (scenarioIsAsync) {
@@ -212,7 +210,6 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
 
           const scenarioName = scenarioIsAsync ? "when messages are propagated" : "immediately";
 
-          // eslint-disable-next-line jest/valid-title
           describe(scenarioName, () => {
             beforeEach((done) => {
               if (scenarioIsAsync) {

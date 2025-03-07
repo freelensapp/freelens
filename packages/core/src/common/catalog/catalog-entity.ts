@@ -226,7 +226,7 @@ export abstract class CatalogCategory extends (EventEmitter as new () => TypedEm
       iter.reduce(
         this.filters,
         iter.filter,
-        menuItems.values(),
+        menuItems.values() as IterableIterator<CatalogEntityAddMenu>,
       ),
     );
   }

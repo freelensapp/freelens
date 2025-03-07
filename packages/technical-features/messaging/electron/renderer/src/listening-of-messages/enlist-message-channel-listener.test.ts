@@ -1,6 +1,6 @@
 import type { IpcRendererEvent, IpcRenderer } from "electron";
 import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
-import { EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
+import { type EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerFeature } from "@freelensapp/feature-core";
 import { messagingFeatureForRenderer } from "../feature";

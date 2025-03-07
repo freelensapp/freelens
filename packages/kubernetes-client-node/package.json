@@ -27,6 +27,10 @@
     "@kubernetes/client-node": "^0.18.1"
   },
   "devDependencies": {
-    "rimraf": "^6.0.0"
+    "rimraf": "^6.0.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^5.0.0",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^4.10.0"
   }
 }

@@ -158,8 +158,8 @@ export const isNumber = inputValidator({
 
     return !(
       isNaN(numVal) ||
-      (min != null && numVal < min) ||
-      (max != null && numVal > max)
+      (min != null && typeof min === "number" && numVal < min) ||
+      (max != null && typeof max === "number" && numVal > max)
     );
   },
 });

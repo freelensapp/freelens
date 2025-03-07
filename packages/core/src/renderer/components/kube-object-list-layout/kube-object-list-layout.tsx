@@ -39,8 +39,7 @@ export type KubeItemListStore<K extends KubeObject> = ItemListStore<K, false> & 
 
 export interface KubeObjectListLayoutProps<
   K extends KubeObject,
-  // eslint-disable-next-line unused-imports/no-unused-vars-ts, @typescript-eslint/no-unused-vars
-  A extends KubeApi<K, D>,
+  _ extends KubeApi<K, D>,
   D extends KubeJsonApiDataFor<K>,
 > extends Omit<ItemListLayoutProps<K, false>, "getItems" | "dependentStores" | "preloadStores"> {
   items?: K[];

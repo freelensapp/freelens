@@ -26,8 +26,8 @@ export type InferParamFromPath<P extends string> =
       ? Record<B, string>
       : never
     : P extends `${infer A}/${infer B}`
-      ? InferParam<A, InferParamFromPath<B>>
-      : InferParam<P, {}>;
+    ? InferParam<A, Record<string, string> & InferParamFromPath<B>>
+    : InferParam<P, {}>;
 
 export interface LensApiRequest<Path extends string> {
   path: Path;

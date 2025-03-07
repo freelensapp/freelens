@@ -47,7 +47,7 @@ export class CatalogCategoryRegistry {
       iter.reduce(
         this.filters,
         iter.filter,
-        this.items.values(),
+        this.items.values() as IterableIterator<CatalogCategory>,
       ),
     );
   }

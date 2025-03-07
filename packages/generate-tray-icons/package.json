@@ -21,7 +21,7 @@
     "@types/jsdom": "^20.0.1",
     "@types/node": "^20.17.19",
     "@types/sharp": "^0.31.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.0"
   },
   "dependencies": {
     "arg": "^5.0.2",

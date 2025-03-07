@@ -1,4 +1,4 @@
-import { getNodeConfig, Paths } from "./get-node-config";
+import { getNodeConfig, type Paths } from "./get-node-config";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import type { Configuration } from "webpack";
 

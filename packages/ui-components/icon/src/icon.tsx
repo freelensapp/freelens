@@ -236,7 +236,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
         active,
         focusable,
       },
-      !size ? { smallest, small, big } : {}
+      !size ? { smallest, small, big } : {},
     ),
     onClick: isInteractive ? boundOnClick : undefined,
     onKeyDown: isInteractive ? boundOnKeyDown : undefined,
@@ -251,7 +251,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
 
   // render as inline svg-icon
   if (typeof svg === "string") {
-    const svgIconText = isSvg(svg) ? svg : localSvgIcons.get(svg) ?? "";
+    const svgIconText = isSvg(svg) ? svg : (localSvgIcons.get(svg) ?? "");
 
     iconContent = (
       <span
@@ -292,7 +292,6 @@ const RawIcon = (props: IconProps & Dependencies) => {
 
   if (href) {
     if (hrefIsSafe(href)) {
-      // eslint-disable-next-line jsx-a11y/anchor-has-content
       return <a {...iconProps} href={href} ref={ref} />;
     }
 
