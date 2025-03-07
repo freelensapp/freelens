@@ -1,11 +1,7 @@
 module.exports = {
   extends: [
     "plugin:@typescript-eslint/recommended",
-    "react-app",
-    "react-app/jest",
-    "airbnb-typescript",
     "prettier",
-    "plugin:security/recommended",
     "plugin:xss/recommended",
     "plugin:no-unsanitized/DOM"
   ],
@@ -35,6 +31,8 @@ module.exports = {
         indent: "off", // Let prettier do it
         curly: "error",
         "import/prefer-default-export": "off",
+        "import/no-named-as-default-member": "off",
+        "import/no-named-as-default": 0,
         "class-methods-use-this": "off",
         "comma-dangle": "off",
         "max-classes-per-file": "off",
@@ -112,7 +110,6 @@ module.exports = {
             ignoreTemplateLiterals: true,
           },
         ],
-        "unused-imports/no-unused-imports-ts": "error",
         "import/extensions": "off",
         "linebreak-style": ["error", "unix"],
         "eol-last": ["error", "always"],
@@ -136,18 +133,10 @@ module.exports = {
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-useless-constructor": "off",
-        "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/no-shadow": "off",
-        "@typescript-eslint/quotes": [
-          "error",
-          "double",
-          {
-            avoidEscape: true,
-            allowTemplateLiterals: true,
-          },
-        ],
         "@typescript-eslint/no-unused-expressions": [
           "error",
           {
@@ -155,25 +144,15 @@ module.exports = {
           },
         ],
         "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/keyword-spacing": ["error"],
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-unsafe-declaration-merging": "off",
+        "@typescript-eslint/no-duplicate-enum-values": "off",
 
         // React specific rules
-        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "off",
         "react/require-default-props": "off",
         "react/function-component-definition": "off",
         "react/prop-types": "off",
-        "react/jsx-filename-extension": [1, { extensions: [".tsx"] }],
-
-        // jsx-a11y custom components
-        "jsx-a11y/label-has-associated-control": [
-          2,
-          {
-            controlComponents: ["Select", "StyledInput", "StyledSlider"],
-            depth: 1,
-          },
-        ],
       },
     },
   ],

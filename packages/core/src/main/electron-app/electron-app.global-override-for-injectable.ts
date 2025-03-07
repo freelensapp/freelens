@@ -202,7 +202,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
     showEmojiPanel(): void {
       throw new Error("Method not implemented.");
     }
-    startAccessingSecurityScopedResource(bookmarkData: string): Function {
+    startAccessingSecurityScopedResource(bookmarkData: string): (...args: any[]) => void {
       void bookmarkData;
       throw new Error("Method not implemented.");
     }

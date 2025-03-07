@@ -138,7 +138,7 @@ export class LensRendererExtension extends LensExtension {
    *
    * @deprecated Switch to using "enabled" or "visible" properties in each registration together with `activeCluster`
    */
-  async isEnabledForCluster(cluster: KubernetesCluster): Promise<Boolean> {
+  async isEnabledForCluster(cluster: KubernetesCluster): Promise<boolean> {
     return !! cluster || true;
   }
 

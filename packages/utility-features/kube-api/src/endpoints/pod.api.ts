@@ -46,7 +46,6 @@ export class PodApi extends KubeApi<Pod> {
       if (status.code >= 200 && status.code < 300) {
         return status.getExplanation();
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal
         throw status.getExplanation();
       }
     }

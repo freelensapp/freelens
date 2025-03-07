@@ -82,7 +82,7 @@ const defaultProps = {
 
 @observer
 class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defaultProps> {
-  static defaultProps = defaultProps as Object;
+  static defaultProps = defaultProps as object;
 
   @observable status = FileInputStatus.CLEAR;
   @observable errorText?: string;

@@ -130,6 +130,7 @@ module.exports = {
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/ban-ts-ignore": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -137,6 +138,8 @@ module.exports = {
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-duplicate-enum-values": "off",
         "no-restricted-imports": ["error", {
           "paths": [
             {
@@ -144,16 +147,6 @@ module.exports = {
               "message": "No importing from local index.ts(x?) file. A common way to make circular dependencies.",
             },
           ],
-        }],
-        "@typescript-eslint/member-delimiter-style": ["error", {
-          "multiline": {
-            "delimiter": "semi",
-            "requireLast": true,
-          },
-          "singleline": {
-            "delimiter": "semi",
-            "requireLast": false,
-          },
         }],
         "react/jsx-max-props-per-line": ["error", {
           "maximum": {
@@ -179,11 +172,6 @@ module.exports = {
         }],
         "react/display-name": "off",
         "space-before-function-paren": "off",
-        "@typescript-eslint/space-before-function-paren": ["error", {
-          "anonymous": "always",
-          "named": "never",
-          "asyncArrow": "always",
-        }],
         "@typescript-eslint/naming-convention": ["error",
           {
             "selector": "interface",
@@ -207,18 +195,8 @@ module.exports = {
           },
         ],
         "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-        "unused-imports/no-unused-imports-ts": process.env.PROD === "true" ? "error" : "warn",
-        "unused-imports/no-unused-vars-ts": [
-          "warn", {
-            "vars": "all",
-            "args": "after-used",
-            "ignoreRestSiblings": true,
-          },
-        ],
         "comman-dangle": "off",
-        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
         "comma-spacing": "off",
-        "@typescript-eslint/comma-spacing": "error",
         "indent": ["error", 2, {
           "SwitchCase": 1,
         }],
@@ -227,12 +205,7 @@ module.exports = {
           "allowTemplateLiterals": true,
         }],
         "object-curly-spacing": "off",
-        "@typescript-eslint/object-curly-spacing": ["error", "always", {
-          "objectsInObjects": false,
-          "arraysInObjects": true,
-        }],
         "semi": "off",
-        "@typescript-eslint/semi": ["error"],
         "linebreak-style": ["error", "unix"],
         "eol-last": ["error", "always"],
         "object-shorthand": "error",
@@ -249,10 +222,12 @@ module.exports = {
           { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
           { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] },
         ],
-        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "off",
         "no-template-curly-in-string": "error",
         "@typescript-eslint/consistent-type-imports": "error",
+        "import/prefer-default-export": "off",
+        "import/no-named-as-default-member": "off",
+        "import/no-named-as-default": 0,
       },
     },
     {

@@ -201,7 +201,6 @@ describe("keyboard-shortcuts", () => {
         shouldCallCallback: true,
       },
     ].forEach(({ binding, keyboard, scenario, shouldCallCallback }) => {
-      // eslint-disable-next-line jest/valid-title
       it(scenario, () => {
         const invokeMock = jest.fn();
 
@@ -223,10 +222,8 @@ describe("keyboard-shortcuts", () => {
         userEvent.keyboard(keyboard);
 
         if (shouldCallCallback) {
-          // eslint-disable-next-line jest/no-conditional-expect
           expect(invokeMock).toHaveBeenCalled();
         } else {
-          // eslint-disable-next-line jest/no-conditional-expect
           expect(invokeMock).not.toHaveBeenCalled();
         }
       });

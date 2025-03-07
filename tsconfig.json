@@ -4,7 +4,7 @@
     "jsx": "react",
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Collection"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext"],
     "moduleResolution": "Node",
     "sourceMap": true,
     "strict": true,

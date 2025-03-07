@@ -120,7 +120,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
           const scenarioName = scenarioIsAsync ? "when all messages are propagated" : "immediately";
 
-          // eslint-disable-next-line jest/valid-title
           describe(scenarioName, () => {
             beforeEach((done) => {
               if (scenarioIsAsync) {
@@ -162,7 +161,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
           const scenarioName = scenarioIsAsync ? "when admin messages are propagated" : "immediately";
 
-          // eslint-disable-next-line jest/valid-title
           describe(scenarioName, () => {
             beforeEach((done) => {
               if (scenarioIsAsync) {
@@ -181,7 +179,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
             const scenarioName = scenarioIsAsync ? "when returning value-messages propagate" : "immediately";
 
-            // eslint-disable-next-line jest/valid-title
             describe(scenarioName, () => {
               beforeEach((done) => {
                 if (scenarioIsAsync) {
@@ -210,7 +207,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
                 const scenarioName = scenarioIsAsync ? "when value-messages propagate" : "immediately";
 
-                // eslint-disable-next-line jest/valid-title
                 describe(scenarioName, () => {
                   beforeEach((done) => {
                     if (scenarioIsAsync) {
@@ -239,7 +235,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
                 const scenarioName = scenarioIsAsync ? "when admin-messages propagate" : "immediately";
 
-                // eslint-disable-next-line jest/valid-title
                 describe(scenarioName, () => {
                   beforeEach((done) => {
                     if (scenarioIsAsync) {
@@ -296,7 +291,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
                       const scenarioName = scenarioIsAsync ? "when admin messages propagate" : "immediately";
 
-                      // eslint-disable-next-line jest/valid-title
                       describe(scenarioName, () => {
                         beforeEach((done) => {
                           if (scenarioIsAsync) {
@@ -322,7 +316,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
                         const scenarioTitle = scenarioIsAsync ? "when value-messages propagate back" : "immediately";
 
-                        // eslint-disable-next-line jest/valid-title
                         describe(scenarioTitle, () => {
                           beforeEach((done) => {
                             if (scenarioIsAsync) {
@@ -441,7 +434,6 @@ const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue
 
                 const scenarioName = scenarioIsAsync ? "when messages would be propagated" : "immediately";
 
-                // eslint-disable-next-line jest/valid-title
                 describe(scenarioName, () => {
                   beforeEach((done) => {
                     if (scenarioIsAsync) {

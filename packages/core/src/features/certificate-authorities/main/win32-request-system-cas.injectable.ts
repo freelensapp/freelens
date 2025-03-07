@@ -7,7 +7,7 @@ import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { platformSpecificRequestSystemCAsInjectionToken } from "../common/request-system-cas-token";
 
-const pemEncoding = (hexEncodedCert: String) => {
+const pemEncoding = (hexEncodedCert: string) => {
   const certData = Buffer.from(hexEncodedCert, "hex").toString("base64");
   const lines = ["-----BEGIN CERTIFICATE-----"];
 
