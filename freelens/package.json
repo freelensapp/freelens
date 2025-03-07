@@ -353,7 +353,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@types/byline": "^4.2.33",
     "@types/chart.js": "^2.9.36",
-    "@types/color": "^3.0.3",
+    "@types/color": "^4.0.0",
     "@types/crypto-js": "^3.1.47",
     "@types/lodash": "^4.14.191",
     "@types/node": "^20.17.19",

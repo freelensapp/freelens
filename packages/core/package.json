@@ -86,7 +86,7 @@
     "@types/byline": "^4.2.33",
     "@types/chart.js": "^2.9.36",
     "@types/circular-dependency-plugin": "5.0.5",
-    "@types/color": "^3.0.3",
+    "@types/color": "^4.0.0",
     "@types/command-line-args": "^5.2.0",
     "@types/crypto-js": "^3.1.47",
     "@types/fs-extra": "^9.0.13",
