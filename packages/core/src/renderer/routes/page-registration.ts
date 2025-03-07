@@ -32,7 +32,7 @@ export interface PageParams<V = any> {
   [paramName: string]: V;
 }
 
-export interface PageComponentProps<P extends PageParams = object> {
+export interface PageComponentProps<P extends PageParams = {}> {
   params?: {
     [N in keyof P]: PageParam<P[N]>;
   };
