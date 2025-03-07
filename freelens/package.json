@@ -55,7 +55,7 @@
   "build": {
     "npmRebuild": false,
     "detectUpdateChannel": false,
-    "electronVersion": "34.2.0",
+    "electronVersion": "34.3.1",
     "generateUpdatesFilesForAllChannels": true,
     "files": [
       "static/**/*",
