@@ -18,14 +18,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@types/jsdom": "^20.0.1",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.17.19",
     "@types/sharp": "^0.32.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^21.1.0",
+    "jsdom": "^21.1.2",
     "rimraf": "^6.0.0",
     "sharp": "^0.33.0"
   }
