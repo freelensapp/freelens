@@ -12,7 +12,7 @@
   "postUpdateOptions": [
     "npmDedupe"
   ],
-  "rangeStrategy": "replace",
+  "rangeStrategy": "bump",
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
