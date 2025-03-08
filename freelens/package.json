@@ -224,7 +224,7 @@
     }
   },
   "dependencies": {
-    "@astronautlabs/jsonpath": "^1.1.0",
+    "@astronautlabs/jsonpath": "^1.1.2",
     "@freelensapp/application": "^1.0.0",
     "@freelensapp/application-for-electron-main": "^1.0.0",
     "@freelensapp/button": "^1.0.0",
