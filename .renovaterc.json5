@@ -21,6 +21,14 @@
     "ubuntu"
   ],
   "packageRules": [
+    // peerDependencies are widen
+    {
+      "matchDepTypes": [
+        "peerDependencies"
+      ],
+      "rangeStrategy": "widen",
+      "semanticCommitScope": "peer-deps"
+    },
     // non-major updates only
     {
       "matchDepNames": [
