@@ -30,7 +30,7 @@
     "css-loader": "^6.7.2",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
     "fs-extra": "^9.0.1",
-    "mini-css-extract-plugin": "^2.7.3",
+    "mini-css-extract-plugin": "^2.9.2",
     "sass": "^1.62.1",
     "sass-loader": "^13.3.3",
     "style-loader": "^4.0.0",
