@@ -286,7 +286,7 @@
     "crypto-js": "^4.1.1",
     "dompurify": "^3.0.0",
     "electron-devtools-installer": "^4.0.0",
-    "electron-updater": "^4.6.5",
+    "electron-updater": "^6.0.0",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^9.0.1",
     "glob-to-regexp": "^0.4.1",
