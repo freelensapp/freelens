@@ -86,7 +86,7 @@
     "@types/circular-dependency-plugin": "5.0.8",
     "@types/color": "^4.0.0",
     "@types/command-line-args": "^5.2.0",
-    "@types/crypto-js": "^3.1.47",
+    "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.1.0",
     "@types/glob-to-regexp": "^0.4.1",
