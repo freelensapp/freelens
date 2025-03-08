@@ -365,7 +365,7 @@
     "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.0",
-    "@types/webpack-node-externals": "2.5.3",
+    "@types/webpack-node-externals": "3.0.4",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^7.6.0",
     "copy-webpack-plugin": "^11.0.0",

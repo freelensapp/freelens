@@ -120,7 +120,7 @@
     "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.0",
-    "@types/webpack-node-externals": "^2.5.3",
+    "@types/webpack-node-externals": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.26.0",
     "circular-dependency-plugin": "^5.2.2",
