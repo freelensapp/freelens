@@ -355,7 +355,7 @@
     "@types/lodash": "^4.14.191",
     "@types/node": "^20.17.19",
     "@types/proper-lockfile": "^4.1.2",
-    "@types/react-dom": "^17.0.16",
+    "@types/react-dom": "^17.0.26",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
