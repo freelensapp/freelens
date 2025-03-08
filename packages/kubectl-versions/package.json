@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
-    "fast-xml-parser": "^4.2.2",
+    "fast-xml-parser": "^5.0.8",
     "semver": "^7.3.8",
     "ts-node": "^10.9.2",
     "typed-regex": "^0.0.8",
