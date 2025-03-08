@@ -31,7 +31,7 @@
     "@ogre-tools/injectable": "^17.2.0",
     "type-fest": "^2.19.0",
     "typed-emitter": "^1.4.0",
-    "uuid": "^8.3.2"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
