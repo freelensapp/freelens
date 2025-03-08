@@ -11,6 +11,12 @@
   "postUpdateOptions": [
     "npmDedupe"
   ],
+  "postUpgradeTasks": {
+    "commands": [
+      "npm install --prefer-dedupe"
+    ],
+    "executionMode": "update"
+  },
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
