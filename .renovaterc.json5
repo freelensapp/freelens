@@ -8,15 +8,11 @@
   "addLabels": [
     "renovate"
   ],
+  "osvVulnerabilityAlerts": true,
   "postUpdateOptions": [
     "npmDedupe"
   ],
-  "postUpgradeTasks": {
-    "commands": [
-      "npm install --prefer-dedupe"
-    ],
-    "executionMode": "update"
-  },
+  "rangeStrategy": "replace",
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
