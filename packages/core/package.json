@@ -202,7 +202,7 @@
     "@freelensapp/tooltip": "^1.0.0",
     "@freelensapp/utilities": "^1.0.0",
     "@hapi/call": "^9.0.1",
-    "@hapi/subtext": "^7.1.0",
+    "@hapi/subtext": "^8.1.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@ogre-tools/fp": "^17.2.0",
