@@ -8,6 +8,9 @@
   "addLabels": [
     "renovate"
   ],
+  "postUpdateOptions": [
+    "npmDedupe"
+  ],
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
