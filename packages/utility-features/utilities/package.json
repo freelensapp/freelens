@@ -25,7 +25,7 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "peerDependencies": {
-    "@astronautlabs/jsonpath": "^1.1.0",
+    "@astronautlabs/jsonpath": "^1.1.2",
     "crypto-js": "^4.2.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.4",
