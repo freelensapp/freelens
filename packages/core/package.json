@@ -139,7 +139,7 @@
     "eslint-plugin-unused-imports": "^4.0.0",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
     "ignore-loader": "^0.1.2",
-    "include-media": "^1.4.10",
+    "include-media": "^2.0.0",
     "jest": "^29.5.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-environment-jsdom": "^28.1.3",
