@@ -124,7 +124,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.26.0",
     "circular-dependency-plugin": "^5.2.2",
-    "concurrently": "^7.6.0",
+    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
     "electron-builder": "^26.0.6",
