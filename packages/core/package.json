@@ -222,7 +222,7 @@
     "chokidar": "^3.5.3",
     "color": "^4.2.3",
     "conf": "^10.2.0",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "dompurify": "^3.0.0",
     "electron": "^34.2.0",
     "electron-devtools-installer": "^4.0.0",
