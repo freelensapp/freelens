@@ -348,7 +348,7 @@
     "@freelensapp/test-utils": "^1.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@types/byline": "^4.2.33",
-    "@types/chart.js": "^2.9.36",
+    "@types/chart.js": "^2.9.41",
     "@types/color": "^4.0.0",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.14.191",
