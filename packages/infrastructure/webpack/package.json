@@ -28,7 +28,7 @@
     "@ogre-tools/linkable": "^17.2.0",
     "@types/webpack-env": "^1.18.0",
     "css-loader": "^6.7.2",
-    "fork-ts-checker-webpack-plugin": "^7.3.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
     "fs-extra": "^9.0.1",
     "mini-css-extract-plugin": "^2.9.2",
     "sass": "^1.62.1",
