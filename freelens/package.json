@@ -363,7 +363,6 @@
     "@types/url-parse": "^1.4.8",
     "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
-    "@types/webpack-env": "^1.18.0",
     "@types/webpack-node-externals": "3.0.4",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^9.1.2",

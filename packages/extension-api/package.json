@@ -30,7 +30,6 @@
   "devDependencies": {
     "@types/node": "^20.17.19",
     "@types/webpack": "^5.28.5",
-    "@types/webpack-env": "^1.18.0",
     "@types/webpack-node-externals": "3.0.4",
     "css-loader": "^6.7.2",
     "node-loader": "^2.0.0",
