@@ -33,7 +33,7 @@
     "@types/webpack-env": "^1.18.0",
     "@types/webpack-node-externals": "3.0.4",
     "css-loader": "^6.11.0",
-    "node-loader": "^2.0.0",
+    "node-loader": "^2.1.0",
     "rimraf": "^6.0.0",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.4.2",
