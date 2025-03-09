@@ -14,7 +14,7 @@
     "semver": "^7.3.8"
   },
   "devDependencies": {
-    "@types/command-line-args": "^5.2.0",
+    "@types/command-line-args": "^5.2.3",
     "@types/node": "^20.17.19",
     "@types/semver": "^7.3.13",
     "rimraf": "^6.0.0",

@@ -85,7 +85,7 @@
     "@types/chart.js": "^2.9.36",
     "@types/circular-dependency-plugin": "5.0.8",
     "@types/color": "^4.0.0",
-    "@types/command-line-args": "^5.2.0",
+    "@types/command-line-args": "^5.2.3",
     "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.1.0",
