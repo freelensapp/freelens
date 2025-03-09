@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.0",
-    "@types/gunzip-maybe": "^1.4.0",
+    "@types/gunzip-maybe": "^1.4.2",
     "@types/node": "^20.17.19",
     "@types/semver": "^7.3.13",
     "@types/tar-stream": "^3.1.3",
