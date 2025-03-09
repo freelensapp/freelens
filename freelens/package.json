@@ -332,7 +332,7 @@
     "tar": "^7.4.3",
     "tcp-port-used": "^1.0.2",
     "tempy": "1.0.1",
-    "type-fest": "^2.14.0",
+    "type-fest": "^2.19.0",
     "typed-emitter": "^1.4.0",
     "typed-regex": "^0.0.8",
     "url-parse": "^1.5.10",

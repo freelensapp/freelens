@@ -45,6 +45,6 @@
     "@freelensapp/jest": "^1.0.0",
     "@freelensapp/typescript": "^1.0.0",
     "@types/node": "^20.17.19",
-    "type-fest": "^2.14.0"
+    "type-fest": "^2.19.0"
   }
 }
