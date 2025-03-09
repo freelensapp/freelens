@@ -264,7 +264,7 @@
     "react-table": "^7.8.0",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8",
-    "rfc6902": "^5.0.1",
+    "rfc6902": "^5.1.2",
     "selfsigned": "^2.1.1",
     "semver": "^7.3.8",
     "stoppable": "^1.1.0",

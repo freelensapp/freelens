@@ -38,7 +38,7 @@
     "@freelensapp/logger": "^1.0.0",
     "@freelensapp/utilities": "^1.0.0",
     "lodash": "^4.17.15",
-    "rfc6902": "^5.0.1"
+    "rfc6902": "^5.1.2"
   },
   "devDependencies": {
     "@freelensapp/eslint-config": "^1.0.0",
