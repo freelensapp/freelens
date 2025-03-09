@@ -19,7 +19,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "rimraf": "^6.0.0",
