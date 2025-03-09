@@ -22,6 +22,6 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "typescript-plugin-css-modules": "^5.0.1"
+    "typescript-plugin-css-modules": "^5.1.0"
   }
 }
