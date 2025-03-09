@@ -92,7 +92,7 @@
     "@types/glob-to-regexp": "^0.4.4",
     "@types/hapi__call": "^9.0.0",
     "@types/hapi__subtext": "^7.0.3",
-    "@types/http-proxy": "^1.17.11",
+    "@types/http-proxy": "^1.17.16",
     "@types/jest": "^29.5.14",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash": "^4.14.191",
