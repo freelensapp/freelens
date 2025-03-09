@@ -383,7 +383,7 @@
     "node-abi": "^3.74.0",
     "node-loader": "^2.0.0",
     "nodemon": "^3.1.9",
-    "playwright": "^1.33.0",
+    "playwright": "^1.51.0",
     "rimraf": "^6.0.0",
     "run-script-os": "^1.1.6",
     "style-loader": "^4.0.0",
