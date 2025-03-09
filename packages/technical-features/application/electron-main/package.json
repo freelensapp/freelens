@@ -43,6 +43,6 @@
     "@async-fn/jest": "^1.6.4",
     "@freelensapp/eslint-config": "^1.0.0",
     "@freelensapp/webpack": "^1.0.0",
-    "@ogre-tools/test-utils": "^17.2.0"
+    "@ogre-tools/test-utils": "^17.11.1"
   }
 }

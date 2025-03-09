@@ -75,7 +75,7 @@
     "@freelensapp/messaging-fake-bridge": "^1.0.0",
     "@freelensapp/react-testing-library-discovery": "^1.0.0",
     "@freelensapp/test-utils": "^1.0.0",
-    "@ogre-tools/linkable": "^17.2.0",
+    "@ogre-tools/linkable": "^17.11.1",
     "@side/jest-runtime": "^1.1.0",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
