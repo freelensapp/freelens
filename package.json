@@ -31,8 +31,8 @@
   },
   "overrides": {
     "underscore": "^1.12.1",
-    "react": "^17",
-    "@types/react": "^17"
+    "react": "^17.0.2",
+    "@types/react": "^17.0.83"
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.11.1",
