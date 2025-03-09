@@ -353,7 +353,7 @@
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^20.17.19",
-    "@types/proper-lockfile": "^4.1.2",
+    "@types/proper-lockfile": "^4.1.4",
     "@types/react-dom": "^17.0.26",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
