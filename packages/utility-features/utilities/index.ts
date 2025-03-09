@@ -30,7 +30,6 @@ export * from "./src/observable-crate";
 export * from "./src/on-keyboard-shortcut";
 export * from "./src/orderable";
 export * from "./src/prevDefault";
-export * from "./src/readableStream";
 export * from "./src/readonly";
 export * from "./src/reject-promise";
 export * from "./src/result";
