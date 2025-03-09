@@ -82,7 +82,7 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/byline": "^4.2.33",
-    "@types/chart.js": "^2.9.36",
+    "@types/chart.js": "^2.9.41",
     "@types/circular-dependency-plugin": "5.0.8",
     "@types/color": "^4.0.0",
     "@types/command-line-args": "^5.2.0",
