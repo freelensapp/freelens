@@ -154,7 +154,7 @@
     "sass-loader": "^12.6.0",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.17",
-    "ts-loader": "^9.4.2",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "typescript-plugin-css-modules": "^5.1.0",
