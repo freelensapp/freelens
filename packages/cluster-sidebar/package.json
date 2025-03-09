@@ -37,7 +37,7 @@
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
     "mobx": "^6.13.4",
-    "react": "^17.0.2"
+    "react": "^17.0.2 || ^19.0.0"
   },
   "devDependencies": {
     "@freelensapp/eslint-config": "^1.0.0",
