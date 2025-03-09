@@ -33,7 +33,7 @@
     "semver": "^7.3.8",
     "ts-node": "^10.9.2",
     "typed-regex": "^0.0.8",
-    "typescript": "^5.0.0"
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
