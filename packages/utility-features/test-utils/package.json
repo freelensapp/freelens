@@ -34,6 +34,6 @@
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
-    "@types/lodash": "^4.14.191"
+    "@types/lodash": "^4.17.16"
   }
 }
