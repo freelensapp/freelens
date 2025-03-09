@@ -347,7 +347,7 @@
     "@freelensapp/generate-tray-icons": "^1.0.0",
     "@freelensapp/test-utils": "^1.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
-    "@types/byline": "^4.2.33",
+    "@types/byline": "^4.2.36",
     "@types/chart.js": "^2.9.41",
     "@types/color": "^4.0.0",
     "@types/crypto-js": "^4.2.2",

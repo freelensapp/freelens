@@ -81,7 +81,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
-    "@types/byline": "^4.2.33",
+    "@types/byline": "^4.2.36",
     "@types/chart.js": "^2.9.41",
     "@types/circular-dependency-plugin": "5.0.8",
     "@types/color": "^4.0.0",
