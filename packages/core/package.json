@@ -95,7 +95,7 @@
     "@types/http-proxy": "^1.17.11",
     "@types/jest": "^29.5.14",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.14.191",
+    "@types/lodash": "^4.17.16",
     "@types/marked": "^4.3.0",
     "@types/memorystream": "^0.3.4",
     "@types/mock-fs": "^4.13.1",

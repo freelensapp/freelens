@@ -42,7 +42,7 @@
   "devDependencies": {
     "@freelensapp/webpack": "^1.0.0",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.14.191",
+    "@types/lodash": "^4.17.16",
     "@types/react": "^17.0.83",
     "@types/react-router": "^5.1.20",
     "@types/semver": "^7.3.13"

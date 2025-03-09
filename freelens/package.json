@@ -351,7 +351,7 @@
     "@types/chart.js": "^2.9.41",
     "@types/color": "^4.0.0",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.14.191",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20.17.19",
     "@types/proper-lockfile": "^4.1.2",
     "@types/react-dom": "^17.0.26",
