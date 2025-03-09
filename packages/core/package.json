@@ -98,7 +98,7 @@
     "@types/lodash": "^4.14.191",
     "@types/marked": "^4.3.0",
     "@types/memorystream": "^0.3.0",
-    "@types/mock-fs": "^4.13.1",
+    "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.17.19",
     "@types/proper-lockfile": "^4.1.2",
     "@types/randomcolor": "^0.5.7",
