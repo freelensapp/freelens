@@ -369,7 +369,7 @@
     "concurrently": "^9.1.2",
     "copy-webpack-plugin": "^13.0.0",
     "cross-env": "^7.0.3",
-    "css-loader": "^6.7.2",
+    "css-loader": "^6.11.0",
     "electron": "^34.2.0",
     "electron-builder": "^26.0.6",
     "esbuild-loader": "^4.3.0",

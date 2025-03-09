@@ -27,7 +27,7 @@
   "dependencies": {
     "@ogre-tools/linkable": "^17.11.1",
     "@types/webpack-env": "^1.18.0",
-    "css-loader": "^6.7.2",
+    "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "fs-extra": "^9.0.1",
     "mini-css-extract-plugin": "^2.9.2",
