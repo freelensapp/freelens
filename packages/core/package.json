@@ -117,7 +117,7 @@
     "@types/url-parse": "^1.4.11",
     "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
-    "@types/webpack-env": "^1.18.0",
+    "@types/webpack-env": "^1.18.8",
     "@types/webpack-node-externals": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
