@@ -1,3 +1,4 @@
+@use "sass:meta";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -7,8 +8,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./flexbox";
-@import "./fonts";
+@include meta.load-css("flexbox");
+@include meta.load-css("fonts");
 
 :root {
   --flex-gap: #{$padding};
