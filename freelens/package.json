@@ -358,7 +358,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
-    "@types/tcp-port-used": "^1.0.1",
+    "@types/tcp-port-used": "^1.0.4",
     "@types/url-parse": "^1.4.11",
     "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
