@@ -24,7 +24,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@kubernetes/client-node": "^0.18.1"
+    "@kubernetes/client-node": "^0.22.3"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
