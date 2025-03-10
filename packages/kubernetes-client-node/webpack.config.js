@@ -20,7 +20,8 @@ export default {
   async externals({ request }) {
     if (
       !request.startsWith(".") &&
-      !request.startsWith("@kubernetes/client-node")
+      !request.startsWith("@kubernetes/client-node") &&
+      !request.startsWith("jsonpath-plus")
     ) {
       return Promise.resolve(`node-commonjs ${request}`);
     }

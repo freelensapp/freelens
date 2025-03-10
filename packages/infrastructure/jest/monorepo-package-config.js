@@ -31,7 +31,6 @@ module.exports = (rootDir) => {
 
     moduleNameMapper: {
       "^electron$": "identity-obj-proxy",
-      "^jsonpath-plus$": require.resolve("jsonpath-plus"),
     },
 
     coverageThreshold: {
