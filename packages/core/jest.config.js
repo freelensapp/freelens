@@ -5,7 +5,6 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|scss)$": "identity-obj-proxy",
     "\\.(svg|png|jpg|eot|woff2?|ttf)$": "<rootDir>/__mocks__/assetMock.ts",
-    "^jsonpath-plus$": require.resolve("jsonpath-plus"),
   },
   modulePathIgnorePatterns: [
     "<rootDir>/dist",
