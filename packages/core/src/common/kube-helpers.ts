@@ -61,7 +61,7 @@ const kubeConfigSchema = Joi.object({
   "current-context": Joi
     .string()
     .min(1)
-    .optional(),
+    .failover("default"),
 })
   .required();
 
@@ -69,7 +69,7 @@ interface KubeConfigOptions {
   clusters: Cluster[];
   users: User[];
   contexts: Context[];
-  currentContext?: string;
+  currentContext: string;
 }
 
 interface OptionsResult {
