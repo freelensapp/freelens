@@ -49,7 +49,6 @@
     "@freelensapp/typescript": "^1.0.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/test-utils": "^17.11.1",
-    "jsonpath-plus": "^10.3.0",
     "ts-node": "^10.9.2",
     "webpack-node-externals": "^3.0.0"
   },
