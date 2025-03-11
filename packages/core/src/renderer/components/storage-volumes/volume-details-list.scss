@@ -4,6 +4,7 @@
  */
 
 @use "../storage/storage-mixins";
+@use "../vars" as *;
 
 .VolumeDetailsList {
   position: relative;

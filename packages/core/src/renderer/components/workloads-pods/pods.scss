@@ -4,6 +4,7 @@
  */
 
 @use "../workloads/workloads-mixins";
+@use "../table/table.mixins";
 
 .Pods {
   .TableCell {
@@ -20,7 +21,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.status {

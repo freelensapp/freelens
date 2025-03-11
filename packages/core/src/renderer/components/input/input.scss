@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../mixins";
+@use "../vars" as *;
 
 .Input {
   position: relative;
@@ -24,7 +26,7 @@
   &.validatingLine {
     label:after {
       width: 100%;
-      @include stripeLinesAnimation;
+      @include mixins.stripeLinesAnimation;
     }
   }
 
@@ -69,7 +71,7 @@
   }
 
   textarea {
-    @include hidden-scrollbar;
+    @include mixins.hidden-scrollbar;
     line-height: 1.2;
     resize: none;
   }

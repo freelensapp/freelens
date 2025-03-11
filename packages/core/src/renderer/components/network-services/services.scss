@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../network/network-mixins";
+@use "../table/table.mixins";
+
 .Services {
   .TableCell {
     &.type {
@@ -10,7 +13,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.age {
@@ -18,11 +21,11 @@
     }
 
     &.selector {
-      @include table-cell-labels-offsets;
+      @include table.table-cell-labels-offsets;
     }
 
     &.status {
-      @include service-status-colors;
+      @include network-mixins.service-status-colors;
       flex: 0.6;
     }
 

@@ -4,6 +4,8 @@
  */
 
 @use "../storage/storage-mixins";
+@use "../table/table.mixins";
+@use "../vars" as *;
 
 .PersistentVolumeClaims {
   .TableCell {
@@ -12,7 +14,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.storage {

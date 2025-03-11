@@ -60,6 +60,7 @@ export const getReactConfigFor =
               {
                 loader: "sass-loader",
                 options: {
+                  api: "modern",
                   sourceMap: false,
                 },
               },

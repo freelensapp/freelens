@@ -3,9 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../namespaces/namespaces-mixins";
+@use "../vars" as *;
+
 .NamespaceDetails {
   .status {
-    @include namespaceStatus;
+    @include namespaces-mixins.namespaceStatus;
   }
 
   .quotas {

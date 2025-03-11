@@ -4,6 +4,7 @@
  */
 
 @use "../storage/storage-mixins";
+@use "../table/table.mixins";
 
 .PersistentVolumes {
   .TableCell {
@@ -12,7 +13,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.storage {

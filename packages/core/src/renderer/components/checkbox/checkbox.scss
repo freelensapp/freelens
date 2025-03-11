@@ -3,7 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@include theme-light {
+@use "sass:math";
+@use "../mixins";
+@use "../vars" as *;
+
+@include mixins.theme-light {
   .Checkbox {
     --checkbox-color-active: var(--blue);
     --checkbox-bgc-active: none;
@@ -61,7 +65,7 @@
   }
 
   > .box {
-    $boxSize: round(1.7 * $unit);
+    $boxSize: math.round(1.7 * $unit);
 
     position: relative;
     width: $boxSize;

@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+@use "../vars" as *;
+
 .PodDetailsContainer {
   margin: $margin * 2 0;
 
@@ -29,10 +32,10 @@
       background: var(--colorTerminated);
       margin-right: $margin;
 
-      @include pod-status-bgs;
+      @include workloads-mixins.pod-status-bgs;
 
       &.running:not(.ready) {
-        background-color: $pod-status-pending-color;
+        background-color: workloads-mixins.$pod-status-pending-color;
       }
     }
   }
@@ -40,6 +43,6 @@
   .status {
     color: var(--colorTerminated);
 
-    @include pod-status-colors;
+    @include workloads-mixins.pod-status-colors;
   }
 }
