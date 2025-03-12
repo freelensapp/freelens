@@ -43,7 +43,7 @@
     "postinstall": "electron-rebuild"
   },
   "config": {
-    "k8sProxyVersion": "1.2.4",
+    "k8sProxyVersion": "1.2.5",
     "bundledKubectlVersion": "1.32.2",
     "bundledHelmVersion": "3.17.1",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.lens.app:*/; img-src * data:",
@@ -55,7 +55,7 @@
   "build": {
     "npmRebuild": false,
     "detectUpdateChannel": false,
-    "electronVersion": "34.3.1",
+    "electronVersion": "34.3.2",
     "generateUpdatesFilesForAllChannels": true,
     "files": [
       "static/**/*",
@@ -307,7 +307,7 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.47",
     "monaco-editor": "^0.52.2",
-    "node-pty": "1.1.0-beta30",
+    "node-pty": "1.1.0-beta31",
     "npm": "10.8.2",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
@@ -369,7 +369,7 @@
     "copy-webpack-plugin": "^13.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.11.0",
-    "electron": "^34.3.1",
+    "electron": "^34.3.2",
     "electron-builder": "^26.0.6",
     "esbuild-loader": "^4.3.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",

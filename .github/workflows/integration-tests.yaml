@@ -13,6 +13,9 @@ on:
 permissions:
   contents: read
 
+env:
+  minikube_version: 1.35.0 # datasource=github-releases depName=kubernetes/minikube
+
 jobs:
   test-integration:
     name: integration tests on ${{ matrix.os }}
@@ -66,13 +69,16 @@ jobs:
 
       - name: Get Kubernetes version (Linux)
         if: runner.os == 'Linux'
-        run: echo "kubernetes_version=v$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
+        run: echo "kubernetes_version=$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
 
       - name: Install minikube (Linux)
         if: runner.os == 'Linux'
-        uses: medyagh/setup-minikube@master
+        uses: manusa/actions-setup-minikube@v2.13.1
         with:
-          kubernetes-version: ${{ env.kubernetes_version }}
+          minikube version: v${{ env.minikube_version }}
+          kubernetes version: v${{ env.kubernetes_version }}
+          github token: ${{ secrets.GITHUB_TOKEN }}
+          driver: docker
 
       - name: Install npm dependencies
         uses: nick-fields/retry@v3

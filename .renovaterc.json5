@@ -19,7 +19,6 @@
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
-    "npm",
     // it must be the oldest possible version to get binary compatibility with older OSes 
     "ubuntu"
   ],
@@ -36,7 +35,8 @@
     {
       "matchDepNames": [
         "@types/node",
-        "electron"
+        "electron",
+        "npm"
       ],
       "matchUpdateTypes": [
         "major"
