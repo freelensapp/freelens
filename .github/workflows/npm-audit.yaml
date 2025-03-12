@@ -1,11 +1,11 @@
-name: Automated npm dedupe
+name: Automated npm audit
 
 on:
   issue_comment:
     types:
       - created
   schedule:
-    - cron: 46 6 * * *
+    - cron: 16 7 * * *
   workflow_dispatch: {}
 
 permissions:
@@ -14,8 +14,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  npm-dedupe:
-    name: npm dedupe
+  npm-audit:
+    name: npm audit
 
     strategy:
       fail-fast: false
@@ -30,7 +30,7 @@ jobs:
 
     if: >-
       github.event_name != 'issue_comment' ||
-      (startsWith(github.event.issue.title, 'Automated npm dedupe') && contains(github.event.comment.body, '/rerun'))
+      (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body, '/rerun'))
 
     steps:
       - name: Checkout
@@ -63,8 +63,8 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: npm dedupe
-        run: npm install --prefer-dedupe
+      - name: npm audit
+        run: npm audit fix || true
 
       - name: Check for changes
         run: |
@@ -80,9 +80,9 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated npm dedupe
-          new_branch: automated/npm-dedupe
-          push: origin automated/npm-dedupe --set-upstream --force
+          message: Automated npm audit
+          new_branch: automated/npm-audit
+          push: origin automated/npm-audit --set-upstream --force
 
       - name: Create pull request
         id: pr
@@ -92,11 +92,11 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           target_branch: main
           label: automated
-          title: Automated npm dedupe
+          title: Automated npm audit
           get_diff: true
 
       - name: Close pull request
         if: env.changes == 'false'
-        run: gh pr list --head automated/npm-dedupe --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
+        run: gh pr list --head automated/npm-audit --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
