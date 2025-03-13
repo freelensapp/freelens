@@ -18,6 +18,7 @@ const logVersionOnStartInjectable = getInjectable({
       const appName = di.inject(appNameInjectable);
 
       logger.info(`Starting v${buildVersion} of ${appName}...`);
+      logger.info(`Electron: ${process.versions.electron}, Chrome: ${process.versions.chrome}, Node: ${process.versions.node}, Platform: ${process.platform}, Architecture: ${process.arch}`);
     },
     runAfter: buildVersionInitializationInjectable,
   }),
