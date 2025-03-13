@@ -53,7 +53,7 @@ const createKubeApiForClusterInjectable = getInjectable({
           debug: isDevelopment,
         }, {
           headers: {
-            "Host": `${cluster.metadata.uid}.lens.app:${new URL(apiBase.config.serverAddress).port}`,
+            "Host": `${cluster.metadata.uid}.renderer.freelens.app:${new URL(apiBase.config.serverAddress).port}`,
           },
         });
 
