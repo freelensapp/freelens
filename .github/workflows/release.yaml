@@ -19,6 +19,10 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 360
 
+    env:
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,23 +74,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
-      - name: Get NPM cache directory
-        shell: bash
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
-
-      - name: Use npm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
-
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
         uses: nick-fields/retry@v3
@@ -95,7 +82,8 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: |
-            sudo apt-get install -y --no-install-recommends \
+            sudo apt-get -q update
+            sudo apt-get -q install -y --no-install-recommends \
               gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
@@ -107,13 +95,55 @@ jobs:
           retry_on: any
           command: brew install bash python-setuptools
 
-      - name: Install NPM dependencies
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: npm ci
+          command: choco install yq --yes --no-progress
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory
+        shell: bash
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r '.packages["node_modules/electron"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Get Electron Builder version
+        shell: bash
+        run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Use npm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
+
+      - name: Use Electron cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+
+      - name: Use Electron Builder cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
       - name: Rebuild for arch (Linux arm64)
         if: runner.os == 'Linux' && matrix.arch == 'arm64'
@@ -131,13 +161,13 @@ jobs:
         if: runner.os == 'macOS' && matrix.arch == 'x64'
         run: npm run rebuild -- -- -a x64
 
-      - name: Build NPM packages (macOS x64, Linux arm64)
+      - name: Build npm packages (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: npm run build
         env:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
-      - name: Build NPM packages (macOS arm64, Linux x64, Windows)
+      - name: Build npm packages (macOS arm64, Linux x64, Windows)
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: npm run build
 
@@ -203,16 +233,10 @@ jobs:
         if: runner.os == 'Windows' && matrix.arch == 'x64'
         shell: bash
         run: |
-          for var in CSC_LINK CSC_KEY_PASSWORD; do
-            test -n "${!var}" || unset $var
-          done
           npm run build:app -- -- -- \
             msi nsis \
             --publish never \
             --${{ matrix.arch }}
-        env:
-          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
 
       - name: Azure Trusted Signing (Windows x64)
         if: runner.os == 'Windows' && matrix.arch == 'x64' && github.ref_name == 'main' && github.event_name != 'pull_request'
@@ -338,11 +362,11 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
 
-      - name: Get NPM cache directory
+      - name: Get npm cache directory
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
-      - name: Use NPM cache
+      - name: Use npm cache
         uses: actions/cache@v4
         with:
           path: ${{ env.npm_cache_dir }}
@@ -350,7 +374,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install NPM dependencies
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
@@ -364,7 +388,7 @@ jobs:
       - name: Reset Git working directory
         run: git reset --hard
 
-      - name: Publish NPM packages
+      - name: Publish npm packages
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
