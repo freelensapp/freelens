@@ -37,9 +37,31 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
 
+    env:
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: brew install python-setuptools
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: choco install yq --yes --no-progress
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -50,6 +72,14 @@ jobs:
         shell: bash
         run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
 
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r '.packages["node_modules/electron"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Get Electron Builder version
+        shell: bash
+        run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
+
       - name: Use npm cache
         uses: actions/cache@v4
         with:
@@ -58,14 +88,21 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
+      - name: Cache Electron
+        uses: actions/cache@v1
         with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: brew install python-setuptools
+          path: ${{ github.workspace }}/.cache/electron
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+
+      - name: Cache Electron Builder
+        uses: actions/cache@v1
+        with:
+          path: ${{ github.workspace }}/.cache/electron-builder
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
       - name: Get Kubernetes version (Linux)
         if: runner.os == 'Linux'
@@ -115,13 +152,13 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: Build NPM packages (macOS x64, Linux arm64)
+      - name: Build npm packages (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: npm run build
         env:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
-      - name: Build NPM packages (macOS arm64, Linux x64, Windows)
+      - name: Build npm packages (macOS arm64, Linux x64, Windows)
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: npm run build
 
