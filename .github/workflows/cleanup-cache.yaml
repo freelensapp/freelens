@@ -18,15 +18,7 @@ jobs:
 
     steps:
       - name: Cleanup cache
-        run: |
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id')
-          set +e
-          echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR; do
-            gh cache delete $cacheKey
-          done
-          echo "Done"
+        run: gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id' | xargs -n1 -r -t gh cache delete
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
