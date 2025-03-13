@@ -114,6 +114,7 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
       - name: Cache Playwright
+        id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
