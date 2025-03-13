@@ -82,7 +82,8 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: |
-            sudo apt-get install -y --no-install-recommends \
+            sudo apt-get -q update
+            sudo apt-get -q install -y --no-install-recommends \
               gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
@@ -93,6 +94,15 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: brew install bash python-setuptools
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: choco install yq --yes --no-progress
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -119,18 +129,18 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Cache Electron
+      - name: Use Electron cache
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.cache/electron
+          path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-
 
-      - name: Cache Electron Builder
+      - name: Use Electron Builder cache
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.cache/electron-builder
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
@@ -223,16 +233,10 @@ jobs:
         if: runner.os == 'Windows' && matrix.arch == 'x64'
         shell: bash
         run: |
-          for var in CSC_LINK CSC_KEY_PASSWORD; do
-            test -n "${!var}" || unset $var
-          done
           npm run build:app -- -- -- \
             msi nsis \
             --publish never \
             --${{ matrix.arch }}
-        env:
-          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
 
       - name: Azure Trusted Signing (Windows x64)
         if: runner.os == 'Windows' && matrix.arch == 'x64' && github.ref_name == 'main' && github.event_name != 'pull_request'

@@ -97,7 +97,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Cache Electron
+      - name: Use Electron cache
         uses: actions/cache@v4
         with:
           path: ${{ env.ELECTRON_CACHE }}
@@ -105,7 +105,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-
 
-      - name: Cache Electron Builder
+      - name: Use Electron Builder cache
         uses: actions/cache@v4
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
@@ -113,7 +113,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Cache Playwright
+      - name: Use Playwright cache
         id: playwright-cache
         uses: actions/cache@v4
         with:
