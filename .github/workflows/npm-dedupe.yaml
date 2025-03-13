@@ -64,7 +64,9 @@ jobs:
           command: npm ci
 
       - name: npm dedupe
-        run: npm install --prefer-dedupe
+        run: |
+          npm install --prefer-dedupe --loglevel error 2>&1 | tee .github/update.log || true
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
 
       - name: Check for changes
         run: |
@@ -94,6 +96,12 @@ jobs:
           label: automated
           title: Automated npm dedupe
           get_diff: true
+
+      - name: Update pull request description
+        if: env.changes == 'true'
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --body-file .github/pr_body.log
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Close pull request
         if: env.changes == 'false'
