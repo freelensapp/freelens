@@ -40,6 +40,7 @@ jobs:
     env:
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
 
     steps:
       - name: Checkout
@@ -80,6 +81,14 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
 
+      - name: Get Playwright version
+        shell: bash
+        run: echo "playwright_version=$(yq -r '.packages["node_modules/playwright"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Get Kubernetes version (Linux)
+        if: runner.os == 'Linux'
+        run: echo "kubernetes_version=$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
+
       - name: Use npm cache
         uses: actions/cache@v4
         with:
@@ -91,7 +100,7 @@ jobs:
       - name: Cache Electron
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.cache/electron
+          path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-
@@ -99,14 +108,18 @@ jobs:
       - name: Cache Electron Builder
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.cache/electron-builder
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Get Kubernetes version (Linux)
-        if: runner.os == 'Linux'
-        run: echo "kubernetes_version=$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
+      - name: Cache Playwright
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
       - name: Install minikube (Linux)
         if: runner.os == 'Linux'
@@ -127,22 +140,9 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
 
-      - name: Detect Playwright version
-        shell: bash
-        run: echo "PLAYWRIGHT_VERSION=$(npm ll -p --depth=0 playwright | cut -d@ -f2)" >> $GITHUB_ENV
-
       - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Use Playwright cache
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ${{ runner.os == 'Windows' && format('{0}{1}', env.HOME, '\AppData\Local\ms-playwright') || runner.os == 'Linux' && '~/.cache/ms-playwright' || '~/Library/Caches/ms-playwright' }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
