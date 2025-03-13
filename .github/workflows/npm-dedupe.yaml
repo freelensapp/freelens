@@ -63,9 +63,9 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: npm dedupe
+      - name: Run npm dedupe
         run: |
-          npm install --prefer-dedupe --loglevel error 2>&1 | tee .github/update.log || true
+          npm install --prefer-dedupe --no-fund --loglevel error 2>&1 | tee .github/update.log || true
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
 
       - name: Check for changes

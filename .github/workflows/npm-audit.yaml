@@ -63,10 +63,12 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: npm audit
+      - name: Run npm audit
         run: |
-          npm audit fix --loglevel error 2>&1 | tee .github/update.log || true
-          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
+          npm audit report --loglevel error 2>&1 | tee .github/report.log || true
+          npm audit fix --no-fund --loglevel error 2>&1 | tee .github/fix.log || true
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/report.log > .github/pr_body.log
+          sed -e 's/\x1b\[[0-9;]*m//g' -e '/^# npm audit report/,$d' .github/fix.log >> .github/pr_body.log
 
       - name: Check for changes
         run: |
