@@ -14,10 +14,18 @@ export function getClusterIdFromHost(host: string): ClusterId | undefined {
   // e.g host == "%clusterId.localhost:45345"
   const subDomains = host.split(":")[0].split(".");
 
-  if (subDomains.length < 2) return;
-  if (subDomains[1] != "renderer" && subDomains[1] != "localhost") return;
+  if (subDomains.length === 0) return undefined;
 
-  return subDomains[0];
+  if (subDomains[subDomains.length - 1] === "localhost") {
+    subDomains.pop();
+  } else if (
+    subDomains.length >= 3 &&
+    subDomains.slice(-3).join(".") === "renderer.freelens.app"
+  ) {
+    subDomains.splice(-3);
+  }
+
+  return subDomains[subDomains.length - 1];
 }
 
 /**
