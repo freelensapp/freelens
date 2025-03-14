@@ -1,4 +1,7 @@
-@include theme-light {
+@use "../mixins";
+@use "../vars" as *;
+
+@include mixins.theme-light {
   .NamespaceSelectFilter {
     --gradientColor: white;
   }

@@ -1,3 +1,4 @@
+@use "sass:list";
 //-- Flexbox
 .flex {
   display: flex;
@@ -42,9 +43,9 @@
   }
 
   $flex: flex-start flex-end center;
-  $justifyContent: join($flex, space-around space-between);
-  $alignContent: join($justifyContent, stretch);
-  $alignItems: join($flex, stretch baseline);
+  $justifyContent: list.join($flex, space-around space-between);
+  $alignContent: list.join($justifyContent, stretch);
+  $alignItems: list.join($flex, stretch baseline);
 
   // align items in x-axis for flex=row (default) and in y-axis when flex=column mode
   @each $mod in $justifyContent {

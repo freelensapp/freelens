@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./drawer-title.module.css";
+import "./drawer-title.scss";
 import React from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
@@ -28,9 +28,9 @@ export interface DrawerTitleProps {
 export function DrawerTitle({ className, children, size = "title" }: DrawerTitleProps) {
   return (
     <div
-      className={cssNames(styles.DrawerTitle, className, {
-        [styles.title]: size === "title",
-        [styles["sub-title"]]: size === "sub-title",
+      className={cssNames("DrawerTitle", className, {
+        title: size === "title",
+        "sub-title": size === "sub-title",
       })}
     >
       {children}

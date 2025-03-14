@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars" as *;
+
 .AddRemoveButtons {
   position: absolute;
   margin: $padding * 2;

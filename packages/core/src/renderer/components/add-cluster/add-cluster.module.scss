@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../../components/mixins.scss";
+@use "../../components/mixins.scss";
 
 .AddClusters {
   --flex-gap: calc(var(--unit) * 2);
@@ -24,7 +24,7 @@
   border-radius: var(--border-radius);
 }
 
-@include theme-light {
+@include mixins.theme-light {
   .editor {
     border-color: var(--borderFaintColor);
   }

@@ -1,3 +1,5 @@
+@use "sass:color";
+@use "sass:math";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -14,7 +16,7 @@
   cursor: pointer;
   border-radius: var(--border-radius);
   background: var(--buttonDefaultBackground);
-  padding: round(8px * .9) 8px * 1.5;
+  padding: math.round(8px * .9) 8px * 1.5;
   flex-shrink: 0;
   line-height: 1;
   font-size: var(--font-size);
@@ -91,7 +93,7 @@
       top: 0;
       width: 0;
       height: 100%;
-      background: transparentize(white, .85);
+      background: color.adjust(white, $alpha: -.85);
       animation: waiting 1.5s infinite linear;
     }
   }
@@ -112,7 +114,7 @@
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background: transparentize(white, .85);
+    background: color.adjust(white, $alpha: -.85);
     transform-origin: left top;
     transition: transform 150ms;
     transform: rotate(0deg);

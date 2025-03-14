@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../storage/storage-mixins";
+@use "../storage/storage-mixins";
+@use "../table/table.mixins";
 
 .PersistentVolumes {
   .TableCell {
@@ -12,7 +13,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.storage {
@@ -32,7 +33,7 @@
     }
 
     &.status {
-      @include pv-status-colors;
+      @include storage-mixins.pv-status-colors;
     }
 
     &.age {
