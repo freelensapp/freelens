@@ -5,8 +5,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: What would you like to be added
-      description: What is the problem? A clear and concise description of the bug.
+      label: What would you like to be added?
     validations:
       required: true
 
