@@ -66,13 +66,13 @@ jobs:
         env:
           newversion: ${{ github.event.inputs.newversion }}
 
-      - name: Reinstall npm dependencies
+      - name: Update npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 5
           max_attempts: 3
           retry_on: error
-          command: npm ci
+          command: npm install
 
       - name: Check for changes
         run: |
