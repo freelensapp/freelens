@@ -58,6 +58,7 @@ jobs:
           popd
           jq -r .version freelens/package.json > .github/version.log
           git checkout freelens/package.json
+          git checkout package-lock.json
           version=$(cat .github/version.log)
           find -name package.json ! -wholename '*/node_modules/*' | xargs grep -l peerDependencies | xargs -n1 yq -i '.peerDependencies = .peerDependencies + (.peerDependencies | with_entries(select (.key == "@freelensapp/*") | .value = "^'"$version"'"))'
           npx -y lerna version --no-git-tag-version --yes --loglevel=error "$version" | tee .github/update.log
