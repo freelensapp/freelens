@@ -149,6 +149,14 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
+      - name: Install npm dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: npm ci
+
       - name: Rebuild for arch (Linux arm64)
         if: runner.os == 'Linux' && matrix.arch == 'arm64'
         run: npm run rebuild -- -- -a arm64
