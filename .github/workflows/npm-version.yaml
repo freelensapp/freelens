@@ -42,7 +42,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install dependencies for plugin
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 5
@@ -65,6 +65,14 @@ jobs:
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$version"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
         env:
           newversion: ${{ github.event.inputs.newversion }}
+
+      - name: Reinstall npm dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_on: error
+          command: npm ci
 
       - name: Check for changes
         run: |
