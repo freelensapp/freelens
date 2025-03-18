@@ -406,7 +406,7 @@ jobs:
               *-*) dist_tag=next;;
               *) dist_tag=latest;;
             esac
-            npx -y lerna lerna \
+            npx -y lerna \
               publish from-package \
               --no-push \
               --no-git-tag-version \
