@@ -164,11 +164,6 @@ jobs:
           CC: aarch64-linux-gnu-gcc
           CXX: aarch64-linux-gnu-g++
 
-      - name: Monkey patch FPM arguments for RPM (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: |
-          sed -i 's/\? "aarch64" : "arm64"/|| targetName === "rpm" &/' node_modules/builder-util/out/arch.js
-
       - name: Rebuild for arch (macOS x64)
         if: runner.os == 'macOS' && matrix.arch == 'x64'
         run: npm run rebuild -- -- -a x64
