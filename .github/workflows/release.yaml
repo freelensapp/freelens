@@ -357,7 +357,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
-    environment: publish
+    environment: publishing
 
     steps:
       - name: Checkout
