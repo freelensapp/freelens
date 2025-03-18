@@ -22,7 +22,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
-    environment: publishing
+    # environment: publishing
 
     steps:
       - name: Checkout
