@@ -246,7 +246,7 @@ jobs:
             --${{ matrix.arch }}
 
       - name: Azure Trusted Signing (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64' && github.ref_name == 'main' && github.event_name != 'pull_request'
+        if: runner.os == 'Windows' && matrix.arch == 'x64'
         uses: azure/trusted-signing-action@v0.5.1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
