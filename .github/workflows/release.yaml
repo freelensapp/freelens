@@ -392,9 +392,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Reset Git working directory
-        run: git reset --hard
-
       - name: Publish npm packages
         uses: nick-fields/retry@v3
         with:
@@ -402,6 +399,7 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: |
+            git reset --hard
             case "${GITHUB_REF_NAME}" in
               *-*) dist_tag=next;;
               *) dist_tag=latest;;

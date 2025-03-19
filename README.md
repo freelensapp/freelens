@@ -13,6 +13,7 @@
 [![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
+[![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
 <!-- markdownlint-enable MD013 -->
 
@@ -32,6 +33,8 @@ download the right package for your system.
 
 ### macOS
 
+macOS 11 or later is required.
+
 Download either the PKG (installer) or DMG (image) package from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
 (M1 chip or newer) and amd64 (Intel) variants are available.
@@ -48,6 +51,10 @@ brew install --cask freelens
 ```
 
 ### Linux
+
+Linux with GNU C Library 2.34 or later is required. It is provided ie. by
+Debian 12, Fedora 35, Mint 21, openSUSE Leap 15.4, Ubuntu 22.04 and by
+rolling release distributions like Arch, Manjaro or Tumbleweed.
 
 Download DEB or RPM (package) or AppImage (executable) from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
@@ -110,6 +117,8 @@ sudo apt install freelens
 ```
 
 ### Windows
+
+Windows 10 or later is required.
 
 Download the EXE or MSI installers from the
 [releases](https://github.com/freelensapp/freelens/releases) page.
