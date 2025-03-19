@@ -42,7 +42,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install dependencies for plugin
+      - name: Install npm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 5
@@ -61,10 +61,19 @@ jobs:
           version=$(cat .github/version.log)
           find -name package.json ! -wholename '*/node_modules/*' | xargs grep -l peerDependencies | xargs -n1 yq -i '.peerDependencies = .peerDependencies + (.peerDependencies | with_entries(select (.key == "@freelensapp/*") | .value = "^'"$version"'"))'
           npx -y lerna version --no-git-tag-version --yes --loglevel=error "$version" | tee .github/update.log
+          git checkout package-lock.json
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$version"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
         env:
           newversion: ${{ github.event.inputs.newversion }}
+
+      - name: Update npm dependencies
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_on: error
+          command: npm install
 
       - name: Check for changes
         run: |

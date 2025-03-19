@@ -20,7 +20,7 @@ const server = new WebpackDevServer({
   headers: {
     "Access-Control-Allow-Origin": "*",
   },
-  allowedHosts: ".lens.app",
+  allowedHosts: ".renderer.freelens.app",
   host: "127.0.0.1",
   port: webpackDevServerPort,
   static: buildDir, // aka `devServer.contentBase` in webpack@4
@@ -31,9 +31,13 @@ const server = new WebpackDevServer({
     index: "index.html",
     publicPath: "/build",
   },
-  proxy: {
-    "^/$": "/build/",
-  },
+  proxy: [
+    {
+      pathRewrite: {
+        "^/$": "/build/",
+      },
+    },
+  ],
   client: {
     overlay: false, // don't show warnings and errors on top of rendered app view
     logging: "error",

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/button",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Highly extendable button in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -33,8 +33,8 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelensapp/tooltip": "^1.0.0",
-    "@freelensapp/utilities": "^1.0.0",
+    "@freelensapp/tooltip": "^1.1.0",
+    "@freelensapp/utilities": "^1.1.0",
     "auto-bind": "^4.0.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.4",
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^1.0.0",
-    "@freelensapp/react-testing-library-discovery": "^1.0.0",
-    "@freelensapp/webpack": "^1.0.0",
+    "@freelensapp/eslint-config": "^1.1.0",
+    "@freelensapp/react-testing-library-discovery": "^1.1.0",
+    "@freelensapp/webpack": "^1.1.0",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^12.8.3"
   }

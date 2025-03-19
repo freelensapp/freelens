@@ -26,13 +26,13 @@ import corePackageJson from "@freelensapp/core/package.json";
 
 const renderer: webpack.Configuration = {
   target: "electron-renderer",
-  name: "lens-app-renderer",
+  name: "freelens-app-renderer",
   mode: isDevelopment ? "development" : "production",
   // https://webpack.js.org/configuration/devtool/ (see description of each option)
   devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
   cache: isDevelopment ? { type: "filesystem" } : false,
   entry: {
-    lens: path.resolve(rendererDir, "index.ts"),
+    freelens: path.resolve(rendererDir, "index.ts"),
   },
   output: {
     libraryTarget: "global",

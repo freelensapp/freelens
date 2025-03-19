@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/random",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Highly extendable random in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -32,13 +32,13 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelensapp/feature-core": "^1.0.0",
+    "@freelensapp/feature-core": "^1.1.0",
     "@ogre-tools/injectable": "^17.1.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.1.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.0.0",
-    "@freelensapp/webpack": "^1.0.0"
+    "@freelensapp/eslint-config": "^1.1.0",
+    "@freelensapp/webpack": "^1.1.0"
   }
 }

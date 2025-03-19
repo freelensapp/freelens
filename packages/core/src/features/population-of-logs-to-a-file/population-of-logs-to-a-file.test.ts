@@ -61,7 +61,7 @@ describe("Population of logs to a file", () => {
 
       if (isClusterFrame) {
         windowDi.override(windowLocationInjectable, () => ({
-          host: "some-cluster.some-domain.localhost:irrelevant",
+          host: "some-cluster.localhost:irrelevant",
           port: "irrelevant",
         }));
       }

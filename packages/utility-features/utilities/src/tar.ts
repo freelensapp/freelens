@@ -5,7 +5,7 @@
 
 // Helper for working with tarball files (.tar, .tgz)
 // Docs: https://github.com/npm/node-tar
-import tar from "tar";
+import { list } from "tar";
 import path from "path";
 import type { JsonValue } from "type-fest";
 
@@ -29,7 +29,7 @@ export function readFileFromTar<ParseJson extends boolean>({ tarPath, filePath, 
   return new Promise((resolve, reject) => {
     const fileChunks: Buffer[] = [];
 
-    tar.list({
+    list({
       file: tarPath,
       filter: entryPath => path.normalize(entryPath) === filePath,
       sync: true,
@@ -58,7 +58,7 @@ export function readFileFromTar<ParseJson extends boolean>({ tarPath, filePath, 
 export async function listTarEntries(filePath: string): Promise<string[]> {
   const entries: string[] = [];
 
-  await tar.list({
+  await list({
     file: filePath,
     onentry: (entry) => {
       entries.push(path.normalize(entry.path));

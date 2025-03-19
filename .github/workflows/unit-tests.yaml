@@ -65,7 +65,7 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: Build NPM packages
+      - name: Build npm packages
         run: npm run build
 
       - name: Run test units

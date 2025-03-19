@@ -2,7 +2,7 @@
   "name": "@freelensapp/legacy-extension-example",
   "private": false,
   "description": "An example bundled Freelens extensions using the v1 API",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "commonjs",
   "files": [
     "dist"
@@ -36,7 +36,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "devDependencies": {
-    "@freelensapp/extensions": "^1.0.0",
+    "@freelensapp/extensions": "^1.1.0",
     "@types/node": "^20.17.24",
     "typescript": "^5.8.2",
     "webpack": "^5.98.0",

@@ -24,7 +24,7 @@ const setupDeepLinkingInjectable = getInjectable({
 
       logger.info(`📟 Setting protocol client for freelens://`);
 
-      if (app.setAsDefaultProtocolClient("lens")) {
+      if (app.setAsDefaultProtocolClient("freelens")) {
         logger.info("📟 Protocol client register succeeded ✅");
       } else {
         logger.info("📟 Protocol client register failed ❗");

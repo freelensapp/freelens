@@ -37,26 +37,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
 
+    env:
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
-      - name: Get npm cache directory
-        shell: bash
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
-
-      - name: Use npm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -67,9 +55,72 @@ jobs:
           retry_on: any
           command: brew install python-setuptools
 
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: any
+          command: choco install yq --yes --no-progress
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get npm cache directory
+        shell: bash
+        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r '.packages["node_modules/electron"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Get Electron Builder version
+        shell: bash
+        run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
+
+      - name: Get Playwright version
+        shell: bash
+        run: echo "playwright_version=$(yq -r '.packages["node_modules/playwright"].version' package-lock.json)" >> $GITHUB_ENV
+
       - name: Get Kubernetes version (Linux)
         if: runner.os == 'Linux'
         run: echo "kubernetes_version=$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
+
+      - name: Use npm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.npm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
+
+      - name: Use Electron cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+
+      - name: Use Electron Builder cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+
+      - name: Use Playwright cache
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
       - name: Install minikube (Linux)
         if: runner.os == 'Linux'
@@ -90,22 +141,9 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
 
-      - name: Detect Playwright version
-        shell: bash
-        run: echo "PLAYWRIGHT_VERSION=$(npm ll -p --depth=0 playwright | cut -d@ -f2)" >> $GITHUB_ENV
-
       - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Use Playwright cache
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ${{ runner.os == 'Windows' && format('{0}{1}', env.HOME, '\AppData\Local\ms-playwright') || runner.os == 'Linux' && '~/.cache/ms-playwright' || '~/Library/Caches/ms-playwright' }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -115,13 +153,13 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: Build NPM packages (macOS x64, Linux arm64)
+      - name: Build npm packages (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: npm run build
         env:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
-      - name: Build NPM packages (macOS arm64, Linux x64, Windows)
+      - name: Build npm packages (macOS arm64, Linux x64, Windows)
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: npm run build
 

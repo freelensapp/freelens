@@ -13,7 +13,7 @@ import { buildDir, isDevelopment } from "./vars";
 
 const webpackLensMain = (): webpack.Configuration => {
   return {
-    name: "lens-app-main",
+    name: "freelens-app-main",
     context: __dirname,
     target: "electron-main",
     mode: isDevelopment ? "development" : "production",

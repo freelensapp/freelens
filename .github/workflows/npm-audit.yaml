@@ -63,8 +63,12 @@ jobs:
           retry_on: any
           command: npm ci
 
-      - name: npm audit
-        run: npm audit fix || true
+      - name: Run npm audit
+        run: |
+          npm audit report --loglevel error 2>&1 | tee .github/report.log || true
+          npm audit fix --no-fund --loglevel error 2>&1 | tee .github/fix.log || true
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/report.log > .github/pr_body.log
+          sed -e 's/\x1b\[[0-9;]*m//g' -e '/^# npm audit report/,$d' .github/fix.log >> .github/pr_body.log
 
       - name: Check for changes
         run: |
@@ -94,6 +98,12 @@ jobs:
           label: automated
           title: Automated npm audit
           get_diff: true
+
+      - name: Update pull request description
+        if: env.changes == 'true'
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --body-file .github/pr_body.log
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Close pull request
         if: env.changes == 'false'
