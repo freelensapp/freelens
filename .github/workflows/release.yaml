@@ -39,6 +39,8 @@ jobs:
           mkdir -p freelens/dist
           cd freelens/dist
           gh release download ${version} --pattern '*.exe' --pattern '*.msi'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Azure Trusted Signing (Windows x64)
         if: runner.os == 'Windows' && matrix.arch == 'x64'
