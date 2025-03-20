@@ -32,7 +32,7 @@
     "moment": "^2.30.1",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.2.1",
-    "react": "^17.0.2",
+    "react": "^17.0.2 || ^19.0.0",
     "react-router": "^5.3.4",
     "semver": "^7.3.8",
     "tar": "^7.4.3",
@@ -43,7 +43,7 @@
     "@freelensapp/webpack": "^1.1.0",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.16",
-    "@types/react": "^17.0.83",
+    "@types/react": "^19.0.12",
     "@types/react-router": "^5.1.20",
     "@types/semver": "^7.5.8"
   }
