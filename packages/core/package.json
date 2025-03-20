@@ -77,7 +77,7 @@
     "@freelensapp/test-utils": "^1.1.0",
     "@ogre-tools/linkable": "^17.11.1",
     "@side/jest-runtime": "^1.1.0",
-    "@testing-library/dom": "^9.3.4",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
