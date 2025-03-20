@@ -1,3 +1,6 @@
+@use "../table/table.mixins";
+@use "../vars" as *;
+
 .DeploymentDetails {
   .ReplicaSets {
     position: relative;
@@ -21,7 +24,7 @@
       }
 
       &.warning {
-        @include table-cell-warning;
+        @include table.table-cell-warning;
       }
 
       &.namespace {
@@ -29,7 +32,7 @@
       }
 
       &.actions {
-        @include table-cell-action;
+        @include table.table-cell-action;
       }
     }
   }

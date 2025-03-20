@@ -3,12 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../network/network-mixins";
+
 .PortForwardDetails {
   .SubTitle {
     text-transform: none
   }
 
   .status {
-    @include port-forward-status-colors;
+    @include network-mixins.port-forward-status-colors;
   }
 }

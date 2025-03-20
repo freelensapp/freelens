@@ -3,9 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+@use "../vars" as *;
+
 .PodDetails {
   .status {
-    @include pod-status-colors;
+    @include workloads-mixins.pod-status-colors;
   }
 
   .volume {

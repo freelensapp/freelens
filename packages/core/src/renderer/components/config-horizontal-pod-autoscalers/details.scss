@@ -3,11 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "autoscaler.mixins";
+@use "autoscaler.mixins";
+@use "../vars" as *;
 
 .HpaDetails {
   .status {
-    @include hpa-status-bgc;
+    @include autoscaler.hpa-status-bgc;
   }
 
   .metrics .Table {

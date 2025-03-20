@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../storage/storage-mixins";
+@use "../storage/storage-mixins";
+@use "../vars" as *;
 
 .VolumeDetailsList {
   position: relative;
@@ -30,7 +31,7 @@
     }
 
     &.status {
-      @include pv-status-colors;
+      @include storage-mixins.pv-status-colors;
     }
   }
 }

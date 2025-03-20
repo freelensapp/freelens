@@ -3,14 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+
 .OverviewWorkloadStatus {
-  --workload-status-running: #{$pod-status-running-color};
-  --workload-status-pending: #{$pod-status-pending-color};
-  --workload-status-evicted: #{$pod-status-evicted-color};
-  --workload-status-succeeded: #{$pod-status-succeeded-color};
-  --workload-status-scheduled: #{$cronjob-scheduled};
-  --workload-status-suspended: #{$cronjob-suspended};
-  --workload-status-failed: #{$pod-status-failed-color};
-  --workload-status-terminated: #{$pod-status-terminated-color};
-  --workload-status-unknown: #{$pod-status-unknown-color};
+  --workload-status-running: #{workloads-mixins.$pod-status-running-color};
+  --workload-status-pending: #{workloads-mixins.$pod-status-pending-color};
+  --workload-status-evicted: #{workloads-mixins.$pod-status-evicted-color};
+  --workload-status-succeeded: #{workloads-mixins.$pod-status-succeeded-color};
+  --workload-status-scheduled: #{workloads-mixins.$cronjob-scheduled};
+  --workload-status-suspended: #{workloads-mixins.$cronjob-suspended};
+  --workload-status-failed: #{workloads-mixins.$pod-status-failed-color};
+  --workload-status-terminated: #{workloads-mixins.$pod-status-terminated-color};
+  --workload-status-unknown: #{workloads-mixins.$pod-status-unknown-color};
 }

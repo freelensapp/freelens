@@ -3,21 +3,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+
 .DeploymentDetails {
   .conditions {
     .available {
       color: white;
-      background-color: $deployment-available;
+      background-color: workloads-mixins.$deployment-available;
     }
 
     .progressing {
       color: white;
-      background-color: $deployment-progressing;
+      background-color: workloads-mixins.$deployment-progressing;
     }
 
     .replica-failure {
       color: white;
-      background-color: $deployment-replicafailure;
+      background-color: workloads-mixins.$deployment-replicafailure;
     }
   }
 }

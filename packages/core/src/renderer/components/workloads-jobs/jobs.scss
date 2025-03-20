@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../workloads/workloads-mixins";
+@use "../table/table.mixins";
+@use "../workloads/workloads-mixins";
 
 .Jobs {
   .TableCell {
@@ -12,11 +13,11 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.conditions {
-      @include job-condition-colors;
+      @include workloads-mixins.job-condition-colors;
     }
 
 

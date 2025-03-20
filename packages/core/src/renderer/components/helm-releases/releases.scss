@@ -3,12 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "release.mixins";
+@use "release.mixins";
+@use "../vars" as *;
 
 .HelmReleases {
   .TableCell {
     &.status {
-      @include release-status-colors;
+      @include release.release-status-colors;
     }
 
     &.version {

@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../../../../../../renderer/components/vars" as *;
+
 .AddHelmRepoDialog {
   --flex-gap: #{$margin * 1.5};
 
