@@ -15,6 +15,7 @@ import type { HelmRepo } from "../../common/helm/helm-repo";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
 import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { AsyncResult } from "@freelensapp/utilities";
+import userEvent from "@testing-library/user-event";
 
 describe("add helm repository from list in preferences", () => {
   let builder: ApplicationBuilder;
@@ -26,7 +27,7 @@ describe("add helm repository from list in preferences", () => {
   let callForPublicHelmRepositoriesMock: AsyncFnMock<() => Promise<HelmRepo[]>>;
 
   beforeEach(async () => {
-    builder = getApplicationBuilder();
+    builder = getApplicationBuilder(userEvent.setup({delay: null}));
 
     execFileMock = asyncFn();
     getActiveHelmRepositoriesMock = asyncFn();
@@ -113,7 +114,7 @@ describe("add helm repository from list in preferences", () => {
           beforeEach(async () => {
             getActiveHelmRepositoriesMock.mockClear();
 
-            builder.select.selectOption(
+            await builder.select.selectOption(
               "selection-of-active-public-helm-repository",
               "Some to be added repository",
             );

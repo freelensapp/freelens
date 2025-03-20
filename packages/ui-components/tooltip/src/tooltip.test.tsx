@@ -5,11 +5,12 @@
 
 import { render } from "@testing-library/react";
 import type { RenderResult } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import assert from "assert";
 import React from "react";
 import { computeNextPosition, RectangleDimensions } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
+import "@testing-library/jest-dom";
 
 const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): RectangleDimensions => {
   assert(parts.right >= parts.left);
@@ -24,6 +25,7 @@ const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): Rec
 
 describe("<Tooltip />", () => {
   let requestAnimationFrameSpy: jest.SpyInstance<number, [callback: FrameRequestCallback]>;
+  let user: UserEvent;
 
   beforeEach(() => {
     requestAnimationFrameSpy = jest.spyOn(window, "requestAnimationFrame");
@@ -33,6 +35,7 @@ describe("<Tooltip />", () => {
 
       return 0;
     });
+    user = userEvent.setup();
   });
 
   afterEach(() => {
@@ -52,7 +55,7 @@ describe("<Tooltip />", () => {
     expect(result.baseElement).toMatchSnapshot();
   });
 
-  it("renders to DOM when hovering over target", () => {
+  it("renders to DOM when hovering over target", async () => {
     const result = render(
       <>
         <Tooltip targetId="my-target" data-testid="tooltip" usePortal={false}>
@@ -66,7 +69,7 @@ describe("<Tooltip />", () => {
 
     assert(target);
 
-    userEvent.hover(target);
+    await user.hover(target);
     expect(result.baseElement).toMatchSnapshot();
   });
 
@@ -121,8 +124,8 @@ describe("<Tooltip />", () => {
     });
 
     describe("when hovering over the target element", () => {
-      beforeEach(() => {
-        userEvent.hover(result.getByTestId("target"));
+      beforeEach(async () => {
+        await user.hover(result.getByTestId("target"));
       });
 
       it("renders", () => {
@@ -134,8 +137,8 @@ describe("<Tooltip />", () => {
       });
 
       describe("when no longer hovering the target", () => {
-        beforeEach(() => {
-          userEvent.unhover(result.getByTestId("target"));
+        beforeEach(async () => {
+          await user.unhover(result.getByTestId("target"));
         });
 
         it("renders", () => {
@@ -176,8 +179,8 @@ describe("<Tooltip />", () => {
     });
 
     describe("when hovering over the target element", () => {
-      beforeEach(() => {
-        userEvent.hover(result.getByTestId("target"));
+      beforeEach(async () => {
+        await user.hover(result.getByTestId("target"));
       });
 
       it("renders", () => {
@@ -189,8 +192,8 @@ describe("<Tooltip />", () => {
       });
 
       describe("when no longer hovering the target", () => {
-        beforeEach(() => {
-          userEvent.unhover(result.getByTestId("target"));
+        beforeEach(async () => {
+          await user.unhover(result.getByTestId("target"));
         });
 
         it("renders", () => {
@@ -204,8 +207,8 @@ describe("<Tooltip />", () => {
     });
 
     describe("when hovering over the target's parent element", () => {
-      beforeEach(() => {
-        userEvent.hover(result.getByTestId("target-parent"));
+      beforeEach(async () => {
+        await user.hover(result.getByTestId("target-parent"));
       });
 
       it("renders", () => {
@@ -217,8 +220,8 @@ describe("<Tooltip />", () => {
       });
 
       describe("when no longer hovering the target's parent", () => {
-        beforeEach(() => {
-          userEvent.unhover(result.getByTestId("target-parent"));
+        beforeEach(async () => {
+          await user.unhover(result.getByTestId("target-parent"));
         });
 
         it("renders", () => {

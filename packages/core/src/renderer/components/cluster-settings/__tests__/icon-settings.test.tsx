@@ -11,6 +11,7 @@ import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { ClusterIconSetting } from "../icon-settings";
 import { screen } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import type { ClusterIconSettingComponentProps } from "@freelensapp/cluster-settings";
 import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelensapp/cluster-settings";
@@ -57,6 +58,7 @@ const newSettingsReactComponent = getInjectable({
 describe("Icon settings", () => {
   let rendered: RenderResult;
   let di: DiContainer;
+  let user: UserEvent;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -89,6 +91,8 @@ describe("Icon settings", () => {
     rendered = render(
       <ClusterIconSetting cluster={cluster} entity={clusterEntity} />,
     );
+
+    user = userEvent.setup();
   });
 
   describe("given no external registrations for cluster settings menu injection token", () => {
@@ -97,13 +101,13 @@ describe("Icon settings", () => {
     });
 
     it("has predefined menu item", async () => {
-      userEvent.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
+      await user.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
 
       expect(rendered.getByText("Upload Icon")).toBeInTheDocument();
     });
 
     it("has menu item from build-in registration", async () => {
-      userEvent.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
+      await user.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
 
       expect(rendered.getByText("Clear")).toBeInTheDocument();
     });
@@ -117,7 +121,7 @@ describe("Icon settings", () => {
     });
 
     it("has menu item from external registration", async () => {
-      userEvent.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
+      await user.click(await screen.findByTestId("icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"));
 
       expect(rendered.getByText("Hello World")).toBeInTheDocument();
     });
