@@ -6,7 +6,7 @@ import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";

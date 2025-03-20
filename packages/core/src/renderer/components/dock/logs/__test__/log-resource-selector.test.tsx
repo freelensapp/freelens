@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import * as selectEvent from "react-select-event";
 import { LogResourceSelector } from "../resource-selector";
 import { dockerPod, deploymentPod1, deploymentPod2 } from "./pod.mock";

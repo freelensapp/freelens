@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fireEvent } from "@testing-library/react";
 import type { Toleration } from "@freelensapp/kube-object";
 import { PodTolerations } from "../pod-tolerations";

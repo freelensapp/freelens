@@ -5,7 +5,7 @@
 import React from "react";
 import type { RenderResult } from "@testing-library/react";
 import { screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { KubeObject } from "@freelensapp/kube-object";
 import userEvent from "@testing-library/user-event";
 import { getInjectable } from "@ogre-tools/injectable";

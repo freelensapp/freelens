@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import { SidebarCluster } from "../sidebar-cluster";
