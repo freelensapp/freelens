@@ -57,7 +57,7 @@
     "clean": "rimraf dist static/build",
     "test:unit": "jest --testPathIgnorePatterns integration",
     "test:watch": "func() { jest ${1} --watch --testPathIgnorePatterns integration; }; func",
-    "lint": "eslint --ext js,ts,tsx --max-warnings=0 .",
+    "lint": "PROD=true eslint --ext js,ts,tsx --max-warnings=0 .",
     "lint:fix": "npm run lint -- --fix"
   },
   "config": {
