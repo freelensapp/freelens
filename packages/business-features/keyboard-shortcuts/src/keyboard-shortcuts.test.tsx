@@ -1,4 +1,4 @@
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
@@ -20,6 +20,7 @@ describe("keyboard-shortcuts", () => {
   let di: DiContainer;
   let invokeMock: jest.Mock;
   let rendered: RenderResult;
+  let user: UserEvent;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
@@ -97,6 +98,8 @@ describe("keyboard-shortcuts", () => {
     di.override(renderInjectionToken, () => (application) => {
       rendered = render(application);
     });
+
+    user = userEvent.setup();
   });
 
   describe("when application is started", () => {
@@ -114,25 +117,25 @@ describe("keyboard-shortcuts", () => {
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
-    it("given focus is in the body, when pressing the shortcut, calls shortcut in global scope", () => {
-      userEvent.keyboard("{Escape}");
+    it("given focus is in the body, when pressing the shortcut, calls shortcut in global scope", async () => {
+      await user.keyboard("{Escape}");
 
       expect(invokeMock.mock.calls).toEqual([["esc-in-root"]]);
     });
 
-    it("given focus inside a nested scope, when pressing the shortcut, calls only the callback for the scope", () => {
+    it("given focus inside a nested scope, when pressing the shortcut, calls only the callback for the scope", async () => {
       const result = discover.getSingleElement("keyboard-shortcut-scope", "some-scope");
 
       const discoveredHtml = result.discovered as HTMLDivElement;
 
       discoveredHtml.focus();
 
-      userEvent.keyboard("{Escape}");
+      await user.keyboard("{Escape}");
 
       expect(invokeMock.mock.calls).toEqual([["esc-in-scope"]]);
     });
 
-    it("given conflicting shortcut, when pressing the shortcut, calls both callbacks", () => {
+    it("given conflicting shortcut, when pressing the shortcut, calls both callbacks", async () => {
       const conflictingShortcutInjectable = getInjectable({
         id: "some-conflicting-keyboard-shortcut",
 
@@ -148,7 +151,7 @@ describe("keyboard-shortcuts", () => {
         di.register(conflictingShortcutInjectable);
       });
 
-      userEvent.keyboard("{Escape}");
+      await user.keyboard("{Escape}");
 
       expect(invokeMock.mock.calls).toEqual([["esc-in-root"], ["conflicting-esc-in-root"]]);
     });
@@ -201,7 +204,7 @@ describe("keyboard-shortcuts", () => {
         shouldCallCallback: true,
       },
     ].forEach(({ binding, keyboard, scenario, shouldCallCallback }) => {
-      it(scenario, () => {
+      it(scenario, async () => {
         const invokeMock = jest.fn();
 
         const shortcutInjectable = getInjectable({
@@ -219,7 +222,7 @@ describe("keyboard-shortcuts", () => {
           di.register(shortcutInjectable);
         });
 
-        userEvent.keyboard(keyboard);
+        await user.keyboard(keyboard);
 
         if (shouldCallCallback) {
           expect(invokeMock).toHaveBeenCalled();
@@ -256,14 +259,14 @@ describe("keyboard-shortcuts", () => {
       await startApplication();
     });
 
-    it("when pressing the keyboard shortcut with command, calls the callback", () => {
-      userEvent.keyboard("{Meta>}[KeyK]");
+    it("when pressing the keyboard shortcut with command, calls the callback", async () => {
+      await user.keyboard("{Meta>}[KeyK]");
 
       expect(invokeMock).toHaveBeenCalled();
     });
 
-    it("when pressing the keyboard shortcut with ctrl, does not call the callback", () => {
-      userEvent.keyboard("{Control>}[KeyK]");
+    it("when pressing the keyboard shortcut with ctrl, does not call the callback", async () => {
+      await user.keyboard("{Control>}[KeyK]");
 
       expect(invokeMock).not.toHaveBeenCalled();
     });
@@ -295,14 +298,14 @@ describe("keyboard-shortcuts", () => {
       await startApplication();
     });
 
-    it("when pressing the keyboard shortcut with windows, does not call the callback", () => {
-      userEvent.keyboard("{Meta>}[KeyK]");
+    it("when pressing the keyboard shortcut with windows, does not call the callback", async () => {
+      await user.keyboard("{Meta>}[KeyK]");
 
       expect(invokeMock).not.toHaveBeenCalled();
     });
 
-    it("when pressing the keyboard shortcut with ctrl, calls the callback", () => {
-      userEvent.keyboard("{Control>}[KeyK]");
+    it("when pressing the keyboard shortcut with ctrl, calls the callback", async () => {
+      await user.keyboard("{Control>}[KeyK]");
 
       expect(invokeMock).toHaveBeenCalled();
     });
@@ -334,14 +337,14 @@ describe("keyboard-shortcuts", () => {
       await startApplication();
     });
 
-    it("when pressing the keyboard shortcut with meta, does not call the callback", () => {
-      userEvent.keyboard("{Meta>}[KeyK]");
+    it("when pressing the keyboard shortcut with meta, does not call the callback", async () => {
+      await user.keyboard("{Meta>}[KeyK]");
 
       expect(invokeMock).not.toHaveBeenCalled();
     });
 
-    it("when pressing the keyboard shortcut with ctrl, calls the callback", () => {
-      userEvent.keyboard("{Control>}[KeyK]");
+    it("when pressing the keyboard shortcut with ctrl, calls the callback", async () => {
+      await user.keyboard("{Control>}[KeyK]");
 
       expect(invokeMock).toHaveBeenCalled();
     });

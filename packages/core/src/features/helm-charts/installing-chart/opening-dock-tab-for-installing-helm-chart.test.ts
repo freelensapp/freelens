@@ -22,6 +22,7 @@ import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-
 import requestHelmChartVersionsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import requestHelmChartReadmeInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
 import requestHelmChartValuesInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
+import userEvent from "@testing-library/user-event";
 
 describe("opening dock tab for installing helm chart", () => {
   let builder: ApplicationBuilder;
@@ -31,7 +32,7 @@ describe("opening dock tab for installing helm chart", () => {
   let requestHelmChartValuesMock: jest.Mock;
 
   beforeEach(() => {
-    builder = getApplicationBuilder();
+    builder = getApplicationBuilder(userEvent.setup({delay: null}));
 
     requestHelmChartsMock = asyncFn();
     requestHelmChartVersionsMock = asyncFn();
@@ -247,10 +248,10 @@ describe("opening dock tab for installing helm chart", () => {
             });
 
             describe("when selecting different version", () => {
-              beforeEach(() => {
+              beforeEach(async () => {
                 requestHelmChartReadmeMock.mockClear();
 
-                builder.select
+                await builder.select
                   .openMenu(
                     "helm-chart-version-selector-some-repository-some-name",
                   )

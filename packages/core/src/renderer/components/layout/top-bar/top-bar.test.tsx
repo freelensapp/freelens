@@ -5,7 +5,7 @@
 
 import React from "react";
 import { fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { TopBar } from "./top-bar";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiContainer } from "@ogre-tools/injectable";

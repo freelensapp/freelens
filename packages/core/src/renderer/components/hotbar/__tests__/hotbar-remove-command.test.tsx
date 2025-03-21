@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { HotbarRemoveCommand } from "../hotbar-remove-command";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";

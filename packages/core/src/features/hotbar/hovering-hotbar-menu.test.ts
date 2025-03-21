@@ -4,6 +4,7 @@
  */
 
 import type { RenderResult } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -11,11 +12,14 @@ import { getApplicationBuilder } from "../../renderer/components/test-utils/get-
 describe("hovering hotbar menu tests", () => {
   let builder: ApplicationBuilder;
   let result: RenderResult;
+  let user: UserEvent;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     result = await builder.render();
+
+    user = userEvent.setup({delay: null});
   });
 
   it("renders", () => {
@@ -27,8 +31,8 @@ describe("hovering hotbar menu tests", () => {
   });
 
   describe("when hovering over the hotbar menu", () => {
-    beforeEach(() => {
-      userEvent.hover(result.getByTestId("hotbar-menu-badge-for-Default"));
+    beforeEach(async () => {
+      await user.hover(result.getByTestId("hotbar-menu-badge-for-Default"));
     });
 
     it("renders", () => {

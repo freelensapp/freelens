@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import type { SelectOption } from "./select";
 import { Select } from "./select";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

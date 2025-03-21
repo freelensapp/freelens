@@ -30,7 +30,6 @@ import { getDiForUnitTesting as getRendererDi } from "../../getDiForUnitTesting"
 import { getDiForUnitTesting as getMainDi } from "../../../main/getDiForUnitTesting";
 import assert from "assert";
 import { openMenu } from "react-select-event";
-import userEvent from "@testing-library/user-event";
 import lensProxyPortInjectable from "../../../main/lens-proxy/lens-proxy-port.injectable";
 import type { Route } from "../../../common/front-end-routing/front-end-route-injection-token";
 import type { NavigateToRouteOptions } from "../../../common/front-end-routing/navigate-to-route-injection-token";
@@ -72,6 +71,8 @@ import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getMessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { historyInjectionToken } from "@freelensapp/routing";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
+import type {UserEvent} from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 
 type MainDiCallback = (container: { mainDi: DiContainer }) => void | Promise<void>;
 type WindowDiCallback = (container: { windowDi: DiContainer }) => void | Promise<void>;
@@ -168,8 +169,8 @@ export interface ApplicationBuilder {
   };
   navigateWith: (token: Injectable<() => void, any, void>) => void;
   select: {
-    openMenu: (id: string) => { selectOption: (labelText: string) => void };
-    selectOption: (menuId: string, labelText: string) => void;
+    openMenu: (id: string) => { selectOption: (labelText: string) => Promise<void> };
+    selectOption: (menuId: string, labelText: string) => Promise<void>;
     getValue: (menuId: string) => string;
   };
 }
@@ -179,7 +180,7 @@ interface Environment {
   onAllowKubeResource: () => void;
 }
 
-export const getApplicationBuilder = () => {
+export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
   const mainDi = getMainDi();
 
   runInAction(() => {
@@ -766,11 +767,11 @@ export const getApplicationBuilder = () => {
         openMenu(select);
 
         return {
-          selectOption: selectOptionFor(builder, menuId),
+          selectOption: selectOptionFor(builder, user, menuId),
         };
       },
 
-      selectOption: (menuId, labelText) => selectOptionFor(builder, menuId)(labelText),
+      selectOption: async (menuId, labelText) => await selectOptionFor(builder, user, menuId)(labelText),
 
       getValue: (menuId) => {
         const rendered = builder.applicationWindow.only.rendered;
@@ -853,7 +854,7 @@ const environments = {
   } as Environment,
 };
 
-const selectOptionFor = (builder: ApplicationBuilder, menuId: string) => (labelText: string) => {
+const selectOptionFor = (builder: ApplicationBuilder, user: UserEvent, menuId: string) => async (labelText: string) => {
   const rendered = builder.applicationWindow.only.rendered;
 
   const menuOptions = rendered.baseElement.querySelector<HTMLElement>(
@@ -866,7 +867,7 @@ const selectOptionFor = (builder: ApplicationBuilder, menuId: string) => (labelT
 
   assert(option, `Could not find select option with label "${labelText}" for menu with ID "${menuId}"`);
 
-  userEvent.click(option);
+  await user.click(option);
 };
 
 function enableExtensionFor(di: DiContainer, stateInjectable: Injectable<ObservableMap<string, any>, any, any>) {

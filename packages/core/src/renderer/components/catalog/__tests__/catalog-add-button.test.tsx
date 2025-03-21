@@ -4,6 +4,7 @@
  */
 import React from "react";
 import { screen } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import type { CatalogCategorySpec } from "../../../../common/catalog";
 import { CatalogCategory } from "../../../../common/catalog";
@@ -29,11 +30,14 @@ class TestCatalogCategory extends CatalogCategory {
 
 describe("CatalogAddButton", () => {
   let render: DiRender;
+  let user: UserEvent;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
+
+    user = userEvent.setup();
   });
 
   it("opens Add menu", async () => {
@@ -51,7 +55,7 @@ describe("CatalogAddButton", () => {
 
     render(<CatalogAddButton category={category}/>);
 
-    userEvent.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
+    await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
     await screen.findByTitle("Add from kubeconfig");
   });
 
@@ -79,7 +83,7 @@ describe("CatalogAddButton", () => {
 
     render(<CatalogAddButton category={category}/>);
 
-    userEvent.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
+    await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
 
     await expect(screen.findByTitle("Add from kubeconfig"))
       .rejects

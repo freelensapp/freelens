@@ -2,7 +2,7 @@
   "name": "@freelensapp/keyboard-shortcuts",
   "private": false,
   "version": "1.1.0",
-  "description": "Keyboard shortcuts for Freeens",
+  "description": "Keyboard shortcuts for Freelens",
   "type": "commonjs",
   "files": [
     "dist"
@@ -44,6 +44,7 @@
     "@async-fn/jest": "^1.6.4",
     "@freelensapp/eslint-config": "^1.1.0",
     "@freelensapp/react-testing-library-discovery": "^1.1.0",
-    "@freelensapp/webpack": "^1.1.0"
+    "@freelensapp/webpack": "^1.1.0",
+    "@testing-library/user-event": "^14.6.1"
   }
 }

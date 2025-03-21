@@ -5,9 +5,10 @@
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { render, RenderResult } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import React from "react";
 import { withTooltip } from "./withTooltip";
+import "@testing-library/jest-dom";
 
 type MyComponentProps = {
   text: string;
@@ -24,6 +25,12 @@ const MyComponent = withTooltip(({ text, "data-testid": testId, id, children }: 
 ));
 
 describe("withTooltip tests", () => {
+  let user: UserEvent;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
+
   it("does not render a tooltip when not specified", () => {
     const result = render(<MyComponent text="foobar" />);
 
@@ -48,8 +55,8 @@ describe("withTooltip tests", () => {
     });
 
     describe("when hovering the component", () => {
-      beforeEach(() => {
-        userEvent.hover(result.getByTestId("my-test-id"));
+      beforeEach(async () => {
+        await user.hover(result.getByTestId("my-test-id"));
       });
 
       it("renders", () => {
@@ -76,8 +83,8 @@ describe("withTooltip tests", () => {
     });
 
     describe("when hovering the component", () => {
-      beforeEach(() => {
-        userEvent.hover(result.getByTestId("my-test-id"));
+      beforeEach(async () => {
+        await user.hover(result.getByTestId("my-test-id"));
       });
 
       it("renders", () => {
