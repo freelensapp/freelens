@@ -55,11 +55,6 @@
   background-color: transparent;
 }
 
-::selection {
-  background: var(--primary);
-  color: white;
-}
-
 *:target {
   color: var(--textColorAccent);
 }
