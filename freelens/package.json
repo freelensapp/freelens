@@ -50,12 +50,12 @@
     "welcomeRoute": "/welcome"
   },
   "engines": {
-    "node": "^20.0.0"
+    "node": "^22.0.0"
   },
   "build": {
     "npmRebuild": false,
     "detectUpdateChannel": false,
-    "electronVersion": "34.3.3",
+    "electronVersion": "35.0.3",
     "generateUpdatesFilesForAllChannels": true,
     "files": [
       "static/**/*",
@@ -369,7 +369,7 @@
     "copy-webpack-plugin": "^13.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.11.0",
-    "electron": "^34.3.3",
+    "electron": "^35.0.3",
     "electron-builder": "^26.0.6",
     "esbuild-loader": "^4.3.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
