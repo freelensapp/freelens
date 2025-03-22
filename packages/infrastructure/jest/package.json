@@ -20,7 +20,7 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.4.3",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^12.1.5",
     "@types/jest": "^29.5.14",
     "identity-obj-proxy": "^3.0.0",
