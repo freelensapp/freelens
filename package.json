@@ -19,7 +19,7 @@
     "postdev": "npx -y lerna watch -- npx -y lerna run build --stream --include-dependents --scope \\$LERNA_PACKAGE_NAME",
     "prestart-dev": "cd freelens && npm run build:tray-icons && npm run download:binaries",
     "start-dev": "npx -y lerna run start",
-    "postinstall": "linkable",
+    "postinstall": "linkable && npx -y patch-package@8",
     "lint": "npx -y lerna run lint --stream --no-bail",
     "lint:fix": "npx -y lerna run lint:fix --stream",
     "test:unit": "npx -y lerna run --stream test:unit --no-bail",
