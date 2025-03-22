@@ -21,7 +21,7 @@
   "homepage": "https://github.com/lensapp/lens",
   "scripts": {
     "build": "webpack",
-    "clean": "rimraf dist/",
+    "clean": "shx rm -rf dist/",
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {

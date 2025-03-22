@@ -25,7 +25,7 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "rimraf dist/",
+    "clean": "shx rm -rf dist/",
     "test:unit": "jest --coverage --runInBand",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"

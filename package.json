@@ -14,8 +14,8 @@
     "build:app": "cd freelens && npm run build:app",
     "rebuild": "npx -y lerna run --stream rebuild",
     "clean": "npx -y lerna run clean --stream",
-    "clean:node_modules": "npx -y lerna clean -y && rimraf node_modules",
-    "dev": "cross-env NODE_ENV=development npx -y lerna run build --stream --skip-nx-cache",
+    "clean:node_modules": "npx -y lerna clean -y && shx rm -rf node_modules",
+    "dev": "x-var NODE_ENV=development npx -y lerna run build --stream --skip-nx-cache",
     "postdev": "npx -y lerna watch -- npx -y lerna run build --stream --include-dependents --scope \\$LERNA_PACKAGE_NAME",
     "prestart-dev": "cd freelens && npm run build:tray-icons && npm run download:binaries",
     "start-dev": "npx -y lerna run start",
@@ -36,9 +36,9 @@
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.11.1",
-    "cross-env": "^7.0.3",
     "npm": "10.9.2",
-    "rimraf": "^6.0.1"
+    "shx": "^0.4.0",
+    "x-var": "^2.1.0"
   },
   "engines": {
     "node": ">=20.0.0"

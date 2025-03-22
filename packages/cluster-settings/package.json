@@ -15,12 +15,12 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "shx rm -rf dist/",
     "build": "lens-webpack-build"
   },
   "devDependencies": {
     "@freelensapp/webpack": "^1.1.0",
-    "rimraf": "^6.0.1"
+    "shx": "^0.4.0"
   },
   "peerDependencies": {
     "@ogre-tools/injectable": "^17.2.0"
