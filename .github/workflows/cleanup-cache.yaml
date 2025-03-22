@@ -19,6 +19,7 @@ jobs:
     steps:
       - name: Cleanup cache
         run: gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id' | xargs -n1 -r -t gh cache delete
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
