@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fireEvent } from "@testing-library/react";
 import { ToBottom } from "../to-bottom";
 import { noop } from "@freelensapp/utilities";

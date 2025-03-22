@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { DiContainer } from "@ogre-tools/injectable";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
