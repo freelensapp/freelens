@@ -58,6 +58,7 @@ export class ClusterFrameHandler {
     iframe.id = `cluster-frame-${cluster.id}`;
     iframe.name = cluster.contextName.get();
     iframe.setAttribute("src", getClusterFrameUrl(clusterId));
+    iframe.setAttribute("allow", "clipboard-read; clipboard-write");
     iframe.addEventListener("load", action(() => {
       this.dependencies.logger.info(`[LENS-VIEW]: frame for clusterId=${clusterId} has loaded`);
       const view = this.views.get(clusterId);

@@ -1,0 +1,13 @@
+diff --git a/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js b/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
+index a1deb14..5598b9b 100644
+--- a/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
++++ b/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
+@@ -201,7 +201,7 @@ if (PasteAction) {
+             if (result) {
+                 return CopyPasteController.get(focusedEditor)?.finishedPaste() ?? Promise.resolve();
+             }
+-            else if (platform.isWeb) {
++            else /*if (platform.isWeb)*/ {
+                 // Use the clipboard service if document.execCommand('paste') was not successful
+                 return (async () => {
+                     const clipboardText = await clipboardService.readText();
