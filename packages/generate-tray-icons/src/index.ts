@@ -89,6 +89,7 @@ const getBaseIconImage = async (system: TargetSystems) => {
 }
 
 const generateImage = (image: Buffer, size: number, namePrefix: string) => (
+  console.log(`Generating ${namePrefix}.png ...`),
   sharp(image)
     .resize({ width: size, height: size })
     .png()
@@ -148,7 +149,7 @@ async function getIconImage(system: TargetSystems, filePath: string) {
 }
 
 try {
-  console.log("Generating tray icon pngs");
+  console.log(`Generating tray icon pngs in ${outputFolder}`);
   await mkdir(outputFolder, {
     recursive: true,
   });
