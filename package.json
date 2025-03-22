@@ -30,7 +30,7 @@
     "compute-versions": "npx -y lerna run --stream compute-versions"
   },
   "overrides": {
-    "underscore": "^1.12.1",
+    "underscore": "^1.13.7",
     "react": "^17.0.2",
     "@types/react": "^17.0.84"
   },
