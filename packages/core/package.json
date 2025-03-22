@@ -98,7 +98,7 @@
     "@types/lodash": "^4.17.16",
     "@types/marked": "^4.3.2",
     "@types/memorystream": "^0.3.4",
-    "@types/node": "^20.17.24",
+    "@types/node": "^20.17.25",
     "@types/proper-lockfile": "^4.1.4",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^17.0.83",
