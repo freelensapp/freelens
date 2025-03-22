@@ -5,7 +5,7 @@
 
 import { computed, observable, makeObservable, action } from "mobx";
 import { ipcRendererOn } from "../../../../common/ipc";
-import type { CatalogCategory, CatalogEntity, CatalogEntityData, CatalogCategoryRegistry, CatalogEntityKindData } from "../../../../common/catalog";
+import type { CatalogCategory, CatalogEntity, CatalogEntityData, CatalogCategoryRegistry, CatalogEntityKindData, CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec } from "../../../../common/catalog";
 import "../../../../common/catalog-entities";
 import { iter } from "@freelensapp/utilities";
 import type { Disposer } from "@freelensapp/utilities";
@@ -156,7 +156,7 @@ export class CatalogEntityRegistry {
       iter.reduce(
         this.filters,
         (acc: IterableIterator<CatalogEntity>, cur: (from: CatalogEntity) => boolean) => iter.filter(acc, cur),
-        this.items.get().values(),
+        this.items.get().values() as Iterable<CatalogEntity<CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec>>,
       ),
     );
   }

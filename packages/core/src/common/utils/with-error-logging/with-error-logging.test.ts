@@ -38,7 +38,6 @@ describe("with-error-logging", () => {
       let returnValue: number | undefined;
 
       beforeEach(() => {
-        // eslint-disable-next-line unused-imports/no-unused-vars
         toBeDecorated.mockImplementation((_, __) => 42);
 
         returnValue = decorated("some-parameter", "some-other-parameter");
@@ -61,7 +60,6 @@ describe("with-error-logging", () => {
       let returnValue: number | undefined;
 
       beforeEach(() => {
-        // eslint-disable-next-line unused-imports/no-unused-vars
         toBeDecorated.mockImplementation((_, __) => undefined);
 
         returnValue = decorated("some-parameter", "some-other-parameter");
@@ -84,7 +82,6 @@ describe("with-error-logging", () => {
       let error: Error;
 
       beforeEach(() => {
-        // eslint-disable-next-line unused-imports/no-unused-vars
         toBeDecorated.mockImplementation((_, __) => {
           throw new Error("some-error");
         });

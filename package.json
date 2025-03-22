@@ -31,17 +31,17 @@
   },
   "overrides": {
     "underscore": "^1.12.1",
-    "react": "^17",
-    "@types/react": "^17",
+    "react": "^17.0.2",
+    "@types/react": "^17.0.83",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0"
   },
   "devDependencies": {
-    "@ogre-tools/linkable": "^17.2.0",
+    "@ogre-tools/linkable": "^17.11.1",
     "cross-env": "^7.0.3",
     "electron-rebuild": "^3.2.9",
-    "npm": "10.8.2",
-    "rimraf": "^6.0.0"
+    "npm": "10.9.2",
+    "rimraf": "^6.0.1"
   },
   "engines": {
     "node": ">=20.0.0"

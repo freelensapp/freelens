@@ -249,7 +249,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
 
     if (log.method === "GET" && res.status === 403) {
       this.writeLog({ ...log, error: data });
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
       throw data;
     }
 
@@ -258,7 +258,6 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     this.onError.emit(error, res);
     this.writeLog({ ...log, error });
 
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw error;
   }
 

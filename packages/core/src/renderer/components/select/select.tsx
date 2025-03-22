@@ -14,7 +14,7 @@ import { observer } from "mobx-react";
 import ReactSelect, { components, createFilter } from "react-select";
 import type { Props as ReactSelectProps, GroupBase, MultiValue, OptionsOrGroups, PropsValue, SingleValue } from "react-select";
 import type { LensTheme } from "../../themes/lens-theme";
-import type { StrictReactNode } from "@freelensapp/utilities";
+import type { ObservableHashSet, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import activeThemeInjectable from "../../themes/active.injectable";
@@ -85,7 +85,7 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-export function onMultiSelectFor<Value, Option extends SelectOption<Value>, Group extends GroupBase<Option> = GroupBase<Option>>(collection: Set<Value> | ObservableSet<Value>): SelectProps<Value, Option, true, Group>["onChange"] {
+export function onMultiSelectFor<Value, Option extends SelectOption<Value>, Group extends GroupBase<Option> = GroupBase<Option>>(collection: Set<Value> | ObservableSet<Value> | ObservableHashSet<Value>): SelectProps<Value, Option, true, Group>["onChange"] {
   return action((newValue, meta) => {
     switch (meta.action) {
       case "clear":

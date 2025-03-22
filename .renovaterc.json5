@@ -8,19 +8,35 @@
   "addLabels": [
     "renovate"
   ],
+  "osvVulnerabilityAlerts": true,
+  "postUpdateOptions": [
+    "npmDedupe"
+  ],
+  // always bump depdenencies even when are in the range
+  "rangeStrategy": "bump",
+  // disable autorebasing to save unecessary workflow runs
+  "rebaseWhen": "never",
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
-    "npm",
     // it must be the oldest possible version to get binary compatibility with older OSes 
     "ubuntu"
   ],
   "packageRules": [
+    // peerDependencies are widen
+    {
+      "matchDepTypes": [
+        "peerDependencies"
+      ],
+      "rangeStrategy": "widen",
+      "semanticCommitScope": "peer-deps"
+    },
     // non-major updates only
     {
       "matchDepNames": [
         "@types/node",
-        "electron"
+        "electron",
+        "npm"
       ],
       "matchUpdateTypes": [
         "major"
@@ -44,6 +60,20 @@
     }
   ],
   "customManagers": [
+    // electron
+    {
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "fileMatch": [
+        "^freelens/package\\.json$",
+      ],
+      "matchStrings": [
+        "\"electronVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
+      ],
+      "datasourceTemplate": "npm",
+      "depNameTemplate": "electron",
+      "versioningTemplate": "npm"
+    },
     // bundled freelens-k8s-proxy
     {
       "customType": "regex",

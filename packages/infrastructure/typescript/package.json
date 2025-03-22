@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/typescript",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Typescript configuration for Freelens packages.",
   "type": "commonjs",
   "publishConfig": {
@@ -19,9 +19,9 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "dependencies": {
-    "typescript": "^4.9.5"
+    "typescript": "^5.8.2"
   },
   "devDependencies": {
-    "typescript-plugin-css-modules": "^5.0.1"
+    "typescript-plugin-css-modules": "^5.1.0"
   }
 }

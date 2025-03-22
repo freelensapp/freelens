@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/webpack",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Webpack configurations and scripts for Lens packages.",
   "type": "commonjs",
   "publishConfig": {
@@ -25,19 +25,19 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
-    "@ogre-tools/linkable": "^17.2.0",
-    "@types/webpack-env": "^1.18.0",
-    "css-loader": "^6.7.2",
-    "fork-ts-checker-webpack-plugin": "^7.3.0",
-    "fs-extra": "^9.0.1",
-    "mini-css-extract-plugin": "^2.7.3",
-    "sass": "^1.62.1",
-    "sass-loader": "^13.2.0",
-    "style-loader": "^3.3.1",
-    "tailwindcss": "^3.3.2",
-    "ts-loader": "^9.4.1",
-    "webpack": "^5.81.0",
-    "webpack-cli": "^4.10.0"
+    "@ogre-tools/linkable": "^17.11.1",
+    "@types/webpack-env": "^1.18.8",
+    "css-loader": "^6.11.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "fs-extra": "^9.1.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.85.1",
+    "sass-loader": "^13.3.3",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.17",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
   },
   "peerDependencies": {
     "@ogre-tools/fp": "^17.2.0",
@@ -46,9 +46,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/typescript": "^1.0.0",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
-    "@ogre-tools/test-utils": "^17.2.0",
+    "@freelensapp/typescript": "^1.1.0",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
+    "@ogre-tools/test-utils": "^17.11.1",
     "ts-node": "^10.9.2",
     "webpack-node-externals": "^3.0.0"
   },

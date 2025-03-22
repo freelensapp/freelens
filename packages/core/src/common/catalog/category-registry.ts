@@ -46,8 +46,8 @@ export class CatalogCategoryRegistry {
     return Array.from(
       iter.reduce(
         this.filters,
-        (acc: IterableIterator<CatalogCategory>, cur: (from: CatalogCategory) => boolean) => iter.filter(acc, cur),
-        this.items.values(),
+        iter.filter,
+        this.items.values() as IterableIterator<CatalogCategory>,
       ),
     );
   }

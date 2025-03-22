@@ -1,11 +1,11 @@
-import { createContainer, DiContainer, Injectable } from "@ogre-tools/injectable";
+import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 
 import { registerFeature } from "@freelensapp/feature-core";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
 
 import {
-  EnlistMessageChannelListener,
+  type EnlistMessageChannelListener,
   enlistMessageChannelListenerInjectionToken,
 } from "./features/actual/message/enlist-message-channel-listener-injection-token";
 
@@ -13,8 +13,8 @@ import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 import {
   getMessageChannelListenerInjectable,
-  MessageChannel,
-  MessageChannelListener,
+  type MessageChannel,
+  type MessageChannelListener,
 } from "./features/actual/message/message-channel-listener-injection-token";
 
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";

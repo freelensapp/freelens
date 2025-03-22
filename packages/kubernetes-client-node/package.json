@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Kubernetes client for Freelens",
   "author": {
     "name": "Freelens Authors",
@@ -24,9 +24,13 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@kubernetes/client-node": "^0.18.1"
+    "@kubernetes/client-node": "^0.22.3"
   },
   "devDependencies": {
-    "rimraf": "^6.0.0"
+    "rimraf": "^6.0.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
   }
 }

@@ -292,7 +292,6 @@ const RawIcon = (props: IconProps & Dependencies) => {
 
   if (href) {
     if (hrefIsSafe(href)) {
-      // eslint-disable-next-line jsx-a11y/anchor-has-content
       return <a {...iconProps} href={href} ref={ref} />;
     }
 

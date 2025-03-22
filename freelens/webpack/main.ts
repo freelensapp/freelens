@@ -4,10 +4,9 @@ import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment, mainDir } from "./vars";
-import { platform } from "process";
 
 const main: webpack.Configuration = ({
-  name: "lens-app-main",
+  name: "freelens-app-main",
   context: __dirname,
   target: "electron-main",
   mode: isDevelopment ? "development" : "production",
@@ -44,7 +43,7 @@ const main: webpack.Configuration = ({
         test: /\.ts$/,
         loader: "ts-loader",
         options: {},
-       },
+      },
       ...iconsAndImagesWebpackRules(),
     ],
   },

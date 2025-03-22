@@ -14,6 +14,10 @@ node_modules/
 out/
 icon.iconset/
 
+.cache/
+
+.npmrc
+
 .nx/
 .yalc/
 

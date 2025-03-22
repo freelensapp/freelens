@@ -1,0 +1,17 @@
+name: ✨ Enhancement Request
+description: Suggest an enhancement to the Freelens application
+labels: [enhancement]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What would you like to be added?
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this needed?
+    validations:
+      required: false

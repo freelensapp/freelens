@@ -15,8 +15,8 @@ const setupHostnamesInjectable = getInjectable({
 
       app.commandLine.appendSwitch("host-rules", [
         "MAP localhost 127.0.0.1",
-        "MAP lens.app 127.0.0.1",
-        "MAP *.lens.app 127.0.0.1",
+        "MAP renderer.freelens.app 127.0.0.1",
+        "MAP *.renderer.freelens.app 127.0.0.1",
       ].join());
 
       return undefined;
