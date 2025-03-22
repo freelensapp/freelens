@@ -299,7 +299,7 @@
     "joi": "^17.13.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "marked": "^4.3.0",
+    "marked": "^15.0.7",
     "mobx": "^6.13.7",
     "mobx-observable-history": "^2.0.3",
     "mobx-react": "^7.6.0",
