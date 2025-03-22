@@ -24,7 +24,7 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "shx rm -rf dist/",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand",
     "lint:fix": "lens-lint --fix",
