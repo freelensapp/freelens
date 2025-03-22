@@ -56,7 +56,7 @@ describe("CatalogAddButton", () => {
     render(<CatalogAddButton category={category}/>);
 
     await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
-    await screen.findByTitle("Add from kubeconfig");
+    await screen.findByLabelText("Add from kubeconfig");
   });
 
   it("filters menu items", async () => {
@@ -85,9 +85,9 @@ describe("CatalogAddButton", () => {
 
     await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
 
-    await expect(screen.findByTitle("Add from kubeconfig"))
+    await expect(screen.findByLabelText("Add from kubeconfig"))
       .rejects
       .toThrow();
-    await screen.findByTitle("foobar");
+    await screen.findByLabelText("foobar");
   });
 });
