@@ -30,7 +30,7 @@ export interface OptionalProps {
 export class MarkdownViewer extends Component<MarkdownViewerProps> {
   render() {
     const { className, markdown } = this.props;
-    const html = DOMPurify.sanitize(marked(markdown));
+    const html = DOMPurify.sanitize(marked.parse(markdown) as string);
 
     return (
       <div
