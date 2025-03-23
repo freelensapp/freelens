@@ -1100,12 +1100,40 @@ exports[`add custom helm repository in preferences when navigating to preference
                       Synced Items
                        
                     </div>
-                    <div
-                      class="loading-spinner"
-                    >
+                    <div>
                       <div
-                        class="Spinner singleColor"
-                      />
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -1815,12 +1843,40 @@ exports[`add custom helm repository in preferences when navigating to preference
                       Synced Items
                        
                     </div>
-                    <div
-                      class="loading-spinner"
-                    >
+                    <div>
                       <div
-                        class="Spinner singleColor"
-                      />
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -2641,12 +2697,40 @@ exports[`add custom helm repository in preferences when navigating to preference
                       Synced Items
                        
                     </div>
-                    <div
-                      class="loading-spinner"
-                    >
+                    <div>
                       <div
-                        class="Spinner singleColor"
-                      />
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -3364,12 +3448,40 @@ exports[`add custom helm repository in preferences when navigating to preference
                       Synced Items
                        
                     </div>
-                    <div
-                      class="loading-spinner"
-                    >
+                    <div>
                       <div
-                        class="Spinner singleColor"
-                      />
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -7116,12 +7228,40 @@ exports[`add custom helm repository in preferences when navigating to preference
                       Synced Items
                        
                     </div>
-                    <div
-                      class="loading-spinner"
-                    >
+                    <div>
                       <div
-                        class="Spinner singleColor"
-                      />
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
                     </div>
                   </section>
                 </div>
