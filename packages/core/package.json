@@ -224,7 +224,7 @@
     "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^6.0.0",
     "electron-window-state": "^5.0.3",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^9.0.1 || ^11.0.0",
     "glob-to-regexp": "^0.4.1",
     "grapheme-splitter": "^1.0.4",
     "handlebars": "^4.7.7",
