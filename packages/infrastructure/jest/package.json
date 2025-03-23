@@ -21,7 +21,7 @@
   "homepage": "https://freelens.app",
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^16.2.0",
     "@types/jest": "^29.5.14",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
