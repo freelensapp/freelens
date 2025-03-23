@@ -38,7 +38,7 @@ export const getOverrideFsWithFakes = () => {
       ? opts
       : opts?.mode;
 
-    root.mkdirpSync(path, mode);
+    root.mkdirSync(path, {mode, recursive: true});
   }) as typeof ensureDirSyncImpl;
 
   return (di: DiContainer) => {
