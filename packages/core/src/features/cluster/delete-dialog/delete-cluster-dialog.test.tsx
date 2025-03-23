@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { RenderResult } from "@testing-library/react";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";

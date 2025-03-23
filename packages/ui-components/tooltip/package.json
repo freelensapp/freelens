@@ -48,6 +48,6 @@
     "@freelensapp/react-testing-library-discovery": "^1.1.0",
     "@freelensapp/webpack": "^1.1.0",
     "@testing-library/react": "^12.1.5",
-    "@testing-library/user-event": "^12.8.3"
+    "@testing-library/user-event": "^14.6.1"
   }
 }

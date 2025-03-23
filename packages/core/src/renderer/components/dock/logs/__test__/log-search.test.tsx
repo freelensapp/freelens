@@ -13,6 +13,7 @@ import type { LogTabViewModelDependencies } from "../logs-view-model";
 import { LogTabViewModel } from "../logs-view-model";
 import type { TabId } from "../../dock/store";
 import { LogSearch } from "../search";
+import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import { SearchStore } from "../../../../search-store/search-store";
 
@@ -61,11 +62,14 @@ const getOnePodViewModel = (tabId: TabId, deps: Partial<LogTabViewModelDependenc
 
 describe("LogSearch tests", () => {
   let render: DiRender;
+  let user: UserEvent;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
+
+    user = userEvent.setup();
   });
 
   it("renders w/o errors", () => {
@@ -96,9 +100,9 @@ describe("LogSearch tests", () => {
       />,
     );
 
-    userEvent.click(await screen.findByPlaceholderText("Search..."));
-    userEvent.keyboard("o");
-    userEvent.click(await screen.findByText("keyboard_arrow_up"));
+    await user.click(await screen.findByPlaceholderText("Search..."));
+    await user.keyboard("o");
+    await user.click(await screen.findByText("keyboard_arrow_up"));
     expect(scrollToOverlay).toBeCalled();
   });
 
@@ -118,9 +122,9 @@ describe("LogSearch tests", () => {
       />,
     );
 
-    userEvent.click(await screen.findByPlaceholderText("Search..."));
-    userEvent.keyboard("o");
-    userEvent.click(await screen.findByText("keyboard_arrow_down"));
+    await user.click(await screen.findByPlaceholderText("Search..."));
+    await user.keyboard("o");
+    await user.click(await screen.findByText("keyboard_arrow_down"));
     expect(scrollToOverlay).toBeCalled();
   });
 
@@ -140,8 +144,8 @@ describe("LogSearch tests", () => {
       />,
     );
 
-    userEvent.click(await screen.findByText("keyboard_arrow_down"));
-    userEvent.click(await screen.findByText("keyboard_arrow_up"));
+    await user.click(await screen.findByText("keyboard_arrow_down"));
+    await user.click(await screen.findByText("keyboard_arrow_up"));
     expect(scrollToOverlay).not.toBeCalled();
   });
 });

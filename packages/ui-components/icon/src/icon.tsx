@@ -17,7 +17,6 @@ import Group from "../assets/group.svg";
 import Helm from "../assets/helm.svg";
 import Install from "../assets/install.svg";
 import Kube from "../assets/kube.svg";
-import LensLogo from "../assets/lens-logo.svg";
 import License from "../assets/license.svg";
 import LogoLens from "../assets/logo-lens.svg";
 import Logout from "../assets/logout.svg";
@@ -55,7 +54,6 @@ const localSvgIcons = new Map([
   ["helm", Helm],
   ["install", Install],
   ["kube", Kube],
-  ["lens-logo", LensLogo],
   ["license", License],
   ["logo-lens", LogoLens],
   ["logout", Logout],
@@ -80,7 +78,6 @@ export type NamedSvg =
   | "helm"
   | "install"
   | "kube"
-  | "lens-logo"
   | "license"
   | "logo-lens"
   | "logout"
