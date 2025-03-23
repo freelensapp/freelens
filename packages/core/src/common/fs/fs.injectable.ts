@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ReadOptions } from "fs-extra";
+import type { CopyOptions, EnsureDirOptions, JsonReadOptions } from "fs-extra";
 import fse from "fs-extra";
 
 /**
@@ -40,7 +40,7 @@ const fsInjectable = getInjectable({
 
     return {
       readFile,
-      readJson: readJson as (file: string, options?: ReadOptions | BufferEncoding) => Promise<any>,
+      readJson: readJson as (file: string, options?: JsonReadOptions | BufferEncoding) => Promise<any>,
       writeFile,
       writeJson,
       pathExists,
@@ -53,8 +53,8 @@ const fsInjectable = getInjectable({
       lstat,
       rm,
       access,
-      copy: copy as (src: string, dest: string, options?: fse.CopyOptions) => Promise<void>,
-      ensureDir: ensureDir as (path: string, options?: number | fse.EnsureOptions ) => Promise<void>,
+      copy: copy as (src: string, dest: string, options?: CopyOptions) => Promise<void>,
+      ensureDir: ensureDir as (path: string, options?: number | EnsureDirOptions ) => Promise<void>,
       ensureDirSync,
       createReadStream,
       stat,
