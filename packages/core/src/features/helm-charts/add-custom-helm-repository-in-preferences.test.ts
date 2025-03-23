@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { AsyncFnMock } from "@async-fn/jest";
@@ -289,7 +289,8 @@ describe("add custom helm repository in preferences", () => {
               expect(maximalOptions).toBeInTheDocument();
             });
 
-            it("renders", () => {
+            it("renders", async() => {
+              await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
               expect(rendered.baseElement).toMatchSnapshot();
             });
 
@@ -314,7 +315,8 @@ describe("add custom helm repository in preferences", () => {
                 fireEvent.click(button);
               });
 
-              it("renders", () => {
+              it("renders", async() => {
+                await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
                 expect(rendered.baseElement).toMatchSnapshot();
               });
 
@@ -346,7 +348,8 @@ describe("add custom helm repository in preferences", () => {
                 jest.runOnlyPendingTimers();
               });
 
-              it("renders", () => {
+              it("renders", async() => {
+                await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
                 expect(rendered.baseElement).toMatchSnapshot();
               });
 
