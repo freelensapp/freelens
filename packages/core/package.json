@@ -140,7 +140,7 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-environment-jsdom": "^29.7.0",
     "jest-mock-extended": "^3.0.7",
-    "memfs": "^3.5.3",
+    "memfs": "^4.17.0",
     "memorystream": "^0.3.1",
     "mini-css-extract-plugin": "^2.9.2",
     "mock-http": "^1.1.1",
