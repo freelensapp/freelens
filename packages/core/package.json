@@ -87,7 +87,7 @@
     "@types/color": "^4.0.0",
     "@types/command-line-args": "^5.2.3",
     "@types/crypto-js": "^4.2.2",
-    "@types/fs-extra": "^9.0.13",
+    "@types/fs-extra": "^11.0.4",
     "@types/glob": "^8.1.0",
     "@types/glob-to-regexp": "^0.4.4",
     "@types/hapi__call": "^9.0.3",

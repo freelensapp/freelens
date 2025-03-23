@@ -14,7 +14,7 @@ import type {
 export const getOverrideFsWithFakes = () => {
   const root = createFsFromVolume(Volume.fromJSON({}));
 
-  const readJsonSync = ((file, opts) => {
+  const readJsonSync = ((file: string, opts) => {
     const options = typeof opts === "string"
       ? {
         encoding: opts,
@@ -24,7 +24,7 @@ export const getOverrideFsWithFakes = () => {
 
     return JSON.parse(value, options?.reviver);
   }) as typeof readJsonSyncImpl;
-  const writeJsonSync = ((file, object, opts) => {
+  const writeJsonSync = ((file: string, object, opts) => {
     const options = typeof opts === "string"
       ? {
         encoding: opts,
