@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/test-utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A collection of utilities for testing",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -33,7 +33,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@freelensapp/webpack": "^1.1.0",
+    "@freelensapp/webpack": "^1.1.1",
     "@types/lodash": "^4.17.16"
   }
 }
