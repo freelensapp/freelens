@@ -21,7 +21,7 @@ const goBackMenuItemInjectable = getInjectable({
       webContents
         .getAllWebContents()
         .filter((wc) => wc.getType() === "window")
-        .forEach((wc) => wc.goBack());
+        .forEach((wc) => wc.navigationHistory.goBack());
     },
   }),
 

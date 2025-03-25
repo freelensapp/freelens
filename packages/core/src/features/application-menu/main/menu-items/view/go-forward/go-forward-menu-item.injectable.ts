@@ -21,7 +21,7 @@ const goForwardMenuItemInjectable = getInjectable({
       webContents
         .getAllWebContents()
         .filter((wc) => wc.getType() === "window")
-        .forEach((wc) => wc.goForward());
+        .forEach((wc) => wc.navigationHistory.goForward());
     },
   }),
 
