@@ -4,6 +4,7 @@
  */
 
 import type { MonacoTheme } from "../components/monaco-editor";
+import type { ITheme } from "@xterm/xterm";
 
 export type ThemeId = string;
 export type LensThemeType = "dark" | "light";
@@ -18,29 +19,7 @@ export interface LensTheme {
   isDefault?: boolean;
 }
 
-export type TerminalColorName =
-  | "foreground"
-  | "background"
-  | "cursor"
-  | "cursorAccent"
-  | "selection"
-  | "selectionForeground"
-  | "black"
-  | "red"
-  | "green"
-  | "yellow"
-  | "blue"
-  | "magenta"
-  | "cyan"
-  | "white"
-  | "brightBlack"
-  | "brightRed"
-  | "brightGreen"
-  | "brightYellow"
-  | "brightBlue"
-  | "brightMagenta"
-  | "brightCyan"
-  | "brightWhite";
+export type TerminalColorName = keyof ITheme;
 
 export type LensColorName =
   | "blue"
@@ -126,6 +105,7 @@ export type LensColorName =
   | "clusterMenuBackground"
   | "clusterMenuBorderColor"
   | "clusterMenuCellBackground"
+  | "clusterMenuCellOutline"
   | "clusterSettingsBackground"
   | "addClusterIconColor"
   | "boxShadow"
