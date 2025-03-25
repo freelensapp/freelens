@@ -7,7 +7,7 @@ import "./list.scss";
 
 import type { ForwardedRef } from "react";
 import React from "react";
-import AnsiUp from "ansi_up";
+import { AnsiUp } from "ansi_up";
 import DOMPurify from "dompurify";
 import debounce from "lodash/debounce";
 import { action, computed, observable, makeObservable, reaction } from "mobx";
