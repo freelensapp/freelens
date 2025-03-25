@@ -61,7 +61,7 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "config": {
-    "k8sProxyVersion": "1.2.6",
+    "k8sProxyVersion": "1.2.7",
     "bundledKubectlVersion": "1.32.3",
     "bundledHelmVersion": "3.17.2",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
