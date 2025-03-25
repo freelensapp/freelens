@@ -115,7 +115,7 @@ const addMetricsRouteInjectable = getRouteInjectable({
       } catch (error) {
         prometheusMetadata.success = false;
 
-        logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}:`, error);
+        logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`);
 
         return { response: {}};
       } finally {
