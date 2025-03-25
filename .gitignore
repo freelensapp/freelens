@@ -18,14 +18,9 @@ icon.iconset/
 
 .npmrc
 
-.nx/
-.yalc/
-
 .DS_Store
 .idea/
 .vscode/
 
 docs/extensions/api
 site/
-
-.linkable.json

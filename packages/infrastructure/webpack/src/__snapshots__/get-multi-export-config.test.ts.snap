@@ -25,8 +25,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
             }
           }
         }
-      },
-      LinkablePushPlugin {}
+      }
     ],
     output: {
       path: '/some-working-directory/dist',
@@ -62,8 +61,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
             }
           }
         }
-      },
-      LinkablePushPlugin {}
+      }
     ],
     output: {
       path: '/some-working-directory/dist/some-entrypoint',
@@ -100,7 +98,6 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
           }
         }
       },
-      LinkablePushPlugin {},
       MiniCssExtractPlugin {
         _sortedModulesCache: WeakMap { <items unknown> },
         options: {
