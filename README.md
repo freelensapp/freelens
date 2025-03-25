@@ -60,7 +60,7 @@ Download DEB or RPM (package) or AppImage (executable) from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
 (aarch64) and amd64 (x86_64) variants are available.
 
-All binary packages are built on Ubuntu 20.04 and should be compatible with
+All binary packages are built on Ubuntu 22.04 and should be compatible with
 new systems.
 
 #### AppImage
@@ -115,6 +115,14 @@ curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/f
 sudo apt update
 sudo apt install freelens
 ```
+
+#### Arch User Repository
+
+The package is available on the [Arch User Repository
+(AUR)](https://wiki.archlinux.org/title/Arch_User_Repository).
+
+Check the [freelens-bin](https://aur.archlinux.org/packages/freelens-bin)
+package page.
 
 ### Windows
 
