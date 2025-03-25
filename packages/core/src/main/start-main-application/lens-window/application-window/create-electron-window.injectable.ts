@@ -185,7 +185,7 @@ const createElectronWindowInjectable = getInjectable({
           const wc = browserWindow.webContents;
 
           wc.reload();
-          wc.clearHistory();
+          wc.navigationHistory.clear();
         },
       };
     };
