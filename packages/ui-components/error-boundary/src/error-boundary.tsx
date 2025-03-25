@@ -57,11 +57,11 @@ class NonInjectedErrorBoundary extends React.Component<
             <span className="contrast">{window.location.pathname}</span>
           </h5>
           <p>
-            {"To help us improve the product please report bugs on"}
+            {"To help us improve the product please report bugs on "}
             <a href={forumsUrl} rel="noreferrer" target="_blank">
               Lens Forums
             </a>
-            {" or on our"}
+            {" or on our "}
             <a href={issuesTrackerUrl} rel="noreferrer" target="_blank">
               Github
             </a>
