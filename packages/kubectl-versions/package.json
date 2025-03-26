@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kubectl-versions",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Package of kubectl versions at build time",
   "files": [
     "dist"
@@ -28,7 +28,7 @@
     "@ogre-tools/injectable": "^17.2.0"
   },
   "devDependencies": {
-    "@freelensapp/webpack": "^1.1.1",
+    "@freelensapp/webpack": "^1.1.2",
     "fast-xml-parser": "^5.0.9",
     "semver": "^7.7.1",
     "ts-node": "^10.9.2",

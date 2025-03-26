@@ -2,7 +2,7 @@
   "name": "@freelensapp/extensions",
   "productName": "Freelens extensions",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "copyright": "© 2024-2025 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
@@ -25,7 +25,7 @@
     "clean": "rimraf dist/"
   },
   "dependencies": {
-    "@freelensapp/core": "^1.1.1"
+    "@freelensapp/core": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.17.27",
