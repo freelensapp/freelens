@@ -33,13 +33,14 @@
     "underscore": "^1.12.1",
     "react": "^17.0.2",
     "@types/react": "^17.0.83",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0"
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1"
   },
   "devDependencies": {
     "@ogre-tools/linkable": "^17.11.1",
     "cross-env": "^7.0.3",
     "electron-rebuild": "^3.2.9",
+    "eslint-plugin-security": "^3.0.1",
     "npm": "10.9.2",
     "rimraf": "^6.0.1"
   },

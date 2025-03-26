@@ -156,7 +156,7 @@ export class CatalogEntityRegistry {
       iter.reduce(
         this.filters,
         (acc: IterableIterator<CatalogEntity>, cur: (from: CatalogEntity) => boolean) => iter.filter(acc, cur),
-        this.items.get().values() as Iterable<CatalogEntity<CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec>>,
+        this.items.get().values() as IterableIterator<CatalogEntity<CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec>>,
       ),
     );
   }

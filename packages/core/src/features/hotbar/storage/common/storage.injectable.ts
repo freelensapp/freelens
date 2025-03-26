@@ -71,7 +71,7 @@ const hotbarsPersistentStorageInjectable = getInjectable({
           activeHotbarId.set(data.activeHotbarId);
         }
 
-        const firstHotbarId = iter.first(state.values() as Hotbar[])?.id;
+        const firstHotbarId = iter.first(state.values() as MapIterator<Hotbar>)?.id;
 
         if (!activeHotbarId.get()) {
           activeHotbarId.set(firstHotbarId);
