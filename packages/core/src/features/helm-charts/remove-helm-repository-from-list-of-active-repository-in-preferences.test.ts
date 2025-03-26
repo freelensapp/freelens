@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { AsyncFnMock } from "@async-fn/jest";
@@ -47,7 +47,8 @@ describe("remove helm repository from list of active repositories in preferences
       builder.preferences.navigation.click("kubernetes");
     });
 
-    it("renders", () => {
+    it("renders", async () => {
+      await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
@@ -79,7 +80,8 @@ describe("remove helm repository from list of active repositories in preferences
           fireEvent.click(removeButton);
         });
 
-        it("renders", () => {
+        it("renders", async () => {
+          await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
@@ -112,7 +114,8 @@ describe("remove helm repository from list of active repositories in preferences
             );
           });
 
-          it("renders", () => {
+          it("renders", async () => {
+            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 

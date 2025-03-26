@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { RenderResult } from "@testing-library/react";
+import { waitFor, type RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { AsyncFnMock } from "@async-fn/jest";
@@ -95,7 +95,8 @@ describe("add helm repository from list in preferences", () => {
         ]);
       });
 
-      it("renders", () => {
+      it("renders", async() => {
+        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
@@ -106,7 +107,8 @@ describe("add helm repository from list in preferences", () => {
           );
         });
 
-        it("renders", () => {
+        it("renders", async() => {
+          await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
@@ -120,7 +122,8 @@ describe("add helm repository from list in preferences", () => {
             );
           });
 
-          it("renders", () => {
+          it("renders", async() => {
+            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 
