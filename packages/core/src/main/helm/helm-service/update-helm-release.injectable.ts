@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import tempy from "tempy";
+import { temporaryFile } from "tempy";
 import getHelmReleaseInjectable from "./get-helm-release.injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
 import removePathInjectable from "../../../common/fs/remove.injectable";
@@ -31,7 +31,7 @@ const updateHelmReleaseInjectable = getInjectable({
     return async (cluster: Cluster, releaseName: string, namespace: string, data: UpdateChartArgs) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
       const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
-      const valuesFilePath = tempy.file({ name: "values.yaml" });
+      const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
       logger.debug(`[HELM]: upgrading "${releaseName}" in "${namespace}" to ${data.version}`);
 
