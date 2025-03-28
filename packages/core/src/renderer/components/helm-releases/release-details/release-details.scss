@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../release.mixins";
+@use "../release.mixins";
 
 .ReleaseDetails {
   .DrawerItem {
@@ -16,7 +16,7 @@
   }
 
   .status {
-    @include release-status-bgs;
+    @include release.release-status-bgs;
   }
 
   .chart {

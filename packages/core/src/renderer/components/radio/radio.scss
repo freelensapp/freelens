@@ -1,3 +1,4 @@
+@use "sass:math";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -17,7 +18,7 @@
       border: 1px solid var(--borderFaintColor);
       border-radius: $radius;
       text-align: center;
-      padding: round($padding * .7) $padding;
+      padding: math.round($padding * .7) $padding;
       white-space: nowrap;
       transition: 250ms color;
 
@@ -63,7 +64,7 @@
 }
 
 .Radio {
-  $tickSize: round(1.8 * $unit);
+  $tickSize: math.round(1.8 * $unit);
   $tickColor: currentColor;
   $tickColorActive: var(--colorInfo);
   $tickColorFocus: var(--colorInfo);

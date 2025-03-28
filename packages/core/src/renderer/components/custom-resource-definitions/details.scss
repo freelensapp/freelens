@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "./mixins.scss";
+@use "mixins.scss";
 
 .CustomResourceDefinitionDetails {
   .conditions {
-    @include custom-resource-definitions-condition-colors;
+    @include mixins.custom-resource-definitions-condition-colors;
   }
 
   .Table {

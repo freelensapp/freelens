@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "nodes-mixins";
+@use "nodes-mixins";
 
 .Nodes {
   .TableCell {
@@ -58,7 +58,7 @@
         display: inline-block;
         margin-right: $margin;
 
-        @include node-status-colors;
+        @include nodes-mixins.node-status-colors;
       }
     }
   }

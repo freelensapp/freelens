@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "autoscaler.mixins";
+@use "autoscaler.mixins";
 
 .HorizontalPodAutoscalers {
   .TableCell {
@@ -22,7 +22,7 @@
     &.status {
       flex: 1.5;
       @include table-cell-labels-offsets;
-      @include hpa-status-bgc;
+      @include autoscaler.hpa-status-bgc;
     }
 
     &.age {

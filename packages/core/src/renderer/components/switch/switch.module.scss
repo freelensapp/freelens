@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../../components/mixins.scss";
+@use "../../components/mixins.scss";
 
 .Switch {
   --thumb-size: 20px;
@@ -94,7 +94,7 @@
   }
 }
 
-@include theme-light {
+@include mixins.theme-light {
   .Switch {
     --thumb-color-highlight: hsl(0 0% 0% / 25%);
 

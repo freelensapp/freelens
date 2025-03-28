@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "colors", "media";
+@use "colors";
+@use "media";
 
 // Dimensions
 $unit: 8px;
@@ -33,4 +34,4 @@ $animation-curve-linear-out-slow-in: cubic-bezier(0, 0, 0.2, 1);
 $animation-curve-fast-out-linear-in: cubic-bezier(0.4, 0, 1, 1);
 
 // Import other common vars & mixins
-@import "mixins";
+@use "mixins";

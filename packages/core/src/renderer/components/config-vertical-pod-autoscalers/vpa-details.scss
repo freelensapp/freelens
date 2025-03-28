@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "autoscaler.mixins";
+@use "autoscaler.mixins";
 
 .VpaDetails {
   .status {
-    @include vpa-status-bgc;
+    @include autoscaler.vpa-status-bgc;
   }
 
   .metrics .Table {
