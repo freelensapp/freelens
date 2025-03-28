@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../../table/table.mixins";
+@use "../../vars" as *;
+
 .Roles {
   .help-icon {
     margin-left: $margin * 0.5;
@@ -10,7 +13,7 @@
 
   .TableCell {
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
 

@@ -3,21 +3,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+@use "../vars" as *;
+
 .PodDetailsStatuses {
   span {
     padding-right: $margin;
 
     &.running {
-      color: $pod-status-running-color;
+      color: workloads-mixins.$pod-status-running-color;
     }
     &.pending {
-      color: $pod-status-pending-color;
+      color: workloads-mixins.$pod-status-pending-color;
     }
     &.succeeded {
-      color: $pod-status-succeeded-color;
+      color: workloads-mixins.$pod-status-succeeded-color;
     }
     &.failed {
-      color: $pod-status-failed-color;
+      color: workloads-mixins.$pod-status-failed-color;
     }
   }
 }

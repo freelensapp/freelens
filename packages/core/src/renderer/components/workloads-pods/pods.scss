@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../workloads/workloads-mixins";
+@use "../workloads/workloads-mixins";
+@use "../table/table.mixins";
 
 .Pods {
   .TableCell {
@@ -20,11 +21,11 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.status {
-      @include pod-status-colors;
+      @include workloads-mixins.pod-status-colors;
       flex-grow: 0.7;
     }
   }

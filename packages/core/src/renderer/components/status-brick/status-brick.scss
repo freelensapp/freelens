@@ -3,10 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../workloads/workloads-mixins";
+@use "../workloads/workloads-mixins";
+@use "../vars" as *;
 
 .StatusBrick {
-  @include pod-status-bgs;
+  @include workloads-mixins.pod-status-bgs;
   $brickSize: 8px;
 
   display: inline-block;
@@ -44,4 +45,3 @@
   }
 
 }
-

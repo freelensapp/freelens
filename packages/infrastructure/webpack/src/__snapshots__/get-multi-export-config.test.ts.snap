@@ -148,7 +148,10 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
                 postcssOptions: { plugins: [ 'tailwindcss' ] }
               }
             },
-            { loader: 'sass-loader', options: { sourceMap: false } }
+            {
+              loader: 'sass-loader',
+              options: { api: 'modern', sourceMap: false }
+            }
           ]
         },
         {
