@@ -21,7 +21,7 @@ lint:
     - actionlint@1.7.7
     - git-diff-check
     - markdownlint@0.44.0
-    - renovate@39.213.0
+    - renovate@39.217.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - trufflehog@3.88.18
