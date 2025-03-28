@@ -4,6 +4,7 @@
  */
 
 @use "autoscaler.mixins";
+@use "../table/table.mixins";
 
 .VerticalPodAutoscalers {
   .TableCell {
@@ -12,7 +13,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.metrics {
@@ -21,7 +22,7 @@
 
     &.status {
       flex: 1.5;
-      @include table-cell-labels-offsets;
+      @include table.table-cell-labels-offsets;
       @include autoscaler.vpa-status-bgc;
     }
 

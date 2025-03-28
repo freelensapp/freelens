@@ -17,7 +17,6 @@ export const appName = isDevelopment
   ? `${packageInfo.productName}Dev`
   : packageInfo.productName;
 export const htmlTemplate = path.resolve(rendererDir, "template.html");
-export const sassCommonVars = path.resolve(rendererDir, "components/vars.scss");
 export const webpackDevServerPort = Number(process.env.WEBPACK_DEV_SERVER_PORT) || 9191;
 
 assert(Number.isInteger(webpackDevServerPort), "WEBPACK_DEV_SERVER_PORT environment variable must only be an integer");

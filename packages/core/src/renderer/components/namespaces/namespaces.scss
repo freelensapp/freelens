@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../namespaces/namespaces-mixins";
+@use "../table/table.mixins";
+
 .Namespaces {
   .TableCell {
     &.name {
@@ -10,16 +13,16 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.labels {
       flex: 4;
-      @include table-cell-labels-offsets;
+      @include table.table-cell-labels-offsets;
     }
 
     &.status {
-      @include namespaceStatus;
+      @include namespaces-mixins.namespaceStatus;
     }
   }
 

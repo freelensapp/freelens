@@ -3,7 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../table/table.mixins";
 @use "nodes-mixins";
+@use "../vars" as *;
 
 .Nodes {
   .TableCell {
@@ -13,7 +15,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     .LineProgress {

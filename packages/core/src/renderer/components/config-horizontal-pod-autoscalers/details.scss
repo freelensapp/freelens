@@ -4,6 +4,7 @@
  */
 
 @use "autoscaler.mixins";
+@use "../vars" as *;
 
 .HpaDetails {
   .status {

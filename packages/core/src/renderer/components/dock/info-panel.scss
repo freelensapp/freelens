@@ -3,8 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../mixins";
+
 .InfoPanel {
-  @include hidden-scrollbar;
+  @include mixins.hidden-scrollbar;
 
   background: var(--dockInfoBackground);
   padding: var(--padding) calc(var(--padding) * 2);

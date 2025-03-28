@@ -4,6 +4,7 @@
  */
 
 @use "../workloads/workloads-mixins";
+@use "../vars" as *;
 
 .StatusBrick {
   @include workloads-mixins.pod-status-bgs;
@@ -44,4 +45,3 @@
   }
 
 }
-

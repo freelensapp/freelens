@@ -4,6 +4,7 @@
  */
 
 @use "mixins.scss";
+@use "../vars" as *;
 
 .CustomResourceDefinitionDetails {
   .conditions {

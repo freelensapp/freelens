@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "sass:color";
+@use "../vars" as *;
 
 .Dialog {
   position: fixed;
@@ -17,7 +19,7 @@
   overflow: auto;
 
   &.modal {
-    background: transparentize(#222, .5);
+    background: color.adjust(#222, $alpha: -.5, $space: hsl);
   }
 
   h5 {

@@ -1,5 +1,7 @@
+@use "../../mixins";
+
 .controls {
-  @include hidden-scrollbar;
+  @include mixins.hidden-scrollbar;
 
   display: flex;
   gap: var(--padding);

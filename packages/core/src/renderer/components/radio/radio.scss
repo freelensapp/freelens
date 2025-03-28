@@ -1,8 +1,10 @@
-@use "sass:math";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+@use "sass:math";
+@use "../vars" as *;
 
 .RadioGroup {
   &.disabled {

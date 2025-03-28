@@ -3,11 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "nodes-mixins";
+
 .NodeDetails {
   --status-ready-bg: var(--colorOk);
   --status-default-bg: var(--colorError);
 
   .conditions {
-    @include node-status-bgs;
+    @include nodes-mixins.node-status-bgs;
   }
 }

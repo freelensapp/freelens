@@ -4,6 +4,7 @@
  */
 
 @use "release.mixins";
+@use "../vars" as *;
 
 .HelmReleases {
   .TableCell {

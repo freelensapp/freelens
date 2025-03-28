@@ -3,14 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../network/network-mixins";
+@use "../table/table.mixins";
+
 .PortForwards {
   .TableCell {
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.status {
-      @include port-forward-status-colors;
+      @include network-mixins.port-forward-status-colors;
       flex: 0.6;
     }
 

@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../table/table.mixins";
+
 .PriorityClasses {
   .TableCell {
     &.name {
@@ -10,7 +12,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.keys {
