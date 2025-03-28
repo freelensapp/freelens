@@ -13,7 +13,7 @@ plugins:
 runtimes:
   enabled:
     - go@1.21.0
-    - node@20.18.0
+    - node@20.18.3
     - python@3.11.9
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
@@ -21,7 +21,6 @@ lint:
     - actionlint@1.7.7
     - git-diff-check
     - markdownlint@0.44.0
-    - renovate@39.213.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - trufflehog@3.88.18
@@ -31,6 +30,7 @@ lint:
     - osv-scanner
     - oxipng
     - prettier
+    - renovate
     - svgo
 actions:
   enabled:
