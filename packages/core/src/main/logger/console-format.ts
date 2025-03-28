@@ -8,6 +8,7 @@ import chalk from "chalk";
 import type { InspectOptions } from "util";
 import { inspect } from "util";
 import { omit } from "lodash";
+import type { Format, TransformableInfo } from "logform";
 
 // The following license was copied from https://github.com/duccio/winston-console-format/blob/master/LICENSE
 // This was modified to support formatting causes
@@ -42,13 +43,7 @@ export interface ConsoleFormatOptions {
   inspectOptions?: InspectOptions;
 }
 
-interface TransformableInfo {
-  level: string;
-  message: string;
-  [key: string | symbol]: any;
-}
-
-export class ConsoleFormat {
+export class ConsoleFormat implements Format {
   private static readonly reSpaces = /^\s+/;
   private static readonly reSpacesOrEmpty = /^(\s*)/;
   // eslint-disable-next-line no-control-regex
@@ -76,7 +71,7 @@ export class ConsoleFormat {
   }
 
   private message(info: TransformableInfo, chr: string, color: string): string {
-    const message = info.message.replace(
+    const message = String(info.message).replace(
       ConsoleFormat.reSpacesOrEmpty,
       `$1${color}${chalk.dim(chr)}${chalk.reset(" ")}`,
     );
@@ -102,7 +97,7 @@ export class ConsoleFormat {
     if (info.stack) {
       const error = new Error();
 
-      error.stack = info.stack;
+      error.stack = String(info.stack);
       messages.push(...this.getLines(error));
     }
 
@@ -150,7 +145,7 @@ export class ConsoleFormat {
   }
 
   private write(info: TransformableInfo, messages: string[], color: string): void {
-    const pad = this.pad(info.message);
+    const pad = this.pad(String(info.message));
 
     messages.forEach((line, index, arr) => {
       const lineNumber = chalk.dim(`[${(index + 1).toString().padStart(arr.length.toString().length, " ")}]`);

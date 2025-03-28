@@ -14,12 +14,12 @@ export function handleWindowAction(action: WindowAction) {
 
   switch (action) {
     case WindowAction.GO_BACK: {
-      window.webContents.goBack();
+      window.webContents.navigationHistory.goBack();
       break;
     }
 
     case WindowAction.GO_FORWARD: {
-      window.webContents.goForward();
+      window.webContents.navigationHistory.goForward();
       break;
     }
 
@@ -52,7 +52,7 @@ export function onLocationChange(): void {
 
   const canGoBack = getAllWebContents.some((webContent) => {
     if (webContent.getType() === "window") {
-      return webContent.canGoBack();
+      return webContent.navigationHistory.canGoBack();
     }
 
     return false;
@@ -60,7 +60,7 @@ export function onLocationChange(): void {
 
   const canGoForward = getAllWebContents.some((webContent) => {
     if (webContent.getType() === "window") {
-      return webContent.canGoForward();
+      return webContent.navigationHistory.canGoForward();
     }
 
     return false;

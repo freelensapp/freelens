@@ -2,7 +2,6 @@ import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import type { Configuration } from "webpack";
 import { MakePeerDependenciesExternalPlugin } from "./plugins/make-peer-dependencies-external";
 import { ProtectFromImportingNonDependencies } from "./plugins/protect-from-importing-non-dependencies";
-import { LinkablePushPlugin } from "./plugins/linkable-push-plugin";
 import nodeExternals from "webpack-node-externals";
 
 export type Paths = {
@@ -46,8 +45,6 @@ export const getNodeConfig = ({
         },
       },
     }),
-
-    new LinkablePushPlugin(),
   ],
 
   output: {
