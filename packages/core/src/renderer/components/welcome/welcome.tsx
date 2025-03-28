@@ -7,73 +7,36 @@ import "./welcome.scss";
 import React from "react";
 import { observer } from "mobx-react";
 import type { IComputedValue } from "mobx";
-import Carousel from "react-material-ui-carousel";
 import { Icon } from "@freelensapp/icon";
 import { forumsUrl } from "../../../common/vars";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import welcomeMenuItemsInjectable from "./welcome-menu-items/welcome-menu-items.injectable";
 import type { WelcomeMenuRegistration } from "./welcome-menu-items/welcome-menu-registration";
-import welcomeBannerItemsInjectable from "./welcome-banner-items/welcome-banner-items.injectable";
-import type { WelcomeBannerRegistration } from "./welcome-banner-items/welcome-banner-registration";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 
 export const defaultWidth = 320;
 
 interface Dependencies {
   welcomeMenuItems: IComputedValue<WelcomeMenuRegistration[]>;
-  welcomeBannerItems: IComputedValue<WelcomeBannerRegistration[]>;
   productName: string;
 }
 
 const NonInjectedWelcome = observer(({
   welcomeMenuItems,
-  welcomeBannerItems,
   productName,
 }: Dependencies) => {
-  const welcomeBanners = welcomeBannerItems.get();
-
-  // if there is banner with specified width, use it to calculate the width of the container
-  const maxWidth = Math.max(
-    ...welcomeBanners.map(banner => banner.width ?? 0),
-    defaultWidth,
-  );
-
   return (
     <div className="flex justify-center Welcome align-center" data-testid="welcome-page">
       <div
-        style={{ width: `${maxWidth}px` }}
+        style={{ width: `${defaultWidth}px` }}
         data-testid="welcome-banner-container"
       >
-        {welcomeBanners.length > 0 ? (
-          <Carousel
-            stopAutoPlayOnHover={true}
-            indicators={welcomeBanners.length > 1}
-            autoPlay={true}
-            navButtonsAlwaysInvisible={true}
-            indicatorIconButtonProps={{
-              style: {
-                color: "var(--iconActiveBackground)",
-              },
-            }}
-            activeIndicatorIconButtonProps={{
-              style: {
-                color: "var(--iconActiveColor)",
-              },
-            }}
-            interval={8000}
-          >
-            {welcomeBanners.map((item, index) => (
-              <item.Banner key={index} />
-            ))}
-          </Carousel>
-        ) : (
-          <Icon
-            svg="logo-lens"
-            className="logo"
-            welcomeLogo={true}
-            data-testid="no-welcome-banners-icon"
-          />
-        )}
+        <Icon
+          svg="logo-lens"
+          className="logo"
+          welcomeLogo={true}
+          data-testid="no-welcome-banners-icon"
+        />
 
         <div className="flex justify-center">
           <div
@@ -135,7 +98,6 @@ const NonInjectedWelcome = observer(({
 export const Welcome = withInjectables<Dependencies>(NonInjectedWelcome, {
   getProps: (di) => ({
     welcomeMenuItems: di.inject(welcomeMenuItemsInjectable),
-    welcomeBannerItems: di.inject(welcomeBannerItemsInjectable),
     productName: di.inject(productNameInjectable),
   }),
 });
