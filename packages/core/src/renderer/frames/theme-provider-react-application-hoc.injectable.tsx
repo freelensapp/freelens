@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material";
 import { defaultMuiBaseTheme } from "../mui-base-theme";
 
 const themeProviderReactApplicationHocInjectable = getInjectable({
@@ -13,8 +13,11 @@ const themeProviderReactApplicationHocInjectable = getInjectable({
 
   instantiate:
     () =>
-      ({ children }) =>
-        <ThemeProvider theme={defaultMuiBaseTheme}>{children}</ThemeProvider>,
+      ({ children }) => (
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={defaultMuiBaseTheme}>{children}</ThemeProvider>
+        </StyledEngineProvider>
+      ),
 
   injectionToken: reactApplicationHigherOrderComponentInjectionToken,
 });

@@ -60,7 +60,7 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
     this.ready = false;
   };
 
-  onChange = (evt: React.ChangeEvent, value: number) => {
+  onChange = (evt: Event, value: number) => {
     this.desiredReplicas = value;
   };
 
