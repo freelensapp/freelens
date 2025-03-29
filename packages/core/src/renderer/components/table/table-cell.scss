@@ -3,6 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../mixins";
+@use "../table/table.mixins";
+@use "../vars" as *;
+
 .TableCell {
   position: relative;
   padding: $padding;
@@ -13,11 +17,11 @@
   align-items: center;
 
   &.menu {
-    @include table-cell-action;
+    @include table.table-cell-action;
   }
 
   &.scrollable {
-    @include hidden-scrollbar;
+    @include mixins.hidden-scrollbar;
     display: flex;
     align-items: center;
 

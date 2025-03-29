@@ -1,3 +1,5 @@
+@use "../../../vars" as *;
+
 .AddClusterRoleBindingDialog {
   .Select + .Select {
     margin-top: $margin *0.5;

@@ -11,7 +11,7 @@ import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import type { WebpackPluginInstance } from "webpack";
 import { optimize, DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
-import { isDevelopment, buildDir, sassCommonVars } from "./vars";
+import { isDevelopment, buildDir } from "./vars";
 
 export function webpackLensRenderer(): webpack.Configuration {
   return {
@@ -186,13 +186,8 @@ export function cssModulesWebpackRule({ styleLoader }: CssModulesWebpackRuleOpti
       {
         loader: "sass-loader",
         options: {
+          api: "modern",
           sourceMap: isDevelopment,
-          additionalData: `@import "${path.basename(sassCommonVars)}";`,
-          sassOptions: {
-            includePaths: [
-              path.dirname(sassCommonVars),
-            ],
-          },
         },
       },
     ],

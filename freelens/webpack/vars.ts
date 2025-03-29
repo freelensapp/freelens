@@ -14,6 +14,5 @@ export const rendererDir = path.join(process.cwd(), "src", "renderer");
 export const publicPath = "/build/";
 export const webpackDevServerPort = Number(process.env.WEBPACK_DEV_SERVER_PORT) || 9191;
 export const htmlTemplate = require.resolve("@freelensapp/core/template.html");
-export const sassCommonVars = require.resolve("@freelensapp/core/vars.scss");
 
 assert(Number.isInteger(webpackDevServerPort), "WEBPACK_DEV_SERVER_PORT environment variable must only be an integer");

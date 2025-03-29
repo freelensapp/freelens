@@ -3,14 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-.ConfigMaps {
+ @use "../table/table.mixins";
+ 
+ .ConfigMaps {
   .TableCell {
     &.name {
       flex: 2;
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.keys {

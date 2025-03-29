@@ -4,12 +4,12 @@
  */
 
 //-- Mixins
-@import "workloads/workloads-mixins";
-@import "storage/storage-mixins";
-@import "nodes/nodes-mixins";
-@import "namespaces/namespaces-mixins";
-@import "table/table.mixins";
-@import "network/network-mixins";
+@use "workloads/workloads-mixins";
+@use "storage/storage-mixins";
+@use "nodes/nodes-mixins";
+@use "namespaces/namespaces-mixins";
+@use "table/table.mixins";
+@use "network/network-mixins";
 
 // Hide scrollbar but keep the element scrollable
 @mixin hidden-scrollbar {

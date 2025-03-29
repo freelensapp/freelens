@@ -6,6 +6,8 @@
 // Custom css-styles for react-select
 // Docs: https://react-select.com/styles
 
+@use "../vars" as *;
+
 html {
   $menuBackgroundColor: var(--contentColor);
 
