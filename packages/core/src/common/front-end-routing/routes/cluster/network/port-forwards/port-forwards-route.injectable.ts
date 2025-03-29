@@ -15,7 +15,7 @@ const portForwardsRouteInjectable = getInjectable({
   id: "port-forwards-route",
 
   instantiate: (): Route<PortForwardsPathParameters> => ({
-    path: "/port-forwards/:forwardport?",
+    path: "/port-forwards{/:forwardport}",
     clusterFrame: true,
     isEnabled: computed(() => true),
   }),

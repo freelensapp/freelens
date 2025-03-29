@@ -16,7 +16,7 @@ const catalogRouteInjectable = getInjectable({
   id: "catalog-route",
 
   instantiate: (): Route<CatalogPathParameters> => ({
-    path: "/catalog/:group?/:kind?",
+    path: "/catalog{/:group}{/:kind}",
     clusterFrame: false,
     isEnabled: computed(() => true),
   }),
