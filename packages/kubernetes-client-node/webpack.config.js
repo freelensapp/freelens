@@ -23,6 +23,9 @@ export default {
       !request.startsWith("@kubernetes/client-node") &&
       !request.startsWith("jsonpath-plus")
     ) {
+      if (request === "node-fetch") {
+        return Promise.resolve(["node-commonjs @freelensapp/node-fetch", "default"]);
+      }
       return Promise.resolve(`node-commonjs ${request}`);
     }
     return Promise.resolve();

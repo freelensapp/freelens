@@ -271,7 +271,7 @@
 
     "packages/kubernetes-client-node": {
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
-      "project": ["dist/*.mjs!", "*.ts"],
+      "project": ["*.js", "*.ts", "dist/*.cjs!", "dist/*.ts"],
       "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]

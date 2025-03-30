@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { HttpError, type KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { ApiException, type KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
@@ -388,12 +388,12 @@ class ClusterConnection {
       const ctx = proxyConfig.getContextObject(this.cluster.contextName.get());
       const namespaceList = [ctx?.namespace].filter(isDefined);
 
-      if (namespaceList.length === 0 && error instanceof HttpError && error.statusCode === 403) {
-        const { response } = error as HttpError & { response: Response };
+      if (namespaceList.length === 0 && error instanceof ApiException && error.code === 403) {
+        const { body } = error;
 
         this.dependencies.logger.info("[CLUSTER]: listing namespaces is forbidden, broadcasting", {
           clusterId: this.cluster.id,
-          error: response.body,
+          error: body,
         });
         this.dependencies.broadcastMessage(clusterListNamespaceForbiddenChannel, this.cluster.id);
       }
