@@ -23,7 +23,7 @@ lint:
     - markdownlint@0.44.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
-    - trufflehog@3.88.18
+    - trufflehog@3.88.20
     - yamllint@1.37.0
   disabled:
     - checkov
