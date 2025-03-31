@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.17.27",
+    "@types/node": "^22.13.11",
     "typescript": "^5.8.2"
   },
   "dependencies": {

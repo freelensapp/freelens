@@ -13,7 +13,7 @@ plugins:
 runtimes:
   enabled:
     - go@1.21.0
-    - node@20.18.3
+    - node@22.14.0
     - python@3.11.9
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:

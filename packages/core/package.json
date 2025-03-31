@@ -68,7 +68,7 @@
     "welcomeRoute": "/welcome"
   },
   "engines": {
-    "node": "^20.0.0"
+    "node": "^22.0.0"
   },
   "devDependencies": {
     "@async-fn/jest": "1.6.4",
@@ -96,7 +96,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.16",
     "@types/memorystream": "^0.3.4",
-    "@types/node": "^20.17.27",
+    "@types/node": "^22.13.11",
     "@types/proper-lockfile": "^4.1.4",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^17.0.84",
@@ -220,7 +220,7 @@
     "conf": "^10.2.0",
     "crypto-js": "^4.2.0",
     "dompurify": "^3.0.0",
-    "electron": "^34.2.0",
+    "electron": "^35.0.3",
     "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^6.0.0",
     "electron-window-state": "^5.0.3",

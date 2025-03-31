@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { RenderResult } from "@testing-library/react";
+import { waitFor, type RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { ReadYamlFile } from "../../common/fs/read-yaml-file.injectable";
@@ -62,7 +62,8 @@ describe("listing active helm repositories in preferences", () => {
       builder.preferences.navigation.click("kubernetes");
     });
 
-    it("renders", () => {
+    it("renders", async() => {
+      await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
@@ -122,7 +123,8 @@ describe("listing active helm repositories in preferences", () => {
         ).not.toBeInTheDocument();
       });
 
-      it("renders", () => {
+      it("renders", async () => {
+        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -164,7 +166,8 @@ describe("listing active helm repositories in preferences", () => {
         ).not.toBeInTheDocument();
       });
 
-      it("renders", () => {
+      it("renders", async() => {
+        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -206,7 +209,8 @@ describe("listing active helm repositories in preferences", () => {
         ).not.toBeInTheDocument();
       });
 
-      it("renders", () => {
+      it("renders", async() => {
+        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -227,7 +231,8 @@ describe("listing active helm repositories in preferences", () => {
         );
       });
 
-      it("renders", () => {
+      it("renders", async() => {
+        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
         expect(rendered.baseElement).toMatchSnapshot();
       });
 

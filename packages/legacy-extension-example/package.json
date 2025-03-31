@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@freelensapp/extensions": "^1.1.2",
-    "@types/node": "^20.17.27",
+    "@types/node": "^22.13.11",
     "typescript": "^5.8.2",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1"
