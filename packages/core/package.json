@@ -123,7 +123,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.11.0",
     "electron-builder": "^26.0.6",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.2",
     "esbuild-loader": "^4.3.0",
     "eslint": "^8.57.1",
     "eslint-import-resolver-typescript": "^4.2.4",
