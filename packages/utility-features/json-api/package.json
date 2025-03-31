@@ -44,7 +44,7 @@
     "@freelensapp/eslint-config": "^1.1.2",
     "@freelensapp/jest": "^1.1.2",
     "@freelensapp/typescript": "^1.1.2",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.14",
     "type-fest": "^2.19.0"
   }
 }

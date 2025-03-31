@@ -96,7 +96,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.16",
     "@types/memorystream": "^0.3.4",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.14",
     "@types/proper-lockfile": "^4.1.4",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^17.0.84",
