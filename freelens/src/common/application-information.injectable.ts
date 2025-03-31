@@ -26,6 +26,8 @@ const applicationInformationInjectable = getInjectable({
       dependencies,
     } = packageJson;
 
+    const publish = (build as any)?.publish;
+
     return {
       version,
       productName,
@@ -37,7 +39,7 @@ const applicationInformationInjectable = getInjectable({
       bundledHelmVersion,
       contentSecurityPolicy,
       welcomeRoute,
-      updatingIsEnabled: (build as any)?.publish?.length > 0,
+      updatingIsEnabled: publish instanceof Array ? publish?.length > 0 : false,
       dependencies,
     };
   },

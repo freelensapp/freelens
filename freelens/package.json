@@ -57,6 +57,7 @@
     "detectUpdateChannel": false,
     "electronVersion": "35.1.2",
     "generateUpdatesFilesForAllChannels": true,
+    "publish": [],
     "files": [
       "static/**/*",
       "!node_modules/@freelensapp/core/node_modules/**/*",

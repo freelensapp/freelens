@@ -70,9 +70,9 @@ Finally, generate binary packages:
 
 ```sh
 # Debian/Ubuntu
-npm run build:app -- -- -- AppImage deb --publish never --arm64
+npm run build:app -- -- -- AppImage deb --arm64
 # MacOS
-npm run build:app -- -- -- dmg pkg --publish never --x86
+npm run build:app -- -- -- dmg pkg --x86
 ```
 
 ### Run app
