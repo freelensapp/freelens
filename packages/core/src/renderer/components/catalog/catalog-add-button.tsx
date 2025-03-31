@@ -5,7 +5,7 @@
 
 import "./catalog-add-button.scss";
 import React from "react";
-import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
+import { SpeedDial, SpeedDialAction } from "@mui/material";
 import { Icon } from "@freelensapp/icon";
 import { observer } from "mobx-react";
 import { observable, makeObservable, action } from "mobx";

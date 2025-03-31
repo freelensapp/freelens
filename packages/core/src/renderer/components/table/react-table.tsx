@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./react-table.module.scss";
+import "./react-table.scss";
 import React, { useCallback, useMemo } from "react";
 import type { Row, UseTableOptions } from "react-table";
 import { useFlexLayout, useSortBy, useTable } from "react-table";
@@ -44,12 +44,12 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
       prepareRow(row);
 
       return (
-        <div className={styles.tr} key={row.id}>
+        <div className="tr" key={row.id}>
           {row.cells.map((cell, index) => (
             <div
               {...cell.getCellProps()}
               key={cell.getCellProps().key}
-              className={cssNames(styles.td, columns[index].accessor)}
+              className={cssNames("td", columns[index].accessor)}
             >
               {cell.render("Cell")}
             </div>
@@ -61,20 +61,20 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
   );
 
   return (
-    <div {...getTableProps()} className={styles.table}>
+    <div {...getTableProps()} className="table">
       {!headless && (
-        <div className={styles.thead}>
+        <div className="thead">
           {headerGroups.map(headerGroup => (
             <div
               {...headerGroup.getHeaderGroupProps()}
               key={headerGroup.getHeaderGroupProps().key}
-              className={styles.tr}
+              className="tr"
             >
               {headerGroup.headers.map(column => (
                 <div
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   key={column.getHeaderProps().key}
-                  className={styles.th}
+                  className="th"
                 >
                   {column.render("Header")}
                   {/* Sort direction indicator */}
@@ -87,7 +87,7 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
                         <Icon
                           material="arrow_drop_down"
                           small
-                          className={styles.disabledArrow}
+                          className="disabledArrow"
                         />
                       )}
                   </span>

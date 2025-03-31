@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars" as *;
+
 @mixin table-cell-action {
   display: flex;
   padding: 0 !important;
@@ -20,6 +22,11 @@
   padding: 0;
 }
 
+@mixin table-cell-labels-offsets {
+  padding-top: $padding * 0.5;
+  padding-bottom: 0;
+}
+
 @mixin table-cell-labels {
   .TableRow {
     .TableCell {
@@ -28,9 +35,4 @@
       }
     }
   }
-}
-
-@mixin table-cell-labels-offsets {
-  padding-top: $padding * 0.5;
-  padding-bottom: 0;
 }

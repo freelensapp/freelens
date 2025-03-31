@@ -3,7 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "../workloads/workloads-mixins";
+@use "../workloads/workloads-mixins";
+@use "../table/table.mixins";
+@use "../vars" as *;
 
 .Deployments {
   .TableCell {
@@ -20,7 +22,7 @@
     }
 
     &.warning {
-      @include table-cell-warning;
+      @include table.table-cell-warning;
     }
 
     &.conditions {
@@ -30,15 +32,15 @@
         margin-right: $margin;
 
         &.available {
-          color: $deployment-available;
+          color: workloads-mixins.$deployment-available;
         }
 
         &.progressing {
-          color: $deployment-progressing;
+          color: workloads-mixins.$deployment-progressing;
         }
 
         &.replica-failure {
-          color: $deployment-replicafailure;
+          color: workloads-mixins.$deployment-replicafailure;
         }
       }
     }

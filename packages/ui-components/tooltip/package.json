@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/tooltip",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Highly extendable tooltip in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -34,7 +34,7 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelensapp/utilities": "^1.1.1",
+    "@freelensapp/utilities": "^1.1.2",
     "auto-bind": "^4.0.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.4",
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^1.1.1",
-    "@freelensapp/react-testing-library-discovery": "^1.1.1",
-    "@freelensapp/webpack": "^1.1.1",
+    "@freelensapp/eslint-config": "^1.1.2",
+    "@freelensapp/react-testing-library-discovery": "^1.1.2",
+    "@freelensapp/webpack": "^1.1.2",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.6.1"
   }

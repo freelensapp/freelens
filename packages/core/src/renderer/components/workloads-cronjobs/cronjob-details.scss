@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../workloads/workloads-mixins";
+@use "../vars" as *;
 
 .CronJobDetails {
   .job {
@@ -17,6 +19,6 @@
   }
 
   .conditions {
-    @include job-condition-bgs;
+    @include workloads-mixins.job-condition-bgs;
   }
 }

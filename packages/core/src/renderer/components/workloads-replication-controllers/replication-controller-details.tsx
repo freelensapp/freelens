@@ -52,7 +52,7 @@ class NonInjectedReplicationControllerDetails<Props extends ReplicationControlle
   }
 
   @action
-  async onScaleSliderChangeCommitted(evt: React.FormEvent<any>, replicas: number) {
+  async onScaleSliderChangeCommitted(evt: React.SyntheticEvent | Event, replicas: number) {
     this.sliderReplicasDisabled = true;
     await this.scale(replicas);
     this.sliderReplicasDisabled = false;

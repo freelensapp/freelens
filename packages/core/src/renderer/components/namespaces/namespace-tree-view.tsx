@@ -5,8 +5,9 @@
 
 import styles from "./namespace-tree-view.module.scss";
 
-import { SvgIcon } from "@material-ui/core";
-import { TreeItem, TreeView } from "@material-ui/lab";
+import { SvgIcon } from "@mui/material";
+import TreeView from "@mui/lab/TreeView";
+import TreeItem, { useTreeItem } from "@mui/lab/TreeItem";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -16,8 +17,11 @@ import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.inject
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { SubnamespaceBadge } from "./subnamespace-badge";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
-import { prevDefault } from "@freelensapp/utilities";
 import type { NamespaceTree } from "./store";
+import type { TreeItemContentProps } from "@mui/lab/TreeItem/TreeItemContent";
+import clsx from "clsx";
+import Typography from "@mui/material/Typography";
+import { prevDefault } from "@freelensapp/utilities";
 
 interface NamespaceTreeViewProps {
   tree: NamespaceTree;
@@ -29,8 +33,76 @@ interface Dependencies {
 }
 
 function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dependencies & NamespaceTreeViewProps) {
-  const [expandedItems, setExpandedItems] = React.useState<string[]>(namespaces.map(ns => ns.getId()));
+  const [expanded, setExpanded] = React.useState<string[]>(namespaces.map(ns => ns.getId()));
+
   const classes = { group: styles.group, label: styles.label };
+
+  const ExpandOnIconClickComponent = React.forwardRef(function ExpandOnIconClickComponent(
+    props: TreeItemContentProps,
+    ref,
+  ) {
+    const {
+      classes,
+      className,
+      label,
+      nodeId,
+      icon: iconProp,
+      expansionIcon,
+      displayIcon,
+    } = props;
+
+    const {
+      disabled,
+      expanded,
+      selected,
+      focused,
+      handleExpansion,
+      handleSelection,
+      preventSelection,
+    } = useTreeItem(nodeId);
+
+    const icon = iconProp || expansionIcon || displayIcon;
+
+    const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      preventSelection(event);
+    };
+
+    const handleExpansionClick = prevDefault((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleExpansion(event));
+
+    const handleSelectionClick = (
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    ) => {
+      handleSelection(event);
+    };
+
+    return (
+      <div
+        className={clsx(className, classes.root, {
+          [classes.expanded]: expanded,
+          [classes.selected]: selected,
+          [classes.focused]: focused,
+          [classes.disabled]: disabled,
+        })}
+        onMouseDown={handleMouseDown}
+        ref={ref as React.Ref<HTMLDivElement>}
+      >
+        <div onClick={handleExpansionClick} className={classes.iconContainer}>
+          {icon}
+        </div>
+        <Typography
+          onClick={handleSelectionClick}
+          component="div"
+          className={classes.label}
+        >
+          {label}
+        </Typography>
+      </div>
+    );
+  });
+
+  const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
+    setExpanded(nodeIds);
+  };
 
   function renderTree(nodes: NamespaceTree) {
     return (
@@ -39,7 +111,7 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         nodeId={nodes.id}
         data-testid={`namespace-${nodes.id}`}
         classes={classes}
-        onIconClick={prevDefault(() => toggleNode(nodes.id))}
+        ContentComponent={ExpandOnIconClickComponent}
         label={(
           <>
             <Link key={nodes.namespace.getId()} to={getDetailsUrl(nodes.namespace.selfLink)}>
@@ -57,14 +129,6 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
     );
   }
 
-  function toggleNode(id: string) {
-    if (expandedItems.includes(id)) {
-      setExpandedItems(expandedItems.filter(item => item !== id));
-    } else {
-      setExpandedItems([...expandedItems, id]);
-    }
-  }
-
   return (
     <div data-testid="namespace-tree-view" className={styles.TreeView}>
       <DrawerTitle>Tree View</DrawerTitle>
@@ -73,7 +137,8 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         defaultCollapseIcon={<MinusSquareIcon />}
         defaultExpandIcon={<PlusSquareIcon />}
         defaultEndIcon={(<div style={{ opacity: 0.3 }}><MinusSquareIcon /></div>)}
-        expanded={expandedItems}
+        expanded={expanded}
+        onNodeToggle={handleToggle}
       >
         {renderTree(tree)}
       </TreeView>

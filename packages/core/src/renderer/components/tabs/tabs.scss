@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../mixins";
+@use "../vars" as *;
+
 .Tabs {
   display: flex;
   user-select: none;
@@ -28,7 +31,7 @@
   }
 
   &.scrollable {
-    @include hidden-scrollbar;
+    @include mixins.hidden-scrollbar;
   }
 }
 

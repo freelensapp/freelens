@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-@import "~@xterm/xterm";
+@use "../../../../../../../node_modules/@xterm/xterm/css/xterm.css" as *;
 
 .TerminalWindow {
   --spacing: calc(var(--unit) * 2);

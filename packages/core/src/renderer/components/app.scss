@@ -3,12 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "sass:meta";
+@use "../components/mixins";
+@use "../components/vars" as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "./flexbox";
-@import "./fonts";
+@include meta.load-css("flexbox");
+@include meta.load-css("fonts");
 
 :root {
   --flex-gap: #{$padding};
@@ -156,7 +160,7 @@ code {
   color: #b4b5b4;
 
   &.block {
-    @include hidden-scrollbar;
+    @include mixins.hidden-scrollbar;
     background: #1a1919;
     display: block;
     white-space: pre;

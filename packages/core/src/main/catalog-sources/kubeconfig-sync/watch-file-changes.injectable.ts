@@ -24,12 +24,23 @@ export type WatchKubeconfigFileChanges = (filepath: string) => [IComputedValue<C
  * This is the list of globs of which files are ignored when under a folder sync
  */
 const ignoreGlobs = [
-  "*.lock", // kubectl lock files
-  "*.swp", // vim swap files
+  "._*", // macOS specific
+  ".#*", // emacs lock files
   ".DS_Store", // macOS specific
+  "*.bak", // backup file
+  "*.lock", // kubectl lock files
+  "*.sw[nop]", // vim swap files
+  "*#", // emacs auto save
+  "*~", // backup file
+  "~*", // backup file
+  "cache", // discovery cache
+  "desktop.ini", // windows specific
+  "kubectx", // kubectx cache
+  "kubens", // kubens cache
+  "Thumbs.db", // windows specific
 ].map(rawGlob => ({
   rawGlob,
-  matcher: GlobToRegExp(rawGlob),
+  matcher: GlobToRegExp(rawGlob, { extended: true }),
 }));
 
 /**

@@ -11,7 +11,6 @@ import type { EntityFilter, CatalogEntityRegistry } from "../renderer/api/catalo
 import type { TopBarRegistration } from "../renderer/components/layout/top-bar/top-bar-registration";
 import type { KubernetesCluster } from "../common/catalog-entities";
 import type { WelcomeMenuRegistration } from "../renderer/components/welcome/welcome-menu-items/welcome-menu-registration";
-import type { WelcomeBannerRegistration } from "../renderer/components/welcome/welcome-banner-items/welcome-banner-registration";
 import type { CommandRegistration } from "../renderer/components/command-palette/registered-commands/commands";
 import type { AppPreferenceRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-registration";
 import type { AdditionalCategoryColumnRegistration } from "../renderer/components/catalog/custom-category-columns";
@@ -68,7 +67,6 @@ export class LensRendererExtension extends LensExtension {
   kubeWorkloadsOverviewItems: WorkloadsOverviewDetailRegistration[] = [];
   commands: CommandRegistration[] = [];
   welcomeMenus: WelcomeMenuRegistration[] = [];
-  welcomeBanners: WelcomeBannerRegistration[] = [];
   catalogEntityDetailItems: CatalogEntityDetailRegistration<CatalogEntity>[] = [];
   topBarItems: TopBarRegistration[] = [];
   additionalCategoryColumns: AdditionalCategoryColumnRegistration[] = [];

@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../../vars" as *;
+
 .AddQuotaDialog {
   .quota-select {
     flex-basis: 55%;
