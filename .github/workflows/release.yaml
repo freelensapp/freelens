@@ -193,7 +193,6 @@ jobs:
             done
             npm run build:app -- -- -- \
               dmg pkg \
-              --publish never \
               --${{ matrix.arch }}
         env:
           APPLEID: ${{ secrets.APPLEID }}
@@ -234,7 +233,6 @@ jobs:
         run: |
           npm run build:app -- -- -- \
             AppImage deb rpm \
-            --publish never \
             --${{ matrix.arch }}
 
       - name: Build Electron app (Windows x64)
@@ -243,7 +241,6 @@ jobs:
         run: |
           npm run build:app -- -- -- \
             msi nsis \
-            --publish never \
             --${{ matrix.arch }}
 
       - name: Azure Trusted Signing (Windows x64)
