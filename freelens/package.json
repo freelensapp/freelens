@@ -349,7 +349,7 @@
     "@electron/notarize": "^3.0.1",
     "@freelensapp/generate-tray-icons": "^1.1.2",
     "@freelensapp/test-utils": "^1.1.2",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.16",
     "@types/byline": "^4.2.36",
     "@types/chart.js": "^2.9.41",
     "@types/color": "^4.0.0",
