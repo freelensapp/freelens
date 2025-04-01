@@ -19,7 +19,7 @@
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
-    // it must be the oldest possible version to get binary compatibility with older OSes 
+    // it must be the oldest possible version to get binary compatibility with older OSes
     "ubuntu"
   ],
   "packageRules": [
