@@ -346,7 +346,7 @@
     "ws": "^8.18.1"
   },
   "devDependencies": {
-    "@electron/notarize": "^1.2.4",
+    "@electron/notarize": "^3.0.1",
     "@freelensapp/generate-tray-icons": "^1.1.2",
     "@freelensapp/test-utils": "^1.1.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
