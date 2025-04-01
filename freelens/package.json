@@ -383,7 +383,7 @@
     "jsonpath-plus": "^10.3.0",
     "mini-css-extract-plugin": "^2.9.2",
     "monaco-editor-webpack-plugin": "^7.1.0",
-    "node-abi": "^3.74.0",
+    "node-abi": "^4.2.0",
     "node-loader": "^2.1.0",
     "nodemon": "^3.1.9",
     "playwright": "^1.33.0",
