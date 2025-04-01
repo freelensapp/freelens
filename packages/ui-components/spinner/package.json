@@ -34,7 +34,7 @@
   },
   "peerDependencies": {
     "@freelensapp/utilities": "^1.1.2",
-    "react": "^17.0.2"
+    "react": "^17.0.2 || ^19.0.0"
   },
   "devDependencies": {
     "@freelensapp/eslint-config": "^1.1.2",
