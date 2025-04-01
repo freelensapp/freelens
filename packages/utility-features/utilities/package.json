@@ -45,6 +45,6 @@
     "@types/lodash": "^4.17.16",
     "@types/react": "^17.0.85",
     "@types/react-router": "^5.1.20",
-    "@types/semver": "^7.5.8"
+    "@types/semver": "^7.7.0"
   }
 }
