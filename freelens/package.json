@@ -386,7 +386,7 @@
     "node-abi": "^4.2.0",
     "node-loader": "^2.1.0",
     "nodemon": "^3.1.9",
-    "playwright": "^1.33.0",
+    "playwright": "^1.51.1",
     "rimraf": "^6.0.1",
     "run-script-os": "^1.1.6",
     "style-loader": "^4.0.0",
