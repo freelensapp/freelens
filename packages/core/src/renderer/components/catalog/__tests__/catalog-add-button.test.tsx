@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import type { CatalogCategorySpec } from "../../../../common/catalog";
@@ -56,6 +56,7 @@ describe("CatalogAddButton", () => {
     render(<CatalogAddButton category={category}/>);
 
     await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
+    await waitFor(() => screen.getByLabelText("SpeedDial CatalogAddButton"));
     await screen.findByLabelText("Add from kubeconfig");
   });
 
@@ -84,6 +85,7 @@ describe("CatalogAddButton", () => {
     render(<CatalogAddButton category={category}/>);
 
     await user.hover(screen.getByLabelText("SpeedDial CatalogAddButton"));
+    await waitFor(() => screen.getByLabelText("SpeedDial CatalogAddButton"));
 
     await expect(screen.findByLabelText("Add from kubeconfig"))
       .rejects

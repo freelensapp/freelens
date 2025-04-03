@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import type { RenderResult } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import assert from "assert";
@@ -70,6 +70,7 @@ describe("<Tooltip />", () => {
     assert(target);
 
     await user.hover(target);
+    await waitFor(() => result.getByTestId("tooltip"));
     expect(result.baseElement).toMatchSnapshot();
   });
 
@@ -126,6 +127,7 @@ describe("<Tooltip />", () => {
     describe("when hovering over the target element", () => {
       beforeEach(async () => {
         await user.hover(result.getByTestId("target"));
+        await waitFor(() => result.getByTestId("target"));
       });
 
       it("renders", () => {
@@ -181,6 +183,7 @@ describe("<Tooltip />", () => {
     describe("when hovering over the target element", () => {
       beforeEach(async () => {
         await user.hover(result.getByTestId("target"));
+        await waitFor(() => result.getByTestId("target"));
       });
 
       it("renders", () => {
@@ -209,6 +212,7 @@ describe("<Tooltip />", () => {
     describe("when hovering over the target's parent element", () => {
       beforeEach(async () => {
         await user.hover(result.getByTestId("target-parent"));
+        await waitFor(() => result.getByTestId("target-parent"));
       });
 
       it("renders", () => {
