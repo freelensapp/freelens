@@ -4,7 +4,7 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { dump } from "js-yaml";
-import tempy from "tempy";
+import { temporaryFile } from "tempy";
 import type { JsonValue } from "type-fest";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
@@ -44,7 +44,7 @@ const installHelmChartInjectable = getInjectable({
       values,
       version,
     }) => {
-      const valuesFilePath = tempy.file({ name: "values.yaml" });
+      const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, dump(values));
 
