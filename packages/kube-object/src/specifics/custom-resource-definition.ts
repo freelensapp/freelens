@@ -104,7 +104,7 @@ export class CustomResourceDefinition extends KubeObject<
 
   getResourceUrl() {
     // TODO: replace this magic string with a use of `customResourcesRouteInjectable` when that is extracted
-    return buildURL("/crd/:group?/:name?", {
+    return buildURL("/crd{/:group}{/:name}", {
       params: {
         group: this.getGroup(),
         name: this.getPluralName(),

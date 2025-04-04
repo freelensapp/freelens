@@ -16,7 +16,7 @@ const helmChartsRouteInjectable = getInjectable({
   id: "helm-charts-route",
 
   instantiate: (): Route<HelmChartsPathParameters> => ({
-    path: "/helm/charts/:repo?/:chartName?",
+    path: "/helm/charts{/:repo}{/:chartName}",
     clusterFrame: true,
     isEnabled: computed(() => true),
   }),

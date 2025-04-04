@@ -37,11 +37,11 @@ export function buildURLPositional<P extends object = {}, Q extends object = {}>
 }
 
 export type UrlParamsFor<Pathname extends string> =
-  Pathname extends `${string}/:${infer A}?/${infer Tail}`
+  Pathname extends `${string}{/:${infer A}}/${infer Tail}`
     ? Partial<Record<A, string>> & UrlParamsFor<`/${Tail}`>
     : Pathname extends `${string}/:${infer A}/${infer Tail}`
       ? Record<A, string> & UrlParamsFor<`/${Tail}`>
-      : Pathname extends `${string}/:${infer A}?`
+      : Pathname extends `${string}{/:${infer A}}`
         ? Partial<Record<A, string>>
         : Pathname extends `${string}/:${infer A}`
           ? Record<A, string>

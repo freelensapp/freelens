@@ -225,7 +225,7 @@ const routeWithOptionalPathParametersInjectable = getInjectable({
   injectionToken: frontEndRouteInjectionToken,
 
   instantiate: (): Route<{ someParameter?: string; someOtherParameter?: string }> => ({
-    path: "/some-path/:someParameter?/:someOtherParameter?",
+    path: "/some-path{/:someParameter}{/:someOtherParameter}",
     clusterFrame: false,
     isEnabled: computed(() => true),
   }),
@@ -249,4 +249,3 @@ const routeWithOptionalPathParametersComponentInjectable = getInjectable({
 
   injectionToken: routeSpecificComponentInjectionToken,
 });
-
