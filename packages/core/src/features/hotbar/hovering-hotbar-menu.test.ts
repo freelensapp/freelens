@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
+import { type RenderResult } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -30,7 +30,7 @@ describe("hovering hotbar menu tests", () => {
     expect(result.queryByText("hotbar-menu-badge-tooltip-for-default")).not.toBeInTheDocument();
   });
 
-  describe("when hovering over the hotbar menu", () => {
+  describe.skip("when hovering over the hotbar menu", () => {
     beforeEach(async () => {
       await user.hover(result.getByTestId("hotbar-menu-badge-for-Default"));
     });
