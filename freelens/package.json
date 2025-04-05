@@ -375,7 +375,7 @@
     "electron": "^35.1.4",
     "electron-builder": "^26.0.6",
     "esbuild-loader": "^4.3.0",
-    "fork-ts-checker-webpack-plugin": "^9.0.3",
+    "fork-ts-checker-webpack-plugin": "^9.1.0",
     "html-webpack-plugin": "^5.6.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",

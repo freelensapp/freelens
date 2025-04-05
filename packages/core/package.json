@@ -132,7 +132,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "fork-ts-checker-webpack-plugin": "^9.0.3",
+    "fork-ts-checker-webpack-plugin": "^9.1.0",
     "ignore-loader": "^0.1.2",
     "include-media": "^2.0.0",
     "jest": "^29.7.0",
