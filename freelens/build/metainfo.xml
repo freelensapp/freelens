@@ -69,7 +69,7 @@
   <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>
-    <release version="1.1.2" date="2025-03-26">
+    <release version="1.2.0" date="2025-04-06">
       <description translatable="no">The latest release.</description>
     </release>
   </releases>
