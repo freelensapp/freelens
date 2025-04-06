@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/notifications",
   "private": false,
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Highly extendable notifications in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -33,17 +33,17 @@
     "lint:fix": "lens-lint --fix"
   },
   "peerDependencies": {
-    "@freelensapp/animate": "^1.1.2",
-    "@freelensapp/application": "^1.1.2",
-    "@freelensapp/event-emitter": "^1.1.2",
-    "@freelensapp/feature-core": "^1.1.2",
-    "@freelensapp/icon": "^1.1.2",
-    "@freelensapp/json-api": "^1.1.2",
-    "@freelensapp/logger": "^1.1.2",
-    "@freelensapp/react-application": "^1.1.2",
-    "@freelensapp/run-many": "^1.1.2",
-    "@freelensapp/tooltip": "^1.1.2",
-    "@freelensapp/utilities": "^1.1.2",
+    "@freelensapp/animate": "^1.2.0",
+    "@freelensapp/application": "^1.2.0",
+    "@freelensapp/event-emitter": "^1.2.0",
+    "@freelensapp/feature-core": "^1.2.0",
+    "@freelensapp/icon": "^1.2.0",
+    "@freelensapp/json-api": "^1.2.0",
+    "@freelensapp/logger": "^1.2.0",
+    "@freelensapp/react-application": "^1.2.0",
+    "@freelensapp/run-many": "^1.2.0",
+    "@freelensapp/tooltip": "^1.2.0",
+    "@freelensapp/utilities": "^1.2.0",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
@@ -60,7 +60,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.1.2",
-    "@freelensapp/webpack": "^1.1.2"
+    "@freelensapp/eslint-config": "^1.2.0",
+    "@freelensapp/webpack": "^1.2.0"
   }
 }

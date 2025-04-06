@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Kubernetes client for Freelens",
   "author": {
     "name": "Freelens Authors",
