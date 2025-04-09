@@ -342,7 +342,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                     class="Select__control css-13cymwt-control"
                   >
                     <div
-                      class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                      class="Select__value-container Select__value-container--is-multi css-hlgwow"
                     >
                       <div
                         class="Select__placeholder css-1jqq78o-placeholder"
@@ -351,7 +351,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                         All namespaces
                       </div>
                       <div
-                        class="Select__input-container css-qbdosj-Input"
+                        class="Select__input-container css-19bb58m"
                         data-value=""
                       >
                         <input
@@ -374,7 +374,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                       </div>
                     </div>
                     <div
-                      class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="Select__indicators css-1wy0on6"
                     >
                       <span
                         class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -886,7 +886,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                     class="Select__control css-13cymwt-control"
                   >
                     <div
-                      class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                      class="Select__value-container Select__value-container--is-multi css-hlgwow"
                     >
                       <div
                         class="Select__placeholder css-1jqq78o-placeholder"
@@ -895,7 +895,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                         All namespaces
                       </div>
                       <div
-                        class="Select__input-container css-qbdosj-Input"
+                        class="Select__input-container css-19bb58m"
                         data-value=""
                       >
                         <input
@@ -918,7 +918,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                       </div>
                     </div>
                     <div
-                      class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="Select__indicators css-1wy0on6"
                     >
                       <span
                         class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1466,7 +1466,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                     class="Select__control css-13cymwt-control"
                   >
                     <div
-                      class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                      class="Select__value-container Select__value-container--is-multi css-hlgwow"
                     >
                       <div
                         class="Select__placeholder css-1jqq78o-placeholder"
@@ -1475,7 +1475,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                         All namespaces
                       </div>
                       <div
-                        class="Select__input-container css-qbdosj-Input"
+                        class="Select__input-container css-19bb58m"
                         data-value=""
                       >
                         <input
@@ -1498,7 +1498,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                       </div>
                     </div>
                     <div
-                      class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="Select__indicators css-1wy0on6"
                     >
                       <span
                         class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3506,7 +3506,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                     class="Select__control css-13cymwt-control"
                   >
                     <div
-                      class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                      class="Select__value-container Select__value-container--is-multi css-hlgwow"
                     >
                       <div
                         class="Select__placeholder css-1jqq78o-placeholder"
@@ -3515,7 +3515,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                         All namespaces
                       </div>
                       <div
-                        class="Select__input-container css-qbdosj-Input"
+                        class="Select__input-container css-19bb58m"
                         data-value=""
                       >
                         <input
@@ -3538,7 +3538,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                       </div>
                     </div>
                     <div
-                      class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="Select__indicators css-1wy0on6"
                     >
                       <span
                         class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4050,7 +4050,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                     class="Select__control css-13cymwt-control"
                   >
                     <div
-                      class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                      class="Select__value-container Select__value-container--is-multi css-hlgwow"
                     >
                       <div
                         class="Select__placeholder css-1jqq78o-placeholder"
@@ -4059,7 +4059,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                         All namespaces
                       </div>
                       <div
-                        class="Select__input-container css-qbdosj-Input"
+                        class="Select__input-container css-19bb58m"
                         data-value=""
                       >
                         <input
@@ -4082,7 +4082,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                       </div>
                     </div>
                     <div
-                      class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                      class="Select__indicators css-1wy0on6"
                     >
                       <span
                         class="Select__indicator-separator css-1u9des2-indicatorSeparator"

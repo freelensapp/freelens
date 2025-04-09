@@ -331,7 +331,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -340,7 +340,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -363,7 +363,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -998,7 +998,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1007,7 +1007,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1030,7 +1030,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1768,7 +1768,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1777,7 +1777,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1800,7 +1800,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -2554,7 +2554,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -2563,7 +2563,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -2586,7 +2586,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3376,7 +3376,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -3385,7 +3385,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -3408,7 +3408,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3954,7 +3954,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -3962,7 +3962,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                             some-repo/some-chart-1.0.1
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
@@ -3984,7 +3984,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4338,7 +4338,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -4347,7 +4347,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -4370,7 +4370,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4916,7 +4916,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
                             class="Select__single-value css-1dimb5e-singleValue"
@@ -4924,7 +4924,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                             some-repo/some-chart-1.0.1
                           </div>
                           <div
-                            class="Select__input-container css-qbdosj-Input"
+                            class="Select__input-container css-19bb58m"
                             data-value=""
                           >
                             <input
@@ -4946,7 +4946,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           </div>
                         </div>
                         <div
-                          class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                          class="Select__indicators css-1wy0on6"
                         >
                           <span
                             class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -5302,7 +5302,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -5311,7 +5311,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           Namespace: my-second-namespace
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -5334,7 +5334,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"

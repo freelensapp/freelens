@@ -235,7 +235,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -243,7 +243,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -265,7 +265,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -441,7 +441,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -450,7 +450,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-1h01tm3-Input"
+                                  class="Select__input-container css-1mkvw8y"
                                   data-value=""
                                 >
                                   <input
@@ -474,7 +474,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <div
                                   aria-hidden="true"
@@ -939,7 +939,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -947,7 +947,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -969,7 +969,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1173,7 +1173,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -1182,7 +1182,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -1205,7 +1205,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1682,7 +1682,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -1690,7 +1690,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -1712,7 +1712,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1916,7 +1916,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control Select__control--menu-is-open css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -1925,7 +1925,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -1950,7 +1950,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -2190,14 +2190,14 @@ exports[`add helm repository from list in preferences when navigating to prefere
     </div>
   </div>
   <div
-    class="Select__menu-portal css-1no2yl0-MenuPortal"
+    class="Select__menu-portal css-yj2v5g"
   >
     <div
       class="theme-lens selection-of-active-public-helm-repository-options Select__menu css-1nmdiq5-menu"
       id="react-select-selection-of-active-public-helm-repository-listbox"
     >
       <div
-        class="Select__menu-list css-1n6sfyn-MenuList"
+        class="Select__menu-list css-qr46ko"
       >
         <div
           aria-disabled="false"
@@ -2478,7 +2478,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -2486,7 +2486,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -2508,7 +2508,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -2712,7 +2712,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -2721,7 +2721,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -2744,7 +2744,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3221,7 +3221,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -3229,7 +3229,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -3251,7 +3251,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3455,7 +3455,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -3464,7 +3464,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -3487,7 +3487,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -3964,7 +3964,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -3972,7 +3972,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -3994,7 +3994,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4198,7 +4198,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -4207,7 +4207,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-1h01tm3-Input"
+                                  class="Select__input-container css-1mkvw8y"
                                   data-value=""
                                 >
                                   <input
@@ -4231,7 +4231,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <div
                                   aria-hidden="true"
@@ -4696,7 +4696,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -4704,7 +4704,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -4726,7 +4726,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -4930,7 +4930,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -4939,7 +4939,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -4962,7 +4962,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -5473,7 +5473,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -5481,7 +5481,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -5503,7 +5503,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -5707,7 +5707,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control Select__control--menu-is-open css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -5716,7 +5716,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -5741,7 +5741,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -6015,14 +6015,14 @@ exports[`add helm repository from list in preferences when navigating to prefere
     </div>
   </div>
   <div
-    class="Select__menu-portal css-1no2yl0-MenuPortal"
+    class="Select__menu-portal css-yj2v5g"
   >
     <div
       class="theme-lens selection-of-active-public-helm-repository-options Select__menu css-1nmdiq5-menu"
       id="react-select-selection-of-active-public-helm-repository-listbox"
     >
       <div
-        class="Select__menu-list css-1n6sfyn-MenuList"
+        class="Select__menu-list css-qr46ko"
       >
         <div
           aria-disabled="false"
@@ -6313,7 +6313,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -6321,7 +6321,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -6343,7 +6343,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -6547,7 +6547,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control css-13cymwt-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -6556,7 +6556,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-qbdosj-Input"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -6579,7 +6579,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <span
                                   class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -7090,7 +7090,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                             class="Select__control css-13cymwt-control"
                           >
                             <div
-                              class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="Select__value-container Select__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="Select__single-value css-1dimb5e-singleValue"
@@ -7098,7 +7098,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 Default (Google)
                               </div>
                               <div
-                                class="Select__input-container css-qbdosj-Input"
+                                class="Select__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -7120,7 +7120,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               </div>
                             </div>
                             <div
-                              class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="Select__indicators css-1wy0on6"
                             >
                               <span
                                 class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -7324,7 +7324,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
-                                class="Select__value-container css-1fdsijx-ValueContainer"
+                                class="Select__value-container css-hlgwow"
                               >
                                 <div
                                   class="Select__placeholder css-1jqq78o-placeholder"
@@ -7333,7 +7333,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-1h01tm3-Input"
+                                  class="Select__input-container css-1mkvw8y"
                                   data-value=""
                                 >
                                   <input
@@ -7357,7 +7357,7 @@ exports[`add helm repository from list in preferences when navigating to prefere
                                 </div>
                               </div>
                               <div
-                                class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="Select__indicators css-1wy0on6"
                               >
                                 <div
                                   aria-hidden="true"
