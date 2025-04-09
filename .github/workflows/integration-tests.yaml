@@ -26,13 +26,10 @@ jobs:
         include:
           - os: ubuntu-22.04
             arch: x64
-            targets: AppImage deb rpm
           - os: macos-14
             arch: arm64
-            targets: dmg pkg
           - os: windows-2022
             arch: x64
-            targets: msi nsis
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -167,7 +164,7 @@ jobs:
         run: pnpm --color=always --stream build
 
       - name: Build Electron app
-        run: pnpm --color=always build:app dir ${{ matrix.targets }} --${{ matrix.arch }}
+        run: pnpm --color=always build:app dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         if: runner.os == 'Linux'
