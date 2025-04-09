@@ -4,9 +4,10 @@
   "description": "CLI generating tray icons for building a lens-like application",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
     "build": "tsc --pretty --project .",
-    "generate": "node --experimental-import-meta-resolve ./dist/index.js"
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "start": "node --experimental-import-meta-resolve ./dist/index.js"
   },
   "files": [
     "dist"
@@ -23,9 +24,12 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@freelensapp/icon": "workspace:^",
     "arg": "^5.0.2",
     "jsdom": "^26.0.0",
-    "rimraf": "^6.0.1",
     "sharp": "^0.34.0"
+  },
+  "bin": {
+    "generate-tray-icons": "bin/generate-tray-icons.js"
   }
 }

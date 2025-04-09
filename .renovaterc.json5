@@ -60,20 +60,6 @@
     }
   ],
   "customManagers": [
-    // electron
-    {
-      "customType": "regex",
-      "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "^freelens/package\\.json$",
-      ],
-      "matchStrings": [
-        "\"electronVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
-      ],
-      "datasourceTemplate": "npm",
-      "depNameTemplate": "electron",
-      "versioningTemplate": "npm"
-    },
     // bundled freelens-k8s-proxy
     {
       "customType": "regex",
@@ -111,7 +97,8 @@
       "fileMatch": [
         "^\\.github/workflows/.*\\.ya?ml$",
         "^\\.trunk/trunk.yaml",
-        "^\\.tool-versions$"
+        "^\\.tool-versions$",
+        "^freelens/electron-builder\\.yml$"
       ],
       "matchStrings": [
         "(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"

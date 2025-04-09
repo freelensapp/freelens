@@ -22,10 +22,11 @@
   },
   "scripts": {
     "build": "webpack --config webpack/extensions.ts",
-    "clean": "rimraf dist/"
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules"
   },
   "dependencies": {
-    "@freelensapp/core": "^1.2.0"
+    "@freelensapp/core": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
@@ -34,7 +35,6 @@
     "@types/webpack-node-externals": "3.0.4",
     "css-loader": "^6.11.0",
     "node-loader": "^2.1.0",
-    "rimraf": "^6.0.1",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",

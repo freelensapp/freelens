@@ -33,12 +33,24 @@ nvm install
 mise install
 ```
 
+Install Pnpm:
+
+```sh
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+```
+
+or
+
+```pwsh
+Invoke-WebRequest https://get.pnpm.io/install.ps1 -UseBasicParsing | Invoke-Expression
+```
+
 ### Build app
 
 ```sh
-npm ci
-npm run build
-npm run build:app
+pnpm i
+pnpm build
+pnpm build:app
 ```
 
 At this point, for example on Windows, simply go to the
@@ -59,20 +71,26 @@ Then rebuild binary modules and build with support for all architectures:
 
 ```sh
 # Debian/Ubuntu
-env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ npm run rebuild -- -- -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ pnpm rebuild -- -- -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true pnpm build
 # MacOS
-npm run rebuild -- -- -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+pnpm rebuild -a arm64
+env DOWNLOAD_ALL_ARCHITECTURES=true pnpm build
 ```
 
 Finally, generate binary packages:
 
 ```sh
 # Debian/Ubuntu
-npm run build:app -- -- -- AppImage deb --arm64
+pnpm build:app AppImage deb --arm64
 # MacOS
-npm run build:app -- -- -- dmg pkg --x86
+pnpm build:app dmg pkg --x86
+```
+
+or run from the directory:
+
+```sh
+pnpm start
 ```
 
 ### Run app
@@ -80,7 +98,7 @@ npm run build:app -- -- -- dmg pkg --x86
 To run the app in developer mode:
 
 ```sh
-npm run start-dev
+pnpm dev
 ```
 
 ## Additional components

@@ -259,8 +259,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
       return;
     }
 
-    const { maxExtent, minExtent, getCurrentExtent, growthDirection } =
-      this.props;
+    const { maxExtent, minExtent, getCurrentExtent, growthDirection } = this.props;
     const {
       onDrag,
       onMaxExtentExceed,
@@ -279,9 +278,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
 
     const previousExtent = getCurrentExtent();
     const unboundedExtent = previousExtent + delta * growthDirection;
-    const boundedExtent = Math.round(
-      Math.max(minExtent, Math.min(maxExtent, unboundedExtent)),
-    );
+    const boundedExtent = Math.round(Math.max(minExtent, Math.min(maxExtent, unboundedExtent)));
 
     onDrag(boundedExtent);
 

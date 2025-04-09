@@ -5,6 +5,7 @@
   "description": "Highly extendable icon in the Freelens.",
   "type": "commonjs",
   "files": [
+    "assets",
     "dist"
   ],
   "publishConfig": {
@@ -30,16 +31,17 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "peerDependencies": {
-    "@freelensapp/button": "^1.2.0",
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/logger": "^1.2.0",
-    "@freelensapp/routing": "^1.2.0",
-    "@freelensapp/tooltip": "^1.2.0",
-    "@freelensapp/utilities": "^1.2.0",
+  "dependencies": {
+    "@freelensapp/button": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/routing": "workspace:^",
+    "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
@@ -57,9 +59,14 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/react-testing-library-discovery": "^1.2.0",
-    "@freelensapp/webpack": "^1.2.0",
-    "@testing-library/react": "^12.1.5"
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/react-testing-library-discovery": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@testing-library/react": "^12.1.5",
+    "@types/history": "^4.7.11",
+    "@types/lodash": "^4.17.16",
+    "@types/react": "^17.0.85",
+    "@types/react-router-dom": "^5.3.3"
   }
 }

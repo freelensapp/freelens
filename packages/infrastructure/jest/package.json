@@ -19,6 +19,9 @@
   },
   "license": "MIT",
   "homepage": "https://freelens.app",
+  "scripts": {
+    "clean:node_modules": "pnpm dlx rimraf node_modules"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^12.1.5",

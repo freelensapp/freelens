@@ -1,7 +1,7 @@
-diff --git a/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js b/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
-index a1deb14..5598b9b 100644
---- a/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
-+++ b/node_modules/monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js
+diff --git a/esm/vs/editor/contrib/clipboard/browser/clipboard.js b/esm/vs/editor/contrib/clipboard/browser/clipboard.js
+index a1deb14b9174989775f3bbe2c7d2370644633237..5598b9b22140cbc3e9c3c9f8d3f6b4a782366f1c 100644
+--- a/esm/vs/editor/contrib/clipboard/browser/clipboard.js
++++ b/esm/vs/editor/contrib/clipboard/browser/clipboard.js
 @@ -201,7 +201,7 @@ if (PasteAction) {
              if (result) {
                  return CopyPasteController.get(focusedEditor)?.finishedPaste() ?? Promise.resolve();

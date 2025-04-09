@@ -1,0 +1,14 @@
+out
+dist
+pnpm-lock.yaml
+pnpm-workspace.yaml
+*.css
+*.html
+*.js
+*.json
+*.jsonc
+*.jsx
+*.mjs
+*.mts
+*.ts
+*.tsx

@@ -92,7 +92,6 @@ const userCreateResourceTemplatesInjectable = getInjectable({
        * NOTE: There is technically a race condition here of the form "time-of-check to time-of-use"
        */
       watch(userTemplatesFolder, {
-        disableGlobbing: true,
         ignorePermissionErrors: true,
         usePolling: false,
         awaitWriteFinish: {

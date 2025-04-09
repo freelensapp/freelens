@@ -1,4 +1,4 @@
-import type { Disposer } from "@freelensapp/utilities/index";
+import type { Disposer } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
 
 import type { RequestChannel, RequestChannelListener } from "./request-channel-listener-injection-token";

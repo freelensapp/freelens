@@ -3,12 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { kebabCase, toUpper } from "lodash/fp";
-import {
-  type DiContainerForInjection,
-  getInjectable,
-  getInjectionToken,
-  lifecycleEnum,
-} from "@ogre-tools/injectable";
+import { type DiContainerForInjection, getInjectable, getInjectionToken, lifecycleEnum } from "@ogre-tools/injectable";
 import { winstonLoggerInjectable } from "./winston-logger.injectable";
 import { pipeline } from "@ogre-tools/fp";
 
@@ -27,13 +22,8 @@ export const loggerInjectionToken = getInjectionToken<Logger>({
 
 const screamingKebabCase = (str: string) => pipeline(str, kebabCase, toUpper);
 
-const getLogFunctionFor = (
-  scenario: keyof Logger,
-  namespace: string | undefined,
-) => {
-  const prefix = namespace
-    ? `[${screamingKebabCase(namespace.replace(/-feature$/, ""))}]: `
-    : "";
+const getLogFunctionFor = (scenario: keyof Logger, namespace: string | undefined) => {
+  const prefix = namespace ? `[${screamingKebabCase(namespace.replace(/-feature$/, ""))}]: ` : "";
 
   return (di: DiContainerForInjection): LogFunction => {
     const winstonLogger = di.inject(winstonLoggerInjectable);

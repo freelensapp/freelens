@@ -25,14 +25,15 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "test:unit": "jest --coverage --runInBand",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "peerDependencies": {
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/react-application": "^1.2.0",
+  "dependencies": {
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/react-application": "workspace:^",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
@@ -42,9 +43,13 @@
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/react-testing-library-discovery": "^1.2.0",
-    "@freelensapp/webpack": "^1.2.0",
-    "@testing-library/user-event": "^14.6.1"
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/react-testing-library-discovery": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^17.0.85",
+    "jest": "^29.7.0"
   }
 }

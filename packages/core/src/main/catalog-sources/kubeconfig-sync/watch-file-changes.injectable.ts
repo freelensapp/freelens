@@ -78,7 +78,6 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
           watcher = watch<true>(filePath, {
             followSymlinks: true,
             depth: isFolderSync ? 0 : 1, // DIRs works with 0 but files need 1 (bug: https://github.com/paulmillr/chokidar/issues/1095)
-            disableGlobbing: true,
             ignorePermissionErrors: true,
             usePolling: false,
             awaitWriteFinish: {

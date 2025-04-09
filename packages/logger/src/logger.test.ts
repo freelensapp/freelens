@@ -38,10 +38,7 @@ describe("logger", () => {
 
       logScenario("some-message", "some-data");
 
-      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
-        "some-message",
-        "some-data",
-      );
+      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith("some-message", "some-data");
     });
 
     it(`given not inside a Feature, when logging "${scenario}" using legacy logger, does so without a prefix`, () => {
@@ -57,10 +54,7 @@ describe("logger", () => {
 
       logger[scenario]("some-message", "some-data");
 
-      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
-        "some-message",
-        "some-data",
-      );
+      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith("some-message", "some-data");
     });
 
     it(`given not inside a Feature, when logging "${scenario}" using legacy prefixed logger, does so without a feature prefix`, () => {
@@ -76,10 +70,7 @@ describe("logger", () => {
 
       logger[scenario]("some-message", "some-data");
 
-      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
-        "[A-PREFIX]: some-message",
-        "some-data",
-      );
+      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith("[A-PREFIX]: some-message", "some-data");
     });
 
     it(`given inside a Feature, when logging "${scenario}", does so with Feature's id as prefix without trailing '-feature' to avoid redundancy`, () => {
@@ -110,10 +101,7 @@ describe("logger", () => {
 
       logScenario("some-message", "some-data");
 
-      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith(
-        "[SOME]: some-message",
-        "some-data",
-      );
+      expect(winstonLoggerStub[scenario]).toHaveBeenCalledWith("[SOME]: some-message", "some-data");
     });
   });
 

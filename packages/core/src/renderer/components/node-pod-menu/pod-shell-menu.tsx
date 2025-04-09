@@ -10,7 +10,7 @@ import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/h
 import { App } from "../../../extensions/common-api";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
-import { Pod } from "@freelensapp/kube-object/src/specifics";
+import { Pod } from "@freelensapp/kube-object";
 import os from "os";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";

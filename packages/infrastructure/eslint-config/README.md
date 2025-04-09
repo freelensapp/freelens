@@ -28,5 +28,5 @@ module.exports = {
 }
 ```
 
-6. Run `npm run lint` to lint
-7. Run `npm run format` to fix all formatting
+6. Run `pnpm lint` to lint
+7. Run `pnpm format` to fix all formatting

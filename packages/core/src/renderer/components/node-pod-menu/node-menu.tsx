@@ -13,7 +13,7 @@ import type { DockTabCreateSpecific } from "../dock/dock/store";
 import openConfirmDialogInjectable, { type OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
-import { Node } from "@freelensapp/kube-object/src/specifics";
+import { Node } from "@freelensapp/kube-object";
 
 export interface NodeMenuProps {
   object: any;

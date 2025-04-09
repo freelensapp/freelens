@@ -37,5 +37,4 @@ deregisterFeature(di, someFeature);
 ## Need to know
 
 ### NPM packages exporting a Feature
-- Prefer `peerDependencies` since they are installed from the application and are not allowed to be in the built bundle. 
 - Prefer exporting `injectionToken` instead of `injectable` for not allowing other features to access technical details like the `injectable`

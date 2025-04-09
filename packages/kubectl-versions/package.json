@@ -22,20 +22,21 @@
     "precompute-versions": "tsc --pretty --project build",
     "compute-versions": "node ./build/compute-versions.mjs",
     "build": "lens-webpack-build",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "dev": "webpack --mode=development --watch"
   },
-  "peerDependencies": {
-    "@ogre-tools/injectable": "^17.2.0"
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.2.0",
+    "node-fetch": "^3.3.2",
+    "semver": "^7.7.1"
   },
   "devDependencies": {
-    "@freelensapp/webpack": "^1.2.0",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/semver": "^7.3.12",
     "fast-xml-parser": "^5.2.0",
-    "semver": "^7.7.1",
     "ts-node": "^10.9.2",
     "typed-regex": "^0.0.8",
     "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "node-fetch": "^3.3.2"
   }
 }
