@@ -52,7 +52,7 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Set version
         run: |
@@ -72,7 +72,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 3
           retry_on: error
-          command: pnpm install --prefer-offline
+          command: pnpm --color=always install --prefer-offline
 
       - name: Check for changes
         run: |

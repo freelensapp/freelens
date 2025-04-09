@@ -61,7 +61,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 3
           retry_on: error
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Set up Trunk
         run: curl https://get.trunk.io -fsSL | bash -s -- -y

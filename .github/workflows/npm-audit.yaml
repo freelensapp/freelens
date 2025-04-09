@@ -62,7 +62,7 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Run npm audit
         run: |

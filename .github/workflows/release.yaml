@@ -159,28 +159,28 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Rebuild packages for arch (Linux arm64)
         if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: pnpm rebuild -a arm64
+        run: pnpm --color=always rebuild -a arm64
         env:
           CC: aarch64-linux-gnu-gcc
           CXX: aarch64-linux-gnu-g++
 
       - name: Rebuild packages for arch (macOS x64)
         if: runner.os == 'macOS' && matrix.arch == 'x64'
-        run: pnpm rebuild -- -- -a x64
+        run: pnpm --color=always rebuild -- -- -a x64
 
       - name: Build packages (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: pnpm --stream build
+        run: pnpm --color=always --stream build
         env:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
       - name: Build packages (macOS arm64, Linux x64, Windows)
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
-        run: pnpm --stream build
+        run: pnpm --color=always --stream build
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
@@ -194,7 +194,7 @@ jobs:
             for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
               test -n "${!var}" || unset $var
             done
-            pnpm build:app \
+            pnpm --color=always build:app \
               dmg pkg \
               --${{ matrix.arch }}
         env:
@@ -234,7 +234,7 @@ jobs:
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
         run: |
-          pnpm build:app \
+          pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
 
@@ -242,7 +242,7 @@ jobs:
         if: runner.os == 'Windows' && matrix.arch == 'x64'
         shell: bash
         run: |
-          pnpm build:app \
+          pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
@@ -391,10 +391,10 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Build packages
-        run: pnpm --stream build
+        run: pnpm --color=always --stream build
 
       - name: Publish npm packages
         uses: nick-fields/retry@v3
@@ -407,7 +407,7 @@ jobs:
               *-*) dist_tag=next;;
               *) dist_tag=latest;;
             esac
-            pnpm publish -r \
+            pnpm --color=always publish -r \
               --no-git-checks \
               --tag ${dist_tag}
         env:

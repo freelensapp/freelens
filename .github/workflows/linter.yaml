@@ -57,10 +57,10 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Lint
-        run: pnpm --stream lint
+        run: pnpm --color=always --stream lint
 
       - name: Verify Publish Configurations
         run: ./scripts/lint-publish-configs.sh

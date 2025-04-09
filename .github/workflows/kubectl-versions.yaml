@@ -65,10 +65,10 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: pnpm install --prefer-offline --frozen-lockfile
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: kubectl versions
-        run: pnpm compute-versions
+        run: pnpm --color=always compute-versions
 
       - name: Bundle the latest kubectl version
         run: |
