@@ -10,12 +10,6 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "biome": "pnpm dlx @biomejs/biome@1.9.4",
-    "biome:check": "pnpm biome check .",
-    "biome:format": "pnpm biome format .",
-    "prettier": "pnpm dlx prettier@3.5.3",
-    "prettier:check": "pnpm prettier --check .",
-    "prettier:format": "pnpm prettier --write .",
     "build": "pnpm dlx cross-env NODE_ENV=production pnpm -r build",
     "build:dev": "pnpm dlx cross-env NODE_ENV=development pnpm -r build",
     "build:app": "cd freelens && pnpm build:app",

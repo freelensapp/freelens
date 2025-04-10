@@ -176,7 +176,7 @@ jobs:
           command: |
             sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
             sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
-            xvfb-run -a pnpm test:integration
+            xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
 
