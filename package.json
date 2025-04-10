@@ -13,7 +13,6 @@
     "build": "pnpm dlx cross-env NODE_ENV=production pnpm -r build",
     "build:dev": "pnpm dlx cross-env NODE_ENV=development pnpm -r build",
     "build:app": "cd freelens && pnpm build:app",
-    "rebuild": "cd freelens && pnpm rebuild",
     "clean": "pnpm -r clean",
     "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf node_modules",
     "start": "cd freelens && pnpm start",

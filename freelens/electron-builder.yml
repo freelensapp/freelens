@@ -2,8 +2,8 @@
 
 electronVersion: 35.1.4 # datasource=npm depName=electron
 
-## Explicit rebuild because of specific cross-compilation
-npmRebuild: false
+## Needs CC and CXX environment variables set for cross-compilation
+npmRebuild: true
 
 ## There is no support in app for autoupdates yet
 detectUpdateChannel: false

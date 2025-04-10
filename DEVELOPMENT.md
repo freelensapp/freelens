@@ -53,8 +53,11 @@ pnpm build
 pnpm build:app
 ```
 
-At this point, for example on Windows, simply go to the
-"freelens\freelens\dist\win-unpacked" directory and run `Freelens.exe`.
+Run it from the directory:
+
+```sh
+pnpm start
+```
 
 ### Cross compilation
 
@@ -67,15 +70,14 @@ On Linux, install cross-compiler (macOS includes this by default):
 apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 ```
 
-Then rebuild binary modules and build with support for all architectures:
+Then set the environment with support for other architectures:
 
 ```sh
 # Debian/Ubuntu
-env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ pnpm rebuild -- -- -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true pnpm build
+export CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++
+export DOWNLOAD_ALL_ARCHITECTURES=true
 # MacOS
-pnpm rebuild -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true pnpm build
+export DOWNLOAD_ALL_ARCHITECTURES=true
 ```
 
 Finally, generate binary packages:
@@ -85,12 +87,6 @@ Finally, generate binary packages:
 pnpm build:app AppImage deb --arm64
 # MacOS
 pnpm build:app dmg pkg --x86
-```
-
-or run from the directory:
-
-```sh
-pnpm start
 ```
 
 ### Run app
