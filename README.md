@@ -48,6 +48,7 @@ systems.
 Run the following command:
 
 ```sh
+brew tap freelensapp/tap
 brew install --cask freelens
 ```
 
