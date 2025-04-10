@@ -161,12 +161,6 @@ jobs:
           retry_on: any
           command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
-      - name: Set cross-complilation environment (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: |
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-
       - name: Enable downloading for all architectures (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: |
@@ -174,6 +168,16 @@ jobs:
 
       - name: Build packages
         run: pnpm --color=always --stream build
+
+      - name: Set cross-complilation environment (Linux arm64)
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: |
+          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
+
+      - name: Rebuild native packages for Electron
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'

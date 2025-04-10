@@ -80,13 +80,22 @@ export DOWNLOAD_ALL_ARCHITECTURES=true
 export DOWNLOAD_ALL_ARCHITECTURES=true
 ```
 
+And rebuild binary packages for the foreign architecture:
+
+```sh
+# Debian/Ubuntu
+pnpm electron-rebuild -a arm64
+# MacOS
+pnpm electron-rebuild -a x64
+```
+
 Finally, generate binary packages:
 
 ```sh
 # Debian/Ubuntu
 pnpm build:app AppImage deb --arm64
 # MacOS
-pnpm build:app dmg pkg --x86
+pnpm build:app dmg pkg --x64
 ```
 
 ### Run app
