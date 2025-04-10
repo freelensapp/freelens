@@ -10,7 +10,7 @@ const preferencesRouteForLegacyExtensionsInjectable = getInjectable({
   id: "preferences-route-for-legacy-extensions",
 
   instantiate: () => ({
-    path: "/preferences/extension/:extensionId/:preferenceTabId?",
+    path: "/preferences/extension/:extensionId{/:preferenceTabId}",
     clusterFrame: false,
     isEnabled: computed(() => true),
   }),

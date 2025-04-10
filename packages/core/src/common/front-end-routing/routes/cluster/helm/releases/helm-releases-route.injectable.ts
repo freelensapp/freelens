@@ -16,7 +16,7 @@ const helmReleasesRouteInjectable = getInjectable({
   id: "helm-releases-route",
 
   instantiate: (): Route<HelmReleasesPathParameters> => ({
-    path: "/helm/releases/:namespace?/:name?",
+    path: "/helm/releases{/:namespace}{/:name}",
     clusterFrame: true,
     isEnabled: computed(() => true),
   }),
