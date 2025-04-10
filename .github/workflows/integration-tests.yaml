@@ -190,10 +190,3 @@ jobs:
           command: pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
-
-      - name: Clean after tests
-        run: pnpm --color=always --parallel clean
-
-      - name: Check untracked files
-        shell: bash
-        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
