@@ -22,4 +22,5 @@ onlyBuiltDependencies:
   - win-ca
 
 patchedDependencies:
+  app-builder-lib: patches/app-builder-lib.patch
   monaco-editor: patches/monaco-editor.patch

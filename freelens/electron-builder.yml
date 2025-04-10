@@ -15,6 +15,7 @@ files:
   - static/**/*
   - "!node_modules/@freelensapp/core/node_modules/**/*"
   - "!node_modules/@freelensapp/core/src"
+  - "!node_modules/win-ca/pem/*"
 
 ## Extra files added to unpacked resources
 extraResources:

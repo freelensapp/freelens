@@ -1,0 +1,13 @@
+diff --git a/out/node-module-collector/pnpmNodeModulesCollector.js b/out/node-module-collector/pnpmNodeModulesCollector.js
+index a28a994841e11c3693e633fd326516e04c91305f..b1c2e767b1670f5824f956b943fdafc29db76621 100644
+--- a/out/node-module-collector/pnpmNodeModulesCollector.js
++++ b/out/node-module-collector/pnpmNodeModulesCollector.js
+@@ -8,7 +8,7 @@ class PnpmNodeModulesCollector extends nodeModulesCollector_1.NodeModulesCollect
+         super(rootDir);
+     }
+     getCommand() {
+-        return process.platform === "win32" ? "pnpm.cmd" : "pnpm";
++        return "pnpm";
+     }
+     getArgs() {
+         return ["list", "--prod", "--json", "--depth", "Infinity"];

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  app-builder-lib:
+    hash: 4e88a709b3fc97b6cfe5bd5d6e86a9113a27b1cb7dfec8f0cb9869a08d8bc271
+    path: patches/app-builder-lib.patch
   monaco-editor:
     hash: 1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0
     path: patches/monaco-editor.patch
@@ -295,7 +298,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -745,7 +748,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: 1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../infrastructure/eslint-config
@@ -1263,7 +1266,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../typescript
@@ -1608,7 +1611,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../infrastructure/eslint-config
@@ -1676,7 +1679,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../../infrastructure/eslint-config
@@ -1716,7 +1719,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../../infrastructure/eslint-config
@@ -1947,7 +1950,7 @@ importers:
     dependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
@@ -2070,7 +2073,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2162,7 +2165,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2226,7 +2229,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2311,7 +2314,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2475,7 +2478,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2543,7 +2546,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -9730,7 +9733,7 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  '@async-fn/jest@1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))':
+  '@async-fn/jest@1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))':
     dependencies:
       jest: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
 
@@ -11701,15 +11704,30 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)':
+    dependencies:
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
+      webpack-cli: 6.0.1(webpack@5.98.0)
+
   '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
     dependencies:
       webpack: 5.98.0(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-dev-server@5.2.1)(webpack@5.98.0)
 
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)':
+    dependencies:
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
+      webpack-cli: 6.0.1(webpack@5.98.0)
+
   '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
     dependencies:
       webpack: 5.98.0(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-dev-server@5.2.1)(webpack@5.98.0)
+
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)':
+    dependencies:
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
+      webpack-cli: 6.0.1(webpack@5.98.0)
 
   '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.1)(webpack@5.98.0)':
     dependencies:
@@ -11717,11 +11735,6 @@ snapshots:
       webpack-cli: 6.0.1(webpack-dev-server@5.2.1)(webpack@5.98.0)
     optionalDependencies:
       webpack-dev-server: 5.2.1(webpack-cli@6.0.1)(webpack@5.98.0)
-
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)':
-    dependencies:
-      webpack: 5.98.0(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.98.0)
 
   '@xmldom/xmldom@0.8.10': {}
 
@@ -11842,7 +11855,7 @@ snapshots:
 
   app-builder-bin@5.0.0-alpha.12: {}
 
-  app-builder-lib@26.0.6(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6):
+  app-builder-lib@26.0.6(patch_hash=4e88a709b3fc97b6cfe5bd5d6e86a9113a27b1cb7dfec8f0cb9869a08d8bc271)(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6):
     dependencies:
       '@develar/schema-utils': 2.6.5
       '@electron/asar': 3.2.18
@@ -12798,7 +12811,7 @@ snapshots:
 
   dmg-builder@26.0.6(electron-builder-squirrel-windows@26.0.6):
     dependencies:
-      app-builder-lib: 26.0.6(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
+      app-builder-lib: 26.0.6(patch_hash=4e88a709b3fc97b6cfe5bd5d6e86a9113a27b1cb7dfec8f0cb9869a08d8bc271)(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
       builder-util: 26.0.4
       builder-util-runtime: 9.3.1
       fs-extra: 10.1.0
@@ -12917,7 +12930,7 @@ snapshots:
 
   electron-builder-squirrel-windows@26.0.6(dmg-builder@26.0.6):
     dependencies:
-      app-builder-lib: 26.0.6(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
+      app-builder-lib: 26.0.6(patch_hash=4e88a709b3fc97b6cfe5bd5d6e86a9113a27b1cb7dfec8f0cb9869a08d8bc271)(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
       builder-util: 26.0.4
       electron-winstaller: 5.4.0
     transitivePeerDependencies:
@@ -12927,7 +12940,7 @@ snapshots:
 
   electron-builder@26.0.6(electron-builder-squirrel-windows@26.0.6):
     dependencies:
-      app-builder-lib: 26.0.6(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
+      app-builder-lib: 26.0.6(patch_hash=4e88a709b3fc97b6cfe5bd5d6e86a9113a27b1cb7dfec8f0cb9869a08d8bc271)(dmg-builder@26.0.6)(electron-builder-squirrel-windows@26.0.6)
       builder-util: 26.0.4
       builder-util-runtime: 9.3.1
       chalk: 4.1.2
@@ -16263,7 +16276,7 @@ snapshots:
       neo-async: 2.6.2
     optionalDependencies:
       sass: 1.86.3
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(esbuild@0.25.2)(webpack-cli@6.0.1)
 
   sass@1.86.3:
     dependencies:
@@ -17331,9 +17344,9 @@ snapshots:
   webpack-cli@6.0.1(webpack@5.98.0):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.98.0)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.98.0))(webpack@5.98.0)
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -17342,7 +17355,7 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(webpack-cli@6.0.1(webpack@5.98.0))
       webpack-merge: 6.0.1
 
   webpack-dev-middleware@7.4.2(webpack@5.98.0):

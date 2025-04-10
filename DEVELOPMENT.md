@@ -19,11 +19,16 @@ Install a compiler and Python setuptools, for example:
 apt install build-essential python3-setuptools
 # MacOS
 brew install bash python3-setuptools
+# Windows
+winget install Microsoft.VisualStudio.2022.Community Python.Python.3.13
+& 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe'
+# then install required components
 ```
 
 Use [NVM](https://github.com/nvm-sh/nvm) or
-[mise-en-place](https://mise.jdx.dev/) to install the required Node.js
-version.
+[mise-en-place](https://mise.jdx.dev/) or
+[windows-nvm](https://github.com/coreybutler/nvm-windows) to install the
+required Node.js version.
 
 From the root of this repository:
 
@@ -31,18 +36,18 @@ From the root of this repository:
 nvm install
 # or
 mise install
+# or
+winget install CoreyButler.NVMforWindows
+nvm install 22.14.0
+nvm use 22.14.0
 ```
 
 Install Pnpm:
 
 ```sh
 curl -fsSL https://get.pnpm.io/install.sh | sh -
-```
-
-or
-
-```pwsh
-Invoke-WebRequest https://get.pnpm.io/install.ps1 -UseBasicParsing | Invoke-Expression
+# or
+winget install pnpm.pnpm
 ```
 
 ### Build app
@@ -51,6 +56,7 @@ Invoke-WebRequest https://get.pnpm.io/install.ps1 -UseBasicParsing | Invoke-Expr
 pnpm i
 pnpm build
 pnpm build:app
+# on Windows it must be ran in elevated mode
 ```
 
 Run it from the directory:
