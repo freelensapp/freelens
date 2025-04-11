@@ -160,6 +160,15 @@ winget install Freelensapp.Freelens
 
 The `--silent` option is supported to suppress all UI.
 
+#### Scoop
+
+Run the following command:
+
+```powershell
+scoop bucket add extras
+scoop install freelens
+```
+
 ## Development
 
 Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
