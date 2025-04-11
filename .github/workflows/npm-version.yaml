@@ -16,7 +16,14 @@ jobs:
   npm-version:
     name: npm version
 
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
     environment: automated
     timeout-minutes: 10
 
@@ -38,13 +45,13 @@ jobs:
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
-      - name: Use cache
+      - name: Use pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
         uses: nick-fields/retry@v3

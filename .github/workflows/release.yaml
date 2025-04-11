@@ -123,11 +123,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r '.packages["node_modules/electron"].version' package-lock.json)" >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use pnpm cache
         uses: actions/cache@v4
