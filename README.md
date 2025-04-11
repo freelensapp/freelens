@@ -9,6 +9,8 @@
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
 [![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
+[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras
+)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
 [![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
@@ -161,6 +163,10 @@ winget install Freelensapp.Freelens
 The `--silent` option is supported to suppress all UI.
 
 #### Scoop
+
+The package is available in the
+[Scoop](https://scoop.sh/#/apps?q=freelens&s=1&d=0) command-line installer for
+Windows.
 
 Run the following command:
 
