@@ -24,7 +24,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
           class="Select__control css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -33,7 +33,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
               All namespaces
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -56,7 +56,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -110,7 +110,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           class="Select__control Select__control--menu-is-open css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -119,7 +119,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               All namespaces
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -144,7 +144,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -172,14 +172,14 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
     </div>
   </div>
   <div
-    class="Select__menu-portal css-1no2yl0-MenuPortal"
+    class="Select__menu-portal css-yj2v5g"
   >
     <div
       class="NamespaceSelectFilterMenu theme-dark namespace-select-filter-options Select__menu css-1nmdiq5-menu"
       id="react-select-namespace-select-filter-listbox"
     >
       <div
-        class="Select__menu-list Select__menu-list--is-multi css-1n6sfyn-MenuList"
+        class="Select__menu-list Select__menu-list--is-multi css-qr46ko"
       >
         <div
           aria-disabled="false"
@@ -674,7 +674,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           class="Select__control css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -683,7 +683,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               Namespace: test-2
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -706,7 +706,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -760,7 +760,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           class="Select__control Select__control--menu-is-open css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -769,7 +769,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               Namespace: test-2
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -794,7 +794,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -822,14 +822,14 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
     </div>
   </div>
   <div
-    class="Select__menu-portal css-1no2yl0-MenuPortal"
+    class="Select__menu-portal css-yj2v5g"
   >
     <div
       class="NamespaceSelectFilterMenu theme-dark namespace-select-filter-options Select__menu css-1nmdiq5-menu"
       id="react-select-namespace-select-filter-listbox"
     >
       <div
-        class="Select__menu-list Select__menu-list--is-multi css-1n6sfyn-MenuList"
+        class="Select__menu-list Select__menu-list--is-multi css-qr46ko"
       >
         <div
           aria-disabled="false"
@@ -1192,7 +1192,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           class="Select__control css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -1201,7 +1201,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               Namespace: test-1
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -1224,7 +1224,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1278,7 +1278,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           class="Select__control Select__control--menu-is-open css-13cymwt-control"
         >
           <div
-            class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+            class="Select__value-container Select__value-container--is-multi css-hlgwow"
           >
             <div
               class="Select__placeholder css-1jqq78o-placeholder"
@@ -1287,7 +1287,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               Namespaces: test-1, test-3
             </div>
             <div
-              class="Select__input-container css-qbdosj-Input"
+              class="Select__input-container css-19bb58m"
               data-value=""
             >
               <input
@@ -1312,7 +1312,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
             </div>
           </div>
           <div
-            class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+            class="Select__indicators css-1wy0on6"
           >
             <span
               class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1340,14 +1340,14 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
     </div>
   </div>
   <div
-    class="Select__menu-portal css-1no2yl0-MenuPortal"
+    class="Select__menu-portal css-yj2v5g"
   >
     <div
       class="NamespaceSelectFilterMenu theme-dark namespace-select-filter-options Select__menu css-1nmdiq5-menu"
       id="react-select-namespace-select-filter-listbox"
     >
       <div
-        class="Select__menu-list Select__menu-list--is-multi css-1n6sfyn-MenuList"
+        class="Select__menu-list Select__menu-list--is-multi css-qr46ko"
       >
         <div
           aria-disabled="false"

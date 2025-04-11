@@ -1,8 +1,5 @@
 import { getInjectionToken } from "@ogre-tools/injectable";
-import type {
-  BundledLensExtensionConstructor,
-  BundledLensExtensionManifest,
-} from "./lens-extension";
+import type { BundledLensExtensionConstructor, BundledLensExtensionManifest } from "./lens-extension";
 
 export type BundledExtensionResult = BundledLensExtensionConstructor | null;
 
@@ -12,7 +9,6 @@ export interface BundledExtension {
   renderer: () => BundledExtensionResult | Promise<BundledExtensionResult>;
 }
 
-export const bundledExtensionInjectionToken =
-  getInjectionToken<BundledExtension>({
-    id: "bundled-extension-path",
-  });
+export const bundledExtensionInjectionToken = getInjectionToken<BundledExtension>({
+  id: "bundled-extension-path",
+});

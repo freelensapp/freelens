@@ -30,7 +30,7 @@ exports[`<HotbarRemoveCommand /> renders w/o errors 1`] = `
       class="Select__control Select__control--is-focused Select__control--menu-is-open css-t3ipsp-control"
     >
       <div
-        class="Select__value-container css-1fdsijx-ValueContainer"
+        class="Select__value-container css-hlgwow"
       >
         <div
           class="Select__placeholder css-1jqq78o-placeholder"
@@ -39,7 +39,7 @@ exports[`<HotbarRemoveCommand /> renders w/o errors 1`] = `
           Remove hotbar
         </div>
         <div
-          class="Select__input-container css-qbdosj-Input"
+          class="Select__input-container css-19bb58m"
           data-value=""
         >
           <input
@@ -64,7 +64,7 @@ exports[`<HotbarRemoveCommand /> renders w/o errors 1`] = `
         </div>
       </div>
       <div
-        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+        class="Select__indicators css-1wy0on6"
       />
     </div>
     <div
@@ -72,7 +72,7 @@ exports[`<HotbarRemoveCommand /> renders w/o errors 1`] = `
       id="react-select-2-listbox"
     >
       <div
-        class="Select__menu-list css-1n6sfyn-MenuList"
+        class="Select__menu-list css-qr46ko"
       >
         <div
           aria-disabled="false"

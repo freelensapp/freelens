@@ -54,7 +54,14 @@ const renderer: webpack.Configuration = {
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
-  externals: ["npm", "win-ca"],
+  async externals({ request }) {
+    const externalModulesRegex = /^(byline|isomorphic-ws|js-yam|npm|openid-client|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
+
+    if (externalModulesRegex.test(request)) {
+      return Promise.resolve(`node-commonjs ${request}`);
+    }
+    return Promise.resolve();
+  },
   optimization: {
     minimize: false,
   },

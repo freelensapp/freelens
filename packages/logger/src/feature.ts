@@ -8,9 +8,7 @@ export const loggerFeature = getFeature({
     autoRegister({
       di,
       targetModule: module,
-      getRequireContexts: () => [
-        require.context("./", true, /\.injectable\.(ts|tsx)$/),
-      ],
+      getRequireContexts: () => [require.context("./", true, /\.injectable\.(ts|tsx)$/)],
     });
   },
 });

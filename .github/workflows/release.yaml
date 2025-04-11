@@ -114,9 +114,12 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm cache directory
         shell: bash
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Get Electron version
         shell: bash
@@ -126,11 +129,11 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r '.packages["packages/core/node_modules/electron-builder"].version' package-lock.json)" >> $GITHUB_ENV
 
-      - name: Use npm cache
+      - name: Use pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
@@ -150,34 +153,31 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Install npm dependencies
+      - name: Install pnpm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: npm ci
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
-      - name: Rebuild for arch (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: npm run rebuild -- -- -a arm64
-        env:
-          CC: aarch64-linux-gnu-gcc
-          CXX: aarch64-linux-gnu-g++
-
-      - name: Rebuild for arch (macOS x64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64'
-        run: npm run rebuild -- -- -a x64
-
-      - name: Build npm packages (macOS x64, Linux arm64)
+      - name: Enable downloading for all architectures (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: npm run build
-        env:
-          DOWNLOAD_ALL_ARCHITECTURES: "true"
+        run: |
+          echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
 
-      - name: Build npm packages (macOS arm64, Linux x64, Windows)
-        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
-        run: npm run build
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Set cross-complilation environment (Linux arm64)
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: |
+          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
+
+      - name: Rebuild native packages for Electron
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
@@ -191,7 +191,7 @@ jobs:
             for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
               test -n "${!var}" || unset $var
             done
-            npm run build:app -- -- -- \
+            pnpm --color=always build:app \
               dmg pkg \
               --${{ matrix.arch }}
         env:
@@ -231,7 +231,7 @@ jobs:
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
         run: |
-          npm run build:app -- -- -- \
+          pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
 
@@ -239,7 +239,7 @@ jobs:
         if: runner.os == 'Windows' && matrix.arch == 'x64'
         shell: bash
         run: |
-          npm run build:app -- -- -- \
+          pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
@@ -367,28 +367,31 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
 
-      - name: Get npm cache directory
-        shell: bash
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Use npm cache
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install npm dependencies
+      - name: Install pnpm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: npm ci
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
-      - name: Build
-        run: npm run build
+      - name: Build packages
+        run: pnpm --color=always --stream build
 
       - name: Publish npm packages
         uses: nick-fields/retry@v3
@@ -397,17 +400,13 @@ jobs:
           max_attempts: 3
           retry_on: any
           command: |
-            git reset --hard
             case "${GITHUB_REF_NAME}" in
               *-*) dist_tag=next;;
               *) dist_tag=latest;;
             esac
-            npx -y lerna@8 \
-              publish from-package \
-              --no-push \
-              --no-git-tag-version \
-              --yes \
-              --dist-tag ${dist_tag}
+            pnpm --color=always publish -r \
+              --no-git-checks \
+              --tag ${dist_tag}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

@@ -10,36 +10,28 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "build": "npx -y lerna@8 run --stream build",
-    "build:app": "cd freelens && npm run build:app",
-    "rebuild": "npx -y lerna@8 run --stream rebuild",
-    "clean": "npx -y lerna@8 run clean --stream",
-    "clean:node_modules": "npx -y lerna@8 clean -y && rimraf node_modules",
-    "dev": "cross-env NODE_ENV=development npx -y lerna@8 run build --stream --skip-nx-cache",
-    "postdev": "npx -y lerna@8 watch -- npx -y lerna@8 run build --stream --include-dependents --scope \\$LERNA_PACKAGE_NAME",
-    "prestart-dev": "cd freelens && npm run build:tray-icons && npm run download:binaries",
-    "start-dev": "npx -y lerna@8 run start",
-    "postinstall": "npx -y patch-package@8",
-    "lint": "npx -y lerna@8 run lint --stream --no-bail",
-    "lint:fix": "npx -y lerna@8 run lint:fix --stream",
-    "test:unit": "npx -y lerna@8 run --stream test:unit --no-bail",
-    "test:unit:updatesnapshot": "npx -y lerna@8 run --stream test:unit --no-bail -- -u",
+    "build": "pnpm dlx cross-env NODE_ENV=production pnpm -r build",
+    "build:dev": "pnpm dlx cross-env NODE_ENV=development pnpm -r build",
+    "build:app": "cd freelens && pnpm build:app",
+    "electron-rebuild": "cd freelens && pnpm electron-rebuild",
+    "clean": "pnpm -r clean",
+    "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf node_modules",
+    "start": "cd freelens && pnpm start",
+    "predev": "cd freelens && pnpm postbuild",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r --no-bail lint",
+    "lint:fix": "pnpm -r --no-bail lint:fix",
+    "test:unit": "pnpm -r --no-bail test:unit",
+    "test:unit:core": "cd packages/core && pnpm test:unit",
+    "test:unit:core:updatesnapshot": "cd packages/core && pnpm test:unit -u",
+    "test:unit:updatesnapshot": "pnpm -r --no-bail test:unit -u",
     "test:unit:watch": "jest --watch",
-    "test:integration": "npx -y lerna@8 run --stream test:integration --no-bail",
-    "bump-version": "npx -y lerna@8 version --no-git-tag-version --no-push",
-    "compute-versions": "npx -y lerna@8 run --stream compute-versions"
-  },
-  "overrides": {
-    "underscore": "^1.13.7",
-    "react": "^17.0.2",
-    "@types/react": "^17.0.85"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "npm": "10.9.2",
-    "rimraf": "^6.0.1"
+    "test:integration": "cd freelens && pnpm test:integration",
+    "bump-version": "pnpm version --no-git-tag-version --no-push",
+    "compute-versions": "pnpm -r compute-versions"
   },
   "engines": {
     "node": ">=22.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }

@@ -31,8 +31,12 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use cache
         uses: actions/cache@v4
@@ -42,38 +46,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install npm dependencies
+      - name: Install pnpm dependencies
         uses: nick-fields/retry@v3
         with:
-          timeout_minutes: 5
+          timeout_minutes: 20
           max_attempts: 3
-          retry_on: error
-          command: npm ci
+          retry_on: any
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Set version
         run: |
           set -eo pipefail
           pushd freelens
-            npm version "$newversion" --no-git-tag-version --no-workspaces-update
+            pnpm version "$newversion" --no-git-tag-version --no-workspaces-update | tee .github/update.log
           popd
           jq -r .version freelens/package.json > .github/version.log
-          git checkout freelens/package.json
-          version=$(cat .github/version.log)
-          find -name package.json ! -wholename '*/node_modules/*' | xargs grep -l peerDependencies | xargs -n1 yq -i '.peerDependencies = .peerDependencies + (.peerDependencies | with_entries(select (.key == "@freelensapp/*") | .value = "^'"$version"'"))'
-          npx -y lerna@8 version --no-git-tag-version --yes --loglevel=error "$version" | tee .github/update.log
-          git checkout package-lock.json
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$version"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
         env:
           newversion: ${{ github.event.inputs.newversion }}
 
-      - name: Update npm dependencies
+      - name: Update pnpm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 5
           max_attempts: 3
           retry_on: error
-          command: npm install
+          command: pnpm --color=always install --prefer-offline
 
       - name: Check for changes
         run: |

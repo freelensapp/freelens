@@ -1,11 +1,7 @@
 export type LensExtensionId = string;
 
-export type LensExtensionConstructor = new (
-  ext: InstalledExtension,
-) => LegacyLensExtension;
-export type BundledLensExtensionConstructor = new (
-  ext: BundledInstalledExtension,
-) => LegacyLensExtension;
+export type LensExtensionConstructor = new (ext: InstalledExtension) => LegacyLensExtension;
+export type BundledLensExtensionConstructor = new (ext: BundledInstalledExtension) => LegacyLensExtension;
 
 export interface BaseInstalledExtension {
   readonly id: LensExtensionId;
@@ -30,9 +26,7 @@ export interface ExternalInstalledExtension extends BaseInstalledExtension {
   isEnabled: boolean;
 }
 
-export type InstalledExtension =
-  | BundledInstalledExtension
-  | ExternalInstalledExtension;
+export type InstalledExtension = BundledInstalledExtension | ExternalInstalledExtension;
 
 export interface LegacyLensExtension {
   readonly id: LensExtensionId;

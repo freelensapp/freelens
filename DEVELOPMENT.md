@@ -19,11 +19,16 @@ Install a compiler and Python setuptools, for example:
 apt install build-essential python3-setuptools
 # MacOS
 brew install bash python3-setuptools
+# Windows
+winget install Microsoft.VisualStudio.2022.Community Python.Python.3.13
+& 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe'
+# then install required components
 ```
 
 Use [NVM](https://github.com/nvm-sh/nvm) or
-[mise-en-place](https://mise.jdx.dev/) to install the required Node.js
-version.
+[mise-en-place](https://mise.jdx.dev/) or
+[windows-nvm](https://github.com/coreybutler/nvm-windows) to install the
+required Node.js version.
 
 From the root of this repository:
 
@@ -31,18 +36,34 @@ From the root of this repository:
 nvm install
 # or
 mise install
+# or
+winget install CoreyButler.NVMforWindows
+nvm install 22.14.0
+nvm use 22.14.0
+```
+
+Install Pnpm:
+
+```sh
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+# or
+winget install pnpm.pnpm
 ```
 
 ### Build app
 
 ```sh
-npm ci
-npm run build
-npm run build:app
+pnpm i
+pnpm build
+pnpm build:app
+# on Windows it must be ran in elevated mode
 ```
 
-At this point, for example on Windows, simply go to the
-"freelens\freelens\dist\win-unpacked" directory and run `Freelens.exe`.
+Run it from the directory:
+
+```sh
+pnpm start
+```
 
 ### Cross compilation
 
@@ -55,24 +76,32 @@ On Linux, install cross-compiler (macOS includes this by default):
 apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 ```
 
-Then rebuild binary modules and build with support for all architectures:
+Then set the environment with support for other architectures:
 
 ```sh
 # Debian/Ubuntu
-env CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ npm run rebuild -- -- -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+export CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++
+export DOWNLOAD_ALL_ARCHITECTURES=true
 # MacOS
-npm run rebuild -- -- -a arm64
-env DOWNLOAD_ALL_ARCHITECTURES=true npm run build
+export DOWNLOAD_ALL_ARCHITECTURES=true
+```
+
+And rebuild binary packages for the foreign architecture:
+
+```sh
+# Debian/Ubuntu
+pnpm electron-rebuild -a arm64
+# MacOS
+pnpm electron-rebuild -a x64
 ```
 
 Finally, generate binary packages:
 
 ```sh
 # Debian/Ubuntu
-npm run build:app -- -- -- AppImage deb --arm64
+pnpm build:app AppImage deb --arm64
 # MacOS
-npm run build:app -- -- -- dmg pkg --x86
+pnpm build:app dmg pkg --x64
 ```
 
 ### Run app
@@ -80,7 +109,7 @@ npm run build:app -- -- -- dmg pkg --x86
 To run the app in developer mode:
 
 ```sh
-npm run start-dev
+pnpm dev
 ```
 
 ## Additional components

@@ -29,21 +29,22 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "peerDependencies": {
-    "@freelensapp/animate": "^1.2.0",
-    "@freelensapp/application": "^1.2.0",
-    "@freelensapp/event-emitter": "^1.2.0",
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/icon": "^1.2.0",
-    "@freelensapp/json-api": "^1.2.0",
-    "@freelensapp/logger": "^1.2.0",
-    "@freelensapp/react-application": "^1.2.0",
-    "@freelensapp/run-many": "^1.2.0",
-    "@freelensapp/tooltip": "^1.2.0",
-    "@freelensapp/utilities": "^1.2.0",
+  "dependencies": {
+    "@freelensapp/animate": "workspace:^",
+    "@freelensapp/application": "workspace:^",
+    "@freelensapp/event-emitter": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/icon": "workspace:^",
+    "@freelensapp/json-api": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/react-application": "workspace:^",
+    "@freelensapp/run-many": "workspace:^",
+    "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
@@ -56,11 +57,15 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.4",
+    "type-fest": "^2.19.0",
     "uuid": "^11.1.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/webpack": "^1.2.0"
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/lodash": "^4.17.16",
+    "@types/react": "^17.0.85"
   }
 }

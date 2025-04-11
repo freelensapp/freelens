@@ -1,0 +1,156 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
+
+electronVersion: 35.1.4 # datasource=npm depName=electron
+
+## Run `pnpm electron-rebuild` instead
+npmRebuild: false
+
+## There is no support in app for autoupdates yet
+detectUpdateChannel: false
+generateUpdatesFilesForAllChannels: true
+publish: []
+
+## Files in app.asar
+files:
+  - static/**/*
+  - "!node_modules/@freelensapp/core/node_modules/**/*"
+  - "!node_modules/@freelensapp/core/src"
+  - "!node_modules/win-ca/pem/*"
+
+## Extra files added to unpacked resources
+extraResources:
+  - build/license.txt
+
+## Notarization
+afterSign: build/notarize.js
+
+## Used to register the app as a handler for the freelens:// protocol
+protocols:
+  name: Freelens Protocol Handler
+  schemes:
+    - freelens
+  role: Viewer
+
+## For Linux targets
+linux:
+  appId: app.freelens.Freelens
+  category: Development;Network
+  artifactName: ${productName}-${version}.${arch}.${ext}
+  target:
+    - AppImage
+  extraResources:
+    - from: binaries/client/linux/${arch}/kubectl
+      to: ./${arch}/kubectl
+    - from: binaries/client/linux/${arch}/freelens-k8s-proxy
+      to: ./${arch}/freelens-k8s-proxy
+    - from: binaries/client/linux/${arch}/helm
+      to: ./${arch}/helm
+
+appImage:
+  executableArgs:
+    - --ozone-platform-hint=auto
+    - --enable-features=WebRTCPipeWireCapturer
+    - --enable-features=WaylandWindowDecorations
+    - --disable-gpu-compositing
+    - --no-sandbox
+  license: build/license.txt
+
+deb:
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libsecret-1-0
+    - libasound2
+    - libgbm1
+  executableArgs:
+    - --ozone-platform-hint=auto
+    - --enable-features=WebRTCPipeWireCapturer
+    - --enable-features=WaylandWindowDecorations
+    - --disable-gpu-compositing
+  afterInstall: ./build/after-install-deb.sh
+  afterRemove: ./build/after-remove-deb.sh
+  fpm:
+    - ./build/apparmor-profile.aa=/etc/apparmor.d/freelens
+    - ./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc
+    - ./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources
+    - ./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml
+  packageCategory: devel
+
+## Official Flatpak is built from the separate repository
+flatpak:
+  useWaylandFlags: true
+  license: build/license.txt
+
+## Official Snap is built from the separate repository
+snap:
+  allowNativeWayland: true
+  confinement: classic
+
+rpm:
+  depends:
+    - gtk3
+    - libnotify
+    - nss
+    - libXScrnSaver
+    - (libXtst or libXtst6)
+    - xdg-utils
+    - at-spi2-core
+    - (libdrm2 or libdrm)
+    - (libgbm1 or libgmb or mesa-libgbm)
+    - (alsa-lib or libalsa2 or libasound2)
+  executableArgs:
+    - --ozone-platform-hint=auto
+    - --enable-features=WebRTCPipeWireCapturer
+    - --enable-features=WaylandWindowDecorations
+    - --disable-gpu-compositing
+  fpm:
+    - --rpm-rpmbuild-define=_build_id_links none
+    - ./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml
+  packageCategory: devel
+
+## For macOS targets
+mac:
+  appId: app.freelens.Freelens
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  category: public.app-category.developer-tools
+  darkModeSupport: true
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  extraResources:
+    - from: binaries/client/darwin/${arch}/kubectl
+      to: ./${arch}/kubectl
+    - from: binaries/client/darwin/${arch}/freelens-k8s-proxy
+      to: ./${arch}/freelens-k8s-proxy
+    - from: binaries/client/darwin/${arch}/helm
+      to: ./${arch}/helm
+
+pkg:
+  license: build/license.txt
+
+## For Windows targets
+win:
+  appId: app.freelens.Freelens
+  target:
+    - nsis
+  extraResources:
+    - from: binaries/client/windows/${arch}/kubectl.exe
+      to: ./${arch}/kubectl.exe
+    - from: binaries/client/windows/${arch}/freelens-k8s-proxy.exe
+      to: ./${arch}/freelens-k8s-proxy.exe
+    - from: binaries/client/windows/${arch}/helm.exe
+      to: ./${arch}/helm.exe
+
+nsis:
+  include: build/installer.nsh
+  oneClick: false
+  allowElevation: true
+  createStartMenuShortcut: true
+  allowToChangeInstallationDirectory: true
+  license: build/license.txt

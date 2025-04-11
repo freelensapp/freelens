@@ -5,7 +5,7 @@
 
 import { configure } from "mobx";
 import { TextEncoder, TextDecoder as TextDecoderNode } from "util";
-import glob from "glob";
+import * as glob from "glob";
 import path from "path";
 import { enableMapSet, setAutoFreeze } from "immer";
 import type * as K8slensTooltip from "@freelensapp/tooltip";

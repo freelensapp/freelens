@@ -24,16 +24,17 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand",
     "lint:fix": "lens-lint --fix",
     "lint": "lens-lint"
   },
-  "peerDependencies": {
-    "@freelensapp/application": "^1.2.0",
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/startable-stoppable": "^1.2.0",
+  "dependencies": {
+    "@freelensapp/application": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/startable-stoppable": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
@@ -41,7 +42,10 @@
     "mobx": "^6.13.4"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/webpack": "^1.2.0"
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "jest": "^29.7.0"
   }
 }

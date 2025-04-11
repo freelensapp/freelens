@@ -74,12 +74,6 @@ export type WatcherOptions<AlwaysStat extends boolean> = {
   cwd?: string;
 
   /**
-   *  If set to true then the strings passed to .watch() and .add() are treated as literal path
-   *  names, even if they look like globs. Default: false.
-   */
-  disableGlobbing?: boolean;
-
-  /**
    * Whether to use fs.watchFile (backed by polling), or fs.watch. If polling leads to high CPU
    * utilization, consider setting this to `false`. It is typically necessary to **set this to
    * `true` to successfully watch files over a network**, and it may be necessary to successfully

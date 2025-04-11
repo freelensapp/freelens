@@ -36,7 +36,7 @@ import type { PartialDeep } from "type-fest";
 import type { LogFunction } from "@freelensapp/logger";
 import { matches } from "lodash/fp";
 import { makeObservable, observable } from "mobx";
-import type { ScaleCreateOptions } from "@freelensapp/kube-object/src/types/scale";
+import type { ScaleCreateOptions } from "@freelensapp/kube-object";
 
 /**
  * The options used for creating a `KubeApi`

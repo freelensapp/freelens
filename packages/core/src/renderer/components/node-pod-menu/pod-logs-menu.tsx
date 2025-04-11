@@ -9,7 +9,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import createPodLogsTabInjectable, { type PodLogsTabData } from "../dock/logs/create-pod-logs-tab.injectable";
 import type { Container } from "@freelensapp/kube-object";
 import PodMenuItem from "./pod-menu-item";
-import { Pod } from "@freelensapp/kube-object/src/specifics";
+import { Pod } from "@freelensapp/kube-object";
 
 export interface NonInjectablePodLogsMenuProps {
   object: any;

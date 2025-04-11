@@ -709,7 +709,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given extension shou
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -718,7 +718,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given extension shou
                           All namespaces
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -741,7 +741,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given extension shou
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1226,7 +1226,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given not yet known 
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--is-multi css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1235,7 +1235,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given not yet known 
                           All namespaces
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1258,7 +1258,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant given not yet known 
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"

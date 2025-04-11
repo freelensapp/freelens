@@ -4,7 +4,7 @@
  */
 
 //-- Mixins for adaptive layout (media queries)
-@use "../../../../../node_modules/include-media/dist/include-media";
+@use "include-media/dist/include-media";
 
 @mixin mobile {
   @include include-media.media("<=desktop") {

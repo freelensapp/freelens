@@ -15,14 +15,15 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "build": "webpack"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "rimraf": "^6.0.1",
+    "@freelensapp/typescript": "workspace:^",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.98.0",

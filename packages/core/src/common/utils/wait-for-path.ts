@@ -27,7 +27,6 @@ export async function waitForPath(pathname: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const watcher = new FSWatcher({
       depth: 0,
-      disableGlobbing: true,
     });
     const onAddOrAddDir = (filePath: string) => {
       if (filePath === pathname) {

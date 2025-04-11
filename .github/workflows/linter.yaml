@@ -36,27 +36,31 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Use npm cache
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install npm dependencies
+      - name: Install pnpm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: npm ci
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm --color=always --stream lint
 
       - name: Verify Publish Configurations
         run: ./scripts/lint-publish-configs.sh

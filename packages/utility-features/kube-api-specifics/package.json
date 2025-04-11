@@ -25,21 +25,23 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "dev": "webpack --mode=development --watch",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "peerDependencies": {
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/kube-api": "^1.2.0",
-    "@freelensapp/logger": "^1.2.0",
+  "dependencies": {
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/kube-api": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/jest": "^1.2.0",
-    "@freelensapp/typescript": "^1.2.0"
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^"
   }
 }

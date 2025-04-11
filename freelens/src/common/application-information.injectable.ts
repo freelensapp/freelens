@@ -19,14 +19,11 @@ const applicationInformationInjectable = getInjectable({
         welcomeRoute,
       },
       productName,
-      build,
       copyright,
       description,
       name,
       dependencies,
     } = packageJson;
-
-    const publish = (build as any)?.publish;
 
     return {
       version,
@@ -39,7 +36,7 @@ const applicationInformationInjectable = getInjectable({
       bundledHelmVersion,
       contentSecurityPolicy,
       welcomeRoute,
-      updatingIsEnabled: publish instanceof Array ? publish?.length > 0 : false,
+      updatingIsEnabled: false,
       dependencies,
     };
   },

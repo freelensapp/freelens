@@ -26,7 +26,10 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "peerDependencies": {
+  "scripts": {
+    "clean:node_modules": "pnpm dlx rimraf node_modules"
+  },
+  "dependencies": {
     "@typescript-eslint/eslint-plugin": ">= 8.26.0",
     "@typescript-eslint/parser": ">= 8.26.0",
     "eslint": ">= 7",

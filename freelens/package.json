@@ -21,26 +21,28 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "clean": "rimraf binaries/ dist/ static/build",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.ts --progress",
-    "postbuild": "npm run build:tray-icons && npm run download:binaries",
-    "build:app": "run-script-os",
+    "clean": "pnpm dlx rimraf binaries dist static/build",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "build": "pnpm dlx cross-env NODE_ENV=production webpack --config webpack/webpack.ts --progress",
+    "postbuild": "pnpm \"/^postbuild:/\"",
+    "postbuild:generate-tray-icons": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg",
+    "postbuild:ensure-binaries": "ensure-binaries --package package.json --base-dir binaries/client",
+    "build:app": "run-script-os --",
     "build:app:darwin": "electron-builder --publish never --macos",
     "build:app:default": "electron-builder --publish never",
     "build:app:linux": "electron-builder --publish never --linux",
     "build:app:win32": "electron-builder --publish never --win",
-    "prebuild:app": "run-script-os",
-    "prebuild:app:default": "exit 0",
-    "prebuild:app:win32": "rimraf node_modules/win-ca/pem",
-    "rebuild": "electron-rebuild -f",
-    "start": "concurrently -i -k \"npm run dev-run -C\" npm:dev:*",
-    "dev-run": "nodemon --watch ./static/build/main.js --exec \"electron --remote-debugging-port=9223 --inspect .\"",
-    "dev:main": "cross-env NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
-    "dev:renderer": "cross-env NODE_ENV=development ts-node ./webpack/dev-server.ts",
-    "test:integration": "jest -xyz --runInBand --detectOpenHandles --modulePaths=[\"<rootDir>/integration/\"]",
-    "build:tray-icons": "npm run --workspace @freelensapp/generate-tray-icons generate -- --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg",
-    "download:binaries": "npm run --workspace @freelensapp/ensure-binaries ensure -- --package package.json --base-dir binaries/client",
-    "postinstall": "electron-rebuild"
+    "electron-rebuild": "electron-rebuild -f",
+    "start": "run-script-os --",
+    "start:darwin": "./dist/mac*/Freelens.app/Contents/MacOS/Freelens",
+    "start:default": "exit 1",
+    "start:linux": "./dist/linux*-unpacked/freelens",
+    "start:win32": "dist\\win-unpacked\\Freelens.exe",
+    "dev": "concurrently -i -k \"pnpm dev:run -C\" npm:dev:build:*",
+    "dev:run": "nodemon --watch ./static/build/main.js --exec \"electron --remote-debugging-port=9223 --inspect .\"",
+    "dev:build:main": "pnpm dlx cross-env NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
+    "dev:build:renderer": "pnpm dlx cross-env NODE_ENV=development ts-node ./webpack/dev-server.ts",
+    "test:integration": "jest -xyz --runInBand --detectOpenHandles --modulePaths=[\"<rootDir>/integration/\"]"
   },
   "config": {
     "k8sProxyVersion": "1.2.8",
@@ -52,325 +54,65 @@
   "engines": {
     "node": "^22.0.0"
   },
-  "build": {
-    "npmRebuild": false,
-    "detectUpdateChannel": false,
-    "electronVersion": "35.1.4",
-    "generateUpdatesFilesForAllChannels": true,
-    "publish": [],
-    "files": [
-      "static/**/*",
-      "!node_modules/@freelensapp/core/node_modules/**/*",
-      "!node_modules/@freelensapp/core/src"
-    ],
-    "afterSign": "build/notarize.js",
-    "extraResources": [
-      "build/license.txt"
-    ],
-    "linux": {
-      "appId": "app.freelens.Freelens",
-      "category": "Development;Network",
-      "artifactName": "${productName}-${version}.${arch}.${ext}",
-      "target": [
-        "AppImage"
-      ],
-      "extraResources": [
-        {
-          "from": "binaries/client/linux/${arch}/kubectl",
-          "to": "./${arch}/kubectl"
-        },
-        {
-          "from": "binaries/client/linux/${arch}/freelens-k8s-proxy",
-          "to": "./${arch}/freelens-k8s-proxy"
-        },
-        {
-          "from": "binaries/client/linux/${arch}/helm",
-          "to": "./${arch}/helm"
-        }
-      ]
-    },
-    "deb": {
-      "depends": [
-        "libgtk-3-0",
-        "libnotify4",
-        "libnss3",
-        "libxss1",
-        "libxtst6",
-        "xdg-utils",
-        "libatspi2.0-0",
-        "libuuid1",
-        "libsecret-1-0",
-        "libasound2",
-        "libgbm1"
-      ],
-      "executableArgs": [
-        "--ozone-platform-hint=auto",
-        "--enable-features=WebRTCPipeWireCapturer",
-        "--enable-features=WaylandWindowDecorations",
-        "--disable-gpu-compositing"
-      ],
-      "afterInstall": "./build/after-install-deb.sh",
-      "afterRemove": "./build/after-remove-deb.sh",
-      "fpm": [
-        "./build/apparmor-profile.aa=/etc/apparmor.d/freelens",
-        "./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc",
-        "./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources",
-        "./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
-      ],
-      "packageCategory": "devel"
-    },
-    "rpm": {
-      "depends": [
-        "gtk3",
-        "libnotify",
-        "nss",
-        "libXScrnSaver",
-        "(libXtst or libXtst6)",
-        "xdg-utils",
-        "at-spi2-core",
-        "(libdrm2 or libdrm)",
-        "(libgbm1 or libgmb or mesa-libgbm)",
-        "(alsa-lib or libalsa2 or libasound2)"
-      ],
-      "executableArgs": [
-        "--ozone-platform-hint=auto",
-        "--enable-features=WebRTCPipeWireCapturer",
-        "--enable-features=WaylandWindowDecorations",
-        "--disable-gpu-compositing"
-      ],
-      "fpm": [
-        "--rpm-rpmbuild-define=_build_id_links none",
-        "./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml"
-      ],
-      "packageCategory": "devel"
-    },
-    "appImage": {
-      "executableArgs": [
-        "--ozone-platform-hint=auto",
-        "--enable-features=WebRTCPipeWireCapturer",
-        "--enable-features=WaylandWindowDecorations",
-        "--disable-gpu-compositing",
-        "--no-sandbox"
-      ],
-      "license": "build/license.txt"
-    },
-    "flatpak": {
-      "useWaylandFlags": true,
-      "license": "build/license.txt"
-    },
-    "snap": {
-      "allowNativeWayland": true,
-      "confinement": "classic"
-    },
-    "mac": {
-      "appId": "app.freelens.Freelens",
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "category": "public.app-category.developer-tools",
-      "darkModeSupport": true,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "extraResources": [
-        {
-          "from": "binaries/client/darwin/${arch}/kubectl",
-          "to": "./${arch}/kubectl"
-        },
-        {
-          "from": "binaries/client/darwin/${arch}/freelens-k8s-proxy",
-          "to": "./${arch}/freelens-k8s-proxy"
-        },
-        {
-          "from": "binaries/client/darwin/${arch}/helm",
-          "to": "./${arch}/helm"
-        }
-      ]
-    },
-    "pkg": {
-      "license": "build/license.txt"
-    },
-    "win": {
-      "appId": "app.freelens.Freelens",
-      "target": [
-        "nsis"
-      ],
-      "extraResources": [
-        {
-          "from": "binaries/client/windows/${arch}/kubectl.exe",
-          "to": "./${arch}/kubectl.exe"
-        },
-        {
-          "from": "binaries/client/windows/${arch}/freelens-k8s-proxy.exe",
-          "to": "./${arch}/freelens-k8s-proxy.exe"
-        },
-        {
-          "from": "binaries/client/windows/${arch}/helm.exe",
-          "to": "./${arch}/helm.exe"
-        }
-      ]
-    },
-    "nsis": {
-      "include": "build/installer.nsh",
-      "oneClick": false,
-      "allowElevation": true,
-      "createStartMenuShortcut": true,
-      "allowToChangeInstallationDirectory": true,
-      "license": "build/license.txt"
-    },
-    "protocols": {
-      "name": "Freelens Protocol Handler",
-      "schemes": [
-        "freelens"
-      ],
-      "role": "Viewer"
-    }
-  },
   "dependencies": {
-    "@astronautlabs/jsonpath": "^1.1.2",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@freelensapp/application": "^1.2.0",
-    "@freelensapp/application-for-electron-main": "^1.2.0",
-    "@freelensapp/button": "^1.2.0",
-    "@freelensapp/cluster-settings": "^1.2.0",
-    "@freelensapp/cluster-sidebar": "^1.2.0",
-    "@freelensapp/core": "^1.2.0",
-    "@freelensapp/ensure-binaries": "^1.2.0",
-    "@freelensapp/error-boundary": "^1.2.0",
-    "@freelensapp/event-emitter": "^1.2.0",
-    "@freelensapp/feature-core": "^1.2.0",
-    "@freelensapp/json-api": "^1.2.0",
-    "@freelensapp/keyboard-shortcuts": "^1.2.0",
-    "@freelensapp/kube-api": "^1.2.0",
-    "@freelensapp/kube-api-specifics": "^1.2.0",
-    "@freelensapp/kube-object": "^1.2.0",
-    "@freelensapp/kubectl-versions": "^1.2.0",
-    "@freelensapp/kubernetes-client-node": "^1.2.0",
-    "@freelensapp/legacy-extension-example": "^1.2.0",
-    "@freelensapp/legacy-extensions": "^1.2.0",
-    "@freelensapp/legacy-global-di": "^1.2.0",
-    "@freelensapp/list-layout": "^1.2.0",
-    "@freelensapp/logger": "^1.2.0",
-    "@freelensapp/messaging": "^1.2.0",
-    "@freelensapp/messaging-for-main": "^1.2.0",
-    "@freelensapp/messaging-for-renderer": "^1.2.0",
-    "@freelensapp/metrics": "^1.2.0",
-    "@freelensapp/node-fetch": "^1.2.0",
-    "@freelensapp/prometheus": "^1.2.0",
-    "@freelensapp/random": "^1.2.0",
-    "@freelensapp/react-application": "^1.2.0",
-    "@freelensapp/resizing-anchor": "^1.2.0",
-    "@freelensapp/resource-templates": "^1.2.0",
-    "@freelensapp/routing": "^1.2.0",
-    "@freelensapp/run-many": "^1.2.0",
-    "@freelensapp/startable-stoppable": "^1.2.0",
-    "@freelensapp/tooltip": "^1.2.0",
-    "@freelensapp/utilities": "^1.2.0",
-    "@hapi/call": "^9.0.1",
-    "@hapi/subtext": "^8.1.0",
-    "@mui/lab": "5.0.0-alpha.142",
-    "@mui/material": "^5.17.1",
-    "@ogre-tools/fp": "^17.11.1",
+    "@freelensapp/animate": "workspace:^",
+    "@freelensapp/application": "workspace:^",
+    "@freelensapp/application-for-electron-main": "workspace:^",
+    "@freelensapp/button": "workspace:^",
+    "@freelensapp/cluster-settings": "workspace:^",
+    "@freelensapp/cluster-sidebar": "workspace:^",
+    "@freelensapp/core": "workspace:^",
+    "@freelensapp/ensure-binaries": "workspace:^",
+    "@freelensapp/error-boundary": "workspace:^",
+    "@freelensapp/event-emitter": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/icon": "workspace:^",
+    "@freelensapp/json-api": "workspace:^",
+    "@freelensapp/keyboard-shortcuts": "workspace:^",
+    "@freelensapp/kube-api": "workspace:^",
+    "@freelensapp/kube-api-specifics": "workspace:^",
+    "@freelensapp/kube-object": "workspace:^",
+    "@freelensapp/kubectl-versions": "workspace:^",
+    "@freelensapp/kubernetes-client-node": "workspace:^",
+    "@freelensapp/legacy-extensions": "workspace:^",
+    "@freelensapp/legacy-global-di": "workspace:^",
+    "@freelensapp/list-layout": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/messaging": "workspace:^",
+    "@freelensapp/messaging-for-main": "workspace:^",
+    "@freelensapp/messaging-for-renderer": "workspace:^",
+    "@freelensapp/metrics": "workspace:^",
+    "@freelensapp/node-fetch": "workspace:^",
+    "@freelensapp/notifications": "workspace:^",
+    "@freelensapp/prometheus": "workspace:^",
+    "@freelensapp/random": "workspace:^",
+    "@freelensapp/react-application": "workspace:^",
+    "@freelensapp/resizing-anchor": "workspace:^",
+    "@freelensapp/resource-templates": "workspace:^",
+    "@freelensapp/routing": "workspace:^",
+    "@freelensapp/run-many": "workspace:^",
+    "@freelensapp/spinner": "workspace:^",
+    "@freelensapp/startable-stoppable": "workspace:^",
+    "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "@xterm/addon-fit": "^0.10.0",
-    "@xterm/addon-web-links": "^0.11.0",
-    "@xterm/xterm": "^5.5.0",
-    "ansi_up": "^5.2.1",
-    "auto-bind": "^4.0.0",
-    "await-lock": "^2.2.2",
-    "byline": "^5.0.0",
-    "chalk": "^4.1.2",
-    "chart.js": "^2.9.4",
-    "chokidar": "^4.0.3",
-    "clsx": "^2.1.1",
-    "color": "^4.2.3",
-    "conf": "^10.2.0",
-    "crypto-js": "^4.2.0",
-    "dompurify": "^3.2.5",
-    "electron-devtools-installer": "^4.0.0",
-    "electron-updater": "^6.6.2",
-    "electron-window-state": "^5.0.3",
-    "fs-extra": "^11.3.0",
-    "glob-to-regexp": "^0.4.1",
-    "grapheme-splitter": "^1.0.4",
-    "handlebars": "^4.7.8",
-    "history": "^4.10.1",
-    "hpagent": "^1.2.0",
-    "http-proxy": "^1.18.1",
-    "immer": "^10.1.1",
-    "joi": "^17.13.3",
-    "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
-    "marked": "^15.0.7",
-    "mobx": "^6.13.7",
-    "mobx-observable-history": "^2.0.3",
-    "mobx-react": "^7.6.0",
-    "mobx-utils": "^6.1.0",
-    "moment": "^2.30.1",
-    "moment-timezone": "^0.5.48",
-    "monaco-editor": "^0.52.2",
-    "node-pty": "1.1.0-beta34",
-    "npm": "10.9.2",
-    "p-limit": "^3.1.0",
-    "path-to-regexp": "^6.3.0",
-    "proper-lockfile": "^4.1.2",
-    "query-string": "^7.1.3",
-    "randomcolor": "^0.6.2",
-    "react": "^17.0.2",
-    "react-beautiful-dnd": "^13.1.1",
-    "react-dom": "^17.0.2",
-    "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4",
-    "react-select": "^5.7.0",
-    "react-select-event": "^5.5.1",
-    "react-table": "^7.8.0",
-    "react-virtualized-auto-sizer": "^1.0.7",
-    "react-window": "^1.8.11",
-    "rfc6902": "^5.1.2",
-    "selfsigned": "^2.4.1",
-    "semver": "^7.7.1",
-    "stoppable": "^1.1.0",
-    "tar": "^7.4.3",
-    "tcp-port-used": "^1.0.2",
-    "tempy": "1.0.1",
-    "type-fest": "^2.19.0",
-    "typed-emitter": "^1.4.0",
-    "typed-regex": "^0.0.8",
-    "url-parse": "^1.5.10",
-    "uuid": "^11.1.0",
-    "win-ca": "^3.5.1",
-    "winston": "^3.17.0",
-    "winston-transport-browserconsole": "^1.0.5",
-    "ws": "^8.18.1"
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
+    "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
+    "@ogre-tools/injectable-react": "^17.2.0",
+    "mobx": "^6.13.4",
+    "tslib": "2.8.1"
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.1",
-    "@freelensapp/generate-tray-icons": "^1.2.0",
-    "@freelensapp/test-utils": "^1.2.0",
+    "@electron/rebuild": "^3.7.1",
+    "@freelensapp/generate-tray-icons": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.16",
-    "@types/byline": "^4.2.36",
-    "@types/chart.js": "^2.9.41",
-    "@types/color": "^4.0.0",
-    "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.17.16",
     "@types/node": "^22.14.0",
-    "@types/proper-lockfile": "^4.1.4",
-    "@types/react-dom": "^17.0.26",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/react-virtualized-auto-sizer": "^1.0.1",
-    "@types/react-window": "^1.8.8",
-    "@types/tcp-port-used": "^1.0.4",
-    "@types/url-parse": "^1.4.11",
-    "@types/uuid": "^10.0.0",
     "@types/webpack": "^5.28.5",
-    "@types/webpack-env": "^1.18.8",
-    "@types/webpack-node-externals": "3.0.4",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^9.1.2",
     "copy-webpack-plugin": "^13.0.0",
-    "cross-env": "^7.0.3",
     "css-loader": "^6.11.0",
     "electron": "^35.1.4",
     "electron-builder": "^26.0.6",
@@ -387,7 +129,6 @@
     "node-loader": "^2.1.0",
     "nodemon": "^3.1.9",
     "playwright": "^1.33.0",
-    "rimraf": "^6.0.1",
     "run-script-os": "^1.1.6",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.17",

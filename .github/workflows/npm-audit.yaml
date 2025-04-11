@@ -44,31 +44,32 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get npm cache directory
-        run: echo "npm_cache_dir=$(npm config get cache)" >> ${GITHUB_ENV}
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
-      - name: Use npm cache
+      - name: Use pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.npm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install npm dependencies
+      - name: Install pnpm dependencies
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
           retry_on: any
-          command: npm ci
+          command: pnpm --color=always install --prefer-offline --frozen-lockfile
 
       - name: Run npm audit
         run: |
-          npm audit report --loglevel error 2>&1 | tee .github/report.log || true
-          npm audit fix --no-fund --loglevel error 2>&1 | tee .github/fix.log || true
+          pnpm audit report 2>&1 | tee .github/report.log || true
+          pnpm audit fix 2>&1 | tee .github/fix.log || true
           sed -e 's/\x1b\[[0-9;]*m//g' .github/report.log > .github/pr_body.log
-          sed -e 's/\x1b\[[0-9;]*m//g' -e '/^# npm audit report/,$d' .github/fix.log >> .github/pr_body.log
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/fix.log >> .github/pr_body.log
 
       - name: Check for changes
         run: |

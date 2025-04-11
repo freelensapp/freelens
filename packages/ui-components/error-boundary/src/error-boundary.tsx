@@ -31,10 +31,7 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedErrorBoundary extends React.Component<
-  ErrorBoundaryProps & Dependencies,
-  State
-> {
+class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Dependencies, State> {
   public state: State = {};
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -77,12 +74,7 @@ class NonInjectedErrorBoundary extends React.Component<
               {error.stack}
             </code>
           </div>
-          <Button
-            className="box self-flex-start"
-            primary
-            label="Back"
-            onClick={this.back}
-          />
+          <Button className="box self-flex-start" primary label="Back" onClick={this.back} />
         </div>
       );
     }
@@ -91,12 +83,9 @@ class NonInjectedErrorBoundary extends React.Component<
   }
 }
 
-export const ErrorBoundary = withInjectables<Dependencies, ErrorBoundaryProps>(
-  NonInjectedErrorBoundary,
-  {
-    getProps: (di, props) => ({
-      ...props,
-      observableHistory: di.inject(observableHistoryInjectionToken),
-    }),
-  },
-);
+export const ErrorBoundary = withInjectables<Dependencies, ErrorBoundaryProps>(NonInjectedErrorBoundary, {
+  getProps: (di, props) => ({
+    ...props,
+    observableHistory: di.inject(observableHistoryInjectionToken),
+  }),
+});

@@ -25,25 +25,26 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "rimraf dist/",
+    "clean": "pnpm dlx rimraf dist",
+    "clean:node_modules": "pnpm dlx rimraf node_modules",
     "dev": "webpack --mode=development --watch",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
   "dependencies": {
-    "@freelensapp/node-fetch": "^1.2.0"
-  },
-  "peerDependencies": {
-    "@freelensapp/event-emitter": "^1.2.0",
-    "@freelensapp/logger": "^1.2.0",
-    "@freelensapp/utilities": "^1.2.0",
+    "@freelensapp/event-emitter": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/node-fetch": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "lodash": "^4.17.15",
     "rfc6902": "^5.1.2"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "^1.2.0",
-    "@freelensapp/jest": "^1.2.0",
-    "@freelensapp/typescript": "^1.2.0",
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^22.14.0",
     "type-fest": "^2.19.0"
   }

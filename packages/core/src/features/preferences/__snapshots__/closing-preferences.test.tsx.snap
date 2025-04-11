@@ -216,7 +216,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container css-1fdsijx-ValueContainer"
+                        class="Select__value-container css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -225,7 +225,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                           Select...
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -248,7 +248,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -307,7 +307,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--has-value css-hlgwow"
                       >
                         <div
                           class="Select__single-value css-1dimb5e-singleValue"
@@ -315,7 +315,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                           Default Url
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -337,7 +337,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -452,7 +452,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--has-value css-hlgwow"
                       >
                         <div
                           class="Select__single-value css-1dimb5e-singleValue"
@@ -460,7 +460,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                           Etc/GMT
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -482,7 +482,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1653,7 +1653,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container css-1fdsijx-ValueContainer"
+                        class="Select__value-container css-hlgwow"
                       >
                         <div
                           class="Select__placeholder css-1jqq78o-placeholder"
@@ -1662,7 +1662,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                           Select...
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1685,7 +1685,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1744,7 +1744,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--has-value css-hlgwow"
                       >
                         <div
                           class="Select__single-value css-1dimb5e-singleValue"
@@ -1752,7 +1752,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                           Default Url
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1774,7 +1774,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1889,7 +1889,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container Select__value-container--has-value css-1fdsijx-ValueContainer"
+                        class="Select__value-container Select__value-container--has-value css-hlgwow"
                       >
                         <div
                           class="Select__single-value css-1dimb5e-singleValue"
@@ -1897,7 +1897,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                           Etc/GMT
                         </div>
                         <div
-                          class="Select__input-container css-qbdosj-Input"
+                          class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
@@ -1919,7 +1919,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                         </div>
                       </div>
                       <div
-                        class="Select__indicators css-1hb7zxy-IndicatorsContainer"
+                        class="Select__indicators css-1wy0on6"
                       >
                         <span
                           class="Select__indicator-separator css-1u9des2-indicatorSeparator"

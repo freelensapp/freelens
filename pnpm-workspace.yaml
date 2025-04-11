@@ -1,0 +1,26 @@
+packages:
+  - freelens
+  - packages/**
+
+publicHoistPattern:
+  - '@types/webpack-env'
+  - '*css-loader*'
+  - '*ts-loader*'
+  - '*sass-loader*'
+  - eslint
+  - webpack
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - core-js-pure
+  - electron
+  - electron-winstaller
+  - esbuild
+  - node-pty
+  - playwright
+  - sharp
+  - win-ca
+
+patchedDependencies:
+  app-builder-lib: patches/app-builder-lib.patch
+  monaco-editor: patches/monaco-editor.patch
