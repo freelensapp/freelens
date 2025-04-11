@@ -39,7 +39,7 @@
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
     "lodash": "^4.17.21",
-    "react": "^17 || ^18"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
