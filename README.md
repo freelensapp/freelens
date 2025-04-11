@@ -10,6 +10,7 @@
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
 [![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
+[![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
 [![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
@@ -87,7 +88,7 @@ The package is available on the
 [Flathub](https://flathub.org/apps/app.freelens.Freelens) App Store for
 Linux.
 
-Run the following commands:
+Use GNOME Software application or run the following commands:
 
 ```sh
 flatpak install flathub app.freelens.Freelens
@@ -103,6 +104,17 @@ Flatpak adds wrappers for the `aws`, `doctl`, `gke-gcloud-auth-plugin`, and
 The terminal uses `/bin/sh` by default, but it can be switched to, for
 example, `/bin/bash` for a sandboxed environment or `/app/bin/host-spawn` for
 a host environment.
+
+#### Snap
+
+The package is available on the [Snap](https://snapcraft.io/freelens) Store
+for Linux.
+
+Use App Center application or run the following command:
+
+```sh
+snap install freelens --classic
+```
 
 #### APT repository
 
