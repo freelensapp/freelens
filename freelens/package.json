@@ -100,6 +100,7 @@
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
     "mobx": "^6.13.4",
+    "pnpm": "^10.8.0",
     "tslib": "2.8.1"
   },
   "devDependencies": {

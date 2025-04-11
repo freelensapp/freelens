@@ -4,6 +4,6 @@
  */
 
 import { getGlobalOverride } from "@freelensapp/test-utils";
-import pathToNpmCliInjectable from "./path-to-npm-cli.injectable";
+import pathToPnpmCliInjectable from "./path-to-pnpm-cli.injectable";
 
-export default getGlobalOverride(pathToNpmCliInjectable, () => "/some/npm/cli/path");
+export default getGlobalOverride(pathToPnpmCliInjectable, () => "node_modules/pnpm/bin/pnpm.cjs");

@@ -5,7 +5,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { fork } from "child_process";
 import AwaitLock from "await-lock";
-import pathToNpmCliInjectable from "../../common/app-paths/path-to-npm-cli.injectable";
+import pathToPnpmCliInjectable from "../../common/app-paths/path-to-pnpm-cli.injectable";
 import extensionPackageRootDirectoryInjectable from "./extension-package-root-directory.injectable";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
@@ -15,15 +15,11 @@ import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable"
 import { once } from "lodash";
 import { isErrnoException } from "@freelensapp/utilities";
 
-const baseNpmInstallArgs = [
+const basePnpmInstallArgs = [
   "install",
-  "--save-optional",
-  "--audit=false",
-  "--fund=false",
-  // NOTE: we do not omit the `optional` dependencies because that is how we specify the non-bundled extensions
-  "--omit=dev",
-  "--omit=peer",
   "--prefer-offline",
+  "--prod",
+  "--save-optional"
 ];
 
 export type InstallExtension = (name: string) => Promise<void>;
@@ -31,19 +27,24 @@ export type InstallExtension = (name: string) => Promise<void>;
 const installExtensionInjectable = getInjectable({
   id: "install-extension",
   instantiate: (di): InstallExtension => {
-    const pathToNpmCli = di.inject(pathToNpmCliInjectable);
+    const pathToPnpmCli = di.inject(pathToPnpmCliInjectable);
     const extensionPackageRootDirectory = di.inject(extensionPackageRootDirectoryInjectable);
     const readJsonFile = di.inject(readJsonFileInjectable);
     const writeJsonFile = di.inject(writeJsonFileInjectable);
     const joinPaths = di.inject(joinPathsInjectable);
     const logger = di.inject(prefixedLoggerInjectable, "EXTENSION-INSTALLER");
 
-    const forkNpm = (...args: string[]) => new Promise<void>((resolve, reject) => {
-      const child = fork(pathToNpmCli, args, {
+    const forkPnpm = (...args: string[]) => new Promise<void>((resolve, reject) => {
+      const child = fork(pathToPnpmCli, args, {
         cwd: extensionPackageRootDirectory,
-        silent: true,
+        silent: false,
       });
+      let stdout = "";
       let stderr = "";
+
+      child.stdout?.on("data", data => {
+        stdout += String(data);
+      });
 
       child.stderr?.on("data", data => {
         stderr += String(data);
@@ -51,7 +52,7 @@ const installExtensionInjectable = getInjectable({
 
       child.on("close", (code) => {
         if (code !== 0) {
-          reject(new Error(stderr));
+          reject(new Error([stdout,stderr].join("\n")));
         } else {
           resolve();
         }
@@ -66,7 +67,7 @@ const installExtensionInjectable = getInjectable({
 
     /**
      * NOTES:
-     *   - We have to keep the `package.json` because `npm install` removes files from `node_modules`
+     *   - We have to keep the `package.json` because `pnpm install` removes files from `node_modules`
      *     if they are no longer in the `package.json`
      *   - In v6.2.X we saved bundled extensions as `"dependencies"` and external extensions as
      *     `"optionalDependencies"` at startup. This was done because `"optionalDependencies"` can
@@ -98,7 +99,7 @@ const installExtensionInjectable = getInjectable({
 
       try {
         logger.info(`installing package for extension "${name}"`);
-        await forkNpm(...baseNpmInstallArgs, name);
+        await forkPnpm(...basePnpmInstallArgs, name);
         logger.info(`installed package for extension "${name}"`);
       } finally {
         installLock.release();

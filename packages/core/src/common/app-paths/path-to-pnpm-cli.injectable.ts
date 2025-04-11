@@ -4,10 +4,10 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-const pathToNpmCliInjectable = getInjectable({
-  id: "path-to-npm-cli",
-  instantiate: () => __non_webpack_require__.resolve("npm"),
+const pathToPnpmCliInjectable = getInjectable({
+  id: "path-to-pnpm-cli",
+  instantiate: () => __non_webpack_require__.resolve("pnpm"),
   causesSideEffects: true,
 });
 
-export default pathToNpmCliInjectable;
+export default pathToPnpmCliInjectable;
