@@ -6,7 +6,13 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 const pathToPnpmCliInjectable = getInjectable({
   id: "path-to-pnpm-cli",
-  instantiate: () => __non_webpack_require__.resolve("pnpm"),
+  instantiate: () => {
+    // Ugly trick to get the path in renderer process
+    const req = eval("require");
+    const pnpmPackageJson = req.resolve("pnpm");
+
+    return pnpmPackageJson.substring(0, pnpmPackageJson.indexOf("package.json")) + "bin/pnpm.cjs";
+  },
   causesSideEffects: true,
 });
 
