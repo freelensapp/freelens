@@ -6,13 +6,13 @@ Each of the below sections, functionally determine what shell and behavior shoul
 
 Current hunch is that this could be refactored, to have a single determination at runtime, stored in an importable location (no shell name is exported at Initialization, though other values are), while the Preferences logic allows for an override, this isn't respected by the Pod Shell Menu at runtime.
 
-## Layout
+## Pre Refactor Layout
 
 1. Initialization
 2. Preferences
 3. Pod Shell Menu
 
-## Initialization
+### Initialization
 
 During initialization the logic is found at `packages/core/src/features/shell-sync/main/compute-unix-shell-environment.injectable.ts`, and has debugging so you can validate you're seeing the expected shell (should be the one pnpm start is ran in).
 
@@ -64,7 +64,7 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
     };
 ```
 
-## Preferences
+### Preferences
 
 `packages/core/src/common/vars/default-shell.injectable.ts`
 
@@ -112,7 +112,7 @@ export default defaultShellInjectable;
 
 ```
 
-## Pod Shell Menu
+### Pod Shell Menu
 
 `freelens/packages/core/src/features/shell-sync/main/compute-unix-shell-environment.injectable.ts`
 
@@ -138,3 +138,9 @@ const execShell = async (container: Container) =>  {
       commandParts.unshift("exec");
     }
 ```
+
+## Post Refactor Layout Proposal
+
+1. Initialization - This should store the default system or current shell (during debugging) and it should be stored as a defaul state, and as the preference terminal state, if the user hasn't updated. This design would also let us add a button, to restore the shell path to the system default.
+2. Pod-Shell-Menu - Logic refactored to check the shell current preference, and then figure out whether or not to prepend exec
+3. Preference - this should ensure the value is exportable, similar to kubectl, if a user opens and sets the preference to a different value, otherwise the Initialization will do an initial write to the file.
