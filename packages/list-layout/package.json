@@ -31,16 +31,14 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@freelensapp/kube-object": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.2.0",
-    "react": "^17.0.2"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/jest": "workspace:^",
+    "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^"
+    "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable": "^17.2.0",
+    "react": "^17.0.2"
   }
 }

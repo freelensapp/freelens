@@ -19,11 +19,9 @@
     "clean:node_modules": "pnpm dlx rimraf node_modules",
     "build": "webpack"
   },
-  "dependencies": {
-    "node-fetch": "^3.3.2"
-  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
+    "node-fetch": "^3.3.2",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.98.0",

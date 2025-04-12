@@ -22,9 +22,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable": "^17.2.0",
     "@types/react": "^17.0.85"
-  },
-  "dependencies": {
-    "@ogre-tools/injectable": "^17.2.0"
   }
 }

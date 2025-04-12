@@ -31,17 +31,15 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/kube-api": "workspace:^",
-    "@freelensapp/logger": "workspace:^",
-    "@ogre-tools/injectable": "^17.2.0",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/jest": "workspace:^",
+    "@freelensapp/kube-api": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^"
+    "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable": "^17.2.0",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0"
   }
 }

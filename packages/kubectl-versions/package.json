@@ -25,16 +25,14 @@
     "clean:node_modules": "pnpm dlx rimraf node_modules",
     "dev": "webpack --mode=development --watch"
   },
-  "dependencies": {
-    "@ogre-tools/injectable": "^17.2.0",
-    "node-fetch": "^3.3.2",
-    "semver": "^7.7.1"
-  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable": "^17.2.0",
     "@types/semver": "^7.3.12",
     "fast-xml-parser": "^5.2.0",
+    "node-fetch": "^3.3.2",
+    "semver": "^7.7.1",
     "ts-node": "^10.9.2",
     "typed-regex": "^0.0.8",
     "typescript": "^5.8.3"
