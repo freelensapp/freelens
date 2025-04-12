@@ -17,58 +17,28 @@ importers:
   .: {}
 
   freelens:
-    devDependencies:
-      '@electron/notarize':
-        specifier: ^3.0.1
-        version: 3.0.1
-      '@electron/rebuild':
-        specifier: ^3.7.1
-        version: 3.7.1
-      '@freelensapp/animate':
-        specifier: workspace:^
-        version: link:../packages/ui-components/animate
+    dependencies:
+      '@astronautlabs/jsonpath':
+        specifier: ^1.1.2
+        version: 1.1.2
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../packages/technical-features/application/agnostic
       '@freelensapp/application-for-electron-main':
         specifier: workspace:^
         version: link:../packages/technical-features/application/electron-main
-      '@freelensapp/button':
-        specifier: workspace:^
-        version: link:../packages/ui-components/button
-      '@freelensapp/cluster-settings':
-        specifier: workspace:^
-        version: link:../packages/cluster-settings
-      '@freelensapp/cluster-sidebar':
-        specifier: workspace:^
-        version: link:../packages/cluster-sidebar
       '@freelensapp/core':
         specifier: workspace:^
         version: link:../packages/core
-      '@freelensapp/ensure-binaries':
-        specifier: workspace:^
-        version: link:../packages/ensure-binaries
-      '@freelensapp/error-boundary':
-        specifier: workspace:^
-        version: link:../packages/ui-components/error-boundary
       '@freelensapp/event-emitter':
         specifier: workspace:^
         version: link:../packages/utility-features/event-emitter
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../packages/technical-features/feature-core
-      '@freelensapp/generate-tray-icons':
-        specifier: workspace:^
-        version: link:../packages/generate-tray-icons
-      '@freelensapp/icon':
-        specifier: workspace:^
-        version: link:../packages/ui-components/icon
       '@freelensapp/json-api':
         specifier: workspace:^
         version: link:../packages/utility-features/json-api
-      '@freelensapp/keyboard-shortcuts':
-        specifier: workspace:^
-        version: link:../packages/business-features/keyboard-shortcuts
       '@freelensapp/kube-api':
         specifier: workspace:^
         version: link:../packages/utility-features/kube-api
@@ -90,9 +60,6 @@ importers:
       '@freelensapp/legacy-global-di':
         specifier: workspace:^
         version: link:../packages/legacy-global-di
-      '@freelensapp/list-layout':
-        specifier: workspace:^
-        version: link:../packages/list-layout
       '@freelensapp/logger':
         specifier: workspace:^
         version: link:../packages/logger
@@ -102,54 +69,33 @@ importers:
       '@freelensapp/messaging-for-main':
         specifier: workspace:^
         version: link:../packages/technical-features/messaging/electron/main
-      '@freelensapp/messaging-for-renderer':
-        specifier: workspace:^
-        version: link:../packages/technical-features/messaging/electron/renderer
-      '@freelensapp/metrics':
-        specifier: workspace:^
-        version: link:../packages/metrics
       '@freelensapp/node-fetch':
         specifier: workspace:^
         version: link:../packages/node-fetch
-      '@freelensapp/notifications':
-        specifier: workspace:^
-        version: link:../packages/ui-components/notifications
       '@freelensapp/prometheus':
         specifier: workspace:^
         version: link:../packages/technical-features/prometheus
       '@freelensapp/random':
         specifier: workspace:^
         version: link:../packages/random-id
-      '@freelensapp/react-application':
-        specifier: workspace:^
-        version: link:../packages/technical-features/react-application
-      '@freelensapp/resizing-anchor':
-        specifier: workspace:^
-        version: link:../packages/ui-components/resizing-anchor
-      '@freelensapp/resource-templates':
-        specifier: workspace:^
-        version: link:../packages/resource-templates
-      '@freelensapp/routing':
-        specifier: workspace:^
-        version: link:../packages/routing
       '@freelensapp/run-many':
         specifier: workspace:^
         version: link:../packages/utility-features/run-many
-      '@freelensapp/spinner':
-        specifier: workspace:^
-        version: link:../packages/ui-components/spinner
       '@freelensapp/startable-stoppable':
         specifier: workspace:^
         version: link:../packages/utility-features/startable-stoppable
-      '@freelensapp/test-utils':
-        specifier: workspace:^
-        version: link:../packages/utility-features/test-utils
-      '@freelensapp/tooltip':
-        specifier: workspace:^
-        version: link:../packages/ui-components/tooltip
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../packages/utility-features/utilities
+      '@hapi/call':
+        specifier: ^9.0.1
+        version: 9.0.1
+      '@hapi/subtext':
+        specifier: ^8.1.0
+        version: 8.1.0
+      '@ogre-tools/fp':
+        specifier: ^17.11.1
+        version: 17.11.1(lodash@4.17.21)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -159,18 +105,220 @@ importers:
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.2.0
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
+      auto-bind:
+        specifier: ^4.0.0
+        version: 4.0.0
+      await-lock:
+        specifier: ^2.2.2
+        version: 2.2.2
+      byline:
+        specifier: ^5.0.0
+        version: 5.0.0
+      chalk:
+        specifier: ^4.1.2
+        version: 4.1.2
+      chokidar:
+        specifier: ^4.0.3
+        version: 4.0.3
+      conf:
+        specifier: ^10.2.0
+        version: 10.2.0
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
+      electron-updater:
+        specifier: ^6.0.0
+        version: 6.6.2
+      electron-window-state:
+        specifier: ^5.0.3
+        version: 5.0.3
+      fs-extra:
+        specifier: ^11.3.0
+        version: 11.3.0
+      glob-to-regexp:
+        specifier: ^0.4.1
+        version: 0.4.1
+      got:
+        specifier: ^11.8.6
+        version: 11.8.6
+      grapheme-splitter:
+        specifier: ^1.0.4
+        version: 1.0.4
+      handlebars:
+        specifier: ^4.7.7
+        version: 4.7.8
+      hpagent:
+        specifier: ^1.2.0
+        version: 1.2.0
+      http-proxy:
+        specifier: ^1.18.1
+        version: 1.18.1
+      immer:
+        specifier: ^10.1.1
+        version: 10.1.1
+      isomorphic-ws:
+        specifier: ^5.0.0
+        version: 5.0.0(ws@8.18.1)
+      joi:
+        specifier: ^17.9.1
+        version: 17.13.3
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      mobx:
+        specifier: ^6.13.4
+        version: 6.13.7
+      moment:
+        specifier: ^2.30.1
+        version: 2.30.1
+      moment-timezone:
+        specifier: ^0.5.40
+        version: 0.5.48
+      node-pty:
+        specifier: 1.1.0-beta34
+        version: 1.1.0-beta34
+      openid-client:
+        specifier: ^6.4.2
+        version: 6.4.2
+      p-limit:
+        specifier: ^3.1.0
+        version: 3.1.0
+      path-to-regexp:
+        specifier: ^6.2.1
+        version: 6.3.0
+      pnpm:
+        specifier: ^10.8.0
+        version: 10.8.0
+      proper-lockfile:
+        specifier: ^4.1.2
+        version: 4.1.2
+      react:
+        specifier: ^17.0.2
+        version: 17.0.2
+      react-router:
+        specifier: ^5.3.4
+        version: 5.3.4(react@17.0.2)
+      request:
+        specifier: ^2.88.2
+        version: 2.88.2
+      rfc4648:
+        specifier: ^1.5.4
+        version: 1.5.4
+      selfsigned:
+        specifier: ^2.1.1
+        version: 2.4.1
+      semver:
+        specifier: ^7.7.1
+        version: 7.7.1
+      stoppable:
+        specifier: ^1.1.0
+        version: 1.1.0
+      stream-buffers:
+        specifier: ^3.0.3
+        version: 3.0.3
+      tar:
+        specifier: ^7.4.3
+        version: 7.4.3
+      tcp-port-used:
+        specifier: ^1.0.2
+        version: 1.0.2
+      tempy:
+        specifier: 1.0.1
+        version: 1.0.1
+      triple-beam:
+        specifier: ^1.3.0
+        version: 1.3.0
+      tslib:
+        specifier: ^2.8.1
+        version: 2.8.1
+      typed-regex:
+        specifier: ^0.0.8
+        version: 0.0.8
+      url-parse:
+        specifier: ^1.5.10
+        version: 1.5.10
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      ws:
+        specifier: ^8.12.1
+        version: 8.18.1
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
+    devDependencies:
+      '@electron/notarize':
+        specifier: ^3.0.1
+        version: 3.0.1
+      '@electron/rebuild':
+        specifier: ^3.7.1
+        version: 3.7.1
+      '@freelensapp/animate':
+        specifier: workspace:^
+        version: link:../packages/ui-components/animate
+      '@freelensapp/button':
+        specifier: workspace:^
+        version: link:../packages/ui-components/button
+      '@freelensapp/cluster-sidebar':
+        specifier: workspace:^
+        version: link:../packages/cluster-sidebar
+      '@freelensapp/ensure-binaries':
+        specifier: workspace:^
+        version: link:../packages/ensure-binaries
+      '@freelensapp/error-boundary':
+        specifier: workspace:^
+        version: link:../packages/ui-components/error-boundary
+      '@freelensapp/generate-tray-icons':
+        specifier: workspace:^
+        version: link:../packages/generate-tray-icons
+      '@freelensapp/icon':
+        specifier: workspace:^
+        version: link:../packages/ui-components/icon
+      '@freelensapp/keyboard-shortcuts':
+        specifier: workspace:^
+        version: link:../packages/business-features/keyboard-shortcuts
+      '@freelensapp/messaging-for-renderer':
+        specifier: workspace:^
+        version: link:../packages/technical-features/messaging/electron/renderer
+      '@freelensapp/notifications':
+        specifier: workspace:^
+        version: link:../packages/ui-components/notifications
+      '@freelensapp/react-application':
+        specifier: workspace:^
+        version: link:../packages/technical-features/react-application
+      '@freelensapp/resizing-anchor':
+        specifier: workspace:^
+        version: link:../packages/ui-components/resizing-anchor
+      '@freelensapp/routing':
+        specifier: workspace:^
+        version: link:../packages/routing
+      '@freelensapp/spinner':
+        specifier: workspace:^
+        version: link:../packages/ui-components/spinner
+      '@freelensapp/test-utils':
+        specifier: workspace:^
+        version: link:../packages/utility-features/test-utils
+      '@freelensapp/tooltip':
+        specifier: workspace:^
+        version: link:../packages/ui-components/tooltip
       '@ogre-tools/injectable-react':
         specifier: ^17.2.0
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@pmmmwh/react-refresh-webpack-plugin':
         specifier: ^0.5.16
         version: 0.5.16(@types/webpack@5.28.5(webpack-cli@6.0.1))(react-refresh@0.17.0)(type-fest@4.38.0)(webpack-dev-server@5.2.1)(webpack@5.98.0)
+      '@side/jest-runtime':
+        specifier: ^1.1.0
+        version: 1.1.0(@jest/transform@29.7.0)(jest-runtime@29.7.0)(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
       '@types/node':
         specifier: ^22.14.0
         version: 22.14.0
-      '@types/webpack':
-        specifier: ^5.28.5
-        version: 5.28.5(webpack-cli@6.0.1)
       circular-dependency-plugin:
         specifier: ^5.2.2
         version: 5.2.2(webpack@5.98.0)
@@ -189,39 +337,27 @@ importers:
       electron-builder:
         specifier: ^26.0.6
         version: 26.0.6(electron-builder-squirrel-windows@26.0.6)
-      esbuild-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.98.0)
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
         version: 9.1.0(typescript@5.8.3)(webpack@5.98.0)
       html-webpack-plugin:
         specifier: ^5.6.3
         version: 5.6.3(webpack@5.98.0)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
-      jsonfile:
-        specifier: ^6.1.0
-        version: 6.1.0
-      jsonpath-plus:
-        specifier: ^10.3.0
-        version: 10.3.0
       mini-css-extract-plugin:
         specifier: ^2.9.2
         version: 2.9.2(webpack@5.98.0)
-      mobx:
-        specifier: ^6.13.4
-        version: 6.13.7
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
         version: 7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.98.0)
-      node-abi:
-        specifier: ^4.2.0
-        version: 4.2.0
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.98.0)
@@ -231,33 +367,24 @@ importers:
       playwright:
         specifier: ^1.33.0
         version: 1.34.1
-      pnpm:
-        specifier: ^10.8.0
-        version: 10.8.0
       style-loader:
         specifier: ^4.0.0
         version: 4.0.0(webpack@5.98.0)
-      tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.17(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
+      ts-jest:
+        specifier: ^29.3.1
+        version: 29.3.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
       ts-loader:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.98.0)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.14.0)(typescript@5.8.3)
-      tslib:
-        specifier: 2.8.1
-        version: 2.8.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-plugin-css-modules:
         specifier: ^5.1.0
         version: 5.1.0(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))(typescript@5.8.3)
-      uuid:
-        specifier: ^11.1.0
-        version: 11.1.0
       webpack:
         specifier: ^5.98.0
         version: 5.98.0(webpack-cli@6.0.1)
@@ -7701,10 +7828,6 @@ packages:
     resolution: {integrity: sha512-c5XK0MjkGBrQPGYG24GBADZud0NCbznxNx0ZkS+ebUTrmV1qTDxPxSL8zEAPURXSbLRWVexxmP4986BziahL5w==}
     engines: {node: '>=10'}
 
-  node-abi@4.2.0:
-    resolution: {integrity: sha512-admQxilhDcmFJbUl4LQzGu+QyEijW9rctKRH2P7LNavAvln1bdK9OcujM3yi2KysKI41dxTrDtp6QfGEZeCbkg==}
-    engines: {node: '>=22.12.0'}
-
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
 
@@ -7782,6 +7905,9 @@ packages:
   oauth4webapi@3.4.0:
     resolution: {integrity: sha512-5lcbectYuzQHvh0Ni7Epvc13sMVq7BxWUlHEYHaNko64OA1hcats0Huq30vZjqCZULcVE/PZxAGGPansfRAWKQ==}
 
+  oauth4webapi@3.4.1:
+    resolution: {integrity: sha512-sPv0Phrf0HjFNRr23b1yC7Q9VAeri3fdrx4sr4KKN6PmLLY/zJD3B4UHLs/p7oYlFBbxJVl/VI6bSvjmKBoexg==}
+
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -7849,6 +7975,9 @@ packages:
 
   openid-client@6.4.1:
     resolution: {integrity: sha512-Bwta7kyGn0vyRGOatIAAvEOYCIiTwxBptrBpJgV9KdV0OGJ8OPe8wWY7bQbDqCJrDCclq6xbJMfK2Ilp5TugbA==}
+
+  openid-client@6.4.2:
+    resolution: {integrity: sha512-4zBRTsKNRTyKxV5cFzl+LtamsYx/FsWhejjax+qgMkFNGtLj1gMtng2iSoJqqWUT0FHU3IUhO53aeBePg7Sp/g==}
 
   optionator@0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
@@ -8496,6 +8625,9 @@ packages:
   rfc4648@1.5.2:
     resolution: {integrity: sha512-tLOizhR6YGovrEBLatX1sdcuhoSCXddw3mqNVAcKxGJ+J0hFeJ+SjeWCv5UPA/WU3YzWPPuCVYgXBKZUPGpKtg==}
 
+  rfc4648@1.5.4:
+    resolution: {integrity: sha512-rRg/6Lb+IGfJqO05HZkN50UtY7K/JhxJag1kP23+zyMfrvoB0B7RWv06MbOzoc79RgCdNTiUaNsTT1AJZ7Z+cg==}
+
   rfc6902@5.1.2:
     resolution: {integrity: sha512-zxcb+PWlE8PwX0tiKE6zP97THQ8/lHmeiwucRrJ3YFupWEmp25RmFSlB1dNTqjkovwqG4iq+u1gzJMBS3um8mA==}
 
@@ -8836,6 +8968,10 @@ packages:
 
   stream-buffers@3.0.2:
     resolution: {integrity: sha512-DQi1h8VEBA/lURbSwFtEHnSTb9s2/pwLEaFuNhXwy1Dx3Sa0lOuYT2yNUr4/j2fs8oCAMANtrZ5OrPZtyVs3MQ==}
+    engines: {node: '>= 0.10.0'}
+
+  stream-buffers@3.0.3:
+    resolution: {integrity: sha512-pqMqwQCso0PBJt2PQmDO0cFj0lyqmiwOMiMSkVtRokl7e+ZTRYgDHKnuZNbqjiJXgsg4nuqtD/zxuo9KqTp0Yw==}
     engines: {node: '>= 0.10.0'}
 
   stream-shift@1.0.1:
@@ -11465,6 +11601,7 @@ snapshots:
       - esbuild
       - uglify-js
       - webpack-cli
+    optional: true
 
   '@types/ws@8.5.14':
     dependencies:
@@ -13162,7 +13299,7 @@ snapshots:
       esbuild: 0.25.2
       get-tsconfig: 4.10.0
       loader-utils: 2.0.4
-      webpack: 5.98.0(webpack-cli@6.0.1)
+      webpack: 5.98.0(esbuild@0.25.2)(webpack-cli@6.0.1)
       webpack-sources: 1.4.3
 
   esbuild@0.25.2:
@@ -14816,8 +14953,7 @@ snapshots:
       '@sideway/formula': 3.0.1
       '@sideway/pinpoint': 2.0.0
 
-  jose@6.0.10:
-    optional: true
+  jose@6.0.10: {}
 
   js-tokens@4.0.0: {}
 
@@ -15365,10 +15501,6 @@ snapshots:
     dependencies:
       semver: 7.7.1
 
-  node-abi@4.2.0:
-    dependencies:
-      semver: 7.7.1
-
   node-abort-controller@3.1.1: {}
 
   node-addon-api@1.7.2:
@@ -15442,6 +15574,8 @@ snapshots:
 
   oauth4webapi@3.4.0:
     optional: true
+
+  oauth4webapi@3.4.1: {}
 
   object-assign@4.1.1: {}
 
@@ -15524,6 +15658,11 @@ snapshots:
       jose: 6.0.10
       oauth4webapi: 3.4.0
     optional: true
+
+  openid-client@6.4.2:
+    dependencies:
+      jose: 6.0.10
+      oauth4webapi: 3.4.1
 
   optionator@0.8.3:
     dependencies:
@@ -16201,6 +16340,8 @@ snapshots:
 
   rfc4648@1.5.2: {}
 
+  rfc4648@1.5.4: {}
+
   rfc6902@5.1.2: {}
 
   rimraf@2.6.3:
@@ -16607,6 +16748,8 @@ snapshots:
   stoppable@1.1.0: {}
 
   stream-buffers@3.0.2: {}
+
+  stream-buffers@3.0.3: {}
 
   stream-shift@1.0.1: {}
 

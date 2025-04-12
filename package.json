@@ -10,6 +10,7 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
+    "asar": "pnpm dlx @electron/asar",
     "build": "pnpm dlx cross-env NODE_ENV=production pnpm -r build",
     "build:dev": "pnpm dlx cross-env NODE_ENV=development pnpm -r build",
     "build:app": "cd freelens && pnpm build:app",
@@ -19,6 +20,8 @@
     "start": "cd freelens && pnpm start",
     "predev": "cd freelens && pnpm postbuild",
     "dev": "pnpm -r dev",
+    "knip": "pnpm -r --no-bail knip",
+    "knip:production": "pnpm -r --no-bail knip:production",
     "lint": "pnpm -r --no-bail lint",
     "lint:fix": "pnpm -r --no-bail lint:fix",
     "test:unit": "pnpm -r --no-bail test:unit",
