@@ -17,7 +17,8 @@ Current hunch is that this could be refactored, to have a single determination a
 During initialization the logic is found at `packages/core/src/features/shell-sync/main/compute-unix-shell-environment.injectable.ts`, and has debugging so you can validate you're seeing the expected shell (should be the one pnpm start is ran in).
 
 Current Core Code
-```
+
+```typescript
 const computeUnixShellEnvironmentInjectable = getInjectable({
   id: "compute-unix-shell-environment",
   instantiate: (di): ComputeUnixShellEnvironment => {
@@ -68,7 +69,7 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
 
 `packages/core/src/common/vars/default-shell.injectable.ts`
 
-```
+```typescript
 const defaultShellInjectable = getInjectable({
   id: "default-shell",
 
@@ -109,7 +110,6 @@ const defaultShellInjectable = getInjectable({
 });
 
 export default defaultShellInjectable;
-
 ```
 
 ### Pod Shell Menu
@@ -118,7 +118,7 @@ export default defaultShellInjectable;
 
 Extract of working but non-mutatable code
 
-```
+```typescript
 const execShell = async (container: Container) =>  {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
