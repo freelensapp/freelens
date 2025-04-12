@@ -7902,9 +7902,6 @@ packages:
   oauth-sign@0.9.0:
     resolution: {integrity: sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==}
 
-  oauth4webapi@3.4.0:
-    resolution: {integrity: sha512-5lcbectYuzQHvh0Ni7Epvc13sMVq7BxWUlHEYHaNko64OA1hcats0Huq30vZjqCZULcVE/PZxAGGPansfRAWKQ==}
-
   oauth4webapi@3.4.1:
     resolution: {integrity: sha512-sPv0Phrf0HjFNRr23b1yC7Q9VAeri3fdrx4sr4KKN6PmLLY/zJD3B4UHLs/p7oYlFBbxJVl/VI6bSvjmKBoexg==}
 
@@ -7972,9 +7969,6 @@ packages:
   open@10.1.0:
     resolution: {integrity: sha512-mnkeQ1qP5Ue2wd+aivTD3NHd/lZ96Lu0jgf0pwktLPtx6cTZiH7tyeGRRHs0zX0rbrahXPnXlUnbeXyaBBuIaw==}
     engines: {node: '>=18'}
-
-  openid-client@6.4.1:
-    resolution: {integrity: sha512-Bwta7kyGn0vyRGOatIAAvEOYCIiTwxBptrBpJgV9KdV0OGJ8OPe8wWY7bQbDqCJrDCclq6xbJMfK2Ilp5TugbA==}
 
   openid-client@6.4.2:
     resolution: {integrity: sha512-4zBRTsKNRTyKxV5cFzl+LtamsYx/FsWhejjax+qgMkFNGtLj1gMtng2iSoJqqWUT0FHU3IUhO53aeBePg7Sp/g==}
@@ -8622,9 +8616,6 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rfc4648@1.5.2:
-    resolution: {integrity: sha512-tLOizhR6YGovrEBLatX1sdcuhoSCXddw3mqNVAcKxGJ+J0hFeJ+SjeWCv5UPA/WU3YzWPPuCVYgXBKZUPGpKtg==}
-
   rfc4648@1.5.4:
     resolution: {integrity: sha512-rRg/6Lb+IGfJqO05HZkN50UtY7K/JhxJag1kP23+zyMfrvoB0B7RWv06MbOzoc79RgCdNTiUaNsTT1AJZ7Z+cg==}
 
@@ -8965,10 +8956,6 @@ packages:
   stoppable@1.1.0:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
     engines: {node: '>=4', npm: '>=6'}
-
-  stream-buffers@3.0.2:
-    resolution: {integrity: sha512-DQi1h8VEBA/lURbSwFtEHnSTb9s2/pwLEaFuNhXwy1Dx3Sa0lOuYT2yNUr4/j2fs8oCAMANtrZ5OrPZtyVs3MQ==}
-    engines: {node: '>= 0.10.0'}
 
   stream-buffers@3.0.3:
     resolution: {integrity: sha512-pqMqwQCso0PBJt2PQmDO0cFj0lyqmiwOMiMSkVtRokl7e+ZTRYgDHKnuZNbqjiJXgsg4nuqtD/zxuo9KqTp0Yw==}
@@ -10805,13 +10792,13 @@ snapshots:
       js-yaml: 4.1.0
       jsonpath-plus: 10.3.0
       request: 2.88.2
-      rfc4648: 1.5.2
-      stream-buffers: 3.0.2
+      rfc4648: 1.5.4
+      stream-buffers: 3.0.3
       tar: 7.4.3
       tslib: 2.8.1
       ws: 8.18.1
     optionalDependencies:
-      openid-client: 6.4.1
+      openid-client: 6.4.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -15572,9 +15559,6 @@ snapshots:
 
   oauth-sign@0.9.0: {}
 
-  oauth4webapi@3.4.0:
-    optional: true
-
   oauth4webapi@3.4.1: {}
 
   object-assign@4.1.1: {}
@@ -15652,12 +15636,6 @@ snapshots:
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
       is-wsl: 3.1.0
-
-  openid-client@6.4.1:
-    dependencies:
-      jose: 6.0.10
-      oauth4webapi: 3.4.0
-    optional: true
 
   openid-client@6.4.2:
     dependencies:
@@ -16338,8 +16316,6 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  rfc4648@1.5.2: {}
-
   rfc4648@1.5.4: {}
 
   rfc6902@5.1.2: {}
@@ -16746,8 +16722,6 @@ snapshots:
       internal-slot: 1.1.0
 
   stoppable@1.1.0: {}
-
-  stream-buffers@3.0.2: {}
 
   stream-buffers@3.0.3: {}
 
