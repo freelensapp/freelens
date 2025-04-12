@@ -11,7 +11,7 @@ const pathToPnpmCliInjectable = getInjectable({
     const req = eval("require");
     const pnpmPackageJson = req.resolve("pnpm");
 
-    return pnpmPackageJson.substring(0, pnpmPackageJson.indexOf("package.json")) + "bin/pnpm.cjs";
+    return `${pnpmPackageJson.substring(0, pnpmPackageJson.indexOf("package.json"))}bin/pnpm.cjs`;
   },
   causesSideEffects: true,
 });
