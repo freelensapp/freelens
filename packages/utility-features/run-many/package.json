@@ -26,6 +26,7 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "devDependencies": {
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",

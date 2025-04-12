@@ -40,6 +40,7 @@
     "@freelensapp/button": "workspace:^",
     "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/routing": "workspace:^",

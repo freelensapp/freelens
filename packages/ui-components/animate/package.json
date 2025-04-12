@@ -36,6 +36,7 @@
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",

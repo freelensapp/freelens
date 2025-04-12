@@ -258,6 +258,9 @@ importers:
       typescript-plugin-css-modules:
         specifier: ^5.1.0
         version: 5.1.0(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))(typescript@5.8.3)
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
       webpack:
         specifier: ^5.98.0
         version: 5.98.0(webpack-cli@6.0.1)
@@ -282,6 +285,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-application':
         specifier: workspace:^
         version: link:../../technical-features/react-application
@@ -1182,6 +1188,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
+      glob:
+        specifier: ^11.0.1
+        version: 11.0.1
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1218,6 +1227,9 @@ importers:
       '@async-fn/jest':
         specifier: ^1.6.4
         version: 1.6.4(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../typescript
@@ -1559,6 +1571,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../technical-features/feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../infrastructure/jest
       '@freelensapp/react-application':
         specifier: workspace:^
         version: link:../technical-features/react-application
@@ -1646,6 +1661,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/logger':
         specifier: workspace:^
         version: link:../../../logger
@@ -1688,6 +1706,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/run-many':
         specifier: workspace:^
         version: link:../../../utility-features/run-many
@@ -1721,6 +1742,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
@@ -1736,6 +1760,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -1760,6 +1787,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/startable-stoppable':
         specifier: workspace:^
         version: link:../../../utility-features/startable-stoppable
@@ -1802,6 +1832,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../agnostic
@@ -1850,6 +1883,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/jest
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../../agnostic
@@ -1889,6 +1925,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/jest
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../../agnostic
@@ -1931,6 +1970,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../agnostic
@@ -2018,6 +2060,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
         version: link:../../utility-features/react-testing-library-discovery
@@ -2081,6 +2126,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2114,6 +2162,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
         version: link:../../utility-features/react-testing-library-discovery
@@ -2165,6 +2216,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
         version: link:../../utility-features/react-testing-library-discovery
@@ -2231,6 +2285,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/logger':
         specifier: workspace:^
         version: link:../../logger
@@ -2330,6 +2387,9 @@ importers:
       '@freelensapp/icon':
         specifier: workspace:^
         version: link:../icon
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/json-api':
         specifier: workspace:^
         version: link:../../utility-features/json-api
@@ -2417,6 +2477,9 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
         version: link:../../utility-features/react-testing-library-discovery
@@ -2468,6 +2531,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2492,6 +2558,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
         version: link:../../utility-features/react-testing-library-discovery
@@ -2717,6 +2786,9 @@ importers:
 
   packages/utility-features/run-many:
     devDependencies:
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../test-utils
@@ -2756,6 +2828,9 @@ importers:
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2768,6 +2843,9 @@ importers:
 
   packages/utility-features/test-utils:
     devDependencies:
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2813,6 +2891,9 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: ^1.1.2
         version: 1.1.2
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../infrastructure/jest
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -6308,6 +6389,11 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
+  glob@11.0.1:
+    resolution: {integrity: sha512-zrQDm8XPnYEKawJScsnM0QzobJxlT/kHOOlRTio8IH/GrmxRE5fjllkzdaHclIuNjUQTJYH2xHNIGfdpJkDJUw==}
+    engines: {node: 20 || >=22}
+    hasBin: true
+
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
     deprecated: Glob versions prior to v9 are no longer supported
@@ -6902,6 +6988,10 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
+  jackspeak@4.1.0:
+    resolution: {integrity: sha512-9DDdhb5j6cpeitCbvLO7n7J4IxnbM6hoF6O1g4HQ5TfhvvKN8ywDM7668ZhMHRqVmxqhps/F6syWK2KcPxYlkw==}
+    engines: {node: 20 || >=22}
+
   jake@10.8.6:
     resolution: {integrity: sha512-G43Ub9IYEFfu72sua6rzooi8V8Gz2lkfk48rW20vEWCGizeaEPlKB1Kh8JIA84yQbiAEfqlPmSpGgCKKxH3rDA==}
     engines: {node: '>=10'}
@@ -7294,6 +7384,10 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  lru-cache@11.1.0:
+    resolution: {integrity: sha512-QIXZUBJUx+2zHUdQujWejBkcD9+cs94tLn0+YL8UrCh+D5sCXZ4c7LaEH48pNwRY3MLDgqUFyhlCyjJPf1WP0A==}
+    engines: {node: 20 || >=22}
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -7867,6 +7961,10 @@ packages:
   path-scurry@1.11.1:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
+
+  path-scurry@2.0.0:
+    resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
+    engines: {node: 20 || >=22}
 
   path-to-regexp@0.1.12:
     resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
@@ -13685,6 +13783,15 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
+  glob@11.0.1:
+    dependencies:
+      foreground-child: 3.3.0
+      jackspeak: 4.1.0
+      minimatch: 10.0.1
+      minipass: 7.1.2
+      package-json-from-dist: 1.0.1
+      path-scurry: 2.0.0
+
   glob@7.2.3:
     dependencies:
       fs.realpath: 1.0.0
@@ -14305,6 +14412,10 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+
+  jackspeak@4.1.0:
+    dependencies:
+      '@isaacs/cliui': 8.0.2
 
   jake@10.8.6:
     dependencies:
@@ -14943,6 +15054,8 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
+  lru-cache@11.1.0: {}
+
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -15506,6 +15619,11 @@ snapshots:
   path-scurry@1.11.1:
     dependencies:
       lru-cache: 10.4.3
+      minipass: 7.1.2
+
+  path-scurry@2.0.0:
+    dependencies:
+      lru-cache: 11.1.0
       minipass: 7.1.2
 
   path-to-regexp@0.1.12: {}

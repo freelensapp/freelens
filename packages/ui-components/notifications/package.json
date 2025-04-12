@@ -40,6 +40,7 @@
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/icon": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/react-application": "workspace:^",

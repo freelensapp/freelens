@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "jest": "^29.7.0"

@@ -35,6 +35,7 @@
     "@async-fn/jest": "^1.6.4",
     "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@freelensapp/typescript": "workspace:^",

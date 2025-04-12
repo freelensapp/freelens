@@ -25,6 +25,7 @@
     "build": "lens-webpack-build"
   },
   "devDependencies": {
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",

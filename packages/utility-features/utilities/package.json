@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/crypto-js": "^4.2.2",

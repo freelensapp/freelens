@@ -35,6 +35,7 @@
     "@freelensapp/application": "workspace:^",
     "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/startable-stoppable": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
