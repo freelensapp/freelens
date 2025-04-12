@@ -30,7 +30,7 @@ const getBaseRegistryUrlInjectable = getInjectable({
             Object.entries(process.env)
               .filter(([key]) => !key.startsWith("npm")),
           );
-          const result = await execFile("npm", ["config", "get", "registry"], { env: filteredEnv });
+          const result = await execFile("pnpm", ["config", "get", "registry"], { env: filteredEnv });
 
           if (result.callWasSuccessful) {
             return result.response.trim();

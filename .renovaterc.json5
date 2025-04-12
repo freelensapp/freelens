@@ -9,9 +9,6 @@
     "renovate"
   ],
   "osvVulnerabilityAlerts": true,
-  "postUpdateOptions": [
-    "npmDedupe"
-  ],
   // always bump depdenencies even when are in the range
   "rangeStrategy": "bump",
   // disable autorebasing to save unecessary workflow runs

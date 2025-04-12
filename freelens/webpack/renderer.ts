@@ -55,7 +55,7 @@ const renderer: webpack.Configuration = {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
   async externals({ request }) {
-    const externalModulesRegex = /^(byline|isomorphic-ws|js-yam|npm|openid-client|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
+    const externalModulesRegex = /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
 
     if (externalModulesRegex.test(request)) {
       return Promise.resolve(`node-commonjs ${request}`);
