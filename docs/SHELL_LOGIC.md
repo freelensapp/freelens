@@ -144,3 +144,5 @@ const execShell = async (container: Container) =>  {
 1. Initialization - This should store the default system or current shell (during debugging) and it should be stored as a defaul state, and as the preference terminal state, if the user hasn't updated. This design would also let us add a button, to restore the shell path to the system default.
 2. Pod-Shell-Menu - Logic refactored to check the shell current preference, and then figure out whether or not to prepend exec
 3. Preference - this should ensure the value is exportable, similar to kubectl, if a user opens and sets the preference to a different value, otherwise the Initialization will do an initial write to the file.
+
+**Note as this is being reverse engineered, there may be other locations where this logic should also be refactored.**
