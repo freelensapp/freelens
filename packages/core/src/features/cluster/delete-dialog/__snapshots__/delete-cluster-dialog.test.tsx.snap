@@ -148,7 +148,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -159,9 +159,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -172,7 +172,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -208,7 +208,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -219,9 +219,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -232,7 +232,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -774,7 +774,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -785,9 +785,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -798,7 +798,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -834,7 +834,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -845,9 +845,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -858,7 +858,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -1433,7 +1433,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -1444,9 +1444,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -1457,7 +1457,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -1493,7 +1493,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -1504,9 +1504,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -1517,7 +1517,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -2171,7 +2171,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -2182,9 +2182,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -2195,7 +2195,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -2231,7 +2231,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -2242,9 +2242,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -2255,7 +2255,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -2909,7 +2909,7 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -2920,9 +2920,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -2933,7 +2933,7 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -2969,7 +2969,7 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -2980,9 +2980,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -2993,7 +2993,7 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>

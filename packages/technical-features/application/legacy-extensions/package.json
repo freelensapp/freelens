@@ -30,12 +30,11 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@ogre-tools/injectable": "^17.2.0"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^"
+    "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable": "^17.2.0"
   }
 }

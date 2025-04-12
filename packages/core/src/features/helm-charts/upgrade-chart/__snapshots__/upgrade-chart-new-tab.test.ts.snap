@@ -7,44 +7,6 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -663,16 +625,6 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
         </div>
       </div>
     </div>
-  </div>
-</body>
-`;
-
-exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navigating to the helm releases view when helm releases resolves renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -711,6 +663,16 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+  </div>
+</body>
+`;
+
+exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navigating to the helm releases view when helm releases resolves renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -1433,16 +1395,6 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
         </div>
       </div>
     </div>
-  </div>
-</body>
-`;
-
-exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navigating to the helm releases view when helm releases resolves when clicking the menu for a helm release renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1481,6 +1433,16 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+  </div>
+</body>
+`;
+
+exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navigating to the helm releases view when helm releases resolves when clicking the menu for a helm release renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -2202,6 +2164,44 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
     </div>
   </div>
   <ul

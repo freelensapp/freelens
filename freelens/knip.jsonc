@@ -1,0 +1,116 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+  "entry": [
+    "build/notarize.js",
+    "integration/**/*.tests.ts",
+    "src/{main,renderer}/index.ts",
+    "src/**/*.injectable.ts",
+    "static/build/{freelens,main}.js!",
+    "webpack/{dev-server,webpack}.ts"
+  ],
+  "project": [
+    "build/*.js",
+    "integration/**/*.ts",
+    "src/**/*.ts!",
+    "static/build/*.js!",
+    "webpack/*.ts"
+  ],
+  "ignoreDependencies": [
+    // it is really runtime dependency but implicitly used in Electron app
+    "electron",
+    // used as script to run in fork()
+    "pnpm",
+    // used as a hint for knip plugin
+    "ts-node",
+    // all packages used in require() calls in webpacked files
+    "@astronautlabs/jsonpath",
+    "@freelensapp/animate",
+    "@freelensapp/application",
+    "@freelensapp/application-for-electron-main",
+    "@freelensapp/button",
+    "@freelensapp/cluster-sidebar",
+    "@freelensapp/core",
+    "@freelensapp/error-boundary",
+    "@freelensapp/event-emitter",
+    "@freelensapp/feature-core",
+    "@freelensapp/icon",
+    "@freelensapp/json-api",
+    "@freelensapp/keyboard-shortcuts",
+    "@freelensapp/kube-api",
+    "@freelensapp/kube-api-specifics",
+    "@freelensapp/kube-object",
+    "@freelensapp/kubectl-versions",
+    "@freelensapp/kubernetes-client-node",
+    "@freelensapp/legacy-extensions",
+    "@freelensapp/legacy-global-di",
+    "@freelensapp/logger",
+    "@freelensapp/messaging",
+    "@freelensapp/messaging-for-main",
+    "@freelensapp/messaging-for-renderer",
+    "@freelensapp/node-fetch",
+    "@freelensapp/notifications",
+    "@freelensapp/prometheus",
+    "@freelensapp/random",
+    "@freelensapp/react-application",
+    "@freelensapp/resizing-anchor",
+    "@freelensapp/routing",
+    "@freelensapp/run-many",
+    "@freelensapp/spinner",
+    "@freelensapp/startable-stoppable",
+    "@freelensapp/test-utils",
+    "@freelensapp/tooltip",
+    "@freelensapp/utilities",
+    "@hapi/call",
+    "@hapi/subtext",
+    "auto-bind",
+    "await-lock",
+    "chalk",
+    "chokidar",
+    "conf",
+    "crypto-js",
+    "electron-updater",
+    "electron-window-state",
+    "fs-extra",
+    "glob-to-regexp",
+    "got",
+    "grapheme-splitter",
+    "handlebars",
+    "hpagent",
+    "http-proxy",
+    "immer",
+    "joi",
+    "moment",
+    "moment-timezone",
+    "node-pty",
+    "p-limit",
+    "path-to-regexp",
+    "proper-lockfile",
+    "react",
+    "react-router",
+    "selfsigned",
+    "semver",
+    "stoppable",
+    "tcp-port-used",
+    "tempy",
+    "triple-beam",
+    "typed-regex",
+    "url-parse",
+    "winston",
+    "zod",
+  ],
+  "ignoreBinaries": [
+    "distwin-unpackedFreelens.exe"
+  ],
+  "ignoreUnresolved": [
+    ".*/__mocks__/assetMock.t"
+  ],
+  "webpack": {
+    "config": [
+      "!webpack/dev-server.ts",
+      "webpack/*.ts"
+    ]
+  },
+  "exclude": [
+    "exports"
+  ]
+}

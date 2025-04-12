@@ -22,10 +22,11 @@
   "scripts": {
     "clean:node_modules": "pnpm dlx rimraf node_modules"
   },
-  "dependencies": {
+  "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^12.1.5",
     "@types/jest": "^29.5.14",
+    "glob": "^11.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",

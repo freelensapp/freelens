@@ -25,19 +25,18 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
+    "@types/uuid": "^10.0.0",
+    "jest": "^29.7.0",
     "type-fest": "^2.19.0",
     "typed-emitter": "^1.4.0",
     "uuid": "^11.1.0"
-  },
-  "devDependencies": {
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@types/uuid": "^10.0.0",
-    "jest": "^29.7.0"
   }
 }

@@ -24,11 +24,9 @@
     "clean:node_modules": "pnpm dlx rimraf node_modules",
     "build": "webpack"
   },
-  "dependencies": {
-    "@kubernetes/client-node": "^0.22.3"
-  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
+    "@kubernetes/client-node": "^0.22.3",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.98.0",

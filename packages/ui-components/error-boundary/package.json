@@ -33,12 +33,20 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
     "@freelensapp/button": "workspace:^",
+    "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/routing": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
+    "@testing-library/react": "^12.1.5",
+    "@types/react": "^17.0.85",
     "auto-bind": "^4.0.0",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
@@ -47,14 +55,5 @@
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
-  },
-  "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "workspace:^",
-    "@freelensapp/react-testing-library-discovery": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@testing-library/react": "^12.1.5",
-    "@types/react": "^17.0.85"
   }
 }

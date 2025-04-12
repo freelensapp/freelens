@@ -25,10 +25,8 @@
     "clean": "pnpm dlx rimraf dist",
     "clean:node_modules": "pnpm dlx rimraf node_modules"
   },
-  "dependencies": {
-    "@freelensapp/core": "workspace:^"
-  },
   "devDependencies": {
+    "@freelensapp/core": "workspace:^",
     "@types/node": "^22.14.0",
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.8",

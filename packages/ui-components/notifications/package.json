@@ -33,23 +33,29 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
+  "devDependencies": {
     "@freelensapp/animate": "workspace:^",
     "@freelensapp/application": "workspace:^",
+    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/icon": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/react-application": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.2.0",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
+    "@types/lodash": "^4.17.16",
+    "@types/react": "^17.0.85",
     "auto-bind": "^4.0.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.4",
@@ -60,12 +66,5 @@
     "type-fest": "^2.19.0",
     "uuid": "^11.1.0",
     "winston": "^3.8.2"
-  },
-  "devDependencies": {
-    "@freelensapp/eslint-config": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@types/lodash": "^4.17.16",
-    "@types/react": "^17.0.85"
   }
 }

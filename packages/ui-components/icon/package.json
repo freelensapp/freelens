@@ -35,16 +35,27 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
     "@freelensapp/button": "workspace:^",
+    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",
+    "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/routing": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.2.0",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
     "@ogre-tools/injectable-react": "^17.2.0",
+    "@testing-library/react": "^12.1.5",
+    "@types/history": "^4.7.11",
+    "@types/lodash": "^4.17.16",
+    "@types/react": "^17.0.85",
+    "@types/react-router-dom": "^5.3.3",
     "auto-bind": "^4.0.0",
     "dompurify": "^3.0.0",
     "history": "^4.10.1",
@@ -56,17 +67,5 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.4",
     "winston": "^3.8.2"
-  },
-  "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
-    "@freelensapp/eslint-config": "workspace:^",
-    "@freelensapp/react-testing-library-discovery": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@testing-library/react": "^12.1.5",
-    "@types/history": "^4.7.11",
-    "@types/lodash": "^4.17.16",
-    "@types/react": "^17.0.85",
-    "@types/react-router-dom": "^5.3.3"
   }
 }

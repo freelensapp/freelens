@@ -31,21 +31,19 @@
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@freelensapp/event-emitter": "workspace:^",
-    "@freelensapp/logger": "workspace:^",
-    "@freelensapp/node-fetch": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
-    "lodash": "^4.17.15",
-    "rfc6902": "^5.1.2"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/jest": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.14.0",
+    "lodash": "^4.17.15",
+    "rfc6902": "^5.1.2",
     "type-fest": "^2.19.0"
   }
 }
