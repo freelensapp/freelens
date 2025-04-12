@@ -105,7 +105,7 @@
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.1",
-    "@electron/rebuild": "^3.7.1",
+    "@electron/rebuild": "^3.7.2",
     "@freelensapp/generate-tray-icons": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.16",
