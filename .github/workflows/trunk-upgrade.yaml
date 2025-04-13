@@ -62,13 +62,14 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Install dependencies for plugin
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 5
-          max_attempts: 3
-          retry_on: error
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Set up Trunk
         run: curl https://get.trunk.io -fsSL | bash -s -- -y

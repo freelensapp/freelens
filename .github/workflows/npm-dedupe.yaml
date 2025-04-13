@@ -1,20 +1,21 @@
-name: Automated npm version
+name: Automated npm dedupe
 
 on:
-  workflow_dispatch:
-    inputs:
-      newversion:
-        description: New version (X.Y.Z | major | minor | patch | premajor | preminor | prepatch | prerelease)
-        required: true
-        default: patch
+  issue_comment:
+    types:
+      - created
+  schedule:
+    - cron: 46 6 * * *
+  workflow_dispatch: {}
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: write
 
 jobs:
-  npm-version:
-    name: npm version
+  npm-dedupe:
+    name: npm dedupe
 
     strategy:
       fail-fast: false
@@ -27,10 +28,15 @@ jobs:
     environment: automated
     timeout-minutes: 10
 
+    if: >-
+      github.event_name != 'issue_comment' ||
+      (startsWith(github.event.issue.title, 'Automated npm dedupe') && contains(github.event.comment.body, '/rerun'))
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Setup node
@@ -62,26 +68,10 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Set version
+      - name: Run pnpm dedupe
         run: |
-          set -eo pipefail
-          pushd freelens
-            pnpm version "$newversion" --no-git-tag-version --no-workspaces-update | tee .github/update.log
-          popd
-          jq -r .version freelens/package.json > .github/version.log
+          pnpm dedupe 2>&1 | tee .github/update.log || true
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
-          sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$version"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
-        env:
-          newversion: ${{ github.event.inputs.newversion }}
-
-      - name: Update pnpm dependencies
-        id: update-pnpm
-        run: timeout 300 pnpm install --color=always --prefer-offline
-        continue-on-error: true
-
-      - name: Update pnpm dependencies (retry)
-        if: steps.update-pnpm.outcome == 'failure'
-        run: timeout 300 pnpm install --color=always --prefer-offline
 
       - name: Check for changes
         run: |
@@ -97,10 +87,9 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated npm version ${{ github.event.inputs.newversion }}
-          new_branch: automated/npm-version
-          fetch: false
-          push: origin automated/npm-version --set-upstream --force
+          message: Automated npm dedupe
+          new_branch: automated/npm-dedupe
+          push: origin automated/npm-dedupe --set-upstream --force
 
       - name: Create pull request
         id: pr
@@ -110,17 +99,17 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           target_branch: main
           label: automated
-          title: Automated npm version v${{ github.event.inputs.newversion }}
-          get_diff: false
+          title: Automated npm dedupe
+          get_diff: true
 
       - name: Update pull request description
         if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated npm version v$(cat .github/version.log)" --body-file .github/pr_body.log
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --body-file .github/pr_body.log
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Close pull request
         if: env.changes == 'false'
-        run: gh pr list --head automated/npm-version --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
+        run: gh pr list --head automated/npm-dedupe --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
