@@ -1133,7 +1133,7 @@ importers:
         specifier: ^3.5.0
         version: 3.5.1
       winston:
-        specifier: ^3.8.2
+        specifier: ^3.17.0
         version: 3.17.0
       winston-transport:
         specifier: ^4.9.0
@@ -1607,7 +1607,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       winston:
-        specifier: ^3.8.2
+        specifier: ^3.17.0
         version: 3.17.0
       winston-transport:
         specifier: ^4.9.0
@@ -2491,7 +2491,7 @@ importers:
         specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
       winston:
-        specifier: ^3.8.2
+        specifier: ^3.17.0
         version: 3.17.0
 
   packages/ui-components/notifications:
@@ -2590,7 +2590,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       winston:
-        specifier: ^3.8.2
+        specifier: ^3.17.0
         version: 3.17.0
 
   packages/ui-components/resizing-anchor:

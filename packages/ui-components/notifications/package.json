@@ -65,6 +65,6 @@
     "react-router-dom": "^5.3.4",
     "type-fest": "^2.19.0",
     "uuid": "^11.1.0",
-    "winston": "^3.8.2"
+    "winston": "^3.17.0"
   }
 }

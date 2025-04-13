@@ -43,7 +43,7 @@
     "@types/lodash": "^4.17.16",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
-    "winston": "^3.8.2",
+    "winston": "^3.17.0",
     "winston-transport": "^4.9.0"
   }
 }
