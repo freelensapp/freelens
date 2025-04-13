@@ -45,7 +45,7 @@ jobs:
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install coreutils python-setuptools
+        run: brew install bash coreutils python-setuptools
 
       - name: Add coreutils to PATH (macOS)
         if: runner.os == 'macOS'
