@@ -244,7 +244,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       win-ca:
-        specifier: ^3.5.0
+        specifier: ^3.5.1
         version: 3.5.1
       winston:
         specifier: ^3.17.0
@@ -1130,7 +1130,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       win-ca:
-        specifier: ^3.5.0
+        specifier: ^3.5.1
         version: 3.5.1
       winston:
         specifier: ^3.17.0
