@@ -32,6 +32,7 @@ lint:
         - name: format
           output: rewrite
           run: yamlfmt ${target}
+          run_from: ${parent}
           success_codes: [0, 1]
           cache_results: true
           formatter: true
