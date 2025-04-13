@@ -35,7 +35,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.4.3",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^12.1.5"
   }
 }
