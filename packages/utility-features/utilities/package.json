@@ -44,7 +44,7 @@
     "path-to-regexp": "^6.2.1",
     "react": "^17.0.2",
     "react-router": "^5.3.4",
-    "semver": "^7.3.8",
+    "semver": "^7.7.1",
     "tar": "^7.4.3",
     "type-fest": "^2.19.0",
     "typed-regex": "^0.0.8"
