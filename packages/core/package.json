@@ -231,7 +231,7 @@
     "mobx-utils": "^6.1.0",
     "mock-http": "^1.1.1",
     "moment": "^2.30.1",
-    "moment-timezone": "^0.5.40",
+    "moment-timezone": "^0.5.48",
     "monaco-editor": "^0.52.2",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "node-loader": "^2.1.0",
