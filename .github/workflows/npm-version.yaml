@@ -27,6 +27,9 @@ jobs:
     environment: automated
     timeout-minutes: 10
 
+    env:
+      PATH: /usr/local/opt/coreutils/libexec/gnubin:{{ env.PATH}}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4

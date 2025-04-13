@@ -38,6 +38,7 @@ jobs:
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+      PATH: /usr/local/opt/coreutils/libexec/gnubin:{{ env.PATH}}
 
     steps:
       - name: Checkout
@@ -56,11 +57,13 @@ jobs:
       - name: Install dependencies (Windows)
         id: install-deps-windows
         if: runner.os == 'Windows'
+        shell: bash
         run: timeout 300 choco install yq --yes --no-progress
         continue-on-error: true
 
       - name: Install dependencies (Windows) (retry)
         if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
         run: timeout 300 choco install yq --yes --no-progress
 
       - name: Setup node
