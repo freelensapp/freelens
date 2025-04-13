@@ -43,7 +43,7 @@
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/test-utils": "^17.11.1",
-    "electron": "^35.0.3",
+    "electron": "^35.1.5",
     "jest": "^29.7.0",
     "lodash": "^4.17.21"
   }
