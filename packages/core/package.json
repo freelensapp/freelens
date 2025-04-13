@@ -255,7 +255,7 @@
     "react-window": "^1.8.11",
     "rfc6902": "^5.1.2",
     "sass-loader": "^16.0.5",
-    "selfsigned": "^2.1.1",
+    "selfsigned": "^2.4.1",
     "semver": "^7.3.8",
     "stoppable": "^1.1.0",
     "style-loader": "^4.0.0",
