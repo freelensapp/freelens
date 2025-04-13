@@ -28,7 +28,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.2.0",
+    "@ogre-tools/injectable": "^17.11.1",
     "@types/semver": "^7.3.12",
     "fast-xml-parser": "^5.2.0",
     "node-fetch": "^3.3.2",
