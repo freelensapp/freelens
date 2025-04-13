@@ -228,7 +228,7 @@
     "mobx-observable-history": "^2.0.3",
     "mobx-react": "^7.6.0",
     "mobx-react-lite": "^3.4.3",
-    "mobx-utils": "^6.0.4",
+    "mobx-utils": "^6.1.0",
     "mock-http": "^1.1.1",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.40",
