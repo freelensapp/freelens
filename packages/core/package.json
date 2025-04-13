@@ -205,7 +205,7 @@
     "glob-to-regexp": "^0.4.1",
     "got": "^11.8.6",
     "grapheme-splitter": "^1.0.4",
-    "handlebars": "^4.7.7",
+    "handlebars": "^4.7.8",
     "history": "^4.10.1",
     "hpagent": "^1.2.0",
     "http-proxy": "^1.18.1",
