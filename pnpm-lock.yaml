@@ -1055,7 +1055,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.17(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react-window:
-        specifier: ^1.8.8
+        specifier: ^1.8.11
         version: 1.8.11(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       rfc6902:
         specifier: ^5.1.2
