@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.14.1",
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.8",
     "@types/webpack-node-externals": "3.0.4",
