@@ -1097,7 +1097,7 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.14.0)(typescript@5.8.3)
       type-fest:
-        specifier: ^2.14.0
+        specifier: ^2.19.0
         version: 2.19.0
       typed-emitter:
         specifier: ^1.4.0
@@ -2857,7 +2857,7 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
       type-fest:
-        specifier: ^2.14.0
+        specifier: ^2.19.0
         version: 2.19.0
 
   packages/utility-features/kube-api-specifics:
