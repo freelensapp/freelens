@@ -85,4 +85,5 @@ jobs:
 
       - name: Check untracked files
         shell: bash
-        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
+        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f;
+          done
