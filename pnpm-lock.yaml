@@ -854,7 +854,7 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.99.5)
       dompurify:
-        specifier: ^3.0.0
+        specifier: ^3.2.5
         version: 3.2.5
       electron:
         specifier: ^35.0.3
@@ -2464,7 +2464,7 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       dompurify:
-        specifier: ^3.0.0
+        specifier: ^3.2.5
         version: 3.2.5
       history:
         specifier: ^4.10.1
