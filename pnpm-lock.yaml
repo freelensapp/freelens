@@ -160,7 +160,7 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(ws@8.18.1)
       joi:
-        specifier: ^17.9.1
+        specifier: ^17.13.3
         version: 17.13.3
       js-yaml:
         specifier: ^4.1.0
@@ -947,7 +947,7 @@ importers:
         specifier: ^3.0.7
         version: 3.0.7(jest@29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3)))(typescript@5.8.3)
       joi:
-        specifier: ^17.9.1
+        specifier: ^17.13.3
         version: 17.13.3
       js-yaml:
         specifier: ^4.1.0
