@@ -995,7 +995,7 @@ importers:
         specifier: ^0.5.40
         version: 0.5.48
       monaco-editor:
-        specifier: ^0.52.0
+        specifier: ^0.52.2
         version: 0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
