@@ -165,7 +165,7 @@
     "@types/webpack": "^5.28.5",
     "@types/webpack-env": "^1.18.8",
     "@types/webpack-node-externals": "^3.0.4",
-    "@types/ws": "^8.5.14",
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.29.0",
     "@xterm/addon-fit": "^0.10.0",
