@@ -46,7 +46,7 @@
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
-    "mobx": "^6.13.4",
+    "mobx": "^6.13.7",
     "type-fest": "^2.19.0"
   }
 }

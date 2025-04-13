@@ -169,7 +169,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       moment:
         specifier: ^2.30.1
@@ -506,7 +506,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       react:
         specifier: ^17.0.2
@@ -971,7 +971,7 @@ importers:
         specifier: ^2.9.2
         version: 2.9.2(webpack@5.98.0)
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-observable-history:
         specifier: ^2.0.3
@@ -1741,7 +1741,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-observable-history:
         specifier: ^2.0.3
@@ -1945,7 +1945,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
 
   packages/technical-features/messaging/computed-channel:
@@ -1993,7 +1993,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       type-fest:
         specifier: ^2.19.0
@@ -2131,7 +2131,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
 
   packages/technical-features/prometheus:
@@ -2233,7 +2233,7 @@ importers:
         specifier: ^4.17.15
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react:
         specifier: ^7.6.0
@@ -2320,7 +2320,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react:
         specifier: ^7.6.0
@@ -2383,7 +2383,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-observable-history:
         specifier: ^2.0.3
@@ -2473,7 +2473,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-observable-history:
         specifier: ^2.0.3
@@ -2569,7 +2569,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react:
         specifier: ^7.6.0
@@ -2641,7 +2641,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react:
         specifier: ^7.6.0
@@ -2725,7 +2725,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react:
         specifier: ^7.6.0
@@ -2848,7 +2848,7 @@ importers:
         specifier: ^4.17.15
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       moment:
         specifier: ^2.30.1
@@ -3004,7 +3004,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       react:
         specifier: ^17.0.2
@@ -3052,7 +3052,7 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       mobx:
-        specifier: ^6.13.4
+        specifier: ^6.13.7
         version: 6.13.7
       moment:
         specifier: ^2.30.1
