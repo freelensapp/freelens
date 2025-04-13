@@ -40,22 +40,16 @@ jobs:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
 
     steps:
-      - name: Add coreutils to PATH
-        if: runner.os == 'macOS'
-        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
-
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dependencies (macOS)
-        id: install-deps-macos
         if: runner.os == 'macOS'
-        run: timeout 300 brew install python-setuptools
-        continue-on-error: true
+        run: brew install coreutils python-setuptools
 
-      - name: Install dependencies (macOS) (retry)
-        if: runner.os == 'macOS' && steps.install-deps-macos.outcome == 'failure'
-        run: timeout 300 brew install python-setuptools
+      - name: Add coreutils to PATH (macOS)
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
         id: install-deps-windows
