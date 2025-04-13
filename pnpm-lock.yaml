@@ -208,7 +208,7 @@ importers:
         specifier: ^1.5.4
         version: 1.5.4
       selfsigned:
-        specifier: ^2.1.1
+        specifier: ^2.4.1
         version: 2.4.1
       semver:
         specifier: ^7.7.1
@@ -1064,7 +1064,7 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.86.3)(webpack@5.98.0)
       selfsigned:
-        specifier: ^2.1.1
+        specifier: ^2.4.1
         version: 2.4.1
       semver:
         specifier: ^7.3.8

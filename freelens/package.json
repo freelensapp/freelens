@@ -170,7 +170,7 @@
     "react-router": "^5.3.4",
     "request": "^2.88.2",
     "rfc4648": "^1.5.4",
-    "selfsigned": "^2.1.1",
+    "selfsigned": "^2.4.1",
     "semver": "^7.7.1",
     "stoppable": "^1.1.0",
     "stream-buffers": "^3.0.3",
