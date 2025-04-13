@@ -135,6 +135,7 @@ jobs:
 
       - name: Install pnpm dependencies
         id: install-pnpm
+        shell: bash
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
@@ -142,6 +143,7 @@ jobs:
 
       - name: Install pnpm dependencies (retry)
         if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
@@ -201,6 +203,7 @@ jobs:
 
       - name: Run integration tests (macOS, Windows) (retry)
         if: runner.os != 'Linux' && steps.integration-tests-macos-windows.outcome == 'failure'
+        shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
