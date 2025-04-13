@@ -44,6 +44,6 @@
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "jest": "^29.7.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.21"
   }
 }

@@ -953,7 +953,7 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       lodash:
-        specifier: ^4.17.15
+        specifier: ^4.17.21
         version: 4.17.21
       logform:
         specifier: ^2.7.0
@@ -1816,7 +1816,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
       lodash:
-        specifier: ^4.17.15
+        specifier: ^4.17.21
         version: 4.17.21
 
   packages/technical-features/application/electron-main:
@@ -2230,7 +2230,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
       lodash:
-        specifier: ^4.17.15
+        specifier: ^4.17.21
         version: 4.17.21
       mobx:
         specifier: ^6.13.7
@@ -2788,7 +2788,7 @@ importers:
         specifier: ^22.14.0
         version: 22.14.0
       lodash:
-        specifier: ^4.17.15
+        specifier: ^4.17.21
         version: 4.17.21
       rfc6902:
         specifier: ^5.1.2
@@ -2845,7 +2845,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.0)(typescript@5.8.3))
       lodash:
-        specifier: ^4.17.15
+        specifier: ^4.17.21
         version: 4.17.21
       mobx:
         specifier: ^6.13.7

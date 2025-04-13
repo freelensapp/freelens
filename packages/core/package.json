@@ -218,7 +218,7 @@
     "jest-mock-extended": "^3.0.7",
     "joi": "^17.13.3",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "logform": "^2.7.0",
     "marked": "^15.0.8",
     "memfs": "^4.17.0",
