@@ -29,7 +29,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@types/semver": "^7.3.12",
+    "@types/semver": "^7.7.0",
     "fast-xml-parser": "^5.2.0",
     "node-fetch": "^3.3.2",
     "semver": "^7.7.1",
