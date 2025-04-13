@@ -220,7 +220,7 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.15",
     "logform": "^2.7.0",
-    "marked": "^15.0.0",
+    "marked": "^15.0.8",
     "memfs": "^4.17.0",
     "memorystream": "^0.3.1",
     "mini-css-extract-plugin": "^2.9.2",
