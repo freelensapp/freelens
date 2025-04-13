@@ -81,33 +81,23 @@ jobs:
 
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: |
-            sudo apt-get -q update
-            sudo apt-get -q install -y --no-install-recommends \
-              gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+        run: |
+          sudo apt-get -q update
+          sudo apt-get -q install -y --no-install-recommends \
+            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: brew install bash python-setuptools
+        run: brew install bash coreutils python-setuptools
+
+      - name: Add coreutils to PATH (macOS)
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: choco install yq --yes --no-progress
+        shell: bash
+        run: choco install yq --yes --no-progress
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -154,12 +144,15 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Enable downloading for all architectures (macOS x64, Linux arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
@@ -181,19 +174,13 @@ jobs:
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          retry_wait_seconds: 600
-          command: |
-            for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
-              test -n "${!var}" || unset $var
-            done
-            pnpm --color=always build:app \
-              dmg pkg \
-              --${{ matrix.arch }}
+        run: |
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          pnpm --color=always build:app \
+            dmg pkg \
+            --${{ matrix.arch }}
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -204,25 +191,63 @@ jobs:
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
 
       - name: Notarize PKG (macOS)
+        id: notarize-pkg
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          retry_wait_seconds: 600
-          command: |
-            if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
-              pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
-              auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
-              xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
-              uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
-              sleep 60
-              if [[ -n $uuid ]]; then
-                xcrun notarytool log $uuid $auth
-                xcrun stapler staple $pkgname
-              fi
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
             fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+        continue-on-error: true
+
+      - name: Notarize PKG (macOS) (retry)
+        id: notarize-pkg-2
+        if: runner.os == 'macOS' && steps.notarize-pkg.outcome == 'failure'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            sleep 600
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+        continue-on-error: true
+
+      - name: Notarize PKG (macOS) (retry 2)
+        if: runner.os == 'macOS' && steps.notarize-pkg-2.outcome == 'failure'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            sleep 600
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
         env:
           APPLEID: ${{ secrets.APPLEID }}
           APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
@@ -383,30 +408,58 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Build packages
         run: pnpm --color=always --stream build
 
       - name: Publish npm packages
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: |
-            case "${GITHUB_REF_NAME}" in
-              *-*) dist_tag=next;;
-              *) dist_tag=latest;;
-            esac
-            pnpm --color=always publish -r \
-              --no-git-checks \
-              --tag ${dist_tag}
+        id: publish-npm
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+
+      - name: Publish npm packages (retry)
+        id: publish-npm-2
+        if: steps.publish-npm.outcome == 'failure'
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+
+      - name: Publish npm packages (retry 2)
+        if: steps.publish-npm-2.outcome == 'failure'
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

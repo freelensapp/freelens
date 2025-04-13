@@ -45,21 +45,23 @@ jobs:
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: brew install python-setuptools
+        run: brew install bash coreutils python-setuptools
+
+      - name: Add coreutils to PATH (macOS)
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
+        id: install-deps-windows
         if: runner.os == 'Windows'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: choco install yq --yes --no-progress
+        shell: bash
+        run: timeout 300 choco install yq --yes --no-progress
+        continue-on-error: true
+
+      - name: Install dependencies (Windows) (retry)
+        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
+        run: timeout 300 choco install yq --yes --no-progress
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -132,12 +134,17 @@ jobs:
           driver: docker
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm install --color=always --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
 
@@ -167,26 +174,36 @@ jobs:
         run: pnpm --color=always build:app dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
+        id: integration-tests-linux
         if: runner.os == 'Linux'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 15
-          max_attempts: 3
-          retry_on: timeout
-          command: |
-            sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
-            sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
-            xvfb-run -a pnpm --color=always test:integration
+        run: |
+          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          timeout 600 xvfb-run -a pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+        continue-on-error: true
+
+      - name: Run integration tests (Linux) (retry)
+        if: runner.os == 'Linux' && steps.integration-tests-linux.outcome == 'failure'
+        run: |
+          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
 
       - name: Run integration tests (macOS, Windows)
+        id: integration-tests-macos-windows
         if: runner.os != 'Linux'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 15
-          max_attempts: 3
-          retry_on: timeout
-          command: pnpm --color=always test:integration
+        run: timeout 600 pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+        continue-on-error: true
+
+      - name: Run integration tests (macOS, Windows) (retry)
+        if: runner.os != 'Linux' && steps.integration-tests-macos-windows.outcome == 'failure'
+        shell: bash
+        run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser

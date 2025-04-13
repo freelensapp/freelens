@@ -28,6 +28,10 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      - name: Add coreutils to PATH
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -52,21 +56,23 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install dependencies (macOS)
+        id: install-deps-macos
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: brew install python-setuptools
+        run: timeout 300 brew install python-setuptools
+        continue-on-error: true
+
+      - name: Install dependencies (macOS) (retry)
+        if: runner.os == 'macOS' && steps.install-deps-macos.outcome == 'failure'
+        run: timeout 300 brew install python-setuptools
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Build packages
         run: pnpm --color=always --stream build

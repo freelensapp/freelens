@@ -60,12 +60,13 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: kubectl versions
         run: pnpm --color=always compute-versions
