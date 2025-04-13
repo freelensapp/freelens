@@ -27,10 +27,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
 
-    env:
-      PATH: /usr/local/opt/coreutils/libexec/gnubin:{{ env.PATH}}
-
     steps:
+      - name: Add coreutils to PATH
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+
       - name: Checkout
         uses: actions/checkout@v4
 

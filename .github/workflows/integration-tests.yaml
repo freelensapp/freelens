@@ -38,9 +38,12 @@ jobs:
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
-      PATH: /usr/local/opt/coreutils/libexec/gnubin:{{ env.PATH}}
 
     steps:
+      - name: Add coreutils to PATH
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+
       - name: Checkout
         uses: actions/checkout@v4
 
