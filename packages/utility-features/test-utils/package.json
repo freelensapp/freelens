@@ -33,7 +33,7 @@
     "@testing-library/react": "^12.1.5",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.14.1",
     "@types/react": "^17.0.85",
     "lodash": "^4.17.21",
     "mobx": "^6.13.7",
