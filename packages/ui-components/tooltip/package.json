@@ -47,7 +47,7 @@
     "@types/lodash": "^4.17.16",
     "@types/react": "^17.0.85",
     "@types/react-dom": "^17.0.26",
-    "auto-bind": "^4.0.0",
+    "auto-bind": "^5.0.1",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.7",

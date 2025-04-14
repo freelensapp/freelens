@@ -106,8 +106,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       await-lock:
         specifier: ^2.2.2
         version: 2.2.2
@@ -815,8 +815,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       await-lock:
         specifier: ^2.2.2
         version: 2.2.2
@@ -1451,8 +1451,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
@@ -1732,8 +1732,8 @@ importers:
         specifier: ^4.7.11
         version: 4.7.11
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       history:
         specifier: ^4.10.1
         version: 4.10.1
@@ -2314,8 +2314,8 @@ importers:
         specifier: ^17.0.85
         version: 17.0.85
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2374,8 +2374,8 @@ importers:
         specifier: ^17.0.85
         version: 17.0.85
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       history:
         specifier: ^4.10.1
         version: 4.10.1
@@ -2461,8 +2461,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       dompurify:
         specifier: ^3.2.5
         version: 3.2.5
@@ -2563,8 +2563,8 @@ importers:
         specifier: ^17.0.85
         version: 17.0.85
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2635,8 +2635,8 @@ importers:
         specifier: ^17.0.85
         version: 17.0.85
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2716,8 +2716,8 @@ importers:
         specifier: ^17.0.26
         version: 17.0.26(@types/react@17.0.85)
       auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
@@ -5045,9 +5045,9 @@ packages:
     resolution: {integrity: sha512-Xcz9l0z7y9yQ9rdDaxlmaI4uJHf/T8g9hOEzJcsEqX2SjCj4J20uK7+ldkDHMbpJDK76wF7xEIgxc/vSlsfw5w==}
     engines: {node: '>=10.12.0'}
 
-  auto-bind@4.0.0:
-    resolution: {integrity: sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==}
-    engines: {node: '>=8'}
+  auto-bind@5.0.1:
+    resolution: {integrity: sha512-ooviqdwwgfIfNmDwo94wlshcdzfO64XV0Cg6oDsDYBJfITDz1EngD2z7DkbvCWn+XIMsIqW27sEVF6qcpJrRcg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
@@ -12114,7 +12114,7 @@ snapshots:
 
   atomically@1.7.0: {}
 
-  auto-bind@4.0.0: {}
+  auto-bind@5.0.1: {}
 
   available-typed-arrays@1.0.7:
     dependencies:
