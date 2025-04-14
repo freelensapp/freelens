@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { createHash } from "crypto";
-import { copy, mkdirp, remove } from "fs-extra";
+import { copy, mkdirp, pathExists, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { setImmediate } from "timers";
@@ -68,7 +68,10 @@ async function attemptStart() {
   await remove(CICD).catch(noop);
   // We need original .kube/config with minikube context
   await mkdirp(path.join(CICD, "home"));
-  await copy(path.join(os.homedir(), ".kube"), path.join(CICD, "home"))
+  const kubeDir = path.join(os.homedir(), ".kube");
+  if (await pathExists(kubeDir)) {
+    await copy(kubeDir, path.join(CICD, "home"));
+  }
 
   const app = await electron.launch({
     args: ["--integration-testing"], // this argument turns off the blocking of quit
