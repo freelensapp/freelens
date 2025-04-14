@@ -186,7 +186,7 @@
     "crypto-js": "^4.2.0",
     "css-loader": "^6.11.0",
     "dompurify": "^3.2.5",
-    "electron": "^35.0.3",
+    "electron": "^35.1.5",
     "electron-builder": "^26.0.6",
     "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^6.0.0",
