@@ -32,7 +32,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": ">= 8.26.0",
     "@typescript-eslint/parser": ">= 8.26.0",
-    "eslint": ">= 7",
+    "eslint": ">= 9.24.0",
     "eslint-config-prettier": ">= 8",
     "eslint-plugin-import": ">= 2",
     "eslint-plugin-jest": ">= 27",
