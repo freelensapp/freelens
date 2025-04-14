@@ -43,6 +43,6 @@
     "eslint-plugin-simple-import-sort": ">= 7",
     "eslint-plugin-unused-imports": ">= 4",
     "eslint-plugin-xss": ">= 0.1.12",
-    "prettier": ">= 3"
+    "prettier": ">= 3.5.3"
   }
 }
