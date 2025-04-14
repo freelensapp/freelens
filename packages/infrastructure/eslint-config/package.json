@@ -36,7 +36,7 @@
     "eslint-config-prettier": ">= 8",
     "eslint-plugin-import": ">= 2",
     "eslint-plugin-jest": ">= 27",
-    "eslint-plugin-jsx-a11y": ">= 6",
+    "eslint-plugin-jsx-a11y": ">= 6.10.2",
     "eslint-plugin-no-unsanitized": ">= 4.0.2",
     "eslint-plugin-prettier": ">= 4",
     "eslint-plugin-react-hooks": ">= 4.6.2",
