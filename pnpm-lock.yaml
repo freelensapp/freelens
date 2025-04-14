@@ -109,8 +109,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       await-lock:
-        specifier: ^2.2.2
-        version: 2.2.2
+        specifier: ^3.0.0
+        version: 3.0.0
       byline:
         specifier: ^5.0.0
         version: 5.0.0
@@ -818,8 +818,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       await-lock:
-        specifier: ^2.2.2
-        version: 2.2.2
+        specifier: ^3.0.0
+        version: 3.0.0
       byline:
         specifier: ^5.0.0
         version: 5.0.0
@@ -5053,8 +5053,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  await-lock@2.2.2:
-    resolution: {integrity: sha512-aDczADvlvTGajTDjcjpJMqRkOF6Qdz3YbPZm/PyW6tKPkx2hlYBzxMhEywM/tU72HrVZjgl5VCdRuMlA7pZ8Gw==}
+  await-lock@3.0.0:
+    resolution: {integrity: sha512-eO6fLiSnrJrMdjWMNK8zbVRXPs2TKJg78iKZd9wDpN3na5tcoV6EoeiOlMgk2QaAQ1gIrK1YuMsJHXWqz89tSA==}
 
   aws-sign2@0.7.0:
     resolution: {integrity: sha512-08kcGqnYf/YmjoRhfxyu+CLxBjUtHLXLXX/vUfx9l2LYzG3c1m61nrpyFUZI6zeS+Li/wWMMidD9KgrqtGq3mA==}
@@ -12120,7 +12120,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  await-lock@2.2.2: {}
+  await-lock@3.0.0: {}
 
   aws-sign2@0.7.0: {}
 
