@@ -175,7 +175,7 @@
     "auto-bind": "^4.0.0",
     "await-lock": "^2.2.2",
     "byline": "^5.0.0",
-    "chalk": "^4.1.2",
+    "chalk": "^5.4.1",
     "chart.js": "^2.9.4",
     "chokidar": "^4.0.3",
     "circular-dependency-plugin": "^5.2.2",
