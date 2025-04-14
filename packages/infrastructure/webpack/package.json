@@ -37,7 +37,7 @@
     "@types/lodash": "^4.17.16",
     "@types/webpack-env": "^1.18.8",
     "@types/webpack-node-externals": "3.0.4",
-    "css-loader": "^6.11.0",
+    "css-loader": "^7.1.2",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "fs-extra": "^11.3.0",
     "jest": "^29.7.0",
