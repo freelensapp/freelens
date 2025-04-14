@@ -14,6 +14,12 @@
   ],
   // always bump depdenencies even when are in the range
   "rangeStrategy": "bump",
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "rangeStrategy": "bump",
+  },
   // disable autorebasing to save unecessary workflow runs
   "rebaseWhen": "never",
   "ignoreDeps": [
