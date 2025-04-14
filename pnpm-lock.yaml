@@ -190,8 +190,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.8.0
-        version: 10.8.0
+        specifier: ^10.8.1
+        version: 10.8.1
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -414,7 +414,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -525,7 +525,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: 1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/animate':
         specifier: workspace:^
         version: link:../ui-components/animate
@@ -1022,8 +1022,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.8.0
-        version: 10.8.0
+        specifier: ^10.8.1
+        version: 10.8.1
       postcss-loader:
         specifier: ^8.1.1
         version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.5)
@@ -1362,7 +1362,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../jest
@@ -1700,7 +1700,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../infrastructure/eslint-config
@@ -1790,7 +1790,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../../infrastructure/eslint-config
@@ -1832,7 +1832,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../agnostic
@@ -2099,7 +2099,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../../infrastructure/eslint-config
@@ -2186,7 +2186,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../application/agnostic
@@ -2294,7 +2294,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2345,7 +2345,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/button':
         specifier: workspace:^
         version: link:../button
@@ -2411,7 +2411,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/button':
         specifier: workspace:^
         version: link:../button
@@ -2606,7 +2606,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -2690,7 +2690,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))
       '@freelensapp/eslint-config':
         specifier: workspace:^
         version: link:../../infrastructure/eslint-config
@@ -8186,8 +8186,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.8.0:
-    resolution: {integrity: sha512-DoJxTRtbQ8dGEBk8sgc0iXwdAN6J0OGEIK68WXf6E9eAqcsFc0Yk6B69gcyHbNRkeUhQZBxIuVRDJrViLKKZcQ==}
+  pnpm@10.8.1:
+    resolution: {integrity: sha512-xQCIupmMZ7jKjJnfil4C/Sri4rKaryOP6qnhJCSNP0j5+22yQklJ/5Ac/7teDwzBrWrttgLNKUUHUdEcNQI2dw==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -9860,7 +9860,7 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  '@async-fn/jest@1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))':
+  '@async-fn/jest@1.6.4(jest@29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))':
     dependencies:
       jest: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
 
@@ -15925,7 +15925,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.8.0: {}
+  pnpm@10.8.1: {}
 
   possible-typed-array-names@1.1.0: {}
 
