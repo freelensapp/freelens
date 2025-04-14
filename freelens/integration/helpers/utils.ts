@@ -67,12 +67,8 @@ async function attemptStart() {
   // Make sure that the directory is clear
   await remove(CICD).catch(noop);
   // We need original .kube/config with minikube context
-  const testKubeDir = path.join(CICD, "home", ".kube");
-  await mkdirp(testKubeDir);
-  const homeKubeDir = path.join(os.homedir(), ".kube");
-  if (await pathExists(homeKubeDir)) {
-    await copy(homeKubeDir, testKubeDir);
-  }
+  const testHomeDir = path.join(CICD, "home");
+  await mkdirp(testHomeDir);
 
   const app = await electron.launch({
     args: ["--integration-testing"], // this argument turns off the blocking of quit
