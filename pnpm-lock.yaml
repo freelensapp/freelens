@@ -1100,8 +1100,8 @@ importers:
         specifier: ^2.19.0
         version: 2.19.0
       typed-emitter:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^2.1.0
+        version: 2.1.0
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -2944,8 +2944,8 @@ importers:
         specifier: ^2.19.0
         version: 2.19.0
       typed-emitter:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^2.1.0
+        version: 2.1.0
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -9403,9 +9403,6 @@ packages:
   typed-array-length@1.0.7:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
-
-  typed-emitter@1.4.0:
-    resolution: {integrity: sha512-weBmoo3HhpKGgLBOYwe8EB31CzDFuaK7CCL+axXhUYhn4jo6DSkHnbefboCF5i4DQ2aMFe0C/FdTWcPdObgHyg==}
 
   typed-emitter@2.1.0:
     resolution: {integrity: sha512-g/KzbYKbH5C2vPkaXGu8DJlHrGKHLsM25Zg9WuC9pMGfuvT+X25tZQWo5fK1BjBm8+UrVE9LDCvaY0CQk+fXDA==}
@@ -17252,8 +17249,6 @@ snapshots:
       is-typed-array: 1.1.15
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
-
-  typed-emitter@1.4.0: {}
 
   typed-emitter@2.1.0:
     optionalDependencies:
