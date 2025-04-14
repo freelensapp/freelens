@@ -67,10 +67,11 @@ async function attemptStart() {
   // Make sure that the directory is clear
   await remove(CICD).catch(noop);
   // We need original .kube/config with minikube context
-  await mkdirp(path.join(CICD, "home"));
-  const kubeDir = path.join(os.homedir(), ".kube");
-  if (await pathExists(kubeDir)) {
-    await copy(kubeDir, path.join(CICD, "home"));
+  const testKubeDir = path.join(CICD, "home", ".kube");
+  await mkdirp(testKubeDir);
+  const homeKubeDir = path.join(os.homedir(), ".kube");
+  if (await pathExists(homeKubeDir)) {
+    await copy(homeKubeDir, testKubeDir);
   }
 
   const app = await electron.launch({
