@@ -1271,7 +1271,7 @@ importers:
         specifier: '>= 7'
         version: 8.57.1
       eslint-config-prettier:
-        specifier: '>= 8'
+        specifier: '>= 8.10.0'
         version: 10.0.2(eslint@8.57.1)
       eslint-plugin-import:
         specifier: '>= 2'
