@@ -250,7 +250,7 @@ importers:
         specifier: ^3.17.0
         version: 3.17.0
       ws:
-        specifier: ^8.17.1
+        specifier: ^8.18.1
         version: 8.18.1
       zod:
         specifier: ^3.24.2
@@ -1151,7 +1151,7 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5
       ws:
-        specifier: ^8.12.1
+        specifier: ^8.18.1
         version: 8.18.1
       zod:
         specifier: ^3.24.2
