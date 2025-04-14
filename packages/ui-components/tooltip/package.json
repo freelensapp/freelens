@@ -42,7 +42,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/lodash": "^4.17.16",
     "@types/react": "^17.0.85",
