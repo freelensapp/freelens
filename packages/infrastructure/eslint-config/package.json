@@ -30,8 +30,8 @@
     "clean:node_modules": "pnpm dlx rimraf node_modules"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": ">= 8.26.0",
-    "@typescript-eslint/parser": ">= 8.26.0",
+    "@typescript-eslint/eslint-plugin": ">= 8.29.1",
+    "@typescript-eslint/parser": ">= 8.29.1",
     "eslint": ">= 7",
     "eslint-config-prettier": ">= 8",
     "eslint-plugin-import": ">= 2",
