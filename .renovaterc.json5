@@ -4,7 +4,7 @@
     "config:recommended",
     ":semanticCommitsDisabled"
   ],
-  "prHourlyLimit": 2,
+  "prHourlyLimit": 0,
   "addLabels": [
     "renovate"
   ],
@@ -21,7 +21,7 @@
     "rangeStrategy": "bump",
   },
   // disable autorebasing to save unecessary workflow runs
-  "rebaseWhen": "never",
+  "rebaseWhen": "conflicted",
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
