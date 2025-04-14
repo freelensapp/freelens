@@ -115,7 +115,8 @@ jobs:
 
       - name: Update pull request description
         if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated npm version v$(cat .github/version.log)" --body-file .github/pr_body.log
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated npm version v$(cat .github/version.log)" --body-file
+          .github/pr_body.log
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 

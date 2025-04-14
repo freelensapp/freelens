@@ -29,8 +29,8 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' ||
-      (startsWith(github.event.issue.title, 'Automated update of kubectl versions') && contains(github.event.comment.body, '/rerun'))
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated update of kubectl versions')
+      && contains(github.event.comment.body, '/rerun'))
 
     steps:
       - name: Checkout
@@ -110,7 +110,8 @@ jobs:
 
       - name: Update pull request description
         if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated update of kubectl versions (bundled $(cat .github/version.log))" --body-file .github/pr_body.log
+        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated update of kubectl versions (bundled $(cat .github/version.log))"
+          --body-file .github/pr_body.log
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 

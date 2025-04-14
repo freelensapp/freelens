@@ -29,8 +29,8 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' ||
-      (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body, '/rerun'))
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body,
+      '/rerun'))
 
     steps:
       - name: Checkout
