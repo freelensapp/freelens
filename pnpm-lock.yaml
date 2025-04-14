@@ -127,7 +127,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       electron-updater:
-        specifier: ^6.3.0
+        specifier: ^6.6.2
         version: 6.6.2
       electron-window-state:
         specifier: ^5.0.3
@@ -875,7 +875,7 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       electron-updater:
-        specifier: ^6.0.0
+        specifier: ^6.6.2
         version: 6.6.2
       electron-window-state:
         specifier: ^5.0.3
