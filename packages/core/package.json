@@ -182,7 +182,7 @@
     "clsx": "^2.1.1",
     "color": "^4.2.3",
     "concurrently": "^9.1.2",
-    "conf": "^10.2.0",
+    "conf": "^13.1.0",
     "crypto-js": "^4.2.0",
     "css-loader": "^6.11.0",
     "dompurify": "^3.2.5",
