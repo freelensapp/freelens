@@ -1292,7 +1292,7 @@ importers:
         specifier: '>= 4.6.2'
         version: 4.6.2(eslint@8.57.1)
       eslint-plugin-simple-import-sort:
-        specifier: '>= 7'
+        specifier: '>= 12.1.1'
         version: 12.1.1(eslint@8.57.1)
       eslint-plugin-unused-imports:
         specifier: '>= 4'
