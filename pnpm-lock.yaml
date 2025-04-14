@@ -1295,7 +1295,7 @@ importers:
         specifier: '>= 7'
         version: 12.1.1(eslint@8.57.1)
       eslint-plugin-unused-imports:
-        specifier: '>= 4'
+        specifier: '>= 4.1.4'
         version: 4.1.4(@typescript-eslint/eslint-plugin@8.29.0(@typescript-eslint/parser@8.29.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)
       eslint-plugin-xss:
         specifier: '>= 0.1.12'
