@@ -219,6 +219,7 @@ jobs:
       - name: Run integration tests (macOS, Windows)
         id: integration-tests-macos-windows
         if: runner.os != 'Linux'
+        shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser

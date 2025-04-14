@@ -12,7 +12,7 @@ import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injecta
 import { getInjectable } from "@ogre-tools/injectable";
 import { userPreferencesMigrationInjectionToken } from "../../../features/user-preferences/common/migrations-token";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
-import homeDirectoryPathInjectable from "../../../common/os/home-directory-path.injectable";
+import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import type { ClusterStoreModel } from "../../../features/cluster/storage/common/storage.injectable";
@@ -28,7 +28,7 @@ const v503Beta1UserPreferencesStorageMigrationInjectable = getInjectable({
     const isLogicalChildPath = di.inject(isLogicalChildPathInjectable);
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
     const readJsonSync = di.inject(readJsonSyncInjectable);
-    const homeDirectoryPath = di.inject(homeDirectoryPathInjectable);
+    const kubeDirectoryPath = di.inject(kubeDirectoryPathInjectable);
     const pathExistsSync = di.inject(pathExistsSyncInjectable);
 
     return {
@@ -40,7 +40,7 @@ const v503Beta1UserPreferencesStorageMigrationInjectable = getInjectable({
           const extensionDataDir = joinPaths(userDataPath, "extension_data");
           const syncPaths = new Set(syncKubeconfigEntries.map(s => s.filePath));
 
-          syncPaths.add(joinPaths(homeDirectoryPath, ".kube"));
+          syncPaths.add(kubeDirectoryPath);
 
           for (const cluster of clusters) {
             if (!cluster.kubeConfigPath) {

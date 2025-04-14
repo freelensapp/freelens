@@ -6,8 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "lodash";
 import type { ObservableMap } from "mobx";
 import { observable } from "mobx";
-import homeDirectoryPathInjectable from "../../../common/os/home-directory-path.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
+import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import { defaultThemeId } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import type { EditorConfiguration, ExtensionRegistry, KubeconfigSyncEntry, KubeconfigSyncValue, TerminalConfig } from "./preferences-helpers";
@@ -19,10 +18,7 @@ const userPreferenceDescriptorsInjectable = getInjectable({
   id: "user-preference-descriptors",
   instantiate: (di) => {
     const currentTimezone = di.inject(currentTimezoneInjectable);
-    const joinPaths = di.inject(joinPathsInjectable);
-    const homeDirectoryPath = di.inject(homeDirectoryPathInjectable);
-
-    const mainKubeFolderPath = joinPaths(homeDirectoryPath, ".kube");
+    const mainKubeFolderPath = di.inject(kubeDirectoryPathInjectable)
 
     return ({
       httpsProxy: getPreferenceDescriptor<string | undefined>({

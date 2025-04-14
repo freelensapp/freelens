@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { createHash } from "crypto";
-import { mkdirp, remove } from "fs-extra";
+import { copy, mkdirp, pathExists, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { setImmediate } from "timers";
@@ -15,7 +15,7 @@ import { disposer } from "@freelensapp/utilities";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
   "win32": "./dist/win-unpacked/Freelens.exe",
-  "linux": "./dist/linux-unpacked/freelens",
+  "linux": `./dist/linux${ process.arch === "arm64" ? "-arm64" : "" }-unpacked/freelens`,
   "darwin": `./dist/mac${ process.arch === "arm64" ? "-arm64" : "" }/Freelens.app/Contents/MacOS/Freelens`,
 };
 
@@ -59,13 +59,16 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 
 async function attemptStart() {
   const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
+  process.env.CICD = CICD;
 
   // Fixes `electron.launch: setImmediate is not defined`
   global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
   await remove(CICD).catch(noop);
-  await mkdirp(CICD);
+  // We need original .kube/config with minikube context
+  const testHomeDir = path.join(CICD, "home");
+  await mkdirp(testHomeDir);
 
   const app = await electron.launch({
     args: ["--integration-testing"], // this argument turns off the blocking of quit
