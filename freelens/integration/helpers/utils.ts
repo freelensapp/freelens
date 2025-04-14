@@ -59,6 +59,7 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 
 async function attemptStart() {
   const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
+  process.env.CICD = CICD;
 
   // Fixes `electron.launch: setImmediate is not defined`
   global.setImmediate = setImmediate;

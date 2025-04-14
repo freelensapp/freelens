@@ -23,6 +23,8 @@ const expectedEnv = {
   ELECTRON_NO_ATTACH_CONSOLE: "1",
   TERM: "screen-256color-bce",
   SOME_THIRD_NON_UNDEFINED_VALUE: "",
+  ITERM_SHELL_INTEGRATION_INSTALLED: "1",
+  VSCODE_SHELL_INTEGRATION: "1",
 };
 
 describe("computeUnixShellEnvironment technical tests", () => {
@@ -111,7 +113,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(`'/some/process/exec/path' -p '"deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef"'`);
+      expect(stdinValue).toBe(`'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`);
     });
 
     it("should close stdin", () => {
@@ -217,7 +219,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(` '/some/process/exec/path' -p '"deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef"'`);
+      expect(stdinValue).toBe(` '/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`);
     });
 
     it("should close stdin", () => {
@@ -313,7 +315,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         [
           "-l",
           "-c",
-          `'/some/process/exec/path' -p '"deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef"'`,
+          `'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
         ],
         expect.objectContaining({
           env: expectedEnv,
@@ -426,7 +428,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(`Command '/some/process/exec/path' -p '\\"deadfoobarfoobeef\\" + JSON.stringify(process.env) + \\"deadfoobarfoobeef\\"'`);
+      expect(stdinValue).toBe(`Command '/some/process/exec/path' -e 'process.stdout.write(\\"deadfoobarfoobeef\\" + JSON.stringify(process.env) + \\"deadfoobarfoobeef\\")'`);
     });
 
     it("should close stdin", () => {
