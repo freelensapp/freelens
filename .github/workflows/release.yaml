@@ -107,6 +107,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
+
       - name: Get pnpm cache directory
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
@@ -173,6 +177,21 @@ jobs:
       - name: Rebuild native packages for Electron
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+
+      - name: Build extra resources
+        id: build-resources
+        run: pnpm --color=always build:resources
+        continue-on-error: true
+
+      - name: Build extra resources (retry)
+        id: build-resources-2
+        if: steps.build-resources.outcome == 'failure'
+        run: pnpm --color=always build:resources
+        continue-on-error: true
+
+      - name: Build extra resources (retry 2)
+        if: steps.build-resources-2.outcome == 'failure'
+        run: pnpm --color=always build:resources
 
       - name: Build Electron app (macOS)
         if: runner.os == 'macOS'
