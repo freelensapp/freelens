@@ -1,0 +1,10 @@
+doublestar: true
+exclude:
+  - .trunk/trunk.yaml
+  - pnpm-workspace.yaml
+formatter:
+  eof_newline: false
+  indentless_arrays: false
+  max_line_length: 120
+  retain_line_breaks_single: true
+  trim_trailing_whitespace: true

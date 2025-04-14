@@ -11,7 +11,7 @@ data:
   game.properties: |
     enemy.types=aliens,monsters
     player.maximum-lives=5
-  user-interface.properties: |
+  user-interface.properties: |-
     color.good=purple
     color.bad=yellow
     allow.textmode=true

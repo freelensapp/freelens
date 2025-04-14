@@ -16,8 +16,42 @@ runtimes:
     - node@22.14.0
     - python@3.11.9
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
+tools:
+  definitions:
+    - name: yamlfmt
+      runtime: go
+      package: github.com/google/yamlfmt/cmd/yamlfmt
+      shims: [yamlfmt]
+      known_good_version: 0.16.0
 lint:
+  definitions:
+    - name: yamlfmt
+      files: [yaml]
+      description: Formats yaml files
+      commands:
+        - name: format
+          output: rewrite
+          run: yamlfmt ${target}
+          run_from: ${parent}
+          success_codes: [0, 1]
+          cache_results: true
+          formatter: true
+          in_place: true
+          batch: true
+      tools: [yamlfmt]
+      direct_configs:
+        - .yamlfmt
+        - .yamlfmt.yaml
+        - .yamlfmt.yml
+        - yamlfmt.yaml
+        - yamlfmt.yml
+      suggest_if: config_present
+      version_command:
+        parse_regex: ${semver}
+        run: yamlfmt -version
+      known_good_version: 0.16.0
   enabled:
+    - yamlfmt@0.16.0
     - actionlint@1.7.7
     - git-diff-check
     - markdownlint@0.44.0
