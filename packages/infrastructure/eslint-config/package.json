@@ -34,7 +34,7 @@
     "@typescript-eslint/parser": ">= 8.26.0",
     "eslint": ">= 7",
     "eslint-config-prettier": ">= 8",
-    "eslint-plugin-import": ">= 2",
+    "eslint-plugin-import": ">= 2.31.0",
     "eslint-plugin-jest": ">= 27",
     "eslint-plugin-jsx-a11y": ">= 6",
     "eslint-plugin-no-unsanitized": ">= 4.0.2",
