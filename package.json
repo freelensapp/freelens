@@ -30,7 +30,7 @@
     "test:unit:updatesnapshot": "pnpm -r --no-bail test:unit -u",
     "test:unit:watch": "jest --watch",
     "test:integration": "cd freelens && pnpm test:integration",
-    "bump-version": "pnpm version --no-git-tag-version --no-push",
+    "bump-version": "pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
     "compute-versions": "pnpm -r compute-versions"
   },
   "engines": {
