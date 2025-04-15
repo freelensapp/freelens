@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Cluster } from "../../common/cluster/cluster";
-import type { Kubectl } from "../kubectl/kubectl";
-import type WebSocket from "ws";
-import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
-import path from "path";
 import os from "os";
-import type * as pty from "node-pty";
-import { getOrInsertWith } from "@freelensapp/utilities";
-import { type TerminalMessage, TerminalChannels } from "../../common/terminal/channels";
+import path from "path";
 import type { Logger } from "@freelensapp/logger";
-import type { ComputeShellEnvironment } from "../../features/shell-sync/main/compute-shell-environment.injectable";
-import type { SpawnPty } from "./spawn-pty.injectable";
-import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
-import type { Stat } from "../../common/fs/stat.injectable";
+import { getOrInsertWith } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
-import type { ShellSessionEnvs } from "./shell-envs.injectable";
+import type * as pty from "node-pty";
+import type WebSocket from "ws";
+import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
+import type { Cluster } from "../../common/cluster/cluster";
+import type { Stat } from "../../common/fs/stat.injectable";
+import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import type { ComputeShellEnvironment } from "../../features/shell-sync/main/compute-shell-environment.injectable";
+import type { Kubectl } from "../kubectl/kubectl";
+import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 import type { ShellSessionProcesses } from "./processes.injectable";
+import type { ShellSessionEnvs } from "./shell-envs.injectable";
+import type { SpawnPty } from "./spawn-pty.injectable";
 
 export class ShellOpenError extends Error {
   constructor(message: string, options?: ErrorOptions) {
@@ -141,9 +142,14 @@ export abstract class ShellSession {
 
   protected abstract get cwd(): string | undefined;
 
-  protected ensureShellProcess(shell: string, args: string[], env: Partial<Record<string, string>>, cwd: string): { shellProcess: pty.IPty; resume: boolean } {
+  protected ensureShellProcess(
+    shell: string,
+    args: string[],
+    env: Partial<Record<string, string>>,
+    cwd: string,
+  ): { shellProcess: pty.IPty; resume: boolean } {
     const resume = this.dependencies.shellSessionProcesses.has(this.terminalId);
-    const shellProcess = getOrInsertWith(this.dependencies.shellSessionProcesses, this.terminalId, () => (
+    const shellProcess = getOrInsertWith(this.dependencies.shellSessionProcesses, this.terminalId, () =>
       this.dependencies.spawnPty(shell, args, {
         rows: 30,
         cols: 80,
@@ -152,15 +158,20 @@ export abstract class ShellSession {
         name: "xterm-256color",
         // TODO: Something else is broken here so we need to force the use of winPty on windows
         useConpty: false,
-      })
-    ));
+      }),
+    );
 
-    this.dependencies.logger.info(`[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`);
+    this.dependencies.logger.info(
+      `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
+    );
 
     return { shellProcess, resume };
   }
 
-  constructor(protected readonly dependencies: ShellSessionDependencies, { kubectl, websocket, cluster, tabId: terminalId }: ShellSessionArgs) {
+  constructor(
+    protected readonly dependencies: ShellSessionDependencies,
+    { kubectl, websocket, cluster, tabId: terminalId }: ShellSessionArgs,
+  ) {
     this.kubectl = kubectl;
     this.websocket = websocket;
     this.cluster = cluster;
@@ -175,16 +186,9 @@ export abstract class ShellSession {
     const cwdOptions = [this.cwd];
 
     if (this.dependencies.isWindows) {
-      cwdOptions.push(
-        env.USERPROFILE,
-        os.homedir(),
-        "C:\\",
-      );
+      cwdOptions.push(env.USERPROFILE, os.homedir(), "C:\\");
     } else {
-      cwdOptions.push(
-        env.HOME,
-        os.homedir(),
-      );
+      cwdOptions.push(env.HOME, os.homedir());
 
       if (this.dependencies.isMac) {
         cwdOptions.push("/Users");
@@ -221,9 +225,11 @@ export abstract class ShellSession {
     }
 
     this.running = true;
-    shellProcess.onData(data => this.send({ type: TerminalChannels.STDOUT, data }));
+    shellProcess.onData((data) => this.send({ type: TerminalChannels.STDOUT, data }));
     shellProcess.onExit(({ exitCode }) => {
-      this.dependencies.logger.info(`[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`);
+      this.dependencies.logger.info(
+        `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,
+      );
 
       // This might already be false because of the kill() within the websocket.on("close") handler
       if (this.running) {
@@ -241,11 +247,15 @@ export abstract class ShellSession {
     this.websocket
       .on("message", (rawData: unknown): void => {
         if (!this.running) {
-          return void this.dependencies.logger.debug(`[SHELL-SESSION]: received message from ${this.terminalId}, but shellProcess isn't running`);
+          return void this.dependencies.logger.debug(
+            `[SHELL-SESSION]: received message from ${this.terminalId}, but shellProcess isn't running`,
+          );
         }
 
         if (!(rawData instanceof Buffer)) {
-          return void this.dependencies.logger.error(`[SHELL-SESSION]: Received message non-buffer message.`, { rawData });
+          return void this.dependencies.logger.error(`[SHELL-SESSION]: Received message non-buffer message.`, {
+            rawData,
+          });
         }
 
         const data = rawData.toString();
@@ -264,34 +274,41 @@ export abstract class ShellSession {
               this.dependencies.logger.silly(`[SHELL-SESSION]: ${this.terminalId} ping!`);
               break;
             default:
-              this.dependencies.logger.warn(`[SHELL-SESSION]: unknown or unhandleable message type for ${this.terminalId}`, message);
+              this.dependencies.logger.warn(
+                `[SHELL-SESSION]: unknown or unhandleable message type for ${this.terminalId}`,
+                message,
+              );
               break;
           }
         } catch (error) {
           this.dependencies.logger.error(`[SHELL-SESSION]: failed to handle message for ${this.terminalId}`, error);
         }
       })
-      .once("close", code => {
-        this.dependencies.logger.info(`[SHELL-SESSION]: websocket for ${this.terminalId} closed with code=${WebSocketCloseEvent[code]}(${code})`, { cluster: this.cluster.getMeta() });
+      .once("close", (code) => {
+        this.dependencies.logger.info(
+          `[SHELL-SESSION]: websocket for ${this.terminalId} closed with code=${WebSocketCloseEvent[code]}(${code})`,
+          { cluster: this.cluster.getMeta() },
+        );
 
-        const stopShellSession = this.running
-          && (
-            (
-              code !== WebSocketCloseEvent.AbnormalClosure
-              && code !== WebSocketCloseEvent.GoingAway
-            )
-            || this.cluster.disconnected.get()
-          );
+        const stopShellSession =
+          this.running &&
+          ((code !== WebSocketCloseEvent.AbnormalClosure && code !== WebSocketCloseEvent.GoingAway) ||
+            this.cluster.disconnected.get());
 
         if (stopShellSession) {
           this.running = false;
 
           try {
-            this.dependencies.logger.info(`[SHELL-SESSION]: Killing shell process (pid=${shellProcess.pid}) for ${this.terminalId}`);
+            this.dependencies.logger.info(
+              `[SHELL-SESSION]: Killing shell process (pid=${shellProcess.pid}) for ${this.terminalId}`,
+            );
             shellProcess.kill();
             this.dependencies.shellSessionProcesses.delete(this.terminalId);
           } catch (error) {
-            this.dependencies.logger.warn(`[SHELL-SESSION]: failed to kill shell process (pid=${shellProcess.pid}) for ${this.terminalId}`, error);
+            this.dependencies.logger.warn(
+              `[SHELL-SESSION]: failed to kill shell process (pid=${shellProcess.pid}) for ${this.terminalId}`,
+              error,
+            );
           }
         }
       });
@@ -333,7 +350,9 @@ export abstract class ShellSession {
     })();
 
     const env = clearKubeconfigEnvVars(JSON.parse(JSON.stringify(rawEnv)));
-    const pathStr = [this.dependencies.directoryContainingKubectl, ...this.getPathEntries(), env.PATH].join(path.delimiter);
+    const pathStr = [this.dependencies.directoryContainingKubectl, ...this.getPathEntries(), env.PATH].join(
+      path.delimiter,
+    );
 
     delete env.DEBUG; // don't pass DEBUG into shells
 
@@ -341,12 +360,7 @@ export abstract class ShellSession {
       env.PTYSHELL = shell || "powershell.exe";
       env.PATH = pathStr;
       env.LENS_SESSION = "true";
-      env.WSLENV = [
-        env.WSLENV,
-        "KUBECONFIG/up:LENS_SESSION/u",
-      ]
-        .filter(Boolean)
-        .join(":");
+      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:LENS_SESSION/u"].filter(Boolean).join(":");
     } else if (shell !== undefined) {
       env.PTYSHELL = shell;
       env.PATH = pathStr;
@@ -369,13 +383,7 @@ export abstract class ShellSession {
       env.HTTPS_PROXY = this.cluster.preferences.httpsProxy;
     }
 
-    env.NO_PROXY = [
-      "localhost",
-      "127.0.0.1",
-      env.NO_PROXY,
-    ]
-      .filter(Boolean)
-      .join();
+    env.NO_PROXY = ["localhost", "127.0.0.1", env.NO_PROXY].filter(Boolean).join();
 
     return env;
   }

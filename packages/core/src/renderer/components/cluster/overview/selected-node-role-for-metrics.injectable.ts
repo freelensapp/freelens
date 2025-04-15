@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
 import nodeStoreInjectable from "../../nodes/store.injectable";
 import type { MetricNodeRole } from "./storage.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
 
-export type SelectedNodeRoleForMetrics = ReturnType<typeof selectedNodeRoleForMetricsInjectable["instantiate"]>;
+export type SelectedNodeRoleForMetrics = ReturnType<(typeof selectedNodeRoleForMetricsInjectable)["instantiate"]>;
 
 const selectedNodeRoleForMetricsInjectable = getInjectable({
   id: "selected-node-role-for-metrics",

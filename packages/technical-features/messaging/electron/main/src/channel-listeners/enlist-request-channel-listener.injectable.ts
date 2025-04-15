@@ -1,8 +1,8 @@
+import type { RequestChannel, RequestChannelListener } from "@freelensapp/messaging";
+import { enlistRequestChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IpcMainInvokeEvent } from "electron";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
-import type { RequestChannel, RequestChannelListener } from "@freelensapp/messaging";
-import { enlistRequestChannelListenerInjectionToken } from "@freelensapp/messaging";
 
 export type EnlistRequestChannelListener = <TChannel extends RequestChannel<unknown, unknown>>(
   listener: RequestChannelListener<TChannel>,

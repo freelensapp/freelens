@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 function parseKeyDownDescriptor(descriptor: string): (event: KeyboardEvent) => boolean {
-  const parts = new Set((
+  const parts = new Set(
     descriptor
       .split("+")
       .filter(Boolean)
-      .map(part => part.toLowerCase())
-  ));
+      .map((part) => part.toLowerCase()),
+  );
 
   if (parts.size === 0) {
     return () => true;
@@ -33,15 +34,20 @@ function parseKeyDownDescriptor(descriptor: string): (event: KeyboardEvent) => b
   }
 
   return (event) => {
-    return event.altKey === hasAlt
-      && event.shiftKey === hasShift
-      && event.ctrlKey === hasCtrl
-      && event.metaKey === hasMeta
-      && event.key.toLowerCase() === key.toLowerCase();
+    return (
+      event.altKey === hasAlt &&
+      event.shiftKey === hasShift &&
+      event.ctrlKey === hasCtrl &&
+      event.metaKey === hasMeta &&
+      event.key.toLowerCase() === key.toLowerCase()
+    );
   };
 }
 
-export function onKeyboardShortcut(descriptor: string, action: () => void): (this: Window, ev: WindowEventMap["keydown"]) => any {
+export function onKeyboardShortcut(
+  descriptor: string,
+  action: () => void,
+): (this: Window, ev: WindowEventMap["keydown"]) => any {
   const isMatchingEvent = parseKeyDownDescriptor(descriptor);
 
   return (event) => {

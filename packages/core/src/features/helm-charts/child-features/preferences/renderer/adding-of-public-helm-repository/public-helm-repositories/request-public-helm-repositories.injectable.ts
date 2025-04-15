@@ -1,15 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { sortBy } from "lodash/fp";
 import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/download-json/proxy.injectable";
 import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-const publicHelmReposUrl = "https://github.com/lensapp/artifact-hub-repositories/releases/download/latest/repositories.json";
+const publicHelmReposUrl =
+  "https://github.com/lensapp/artifact-hub-repositories/releases/download/latest/repositories.json";
 
 const requestPublicHelmRepositoriesInjectable = getInjectable({
   id: "request-public-helm-repositories",
@@ -30,7 +33,7 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
         return [];
       }
 
-      return sortBy(repo => repo.name, result.response as HelmRepo[]);
+      return sortBy((repo) => repo.name, result.response as HelmRepo[]);
     };
   },
 

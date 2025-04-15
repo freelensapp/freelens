@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { IObservableValue } from "mobx";
-import { runInAction, computed, observable } from "mobx";
-import React from "react";
+
+import assert from "assert";
+import type { KubeApi } from "@freelensapp/kube-api";
 import { KubeObject } from "@freelensapp/kube-object";
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+import { computed, observable, runInAction } from "mobx";
+import React from "react";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import type { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
-import type { KubeApi } from "@freelensapp/kube-api";
 import showDetailsInjectable from "../../../../renderer/components/kube-detail-params/show-details.injectable";
-import assert from "assert";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../../../renderer/components/test-utils/get-extension-fake";
 
 describe("reactively hide kube object detail item", () => {
@@ -34,8 +36,7 @@ describe("reactively hide kube object detail item", () => {
       const store = {
         api,
         loadFromPath: async () => Promise.resolve(getKubeObjectStub("some-kind", "some-api-version")),
-        getByPath() {
-        },
+        getByPath() {},
       } as Partial<KubeObjectStore<KubeObject>> as KubeObjectStore<KubeObject>;
 
       apiManager.registerApi(api);
@@ -55,11 +56,7 @@ describe("reactively hide kube object detail item", () => {
             apiVersions: ["some-api-version"],
 
             components: {
-              Details: () => (
-                <div data-testid="some-kube-object-detail-item">
-                  Some detail
-                </div>
-              ),
+              Details: () => <div data-testid="some-kube-object-detail-item">Some detail</div>,
             },
 
             visible: computed(() => someObservable.get()),

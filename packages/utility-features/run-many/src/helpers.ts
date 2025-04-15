@@ -1,14 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { DiContainerForInjection, InjectionInstanceWithMeta } from "@ogre-tools/injectable";
-import { getOrInsertSetFor, isDefined } from "@freelensapp/utilities";
-import * as uuid from "uuid";
+
 import assert from "assert";
+import { getOrInsertSetFor, isDefined } from "@freelensapp/utilities";
+import type { DiContainerForInjection, InjectionInstanceWithMeta } from "@ogre-tools/injectable";
+import * as uuid from "uuid";
 import type { Runnable, RunnableSync, RunnableSyncWithId, RunnableWithId } from "./types";
 
-const computedNextEdge = (traversed: string[], graph: Map<string, Set<string>>, currentId: string, seenIds: Set<string>) => {
+const computedNextEdge = (
+  traversed: string[],
+  graph: Map<string, Set<string>>,
+  currentId: string,
+  seenIds: Set<string>,
+) => {
   seenIds.add(currentId);
   const currentNode = graph.get(currentId);
 
@@ -32,7 +39,10 @@ const computedNextEdge = (traversed: string[], graph: Map<string, Set<string>>, 
 export function verifyRunnablesAreDAG<Param>(tokenId: string, runnables: RunnableWithId<Param>[]): void;
 export function verifyRunnablesAreDAG<Param>(tokenId: string, runnables: RunnableSyncWithId<Param>[]): void;
 
-export function verifyRunnablesAreDAG<Param>(tokenId: string, runnables: (RunnableWithId<Param>[]) | (RunnableSyncWithId<Param>[])): void {
+export function verifyRunnablesAreDAG<Param>(
+  tokenId: string,
+  runnables: RunnableWithId<Param>[] | RunnableSyncWithId<Param>[],
+): void {
   const rootId = uuid.v4();
   const runnableGraph = new Map<string, Set<string>>();
   const seenIds = new Set<string>();
@@ -58,7 +68,7 @@ export function verifyRunnablesAreDAG<Param>(tokenId: string, runnables: (Runnab
 
   for (const id of runnableGraph.keys()) {
     if (!seenIds.has(id)) {
-      const runnable = runnables.find(runnable => runnable.id === id);
+      const runnable = runnables.find((runnable) => runnable.id === id);
 
       if (!runnable) {
         throw new Error(`Runnable "${id}" is not part of the injection token "${tokenId}"`);
@@ -67,10 +77,12 @@ export function verifyRunnablesAreDAG<Param>(tokenId: string, runnables: (Runnab
       const runAfters = [runnable.runAfter]
         .flat()
         .filter(isDefined)
-        .map(runnable => runnable.id)
+        .map((runnable) => runnable.id)
         .join('", "');
 
-      throw new Error(`Runnable "${id}" is unreachable for injection token "${tokenId}": run afters "${runAfters}" are a part of different injection tokens.`);
+      throw new Error(
+        `Runnable "${id}" is unreachable for injection token "${tokenId}": run afters "${runAfters}" are a part of different injection tokens.`,
+      );
     }
   }
 }

@@ -1,8 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describeIf } from "@freelensapp/test-utils";
+import { pipeline } from "@ogre-tools/fp";
+import { groupBy, toPairs } from "lodash/fp";
+import type { Frame, Page } from "playwright";
+import { minikubeReady } from "../helpers/minikube";
 /*
   Cluster tests are run if there is a pre-existing minikube cluster. Before running cluster tests the TEST_NAMESPACE
   namespace is removed, if it exists, from the minikube cluster. Resources are created as part of the cluster tests in the
@@ -10,11 +16,6 @@
   cluster and vice versa.
 */
 import * as utils from "../helpers/utils";
-import { minikubeReady } from "../helpers/minikube";
-import type { Frame, Page } from "playwright";
-import { groupBy, toPairs } from "lodash/fp";
-import { pipeline } from "@ogre-tools/fp";
-import { describeIf } from "@freelensapp/test-utils";
 
 const TEST_NAMESPACE = "integration-tests";
 
@@ -23,16 +24,22 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
   let cleanup: undefined | (() => Promise<void>);
   let frame: Frame;
 
-  beforeEach(async () => {
-    ({ window, cleanup } = await utils.start());
-    await utils.clickWelcomeButton(window);
+  beforeEach(
+    async () => {
+      ({ window, cleanup } = await utils.start());
+      await utils.clickWelcomeButton(window);
 
-    frame = await utils.launchMinikubeClusterFromCatalog(window);
-  }, 10 * 60 * 1000);
+      frame = await utils.launchMinikubeClusterFromCatalog(window);
+    },
+    10 * 60 * 1000,
+  );
 
-  afterEach(async () => {
-    await cleanup?.();
-  }, 10 * 60 * 1000);
+  afterEach(
+    async () => {
+      await cleanup?.();
+    },
+    10 * 60 * 1000,
+  );
 
   it("shows cluster context menu in sidebar", async () => {
     await frame.click(`[data-testid="sidebar-cluster-dropdown"]`);
@@ -51,11 +58,7 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
   it(
     "should navigate around common cluster pages",
     async () => {
-      const scenariosByParent = pipeline(
-        scenarios,
-        groupBy("parentSidebarItemTestId"),
-        toPairs,
-      );
+      const scenariosByParent = pipeline(scenarios, groupBy("parentSidebarItemTestId"), toPairs);
 
       for (const [parentSidebarItemTestId, scenarios] of scenariosByParent) {
         if (parentSidebarItemTestId !== "null") {
@@ -65,10 +68,7 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
         for (const scenario of scenarios) {
           await frame.click(`[data-testid="${scenario.sidebarItemTestId}"]`);
 
-          await frame.waitForSelector(
-            scenario.expectedSelector,
-            selectorTimeout,
-          );
+          await frame.waitForSelector(scenario.expectedSelector, selectorTimeout);
         }
       }
     },
@@ -91,13 +91,9 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
     async () => {
       await navigateToNamespaces(frame);
       await frame.click("button.add-button");
-      await frame.waitForSelector(
-        "div.AddNamespaceDialog >> text='Create Namespace'",
-      );
+      await frame.waitForSelector("div.AddNamespaceDialog >> text='Create Namespace'");
 
-      const namespaceNameInput = await frame.waitForSelector(
-        ".AddNamespaceDialog input",
-      );
+      const namespaceNameInput = await frame.waitForSelector(".AddNamespaceDialog input");
 
       await namespaceNameInput.type(TEST_NAMESPACE);
       await namespaceNameInput.press("Enter");
@@ -106,9 +102,7 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
 
       await navigateToPods(frame);
 
-      const namespacesSelector = await frame.waitForSelector(
-        ".NamespaceSelect",
-      );
+      const namespacesSelector = await frame.waitForSelector(".NamespaceSelect");
 
       await namespacesSelector.click();
       await namespacesSelector.type(TEST_NAMESPACE);

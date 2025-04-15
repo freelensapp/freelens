@@ -1,17 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
-import type { ClusterId, ClusterState } from "../../common/cluster-types";
-import { windowActionHandleChannel, windowLocationChangedChannel, windowOpenAppMenuAsContextMenuChannel, type WindowAction } from "../../common/ipc/window";
-import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
 import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
-import type { Location } from "history";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
+import type { Location } from "history";
+import type { ClusterId, ClusterState } from "../../common/cluster-types";
+import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
+import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
+import {
+  type WindowAction,
+  windowActionHandleChannel,
+  windowLocationChangedChannel,
+  windowOpenAppMenuAsContextMenuChannel,
+} from "../../common/ipc/window";
 import { toJS } from "../../common/utils";
+import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 
 function requestMain(channel: string, ...args: any[]) {
   const di = getLegacyGlobalDiForExtensionApi();

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
+import assert from "assert";
 import { iter } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import clusterFramesInjectable from "../../../common/cluster-frames.injectable";
 import { IpcRendererNavigationEvents } from "../../../common/ipc/navigation-events";
-import showApplicationWindowInjectable from "./show-application-window.injectable";
 import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
-import assert from "assert";
+import showApplicationWindowInjectable from "./show-application-window.injectable";
 
 const navigateInjectable = getInjectable({
   id: "navigate",
@@ -25,10 +27,7 @@ const navigateInjectable = getInjectable({
 
       assert(applicationWindow);
 
-      const frameInfo = iter.find(
-        clusterFrames.values(),
-        (frameInfo) => frameInfo.frameId === frameId,
-      );
+      const frameInfo = iter.find(clusterFrames.values(), (frameInfo) => frameInfo.frameId === frameId);
 
       const channel = frameInfo
         ? IpcRendererNavigationEvents.NAVIGATE_IN_CLUSTER

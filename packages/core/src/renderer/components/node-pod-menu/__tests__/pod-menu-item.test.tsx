@@ -1,9 +1,9 @@
-import React from "react";
-import PodMenuItem from "../pod-menu-item";
-import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { fireEvent, screen, within } from "@testing-library/react";
+import React from "react";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
+import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import PodMenuItem from "../pod-menu-item";
 
 jest.mock("../../menu", () => {
   const actualMenu = jest.requireActual("../../menu");
@@ -71,9 +71,7 @@ describe("pod-menu-item", () => {
   it("given containers with one element should render only main MenuItem", () => {
     // GIVEN
     const title = "title";
-    const containers = [
-      { name: "container-name-1" },
-    ];
+    const containers = [{ name: "container-name-1" }];
 
     // WHEN
     const { container } = render(
@@ -106,21 +104,21 @@ describe("pod-menu-item", () => {
   it("click on main MenuItem should execute onMenuItemClick", () => {
     // GIVEN
     const title = "title";
-    const containers = [
-      { name: "container-name-1" },
-    ];
+    const containers = [{ name: "container-name-1" }];
 
     // WHEN
     expect(() => {
-      render(<PodMenuItem
-        material="pageview"
-        title={title}
-        tooltip="tooltip"
-        toolbar={true}
-        containers={containers}
-        statuses={[]}
-        onMenuItemClick={callback}
-      />);
+      render(
+        <PodMenuItem
+          material="pageview"
+          title={title}
+          tooltip="tooltip"
+          toolbar={true}
+          containers={containers}
+          statuses={[]}
+          onMenuItemClick={callback}
+        />,
+      );
     }).not.toThrow();
 
     // THEN
@@ -133,15 +131,11 @@ describe("pod-menu-item", () => {
   it("given containers with more elements should render SubMenu", () => {
     // GIVEN
     const title = "title";
-    const containers = [
-      { name: "container-name-1" },
-      { name: "container-name-2" },
-      { name: "container-name-3" },
-    ];
+    const containers = [{ name: "container-name-1" }, { name: "container-name-2" }, { name: "container-name-3" }];
     const statuses = [
-      { name: "container-name-1", state: { running: { startedAt: "" }}, ready: true },
-      { name: "container-name-2", state: { pending: { startedAt: "" }}, ready: true },
-      { name: "container-name-3", state: { terminated: { startedAt: "" }}, ready: true },
+      { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
+      { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
+      { name: "container-name-3", state: { terminated: { startedAt: "" } }, ready: true },
     ];
 
     // WHEN
@@ -189,29 +183,27 @@ describe("pod-menu-item", () => {
   it("click on first submenu should execute onMenuItemClick", () => {
     // GIVEN
     const title = "title";
-    const containers = [
-      { name: "container-name-1" },
-      { name: "container-name-2" },
-      { name: "container-name-3" },
-    ];
+    const containers = [{ name: "container-name-1" }, { name: "container-name-2" }, { name: "container-name-3" }];
     const statuses = [
-      { name: "container-name-1", state: { running: { startedAt: "" }}, ready: true },
-      { name: "container-name-2", state: { pending: { startedAt: "" }}, ready: true },
-      { name: "container-name-3", state: { terminated: { startedAt: "" }}, ready: true },
+      { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
+      { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
+      { name: "container-name-3", state: { terminated: { startedAt: "" } }, ready: true },
     ];
 
     // WHEN
     expect(() => {
-      render(<PodMenuItem
-        material="pageview"
-        title={title}
-        tooltip="tooltip"
-        toolbar={true}
-        containers={containers}
-        // @ts-ignore
-        statuses={statuses}
-        onMenuItemClick={callback}
-      />);
+      render(
+        <PodMenuItem
+          material="pageview"
+          title={title}
+          tooltip="tooltip"
+          toolbar={true}
+          containers={containers}
+          // @ts-ignore
+          statuses={statuses}
+          onMenuItemClick={callback}
+        />,
+      );
     }).not.toThrow();
 
     // THEN
@@ -220,6 +212,4 @@ describe("pod-menu-item", () => {
     fireEvent.click(menuItem[1]);
     expect(callback).toBeCalledWith(containers[0]);
   });
-
-
 });

@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
-import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { JobApi } from "@freelensapp/kube-api";
 import type { CronJob, Job, Pod } from "@freelensapp/kube-object";
 import { PodStatusPhase } from "@freelensapp/kube-object";
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
+import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.injectable";
 
 interface Dependencies extends KubeObjectStoreDependencies {
@@ -15,7 +16,11 @@ interface Dependencies extends KubeObjectStoreDependencies {
 }
 
 export class JobStore extends KubeObjectStore<Job, JobApi> {
-  constructor(protected readonly dependencies: Dependencies, api: JobApi, opts?: KubeObjectStoreOptions) {
+  constructor(
+    protected readonly dependencies: Dependencies,
+    api: JobApi,
+    opts?: KubeObjectStoreOptions,
+  ) {
     super(dependencies, api, opts);
   }
 
@@ -27,9 +32,10 @@ export class JobStore extends KubeObjectStore<Job, JobApi> {
   }
 
   getJobsByOwner(cronJob: CronJob) {
-    return this.items.filter(job =>
-      job.getNs() == cronJob.getNs() &&
-      job.getOwnerRefs().find(ref => ref.name === cronJob.getName() && ref.kind === cronJob.kind),
+    return this.items.filter(
+      (job) =>
+        job.getNs() == cronJob.getNs() &&
+        job.getOwnerRefs().find((ref) => ref.name === cronJob.getName() && ref.kind === cronJob.kind),
     );
   }
 
@@ -37,7 +43,7 @@ export class JobStore extends KubeObjectStore<Job, JobApi> {
     const status = { succeeded: 0, running: 0, failed: 0, pending: 0 };
 
     for (const job of jobs ?? []) {
-      const statuses = new Set(this.getChildPods(job).map(pod => pod.getStatus()));
+      const statuses = new Set(this.getChildPods(job).map((pod) => pod.getStatus()));
 
       if (statuses.has(PodStatusPhase.FAILED)) {
         status.failed++;

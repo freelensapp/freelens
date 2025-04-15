@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import type { KubeObjectMetadata, KubeObjectScope, KubeJsonApiData } from "@freelensapp/kube-object";
+
+import { parseKubeApi } from "@freelensapp/kube-api";
+import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
-import { getErrorMessage } from "../../../../../common/utils/get-error-message";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { Writable } from "type-fest";
-import { parseKubeApi } from "@freelensapp/kube-api";
+import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import apiKubeGetInjectable from "../../../../k8s/api-kube-get.injectable";
 
 export type RequestKubeResource = (selfLink: string) => AsyncResult<KubeObject | undefined>;
@@ -27,7 +29,11 @@ const requestKubeResourceInjectable = getInjectable({
       }
 
       try {
-        const rawData = await apiKubeGet(selfLink) as KubeJsonApiData<KubeObjectMetadata<KubeObjectScope>, unknown, unknown>;
+        const rawData = (await apiKubeGet(selfLink)) as KubeJsonApiData<
+          KubeObjectMetadata<KubeObjectScope>,
+          unknown,
+          unknown
+        >;
 
         (rawData.metadata as Writable<typeof rawData.metadata>).selfLink = selfLink;
 

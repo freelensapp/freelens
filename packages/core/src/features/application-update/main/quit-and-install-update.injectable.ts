@@ -1,20 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
-import electronQuitAndInstallUpdateInjectable from "../../../main/electron-app/features/electron-quit-and-install-update.injectable";
-import { getCurrentDateTime } from "../../../common/utils/date/get-current-date-time";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
+import { getCurrentDateTime } from "../../../common/utils/date/get-current-date-time";
+import electronQuitAndInstallUpdateInjectable from "../../../main/electron-app/features/electron-quit-and-install-update.injectable";
 import discoveredUpdateVersionInjectable from "../common/discovered-update-version.injectable";
 
 const quitAndInstallUpdateInjectable = getInjectable({
   id: "quit-and-install-update",
 
   instantiate: (di) => {
-    const electronQuitAndInstallUpdate = di.inject(
-      electronQuitAndInstallUpdateInjectable,
-    );
+    const electronQuitAndInstallUpdate = di.inject(electronQuitAndInstallUpdateInjectable);
 
     const emitEvent = di.inject(emitAppEventInjectable);
     const discoveredUpdateVersion = di.inject(discoveredUpdateVersionInjectable);

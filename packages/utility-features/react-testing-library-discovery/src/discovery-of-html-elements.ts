@@ -1,5 +1,5 @@
-import type { RenderResult } from "@testing-library/react";
 import { prettyDOM as prettyDom } from "@testing-library/dom";
+import type { RenderResult } from "@testing-library/react";
 
 type DiscoverySourceTypes = RenderResult | Element;
 
@@ -38,7 +38,6 @@ export function querySingleElement(getSource: () => DiscoverySourceTypes): Query
 
     const discovered = getBaseElement(source).querySelector(selector);
 
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const nestedDiscover = discoverFor(() => {
       if (!discovered) {
         throw new Error("Tried to do nested discover using source that does not exist");
@@ -78,7 +77,6 @@ export function getSingleElement(getSource: () => DiscoverySourceTypes): GetSing
     const { discovered, ...nestedDiscover } = querySingleElement(getSource)(attributeName, attributeValue);
 
     if (!discovered) {
-      // eslint-disable-next-line xss/no-mixed-html
       const html = prettyDom(getBaseElement(getSource()));
 
       if (attributeValue) {

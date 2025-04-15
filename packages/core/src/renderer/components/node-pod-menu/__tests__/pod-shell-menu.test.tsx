@@ -1,12 +1,12 @@
+import os from "os";
+import type { DiContainer } from "@ogre-tools/injectable";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { PodShellMenu } from "../pod-shell-menu";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
-import os from "os";
+import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import { PodShellMenu } from "../pod-shell-menu";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "mocked-id"),
@@ -15,17 +15,14 @@ jest.mock("uuid", () => ({
 let execShell: (container: { name: string }) => Promise<void> = async () => {};
 
 // This mock is used to get attachToPod function from PodShellMenu
-jest.mock(
-  "../pod-menu-item",
-  () => ({
-    __esModule: true,
-    default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
-      execShell = onMenuItemClick;
+jest.mock("../pod-menu-item", () => ({
+  __esModule: true,
+  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
+    execShell = onMenuItemClick;
 
-      return null;
-    },
-  }),
-);
+    return null;
+  },
+}));
 
 describe("pod-shell-menu", () => {
   let di: DiContainer;
@@ -49,17 +46,13 @@ describe("pod-shell-menu", () => {
   });
 
   it("given null object should render null component", () => {
-    const { container } = render(
-      <PodShellMenu object={null as never} toolbar={false} />,
-    );
+    const { container } = render(<PodShellMenu object={null as never} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
 
   it("given object without metadata should render null component", () => {
-    const { container } = render(
-      <PodShellMenu object={{}} toolbar={false} />,
-    );
+    const { container } = render(<PodShellMenu object={{}} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -70,9 +63,7 @@ describe("pod-shell-menu", () => {
     };
 
     // WHEN
-    const { container } = render(
-      <PodShellMenu object={object} toolbar={false} />,
-    );
+    const { container } = render(<PodShellMenu object={object} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -112,8 +103,8 @@ describe("pod-shell-menu", () => {
     await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
     expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
     expect(sendCommandMock).toHaveBeenCalledWith(
-      "exec kubectl exec -i -t -n  name -c test-container -- sh -c \"clear; (bash || ash || sh)\"",
-      { "enter": true, "tabId": "mocked-id" },
+      'exec kubectl exec -i -t -n  name -c test-container -- sh -c "clear; (bash || ash || sh)"',
+      { enter: true, tabId: "mocked-id" },
     );
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
@@ -138,8 +129,8 @@ describe("pod-shell-menu", () => {
     await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
     expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
     expect(sendCommandMock).toHaveBeenCalledWith(
-      "kubectl exec -i -t -n  name -c test-container -- sh -c \"clear; (bash || ash || sh)\"",
-      { "enter": true, "tabId": "mocked-id" },
+      'kubectl exec -i -t -n  name -c test-container -- sh -c "clear; (bash || ash || sh)"',
+      { enter: true, tabId: "mocked-id" },
     );
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
@@ -166,11 +157,10 @@ describe("pod-shell-menu", () => {
     // THEN
     await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
     expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith(
-      "kubectl exec -i -t -n  name -c test-container -- powershell",
-      { "enter": true, "tabId": "mocked-id" },
-    );
+    expect(sendCommandMock).toHaveBeenCalledWith("kubectl exec -i -t -n  name -c test-container -- powershell", {
+      enter: true,
+      tabId: "mocked-id",
+    });
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
-
 });

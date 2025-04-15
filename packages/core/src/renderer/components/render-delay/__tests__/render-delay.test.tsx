@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import { RenderDelay } from "../render-delay";
+import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import cancelIdleCallbackInjectable from "../cancel-idle-callback.injectable";
-import requestIdleCallbackInjectable from "../request-idle-callback.injectable";
-import type { RenderResult } from "@testing-library/react";
 import idleCallbackTimeoutInjectable from "../idle-callback-timeout.injectable";
-import { testUsingFakeTime, advanceFakeTime } from "../../../../test-utils/use-fake-time";
+import { RenderDelay } from "../render-delay";
+import requestIdleCallbackInjectable from "../request-idle-callback.injectable";
 
 describe("<RenderDelay/>", () => {
   let render: DiRender;
@@ -32,11 +34,11 @@ describe("<RenderDelay/>", () => {
     let result: RenderResult;
 
     beforeEach(() => {
-      result = render((
+      result = render(
         <RenderDelay>
           <div data-testid="child" />
-        </RenderDelay>
-      ));
+        </RenderDelay>,
+      );
     });
 
     it("renders", () => {
@@ -66,13 +68,11 @@ describe("<RenderDelay/>", () => {
     let result: RenderResult;
 
     beforeEach(() => {
-      result = render((
-        <RenderDelay
-          placeholder={<div data-testid="placeholder"></div>}
-        >
+      result = render(
+        <RenderDelay placeholder={<div data-testid="placeholder"></div>}>
           <div data-testid="child" />
-        </RenderDelay>
-      ));
+        </RenderDelay>,
+      );
     });
 
     it("renders", () => {

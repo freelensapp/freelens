@@ -1,10 +1,10 @@
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelensapp/feature-core";
-import { applicationFeatureForElectronMain } from "./feature";
-import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelensapp/application";
 import asyncFn, { AsyncFnMock } from "@async-fn/jest";
-import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";
+import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelensapp/application";
+import { registerFeature } from "@freelensapp/feature-core";
+import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { applicationFeatureForElectronMain } from "./feature";
 import * as timeSlots from "./start-application/time-slots";
+import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";
 
 describe("starting-of-electron-main-application", () => {
   let di: DiContainer;

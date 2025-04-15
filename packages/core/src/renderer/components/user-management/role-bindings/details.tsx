@@ -1,30 +1,30 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./details.scss";
 
+import type { RoleBinding } from "@freelensapp/kube-object";
+import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { RoleBinding } from "@freelensapp/kube-object";
-import { prevDefault, ObservableHashSet } from "@freelensapp/utilities";
 import { AddRemoveButtons } from "../../add-remove-buttons";
+import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
+import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
 import { hashSubject } from "../hashers";
-import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import type { OpenRoleBindingDialog } from "./dialog/open.injectable";
 import openRoleBindingDialogInjectable from "./dialog/open.injectable";
 import type { RoleBindingStore } from "./store";
 import roleBindingStoreInjectable from "./store.injectable";
 
-export interface RoleBindingDetailsProps extends KubeObjectDetailsProps<RoleBinding> {
-}
+export interface RoleBindingDetailsProps extends KubeObjectDetailsProps<RoleBinding> {}
 
 interface Dependencies {
   openConfirmDialog: OpenConfirmDialog;
@@ -38,9 +38,12 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
 
   async componentDidMount() {
     disposeOnUnmount(this, [
-      reaction(() => this.props.object, () => {
-        this.selectedSubjects.clear();
-      }),
+      reaction(
+        () => this.props.object,
+        () => {
+          this.selectedSubjects.clear();
+        },
+      ),
     ]);
   }
 
@@ -54,8 +57,7 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
       message: (
         <p>
           Remove selected bindings for
-          <b>{roleBinding.getName()}</b>
-          ?
+          <b>{roleBinding.getName()}</b>?
         </p>
       ),
     });
@@ -96,25 +98,23 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
               <TableCell className="binding">Name</TableCell>
               <TableCell className="ns">Namespace</TableCell>
             </TableHead>
-            {
-              subjects.map((subject, i) => {
-                const { kind, name, namespace } = subject;
-                const isSelected = selectedSubjects.has(subject);
+            {subjects.map((subject, i) => {
+              const { kind, name, namespace } = subject;
+              const isSelected = selectedSubjects.has(subject);
 
-                return (
-                  <TableRow
-                    key={i}
-                    selected={isSelected}
-                    onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
-                  >
-                    <TableCell checkbox isChecked={isSelected} />
-                    <TableCell className="type">{kind}</TableCell>
-                    <TableCell className="binding">{name}</TableCell>
-                    <TableCell className="ns">{namespace || "-"}</TableCell>
-                  </TableRow>
-                );
-              })
-            }
+              return (
+                <TableRow
+                  key={i}
+                  selected={isSelected}
+                  onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
+                >
+                  <TableCell checkbox isChecked={isSelected} />
+                  <TableCell className="type">{kind}</TableCell>
+                  <TableCell className="binding">{name}</TableCell>
+                  <TableCell className="ns">{namespace || "-"}</TableCell>
+                </TableRow>
+              );
+            })}
           </Table>
         )}
 
@@ -129,11 +129,14 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
   }
 }
 
-export const RoleBindingDetails = withInjectables<Dependencies, RoleBindingDetailsProps>(NonInjectedRoleBindingDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    openConfirmDialog: di.inject(openConfirmDialogInjectable),
-    openRoleBindingDialog: di.inject(openRoleBindingDialogInjectable),
-    roleBindingStore: di.inject(roleBindingStoreInjectable),
-  }),
-});
+export const RoleBindingDetails = withInjectables<Dependencies, RoleBindingDetailsProps>(
+  NonInjectedRoleBindingDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      openConfirmDialog: di.inject(openConfirmDialogInjectable),
+      openRoleBindingDialog: di.inject(openRoleBindingDialogInjectable),
+      roleBindingStore: di.inject(roleBindingStoreInjectable),
+    }),
+  },
+);

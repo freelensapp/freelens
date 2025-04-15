@@ -1,8 +1,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
-import type { KubeObjectMenuItemComponent }  from "../../kube-object-menu/kube-object-menu-item-injection-token";
-import { kubeObjectMenuItemInjectionToken }  from "../../kube-object-menu/kube-object-menu-item-injection-token";
-import { PodAttachMenu } from "../pod-attach-menu";
 import { computed } from "mobx";
+import type { KubeObjectMenuItemComponent } from "../../kube-object-menu/kube-object-menu-item-injection-token";
+import { kubeObjectMenuItemInjectionToken } from "../../kube-object-menu/kube-object-menu-item-injection-token";
+import { PodAttachMenu } from "../pod-attach-menu";
 
 const podAttachMenuInjectable = getInjectable({
   id: "pod-attach-menu-node-pod-menu",

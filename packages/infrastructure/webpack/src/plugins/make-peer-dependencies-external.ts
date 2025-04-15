@@ -1,8 +1,8 @@
+import path from "path";
+import { readJsonSync } from "fs-extra";
 // @ts-ignore
 import ExternalModuleFactoryPlugin from "webpack/lib/ExternalModuleFactoryPlugin";
-import path from "path";
 import { toModuleMatcherRegExp } from "./to-module-matcher-reg-exp/to-module-matcher-reg-exp";
-import { readJsonSync } from "fs-extra";
 
 export class MakePeerDependenciesExternalPlugin {
   apply(compiler: any) {
@@ -11,7 +11,7 @@ export class MakePeerDependenciesExternalPlugin {
 
       new ExternalModuleFactoryPlugin(
         compiler.options.output.library.type,
-        peerDependencies.map(toModuleMatcherRegExp)
+        peerDependencies.map(toModuleMatcherRegExp),
       ).apply(params.normalModuleFactory);
     });
   }

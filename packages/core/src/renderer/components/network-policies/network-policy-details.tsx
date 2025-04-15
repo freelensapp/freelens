@@ -1,25 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./network-policy-details.module.scss";
 
-import React from "react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import type { PolicyIpBlock, NetworkPolicyPeer, NetworkPolicyPort, LabelMatchExpression, LabelSelector } from "@freelensapp/kube-object";
+import type {
+  LabelMatchExpression,
+  LabelSelector,
+  NetworkPolicyPeer,
+  NetworkPolicyPort,
+  PolicyIpBlock,
+} from "@freelensapp/kube-object";
 import { NetworkPolicy } from "@freelensapp/kube-object";
-import { Badge } from "../badge";
-import { SubTitle } from "../layout/sub-title";
-import { observer } from "mobx-react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { Logger } from "@freelensapp/logger";
-import { isEmpty } from "lodash";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { isEmpty } from "lodash";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { SubTitle } from "../layout/sub-title";
 
-export interface NetworkPolicyDetailsProps extends KubeObjectDetailsProps<NetworkPolicy> {
-}
+export interface NetworkPolicyDetailsProps extends KubeObjectDetailsProps<NetworkPolicy> {}
 
 interface Dependencies {
   logger: Logger;
@@ -44,11 +50,7 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
       items.push(`except: ${except.join(", ")}`);
     }
 
-    return (
-      <DrawerItem name="ipBlock">
-        {items.join(", ")}
-      </DrawerItem>
-    );
+    return <DrawerItem name="ipBlock">{items.join(", ")}</DrawerItem>;
   }
 
   renderMatchLabels(matchLabels: Record<string, string | undefined> | undefined) {
@@ -56,12 +58,7 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
       return null;
     }
 
-    return Object.entries(matchLabels)
-      .map(([key, value]) => (
-        <li key={key}>
-          {`${key}: ${value ?? ""}`}
-        </li>
-      ));
+    return Object.entries(matchLabels).map(([key, value]) => <li key={key}>{`${key}: ${value ?? ""}`}</li>);
   }
 
   renderMatchExpressions(matchExpressions: LabelMatchExpression[] | undefined) {
@@ -69,22 +66,20 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
       return null;
     }
 
-    return matchExpressions.map(expr => {
+    return matchExpressions.map((expr) => {
       switch (expr.operator) {
         case "DoesNotExist":
         case "Exists":
-          return (
-            <li key={expr.key}>
-              {`${expr.key} (${expr.operator})`}
-            </li>
-          );
+          return <li key={expr.key}>{`${expr.key} (${expr.operator})`}</li>;
         case "In":
         case "NotIn":
           return (
             <li key={expr.key}>
               {`${expr.key} (${expr.operator})`}
               <ul>
-                {expr.values.map((value, index) => <li key={index}>{value}</li>)}
+                {expr.values.map((value, index) => (
+                  <li key={index}>{value}</li>
+                ))}
               </ul>
             </li>
           );
@@ -104,11 +99,7 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
         <ul className={styles.policySelectorList}>
           {this.renderMatchLabels(matchLabels)}
           {this.renderMatchExpressions(matchExpressions)}
-          {
-            (isEmpty(matchLabels) && isEmpty(matchExpressions)) && (
-              <li>(empty)</li>
-            )
-          }
+          {isEmpty(matchLabels) && isEmpty(matchExpressions) && <li>(empty)</li>}
         </ul>
       </DrawerItem>
     );
@@ -121,16 +112,14 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
 
     return (
       <>
-        <SubTitle className={styles.networkPolicyPeerTitle} title={name}/>
-        {
-          peers.map((peer, index) => (
-            <div key={index} className={styles.networkPolicyPeer}>
-              {this.renderIPolicyIpBlock(peer.ipBlock)}
-              {this.renderIPolicySelector("namespaceSelector", peer.namespaceSelector)}
-              {this.renderIPolicySelector("podSelector", peer.podSelector)}
-            </div>
-          ))
-        }
+        <SubTitle className={styles.networkPolicyPeerTitle} title={name} />
+        {peers.map((peer, index) => (
+          <div key={index} className={styles.networkPolicyPeer}>
+            {this.renderIPolicyIpBlock(peer.ipBlock)}
+            {this.renderIPolicySelector("namespaceSelector", peer.namespaceSelector)}
+            {this.renderIPolicySelector("podSelector", peer.podSelector)}
+          </div>
+        ))}
       </>
     );
   }
@@ -145,9 +134,7 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
         <ul>
           {ports.map(({ protocol = "TCP", port = "<all>", endPort }, index) => (
             <li key={index}>
-              {protocol}
-              :
-              {port}
+              {protocol}:{port}
               {typeof endPort === "number" && `:${endPort}`}
             </li>
           ))}
@@ -175,11 +162,9 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
     return (
       <div className={styles.NetworkPolicyDetails}>
         <DrawerItem name="Pod Selector" labelsOnly={selector.length > 0}>
-          {
-            selector.length > 0
-              ? policy.getMatchLabels().map(label => <Badge key={label} label={label}/>)
-              : `(empty) (Allowing the specific traffic to all pods in this namespace)`
-          }
+          {selector.length > 0
+            ? policy.getMatchLabels().map((label) => <Badge key={label} label={label} />)
+            : `(empty) (Allowing the specific traffic to all pods in this namespace)`}
         </DrawerItem>
 
         {ingress && (
@@ -210,9 +195,12 @@ class NonInjectedNetworkPolicyDetails extends React.Component<NetworkPolicyDetai
   }
 }
 
-export const NetworkPolicyDetails = withInjectables<Dependencies, NetworkPolicyDetailsProps>(NonInjectedNetworkPolicyDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const NetworkPolicyDetails = withInjectables<Dependencies, NetworkPolicyDetailsProps>(
+  NonInjectedNetworkPolicyDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

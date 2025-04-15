@@ -1,18 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
-import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+
 import type { LensExtensionId } from "@freelensapp/legacy-extensions";
-import { extensionDisplayName } from "../../../extensions/lens-extension";
-import React from "react";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { getInjectable } from "@ogre-tools/injectable";
 import { when } from "mobx";
+import React from "react";
+import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
+import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+import { extensionDisplayName } from "../../../extensions/lens-extension";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 const uninstallExtensionInjectable = getInjectable({
   id: "uninstall-extension",
@@ -58,10 +60,7 @@ const uninstallExtensionInjectable = getInjectable({
       } catch (error) {
         const message = getMessageFromError(error);
 
-        logger.info(
-          `[EXTENSION-UNINSTALL]: uninstalling ${displayName} has failed: ${error}`,
-          { error },
-        );
+        logger.info(`[EXTENSION-UNINSTALL]: uninstalling ${displayName} has failed: ${error}`, { error });
         showErrorNotification(
           <p>
             {"Uninstalling extension "}
@@ -73,7 +72,7 @@ const uninstallExtensionInjectable = getInjectable({
 
         return false;
       } finally {
-      // Remove uninstall state on uninstall failure
+        // Remove uninstall state on uninstall failure
         extensionInstallationStateStore.clearUninstalling(extensionId);
       }
     };

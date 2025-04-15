@@ -1,17 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./kube-event-icon.scss";
 
-import React from "react";
 import { Icon } from "@freelensapp/icon";
-import type { KubeObject, KubeEvent } from "@freelensapp/kube-object";
+import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import type { EventStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import eventStoreInjectable from "./store.injectable";
 
 export interface KubeEventIconProps {
@@ -32,7 +33,7 @@ class NonInjectedKubeEventIcon extends React.Component<KubeEventIconProps & Depe
   render() {
     const { object, filterEvents, eventStore } = this.props;
     const events = eventStore.getEventsByObject(object);
-    let warnings = events.filter(evt => evt.isWarning());
+    let warnings = events.filter((evt) => evt.isWarning());
 
     if (filterEvents) warnings = filterEvents(warnings);
 
@@ -50,7 +51,7 @@ class NonInjectedKubeEventIcon extends React.Component<KubeEventIconProps & Depe
             <div className="KubeEventTooltip">
               <div className="msg">{event.message}</div>
               <div className="age">
-                <Icon material="access_time"/>
+                <Icon material="access_time" />
                 <KubeObjectAge object={event} />
               </div>
             </div>

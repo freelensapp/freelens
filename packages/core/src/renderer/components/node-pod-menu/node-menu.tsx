@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
+import { Node } from "@freelensapp/kube-object";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { App } from "../../../extensions/common-api";
-import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { MenuItem } from "../menu";
-import { Icon } from "@freelensapp/icon";
-import type { DockTabCreateSpecific } from "../dock/dock/store";
 import openConfirmDialogInjectable, { type OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import type { DockTabCreateSpecific } from "../dock/dock/store";
+import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
-import { Node } from "@freelensapp/kube-object";
+import { MenuItem } from "../menu";
 
 export interface NodeMenuProps {
   object: any;
@@ -27,15 +28,8 @@ interface Dependencies {
   hideDetails: HideDetails;
 }
 
-const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
-  const {
-    object,
-    toolbar,
-    createTerminalTab,
-    sendCommand,
-    openConfirmDialog,
-    hideDetails,
-  } = props;
+const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = (props) => {
+  const { object, toolbar, createTerminalTab, sendCommand, openConfirmDialog, hideDetails } = props;
 
   if (!object) return null;
   let node: Node;
@@ -53,8 +47,7 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
     sendCommand(command, {
       enter: true,
       newTab: true,
-    })
-      .then(hideDetails);
+    }).then(hideDetails);
   };
 
   const shell = () => {
@@ -82,8 +75,7 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
       message: (
         <p>
           {"Are you sure you want to drain "}
-          <b>{nodeName}</b>
-          ?
+          <b>{nodeName}</b>?
         </p>
       ),
     });
@@ -92,53 +84,34 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = props => {
   return (
     <>
       <MenuItem onClick={shell}>
-        <Icon
-          svg="ssh"
-          interactive={toolbar}
-          tooltip={toolbar && "Node shell"}
-        />
+        <Icon svg="ssh" interactive={toolbar} tooltip={toolbar && "Node shell"} />
         <span className="title">Shell</span>
       </MenuItem>
       {node.isUnschedulable() ? (
         <MenuItem onClick={unCordon}>
-          <Icon
-            material="play_circle_filled"
-            tooltip={toolbar && "Uncordon"}
-            interactive={toolbar}
-          />
+          <Icon material="play_circle_filled" tooltip={toolbar && "Uncordon"} interactive={toolbar} />
           <span className="title">Uncordon</span>
         </MenuItem>
       ) : (
         <MenuItem onClick={cordon}>
-          <Icon
-            material="pause_circle_filled"
-            tooltip={toolbar && "Cordon"}
-            interactive={toolbar}
-          />
+          <Icon material="pause_circle_filled" tooltip={toolbar && "Cordon"} interactive={toolbar} />
           <span className="title">Cordon</span>
         </MenuItem>
       )}
       <MenuItem onClick={drain}>
-        <Icon
-          material="delete_sweep"
-          tooltip={toolbar && "Drain"}
-          interactive={toolbar}
-        />
+        <Icon material="delete_sweep" tooltip={toolbar && "Drain"} interactive={toolbar} />
         <span className="title">Drain</span>
       </MenuItem>
     </>
   );
 };
 
-export const NodeMenu = withInjectables<Dependencies, NodeMenuProps>(
-  NonInjectedNodeMenu,
-  {
-    getProps: (di, props) => ({
-      ...props,
-      createTerminalTab: di.inject(createTerminalTabInjectable),
-      sendCommand: di.inject(sendCommandInjectable),
-      openConfirmDialog: di.inject(openConfirmDialogInjectable),
-      hideDetails: di.inject(hideDetailsInjectable),
-    }),
-  },
-);
+export const NodeMenu = withInjectables<Dependencies, NodeMenuProps>(NonInjectedNodeMenu, {
+  getProps: (di, props) => ({
+    ...props,
+    createTerminalTab: di.inject(createTerminalTabInjectable),
+    sendCommand: di.inject(sendCommandInjectable),
+    openConfirmDialog: di.inject(openConfirmDialogInjectable),
+    hideDetails: di.inject(hideDetailsInjectable),
+  }),
+});

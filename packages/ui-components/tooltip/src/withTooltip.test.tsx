@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { StrictReactNode } from "@freelensapp/utilities";
-import { render, RenderResult } from "@testing-library/react";
+import { RenderResult, render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import React from "react";
 import { withTooltip } from "./withTooltip";

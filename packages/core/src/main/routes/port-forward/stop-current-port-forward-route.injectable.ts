@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getRouteInjectable } from "../../router/router.injectable";
-import { apiPrefix } from "../../../common/vars";
-import { PortForward } from "./functionality/port-forward";
-import { clusterRoute } from "../../router/route";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { apiPrefix } from "../../../common/vars";
+import { clusterRoute } from "../../router/route";
+import { getRouteInjectable } from "../../router/router.injectable";
+import { PortForward } from "./functionality/port-forward";
 
 const stopCurrentPortForwardRouteInjectable = getRouteInjectable({
   id: "stop-current-port-forward-route",
@@ -22,16 +24,26 @@ const stopCurrentPortForwardRouteInjectable = getRouteInjectable({
       const port = Number(query.get("port"));
       const forwardPort = Number(query.get("forwardPort"));
       const portForward = PortForward.getPortforward({
-        clusterId: cluster.id, kind: resourceType, name: resourceName,
-        namespace, port, forwardPort,
+        clusterId: cluster.id,
+        kind: resourceType,
+        name: resourceName,
+        namespace,
+        port,
+        forwardPort,
       });
 
       try {
         await portForward?.stop();
 
-        return { response: { status: true }};
+        return { response: { status: true } };
       } catch (error) {
-        logger.error("[PORT-FORWARD-ROUTE]: error stopping a port-forward", { namespace, port, forwardPort, resourceType, resourceName });
+        logger.error("[PORT-FORWARD-ROUTE]: error stopping a port-forward", {
+          namespace,
+          port,
+          forwardPort,
+          resourceType,
+          resourceName,
+        });
 
         return {
           error: {

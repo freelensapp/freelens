@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
-import { isNumber } from "@freelensapp/utilities";
+
 import assert from "assert";
 import type { ChildProcess } from "child_process";
+import type { AsyncResult } from "@freelensapp/utilities";
+import { isNumber } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
 
 export type ExecFileWithInput = (options: {
   filePath: string;
@@ -50,9 +52,7 @@ const execFileWithInputInjectable = getInjectable({
           stderr += data;
         });
 
-        execution.on("error", (error) =>
-          resolve({ callWasSuccessful: false, error }),
-        );
+        execution.on("error", (error) => resolve({ callWasSuccessful: false, error }));
 
         execution.on("exit", (code, signal) => {
           if (!isNumber(code)) {

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { autorun } from "mobx";
-import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import setUpdateOnQuitInjectable from "../../../../main/electron-app/features/set-update-on-quit.injectable";
+import discoveredUpdateVersionInjectable from "../../common/discovered-update-version.injectable";
 import selectedUpdateChannelInjectable from "../../common/selected-update-channel.injectable";
 import type { ReleaseChannel, UpdateChannel } from "../../common/update-channels";
-import discoveredUpdateVersionInjectable from "../../common/discovered-update-version.injectable";
 
 const watchIfUpdateShouldHappenOnQuitInjectable = getInjectable({
   id: "watch-if-update-should-happen-on-quit",
@@ -23,11 +25,11 @@ const watchIfUpdateShouldHappenOnQuitInjectable = getInjectable({
         const sufficientlyStableUpdateChannels = getSufficientlyStableUpdateChannels(selectedUpdateChannel.value.get());
         const updateIsDiscoveredFromChannel = discoveredVersionState.value.get()?.updateChannel;
 
-        setUpdateOnQuit((
+        setUpdateOnQuit(
           updateIsDiscoveredFromChannel
             ? sufficientlyStableUpdateChannels.includes(updateIsDiscoveredFromChannel.id)
-            : false
-        ));
+            : false,
+        );
       }),
     );
   },
@@ -38,10 +40,7 @@ const getSufficientlyStableUpdateChannels = (updateChannel: UpdateChannel): Rele
     return [updateChannel.id];
   }
 
-  return [
-    updateChannel.id,
-    ...getSufficientlyStableUpdateChannels(updateChannel.moreStableUpdateChannel),
-  ];
+  return [updateChannel.id, ...getSufficientlyStableUpdateChannels(updateChannel.moreStableUpdateChannel)];
 };
 
 export default watchIfUpdateShouldHappenOnQuitInjectable;

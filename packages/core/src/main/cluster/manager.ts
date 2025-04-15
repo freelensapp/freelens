@@ -1,23 +1,28 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "../../common/ipc/cluster";
+import type { Logger } from "@freelensapp/logger";
+import { once } from "lodash";
 import type { IComputedValue, IObservableValue, ObservableSet } from "mobx";
 import { action, makeObservable, observe, reaction, toJS } from "mobx";
-import type { Cluster } from "../../common/cluster/cluster";
-import { isKubernetesCluster, KubernetesCluster, LensKubernetesClusterStatus } from "../../common/catalog-entities/kubernetes-cluster";
-import { ipcMainOn } from "../../common/ipc";
-import { once } from "lodash";
+import {
+  KubernetesCluster,
+  LensKubernetesClusterStatus,
+  isKubernetesCluster,
+} from "../../common/catalog-entities/kubernetes-cluster";
 import type { ClusterId } from "../../common/cluster-types";
+import type { Cluster } from "../../common/cluster/cluster";
+import { ipcMainOn } from "../../common/ipc";
+import type { AddCluster } from "../../features/cluster/storage/common/add.injectable";
+import type { GetClusterById } from "../../features/cluster/storage/common/get-by-id.injectable";
 import type { CatalogEntityRegistry } from "../catalog";
-import type { Logger } from "@freelensapp/logger";
+import type { ClusterConnection } from "./cluster-connection.injectable";
 import type { UpdateEntityMetadata } from "./update-entity-metadata.injectable";
 import type { UpdateEntitySpec } from "./update-entity-spec.injectable";
-import type { ClusterConnection } from "./cluster-connection.injectable";
-import type { GetClusterById } from "../../features/cluster/storage/common/get-by-id.injectable";
-import type { AddCluster } from "../../features/cluster/storage/common/add.injectable";
 
 const logPrefix = "[CLUSTER-MANAGER]:";
 
@@ -44,37 +49,41 @@ export class ClusterManager {
   init = once(() => {
     // reacting to every cluster's state change and total amount of items
     reaction(
-      () => this.dependencies.clusters.get().map(c => c.getState()),
+      () => this.dependencies.clusters.get().map((c) => c.getState()),
       () => this.updateCatalog(this.dependencies.clusters.get()),
       { fireImmediately: false },
     );
 
     // reacting to every cluster's preferences change and total amount of items
     reaction(
-      () => this.dependencies.clusters.get().map(c => toJS(c.preferences)),
+      () => this.dependencies.clusters.get().map((c) => toJS(c.preferences)),
       () => this.updateCatalog(this.dependencies.clusters.get()),
       { fireImmediately: false },
     );
 
     reaction(
       () => this.dependencies.catalogEntityRegistry.filterItemsByPredicate(isKubernetesCluster),
-      entities => this.syncClustersFromCatalog(entities),
+      (entities) => this.syncClustersFromCatalog(entities),
     );
 
-    reaction(() => [
-      this.dependencies.catalogEntityRegistry.filterItemsByPredicate(isKubernetesCluster),
-      this.dependencies.visibleCluster.get(),
-    ] as const, ([entities, visibleCluster]) => {
-      for (const entity of entities) {
-        if (entity.getId() === visibleCluster) {
-          entity.status.active = true;
-        } else {
-          entity.status.active = false;
+    reaction(
+      () =>
+        [
+          this.dependencies.catalogEntityRegistry.filterItemsByPredicate(isKubernetesCluster),
+          this.dependencies.visibleCluster.get(),
+        ] as const,
+      ([entities, visibleCluster]) => {
+        for (const entity of entities) {
+          if (entity.getId() === visibleCluster) {
+            entity.status.active = true;
+          } else {
+            entity.status.active = false;
+          }
         }
-      }
-    });
+      },
+    );
 
-    observe(this.dependencies.clustersThatAreBeingDeleted, change => {
+    observe(this.dependencies.clustersThatAreBeingDeleted, (change) => {
       if (change.type === "add") {
         this.updateEntityStatus(this.dependencies.catalogEntityRegistry.findById(change.newValue) as KubernetesCluster);
       }
@@ -118,31 +127,41 @@ export class ClusterManager {
     } else {
       entity.status.phase = (() => {
         if (!cluster) {
-          this.dependencies.logger.silly(`${logPrefix} setting entity ${entity.getName()} to DISCONNECTED, reason="no cluster"`);
+          this.dependencies.logger.silly(
+            `${logPrefix} setting entity ${entity.getName()} to DISCONNECTED, reason="no cluster"`,
+          );
 
           return LensKubernetesClusterStatus.DISCONNECTED;
         }
 
         if (cluster.accessible.get()) {
-          this.dependencies.logger.silly(`${logPrefix} setting entity ${entity.getName()} to CONNECTED, reason="cluster is accessible"`);
+          this.dependencies.logger.silly(
+            `${logPrefix} setting entity ${entity.getName()} to CONNECTED, reason="cluster is accessible"`,
+          );
 
           return LensKubernetesClusterStatus.CONNECTED;
         }
 
         if (!cluster.disconnected.get()) {
-          this.dependencies.logger.silly(`${logPrefix} setting entity ${entity.getName()} to CONNECTING, reason="cluster is not disconnected"`);
+          this.dependencies.logger.silly(
+            `${logPrefix} setting entity ${entity.getName()} to CONNECTING, reason="cluster is not disconnected"`,
+          );
 
           return LensKubernetesClusterStatus.CONNECTING;
         }
 
         // Extensions are not allowed to use the Lens specific status phases
         if (!lensSpecificClusterStatuses.has(entity?.status?.phase)) {
-          this.dependencies.logger.silly(`${logPrefix} not clearing entity ${entity.getName()} status, reason="custom string"`);
+          this.dependencies.logger.silly(
+            `${logPrefix} not clearing entity ${entity.getName()} status, reason="custom string"`,
+          );
 
           return entity.status.phase;
         }
 
-        this.dependencies.logger.silly(`${logPrefix} setting entity ${entity.getName()} to DISCONNECTED, reason="fallthrough"`);
+        this.dependencies.logger.silly(
+          `${logPrefix} setting entity ${entity.getName()} to DISCONNECTED, reason="fallthrough"`,
+        );
 
         return LensKubernetesClusterStatus.DISCONNECTED;
       })();
@@ -196,17 +215,14 @@ export class ClusterManager {
     this.dependencies.logger.info(`${logPrefix} network is offline`);
 
     await Promise.allSettled(
-      this.dependencies
-        .clusters
+      this.dependencies.clusters
         .get()
-        .filter(cluster => !cluster.disconnected.get())
+        .filter((cluster) => !cluster.disconnected.get())
         .map(async (cluster) => {
           cluster.online.set(false);
           cluster.accessible.set(false);
 
-          await this.dependencies
-            .getClusterConnection(cluster)
-            .refreshConnectionStatus();
+          await this.dependencies.getClusterConnection(cluster).refreshConnectionStatus();
         }),
     );
   };
@@ -215,15 +231,10 @@ export class ClusterManager {
     this.dependencies.logger.info(`${logPrefix} network is online`);
 
     await Promise.allSettled(
-      this.dependencies
-        .clusters
+      this.dependencies.clusters
         .get()
-        .filter(cluster => !cluster.disconnected.get())
-        .map((cluster) => (
-          this.dependencies
-            .getClusterConnection(cluster)
-            .refreshConnectionStatus()
-        )),
+        .filter((cluster) => !cluster.disconnected.get())
+        .map((cluster) => this.dependencies.getClusterConnection(cluster).refreshConnectionStatus()),
     );
   };
 }

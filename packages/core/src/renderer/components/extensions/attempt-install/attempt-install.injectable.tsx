@@ -1,29 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import uninstallExtensionInjectable from "../uninstall-extension.injectable";
-import type { UnpackExtension } from "./unpack-extension.injectable";
-import unpackExtensionInjectable from "./unpack-extension.injectable";
-import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
-import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
-import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
-import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
-import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+
+import { Button } from "@freelensapp/button";
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
 import type { Disposer } from "@freelensapp/utilities";
 import { disposer } from "@freelensapp/utilities";
-import type { ShowNotification } from "@freelensapp/notifications";
-import { Button } from "@freelensapp/button";
-import type { ExtensionLoader } from "../../../../extensions/extension-loader";
-import React from "react";
-import { remove as removeDir } from "fs-extra";
+import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
+import { remove as removeDir } from "fs-extra";
+import React from "react";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
-import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import uninstallExtensionInjectable from "../uninstall-extension.injectable";
+import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
+import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
+import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
+import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
+import type { UnpackExtension } from "./unpack-extension.injectable";
+import unpackExtensionInjectable from "./unpack-extension.injectable";
 
 export interface InstallRequest {
   fileName: string;
@@ -43,21 +45,19 @@ interface Dependencies {
 
 export type AttemptInstall = (request: InstallRequest, cleanup?: Disposer) => Promise<void>;
 
-const attemptInstall = ({
-  extensionLoader,
-  uninstallExtension,
-  unpackExtension,
-  createTempFilesAndValidate,
-  getExtensionDestFolder,
-  installStateStore,
-  showErrorNotification,
-  showInfoNotification,
-}: Dependencies): AttemptInstall =>
+const attemptInstall =
+  ({
+    extensionLoader,
+    uninstallExtension,
+    unpackExtension,
+    createTempFilesAndValidate,
+    getExtensionDestFolder,
+    installStateStore,
+    showErrorNotification,
+    showInfoNotification,
+  }: Dependencies): AttemptInstall =>
   async (request, cleanup) => {
-    const dispose = disposer(
-      installStateStore.startPreInstall(),
-      cleanup,
-    );
+    const dispose = disposer(installStateStore.startPreInstall(), cleanup);
 
     const validatedRequest = await createTempFilesAndValidate(request);
 
@@ -96,17 +96,13 @@ const attemptInstall = ({
           <div className="flex column gaps">
             <p>
               {"Install extension "}
-              <b>{`${name}@${version}`}</b>
-              ?
+              <b>{`${name}@${version}`}</b>?
             </p>
             <p>
               {"Description: "}
               <em>{description}</em>
             </p>
-            <div
-              className="remove-folder-warning"
-              onClick={() => shell.openPath(extensionFolder)}
-            >
+            <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
               <b>Warning:</b>
               {` ${name}@${oldVersion} will be removed before installation.`}
             </div>
@@ -140,16 +136,17 @@ const attemptInstall = ({
 
 const attemptInstallInjectable = getInjectable({
   id: "attempt-install",
-  instantiate: (di) => attemptInstall({
-    extensionLoader: di.inject(extensionLoaderInjectable),
-    uninstallExtension: di.inject(uninstallExtensionInjectable),
-    unpackExtension: di.inject(unpackExtensionInjectable),
-    createTempFilesAndValidate: di.inject(createTempFilesAndValidateInjectable),
-    getExtensionDestFolder: di.inject(getExtensionDestFolderInjectable),
-    installStateStore: di.inject(extensionInstallationStateStoreInjectable),
-    showErrorNotification: di.inject(showErrorNotificationInjectable),
-    showInfoNotification: di.inject(showInfoNotificationInjectable),
-  }),
+  instantiate: (di) =>
+    attemptInstall({
+      extensionLoader: di.inject(extensionLoaderInjectable),
+      uninstallExtension: di.inject(uninstallExtensionInjectable),
+      unpackExtension: di.inject(unpackExtensionInjectable),
+      createTempFilesAndValidate: di.inject(createTempFilesAndValidateInjectable),
+      getExtensionDestFolder: di.inject(getExtensionDestFolderInjectable),
+      installStateStore: di.inject(extensionInstallationStateStoreInjectable),
+      showErrorNotification: di.inject(showErrorNotificationInjectable),
+      showInfoNotification: di.inject(showInfoNotificationInjectable),
+    }),
 });
 
 export default attemptInstallInjectable;

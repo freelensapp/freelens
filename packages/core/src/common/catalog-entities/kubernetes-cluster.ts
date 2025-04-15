@@ -1,16 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CatalogEntityActionContext, CatalogEntityContextMenuContext, CatalogEntityMetadata, CatalogEntityStatus, CatalogCategorySpec } from "../catalog";
-import { CatalogEntity, CatalogCategory, categoryVersion } from "../catalog/catalog-entity";
-import { broadcastMessage } from "../ipc";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import {
+  requestClusterActivationInjectionToken,
+  requestClusterDeactivationInjectionToken,
+} from "../../features/cluster/activation/common/request-token";
+import type {
+  CatalogCategorySpec,
+  CatalogEntityActionContext,
+  CatalogEntityContextMenuContext,
+  CatalogEntityMetadata,
+  CatalogEntityStatus,
+} from "../catalog";
+import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import type { CatalogEntityConstructor, CatalogEntitySpec } from "../catalog/catalog-entity";
+import { broadcastMessage } from "../ipc";
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
 import KubeClusterCategoryIcon from "./icons/kubernetes.svg";
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import { requestClusterActivationInjectionToken, requestClusterDeactivationInjectionToken } from "../../features/cluster/activation/common/request-token";
 
 export interface KubernetesClusterPrometheusMetrics {
   address?: {
@@ -55,8 +65,7 @@ export interface KubernetesClusterMetadata extends CatalogEntityMetadata {
  */
 export type KubernetesClusterStatusPhase = "connected" | "connecting" | "disconnected" | "deleting";
 
-export interface KubernetesClusterStatus extends CatalogEntityStatus {
-}
+export interface KubernetesClusterStatus extends CatalogEntityStatus {}
 
 export function isKubernetesCluster(item: unknown): item is KubernetesCluster {
   return item instanceof KubernetesCluster;
@@ -106,10 +115,8 @@ export class KubernetesCluster<
       context.menuItems.push({
         title: "Settings",
         icon: "settings",
-        onClick: () => broadcastMessage(
-          IpcRendererNavigationEvents.NAVIGATE_IN_APP,
-          `/entity/${this.getId()}/settings`,
-        ),
+        onClick: () =>
+          broadcastMessage(IpcRendererNavigationEvents.NAVIGATE_IN_APP, `/entity/${this.getId()}/settings`),
       });
     }
 
@@ -121,10 +128,7 @@ export class KubernetesCluster<
           icon: "link_off",
           onClick: () => {
             this.disconnect();
-            broadcastMessage(
-              IpcRendererNavigationEvents.NAVIGATE_IN_APP,
-              "/catalog",
-            );
+            broadcastMessage(IpcRendererNavigationEvents.NAVIGATE_IN_APP, "/catalog");
           },
         });
         break;
@@ -148,9 +152,7 @@ export class KubernetesClusterCategory extends CatalogCategory {
   };
   public spec: CatalogCategorySpec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", KubernetesCluster as CatalogEntityConstructor<KubernetesCluster>),
-    ],
+    versions: [categoryVersion("v1alpha1", KubernetesCluster as CatalogEntityConstructor<KubernetesCluster>)],
     names: {
       kind: "KubernetesCluster",
     },

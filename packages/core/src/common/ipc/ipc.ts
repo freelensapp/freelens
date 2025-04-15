@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,14 +8,14 @@
 // https://www.electronjs.org/docs/api/ipc-main
 // https://www.electronjs.org/docs/api/ipc-renderer
 
-import { ipcMain, ipcRenderer, webContents } from "electron";
-import { toJS } from "../utils/toJS";
-import type { Disposer } from "@freelensapp/utilities";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import ipcMainInjectionToken from "./ipc-main-injection-token";
+import type { Disposer } from "@freelensapp/utilities";
+import { ipcMain, ipcRenderer, webContents } from "electron";
+import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
 import clusterFramesInjectable from "../cluster-frames.injectable";
+import { toJS } from "../utils/toJS";
+import ipcMainInjectionToken from "./ipc-main-injection-token";
 
 export const broadcastMainChannel = "ipc:broadcast-main";
 
@@ -41,9 +42,17 @@ export async function broadcastMessage(channel: string, ...args: any[]): Promise
   const logger = di.inject(loggerInjectionToken);
   const clusterFrames = di.inject(clusterFramesInjectable);
 
-  ipcMain.listeners(channel).forEach((func) => func({
-    processId: undefined, frameId: undefined, sender: undefined, senderFrame: undefined,
-  }, ...args));
+  ipcMain.listeners(channel).forEach((func) =>
+    func(
+      {
+        processId: undefined,
+        frameId: undefined,
+        sender: undefined,
+        senderFrame: undefined,
+      },
+      ...args,
+    ),
+  );
 
   const views = webContents.getAllWebContents();
 
@@ -71,12 +80,18 @@ export async function broadcastMessage(channel: string, ...args: any[]): Promise
 
     // Send message to subFrames of views.
     for (const frameInfo of clusterFrames.values()) {
-      logger.silly(`[IPC]: broadcasting "${channel}" to subframe "frameInfo.processId"=${frameInfo.processId} "frameInfo.frameId"=${frameInfo.frameId}`, { args });
+      logger.silly(
+        `[IPC]: broadcasting "${channel}" to subframe "frameInfo.processId"=${frameInfo.processId} "frameInfo.frameId"=${frameInfo.frameId}`,
+        { args },
+      );
 
       try {
         view.sendToFrame([frameInfo.processId, frameInfo.frameId], channel, ...args);
       } catch (error) {
-        logger.error(`[IPC]: failed to send IPC message "${channel}" to view "${viewType}=${view.id}"'s subframe "frameInfo.processId"=${frameInfo.processId} "frameInfo.frameId"=${frameInfo.frameId}`, { error: String(error) });
+        logger.error(
+          `[IPC]: failed to send IPC message "${channel}" to view "${viewType}=${view.id}"'s subframe "frameInfo.processId"=${frameInfo.processId} "frameInfo.frameId"=${frameInfo.frameId}`,
+          { error: String(error) },
+        );
       }
     }
   }
@@ -92,7 +107,10 @@ export function ipcMainOn(channel: string, listener: (event: Electron.IpcMainEve
   return () => ipcMain.off(channel, listener);
 }
 
-export function ipcRendererOn(channel: string, listener: (event: Electron.IpcRendererEvent, ...args: any[]) => any): Disposer {
+export function ipcRendererOn(
+  channel: string,
+  listener: (event: Electron.IpcRendererEvent, ...args: any[]) => any,
+): Disposer {
   const di = getLegacyGlobalDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);

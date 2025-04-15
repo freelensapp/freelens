@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type React from "react";
-import { action, observable, makeObservable } from "mobx";
-import uniqueId from "lodash/uniqueId";
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";
-import type { SetRequired } from "type-fest";
 import autoBind from "auto-bind";
+import uniqueId from "lodash/uniqueId";
+import { action, makeObservable, observable } from "mobx";
+import type React from "react";
+import type { SetRequired } from "type-fest";
 
 export type NotificationId = string | number;
 export type NotificationMessage = string | React.ReactElement | React.ReactElement[] | JsonApiErrorParsed | Error;

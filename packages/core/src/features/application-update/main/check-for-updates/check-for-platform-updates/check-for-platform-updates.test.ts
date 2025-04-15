@@ -1,18 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
-import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { getPromiseStatus } from "@freelensapp/test-utils";
+import { noop } from "@freelensapp/utilities";
 import type { AppUpdater, UpdateCheckResult } from "electron-updater";
+import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
+import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
+import type { ReleaseChannel, UpdateChannel } from "../../../common/update-channels";
 import type { CheckForPlatformUpdates } from "./check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./check-for-platform-updates.injectable";
-import type { UpdateChannel, ReleaseChannel } from "../../../common/update-channels";
-import { getPromiseStatus } from "@freelensapp/test-utils";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { noop } from "@freelensapp/utilities";
 
 describe("check-for-platform-updates", () => {
   let checkForPlatformUpdates: CheckForPlatformUpdates;

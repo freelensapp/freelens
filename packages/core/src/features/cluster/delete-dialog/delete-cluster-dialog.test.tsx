@@ -1,19 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import "@testing-library/jest-dom";
 import { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { RenderResult } from "@testing-library/react";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";
 import kubectlBinaryNameInjectable from "../../../main/kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../../../main/kubectl/normalized-arch.injectable";
-import openDeleteClusterDialogInjectable, { type OpenDeleteClusterDialog } from "../../../renderer/components/delete-cluster-dialog/open.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { Cluster } from "../../../common/cluster/cluster";
-import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
+import openDeleteClusterDialogInjectable, {
+  type OpenDeleteClusterDialog,
+} from "../../../renderer/components/delete-cluster-dialog/open.injectable";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime } from "../../../test-utils/use-fake-time";
 
 const currentClusterServerUrl = "https://localhost";

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -14,7 +15,7 @@ const openHelmReleaseRollbackDialogInjectable = getInjectable({
   instantiate: (di): OpenHelmReleaseRollbackDialog => {
     const state = di.inject(releaseRollbackDialogStateInjectable);
 
-    return release => state.set(release);
+    return (release) => state.set(release);
   },
 });
 

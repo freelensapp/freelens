@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -103,7 +104,9 @@ describe("namespaces route when viewed with some subNamespaces", () => {
       });
 
       it("shows the context menu", () => {
-        expect(result.getByTestId("menu-actions-for-kube-object-menu-for-namespace-my-sub-namespace")).toBeInTheDocument();
+        expect(
+          result.getByTestId("menu-actions-for-kube-object-menu-for-namespace-my-sub-namespace"),
+        ).toBeInTheDocument();
       });
 
       describe("when clicking the delete action in the context menu", () => {

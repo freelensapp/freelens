@@ -8,32 +8,29 @@ import "@freelensapp/animate/styles";
 import "@freelensapp/notifications/styles";
 import "@freelensapp/spinner/styles";
 
-import { runInAction } from "mobx";
+import { animateFeature } from "@freelensapp/animate";
+import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
+import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import {
-  rendererExtensionApi as Renderer,
   commonExtensionApi as Common,
-  registerLensCore,
+  rendererExtensionApi as Renderer,
   metricsFeature,
+  registerLensCore,
 } from "@freelensapp/core/renderer";
-import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { registerFeature } from "@freelensapp/feature-core";
-import {
-  applicationFeature,
-  startApplicationInjectionToken
-} from "@freelensapp/application";
-import { createContainer } from "@ogre-tools/injectable";
-import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { messagingFeatureForRenderer } from "@freelensapp/messaging-for-renderer";
 import { keyboardShortcutsFeature } from "@freelensapp/keyboard-shortcuts";
+import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
+import { loggerFeature } from "@freelensapp/logger";
+import { messagingFeatureForRenderer } from "@freelensapp/messaging-for-renderer";
+import { notificationsFeature } from "@freelensapp/notifications";
+import { randomFeature } from "@freelensapp/random";
 import { reactApplicationFeature } from "@freelensapp/react-application";
 import { routingFeature } from "@freelensapp/routing";
-import { loggerFeature } from "@freelensapp/logger";
-import { animateFeature } from "@freelensapp/animate";
-import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
-import { randomFeature } from "@freelensapp/random";
-import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
-import { notificationsFeature } from "@freelensapp/notifications";
+import { createContainer } from "@ogre-tools/injectable";
+import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
+import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
+import { registerInjectableReact } from "@ogre-tools/injectable-react";
+import { runInAction } from "mobx";
 
 const environment = "renderer";
 
@@ -46,10 +43,7 @@ runInAction(() => {
   registerInjectableReact(di);
   registerLensCore(di, environment);
 
-  registerFeature(
-    di,
-    loggerFeature,
-  );
+  registerFeature(di, loggerFeature);
 
   registerFeature(
     di,

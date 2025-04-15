@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import autoBind from "auto-bind";
-import { computed, observable, reaction, makeObservable, action } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 import type { PageParam } from "../../../navigation/page-param";
 
 export enum FilterType {
@@ -25,7 +26,7 @@ export class PageFiltersStore {
   protected isDisabled = observable.map<FilterType, boolean>();
 
   @computed get activeFilters() {
-    return this.filters.filter(filter => !this.isDisabled.get(filter.type));
+    return this.filters.filter((filter) => !this.isDisabled.get(filter.type));
   }
 
   constructor(protected readonly dependencies: Dependencies) {
@@ -37,23 +38,30 @@ export class PageFiltersStore {
 
   protected syncWithGlobalSearch() {
     const disposers = [
-      reaction(() => this.getValues(FilterType.SEARCH)[0], search => this.dependencies.searchUrlParam.set(search)),
-      reaction(() => this.dependencies.searchUrlParam.get(), search => {
-        const filter = this.getByType(FilterType.SEARCH);
+      reaction(
+        () => this.getValues(FilterType.SEARCH)[0],
+        (search) => this.dependencies.searchUrlParam.set(search),
+      ),
+      reaction(
+        () => this.dependencies.searchUrlParam.get(),
+        (search) => {
+          const filter = this.getByType(FilterType.SEARCH);
 
-        if (filter) {
-          this.removeFilter(filter); // search filter might occur once
-        }
+          if (filter) {
+            this.removeFilter(filter); // search filter might occur once
+          }
 
-        if (search) {
-          this.addFilter({ type: FilterType.SEARCH, value: search }, true);
-        }
-      }, {
-        fireImmediately: true,
-      }),
+          if (search) {
+            this.addFilter({ type: FilterType.SEARCH, value: search }, true);
+          }
+        },
+        {
+          fireImmediately: true,
+        },
+      ),
     ];
 
-    return () => disposers.forEach(dispose => dispose());
+    return () => disposers.forEach((dispose) => dispose());
   }
 
   @action
@@ -67,22 +75,20 @@ export class PageFiltersStore {
   @action
   removeFilter(filter: Filter) {
     if (!this.filters.remove(filter)) {
-      const filterCopy = this.filters.find(f => f.type === filter.type && f.value === filter.value);
+      const filterCopy = this.filters.find((f) => f.type === filter.type && f.value === filter.value);
 
       if (filterCopy) this.filters.remove(filterCopy);
     }
   }
 
   getByType(type: FilterType, value?: any): Filter | undefined {
-    return this.filters.find(filter => filter.type === type && (
-      arguments.length > 1 ? filter.value === value : true
-    ));
+    return this.filters.find(
+      (filter) => filter.type === type && (arguments.length > 1 ? filter.value === value : true),
+    );
   }
 
   getValues(type: FilterType) {
-    return this.filters
-      .filter(filter => filter.type === type)
-      .map(filter => filter.value);
+    return this.filters.filter((filter) => filter.type === type).map((filter) => filter.value);
   }
 
   isEnabled(type: FilterType) {
@@ -91,14 +97,14 @@ export class PageFiltersStore {
 
   @action
   disable(type: FilterType | FilterType[]) {
-    [type].flat().forEach(type => this.isDisabled.set(type, true));
+    [type].flat().forEach((type) => this.isDisabled.set(type, true));
 
     return () => this.enable(type);
   }
 
   @action
   enable(type: FilterType | FilterType[]) {
-    [type].flat().forEach(type => this.isDisabled.delete(type));
+    [type].flat().forEach((type) => this.isDisabled.delete(type));
 
     return () => this.disable(type);
   }

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -33,8 +34,9 @@ export interface KubeJsonApiData<
   [otherKeys: string]: unknown;
 }
 
-export type KubeJsonApiDataFor<K> =
-  K extends KubeObject<infer Metadata, infer Status, infer Spec> ? KubeJsonApiData<Metadata, Status, Spec> : never;
+export type KubeJsonApiDataFor<K> = K extends KubeObject<infer Metadata, infer Status, infer Spec>
+  ? KubeJsonApiData<Metadata, Status, Spec>
+  : never;
 
 export interface KubeObjectConstructorData {
   readonly kind?: string;

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getRouteInjectable } from "../../router/router.injectable";
-import { apiPrefix } from "../../../common/vars";
-import { PortForward } from "./functionality/port-forward";
-import createPortForwardInjectable from "./functionality/create-port-forward.injectable";
-import { clusterRoute } from "../../router/route";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { apiPrefix } from "../../../common/vars";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
+import { clusterRoute } from "../../router/route";
+import { getRouteInjectable } from "../../router/router.injectable";
+import createPortForwardInjectable from "./functionality/create-port-forward.injectable";
+import { PortForward } from "./functionality/port-forward";
 
 const startPortForwardRouteInjectable = getRouteInjectable({
   id: "start-current-port-forward-route",
@@ -38,13 +40,9 @@ const startPortForwardRouteInjectable = getRouteInjectable({
         });
 
         if (!portForward) {
-          logger.info(
-            `Creating a new port-forward ${namespace}/${resourceType}/${resourceName}:${port}`,
-          );
+          logger.info(`Creating a new port-forward ${namespace}/${resourceType}/${resourceName}:${port}`);
 
-          const thePort = 0 < forwardPort && forwardPort < 65536
-            ? forwardPort
-            : 0;
+          const thePort = 0 < forwardPort && forwardPort < 65536 ? forwardPort : 0;
           const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
 
           portForward = createPortForward(proxyKubeconfigPath, {
@@ -68,20 +66,20 @@ const startPortForwardRouteInjectable = getRouteInjectable({
 
             return {
               error: {
-                message: `Failed to forward port ${port} to ${
-                  thePort ? forwardPort : "random port"
-                }`,
+                message: `Failed to forward port ${port} to ${thePort ? forwardPort : "random port"}`,
               },
             };
           }
         }
 
-        return { response: { port: portForward.forwardPort }};
+        return { response: { port: portForward.forwardPort } };
       } catch (error) {
-        logger.error(
-          `[PORT-FORWARD-ROUTE]: failed to open a port-forward: ${error}`,
-          { namespace, port, resourceType, resourceName },
-        );
+        logger.error(`[PORT-FORWARD-ROUTE]: failed to open a port-forward: ${error}`, {
+          namespace,
+          port,
+          resourceType,
+          resourceName,
+        });
 
         return {
           error: {

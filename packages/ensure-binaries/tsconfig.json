@@ -3,17 +3,10 @@
   "compilerOptions": {
     "outDir": "dist/",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "types/*"
-      ]
+      "*": ["node_modules/*", "types/*"]
     },
     "types": []
   },
-  "include": [
-    "src/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

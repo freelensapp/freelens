@@ -1,15 +1,48 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 export type KubeResource =
-  "namespaces" | "nodes" | "events" | "resourcequotas" | "services" | "limitranges" | "leases" |
-  "secrets" | "configmaps" | "ingresses" | "ingressclasses" | "networkpolicies" | "persistentvolumeclaims" | "persistentvolumes" | "storageclasses" |
-  "pods" | "daemonsets" | "deployments" | "statefulsets" | "replicasets" | "replicationcontrollers" | "jobs" | "cronjobs" |
-  "endpoints" | "customresourcedefinitions" | "horizontalpodautoscalers" | "verticalpodautoscalers" | "podsecuritypolicies" | "poddisruptionbudgets" |
-  "priorityclasses" | "runtimeclasses" |
-  "roles" | "clusterroles" | "rolebindings" | "clusterrolebindings" | "serviceaccounts" | "mutatingwebhookconfigurations" | "validatingwebhookconfigurations";
+  | "namespaces"
+  | "nodes"
+  | "events"
+  | "resourcequotas"
+  | "services"
+  | "limitranges"
+  | "leases"
+  | "secrets"
+  | "configmaps"
+  | "ingresses"
+  | "ingressclasses"
+  | "networkpolicies"
+  | "persistentvolumeclaims"
+  | "persistentvolumes"
+  | "storageclasses"
+  | "pods"
+  | "daemonsets"
+  | "deployments"
+  | "statefulsets"
+  | "replicasets"
+  | "replicationcontrollers"
+  | "jobs"
+  | "cronjobs"
+  | "endpoints"
+  | "customresourcedefinitions"
+  | "horizontalpodautoscalers"
+  | "verticalpodautoscalers"
+  | "podsecuritypolicies"
+  | "poddisruptionbudgets"
+  | "priorityclasses"
+  | "runtimeclasses"
+  | "roles"
+  | "clusterroles"
+  | "rolebindings"
+  | "clusterrolebindings"
+  | "serviceaccounts"
+  | "mutatingwebhookconfigurations"
+  | "validatingwebhookconfigurations";
 
 export interface KubeApiResource {
   kind: string;
@@ -23,11 +56,8 @@ export interface KubeApiResourceDescriptor {
   group: string; // api-group, if empty then "core"
 }
 
-export const formatKubeApiResource = (desc: KubeApiResourceDescriptor) => (
-  desc.group
-    ? `${desc.group}/${desc.apiName}`
-    : desc.apiName
-);
+export const formatKubeApiResource = (desc: KubeApiResourceDescriptor) =>
+  desc.group ? `${desc.group}/${desc.apiName}` : desc.apiName;
 
 export interface KubeApiResourceData {
   kind: string; // resource type (e.g. "Namespace")

@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { StorageLayer } from "../../../utils/storage-helper";
 import type { TableSortParams } from "../table";
 
@@ -18,13 +20,9 @@ interface Dependencies {
 export class TableModel {
   constructor(private dependencies: Dependencies) {}
 
-  getSortParams = (tableId: string): Partial<TableSortParams> =>
-    this.dependencies.storage.get().sortParams[tableId];
+  getSortParams = (tableId: string): Partial<TableSortParams> => this.dependencies.storage.get().sortParams[tableId];
 
-  setSortParams = (
-    tableId: string,
-    sortParams: Partial<TableSortParams>,
-  ): void => {
+  setSortParams = (tableId: string, sortParams: Partial<TableSortParams>): void => {
     this.dependencies.storage.merge((draft) => {
       draft.sortParams[tableId] = sortParams;
     });

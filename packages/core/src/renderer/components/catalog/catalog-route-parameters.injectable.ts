@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import catalogRouteInjectable from "../../../common/front-end-routing/routes/catalog/catalog-route.injectable";
+import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 
 const catalogRouteParametersInjectable = getInjectable({
   id: "catalog-route-parameters",

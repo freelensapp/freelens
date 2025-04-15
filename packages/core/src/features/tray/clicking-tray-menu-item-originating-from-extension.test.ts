@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import logErrorInjectable from "../../common/log-error.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
-import logErrorInjectable from "../../common/log-error.injectable";
 
 describe("clicking tray menu item originating from extension", () => {
   let builder: ApplicationBuilder;
@@ -44,9 +46,7 @@ describe("clicking tray menu item originating from extension", () => {
     });
 
     it("when item is clicked, triggers the click handler", () => {
-      builder.tray.click(
-        "some-random-id-tray-menu-item-for-extension-some-extension-name",
-      );
+      builder.tray.click("some-random-id-tray-menu-item-for-extension-some-extension-name");
 
       expect(clickMock).toHaveBeenCalled();
     });
@@ -57,9 +57,7 @@ describe("clicking tray menu item originating from extension", () => {
           throw new Error("some-error");
         });
 
-        builder.tray.click(
-          "some-random-id-tray-menu-item-for-extension-some-extension-name",
-        );
+        builder.tray.click("some-random-id-tray-menu-item-for-extension-some-extension-name");
       });
 
       it("logs the error", () => {
@@ -74,9 +72,7 @@ describe("clicking tray menu item originating from extension", () => {
       beforeEach(() => {
         clickMock.mockImplementation(() => Promise.reject("some-rejection"));
 
-        builder.tray.click(
-          "some-random-id-tray-menu-item-for-extension-some-extension-name",
-        );
+        builder.tray.click("some-random-id-tray-menu-item-for-extension-some-extension-name");
       });
 
       it("logs the error", () => {
@@ -93,22 +89,14 @@ describe("clicking tray menu item originating from extension", () => {
       });
 
       it("does not have the tray menu item from extension", () => {
-        expect(
-          builder.tray.get(
-            "some-random-id-tray-menu-item-for-extension-some-extension-name",
-          ),
-        ).toBeNull();
+        expect(builder.tray.get("some-random-id-tray-menu-item-for-extension-some-extension-name")).toBeNull();
       });
 
       // Note: Motivation here is to make sure that enabling same extension does not throw
       it("when extension is re-enabled, has the tray menu item from extension", async () => {
         await builder.extensions.enable(someExtension);
 
-        expect(
-          builder.tray.get(
-            "some-random-id-tray-menu-item-for-extension-some-extension-name",
-          ),
-        ).not.toBeNull();
+        expect(builder.tray.get("some-random-id-tray-menu-item-for-extension-some-extension-name")).not.toBeNull();
       });
     });
   });

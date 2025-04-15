@@ -1,20 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import forceAppExitInjectable from "../../electron-app/features/force-app-exit.injectable";
-import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
-import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
+
+import { Agent } from "https";
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
-import { Agent } from "https";
+import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import { buildVersionInitializationInjectable } from "../../../features/vars/build-version/main/init.injectable";
+import forceAppExitInjectable from "../../electron-app/features/force-app-exit.injectable";
+import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
+import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
+import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
 
 const setupLensProxyInjectable = getInjectable({
   id: "setup-lens-proxy",
@@ -49,7 +51,7 @@ const setupLensProxyInjectable = getInjectable({
           }),
         });
 
-        const { version: versionFromProxy } = await versionResponse.json() as { version: string };
+        const { version: versionFromProxy } = (await versionResponse.json()) as { version: string };
 
         if (buildVersion !== versionFromProxy) {
           logger.error("Proxy server responded with invalid response");
@@ -61,9 +63,7 @@ const setupLensProxyInjectable = getInjectable({
       } catch (error) {
         logger.error(`🛑 LensProxy: failed connection test: ${error}`);
 
-        const hostsPath = isWindows
-          ? "C:\\windows\\system32\\drivers\\etc\\hosts"
-          : "/etc/hosts";
+        const hostsPath = isWindows ? "C:\\windows\\system32\\drivers\\etc\\hosts" : "/etc/hosts";
         const message = [
           `Failed connection test: ${error}`,
           "Check to make sure that no other versions of Lens are running",

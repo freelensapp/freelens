@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
@@ -16,15 +18,13 @@ const setupWeblinkContextMenuOpenInjectable = getInjectable({
       const catalogCategoryRegistry = di.inject(catalogCategoryRegistryInjectable);
       const commandOverlay = di.inject(commandOverlayInjectable);
 
-      catalogCategoryRegistry
-        .getForGroupKind("entity.k8slens.dev", "WebLink")
-        ?.on("catalogAddMenu", ctx => {
-          ctx.menuItems.push({
-            title: "Add web link",
-            icon: "public",
-            onClick: () => commandOverlay.open(<WeblinkAddCommand />),
-          });
+      catalogCategoryRegistry.getForGroupKind("entity.k8slens.dev", "WebLink")?.on("catalogAddMenu", (ctx) => {
+        ctx.menuItems.push({
+          title: "Add web link",
+          icon: "public",
+          onClick: () => commandOverlay.open(<WeblinkAddCommand />),
         });
+      });
     },
   }),
   injectionToken: beforeFrameStartsSecondInjectionToken,

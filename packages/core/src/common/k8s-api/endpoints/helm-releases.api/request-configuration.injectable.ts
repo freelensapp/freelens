@@ -1,16 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { urlBuilderFor } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
 
-export type RequestHelmReleaseConfiguration = (
-  name: string,
-  namespace: string,
-  all: boolean
-) => Promise<string>;
+export type RequestHelmReleaseConfiguration = (name: string, namespace: string, all: boolean) => Promise<string>;
 
 const requestConfigurationEnpoint = urlBuilderFor("/v2/releases/:namespace/:name/values");
 
@@ -20,9 +18,8 @@ const requestHelmReleaseConfigurationInjectable = getInjectable({
   instantiate: (di): RequestHelmReleaseConfiguration => {
     const apiBase = di.inject(apiBaseInjectable);
 
-    return (name, namespace, all: boolean) => (
-      apiBase.get(requestConfigurationEnpoint.compile({ name, namespace }, { all }))
-    );
+    return (name, namespace, all: boolean) =>
+      apiBase.get(requestConfigurationEnpoint.compile({ name, namespace }, { all }));
   },
 });
 

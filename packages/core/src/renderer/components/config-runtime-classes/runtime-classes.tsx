@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./runtime-classes.scss";
 
-import * as React from "react";
-import { observer } from "mobx-react";
 import type { RuntimeClass } from "@freelensapp/kube-object";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { observer } from "mobx-react";
+import * as React from "react";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import runtimeClassStoreInjectable from "./store.injectable";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import type { RuntimeClassStore } from "./store";
-import autoBindReact from "auto-bind/react";
+import runtimeClassStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -24,8 +25,7 @@ enum columnId {
   age = "age",
 }
 
-export interface RuntimeClassesProps extends KubeObjectDetailsProps<RuntimeClass> {
-}
+export interface RuntimeClassesProps extends KubeObjectDetailsProps<RuntimeClass> {}
 
 interface Dependencies {
   runtimeClassStore: RuntimeClassStore;
@@ -49,13 +49,11 @@ class NonInjectedRuntimeClasses extends React.Component<RuntimeClassesProps & De
           className="RuntimeClasses"
           store={runtimeClassStore}
           sortingCallbacks={{
-            [columnId.name]: rc => rc.getName(),
-            [columnId.handler]: rc => rc.getHandler(),
-            [columnId.age]: rc => -rc.getCreationTimestamp(),
+            [columnId.name]: (rc) => rc.getName(),
+            [columnId.handler]: (rc) => rc.getHandler(),
+            [columnId.age]: (rc) => -rc.getCreationTimestamp(),
           }}
-          searchFilters={[
-            rc => rc.getSearchFields(),
-          ]}
+          searchFilters={[(rc) => rc.getSearchFields()]}
           renderHeaderTitle="Runtime Classes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -63,7 +61,7 @@ class NonInjectedRuntimeClasses extends React.Component<RuntimeClassesProps & De
             { title: "Handler", className: "handler", sortBy: columnId.handler, id: columnId.handler },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={rc => [
+          renderTableContents={(rc) => [
             rc.getName(),
             <KubeObjectStatusIcon key="icon" object={rc} />,
             rc.getHandler(),

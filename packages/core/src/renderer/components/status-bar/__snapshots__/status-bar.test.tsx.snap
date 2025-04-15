@@ -163,11 +163,7 @@ exports[`<StatusBar /> when StatusBar's status is set to "error" renders 1`] = `
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -511,11 +507,7 @@ exports[`<StatusBar /> when StatusBar's status is set to "warning" renders 1`] =
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -859,11 +851,7 @@ exports[`<StatusBar /> when an extension is enabled specifying the side the elem
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1249,11 +1237,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1597,11 +1581,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1945,11 +1925,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -2293,11 +2269,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -2641,11 +2613,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -2989,11 +2957,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -3337,11 +3301,7 @@ exports[`<StatusBar /> when an extension is enabled with an invalid data type, (
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -3685,11 +3645,7 @@ exports[`<StatusBar /> when an extension is enabled with no status items renders
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 

@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
 import { kubectlApplyAllChannel } from "../../common/kube-helpers/channels";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 import resourceApplierInjectable from "../resource-applier/create-resource-applier.injectable";
-import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 
 const kubectlApplyAllChannelHandlerInjectable = getRequestChannelListenerInjectable({
   id: "kubectl-apply-all-channel-handler-listener",
@@ -16,11 +18,7 @@ const kubectlApplyAllChannelHandlerInjectable = getRequestChannelListenerInjecta
     const emitAppEvent = di.inject(emitAppEventInjectable);
 
     return async (event) => {
-      const {
-        clusterId,
-        extraArgs,
-        resources,
-      } = event;
+      const { clusterId, extraArgs, resources } = event;
       const cluster = getClusterById(clusterId);
 
       emitAppEvent({ name: "cluster", action: "kubectl-apply-all" });

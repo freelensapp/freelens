@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./table-row.scss";
 
+import { cssNames } from "@freelensapp/utilities";
 import type { CSSProperties } from "react";
 import React from "react";
-import { cssNames } from "@freelensapp/utilities";
 
 export type TableRowElem<Item> = React.ReactElement<TableRowProps<Item>>;
 
@@ -38,10 +39,7 @@ export class TableRow<Item> extends React.Component<TableRowProps<Item>> {
     const classNames = cssNames("TableRow", className, { selected, nowrap, disabled });
 
     return (
-      <div
-        className={classNames}
-        data-testid={testId}
-        {...rowProps}>
+      <div className={classNames} data-testid={testId} {...rowProps}>
         {children}
       </div>
     );

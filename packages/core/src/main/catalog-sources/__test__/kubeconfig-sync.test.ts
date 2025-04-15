@@ -1,40 +1,41 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { observable, ObservableMap, runInAction } from "mobx";
-import type { CatalogEntity } from "../../../common/catalog";
-import { loadFromOptions } from "../../../common/kube-helpers";
-import type { Cluster } from "../../../common/cluster/cluster";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import { iter, strictGet } from "@freelensapp/utilities";
-import type { ComputeKubeconfigDiff } from "../kubeconfig-sync/compute-diff.injectable";
-import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.injectable";
-import type { ConfigToModels } from "../kubeconfig-sync/config-to-models.injectable";
-import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
-import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
-import type { KubeconfigSyncManager } from "../kubeconfig-sync/manager";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import type { Stat } from "../../../common/fs/stat.injectable";
-import asyncFn from "@async-fn/jest";
-import statInjectable from "../../../common/fs/stat.injectable";
-import type { Watcher } from "../../../common/fs/watch/watch.injectable";
-import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import EventEmitter from "events";
 import type { ReadStream, Stats } from "fs";
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { iter, strictGet } from "@freelensapp/utilities";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { ObservableMap, observable, runInAction } from "mobx";
+import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import type { CatalogEntity } from "../../../common/catalog";
+import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
 import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import pathExistsInjectable from "../../../common/fs/path-exists.injectable";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
+import type { Stat } from "../../../common/fs/stat.injectable";
+import statInjectable from "../../../common/fs/stat.injectable";
+import type { Watcher } from "../../../common/fs/watch/watch.injectable";
+import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
+import { loadFromOptions } from "../../../common/kube-helpers";
+import kubeconfigSyncsInjectable from "../../../features/user-preferences/common/kubeconfig-syncs.injectable";
+import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
-import kubeconfigSyncsInjectable from "../../../features/user-preferences/common/kubeconfig-syncs.injectable";
+import type { ComputeKubeconfigDiff } from "../kubeconfig-sync/compute-diff.injectable";
+import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.injectable";
+import type { ConfigToModels } from "../kubeconfig-sync/config-to-models.injectable";
+import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
+import type { KubeconfigSyncManager } from "../kubeconfig-sync/manager";
+import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
 
 describe("kubeconfig-sync.source tests", () => {
   let computeKubeconfigDiff: ComputeKubeconfigDiff;
@@ -47,14 +48,26 @@ describe("kubeconfig-sync.source tests", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(directoryForTempInjectable, () => "/some-directory-for-temp");
-    di.override(pathExistsInjectable, () => () => { throw new Error("tried call pathExists without override"); });
-    di.override(pathExistsSyncInjectable, () => () => { throw new Error("tried call pathExistsSync without override"); });
-    di.override(readJsonSyncInjectable, () => () => { throw new Error("tried call readJsonSync without override"); });
-    di.override(writeJsonSyncInjectable, () => () => { throw new Error("tried call writeJsonSync without override"); });
+    di.override(pathExistsInjectable, () => () => {
+      throw new Error("tried call pathExists without override");
+    });
+    di.override(pathExistsSyncInjectable, () => () => {
+      throw new Error("tried call pathExistsSync without override");
+    });
+    di.override(readJsonSyncInjectable, () => () => {
+      throw new Error("tried call readJsonSync without override");
+    });
+    di.override(writeJsonSyncInjectable, () => () => {
+      throw new Error("tried call writeJsonSync without override");
+    });
 
-    di.override(kubeconfigManagerInjectable, () => ({
-      ensurePath: async () => "/some-proxy-kubeconfig-file",
-    } as Partial<KubeconfigManager> as KubeconfigManager));
+    di.override(
+      kubeconfigManagerInjectable,
+      () =>
+        ({
+          ensurePath: async () => "/some-proxy-kubeconfig-file",
+        }) as Partial<KubeconfigManager> as KubeconfigManager,
+    );
 
     kubeconfigSyncs = observable.map();
 
@@ -78,19 +91,25 @@ describe("kubeconfig-sync.source tests", () => {
 
     it("should keep a single valid split config", () => {
       const config = loadFromOptions({
-        clusters: [{
-          name: "cluster-name",
-          server: "https://1.2.3.4",
-          skipTLSVerify: false,
-        }],
-        users: [{
-          name: "user-name",
-        }],
-        contexts: [{
-          cluster: "cluster-name",
-          name: "context-name",
-          user: "user-name",
-        }],
+        clusters: [
+          {
+            name: "cluster-name",
+            server: "https://1.2.3.4",
+            skipTLSVerify: false,
+          },
+        ],
+        users: [
+          {
+            name: "user-name",
+          },
+        ],
+        contexts: [
+          {
+            cluster: "cluster-name",
+            name: "context-name",
+            user: "user-name",
+          },
+        ],
         currentContext: "foobar",
       });
 
@@ -115,29 +134,36 @@ describe("kubeconfig-sync.source tests", () => {
 
     it("should add only the valid clusters to the source", () => {
       const contents = JSON.stringify({
-        clusters: [{
-          name: "cluster-name",
-          cluster: {
-            server: "https://1.2.3.4",
+        clusters: [
+          {
+            name: "cluster-name",
+            cluster: {
+              server: "https://1.2.3.4",
+            },
+            skipTLSVerify: false,
           },
-          skipTLSVerify: false,
-        }],
-        users: [{
-          name: "user-name",
-        }],
-        contexts: [{
-          name: "context-name",
-          context: {
-            cluster: "cluster-name",
-            user: "user-name",
+        ],
+        users: [
+          {
+            name: "user-name",
           },
-        }, {
-          name: "context-the-second",
-          context: {
-            cluster: "missing-cluster",
-            user: "user-name",
+        ],
+        contexts: [
+          {
+            name: "context-name",
+            context: {
+              cluster: "cluster-name",
+              user: "user-name",
+            },
           },
-        }],
+          {
+            name: "context-the-second",
+            context: {
+              cluster: "missing-cluster",
+              user: "user-name",
+            },
+          },
+        ],
         currentContext: "foobar",
       });
       const rootSource = new ObservableMap<string, [Cluster, CatalogEntity]>();
@@ -147,8 +173,7 @@ describe("kubeconfig-sync.source tests", () => {
 
       expect(rootSource.size).toBe(1);
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const c = (iter.first(rootSource.values())!)[0];
+      const c = iter.first(rootSource.values())![0];
 
       runInAction(() => {
         expect(c.kubeConfigPath.get()).toBe("/bar");
@@ -158,30 +183,36 @@ describe("kubeconfig-sync.source tests", () => {
 
     it("should remove a cluster when it is removed from the contents", () => {
       const contents = JSON.stringify({
-        clusters: [{
-          name: "cluster-name",
-          cluster: {
-            server: "https://1.2.3.4",
+        clusters: [
+          {
+            name: "cluster-name",
+            cluster: {
+              server: "https://1.2.3.4",
+            },
+            skipTLSVerify: false,
           },
-          skipTLSVerify: false,
-        }],
-        users: [{
-          name: "user-name",
-
-        }],
-        contexts: [{
-          name: "context-name",
-          context: {
-            cluster: "cluster-name",
-            user: "user-name",
+        ],
+        users: [
+          {
+            name: "user-name",
           },
-        }, {
-          name: "context-the-second",
-          context: {
-            cluster: "missing-cluster",
-            user: "user-name",
+        ],
+        contexts: [
+          {
+            name: "context-name",
+            context: {
+              cluster: "cluster-name",
+              user: "user-name",
+            },
           },
-        }],
+          {
+            name: "context-the-second",
+            context: {
+              cluster: "missing-cluster",
+              user: "user-name",
+            },
+          },
+        ],
         currentContext: "foobar",
       });
       const rootSource = new ObservableMap<string, [Cluster, CatalogEntity]>();
@@ -209,37 +240,46 @@ describe("kubeconfig-sync.source tests", () => {
 
     it("should remove only the cluster that it is removed from the contents", () => {
       const contents = JSON.stringify({
-        clusters: [{
-          name: "cluster-name",
-          cluster: {
-            server: "https://1.2.3.4",
+        clusters: [
+          {
+            name: "cluster-name",
+            cluster: {
+              server: "https://1.2.3.4",
+            },
+            skipTLSVerify: false,
           },
-          skipTLSVerify: false,
-        }],
-        users: [{
-          name: "user-name",
-        }, {
-          name: "user-name-2",
-        }],
-        contexts: [{
-          name: "context-name",
-          context: {
-            cluster: "cluster-name",
-            user: "user-name",
+        ],
+        users: [
+          {
+            name: "user-name",
           },
-        }, {
-          name: "context-name-2",
-          context: {
-            cluster: "cluster-name",
-            user: "user-name-2",
+          {
+            name: "user-name-2",
           },
-        }, {
-          name: "context-the-second",
-          context: {
-            cluster: "missing-cluster",
-            user: "user-name",
+        ],
+        contexts: [
+          {
+            name: "context-name",
+            context: {
+              cluster: "cluster-name",
+              user: "user-name",
+            },
           },
-        }],
+          {
+            name: "context-name-2",
+            context: {
+              cluster: "cluster-name",
+              user: "user-name-2",
+            },
+          },
+          {
+            name: "context-the-second",
+            context: {
+              cluster: "missing-cluster",
+              user: "user-name",
+            },
+          },
+        ],
         currentContext: "foobar",
       });
       const rootSource = new ObservableMap<string, [Cluster, CatalogEntity]>();
@@ -254,7 +294,7 @@ describe("kubeconfig-sync.source tests", () => {
 
         expect(nextValue).toBeDefined();
 
-        if (nextValue){
+        if (nextValue) {
           const c = nextValue[0] as Cluster;
 
           runInAction(() => {
@@ -265,31 +305,39 @@ describe("kubeconfig-sync.source tests", () => {
       }
 
       const newContents = JSON.stringify({
-        clusters: [{
-          name: "cluster-name",
-          cluster: {
-            server: "https://1.2.3.4",
+        clusters: [
+          {
+            name: "cluster-name",
+            cluster: {
+              server: "https://1.2.3.4",
+            },
+            skipTLSVerify: false,
           },
-          skipTLSVerify: false,
-        }],
-        users: [{
-          name: "user-name",
-        }, {
-          name: "user-name-2",
-        }],
-        contexts: [{
-          name: "context-name",
-          context: {
-            cluster: "cluster-name",
-            user: "user-name",
+        ],
+        users: [
+          {
+            name: "user-name",
           },
-        }, {
-          name: "context-the-second",
-          context: {
-            cluster: "missing-cluster",
-            user: "user-name",
+          {
+            name: "user-name-2",
           },
-        }],
+        ],
+        contexts: [
+          {
+            name: "context-name",
+            context: {
+              cluster: "cluster-name",
+              user: "user-name",
+            },
+          },
+          {
+            name: "context-the-second",
+            context: {
+              cluster: "missing-cluster",
+              user: "user-name",
+            },
+          },
+        ],
         currentContext: "foobar",
       });
 
@@ -302,7 +350,7 @@ describe("kubeconfig-sync.source tests", () => {
 
         expect(nextValue).toBeDefined();
 
-        if (nextValue){
+        if (nextValue) {
           const c = nextValue[0] as Cluster;
 
           expect(c.kubeConfigPath.get()).toBe("/bar");
@@ -338,11 +386,11 @@ describe("kubeconfig-sync.source tests", () => {
         }
 
         if (!firstReadFoobarConfigSteam) {
-          return firstReadFoobarConfigSteam = getFakeReadStream(filePath);
+          return (firstReadFoobarConfigSteam = getFakeReadStream(filePath));
         }
 
         if (!secondReadFoobarConfigSteam) {
-          return secondReadFoobarConfigSteam = getFakeReadStream(filePath);
+          return (secondReadFoobarConfigSteam = getFakeReadStream(filePath));
         }
 
         return getFakeReadStream(filePath);
@@ -464,28 +512,35 @@ const getFakeReadStream = (path: string): ReadStream => {
 };
 
 const foobarConfig = JSON.stringify({
-  clusters: [{
-    name: "cluster-name",
-    cluster: {
-      server: "https://1.2.3.4",
+  clusters: [
+    {
+      name: "cluster-name",
+      cluster: {
+        server: "https://1.2.3.4",
+      },
+      skipTLSVerify: false,
     },
-    skipTLSVerify: false,
-  }],
-  users: [{
-    name: "user-name",
-  }],
-  contexts: [{
-    name: "context-name",
-    context: {
-      cluster: "cluster-name",
-      user: "user-name",
+  ],
+  users: [
+    {
+      name: "user-name",
     },
-  }, {
-    name: "context-the-second",
-    context: {
-      cluster: "missing-cluster",
-      user: "user-name",
+  ],
+  contexts: [
+    {
+      name: "context-name",
+      context: {
+        cluster: "cluster-name",
+        user: "user-name",
+      },
     },
-  }],
+    {
+      name: "context-the-second",
+      context: {
+        cluster: "missing-cluster",
+        user: "user-name",
+      },
+    },
+  ],
   currentContext: "foobar",
 });

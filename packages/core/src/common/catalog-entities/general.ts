@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -33,9 +34,7 @@ export class GeneralCategory extends CatalogCategory {
   };
   public spec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", GeneralEntity),
-    ],
+    versions: [categoryVersion("v1alpha1", GeneralEntity)],
     names: {
       kind: "General",
     },

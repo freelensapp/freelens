@@ -1,6 +1,6 @@
 import path from "path";
-import { getDependencyName } from "./get-dependency-name/get-dependency-name";
 import { readJsonSync } from "fs-extra";
+import { getDependencyName } from "./get-dependency-name/get-dependency-name";
 
 const pathToPackageJson = path.resolve(process.cwd(), "package.json");
 
@@ -10,43 +10,31 @@ export class ProtectFromImportingNonDependencies {
 
     const nodeModulesToBeResolved = new Set();
 
-    compiler.hooks.normalModuleFactory.tap(
-      "irrelevant",
-      (normalModuleFactory: any) => {
-        normalModuleFactory.hooks.resolve.tap(
-          "irrelevant",
-          (toBeResolved: any) => {
-            const isSassDependency = toBeResolved.request.endsWith(".scss");
-            const isLocalDependency = toBeResolved.request.startsWith(".");
-            const isDependencyOfDependency =
-              toBeResolved.context.includes("node_modules");
+    compiler.hooks.normalModuleFactory.tap("irrelevant", (normalModuleFactory: any) => {
+      normalModuleFactory.hooks.resolve.tap("irrelevant", (toBeResolved: any) => {
+        const isSassDependency = toBeResolved.request.endsWith(".scss");
+        const isLocalDependency = toBeResolved.request.startsWith(".");
+        const isDependencyOfDependency = toBeResolved.context.includes("node_modules");
 
-            const dependencyName = getDependencyName(toBeResolved.request);
+        const dependencyName = getDependencyName(toBeResolved.request);
 
-            const dependencyWeAreInterested =
-              !isSassDependency &&
-              !isLocalDependency &&
-              !isDependencyOfDependency &&
-              dependencyName;
+        const dependencyWeAreInterested =
+          !isSassDependency && !isLocalDependency && !isDependencyOfDependency && dependencyName;
 
-            if (dependencyWeAreInterested) {
-              nodeModulesToBeResolved.add(dependencyName);
-            }
-          }
-        );
-      }
-    );
+        if (dependencyWeAreInterested) {
+          nodeModulesToBeResolved.add(dependencyName);
+        }
+      });
+    });
 
     compiler.hooks.afterCompile.tap("compile", () => {
-      const notSpecifiedDependencies = [...nodeModulesToBeResolved].filter(
-        (x: any) => !dependencies.includes(x)
-      );
+      const notSpecifiedDependencies = [...nodeModulesToBeResolved].filter((x: any) => !dependencies.includes(x));
 
       if (notSpecifiedDependencies.length) {
         throw new Error(
           `Tried to import dependencies that are not specified in the package.json "${pathToPackageJson}". Add "${notSpecifiedDependencies.join(
-            '", "'
-          )}" to dependencies or peerDependencies.`
+            '", "',
+          )}" to dependencies or peerDependencies.`,
         );
       }
     });

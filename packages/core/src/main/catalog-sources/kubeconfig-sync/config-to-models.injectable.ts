@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { UpdateClusterModel } from "../../../common/cluster-types";
@@ -20,7 +22,10 @@ const configToModelsInjectable = getInjectable({
 
       for (const { config, validationResult } of splitConfig(rootConfig)) {
         if (validationResult.error) {
-          logger.debug(`context failed validation: ${validationResult.error}`, { context: config.currentContext, filePath });
+          logger.debug(`context failed validation: ${validationResult.error}`, {
+            context: config.currentContext,
+            filePath,
+          });
         } else {
           validConfigs.push({
             kubeConfigPath: filePath,

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
-import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
+
+import { inspect } from "util";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import platformInjectable, { allPlatforms } from "../../common/vars/platform.injectable";
-import { inspect } from "util";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
+import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
 
 describe.each(allPlatforms)("application-menu, given platform is '%s'", (platform) => {
   let builder: ApplicationBuilder;
@@ -24,10 +26,7 @@ describe.each(allPlatforms)("application-menu, given platform is '%s'", (platfor
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(platformInjectable, () => platform);
 
-      mainDi.override(
-        populateApplicationMenuInjectable,
-        () => populateApplicationMenuMock,
-      );
+      mainDi.override(populateApplicationMenuInjectable, () => populateApplicationMenuMock);
     });
 
     await builder.startHidden();
@@ -44,9 +43,7 @@ describe.each(allPlatforms)("application-menu, given platform is '%s'", (platfor
 
     beforeEach(() => {
       advanceFakeTime(100);
-      applicationMenuPaths = getCompositePaths(
-        populateApplicationMenuMock.mock.calls[0][0],
-      );
+      applicationMenuPaths = getCompositePaths(populateApplicationMenuMock.mock.calls[0][0]);
     });
 
     it("populates application menu with at least something", () => {
@@ -54,14 +51,19 @@ describe.each(allPlatforms)("application-menu, given platform is '%s'", (platfor
     });
 
     it("populates application menu", () => {
-      expect(inspect(applicationMenuPaths.map(x => x.join(" -> ")), {
-        compact: false,
-        breakLength: Infinity,
-        colors: false,
-        depth: Infinity,
-        maxArrayLength: Infinity,
-        maxStringLength: Infinity,
-      })).toMatchSnapshot();
+      expect(
+        inspect(
+          applicationMenuPaths.map((x) => x.join(" -> ")),
+          {
+            compact: false,
+            breakLength: Infinity,
+            colors: false,
+            depth: Infinity,
+            maxArrayLength: Infinity,
+            maxStringLength: Infinity,
+          },
+        ),
+      ).toMatchSnapshot();
     });
   });
 });

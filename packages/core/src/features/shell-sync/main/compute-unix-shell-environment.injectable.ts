@@ -1,30 +1,38 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { EnvironmentVariables } from "./compute-shell-environment.injectable";
+
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { object } from "@freelensapp/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import processExecPathInjectable from "./execPath.injectable";
+import type { EnvironmentVariables } from "./compute-shell-environment.injectable";
 import processEnvInjectable from "./env.injectable";
-import { object } from "@freelensapp/utilities";
-import type { AsyncResult } from "@freelensapp/utilities";
+import processExecPathInjectable from "./execPath.injectable";
 
 export interface UnixShellEnvOptions {
   signal: AbortSignal;
 }
 
-export type ComputeUnixShellEnvironment = (shell: string, opts: UnixShellEnvOptions) => AsyncResult<EnvironmentVariables, string>;
+export type ComputeUnixShellEnvironment = (
+  shell: string,
+  opts: UnixShellEnvOptions,
+) => AsyncResult<EnvironmentVariables, string>;
 
 /**
  * @param src The object containing the current environment variables
  * @param overrides The environment variables that want to be overridden before passing the env to a child process
  * @returns The combination of environment variables and a function which resets an object of environment variables to the values the keys corresponded to in `src` (rather than `overrides`)
  */
-const getResetProcessEnv = (src: Partial<Record<string, string>>, overrides: Partial<Record<string, string>>): {
+const getResetProcessEnv = (
+  src: Partial<Record<string, string>>,
+  overrides: Partial<Record<string, string>>,
+): {
   resetEnvPairs: (target: Partial<Record<string, string>>) => void;
   env: Partial<Record<string, string>>;
 } => {
@@ -92,14 +100,13 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
       return { command, shellArgs, regex };
     };
 
-
     return async (shellPath, opts) => {
       const { resetEnvPairs, env } = getResetProcessEnv(processEnv, {
         ELECTRON_RUN_AS_NODE: "1",
         ELECTRON_NO_ATTACH_CONSOLE: "1",
         ITERM_SHELL_INTEGRATION_INSTALLED: "1", // ITerm2 shell integration breaks output
         TERM: "screen-256color-bce", // required for fish
-        VSCODE_SHELL_INTEGRATION: "1" // VS Code shell integration breaks output
+        VSCODE_SHELL_INTEGRATION: "1", // VS Code shell integration breaks output
       });
       const shellName = getBasenameOfPath(shellPath);
       const { command, shellArgs, regex } = getShellSpecifics(shellName);
@@ -125,8 +132,8 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
           return JSON.stringify(context, null, 4);
         };
 
-        shellProcess.stdout.on("data", b => stdout.push(b));
-        shellProcess.stderr.on("data", b => stderr.push(b));
+        shellProcess.stdout.on("data", (b) => stdout.push(b));
+        shellProcess.stderr.on("data", (b) => stderr.push(b));
 
         shellProcess.on("error", (error) => {
           if (opts.signal.aborted) {

@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { CoreV1Api } from "@freelensapp/kubernetes-client-node";
-import { getInjectionToken } from "@ogre-tools/injectable";
 import { isRequestError } from "@freelensapp/utilities";
+import { getInjectionToken } from "@ogre-tools/injectable";
 
 export interface PrometheusService extends PrometheusServiceInfo {
   kind: string;

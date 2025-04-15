@@ -5,10 +5,7 @@
     "composite": true,
     "outDir": "static/build/library/",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "types/*"
-      ]
+      "*": ["node_modules/*", "types/*"]
     },
     "plugins": [
       {
@@ -19,13 +16,6 @@
       }
     ]
   },
-  "include": [
-    "package.json",
-    "webpack/vars.ts",
-    "src/**/*",
-    "types/*.d.ts",
-  ],
-  "exclude": [
-    "node_modules",
-  ]
+  "include": ["package.json", "webpack/vars.ts", "src/**/*", "types/*.d.ts"],
+  "exclude": ["node_modules"]
 }

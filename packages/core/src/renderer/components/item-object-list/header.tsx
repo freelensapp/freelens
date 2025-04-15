@@ -1,18 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./item-list-layout.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import type { ItemObject } from "@freelensapp/list-layout";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isDefined } from "@freelensapp/utilities";
-import type { ItemObject } from "@freelensapp/list-layout";
-import type { Filter } from "./page-filters/store";
-import type { HeaderCustomizer, HeaderPlaceholders, ItemListStore, SearchFilter } from "./list-layout";
+import { observer } from "mobx-react";
+import React from "react";
 import { SearchInputUrl } from "../input";
+import type { HeaderCustomizer, HeaderPlaceholders, ItemListStore, SearchFilter } from "./list-layout";
+import type { Filter } from "./page-filters/store";
 
 export interface ItemListLayoutHeaderProps<I extends ItemObject, PreLoadStores extends boolean> {
   getItems: () => I[];
@@ -25,14 +26,14 @@ export interface ItemListLayoutHeaderProps<I extends ItemObject, PreLoadStores e
   // header (title, filtering, searching, etc.)
   showHeader?: boolean;
   headerClassName?: IClassName;
-  renderHeaderTitle?:
-    | StrictReactNode
-    | (() => StrictReactNode);
+  renderHeaderTitle?: StrictReactNode | (() => StrictReactNode);
   customizeHeader?: HeaderCustomizer | HeaderCustomizer[];
 }
 
 @observer
-export class ItemListLayoutHeader<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<ItemListLayoutHeaderProps<I, PreLoadStores>> {
+export class ItemListLayoutHeader<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
+  ItemListLayoutHeaderProps<I, PreLoadStores>
+> {
   render() {
     const {
       showHeader,
@@ -63,22 +64,13 @@ export class ItemListLayoutHeader<I extends ItemObject, PreLoadStores extends bo
         );
       }
 
-      return allItemsCount === 1
-        ? `${allItemsCount} item`
-        : `${allItemsCount} items`;
+      return allItemsCount === 1 ? `${allItemsCount} item` : `${allItemsCount} items`;
     };
 
     const customizeHeaderFunctions = [customizeHeader].flat().filter(isDefined);
-    const renderedTitle = typeof renderHeaderTitle === "function"
-      ? renderHeaderTitle()
-      : renderHeaderTitle;
+    const renderedTitle = typeof renderHeaderTitle === "function" ? renderHeaderTitle() : renderHeaderTitle;
 
-    const {
-      filters,
-      info,
-      searchProps,
-      title,
-    } = customizeHeaderFunctions.reduce<HeaderPlaceholders>(
+    const { filters, info, searchProps, title } = customizeHeaderFunctions.reduce<HeaderPlaceholders>(
       (prevPlaceholders, customizer) => customizer(prevPlaceholders),
       {
         title: <h5 className="title">{renderedTitle}</h5>,
@@ -90,13 +82,7 @@ export class ItemListLayoutHeader<I extends ItemObject, PreLoadStores extends bo
     return (
       <div className={cssNames("header flex gaps align-center", headerClassName)}>
         {title}
-        {
-          info && (
-            <div className="info-panel box grow">
-              {info}
-            </div>
-          )
-        }
+        {info && <div className="info-panel box grow">{info}</div>}
         {filters}
         {searchFilters.length > 0 && searchProps && <SearchInputUrl {...searchProps} />}
       </div>

@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
-import { iter, noop, computedAnd } from "@freelensapp/utilities";
+import { computedAnd, iter, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash";
 import { computed } from "mobx";
@@ -19,9 +21,7 @@ import customResourceDefinitionsInjectable from "./definitions.injectable";
 
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
-const formatResourceKind = (resourceKind: string) => (
-  resourceKind.split(titleCaseSplitRegex).join(" ")
-);
+const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
 
 const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-computed",
@@ -31,7 +31,10 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
 
-    const toCustomResourceGroupToSidebarItems = ([group, definitions]: [string, CustomResourceDefinition[]], index: number) => {
+    const toCustomResourceGroupToSidebarItems = (
+      [group, definitions]: [string, CustomResourceDefinition[]],
+      index: number,
+    ) => {
       const customResourceGroupSidebarItem = getInjectable({
         id: `sidebar-item-custom-resource-group-${group}`,
         instantiate: (): SidebarItemRegistration => ({
@@ -68,21 +71,16 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         });
       });
 
-      return [
-        customResourceGroupSidebarItem,
-        ...customResourceSidebarItems,
-      ];
+      return [customResourceGroupSidebarItem, ...customResourceSidebarItems];
     };
 
     return computed(() => {
-      const customResourceDefinitionGroups = (
-        iter.chain(customResourceDefinitions.get().values())
-          .map((crd) => [crd.getGroup(), crd] as const)
-          .toMap()
-      );
+      const customResourceDefinitionGroups = iter
+        .chain(customResourceDefinitions.get().values())
+        .map((crd) => [crd.getGroup(), crd] as const)
+        .toMap();
 
-      return Array.from(customResourceDefinitionGroups.entries(), toCustomResourceGroupToSidebarItems)
-        .flat();
+      return Array.from(customResourceDefinitionGroups.entries(), toCustomResourceGroupToSidebarItems).flat();
     });
   },
 });

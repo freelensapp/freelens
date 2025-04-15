@@ -1,27 +1,29 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
+
+import assert from "assert";
+import { flushPromises } from "@freelensapp/test-utils";
+import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
-import routesInjectable from "../../renderer/routes/routes.injectable";
 import { matches } from "lodash/fp";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import type { IObservableValue } from "mobx";
+import { computed, observable, runInAction } from "mobx";
+import React from "react";
+import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
+import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
-import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
-import assert from "assert";
-import type { IObservableValue } from "mobx";
-import { runInAction, computed, observable } from "mobx";
-import storageSaveDelayInjectable from "../../renderer/utils/create-storage/storage-save-delay.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
+import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import type { ClusterPageMenuRegistration } from "../../extensions/common-api/types";
-import { flushPromises } from "@freelensapp/test-utils";
-import { testUsingFakeTime, advanceFakeTime } from "../../test-utils/use-fake-time";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import routesInjectable from "../../renderer/routes/routes.injectable";
+import storageSaveDelayInjectable from "../../renderer/utils/create-storage/storage-save-delay.injectable";
+import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 
 describe("cluster - sidebar and tab navigation for extensions", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -37,10 +39,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
     applicationBuilder.beforeWindowStart(({ windowDi }) => {
       windowDi.override(storageSaveDelayInjectable, () => 250);
 
-      windowDi.override(
-        directoryForLensLocalStorageInjectable,
-        () => "/some-directory-for-lens-local-storage",
-      );
+      windowDi.override(directoryForLensLocalStorageInjectable, () => "/some-directory-for-lens-local-storage");
     });
   });
 
@@ -74,9 +73,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
               id: "some-other-child-page-id",
 
               components: {
-                Page: () => (
-                  <div data-testid="some-other-child-page">Some other child page</div>
-                ),
+                Page: () => <div data-testid="some-other-child-page">Some other child page</div>,
               },
             },
           ],
@@ -140,9 +137,11 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(matches({
-            path: "/extension/some-extension-name/some-child-page-id",
-          }));
+          .find(
+            matches({
+              path: "/extension/some-extension-name/some-child-page-id",
+            }),
+          );
 
         assert(route);
         navigateToRoute(route);
@@ -174,15 +173,12 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         applicationBuilder.beforeWindowStart(async ({ windowDi }) => {
           const writeJsonFileFake = windowDi.inject(writeJsonFileInjectable);
 
-          await writeJsonFileFake(
-            "/some-directory-for-lens-local-storage/some-cluster-id.json",
-            {
-              sidebar: {
-                expanded: { "sidebar-item-some-extension-name-some-parent-id": true },
-                width: 200,
-              },
+          await writeJsonFileFake("/some-directory-for-lens-local-storage/some-cluster-id.json", {
+            sidebar: {
+              expanded: { "sidebar-item-some-extension-name-some-parent-id": true },
+              width: 200,
             },
-          );
+          });
         });
 
         rendered = await applicationBuilder.render();
@@ -210,15 +206,12 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         applicationBuilder.beforeWindowStart(async ({ windowDi }) => {
           const writeJsonFileFake = windowDi.inject(writeJsonFileInjectable);
 
-          await writeJsonFileFake(
-            "/some-directory-for-lens-local-storage/some-cluster-id.json",
-            {
-              sidebar: {
-                expanded: { "some-extension-name-some-unknown-parent-id": true },
-                width: 200,
-              },
+          await writeJsonFileFake("/some-directory-for-lens-local-storage/some-cluster-id.json", {
+            sidebar: {
+              expanded: { "some-extension-name-some-unknown-parent-id": true },
+              width: 200,
             },
-          );
+          });
         });
 
         rendered = await applicationBuilder.render();
@@ -240,12 +233,9 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         applicationBuilder.beforeWindowStart(async ({ windowDi }) => {
           const writeJsonFileFake = windowDi.inject(writeJsonFileInjectable);
 
-          await writeJsonFileFake(
-            "/some-directory-for-lens-local-storage/some-cluster-id.json",
-            {
-              someThingButSidebar: {},
-            },
-          );
+          await writeJsonFileFake("/some-directory-for-lens-local-storage/some-cluster-id.json", {
+            someThingButSidebar: {},
+          });
         });
 
         rendered = await applicationBuilder.render();
@@ -288,9 +278,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
       });
 
       it("does not show the sidebar item that should be hidden", () => {
-        const child = rendered.queryByTestId(
-          "sidebar-item-some-extension-name-some-menu-with-controlled-visibility",
-        );
+        const child = rendered.queryByTestId("sidebar-item-some-extension-name-some-menu-with-controlled-visibility");
 
         expect(child).not.toBeInTheDocument();
       });
@@ -300,18 +288,14 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
           someObservable.set(true);
         });
 
-        const child = rendered.queryByTestId(
-          "sidebar-item-some-extension-name-some-menu-with-controlled-visibility",
-        );
+        const child = rendered.queryByTestId("sidebar-item-some-extension-name-some-menu-with-controlled-visibility");
 
         expect(child).toBeInTheDocument();
       });
 
       describe("when a parent sidebar item is expanded", () => {
         beforeEach(() => {
-          const parentLink = rendered.getByTestId(
-            "link-for-sidebar-item-some-extension-name-some-parent-id",
-          );
+          const parentLink = rendered.getByTestId("link-for-sidebar-item-some-extension-name-some-parent-id");
 
           fireEvent.click(parentLink);
         });
@@ -334,9 +318,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
 
         describe("when a child of the parent is selected", () => {
           beforeEach(() => {
-            const childLink = rendered.getByTestId(
-              "link-for-sidebar-item-some-extension-name-some-child-id",
-            );
+            const childLink = rendered.getByTestId("link-for-sidebar-item-some-extension-name-some-child-id");
 
             fireEvent.click(childLink);
           });
@@ -366,17 +348,13 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
           });
 
           it("tab for child page is active", () => {
-            const tabLink = rendered.getByTestId(
-              "tab-link-for-sidebar-item-some-extension-name-some-child-id",
-            );
+            const tabLink = rendered.getByTestId("tab-link-for-sidebar-item-some-extension-name-some-child-id");
 
             expect(tabLink.dataset.isActiveTest).toBe("true");
           });
 
           it("tab for sibling page is not active", () => {
-            const tabLink = rendered.getByTestId(
-              "tab-link-for-sidebar-item-some-extension-name-some-other-child-id",
-            );
+            const tabLink = rendered.getByTestId("tab-link-for-sidebar-item-some-extension-name-some-other-child-id");
 
             expect(tabLink.dataset.isActiveTest).toBe("false");
           });
@@ -386,9 +364,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
 
             const pathExistsFake = windowDi.inject(pathExistsInjectable);
 
-            const actual = await pathExistsFake(
-              "/some-directory-for-lens-local-storage/some-cluster-id.json",
-            );
+            const actual = await pathExistsFake("/some-directory-for-lens-local-storage/some-cluster-id.json");
 
             expect(actual).toBe(false);
           });
@@ -400,9 +376,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
 
             await flushPromises(); // Needed because of several async calls
 
-            const actual = await readJsonFileFake(
-              "/some-directory-for-lens-local-storage/some-cluster-id.json",
-            );
+            const actual = await readJsonFileFake("/some-directory-for-lens-local-storage/some-cluster-id.json");
 
             expect(actual).toEqual({
               sidebar: {
@@ -426,23 +400,17 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
             });
 
             it("sibling child page is shown", () => {
-              expect(
-                rendered.getByTestId("some-other-child-page"),
-              ).not.toBeNull();
+              expect(rendered.getByTestId("some-other-child-page")).not.toBeNull();
             });
 
             it("tab for sibling page is active", () => {
-              const tabLink = rendered.getByTestId(
-                "tab-link-for-sidebar-item-some-extension-name-some-other-child-id",
-              );
+              const tabLink = rendered.getByTestId("tab-link-for-sidebar-item-some-extension-name-some-other-child-id");
 
               expect(tabLink.dataset.isActiveTest).toBe("true");
             });
 
             it("tab for previous page is not active", () => {
-              const tabLink = rendered.getByTestId(
-                "tab-link-for-sidebar-item-some-extension-name-some-child-id",
-              );
+              const tabLink = rendered.getByTestId("tab-link-for-sidebar-item-some-extension-name-some-child-id");
 
               expect(tabLink.dataset.isActiveTest).toBe("false");
             });
@@ -482,9 +450,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
               id: "some-other-child-page-id",
 
               components: {
-                Page: () => (
-                  <div data-testid="some-other-child-page">Some other child page</div>
-                ),
+                Page: () => <div data-testid="some-other-child-page">Some other child page</div>,
               },
             },
           ],
@@ -542,9 +508,11 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(matches({
-            path: "/extension/some-extension-name/some-child-page-id",
-          }));
+          .find(
+            matches({
+              path: "/extension/some-extension-name/some-child-page-id",
+            }),
+          );
 
         assert(route);
         navigateToRoute(route);

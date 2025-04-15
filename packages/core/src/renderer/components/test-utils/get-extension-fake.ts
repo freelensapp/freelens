@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { LensMainExtension } from "../../../extensions/lens-main-extension";
 import { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 
@@ -15,7 +17,7 @@ export interface FakeExtensionOptions {
   mainOptions?: Partial<LensMainExtension>;
 }
 
-export const getExtensionFakeForMain = ({ id, name, mainOptions = {}}: FakeExtensionOptions) => (
+export const getExtensionFakeForMain = ({ id, name, mainOptions = {} }: FakeExtensionOptions) =>
   Object.assign(
     new TestExtensionMain({
       id,
@@ -33,10 +35,9 @@ export const getExtensionFakeForMain = ({ id, name, mainOptions = {}}: FakeExten
       manifestPath: "irrelevant",
     }),
     mainOptions,
-  )
-);
+  );
 
-export const getExtensionFakeForRenderer = ({ id, name, rendererOptions = {}}: FakeExtensionOptions) => (
+export const getExtensionFakeForRenderer = ({ id, name, rendererOptions = {} }: FakeExtensionOptions) =>
   Object.assign(
     new TestExtensionRenderer({
       id,
@@ -54,5 +55,4 @@ export const getExtensionFakeForRenderer = ({ id, name, rendererOptions = {}}: F
       manifestPath: "irrelevant",
     }),
     rendererOptions,
-  )
-);
+  );

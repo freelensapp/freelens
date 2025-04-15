@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ServerOptions } from "http-proxy";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import type { ServerOptions } from "http-proxy";
 import type { Cluster } from "../../common/cluster/cluster";
-import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
-import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
-import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
+import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
 
 export interface KubeAuthProxyServer {
   getApiTarget(isLongRunningRequest?: boolean): Promise<ServerOptions>;
@@ -19,7 +20,7 @@ export interface KubeAuthProxyServer {
   stop(): void;
 }
 
-const fourHoursInMs = 4 * 60 * 60  * 1000;
+const fourHoursInMs = 4 * 60 * 60 * 1000;
 const thirtySecondsInMs = 30 * 1000;
 
 const kubeAuthProxyServerInjectable = getInjectable({
@@ -83,7 +84,7 @@ const kubeAuthProxyServerInjectable = getInjectable({
           return newApiTarget(fourHoursInMs);
         }
 
-        return apiTarget ??= await newApiTarget(thirtySecondsInMs);
+        return (apiTarget ??= await newApiTarget(thirtySecondsInMs));
       },
       ensureAuthProxyUrl: async () => {
         const kubeAuthProxy = await ensureServerHelper();

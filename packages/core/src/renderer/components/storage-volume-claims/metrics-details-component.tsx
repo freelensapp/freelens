@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 import type { PersistentVolumeClaimMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-persistent-volume-claim-metrics.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";
@@ -20,18 +22,15 @@ const NonInjectedPersistentVolumeClaimMetricsDetailsComponent = ({
   object,
   metrics,
 }: KubeObjectDetailsProps<PersistentVolumeClaim> & Dependencies) => (
-  <ResourceMetrics
-    tabs={[
-      "Disk",
-    ]}
-    object={object}
-    metrics={metrics}
-  >
+  <ResourceMetrics tabs={["Disk"]} object={object} metrics={metrics}>
     <VolumeClaimDiskChart />
   </ResourceMetrics>
 );
 
-export const PersistentVolumeClaimMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<PersistentVolumeClaim>>(NonInjectedPersistentVolumeClaimMetricsDetailsComponent, {
+export const PersistentVolumeClaimMetricsDetailsComponent = withInjectables<
+  Dependencies,
+  KubeObjectDetailsProps<PersistentVolumeClaim>
+>(NonInjectedPersistentVolumeClaimMetricsDetailsComponent, {
   getProps: (di, props) => ({
     metrics: di.inject(persistentVolumeClaimMetricsInjectable, props.object),
     ...props,

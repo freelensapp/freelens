@@ -1,35 +1,38 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { PodSpec } from "@freelensapp/kube-object";
+import { Deployment, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import type { DeploymentStore } from "../workloads-deployments/store";
 import deploymentStoreInjectable from "../workloads-deployments/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { PodSpec } from "@freelensapp/kube-object";
-import { Deployment, Pod } from "@freelensapp/kube-object";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import { Cluster } from "../../../common/cluster/cluster";
 
 const spec: PodSpec = {
-  containers: [{
-    name: "some",
-    image: "someimage",
-    resources: {
-      requests: {
-        cpu: "2",
-        memory: "2Gi",
+  containers: [
+    {
+      name: "some",
+      image: "someimage",
+      resources: {
+        requests: {
+          cpu: "2",
+          memory: "2Gi",
+        },
       },
+      terminationMessagePath: "test",
+      terminationMessagePolicy: "File",
+      imagePullPolicy: "Always",
     },
-    terminationMessagePath: "test",
-    terminationMessagePolicy: "File",
-    imagePullPolicy: "Always",
-  }],
+  ],
   restartPolicy: "restart",
   terminationGracePeriodSeconds: 1200,
   dnsPolicy: "dns",
@@ -51,7 +54,7 @@ const runningDeployment = new Deployment({
   },
   spec: {
     replicas: 1,
-    selector: { matchLabels: {}},
+    selector: { matchLabels: {} },
     strategy: {
       type: "test",
       rollingUpdate: {
@@ -62,7 +65,7 @@ const runningDeployment = new Deployment({
     template: {
       metadata: {
         labels: {
-          "name": "kube-state-metrics",
+          name: "kube-state-metrics",
         },
       },
       spec,
@@ -82,7 +85,7 @@ const failedDeployment = new Deployment({
   },
   spec: {
     replicas: 1,
-    selector: { matchLabels: {}},
+    selector: { matchLabels: {} },
     strategy: {
       type: "test",
       rollingUpdate: {
@@ -93,7 +96,7 @@ const failedDeployment = new Deployment({
     template: {
       metadata: {
         labels: {
-          "name": "failedpods",
+          name: "failedpods",
         },
       },
       spec,
@@ -113,7 +116,7 @@ const pendingDeployment = new Deployment({
   },
   spec: {
     replicas: 1,
-    selector: { matchLabels: {}},
+    selector: { matchLabels: {} },
     strategy: {
       type: "test",
       rollingUpdate: {
@@ -124,7 +127,7 @@ const pendingDeployment = new Deployment({
     template: {
       metadata: {
         labels: {
-          "mydeployment": "true",
+          mydeployment: "true",
         },
       },
       spec,
@@ -140,7 +143,7 @@ const runningPod = new Pod({
     resourceVersion: "foobar",
     uid: "foobar",
     labels: {
-      "name": "kube-state-metrics",
+      name: "kube-state-metrics",
     },
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar",
@@ -177,7 +180,7 @@ const pendingPod = new Pod({
     resourceVersion: "foobar",
     uid: "foobar-pending",
     labels: {
-      "mydeployment": "true",
+      mydeployment: "true",
     },
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-pending",
@@ -192,7 +195,7 @@ const failedPod = new Pod({
     resourceVersion: "foobar",
     uid: "foobar-failed",
     labels: {
-      "name": "failedpods",
+      name: "failedpods",
     },
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-failed",
@@ -216,29 +219,27 @@ describe("Deployment Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     const podStore = di.inject(podStoreInjectable);
 
     // Add pods to pod store
-    podStore.items = observable.array([
-      runningPod,
-      failedPod,
-      pendingPod,
-    ]);
+    podStore.items = observable.array([runningPod, failedPod, pendingPod]);
     deploymentStore = di.inject(deploymentStoreInjectable);
   });
 
   it("gets Deployment statuses in proper sorting order", () => {
-    const statuses = Object.entries(deploymentStore.getStatuses([
-      failedDeployment,
-      runningDeployment,
-      pendingDeployment,
-    ]));
+    const statuses = Object.entries(
+      deploymentStore.getStatuses([failedDeployment, runningDeployment, pendingDeployment]),
+    );
 
     expect(statuses).toEqual([
       ["running", 1],

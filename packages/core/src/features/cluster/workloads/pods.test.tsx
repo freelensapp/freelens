@@ -1,18 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
-import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
-import type { PodMetrics, PodStatus } from "@freelensapp/kube-object";
-import { Pod } from "@freelensapp/kube-object";
 import type { PodMetricsApi } from "@freelensapp/kube-api";
 import { podMetricsApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { PodMetrics, PodStatus } from "@freelensapp/kube-object";
+import { Pod } from "@freelensapp/kube-object";
+import type { RenderResult } from "@testing-library/react";
+import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import type { RequestMetrics } from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../../renderer/components/test-utils/get-application-builder";
+import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
 
 describe("workloads / pods", () => {
   let rendered: RenderResult;
@@ -23,9 +27,13 @@ describe("workloads / pods", () => {
     applicationBuilder = getApplicationBuilder().setEnvironmentToClusterFrame();
     applicationBuilder.namespaces.add("default");
     applicationBuilder.beforeWindowStart(({ windowDi }) => {
-      windowDi.override(podMetricsApiInjectable, () => ({
-        list: async () => Promise.resolve(podMetrics),
-      } as PodMetricsApi));
+      windowDi.override(
+        podMetricsApiInjectable,
+        () =>
+          ({
+            list: async () => Promise.resolve(podMetrics),
+          }) as PodMetricsApi,
+      );
     });
     applicationBuilder.afterWindowStart(() => {
       applicationBuilder.allowKubeResource({
@@ -88,28 +96,30 @@ describe("workloads / pods", () => {
 
           const podStore = windowDi.inject(podStoreInjectable);
 
-          podStore.items.push(new Pod({
-            apiVersion: "v1",
-            kind: "Pod",
-            metadata: {
-              name: "test-pod-1",
-              namespace: "default",
-              resourceVersion: "irrelevant",
-              selfLink: "/api/v1/namespaces/default/pods/test-pod-1",
-              uid: "uuid-1",
-            },
-            spec: {
-              containers: [
-                {
-                  name: "container-1",
-                },
-                {
-                  name: "container-2",
-                },
-              ],
-            },
-            status: {} as PodStatus,
-          }));
+          podStore.items.push(
+            new Pod({
+              apiVersion: "v1",
+              kind: "Pod",
+              metadata: {
+                name: "test-pod-1",
+                namespace: "default",
+                resourceVersion: "irrelevant",
+                selfLink: "/api/v1/namespaces/default/pods/test-pod-1",
+                uid: "uuid-1",
+              },
+              spec: {
+                containers: [
+                  {
+                    name: "container-1",
+                  },
+                  {
+                    name: "container-2",
+                  },
+                ],
+              },
+              status: {} as PodStatus,
+            }),
+          );
           podStore.isLoaded = true;
         });
 

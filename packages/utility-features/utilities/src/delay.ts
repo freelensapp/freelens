@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -11,7 +12,7 @@
  * @param failFast An abort controller instance to cause the delay to short-circuit
  */
 export function delay(timeout = 1000, failFast?: AbortSignal): Promise<void> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const timeoutId = setTimeout(resolve, timeout);
 
     failFast?.addEventListener("abort", () => {

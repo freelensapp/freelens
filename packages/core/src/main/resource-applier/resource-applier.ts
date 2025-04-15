@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Cluster } from "../../common/cluster/cluster";
-import * as yaml from "js-yaml";
-import tempy from "tempy";
-import type { Patch } from "rfc6902";
 import type { KubernetesObject } from "@freelensapp/kubernetes-client-node";
-import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Logger } from "@freelensapp/logger";
-import type { WriteFile } from "../../common/fs/write-file.injectable";
-import type { RemovePath } from "../../common/fs/remove.injectable";
-import type { ExecFile } from "../../common/fs/exec-file.injectable";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
-import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { AsyncResult } from "@freelensapp/utilities";
+import * as yaml from "js-yaml";
+import type { Patch } from "rfc6902";
+import tempy from "tempy";
+import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
+import type { Cluster } from "../../common/cluster/cluster";
+import type { ExecFile } from "../../common/fs/exec-file.injectable";
+import type { RemovePath } from "../../common/fs/remove.injectable";
+import type { WriteFile } from "../../common/fs/write-file.injectable";
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
+import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
 
 export interface ResourceApplierDependencies {
   emitAppEvent: EmitAppEvent;
@@ -55,22 +56,13 @@ export class ResourceApplier {
 
     const kubectlPath = await this.getKubectlPath();
     const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
-    const args = [
-      "--kubeconfig", proxyKubeconfigPath,
-      "patch",
-      kind,
-      name,
-    ];
+    const args = ["--kubeconfig", proxyKubeconfigPath, "patch", kind, name];
 
     if (ns) {
       args.push("--namespace", ns);
     }
 
-    args.push(
-      "--type", "json",
-      "--patch", JSON.stringify(patch),
-      "-o", "json",
-    );
+    args.push("--type", "json", "--patch", JSON.stringify(patch), "-o", "json");
 
     const result = await this.dependencies.execFile(kubectlPath, args);
 
@@ -91,12 +83,7 @@ export class ResourceApplier {
     const kubectlPath = await this.getKubectlPath();
     const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
     const fileName = tempy.file({ name: "resource.yaml" });
-    const args = [
-      "apply",
-      "--kubeconfig", proxyKubeconfigPath,
-      "-o", "json",
-      "-f", fileName,
-    ];
+    const args = ["apply", "--kubeconfig", proxyKubeconfigPath, "-o", "json", "-f", fileName];
 
     this.dependencies.logger.debug(`shooting manifests with ${kubectlPath}`, { args });
 
@@ -133,22 +120,22 @@ export class ResourceApplier {
     return this.kubectlCmdAll("delete", resources, extraArgs);
   }
 
-  protected async kubectlCmdAll(subCmd: string, resources: string[], parentArgs: string[] = []): AsyncResult<string, string> {
+  protected async kubectlCmdAll(
+    subCmd: string,
+    resources: string[],
+    parentArgs: string[] = [],
+  ): AsyncResult<string, string> {
     const kubectlPath = await this.getKubectlPath();
     const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
     const tmpDir = tempy.directory();
 
-    await Promise.all(resources.map((resource, index) => this.dependencies.writeFile(
-      this.dependencies.joinPaths(tmpDir, `${index}.yaml`),
-      resource,
-    )));
+    await Promise.all(
+      resources.map((resource, index) =>
+        this.dependencies.writeFile(this.dependencies.joinPaths(tmpDir, `${index}.yaml`), resource),
+      ),
+    );
 
-    const args = [
-      subCmd,
-      "--kubeconfig", proxyKubeconfigPath,
-      ...parentArgs,
-      "-f", tmpDir,
-    ];
+    const args = [subCmd, "--kubeconfig", proxyKubeconfigPath, ...parentArgs, "-f", tmpDir];
 
     this.dependencies.logger.info(`[RESOURCE-APPLIER] running kubectl`, { args });
     const result = await this.dependencies.execFile(kubectlPath, args);

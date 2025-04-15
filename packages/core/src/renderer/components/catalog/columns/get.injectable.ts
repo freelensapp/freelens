@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { orderBy } from "lodash";
@@ -14,7 +16,12 @@ export interface GetCategoryColumnsParams {
   activeCategory: CatalogCategory | null | undefined;
 }
 
-export type CategoryColumns = Required<Pick<ItemListLayoutProps<CatalogEntity>, "sortingCallbacks" | "searchFilters" | "renderTableContents" | "renderTableHeader">>;
+export type CategoryColumns = Required<
+  Pick<
+    ItemListLayoutProps<CatalogEntity>,
+    "sortingCallbacks" | "searchFilters" | "renderTableContents" | "renderTableHeader"
+  >
+>;
 export type GetCategoryColumns = (params: GetCategoryColumnsParams) => CategoryColumns;
 
 const getCategoryColumnsInjectable = getInjectable({
@@ -26,9 +33,7 @@ const getCategoryColumnsInjectable = getInjectable({
 
     return ({ activeCategory }) => {
       const allRegistrations = orderBy(
-        activeCategory
-          ? getColumnsForCategory(activeCategory)
-          : browseAllColumns,
+        activeCategory ? getColumnsForCategory(activeCategory) : browseAllColumns,
         "priority",
         "asc",
       );
@@ -57,7 +62,7 @@ const getCategoryColumnsInjectable = getInjectable({
       return {
         sortingCallbacks,
         renderTableHeader,
-        renderTableContents: entity => tableRowRenderers.map(fn => fn(entity)),
+        renderTableContents: (entity) => tableRowRenderers.map((fn) => fn(entity)),
         searchFilters,
       };
     };

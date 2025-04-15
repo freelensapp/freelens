@@ -1,24 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { KubeObjectStore } from "../kube-object.store";
 
-import type { IComputedValue } from "mobx";
-import { autorun,  action, observable } from "mobx";
 import type { KubeApi } from "@freelensapp/kube-api";
+import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeObject, ObjectReference } from "@freelensapp/kube-object";
-import { parseKubeApi, createKubeApiURL } from "@freelensapp/kube-api";
 import { getOrInsertWith, iter } from "@freelensapp/utilities";
+import type { IComputedValue } from "mobx";
+import { action, autorun, observable } from "mobx";
 import type { CreateCustomResourceStore } from "./create-custom-resource-store.injectable";
 
-export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any>
-  ? Store
-  : never;
-export type RegisterableApi<Api> = Api extends KubeApi<any, any>
-  ? Api
-  : never;
+export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any> ? Store : never;
+export type RegisterableApi<Api> = Api extends KubeApi<any, any> ? Api : never;
 export type KubeObjectStoreFrom<Api> = Api extends KubeApi<infer KubeObj, infer ApiData>
   ? KubeObjectStore<KubeObj, Api, ApiData>
   : never;
@@ -41,8 +38,7 @@ export class ApiManager {
   constructor(private readonly dependencies: ApiManagerDependencies) {
     // NOTE: this is done to preserve the old behaviour of an API being discoverable using all previous apiBases
     autorun(() => {
-      const apis = iter.chain(this.dependencies.apis.get().values())
-        .concat(this.externalApis.values());
+      const apis = iter.chain(this.dependencies.apis.get().values()).concat(this.externalApis.values());
       const removedApis = new Set(this.apis.values());
       const newState = new Map(this.apis);
 
@@ -84,7 +80,7 @@ export class ApiManager {
   }
 
   getApiByKind(kind: string, apiVersion: string) {
-    return this.getApi(api => api.kind === kind && api.apiVersionWithGroup === apiVersion);
+    return this.getApi((api) => api.kind === kind && api.apiVersionWithGroup === apiVersion);
   }
 
   registerApi<Api>(api: RegisterableApi<Api>): void;
@@ -102,7 +98,7 @@ export class ApiManager {
 
   unregisterApi(apiOrBase: string | KubeApi<KubeObject>) {
     if (typeof apiOrBase === "string") {
-      const api = this.externalApis.find(api => api.apiBase === apiOrBase);
+      const api = this.externalApis.find((api) => api.apiBase === apiOrBase);
 
       if (api) {
         this.externalApis.remove(api);
@@ -138,15 +134,13 @@ export class ApiManager {
   /**
    * @deprecated use an actual cast instead of hiding it with this unused type param
    */
-  getStore<Store extends KubeObjectStore>(api: string | KubeApi): Store | undefined ;
+  getStore<Store extends KubeObjectStore>(api: string | KubeApi): Store | undefined;
   getStore(apiOrBase: string | KubeApi | undefined): KubeObjectStore | undefined {
     if (!apiOrBase) {
       return undefined;
     }
 
-    const { apiBase } = typeof apiOrBase === "string"
-      ? parseKubeApi(apiOrBase) ?? {}
-      : apiOrBase;
+    const { apiBase } = typeof apiOrBase === "string" ? (parseKubeApi(apiOrBase) ?? {}) : apiOrBase;
 
     const api = apiBase && this.getApi(apiBase);
 
@@ -154,31 +148,31 @@ export class ApiManager {
       return undefined;
     }
 
-    const defaultResult = iter.chain(this.dependencies.stores.get().values())
+    const defaultResult = iter
+      .chain(this.dependencies.stores.get().values())
       .concat(this.externalStores.values())
-      .find(store => store.api.apiBase === api.apiBase);
+      .find((store) => store.api.apiBase === api.apiBase);
 
     if (defaultResult) {
       return defaultResult;
     }
 
     if (this.apiIsDefaultCrdApi(api)) {
-      return getOrInsertWith(this.defaultCrdStores, api.apiBase, () => this.dependencies.createCustomResourceStore(api));
+      return getOrInsertWith(this.defaultCrdStores, api.apiBase, () =>
+        this.dependencies.createCustomResourceStore(api),
+      );
     }
 
     return undefined;
   }
 
   lookupApiLink(ref: ObjectReference, parentObject?: KubeObject): string {
-    const {
-      kind, apiVersion = "v1", name,
-      namespace = parentObject?.getNs(),
-    } = ref;
+    const { kind, apiVersion = "v1", name, namespace = parentObject?.getNs() } = ref;
 
     if (!kind) return "";
 
     // search in registered apis by 'kind' & 'apiVersion'
-    const api = this.getApi(api => api.kind === kind && api.apiVersionWithGroup == apiVersion);
+    const api = this.getApi((api) => api.kind === kind && api.apiVersionWithGroup == apiVersion);
 
     if (api) {
       return api.formatUrlForNotListing({ namespace, name });
@@ -197,7 +191,7 @@ export class ApiManager {
     }
 
     // resolve by kind only (hpa's might use refs to older versions of resources for example)
-    const apiByKind = this.getApi(api => api.kind === kind);
+    const apiByKind = this.getApi((api) => api.kind === kind);
 
     if (apiByKind) {
       return apiByKind.formatUrlForNotListing({ name, namespace });

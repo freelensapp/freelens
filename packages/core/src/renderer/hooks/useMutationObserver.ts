@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -17,7 +18,6 @@ export function useMutationObserver(
   callback: MutationCallback,
   options: MutationObserverInit = config,
 ) {
-
   useEffect(() => {
     if (root) {
       const observer = new MutationObserver(callback);

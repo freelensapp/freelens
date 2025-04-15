@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type winston from "winston";
+
+import { winstonLoggerInjectable } from "@freelensapp/logger";
 import type { SendMessageToChannel } from "@freelensapp/messaging";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import type { DiContainer } from "@ogre-tools/injectable";
-import { winstonLoggerInjectable } from "@freelensapp/logger";
+import type winston from "winston";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import closeRendererLogFileInjectable from "./close-renderer-log-file.injectable";
-import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
-import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import type IpcLogTransport from "./ipc-transport";
+import ipcLogTransportInjectable from "./ipc-transport.injectable";
+import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 
 describe("close renderer file logging", () => {
   let di: DiContainer;

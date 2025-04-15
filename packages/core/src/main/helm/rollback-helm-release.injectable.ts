@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
 
@@ -23,8 +25,10 @@ const rollbackHelmReleaseInjectable = getInjectable({
         "rollback",
         name,
         `${revision}`,
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
+        "--namespace",
+        namespace,
+        "--kubeconfig",
+        kubeconfigPath,
       ]);
 
       if (!result.callWasSuccessful) {

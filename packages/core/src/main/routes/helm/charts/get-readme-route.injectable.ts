@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getRouteInjectable } from "../../../router/router.injectable";
+
 import { apiPrefix } from "../../../../common/vars";
-import { route } from "../../../router/route";
 import getHelmChartReadmeInjectable from "../../../helm/helm-service/get-helm-chart-readme.injectable";
+import { route } from "../../../router/route";
+import { getRouteInjectable } from "../../../router/router.injectable";
 
 const getHelmChartReadmeRouteInjectable = getRouteInjectable({
   id: "get-helm-chart-readme-route",
@@ -20,11 +22,7 @@ const getHelmChartReadmeRouteInjectable = getRouteInjectable({
       const { repo, chart } = params;
 
       return {
-        response: await getHelmChartReadme(
-          repo,
-          chart,
-          query.get("version") ?? undefined,
-        ),
+        response: await getHelmChartReadme(repo, chart, query.get("version") ?? undefined),
       };
     });
   },

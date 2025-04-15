@@ -1,15 +1,16 @@
-import { HotbarSwitchCommand } from "../hotbar-switch-command";
 import type { RenderResult } from "@testing-library/react";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { renderFor } from "../../test-utils/renderFor";
-import directoryForUserDataInjectable
-  from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import createHotbarInjectable, { type CreateHotbar } from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
+import type { IComputedValue } from "mobx";
+import React from "react";
+import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import createHotbarInjectable, {
+  type CreateHotbar,
+} from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
+import type { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
 import hotbarsInjectable from "../../../../features/hotbar/storage/common/hotbars.injectable";
 import hotbarsStateInjectable from "../../../../features/hotbar/storage/common/state.injectable";
-import React from "react";
-import type { IComputedValue } from "mobx";
-import type { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
+import { renderFor } from "../../test-utils/renderFor";
+import { HotbarSwitchCommand } from "../hotbar-switch-command";
 
 describe("when there is one hotbar", () => {
   let result: RenderResult;
@@ -30,9 +31,7 @@ describe("when there is one hotbar", () => {
 
     hotbarsState.set(defaultHotbar.id, defaultHotbar);
 
-    result = render(
-      <HotbarSwitchCommand />,
-    );
+    result = render(<HotbarSwitchCommand />);
   });
 
   it("renders w/o errors", () => {
@@ -66,9 +65,7 @@ describe("when there are two hotbars", () => {
     hotbarsState.set(defaultHotbar.id, defaultHotbar);
     hotbarsState.set(nonDefaultHotbar.id, nonDefaultHotbar);
 
-    result = render(
-      <HotbarSwitchCommand />,
-    );
+    result = render(<HotbarSwitchCommand />);
   });
 
   it("renders w/o errors", () => {

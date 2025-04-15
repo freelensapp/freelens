@@ -1,22 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { ClusterIconSettingComponentProps } from "@freelensapp/cluster-settings";
+import {
+  clusterIconSettingsComponentInjectionToken,
+  clusterIconSettingsMenuInjectionToken,
+} from "@freelensapp/cluster-settings";
+import { type DiContainer, getInjectable } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
+import { runInAction } from "mobx";
 import React from "react";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { Cluster } from "../../../../common/cluster/cluster";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { ClusterIconSetting } from "../icon-settings";
-import { screen } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
-import userEvent from "@testing-library/user-event";
-import type { ClusterIconSettingComponentProps } from "@freelensapp/cluster-settings";
-import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelensapp/cluster-settings";
-import { runInAction } from "mobx";
-import { getInjectable, type DiContainer } from "@ogre-tools/injectable";
 
 const newMenuItem = getInjectable({
   id: "cluster-icon-settings-menu-test-item",
@@ -88,9 +92,7 @@ describe("Icon settings", () => {
       },
     });
 
-    rendered = render(
-      <ClusterIconSetting cluster={cluster} entity={clusterEntity} />,
-    );
+    rendered = render(<ClusterIconSetting cluster={cluster} entity={clusterEntity} />);
 
     user = userEvent.setup();
   });

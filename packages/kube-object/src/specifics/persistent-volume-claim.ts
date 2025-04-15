@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Pod } from "./pod";
 import { object } from "@freelensapp/utilities";
-import type { TypedLocalObjectReference, LabelSelector, NamespaceScopedMetadata } from "../api-types";
+import type { LabelSelector, NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { ResourceRequirements } from "../types/resource-requirements";
+import type { Pod } from "./pod";
 
 export interface PersistentVolumeClaimSpec {
   accessModes?: string[];

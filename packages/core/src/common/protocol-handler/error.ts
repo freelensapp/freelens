@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -20,7 +21,10 @@ export class RoutingError<Query> extends Error {
    */
   public extensionName?: string;
 
-  constructor(public type: RoutingErrorType, public url: Url<Query>) {
+  constructor(
+    public type: RoutingErrorType,
+    public url: Url<Query>,
+  ) {
     super("routing error");
   }
 

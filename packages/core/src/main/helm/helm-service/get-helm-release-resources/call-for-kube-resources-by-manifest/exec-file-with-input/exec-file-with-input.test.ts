@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import EventEmitter from "events";
+import { getPromiseStatus } from "@freelensapp/test-utils";
+import type { AsyncResult } from "@freelensapp/utilities";
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import type { ExecFileWithInput } from "./exec-file-with-input.injectable";
 import execFileWithInputInjectable from "./exec-file-with-input.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
-import { getPromiseStatus } from "@freelensapp/test-utils";
-import EventEmitter from "events";
 
 describe("exec-file-with-input", () => {
   let execFileWithInput: ExecFileWithInput;
@@ -67,14 +69,9 @@ describe("exec-file-with-input", () => {
     });
 
     it("calls for file with arguments", () => {
-      expect(execFileMock).toHaveBeenCalledWith(
-        "./some-file-path",
-        [
-          "some-arg",
-          "some-other-arg",
-        ],
-        { "maxBuffer": 8589934592 },
-      );
+      expect(execFileMock).toHaveBeenCalledWith("./some-file-path", ["some-arg", "some-other-arg"], {
+        maxBuffer: 8589934592,
+      });
     });
 
     it("calls with input", () => {

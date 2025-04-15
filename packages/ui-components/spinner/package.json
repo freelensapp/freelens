@@ -29,12 +29,9 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "lint": "lens-lint",
-    "lint:fix": "lens-lint --fix"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",

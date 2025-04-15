@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,15 +8,15 @@
 // API docs: https://react-window.now.sh
 import "./virtual-list.scss";
 
+import { cssNames, noop } from "@freelensapp/utilities";
+import isEqual from "lodash/isEqual";
+import { observer } from "mobx-react";
 import type { ForwardedRef } from "react";
 import React, { createRef, forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { observer } from "mobx-react";
+import AutoSizer from "react-virtualized-auto-sizer";
 import type { Align, ListChildComponentProps, ListOnScrollProps } from "react-window";
 import { VariableSizeList } from "react-window";
-import { cssNames, noop } from "@freelensapp/utilities";
 import type { TableRowProps } from "../table/table-row";
-import isEqual from "lodash/isEqual";
-import AutoSizer from "react-virtualized-auto-sizer";
 
 export interface VirtualListProps<T extends { getId(): string } | string> {
   items: T[];
@@ -63,11 +64,7 @@ function VirtualListInner<T extends { getId(): string } | string>({
       return;
     }
 
-    const index = items.findIndex(item => selectedItemId === (
-      typeof item === "string"
-        ? item
-        : item.getId()
-    ));
+    const index = items.findIndex((item) => selectedItemId === (typeof item === "string" ? item : item.getId()));
 
     if (index >= 0) {
       listRef.current?.scrollToItem(index, "smart");
@@ -117,22 +114,20 @@ function VirtualListInner<T extends { getId(): string } | string>({
 
   return (
     <div className={cssNames("VirtualList", className)}>
-      {
-        typeof fixedHeight === "number"
-          ? renderList(fixedHeight)
-          : (
-            <AutoSizer disableWidth>
-              {({ height = 0 }) => renderList(height)}
-            </AutoSizer>
-          )
-      }
+      {typeof fixedHeight === "number" ? (
+        renderList(fixedHeight)
+      ) : (
+        <AutoSizer disableWidth>{({ height = 0 }) => renderList(height)}</AutoSizer>
+      )}
     </div>
   );
 }
 
 export const VirtualList = forwardRef<VirtualListRef, VirtualListProps<string>>((props, ref) => (
   <VirtualListInner {...props} forwardedRef={ref} />
-)) as <T extends { getId(): string } | string>(props: VirtualListProps<T> & { ref?: ForwardedRef<VirtualListRef> }) => JSX.Element;
+)) as <T extends { getId(): string } | string>(
+  props: VirtualListProps<T> & { ref?: ForwardedRef<VirtualListRef> },
+) => JSX.Element;
 
 interface RowData<T extends { getId(): string } | string> {
   items: T[];
@@ -147,11 +142,7 @@ const Row = observer(<T extends { getId(): string } | string>(props: RowProps<T>
   const { index, style, data } = props;
   const { items, getRow } = data;
   const item = items[index];
-  const row = getRow?.((
-    typeof item == "string"
-      ? index
-      : item.getId()
-  ) as never);
+  const row = getRow?.((typeof item == "string" ? index : item.getId()) as never);
 
   if (!row) return null;
 

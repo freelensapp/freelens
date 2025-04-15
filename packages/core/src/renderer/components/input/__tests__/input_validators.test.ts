@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -18,10 +19,7 @@ describe("input validation tests", () => {
       isUrl,
     );
 
-    it.each([
-      "abc@news.com",
-      "abc@news.co.uk",
-    ])("Given '%s' is a valid email, emailOrUrl matches", (input) => {
+    it.each(["abc@news.com", "abc@news.co.uk"])("Given '%s' is a valid email, emailOrUrl matches", (input) => {
       expect(emailOrUrl.validate(input)).toBe(true);
     });
 
@@ -32,10 +30,7 @@ describe("input validation tests", () => {
       expect(emailOrUrl.validate(input)).toBe(true);
     });
 
-    it.each([
-      "hello",
-      "57",
-    ])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", (input) => {
+    it.each(["hello", "57"])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", (input) => {
       expect(emailOrUrl.validate(input)).toBe(false);
     });
   });
@@ -49,10 +44,7 @@ describe("input validation tests", () => {
       isUrl,
     );
 
-    it.each([
-      "abc@news.com",
-      "abc@news.co.uk",
-    ])("Given '%s' is a valid email, emailOrUrl matches", async (input) => {
+    it.each(["abc@news.com", "abc@news.co.uk"])("Given '%s' is a valid email, emailOrUrl matches", async (input) => {
       try {
         await emailOrUrl.validate(input);
       } catch {
@@ -71,17 +63,17 @@ describe("input validation tests", () => {
       }
     });
 
-    it.each([
-      "hello",
-      "57",
-    ])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", async (input) => {
-      try {
-        await emailOrUrl.validate(input);
-        fail("Should throw on invalid input");
-      } catch {
-        // We want this to happen
-      }
-    });
+    it.each(["hello", "57"])(
+      "Given '%s' is neither a valid email nor URL, emailOrUrl does not match",
+      async (input) => {
+        try {
+          await emailOrUrl.validate(input);
+          fail("Should throw on invalid input");
+        } catch {
+          // We want this to happen
+        }
+      },
+    );
   });
 
   describe("isEmail tests", () => {
@@ -103,7 +95,10 @@ describe("input validation tests", () => {
 
   describe("isUrl tests", () => {
     const cases: TextValidationCase[] = [
-      ["https://github-production-registry-package-file-4f11e5.s3.amazonaws.com/307985088/68bbbf00-309f-11eb-8457-a15e4efe9e77?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20201127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20201127T123754Z&X-Amz-Expires=300&X-Amz-Signature=9b8167f00685a20d980224d397892195abc187cdb2934cefb79edcd7ec600f78&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=0&response-content-disposition=filename%3Dstarboard-lens-extension-0.0.1-alpha.1-npm.tgz&response-content-type=application%2Foctet-stream", true],
+      [
+        "https://github-production-registry-package-file-4f11e5.s3.amazonaws.com/307985088/68bbbf00-309f-11eb-8457-a15e4efe9e77?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20201127%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20201127T123754Z&X-Amz-Expires=300&X-Amz-Signature=9b8167f00685a20d980224d397892195abc187cdb2934cefb79edcd7ec600f78&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=0&response-content-disposition=filename%3Dstarboard-lens-extension-0.0.1-alpha.1-npm.tgz&response-content-type=application%2Foctet-stream",
+        true,
+      ],
       ["google.ca", false],
       ["", false],
       [".", false],

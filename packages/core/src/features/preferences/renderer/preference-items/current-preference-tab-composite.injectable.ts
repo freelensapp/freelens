@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import { computed } from "mobx";
-import type { PreferenceTab, PreferenceItemTypes } from "./preference-item-injection-token";
-import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
-import { filter, map } from "lodash/fp";
+
 import { pipeline } from "@ogre-tools/fp";
+import { getInjectable } from "@ogre-tools/injectable";
+import { filter, map } from "lodash/fp";
+import { computed } from "mobx";
 import { getCompositeNormalization } from "../../../../common/utils/composite/get-composite-normalization/get-composite-normalization";
-import preferencesCompositeInjectable from "./preferences-composite.injectable";
-import type { PreferenceTabsRoot } from "./preference-tab-root";
+import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
+import type { PreferenceItemTypes, PreferenceTab } from "./preference-item-injection-token";
+import type { PreferenceTabsRoot } from "./preference-tab-root";
+import preferencesCompositeInjectable from "./preferences-composite.injectable";
 
 const currentPreferenceTabCompositeInjectable = getInjectable({
   id: "current-preference-page-composite",
@@ -45,7 +47,7 @@ const isPreferenceTab = (
 
 const hasMatchingPathId =
   (preferenceTabId: string) =>
-    ({ value: { pathId }}: Composite<PreferenceTab>) =>
-      pathId === preferenceTabId;
+  ({ value: { pathId } }: Composite<PreferenceTab>) =>
+    pathId === preferenceTabId;
 
 export default currentPreferenceTabCompositeInjectable;

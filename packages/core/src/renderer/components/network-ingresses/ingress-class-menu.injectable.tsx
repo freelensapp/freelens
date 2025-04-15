@@ -1,23 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import { Icon } from "@freelensapp/icon";
+import type { IngressClass } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
-import type { KubeObjectMenuItemComponent, KubeObjectMenuItem } from "../kube-object-menu/kube-object-menu-item-injection-token";
-import { kubeObjectMenuItemInjectionToken } from "../kube-object-menu/kube-object-menu-item-injection-token";
-import { ingressClassSetDefaultInjectable } from "./ingress-class-set-default.injectable";
-import { MenuItem } from "../menu";
-import type { IngressClass } from "@freelensapp/kube-object";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
-import { Icon } from "@freelensapp/icon";
+import React from "react";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import type {
+  KubeObjectMenuItem,
+  KubeObjectMenuItemComponent,
+} from "../kube-object-menu/kube-object-menu-item-injection-token";
+import { kubeObjectMenuItemInjectionToken } from "../kube-object-menu/kube-object-menu-item-injection-token";
+import { MenuItem } from "../menu";
+import { ingressClassSetDefaultInjectable } from "./ingress-class-set-default.injectable";
 
-export interface IngressClassMenuProps extends KubeObjectMenuProps<IngressClass> {
-}
+export interface IngressClassMenuProps extends KubeObjectMenuProps<IngressClass> {}
 
 export interface Dependencies {
   setDefault: (item: IngressClass) => Promise<void>;
@@ -25,12 +28,7 @@ export interface Dependencies {
 }
 
 export function NonInjectedIngressClassMenu(props: IngressClassMenuProps & Dependencies) {
-  const {
-    object,
-    toolbar,
-    setDefault,
-    hideDetails,
-  } = props;
+  const { object, toolbar, setDefault, hideDetails } = props;
 
   function markItemAsDefaultIngressClass() {
     void setDefault(object);
@@ -40,10 +38,7 @@ export function NonInjectedIngressClassMenu(props: IngressClassMenuProps & Depen
   return (
     <>
       <MenuItem onClick={markItemAsDefaultIngressClass}>
-        <Icon
-          material="star"
-          tooltip="Set as default"
-          interactive={toolbar} />
+        <Icon material="star" tooltip="Set as default" interactive={toolbar} />
         <span className="title">Set as default</span>
       </MenuItem>
     </>
@@ -57,7 +52,6 @@ export const IngressClassMenu = withInjectables<Dependencies, IngressClassMenuPr
     hideDetails: di.inject(hideDetailsInjectable),
   }),
 });
-
 
 const ingressClassMenuInjectable = getInjectable({
   id: "ingress-class-kube-object-menu",

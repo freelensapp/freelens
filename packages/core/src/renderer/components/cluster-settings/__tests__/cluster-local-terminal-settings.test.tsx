@@ -1,21 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import type { Stats } from "fs";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { waitFor } from "@testing-library/react";
-import { ClusterLocalTerminalSetting } from "../local-terminal-settings";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
-import type { Stats } from "fs";
+import React from "react";
 import { Cluster } from "../../../../common/cluster/cluster";
+import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";
+import statInjectable from "../../../../common/fs/stat.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import statInjectable from "../../../../common/fs/stat.injectable";
-import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";
+import { ClusterLocalTerminalSetting } from "../local-terminal-settings";
 
 describe("ClusterLocalTerminalSettings", () => {
   let render: DiRender;
@@ -33,10 +34,7 @@ describe("ClusterLocalTerminalSettings", () => {
 
     di.override(statInjectable, () => statMock);
 
-    di.override(
-      showErrorNotificationInjectable,
-      () => showErrorNotificationMock,
-    );
+    di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
     loadKubeconfigMock = jest.fn();
     di.override(loadKubeconfigInjectable, () => loadKubeconfigMock);
@@ -60,7 +58,7 @@ describe("ClusterLocalTerminalSettings", () => {
         defaultNamespace: "kube-system",
       },
     });
-    const dom = render(<ClusterLocalTerminalSetting cluster={cluster}/>);
+    const dom = render(<ClusterLocalTerminalSetting cluster={cluster} />);
 
     expect(await dom.findByDisplayValue("/foobar")).toBeDefined();
     expect(await dom.findByDisplayValue("kube-system")).toBeDefined();
@@ -80,7 +78,7 @@ describe("ClusterLocalTerminalSettings", () => {
       },
     });
 
-    const dom = render(<ClusterLocalTerminalSetting cluster={cluster}/>);
+    const dom = render(<ClusterLocalTerminalSetting cluster={cluster} />);
 
     expect(await dom.findByDisplayValue("/foobar")).toBeDefined();
     expect(await dom.findByPlaceholderText("blat")).toBeDefined();
@@ -100,7 +98,7 @@ describe("ClusterLocalTerminalSettings", () => {
       },
     });
 
-    const dom = render(<ClusterLocalTerminalSetting cluster={cluster}/>);
+    const dom = render(<ClusterLocalTerminalSetting cluster={cluster} />);
     const dn = await dom.findByTestId("default-namespace");
 
     await user.click(dn);
@@ -129,7 +127,7 @@ describe("ClusterLocalTerminalSettings", () => {
       kubeConfigPath: "/some/path",
     });
 
-    const dom = render(<ClusterLocalTerminalSetting cluster={cluster}/>);
+    const dom = render(<ClusterLocalTerminalSetting cluster={cluster} />);
     const dn = await dom.findByTestId("working-directory");
 
     await user.click(dn);
@@ -159,7 +157,7 @@ describe("ClusterLocalTerminalSettings", () => {
       kubeConfigPath: "/some/path",
     });
 
-    const dom = render(<ClusterLocalTerminalSetting cluster={cluster}/>);
+    const dom = render(<ClusterLocalTerminalSetting cluster={cluster} />);
     const dn = await dom.findByTestId("working-directory");
 
     await user.click(dn);

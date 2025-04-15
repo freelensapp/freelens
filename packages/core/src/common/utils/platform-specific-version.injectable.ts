@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -17,13 +18,12 @@ const platformSpecificVersionInjectable = getInjectable({
   instantiate: (di: DiContainerForInjection) => {
     const targetPlatform = di.inject(platformInjectable);
 
-    return <T>(token: InjectionToken<PlatformSpecific<T>, void>) => (
-      di.injectMany(token)
-        .find(impl => impl.platform === targetPlatform)
-        ?.instantiate()
-    );
+    return <T>(token: InjectionToken<PlatformSpecific<T>, void>) =>
+      di
+        .injectMany(token)
+        .find((impl) => impl.platform === targetPlatform)
+        ?.instantiate();
   },
 });
 
 export default platformSpecificVersionInjectable;
-

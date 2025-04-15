@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -14,8 +15,5 @@ const anyKubeconfig = /^kubeconfig$/i;
  * @param env The current copy of env
  */
 export function clearKubeconfigEnvVars(env: Partial<Record<string, string>>): Partial<Record<string, string>> {
-  return Object.fromEntries(
-    Object.entries(env)
-      .filter(([key]) => anyKubeconfig.exec(key) === null),
-  );
+  return Object.fromEntries(Object.entries(env).filter(([key]) => anyKubeconfig.exec(key) === null));
 }

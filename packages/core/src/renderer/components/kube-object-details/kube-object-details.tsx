@@ -1,24 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./kube-object-details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import type { IComputedValue } from "mobx";
-import { Drawer } from "../drawer";
 import type { KubeObject } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
-import { KubeObjectMenu } from "../kube-object-menu";
-import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { Drawer } from "../drawer";
+import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
-import kubeObjectDetailItemsInjectable from "./kube-object-detail-items/kube-object-detail-items.injectable";
+import { KubeObjectMenu } from "../kube-object-menu";
 import type { CurrentKubeObject } from "./current-kube-object-in-details.injectable";
 import currentKubeObjectInDetailsInjectable from "./current-kube-object-in-details.injectable";
+import kubeObjectDetailItemsInjectable from "./kube-object-detail-items/kube-object-detail-items.injectable";
 
 export interface KubeObjectDetailsProps<Kube extends KubeObject = KubeObject> {
   className?: string;
@@ -32,11 +33,7 @@ interface Dependencies {
 }
 
 const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
-  const {
-    detailComponents,
-    hideDetails,
-    kubeObject,
-  } = props;
+  const { detailComponents, hideDetails, kubeObject } = props;
 
   const currentKubeObject = kubeObject.value.get();
   const isLoading = kubeObject.pending.get();
@@ -45,15 +42,11 @@ const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
     <Drawer
       className="KubeObjectDetails flex column"
       open={Boolean(isLoading || currentKubeObject)}
-      title={(
-        currentKubeObject?.object
-          ? `${currentKubeObject.object.kind}: ${currentKubeObject.object.getName()}`
-          : ""
-      )}
-      toolbar={currentKubeObject?.object && <KubeObjectMenu object={currentKubeObject.object} toolbar={true}/>}
+      title={currentKubeObject?.object ? `${currentKubeObject.object.kind}: ${currentKubeObject.object.getName()}` : ""}
+      toolbar={currentKubeObject?.object && <KubeObjectMenu object={currentKubeObject.object} toolbar={true} />}
       onClose={hideDetails}
     >
-      {isLoading && <Spinner center/>}
+      {isLoading && <Spinner center />}
       {currentKubeObject?.error && (
         <div className="box center">
           Resource loading has failed:
@@ -62,10 +55,9 @@ const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
       )}
       {currentKubeObject?.object && (
         <>
-          {
-            detailComponents.get()
-              .map((Component, index) => <Component key={index} object={currentKubeObject.object} />)
-          }
+          {detailComponents.get().map((Component, index) => (
+            <Component key={index} object={currentKubeObject.object} />
+          ))}
         </>
       )}
     </Drawer>

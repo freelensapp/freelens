@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
-import type { Disposer } from "@freelensapp/utilities";
-import type { RunnableSync, RunSync, RunnableSyncWithId } from "./types";
-import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
-import type TypedEventEmitter from "typed-emitter";
+
 import EventEmitter from "events";
+import type { Disposer } from "@freelensapp/utilities";
+import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
+import type TypedEventEmitter from "typed-emitter";
+import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
+import type { RunSync, RunnableSync, RunnableSyncWithId } from "./types";
 
 export type RunManySync = <Param>(injectionToken: InjectionToken<RunnableSync<Param>, void>) => RunSync<Param>;
 
@@ -55,7 +57,7 @@ const executeRunnableWith = <Param>(param: Param) => {
   return (runnable: RunnableSyncWithId<Param>) => {
     barrier.onceParentsAreFinished(
       runnable.id,
-      runnable.runAfter.map(r => r.id),
+      runnable.runAfter.map((r) => r.id),
       () => runnable.run(param),
     );
   };
@@ -64,14 +66,15 @@ const executeRunnableWith = <Param>(param: Param) => {
 export function runManySyncFor(di: DiContainerForInjection): RunManySync {
   const convertToWithId = convertToWithIdWith(di);
 
-  return <Param>(injectionToken: InjectionToken<RunnableSync<Param>, void>) => (param: Param): undefined => {
-    const executeRunnable = executeRunnableWith(param);
-    const allRunnables = di.injectManyWithMeta(injectionToken).map(convertToWithId);
+  return <Param>(injectionToken: InjectionToken<RunnableSync<Param>, void>) =>
+    (param: Param): undefined => {
+      const executeRunnable = executeRunnableWith(param);
+      const allRunnables = di.injectManyWithMeta(injectionToken).map(convertToWithId);
 
-    verifyRunnablesAreDAG(injectionToken.id, allRunnables);
+      verifyRunnablesAreDAG(injectionToken.id, allRunnables);
 
-    allRunnables.forEach(executeRunnable);
+      allRunnables.forEach(executeRunnable);
 
-    return undefined;
-  };
+      return undefined;
+    };
 }

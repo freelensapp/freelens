@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
@@ -15,7 +17,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedNamespaceKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedNamespaceKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -29,12 +34,15 @@ function NonInjectedNamespaceKubernetesClusterSettings({ entity, getClusterById 
   );
 }
 
-const NamespaceKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedNamespaceKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const NamespaceKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedNamespaceKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const namespaceKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "namespace-kubernetes-cluster-entity-settings",

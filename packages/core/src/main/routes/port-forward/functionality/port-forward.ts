@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
+
 import type { ChildProcessWithoutNullStreams } from "child_process";
 import { spawn } from "child_process";
+import type { Logger } from "@freelensapp/logger";
 import * as tcpPortUsed from "tcp-port-used";
 import { TypedRegEx } from "typed-regex";
-import type { Logger } from "@freelensapp/logger";
+import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
 const internalPortMatcher = "^forwarding from (?<address>.+) ->";
 const internalPortRegex = Object.assign(TypedRegEx(internalPortMatcher, "i"), {
@@ -33,13 +35,14 @@ export class PortForward {
   public static portForwards: PortForward[] = [];
 
   static getPortforward(forward: PortForwardArgs) {
-    return PortForward.portForwards.find((pf) => (
-      pf.clusterId == forward.clusterId &&
-      pf.kind == forward.kind &&
-      pf.name == forward.name &&
-      pf.namespace == forward.namespace &&
-      pf.port == forward.port
-    ));
+    return PortForward.portForwards.find(
+      (pf) =>
+        pf.clusterId == forward.clusterId &&
+        pf.kind == forward.kind &&
+        pf.name == forward.name &&
+        pf.namespace == forward.namespace &&
+        pf.port == forward.port,
+    );
   }
 
   public process?: ChildProcessWithoutNullStreams;
@@ -50,7 +53,11 @@ export class PortForward {
   public port: number;
   public forwardPort: number;
 
-  constructor(private dependencies: PortForwardDependencies, public pathToKubeConfig: string, args: PortForwardArgs) {
+  constructor(
+    private dependencies: PortForwardDependencies,
+    public pathToKubeConfig: string,
+    args: PortForwardArgs,
+  ) {
     this.clusterId = args.clusterId;
     this.kind = args.kind;
     this.namespace = args.namespace;
@@ -62,9 +69,11 @@ export class PortForward {
   public async start() {
     const kubectlBin = await this.dependencies.getKubectlBinPath(true);
     const args = [
-      "--kubeconfig", this.pathToKubeConfig,
+      "--kubeconfig",
+      this.pathToKubeConfig,
       "port-forward",
-      "-n", this.namespace,
+      "-n",
+      this.namespace,
       `${this.kind}/${this.name}`,
       `${this.forwardPort ?? ""}:${this.port}`,
     ];

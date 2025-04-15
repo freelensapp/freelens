@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { Composite } from "../get-composite/get-composite";
-import { findComposite } from "./find-composite";
 import { getCompositeFor } from "../get-composite/get-composite";
+import { findComposite } from "./find-composite";
 
 describe("find-composite", () => {
   let composite: Composite<{ id: string; parentId?: string }>;
@@ -40,22 +42,14 @@ describe("find-composite", () => {
   });
 
   it("when finding grandchild using path, does so", () => {
-    const actual = findComposite(
-      "some-root-id",
-      "some-child-id",
-      "some-grandchild-id",
-    )(composite);
+    const actual = findComposite("some-root-id", "some-child-id", "some-grandchild-id")(composite);
 
     expect(actual.id).toBe("some-grandchild-id");
   });
 
   it("when finding with non existing leaf-level path, throws", () => {
     expect(() => {
-      findComposite(
-        "some-root-id",
-        "some-child-id",
-        "some-non-existing-grandchild-id",
-      )(composite);
+      findComposite("some-root-id", "some-child-id", "some-non-existing-grandchild-id")(composite);
     }).toThrow(`Tried to find 'some-root-id -> some-child-id -> some-non-existing-grandchild-id' from a composite, but found nothing.
 
 Node 'some-root-id -> some-child-id' had only following children:
@@ -65,11 +59,7 @@ some-other-grandchild-id`);
 
   it("when finding with non-existing mid-level path, throws", () => {
     expect(() => {
-      findComposite(
-        "some-root-id",
-        "some-non-existing-child-id",
-        "some-non-existing-grandchild-id",
-      )(composite);
+      findComposite("some-root-id", "some-non-existing-child-id", "some-non-existing-grandchild-id")(composite);
     }).toThrow(`Tried to find 'some-root-id -> some-non-existing-child-id -> some-non-existing-grandchild-id' from a composite, but found nothing.
 
 Node 'some-root-id' had only following children:

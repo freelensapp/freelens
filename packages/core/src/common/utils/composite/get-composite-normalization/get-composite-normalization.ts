@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { Composite } from "../get-composite/get-composite";
 
 export const getCompositeNormalization = <T>(composite: Composite<T>) => {
@@ -16,9 +18,7 @@ export const getCompositeNormalization = <T>(composite: Composite<T>) => {
     return [
       pathAndCompositeTuple,
 
-      ...composite.children.flatMap((child) =>
-        _normalizeComposite(child, currentPath),
-      ),
+      ...composite.children.flatMap((child) => _normalizeComposite(child, currentPath)),
     ];
   };
 

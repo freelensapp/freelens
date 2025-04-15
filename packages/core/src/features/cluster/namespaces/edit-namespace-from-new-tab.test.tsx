@@ -1,31 +1,33 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { JsonApiErrorParsed } from "@freelensapp/json-api";
+import { Namespace } from "@freelensapp/kube-object";
+import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import type { ShowNotification } from "@freelensapp/notifications";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import React from "react";
+import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
+import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
+import hostedClusterIdInjectable from "../../../renderer/cluster-frame-context/hosted-cluster-id.injectable";
+import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
 import createEditResourceTabInjectable from "../../../renderer/components/dock/edit-resource/edit-resource-tab.injectable";
 import getRandomIdForEditResourceTabInjectable from "../../../renderer/components/dock/edit-resource/get-random-id-for-edit-resource-tab.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
-import { Namespace } from "@freelensapp/kube-object";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
-import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
-import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
-import hostedClusterIdInjectable from "../../../renderer/cluster-frame-context/hosted-cluster-id.injectable";
-import type { ApiKubePatch } from "../../../renderer/k8s/api-kube-patch.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
-import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injectable";
 import apiKubeGetInjectable from "../../../renderer/k8s/api-kube-get.injectable";
-import type { BaseKubeJsonApiObjectMetadata, KubeObjectScope, KubeJsonApiData } from "@freelensapp/kube-object";
-import { JsonApiErrorParsed } from "@freelensapp/json-api";
-import type { ShowNotification } from "@freelensapp/notifications";
-import React from "react";
+import type { ApiKubePatch } from "../../../renderer/k8s/api-kube-patch.injectable";
+import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injectable";
 
 describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;
@@ -40,10 +42,7 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
     builder.setEnvironmentToClusterFrame();
 
     builder.beforeWindowStart(({ windowDi }) => {
-      windowDi.override(
-        directoryForLensLocalStorageInjectable,
-        () => "/some-directory-for-lens-local-storage",
-      );
+      windowDi.override(directoryForLensLocalStorageInjectable, () => "/some-directory-for-lens-local-storage");
 
       windowDi.override(hostedClusterIdInjectable, () => "some-cluster-id");
 
@@ -98,39 +97,27 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
-    xit("calls for namespaces", () => {
+    xit("calls for namespaces", () => {});
 
-    });
-
-    xit("shows spinner", () => {
-
-    });
+    xit("shows spinner", () => {});
 
     describe("when namespaces resolve", () => {
-      beforeEach(() => {
-
-      });
+      beforeEach(() => {});
 
       xit("renders", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      xit("does not show spinner anymore", () => {
-
-      });
+      xit("does not show spinner anymore", () => {});
 
       describe("when clicking the context menu for a namespace", () => {
-        beforeEach(() => {
-
-        });
+        beforeEach(() => {});
 
         xit("renders", () => {
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
-        xit("does not show edit resource tab yet", () => {
-
-        });
+        xit("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
           beforeEach(() => {
@@ -147,28 +134,26 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
           });
 
           it("shows dock tab for editing namespace", () => {
-            expect(
-              rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-            ).toBeInTheDocument();
+            expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
           });
 
           it("shows spinner in the dock tab", () => {
-            expect(
-              rendered.getByTestId("edit-resource-tab-spinner"),
-            ).toBeInTheDocument();
+            expect(rendered.getByTestId("edit-resource-tab-spinner")).toBeInTheDocument();
           });
 
           it("calls for namespace", () => {
-            expect(apiKubeGetMock).toHaveBeenCalledWith(
-              "/api/some-api-version/namespaces/some-uid",
-            );
+            expect(apiKubeGetMock).toHaveBeenCalledWith("/api/some-api-version/namespaces/some-uid");
           });
 
           describe("when call for namespace resolves with namespace", () => {
-            let someNamespaceData: KubeJsonApiData<BaseKubeJsonApiObjectMetadata<KubeObjectScope.Cluster>, unknown, unknown>;
+            let someNamespaceData: KubeJsonApiData<
+              BaseKubeJsonApiObjectMetadata<KubeObjectScope.Cluster>,
+              unknown,
+              unknown
+            >;
 
             beforeEach(async () => {
-              someNamespaceData = ({
+              someNamespaceData = {
                 apiVersion: "some-api-version",
                 kind: "Namespace",
 
@@ -179,7 +164,7 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
                   somePropertyToBeRemoved: "some-value",
                   somePropertyToBeChanged: "some-old-value",
                 },
-              });
+              };
 
               await apiKubeGetMock.resolve(someNamespaceData);
             });
@@ -189,15 +174,11 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
             });
 
             it("does not show spinner anymore", () => {
-              expect(
-                rendered.queryByTestId("edit-resource-tab-spinner"),
-              ).not.toBeInTheDocument();
+              expect(rendered.queryByTestId("edit-resource-tab-spinner")).not.toBeInTheDocument();
             });
 
             it("has the configuration in editor", () => {
-              const input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              ) as HTMLTextAreaElement;
+              const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLTextAreaElement;
 
               expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
@@ -213,9 +194,7 @@ metadata:
 
             describe("given no changes in the configuration, when selecting to save", () => {
               beforeEach(() => {
-                const saveButton = rendered.getByTestId(
-                  "save-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                 fireEvent.click(saveButton);
               });
@@ -228,13 +207,15 @@ metadata:
                 expect(apiKubePatchMock).toHaveBeenCalledWith(
                   "/api/some-api-version/namespaces/some-uid",
                   {
-                    data: [{
-                      op: "add",
-                      path: "/metadata/annotations",
-                      value: {
-                        "freelens.app/resource-version": "some-api-version",
+                    data: [
+                      {
+                        op: "add",
+                        path: "/metadata/annotations",
+                        value: {
+                          "freelens.app/resource-version": "some-api-version",
+                        },
                       },
-                    }],
+                    ],
                   },
                   {
                     headers: {
@@ -245,23 +226,17 @@ metadata:
               });
 
               it("shows spinner", () => {
-                expect(
-                  rendered.getByTestId("saving-edit-resource-from-tab-for-some-first-tab-id"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("saving-edit-resource-from-tab-for-some-first-tab-id")).toBeInTheDocument();
               });
 
               it("save button is disabled", () => {
-                const saveButton = rendered.getByTestId(
-                  "save-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                 expect(saveButton).toHaveAttribute("disabled");
               });
 
               it("save and close button is disabled", () => {
-                const saveButton = rendered.getByTestId(
-                  "save-and-close-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-and-close-edit-resource-from-tab-for-some-first-tab-id");
 
                 expect(saveButton).toHaveAttribute("disabled");
               });
@@ -287,9 +262,7 @@ metadata:
                 });
 
                 it("save button is enabled", () => {
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-first-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                   expect(saveButton).not.toHaveAttribute("disabled");
                 });
@@ -311,9 +284,7 @@ metadata:
                 });
 
                 it("does not close the dock tab", () => {
-                  expect(
-                    rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                  ).toBeInTheDocument();
+                  expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
                 });
               });
 
@@ -327,15 +298,11 @@ metadata:
                 });
 
                 it("does not show spinner anymore", () => {
-                  expect(
-                    rendered.queryByTestId("edit-resource-tab-spinner"),
-                  ).not.toBeInTheDocument();
+                  expect(rendered.queryByTestId("edit-resource-tab-spinner")).not.toBeInTheDocument();
                 });
 
                 it("save button is enabled", () => {
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-first-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                   expect(saveButton).not.toHaveAttribute("disabled");
                 });
@@ -357,18 +324,14 @@ metadata:
                 });
 
                 it("does not close the dock tab", () => {
-                  expect(
-                    rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                  ).toBeInTheDocument();
+                  expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
                 });
               });
             });
 
             describe("when selecting to save and close", () => {
               beforeEach(() => {
-                const saveButton = rendered.getByTestId(
-                  "save-and-close-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-and-close-edit-resource-from-tab-for-some-first-tab-id");
 
                 fireEvent.click(saveButton);
               });
@@ -378,9 +341,7 @@ metadata:
               });
 
               it("does not close the tab yet", () => {
-                expect(
-                  rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
               });
 
               describe("when saving resolves with success", () => {
@@ -398,9 +359,7 @@ metadata:
                 });
 
                 it("closes the dock tab", () => {
-                  expect(
-                    rendered.queryByTestId("dock-tab-for-some-first-tab-id"),
-                  ).not.toBeInTheDocument();
+                  expect(rendered.queryByTestId("dock-tab-for-some-first-tab-id")).not.toBeInTheDocument();
                 });
               });
 
@@ -414,40 +373,41 @@ metadata:
                 });
 
                 it("does not close the dock tab", () => {
-                  expect(
-                    rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                  ).toBeInTheDocument();
+                  expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
                 });
               });
 
               describe("when saving failings with a JsonApiError", () => {
                 beforeEach(async () => {
-                  await apiKubePatchMock.reject(new JsonApiErrorParsed(
-                    {
-                      kind: "Status",
-                      apiVersion: "v1",
-                      metadata: {},
-                      status: "Failure",
-                      message: "PodDisruptionBudget.policy \"frontend-pdb\" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0",
-                      reason: "Invalid",
-                      details: {
-                        name: "frontend-pdb",
-                        group: "policy",
-                        kind: "PodDisruptionBudget",
-                        causes: [
-                          {
-                            reason: "FieldValueInvalid",
-                            message: "Invalid value: -10: must be greater than or equal to 0",
-                            field: "spec.minAvailable",
-                          },
-                        ],
+                  await apiKubePatchMock.reject(
+                    new JsonApiErrorParsed(
+                      {
+                        kind: "Status",
+                        apiVersion: "v1",
+                        metadata: {},
+                        status: "Failure",
+                        message:
+                          'PodDisruptionBudget.policy "frontend-pdb" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0',
+                        reason: "Invalid",
+                        details: {
+                          name: "frontend-pdb",
+                          group: "policy",
+                          kind: "PodDisruptionBudget",
+                          causes: [
+                            {
+                              reason: "FieldValueInvalid",
+                              message: "Invalid value: -10: must be greater than or equal to 0",
+                              field: "spec.minAvailable",
+                            },
+                          ],
+                        },
+                        code: 422,
                       },
-                      code: 422,
-                    },
-                    [
-                      "PodDisruptionBudget.policy \"frontend-pdb\" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0",
-                    ],
-                  ));
+                      [
+                        'PodDisruptionBudget.policy "frontend-pdb" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0',
+                      ],
+                    ),
+                  );
                 });
 
                 it("renders", () => {
@@ -455,17 +415,16 @@ metadata:
                 });
 
                 it("does not close the dock tab", () => {
-                  expect(
-                    rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                  ).toBeInTheDocument();
+                  expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
                 });
 
                 it("shows an error notification with a condensed message", () => {
                   expect(showErrorNotificationMock).toBeCalledWith(
                     <p>
-                      {"Failed to save resource:"}
-                      {" "}
-                      {'PodDisruptionBudget.policy "frontend-pdb" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0'}
+                      {"Failed to save resource: "}
+                      {
+                        'PodDisruptionBudget.policy "frontend-pdb" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0'
+                      }
                     </p>,
                   );
                 });
@@ -474,9 +433,7 @@ metadata:
 
             describe("when selecting to cancel", () => {
               beforeEach(() => {
-                const cancelButton = rendered.getByTestId(
-                  "cancel-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const cancelButton = rendered.getByTestId("cancel-edit-resource-from-tab-for-some-first-tab-id");
 
                 fireEvent.click(cancelButton);
               });
@@ -486,17 +443,13 @@ metadata:
               });
 
               it("does not have dock tab anymore", () => {
-                expect(
-                  rendered.queryByTestId("dock-tab-for-some-first-tab-id"),
-                ).not.toBeInTheDocument();
+                expect(rendered.queryByTestId("dock-tab-for-some-first-tab-id")).not.toBeInTheDocument();
               });
             });
 
             describe("given change in configuration", () => {
               beforeEach(() => {
-                const input = rendered.getByTestId(
-                  "monaco-editor-for-some-first-tab-id",
-                ) as HTMLInputElement;
+                const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLInputElement;
 
                 fireEvent.change(input, {
                   target: {
@@ -519,9 +472,7 @@ metadata:
               });
 
               it("has the changed configuration in editor", () => {
-                const input = rendered.getByTestId(
-                  "monaco-editor-for-some-first-tab-id",
-                ) as HTMLTextAreaElement;
+                const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLTextAreaElement;
 
                 expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
@@ -536,17 +487,13 @@ metadata:
               });
 
               it("stores the changed configuration", async () => {
-                const readJsonFile = windowDi.inject(
-                  readJsonFileInjectable,
-                );
+                const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
-                const actual = await readJsonFile(
+                const actual = (await readJsonFile(
                   "/some-directory-for-lens-local-storage/some-cluster-id.json",
-                ) as Record<string, Record<string, unknown>>;
+                )) as Record<string, Record<string, unknown>>;
 
-                expect(
-                  actual.edit_resource_store["some-first-tab-id"],
-                ).toEqual({
+                expect(actual.edit_resource_store["some-first-tab-id"]).toEqual({
                   resource: "/api/some-api-version/namespaces/some-uid",
                   firstDraft: `apiVersion: some-api-version
 kind: Namespace
@@ -573,9 +520,7 @@ metadata:
 
               describe("when selecting to save", () => {
                 beforeEach(() => {
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-first-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                   fireEvent.click(saveButton);
                 });
@@ -624,9 +569,7 @@ metadata:
                     },
                   });
 
-                  const input = rendered.getByTestId(
-                    "monaco-editor-for-some-first-tab-id",
-                  ) as HTMLInputElement;
+                  const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLInputElement;
 
                   fireEvent.change(input, {
                     target: {
@@ -644,12 +587,9 @@ metadata:
                     },
                   });
 
-
                   apiKubePatchMock.mockClear();
 
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-first-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                   fireEvent.click(saveButton);
 
@@ -676,9 +616,7 @@ metadata:
 
             describe("given invalid change in configuration", () => {
               beforeEach(() => {
-                const input = rendered.getByTestId(
-                  "monaco-editor-for-some-first-tab-id",
-                ) as HTMLInputElement;
+                const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLInputElement;
 
                 fireEvent.change(input, {
                   target: {
@@ -692,36 +630,26 @@ metadata:
               });
 
               it("has the changed configuration in editor", () => {
-                const input = rendered.getByTestId(
-                  "monaco-editor-for-some-first-tab-id",
-                ) as HTMLTextAreaElement;
+                const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLTextAreaElement;
 
                 expect(input.value).toBe(`@some-invalid-configuration@`);
               });
 
               it("save button is disabled", () => {
-                const saveButton = rendered.getByTestId(
-                  "save-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                 expect(saveButton).toHaveAttribute("disabled");
               });
 
               it("save and close button is disabled", () => {
-                const saveButton = rendered.getByTestId(
-                  "save-and-close-edit-resource-from-tab-for-some-first-tab-id",
-                );
+                const saveButton = rendered.getByTestId("save-and-close-edit-resource-from-tab-for-some-first-tab-id");
 
                 expect(saveButton).toHaveAttribute("disabled");
               });
 
               describe("when valid change in configuration", () => {
-
                 beforeEach(() => {
-                  const input = rendered.getByTestId(
-                    "monaco-editor-for-some-first-tab-id",
-                  ) as HTMLInputElement;
-
+                  const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLInputElement;
 
                   fireEvent.change(input, {
                     target: {
@@ -735,13 +663,10 @@ metadata:
 `,
                     },
                   });
-
                 });
 
                 it("save button is enabled", () => {
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-first-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                   expect(saveButton).not.toHaveAttribute("disabled");
                 });
@@ -754,7 +679,6 @@ metadata:
                   expect(saveButton).not.toHaveAttribute("disabled");
                 });
               });
-
             });
 
             describe("given clicking the context menu for second namespace, when clicking to edit namespace", () => {
@@ -774,27 +698,19 @@ metadata:
               });
 
               it("shows dock tab for editing second namespace", () => {
-                expect(
-                  rendered.getByTestId("dock-tab-content-for-some-second-tab-id"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("dock-tab-content-for-some-second-tab-id")).toBeInTheDocument();
               });
 
               it("still has dock tab for first namespace", () => {
-                expect(
-                  rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
               });
 
               it("shows spinner in the dock tab", () => {
-                expect(
-                  rendered.getByTestId("edit-resource-tab-spinner"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("edit-resource-tab-spinner")).toBeInTheDocument();
               });
 
               it("calls for second namespace", () => {
-                expect(apiKubeGetMock).toHaveBeenCalledWith(
-                  "/api/some-api-version/namespaces/some-other-uid",
-                );
+                expect(apiKubeGetMock).toHaveBeenCalledWith("/api/some-api-version/namespaces/some-other-uid");
               });
 
               describe("when second namespace resolves", () => {
@@ -809,8 +725,7 @@ metadata:
                       uid: "some-other-uid",
                       name: "some-other-name",
                       resourceVersion: "some-resource-version",
-                      selfLink:
-                        "/api/some-api-version/namespaces/some-other-uid",
+                      selfLink: "/api/some-api-version/namespaces/some-other-uid",
                     },
                   });
 
@@ -822,9 +737,7 @@ metadata:
                 });
 
                 it("has the configuration in editor", () => {
-                  const input = rendered.getByTestId(
-                    "monaco-editor-for-some-second-tab-id",
-                  ) as HTMLTextAreaElement;
+                  const input = rendered.getByTestId("monaco-editor-for-some-second-tab-id") as HTMLTextAreaElement;
 
                   expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
@@ -839,22 +752,22 @@ metadata:
                 it("when selecting to save, calls for save of second namespace with just the add edit version annotation", () => {
                   apiKubePatchMock.mockClear();
 
-                  const saveButton = rendered.getByTestId(
-                    "save-edit-resource-from-tab-for-some-second-tab-id",
-                  );
+                  const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-second-tab-id");
 
                   fireEvent.click(saveButton);
 
                   expect(apiKubePatchMock).toHaveBeenCalledWith(
                     "/api/some-api-version/namespaces/some-other-uid",
                     {
-                      data: [{
-                        op: "add",
-                        path: "/metadata/annotations",
-                        value: {
-                          "freelens.app/resource-version": "some-api-version",
+                      data: [
+                        {
+                          op: "add",
+                          path: "/metadata/annotations",
+                          value: {
+                            "freelens.app/resource-version": "some-api-version",
+                          },
                         },
-                      }],
+                      ],
                     },
                     {
                       headers: {
@@ -878,21 +791,15 @@ metadata:
                   });
 
                   it("shows dock tab for editing first namespace", () => {
-                    expect(
-                      rendered.getByTestId("dock-tab-content-for-some-first-tab-id"),
-                    ).toBeInTheDocument();
+                    expect(rendered.getByTestId("dock-tab-content-for-some-first-tab-id")).toBeInTheDocument();
                   });
 
                   it("still has dock tab for second namespace", () => {
-                    expect(
-                      rendered.getByTestId("dock-tab-for-some-second-tab-id"),
-                    ).toBeInTheDocument();
+                    expect(rendered.getByTestId("dock-tab-for-some-second-tab-id")).toBeInTheDocument();
                   });
 
                   it("does not show spinner in the dock tab", () => {
-                    expect(
-                      rendered.queryByTestId("edit-resource-tab-spinner"),
-                    ).not.toBeInTheDocument();
+                    expect(rendered.queryByTestId("edit-resource-tab-spinner")).not.toBeInTheDocument();
                   });
 
                   it("does not call for namespace", () => {
@@ -900,9 +807,7 @@ metadata:
                   });
 
                   it("has configuration in the editor", () => {
-                    const input = rendered.getByTestId(
-                      "monaco-editor-for-some-first-tab-id",
-                    ) as HTMLTextAreaElement;
+                    const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLTextAreaElement;
 
                     expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
@@ -919,22 +824,22 @@ metadata:
                   it("when selecting to save, calls for save of first namespace with just the new edit version annotation", () => {
                     apiKubePatchMock.mockClear();
 
-                    const saveButton = rendered.getByTestId(
-                      "save-edit-resource-from-tab-for-some-first-tab-id",
-                    );
+                    const saveButton = rendered.getByTestId("save-edit-resource-from-tab-for-some-first-tab-id");
 
                     fireEvent.click(saveButton);
 
                     expect(apiKubePatchMock).toHaveBeenCalledWith(
                       "/api/some-api-version/namespaces/some-uid",
                       {
-                        data: [{
-                          op: "add",
-                          path: "/metadata/annotations",
-                          value: {
-                            "freelens.app/resource-version": "some-api-version",
+                        data: [
+                          {
+                            op: "add",
+                            path: "/metadata/annotations",
+                            value: {
+                              "freelens.app/resource-version": "some-api-version",
+                            },
                           },
-                        }],
+                        ],
                       },
                       {
                         headers: {
@@ -958,15 +863,13 @@ metadata:
             });
 
             it("still shows the dock tab for editing namespace", () => {
-              expect(
-                rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-              ).toBeInTheDocument();
+              expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
             });
 
             it("shows error message", () => {
-              expect(
-                rendered.getByTestId("dock-tab-content-for-some-first-tab-id"),
-              ).toHaveTextContent("Resource not found");
+              expect(rendered.getByTestId("dock-tab-content-for-some-first-tab-id")).toHaveTextContent(
+                "Resource not found",
+              );
             });
 
             it("shows error notification", () => {

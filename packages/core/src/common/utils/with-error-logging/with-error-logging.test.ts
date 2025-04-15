@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
-import withErrorLoggingInjectable from "./with-error-logging.injectable";
-import { pipeline } from "@ogre-tools/fp";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
+import { pipeline } from "@ogre-tools/fp";
+import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
+import withErrorLoggingInjectable from "./with-error-logging.injectable";
 
 describe("with-error-logging", () => {
   describe("given decorated sync function", () => {
@@ -126,10 +127,7 @@ describe("with-error-logging", () => {
       decorated = pipeline(
         toBeDecorated,
 
-        withErrorLoggingFor(
-          (error: any) =>
-            `some-error-message-for-${error.message || error.someProperty}`,
-        ),
+        withErrorLoggingFor((error: any) => `some-error-message-for-${error.message || error.someProperty}`),
       );
     });
 
@@ -190,10 +188,7 @@ describe("with-error-logging", () => {
         });
 
         it("logs the rejection", () => {
-          expect(logErrorMock).toHaveBeenCalledWith(
-            "some-error-message-for-some-rejection",
-            error,
-          );
+          expect(logErrorMock).toHaveBeenCalledWith("some-error-message-for-some-rejection", error);
         });
 
         it("rejects", () => {

@@ -1,26 +1,39 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { LensApiResult } from "./route";
 
 export interface LensApiResultContentType {
-  resultMapper: (result: LensApiResult<unknown>) => ({
+  resultMapper: (result: LensApiResult<unknown>) => {
     statusCode: number;
     content: unknown;
     headers: Record<string, string>;
-  });
+  };
 }
 
 const resultMapperFor =
   (contentType: string): LensApiResultContentType["resultMapper"] =>
-    ({ response, error, statusCode= error ? 400 : 200, headers = {}}) => ({
-      statusCode,
-      content: error || response,
-      headers: { ...headers, "Content-Type": contentType },
-    });
+  ({ response, error, statusCode = error ? 400 : 200, headers = {} }) => ({
+    statusCode,
+    content: error || response,
+    headers: { ...headers, "Content-Type": contentType },
+  });
 
-export type SupportedFileExtension = "json" | "txt" | "html" | "css" | "gif" | "jpg" | "png" | "svg" | "js" | "woff2" | "ttf";
+export type SupportedFileExtension =
+  | "json"
+  | "txt"
+  | "html"
+  | "css"
+  | "gif"
+  | "jpg"
+  | "png"
+  | "svg"
+  | "js"
+  | "woff2"
+  | "ttf";
 
 export interface ContentTypes extends Record<SupportedFileExtension, LensApiResultContentType> {
   [key: string]: LensApiResultContentType | undefined;
@@ -37,9 +50,7 @@ export const contentTypes: ContentTypes = {
       const contentIsBuffer = mappedResult.content instanceof Buffer;
       const contentShouldBeStringified = contentIsObject && !contentIsBuffer;
 
-      const content = contentShouldBeStringified
-        ? JSON.stringify(mappedResult.content)
-        : mappedResult.content;
+      const content = contentShouldBeStringified ? JSON.stringify(mappedResult.content) : mappedResult.content;
 
       return {
         ...mappedResult,

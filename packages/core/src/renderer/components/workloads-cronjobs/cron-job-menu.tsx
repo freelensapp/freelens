@@ -1,21 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { CronJob } from "@freelensapp/kube-object";
-import { MenuItem } from "../menu";
+
 import { Icon } from "@freelensapp/icon";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { OpenCronJobTriggerDialog } from "./trigger-dialog/open.injectable";
-import openCronJobTriggerDialogInjectable from "./trigger-dialog/open.injectable";
+import type { CronJobApi } from "@freelensapp/kube-api";
 import { cronJobApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { CronJob } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { CronJobApi } from "@freelensapp/kube-api";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import { MenuItem } from "../menu";
+import type { OpenCronJobTriggerDialog } from "./trigger-dialog/open.injectable";
+import openCronJobTriggerDialogInjectable from "./trigger-dialog/open.injectable";
 
 export interface CronJobMenuProps extends KubeObjectMenuProps<CronJob> {}
 
@@ -33,21 +35,17 @@ const NonInjectedCronJobMenu = ({
   openCronJobTriggerDialog,
   cronJobApi,
   showCheckedErrorNotification,
-}: Dependencies & CronJobMenuProps) =>  (
+}: Dependencies & CronJobMenuProps) => (
   <>
     <MenuItem onClick={() => openCronJobTriggerDialog(object)}>
-      <Icon
-        material="play_circle_filled"
-        tooltip="Trigger"
-        interactive={toolbar}
-      />
+      <Icon material="play_circle_filled" tooltip="Trigger" interactive={toolbar} />
       <span className="title">Trigger</span>
     </MenuItem>
 
-    {object.isSuspend()
-      ? (
-        <MenuItem
-          onClick={() => openConfirmDialog({
+    {object.isSuspend() ? (
+      <MenuItem
+        onClick={() =>
+          openConfirmDialog({
             ok: async () => {
               try {
                 await cronJobApi.resume({ namespace: object.getNs(), name: object.getName() });
@@ -59,23 +57,19 @@ const NonInjectedCronJobMenu = ({
             message: (
               <p>
                 {"Resume CronJob "}
-                <b>{object.getName()}</b>
-                ?
+                <b>{object.getName()}</b>?
               </p>
             ),
-          })}
-        >
-          <Icon
-            material="play_circle_outline"
-            tooltip="Resume"
-            interactive={toolbar}
-          />
-          <span className="title">Resume</span>
-        </MenuItem>
-      )
-      : (
-        <MenuItem
-          onClick={() => openConfirmDialog({
+          })
+        }
+      >
+        <Icon material="play_circle_outline" tooltip="Resume" interactive={toolbar} />
+        <span className="title">Resume</span>
+      </MenuItem>
+    ) : (
+      <MenuItem
+        onClick={() =>
+          openConfirmDialog({
             ok: async () => {
               try {
                 await cronJobApi.suspend({ namespace: object.getNs(), name: object.getName() });
@@ -87,20 +81,16 @@ const NonInjectedCronJobMenu = ({
             message: (
               <p>
                 {"Suspend CronJob "}
-                <b>{object.getName()}</b>
-                ?
-              </p>),
-          })}
-        >
-          <Icon
-            material="pause_circle_filled"
-            tooltip="Suspend"
-            interactive={toolbar}
-          />
-          <span className="title">Suspend</span>
-        </MenuItem>
-      )
-    }
+                <b>{object.getName()}</b>?
+              </p>
+            ),
+          })
+        }
+      >
+        <Icon material="pause_circle_filled" tooltip="Suspend" interactive={toolbar} />
+        <span className="title">Suspend</span>
+      </MenuItem>
+    )}
   </>
 );
 

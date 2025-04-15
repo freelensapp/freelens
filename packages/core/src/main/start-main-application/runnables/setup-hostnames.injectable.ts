@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 import { getInjectable } from "@ogre-tools/injectable";
 import electronAppInjectable from "../../electron-app/electron-app.injectable";
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 
 const setupHostnamesInjectable = getInjectable({
   id: "setup-hostnames",
@@ -13,11 +15,14 @@ const setupHostnamesInjectable = getInjectable({
     run: () => {
       const app = di.inject(electronAppInjectable);
 
-      app.commandLine.appendSwitch("host-rules", [
-        "MAP localhost 127.0.0.1",
-        "MAP renderer.freelens.app 127.0.0.1",
-        "MAP *.renderer.freelens.app 127.0.0.1",
-      ].join());
+      app.commandLine.appendSwitch(
+        "host-rules",
+        [
+          "MAP localhost 127.0.0.1",
+          "MAP renderer.freelens.app 127.0.0.1",
+          "MAP *.renderer.freelens.app 127.0.0.1",
+        ].join(),
+      );
 
       return undefined;
     },

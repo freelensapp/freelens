@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./search-input.scss";
 
-import React, { createRef } from "react";
-import { observer } from "mobx-react";
-import { cssNames } from "@freelensapp/utilities";
 import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { observer } from "mobx-react";
+import React, { createRef } from "react";
+import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import type { InputProps } from "./input";
 import { Input } from "./input";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import isMacInjectable from "../../../common/vars/is-mac.injectable";
-import autoBindReact from "auto-bind/react";
 
 export interface SearchInputProps extends InputProps {
   compact?: boolean; // show only search-icon when not focused
@@ -77,17 +78,12 @@ class NonInjectedSearchInput extends React.Component<SearchInputProps & Dependen
   }
 
   render() {
-    const { className, compact, onClear, showClearIcon, bindGlobalFocusHotkey, value, isMac, ...inputProps } = this.props;
-    let rightIcon = <Icon small material="search"/>;
+    const { className, compact, onClear, showClearIcon, bindGlobalFocusHotkey, value, isMac, ...inputProps } =
+      this.props;
+    let rightIcon = <Icon small material="search" />;
 
     if (showClearIcon && value) {
-      rightIcon = (
-        <Icon
-          small
-          material="close"
-          onClick={this.clear}
-        />
-      );
+      rightIcon = <Icon small material="close" onClick={this.clear} />;
     }
 
     return (

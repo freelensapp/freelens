@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "assert";
 import { render } from "@testing-library/react";
 import type { RenderResult } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
-import assert from "assert";
 import React from "react";
-import { computeNextPosition, RectangleDimensions } from "./helpers";
+import { RectangleDimensions, computeNextPosition } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
 import "@testing-library/jest-dom";
 

@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
@@ -12,12 +14,13 @@ const enabledExtensionsInjectable = getInjectable({
   instantiate: (di) => {
     const state = di.inject(enabledExtensionsStateInjectable);
 
-    return computed(() => (
-      iter.chain(state.values())
+    return computed(() =>
+      iter
+        .chain(state.values())
         .filter(({ enabled }) => enabled)
         .map(({ name }) => name)
-        .toArray()
-    ));
+        .toArray(),
+    );
   },
 });
 

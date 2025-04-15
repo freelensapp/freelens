@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { Injectable, InjectionToken, Instantiate } from "@ogre-tools/injectable";
 
 export type GlobalOverride<
@@ -17,11 +19,7 @@ export function getGlobalOverride<
 >(
   injectable:
     | InjectionToken<InjectionInstance, InstantiationParam>
-    | Injectable<
-        InjectionInstance,
-        InjectionTokenInstance,
-        InstantiationParam
-      >,
+    | Injectable<InjectionInstance, InjectionTokenInstance, InstantiationParam>,
   overridingInstantiate: Instantiate<InjectionInstance, InstantiationParam>,
 ) {
   return {

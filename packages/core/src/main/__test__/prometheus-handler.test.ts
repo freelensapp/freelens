@@ -1,20 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import { Cluster } from "../../common/cluster/cluster";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { getInjectable } from "@ogre-tools/injectable";
 import type { PrometheusProvider } from "@freelensapp/prometheus";
 import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
-import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import { Cluster } from "../../common/cluster/cluster";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
+import { getDiForUnitTesting } from "../getDiForUnitTesting";
+import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 
 enum ServiceResult {
   Success,
@@ -65,22 +66,28 @@ describe("PrometheusHandler", () => {
     await writeJsonFile(kubeConfigPath, {
       apiVersion: "v1",
       kind: "Config",
-      clusters: [{
-        name: "some-cluster-name",
-        cluster: {
-          server: "https://localhost:8989",
+      clusters: [
+        {
+          name: "some-cluster-name",
+          cluster: {
+            server: "https://localhost:8989",
+          },
         },
-      }],
-      users: [{
-        name: "some-user-name",
-      }],
-      contexts: [{
-        name: contextName,
-        context: {
-          user: "some-user-name",
-          cluster: "some-cluster-name",
+      ],
+      users: [
+        {
+          name: "some-user-name",
         },
-      }],
+      ],
+      contexts: [
+        {
+          name: contextName,
+          context: {
+            user: "some-user-name",
+            cluster: "some-cluster-name",
+          },
+        },
+      ],
     });
 
     cluster = new Cluster({
@@ -91,19 +98,16 @@ describe("PrometheusHandler", () => {
   });
 
   describe("getPrometheusService", () => {
-    it.each([
-      [0],
-      [1],
-      [2],
-      [3],
-    ])("should throw after %d failure(s)", async (failures) => {
+    it.each([[0], [1], [2], [3]])("should throw after %d failure(s)", async (failures) => {
       runInAction(() => {
         for (let i = 0; i < failures; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-failure-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-failure-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
+            }),
+          );
         }
       });
 
@@ -122,19 +126,23 @@ describe("PrometheusHandler", () => {
     ])("should pick the first provider of %d success(es) after %d failure(s)", async (successes, failures) => {
       runInAction(() => {
         for (let i = 0; i < failures; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-failure-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-failure-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
+            }),
+          );
         }
 
         for (let i = 0; i < successes; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-success-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-success-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
+            }),
+          );
         }
       });
 
@@ -155,19 +163,23 @@ describe("PrometheusHandler", () => {
     ])("should pick the first provider of %d success(es) before %d failure(s)", async (successes, failures) => {
       runInAction(() => {
         for (let i = 0; i < failures; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-failure-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-failure-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
+            }),
+          );
         }
 
         for (let i = 0; i < successes; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-success-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-success-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
+            }),
+          );
         }
       });
 
@@ -190,27 +202,33 @@ describe("PrometheusHandler", () => {
 
       runInAction(() => {
         for (let i = 0; i < beforeSuccesses; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-success-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-success-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
+            }),
+          );
         }
 
         for (let i = 0; i < failures; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-failure-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-failure-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_failure_${i}`, ServiceResult.Failure),
+            }),
+          );
         }
 
         for (let i = beforeSuccesses; i < successes; i += 1) {
-          di.register(getInjectable({
-            id: `test-prometheus-provider-success-${i}`,
-            injectionToken: prometheusProviderInjectionToken,
-            instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
-          }));
+          di.register(
+            getInjectable({
+              id: `test-prometheus-provider-success-${i}`,
+              injectionToken: prometheusProviderInjectionToken,
+              instantiate: () => createTestPrometheusProvider(`id_success_${i}`, ServiceResult.Success),
+            }),
+          );
         }
       });
 

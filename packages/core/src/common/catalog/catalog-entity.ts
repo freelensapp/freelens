@@ -1,15 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import EventEmitter from "events";
-import type TypedEmitter from "typed-emitter";
-import { observable, makeObservable } from "mobx";
-import { once } from "lodash";
 import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
 import { iter } from "@freelensapp/utilities";
-import type { CategoryColumnRegistration, TitleCellProps } from "../../renderer/components/catalog/custom-category-columns";
+import { once } from "lodash";
+import { makeObservable, observable } from "mobx";
+import type TypedEmitter from "typed-emitter";
+import type {
+  CategoryColumnRegistration,
+  TitleCellProps,
+} from "../../renderer/components/catalog/custom-category-columns";
 
 export type { CategoryColumnRegistration, TitleCellProps };
 
@@ -21,9 +25,7 @@ export type CatalogEntityInstanceFrom<Constructor> = Constructor extends Catalog
   ? Entity
   : never;
 
-export type CatalogEntityConstructor<Entity extends CatalogEntity> = (
-  new (data: CatalogEntityDataFor<Entity>) => Entity
-);
+export type CatalogEntityConstructor<Entity extends CatalogEntity> = new (data: CatalogEntityDataFor<Entity>) => Entity;
 
 export interface CatalogCategoryVersion {
   /**
@@ -223,11 +225,7 @@ export abstract class CatalogCategory extends (EventEmitter as new () => TypedEm
    */
   public filteredItems(menuItems: CatalogEntityAddMenu[]) {
     return Array.from(
-      iter.reduce(
-        this.filters,
-        iter.filter,
-        menuItems.values() as IterableIterator<CatalogEntityAddMenu>,
-      ),
+      iter.reduce(this.filters, iter.filter, menuItems.values() as IterableIterator<CatalogEntityAddMenu>),
     );
   }
 }
@@ -325,7 +323,6 @@ export interface CatalogEntityAddMenuContext {
 
 export type CatalogEntitySpec = Record<string, any>;
 
-
 export interface CatalogEntityData<
   Metadata extends CatalogEntityMetadata = CatalogEntityMetadata,
   Status extends CatalogEntityStatus = CatalogEntityStatus,
@@ -345,7 +342,8 @@ export abstract class CatalogEntity<
   Metadata extends CatalogEntityMetadata = CatalogEntityMetadata,
   Status extends CatalogEntityStatus = CatalogEntityStatus,
   Spec extends CatalogEntitySpec = CatalogEntitySpec,
-> implements CatalogEntityKindData {
+> implements CatalogEntityKindData
+{
   /**
    * The group and version of this class.
    */

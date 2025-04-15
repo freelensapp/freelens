@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
+import { disposer } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
-import { disposer } from "@freelensapp/utilities";
-import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
+import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
 
 export interface Extension {
   register: () => void;
@@ -36,13 +38,11 @@ const extensionInjectable = getInjectable({
                   injectableDifferencingRegistrator(injectables);
                 });
               } else {
-                reactionDisposer.push(reaction(
-                  () => injectables.get(),
-                  injectableDifferencingRegistrator,
-                  {
+                reactionDisposer.push(
+                  reaction(() => injectables.get(), injectableDifferencingRegistrator, {
                     fireImmediately: true,
-                  },
-                ));
+                  }),
+                );
               }
             }
           },

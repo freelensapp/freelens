@@ -1,21 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { kebabCase } from "lodash";
-import { getGlobalOverride } from "@freelensapp/test-utils";
-import electronAppInjectable from "./electron-app.injectable";
 import EventEmitter from "events";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import { getOrInsert } from "@freelensapp/utilities";
 import type { ClientCertRequestParams, ProxyConfig } from "electron";
+import { kebabCase } from "lodash";
+import electronAppInjectable from "./electron-app.injectable";
 
 export default getGlobalOverride(electronAppInjectable, () => {
   const commandLineArgs: string[] = [];
   const chromiumArgs = new Map<string, string | undefined>();
   const appPaths = new Map<string, string>();
 
-  return new class extends EventEmitter implements Electron.App {
+  return new (class extends EventEmitter implements Electron.App {
     addRecentDocument(path: string): void {
       void path;
       throw new Error("Method not implemented.");
@@ -74,7 +75,11 @@ export default getGlobalOverride(electronAppInjectable, () => {
     getName(): string {
       throw new Error("Method not implemented.");
     }
-    getPreferredSystemLanguages(): ("app.getLocale()" | "app.getSystemLocale()" | "app.getPreferredSystemLanguages()")[] {
+    getPreferredSystemLanguages(): (
+      | "app.getLocale()"
+      | "app.getSystemLocale()"
+      | "app.getPreferredSystemLanguages()"
+    )[] {
       throw new Error("Method not implemented.");
     }
     getSystemLocale(): string {
@@ -171,7 +176,9 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void count;
       throw new Error("Method not implemented.");
     }
-    setJumpList(categories: Electron.JumpListCategory[] | null): "error" | "ok" | "invalidSeparatorError" | "fileTypeRegistrationError" | "customCategoryAccessDeniedError" {
+    setJumpList(
+      categories: Electron.JumpListCategory[] | null,
+    ): "error" | "ok" | "invalidSeparatorError" | "fileTypeRegistrationError" | "customCategoryAccessDeniedError" {
       void categories;
       throw new Error("Method not implemented.");
     }
@@ -217,7 +224,9 @@ export default getGlobalOverride(electronAppInjectable, () => {
       throw new Error("Method not implemented.");
     }
 
-    setClientCertRequestPasswordHandler(handler: (clientCertRequestParams: ClientCertRequestParams) => Promise<string>): void {
+    setClientCertRequestPasswordHandler(
+      handler: (clientCertRequestParams: ClientCertRequestParams) => Promise<string>,
+    ): void {
       void handler;
       throw new Error("Method not implemented.");
     }
@@ -284,5 +293,5 @@ export default getGlobalOverride(electronAppInjectable, () => {
         status: "",
       };
     }
-  };
+  })();
 });

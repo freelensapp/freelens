@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -15,29 +16,19 @@ import type { AtLeastOneMetricTab } from "../resource-metrics";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 
-export const podMetricTabs: AtLeastOneMetricTab = [
-  "CPU",
-  "Memory",
-  "Network",
-  "Filesystem",
-];
+export const podMetricTabs: AtLeastOneMetricTab = ["CPU", "Memory", "Network", "Filesystem"];
 
 export const PodCharts = observer(() => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
 
   if (!metrics || !object || !tab) return null;
-  if (isMetricsEmpty(metrics)) return <NoMetrics/>;
+  if (isMetricsEmpty(metrics)) return <NoMetrics />;
 
   const id = object.getId();
-  const {
-    cpuUsage,
-    memoryUsage,
-    fsUsage,
-    fsWrites,
-    fsReads,
-    networkReceive,
-    networkTransmit,
-  } = mapValues(metrics, metric => normalizeMetrics(metric).data.result[0].values);
+  const { cpuUsage, memoryUsage, fsUsage, fsWrites, fsReads, networkReceive, networkTransmit } = mapValues(
+    metrics,
+    (metric) => normalizeMetrics(metric).data.result[0].values,
+  );
 
   const datasets: Partial<Record<MetricsTab, ChartDataSets[]>> = {
     CPU: [

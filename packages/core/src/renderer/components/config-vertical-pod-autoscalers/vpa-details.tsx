@@ -1,30 +1,36 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./vpa-details.scss";
 
-import startCase from "lodash/startCase";
-import React from "react";
-import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Badge } from "../badge";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { cssNames } from "@freelensapp/utilities";
-import { ContainerScalingMode, ControlledValues, ResourceName, UpdateMode, VerticalPodAutoscaler } from "@freelensapp/kube-object";
-import type { PodUpdatePolicy, PodResourcePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import {
+  ContainerScalingMode,
+  ControlledValues,
+  ResourceName,
+  UpdateMode,
+  VerticalPodAutoscaler,
+} from "@freelensapp/kube-object";
+import type { PodResourcePolicy, PodUpdatePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import startCase from "lodash/startCase";
+import { observer } from "mobx-react";
+import React from "react";
+import { Link } from "react-router-dom";
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
-export interface VpaDetailsProps extends KubeObjectDetailsProps<VerticalPodAutoscaler> {
-}
+export interface VpaDetailsProps extends KubeObjectDetailsProps<VerticalPodAutoscaler> {}
 
 interface Dependencies {
   apiManager: ApiManager;
@@ -41,25 +47,15 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
     return (
       <div>
         <DrawerTitle>Status</DrawerTitle>
-        <DrawerItem
-          name="Status"
-          className="status"
-          labelsOnly
-        >
-          {vpa.getReadyConditions()
-            .map(({ type, tooltip, isReady }) => (
-              <Badge
-                key={type}
-                label={type}
-                tooltip={tooltip}
-                className={cssNames({ [type.toLowerCase()]: isReady })}
-              />
-            ))}
+        <DrawerItem name="Status" className="status" labelsOnly>
+          {vpa.getReadyConditions().map(({ type, tooltip, isReady }) => (
+            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type.toLowerCase()]: isReady })} />
+          ))}
         </DrawerItem>
 
-        {recommendation?.containerRecommendations && (
-          recommendation.containerRecommendations
-            .map( ({ containerName, target, lowerBound, upperBound, uncappedTarget }) => (
+        {recommendation?.containerRecommendations &&
+          recommendation.containerRecommendations.map(
+            ({ containerName, target, lowerBound, upperBound, uncappedTarget }) => (
               <div key={containerName}>
                 <DrawerTitle>{`Container Recommendation for ${containerName ?? "<unknown>"}`}</DrawerTitle>
                 <DrawerItem name="target">
@@ -97,8 +93,8 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
                   </DrawerItem>
                 )}
               </div>
-            ))
-        )}
+            ),
+          )}
       </div>
     );
   }
@@ -107,12 +103,8 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
     return (
       <div>
         <DrawerTitle>Update Policy</DrawerTitle>
-        <DrawerItem name="updateMode" >
-          {updatePolicy?.updateMode ?? UpdateMode.UpdateModeAuto}
-        </DrawerItem>
-        <DrawerItem name="minReplicas" >
-          {updatePolicy?.minReplicas}
-        </DrawerItem>
+        <DrawerItem name="updateMode">{updatePolicy?.updateMode ?? UpdateMode.UpdateModeAuto}</DrawerItem>
+        <DrawerItem name="minReplicas">{updatePolicy?.minReplicas}</DrawerItem>
       </div>
     );
   }
@@ -122,16 +114,14 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
       <div>
         {resourcePolicy.containerPolicies && (
           <div>
-            {resourcePolicy.containerPolicies
-              .map( ({ containerName, mode, minAllowed, maxAllowed, controlledResources, controlledValues }) => {
+            {resourcePolicy.containerPolicies.map(
+              ({ containerName, mode, minAllowed, maxAllowed, controlledResources, controlledValues }) => {
                 return (
                   <div key={containerName}>
                     <DrawerTitle>{`Container Policy for ${containerName ?? "<unknown>"}`}</DrawerTitle>
-                    <DrawerItem name="mode" >
-                      {mode ?? ContainerScalingMode.ContainerScalingModeAuto}
-                    </DrawerItem>
+                    <DrawerItem name="mode">{mode ?? ContainerScalingMode.ContainerScalingModeAuto}</DrawerItem>
                     {minAllowed && (
-                      <DrawerItem name="minAllowed" >
+                      <DrawerItem name="minAllowed">
                         {Object.entries(minAllowed).map(([name, value]) => (
                           <DrawerItem key={name} name={startCase(name)}>
                             {value}
@@ -140,7 +130,7 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
                       </DrawerItem>
                     )}
                     {maxAllowed && (
-                      <DrawerItem name="maxAllowed" >
+                      <DrawerItem name="maxAllowed">
                         {Object.entries(maxAllowed).map(([name, value]) => (
                           <DrawerItem key={name} name={startCase(name)}>
                             {value}
@@ -148,16 +138,18 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
                         ))}
                       </DrawerItem>
                     )}
-                    <DrawerItem name="controlledResources" >
-                      {controlledResources?.length ? controlledResources.join(", ") : `${ResourceName.ResourceCPU}, ${ResourceName.ResourceMemory}`}
+                    <DrawerItem name="controlledResources">
+                      {controlledResources?.length
+                        ? controlledResources.join(", ")
+                        : `${ResourceName.ResourceCPU}, ${ResourceName.ResourceMemory}`}
                     </DrawerItem>
-                    <DrawerItem name="controlledValues" >
+                    <DrawerItem name="controlledValues">
                       {controlledValues ?? ControlledValues.ControlledValueRequestsAndLimits}
                     </DrawerItem>
                   </div>
                 );
-              })
-            }
+              },
+            )}
           </div>
         )}
       </div>
@@ -184,9 +176,7 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
         <DrawerItem name="Reference">
           {targetRef && (
             <Link to={getDetailsUrl(apiManager.lookupApiLink(targetRef, vpa))}>
-              {targetRef.kind}
-              /
-              {targetRef.name}
+              {targetRef.kind}/{targetRef.name}
             </Link>
           )}
         </DrawerItem>

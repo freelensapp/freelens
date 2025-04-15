@@ -1,17 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 // Fix embedded kubeconfig paths under snap config
 
-import { getInjectable } from "@ogre-tools/injectable";
-import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
+import { applicationInformationToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { ClusterModel } from "../../../common/cluster-types";
 import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
-import { applicationInformationToken } from "@freelensapp/application";
+import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
+import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
 
 const clusterStoreSnapMigrationInjectable = getInjectable({
   id: "cluster-store-snap-migration",
@@ -34,20 +35,21 @@ const clusterStoreSnapMigrationInjectable = getInjectable({
         if (!storedClusters.length) return;
 
         logger.info("Number of clusters to migrate: ", storedClusters.length);
-        const migratedClusters = storedClusters
-          .map(cluster => {
-            /**
-             * replace snap version with 'current' in kubeconfig path
-             */
-            if (!pathExistsSync(cluster.kubeConfigPath)) {
-              const kubeconfigPath = cluster.kubeConfigPath.replace(/\/snap\/kontena-lens\/[0-9]*\//, "/snap/kontena-lens/current/");
+        const migratedClusters = storedClusters.map((cluster) => {
+          /**
+           * replace snap version with 'current' in kubeconfig path
+           */
+          if (!pathExistsSync(cluster.kubeConfigPath)) {
+            const kubeconfigPath = cluster.kubeConfigPath.replace(
+              /\/snap\/kontena-lens\/[0-9]*\//,
+              "/snap/kontena-lens/current/",
+            );
 
-              cluster.kubeConfigPath = kubeconfigPath;
-            }
+            cluster.kubeConfigPath = kubeconfigPath;
+          }
 
-            return cluster;
-          });
-
+          return cluster;
+        });
 
         store.set("clusters", migratedClusters);
       },

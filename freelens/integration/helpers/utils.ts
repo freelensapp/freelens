@@ -1,22 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { createHash } from "crypto";
-import { copy, mkdirp, pathExists, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { setImmediate } from "timers";
-import * as uuid from "uuid";
+import { disposer } from "@freelensapp/utilities";
+import { copy, mkdirp, pathExists, remove } from "fs-extra";
+import { noop } from "lodash";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
-import { noop } from "lodash";
-import { disposer } from "@freelensapp/utilities";
+import * as uuid from "uuid";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
-  "win32": "./dist/win-unpacked/Freelens.exe",
-  "linux": `./dist/linux${ process.arch === "arm64" ? "-arm64" : "" }-unpacked/freelens`,
-  "darwin": `./dist/mac${ process.arch === "arm64" ? "-arm64" : "" }/Freelens.app/Contents/MacOS/Freelens`,
+  win32: "./dist/win-unpacked/Freelens.exe",
+  linux: `./dist/linux${process.arch === "arm64" ? "-arm64" : ""}-unpacked/freelens`,
+  darwin: `./dist/mac${process.arch === "arm64" ? "-arm64" : ""}/Freelens.app/Contents/MacOS/Freelens`,
 };
 
 async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promise<Page> {
@@ -40,9 +42,8 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
     app.on("close", cleanup);
     cleanup.push(() => app.off("close", cleanup));
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const stdout = app.process().stdout!;
-    const onData = (chunk: any) => stdoutBuf += chunk.toString();
+    const onData = (chunk: any) => (stdoutBuf += chunk.toString());
 
     stdout.on("data", onData);
     cleanup.push(() => stdout.off("data", onData));
@@ -117,7 +118,9 @@ export async function clickWelcomeButton(window: Page) {
 }
 
 function minikubeEntityId() {
-  return createHash("md5").update(`${path.join(os.homedir(), ".kube", "config")}:minikube`).digest("hex");
+  return createHash("md5")
+    .update(`${path.join(os.homedir(), ".kube", "config")}:minikube`)
+    .digest("hex");
 }
 
 /**

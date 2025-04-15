@@ -1,10 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { Composite } from "../get-composite/get-composite";
 
-const _findComposite = <T>(currentLeftIds: string[], currentId: string, currentRightIds: string[], composite: Composite<T>): Composite<T> => {
+const _findComposite = <T>(
+  currentLeftIds: string[],
+  currentId: string,
+  currentRightIds: string[],
+  composite: Composite<T>,
+): Composite<T> => {
   const [nextId, ...nextRightIds] = currentRightIds;
   const nextLeftIds = [...currentLeftIds, currentId];
 

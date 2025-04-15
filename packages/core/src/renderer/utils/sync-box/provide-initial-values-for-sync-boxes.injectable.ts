@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import { beforeFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
-import { syncBoxInitialValueChannel } from "../../../common/utils/sync-box/channels";
-import createSyncBoxStateInjectable from "../../../common/utils/sync-box/sync-box-state.injectable";
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
-import { runInAction } from "mobx";
-import { syncBoxInjectionToken } from "../../../common/utils/sync-box/sync-box-injection-token";
+
 import assert from "assert";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
+import { getInjectable } from "@ogre-tools/injectable";
+import { runInAction } from "mobx";
+import { syncBoxInitialValueChannel } from "../../../common/utils/sync-box/channels";
+import { syncBoxInjectionToken } from "../../../common/utils/sync-box/sync-box-injection-token";
+import createSyncBoxStateInjectable from "../../../common/utils/sync-box/sync-box-state.injectable";
+import { beforeFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
 
 const provideInitialValuesForSyncBoxesInjectable = getInjectable({
   id: "provide-initial-values-for-sync-boxes",

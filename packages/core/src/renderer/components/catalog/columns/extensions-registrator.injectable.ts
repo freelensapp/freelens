@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
@@ -20,36 +22,36 @@ const customCategoryColumnsRegistratorInjectable = getInjectable({
 
 export default customCategoryColumnsRegistratorInjectable;
 
-const getInjectableForColumnRegistrationFor = (extension: LensRendererExtension) => ({
-  group,
-  id,
-  kind,
-  renderCell,
-  titleProps,
-  priority = 50,
-  searchFilter,
-  sortCallback,
-}: AdditionalCategoryColumnRegistration) => {
-  return getInjectable({
-    id: `${extension.manifest.name}:${group}/${kind}:${id}`,
-    instantiate: () => ({
-      group,
-      kind,
-      registration: {
-        renderCell,
-        priority,
-        id,
-        titleProps: {
+const getInjectableForColumnRegistrationFor =
+  (extension: LensRendererExtension) =>
+  ({
+    group,
+    id,
+    kind,
+    renderCell,
+    titleProps,
+    priority = 50,
+    searchFilter,
+    sortCallback,
+  }: AdditionalCategoryColumnRegistration) => {
+    return getInjectable({
+      id: `${extension.manifest.name}:${group}/${kind}:${id}`,
+      instantiate: () => ({
+        group,
+        kind,
+        registration: {
+          renderCell,
+          priority,
           id,
-          ...titleProps,
-          sortBy: sortCallback
-            ? id
-            : undefined,
+          titleProps: {
+            id,
+            ...titleProps,
+            sortBy: sortCallback ? id : undefined,
+          },
+          searchFilter,
+          sortCallback,
         },
-        searchFilter,
-        sortCallback,
-      },
-    }),
-    injectionToken: customCatalogCategoryColumnInjectionToken,
-  });
-};
+      }),
+      injectionToken: customCatalogCategoryColumnInjectionToken,
+    });
+  };

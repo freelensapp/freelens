@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
+import isMacInjectable from "../../../../../../common/vars/is-mac.injectable";
 import applicationMenuItemInjectionToken from "../../../../../application-menu/main/menu-items/application-menu-item-injection-token";
 import navigateToPreferencesInjectable from "../../../../common/navigate-to-preferences.injectable";
-import isMacInjectable from "../../../../../../common/vars/is-mac.injectable";
 
 const navigateToPreferencesMenuItemInjectable = getInjectable({
   id: "navigate-to-preferences-menu-item",

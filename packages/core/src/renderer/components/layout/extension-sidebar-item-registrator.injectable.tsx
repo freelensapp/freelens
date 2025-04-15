@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
-import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import { computed } from "mobx";
-import routesInjectable from "../../routes/routes.injectable";
+import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash/fp";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import { computed } from "mobx";
+import React from "react";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
-import { getExtensionRoutePath } from "../../routes/for-extension";
+import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
+import { getExtensionRoutePath } from "../../routes/for-extension";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import routesInjectable from "../../routes/routes.injectable";
 
 const extensionSidebarItemRegistratorInjectable = getInjectable({
   id: "extension-sidebar-item-registrator",
@@ -22,56 +24,59 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
     const extension = ext as LensRendererExtension;
     const navigateToRoute = di.inject(navigateToRouteInjectionToken);
     const routes = di.inject(routesInjectable);
-    const extensionShouldBeEnabledForClusterFrame = di.inject(extensionShouldBeEnabledForClusterFrameInjectable, extension);
+    const extensionShouldBeEnabledForClusterFrame = di.inject(
+      extensionShouldBeEnabledForClusterFrameInjectable,
+      extension,
+    );
     const extensionRoutes = computed(() => routes.get().filter(matches({ extension })));
 
-    return computed(() => extension.clusterPageMenus.map((registration) => {
-      const {
-        components,
-        title,
-        orderNumber = 9999,
-        parentId: rawParentId,
-        visible,
-        id: rawId,
-        target,
-      } = registration;
-      const id = rawId
-        ? `sidebar-item-${extension.sanitizedExtensionId}-${rawId}`
-        : `sidebar-item-${extension.sanitizedExtensionId}`;
-      const parentId = rawParentId
-        ? `sidebar-item-${extension.sanitizedExtensionId}-${rawParentId}`
-        : null;
-      const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
-      const targetRoute = computed(() => extensionRoutes.get().find(matches({ path: targetRoutePath })));
-
-      return getInjectable({
-        id,
-        instantiate: () => ({
-          orderNumber,
-          parentId,
-          isVisible: computed(() => extensionShouldBeEnabledForClusterFrame.value.get() && (visible?.get() ?? true)),
+    return computed(() =>
+      extension.clusterPageMenus.map((registration) => {
+        const {
+          components,
           title,
-          getIcon: () => (components.Icon && <components.Icon />),
-          onClick: () => {
-            const route = targetRoute.get();
+          orderNumber = 9999,
+          parentId: rawParentId,
+          visible,
+          id: rawId,
+          target,
+        } = registration;
+        const id = rawId
+          ? `sidebar-item-${extension.sanitizedExtensionId}-${rawId}`
+          : `sidebar-item-${extension.sanitizedExtensionId}`;
+        const parentId = rawParentId ? `sidebar-item-${extension.sanitizedExtensionId}-${rawParentId}` : null;
+        const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
+        const targetRoute = computed(() => extensionRoutes.get().find(matches({ path: targetRoutePath })));
 
-            if (route) {
-              navigateToRoute(route);
-            }
-          },
-          isActive: computed(() => {
-            const route = targetRoute.get();
+        return getInjectable({
+          id,
+          instantiate: () => ({
+            orderNumber,
+            parentId,
+            isVisible: computed(() => extensionShouldBeEnabledForClusterFrame.value.get() && (visible?.get() ?? true)),
+            title,
+            getIcon: () => components.Icon && <components.Icon />,
+            onClick: () => {
+              const route = targetRoute.get();
 
-            if (!route) {
-              return false;
-            }
+              if (route) {
+                navigateToRoute(route);
+              }
+            },
+            isActive: computed(() => {
+              const route = targetRoute.get();
 
-            return di.inject(routeIsActiveInjectable, route).get();
+              if (!route) {
+                return false;
+              }
+
+              return di.inject(routeIsActiveInjectable, route).get();
+            }),
           }),
-        }),
-        injectionToken: sidebarItemInjectionToken,
-      });
-    }));
+          injectionToken: sidebarItemInjectionToken,
+        });
+      }),
+    );
   },
 
   injectionToken: extensionRegistratorInjectionToken,

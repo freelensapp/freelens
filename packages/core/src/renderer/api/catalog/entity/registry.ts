@@ -1,21 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed, observable, makeObservable, action } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
+import type {
+  CatalogCategory,
+  CatalogCategoryRegistry,
+  CatalogEntity,
+  CatalogEntityData,
+  CatalogEntityKindData,
+  CatalogEntityMetadata,
+  CatalogEntitySpec,
+  CatalogEntityStatus,
+} from "../../../../common/catalog";
 import { ipcRendererOn } from "../../../../common/ipc";
-import type { CatalogCategory, CatalogEntity, CatalogEntityData, CatalogCategoryRegistry, CatalogEntityKindData, CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec } from "../../../../common/catalog";
 import "../../../../common/catalog-entities";
+import type { Logger } from "@freelensapp/logger";
 import { iter } from "@freelensapp/utilities";
 import type { Disposer } from "@freelensapp/utilities";
-import { once } from "lodash";
-import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
 import { ipcRenderer } from "electron";
-import { catalogInitChannel, catalogItemsChannel, catalogEntityRunListener } from "../../../../common/ipc/catalog";
+import { once } from "lodash";
 import { isMainFrame } from "process";
+import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
+import { catalogEntityRunListener, catalogInitChannel, catalogItemsChannel } from "../../../../common/ipc/catalog";
 import type { Navigate } from "../../../navigation/navigate.injectable";
-import type { Logger } from "@freelensapp/logger";
 
 export type EntityFilter = (entity: CatalogEntity) => any;
 export type CatalogEntityOnBeforeRun = (event: CatalogRunEvent) => void | Promise<void>;
@@ -72,9 +82,7 @@ export class CatalogEntityRegistry {
 
   set activeEntity(raw: CatalogEntity | string | undefined) {
     if (raw) {
-      const id = typeof raw === "string"
-        ? raw
-        : raw.getId();
+      const id = typeof raw === "string" ? raw : raw.getId();
 
       this.activeEntityId.set(id);
     } else {
@@ -117,7 +125,7 @@ export class CatalogEntityRegistry {
     }
   }
 
-  @action protected updateItem(item: (CatalogEntityData & CatalogEntityKindData)) {
+  @action protected updateItem(item: CatalogEntityData & CatalogEntityKindData) {
     const existing = this._entities.get(item.metadata.uid);
 
     if (!existing) {
@@ -156,21 +164,19 @@ export class CatalogEntityRegistry {
       iter.reduce(
         this.filters,
         iter.filter,
-        this.items.get().values() as Iterable<CatalogEntity<CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec>>,
+        this.items.get().values() as Iterable<
+          CatalogEntity<CatalogEntityMetadata, CatalogEntityStatus, CatalogEntitySpec>
+        >,
       ),
     );
   }
 
   @computed get entities(): Map<string, CatalogEntity> {
-    return new Map(
-      this.items.get().map(entity => [entity.getId(), entity]),
-    );
+    return new Map(this.items.get().map((entity) => [entity.getId(), entity]));
   }
 
   @computed get filteredEntities(): Map<string, CatalogEntity> {
-    return new Map(
-      this.filteredItems.map(entity => [entity.getId(), entity]),
-    );
+    return new Map(this.filteredItems.map((entity) => [entity.getId(), entity]));
   }
 
   getById(id: string) {
@@ -186,7 +192,8 @@ export class CatalogEntityRegistry {
 
   getItemsForCategory<T extends CatalogEntity>(category: CatalogCategory, { filtered = false } = {}): T[] {
     const supportedVersions = new Set(category.spec.versions.map((v) => `${category.spec.group}/${v.name}`));
-    const byApiVersionKind = (item: CatalogEntity) => supportedVersions.has(item.apiVersion) && item.kind === category.spec.names.kind;
+    const byApiVersionKind = (item: CatalogEntity) =>
+      supportedVersions.has(item.apiVersion) && item.kind === category.spec.names.kind;
     const entities = filtered ? this.filteredItems : this.items.get();
 
     return entities.filter(byApiVersionKind) as T[];
@@ -228,7 +235,10 @@ export class CatalogEntityRegistry {
       try {
         await onBeforeRun(runEvent);
       } catch (error) {
-        this.dependencies.logger.warn(`[CATALOG-ENTITY-REGISTRY]: entity ${entity.getId()} onBeforeRun threw an error`, error);
+        this.dependencies.logger.warn(
+          `[CATALOG-ENTITY-REGISTRY]: entity ${entity.getId()} onBeforeRun threw an error`,
+          error,
+        );
       }
 
       if (runEvent.defaultPrevented) {

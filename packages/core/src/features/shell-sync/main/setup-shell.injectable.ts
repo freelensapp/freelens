@@ -1,16 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { unionPATHs } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import isSnapPackageInjectable from "../../../common/vars/is-snap-package.injectable";
 import electronAppInjectable from "../../../main/electron-app/electron-app.injectable";
+import userShellSettingInjectable from "../../user-preferences/common/shell-setting.injectable";
 import computeShellEnvironmentInjectable from "./compute-shell-environment.injectable";
 import emitShellSyncFailedInjectable from "./emit-failure.injectable";
-import { unionPATHs } from "@freelensapp/utilities";
-import userShellSettingInjectable from "../../user-preferences/common/shell-setting.injectable";
 
 const setupShellInjectable = getInjectable({
   id: "setup-shell",

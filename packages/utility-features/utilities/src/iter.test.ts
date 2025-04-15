@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -79,7 +80,15 @@ describe("iter", () => {
     });
 
     it("should include all matching parts in each type", () => {
-      const res = iter.nFircate([{ a: 1, b: "a" }, { a: 2, b: "b" }, { a: 1, b: "c" }], "a", [1, 2]);
+      const res = iter.nFircate(
+        [
+          { a: 1, b: "a" },
+          { a: 2, b: "b" },
+          { a: 1, b: "c" },
+        ],
+        "a",
+        [1, 2],
+      );
 
       expect(res.length).toBe(2);
       expect(res[0].length).toBe(2);
@@ -91,7 +100,15 @@ describe("iter", () => {
 
     it("should throw a type error if the same part is provided more than once", () => {
       try {
-        iter.nFircate([{ a: 1, b: "a" }, { a: 2, b: "b" }, { a: 1, b: "c" }], "a", [1, 2, 1]);
+        iter.nFircate(
+          [
+            { a: 1, b: "a" },
+            { a: 2, b: "b" },
+            { a: 1, b: "c" },
+          ],
+          "a",
+          [1, 2, 1],
+        );
         fail("Expected error");
       } catch (error) {
         expect(error).toBeInstanceOf(TypeError);

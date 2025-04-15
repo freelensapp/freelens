@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { formatDuration } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 import React from "react";
-import { formatDuration } from "@freelensapp/utilities";
 import { reactiveNow } from "../../../common/utils/reactive-now/reactive-now";
 
 export interface ReactiveDurationProps {
@@ -36,7 +37,7 @@ function computeUpdateInterval(creationTimestampEpoch: number, compact: boolean)
     return everyMinute;
   }
 
-  if (minutes < (60 * 3)) {
+  if (minutes < 60 * 3) {
     return everySecond;
   }
 
@@ -51,8 +52,6 @@ export const ReactiveDuration = observer(({ timestamp, compact = true }: Reactiv
   const timestampSeconds = new Date(timestamp).getTime();
 
   return (
-    <>
-      {formatDuration(reactiveNow(computeUpdateInterval(timestampSeconds, compact)) - timestampSeconds, compact)}
-    </>
+    <>{formatDuration(reactiveNow(computeUpdateInterval(timestampSeconds, compact)) - timestampSeconds, compact)}</>
   );
 });

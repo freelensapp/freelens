@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import type { AgentOptions } from "https";
 import { Agent } from "https";
-import type { RequestInit } from "@freelensapp/node-fetch";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
-import isDevelopmentInjectable from "../vars/is-development.injectable";
-import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 import type { KubeApiOptions } from "@freelensapp/kube-api";
 import { KubeApi } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
+import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import type { RequestInit } from "@freelensapp/node-fetch";
+import { getInjectable } from "@ogre-tools/injectable";
+import isDevelopmentInjectable from "../vars/is-development.injectable";
+import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 
 export interface CreateKubeApiForRemoteClusterConfig {
   cluster: {
@@ -30,10 +32,12 @@ export interface CreateKubeApiForRemoteClusterConfig {
    * @remarks the custom agent replaced default agent, options skipTLSVerify,
    * clientCertificateData, clientKeyData and caData are ignored.
    */
-   agent?: Agent;
+  agent?: Agent;
 }
 
-export type KubeApiConstructor<Object extends KubeObject, Api extends KubeApi<Object>> = new (apiOpts: KubeApiOptions<Object>) => Api;
+export type KubeApiConstructor<Object extends KubeObject, Api extends KubeApi<Object>> = new (
+  apiOpts: KubeApiOptions<Object>,
+) => Api;
 
 export interface CreateKubeApiForRemoteCluster {
   <Object extends KubeObject, Api extends KubeApi<Object>, Data extends KubeJsonApiDataFor<Object>>(
@@ -90,18 +94,23 @@ const createKubeApiForRemoteClusterInjectable = getInjectable({
       }
 
       const token = config.user.token;
-      const request = createKubeJsonApi({
-        serverAddress: config.cluster.server,
-        apiBase: "",
-        debug: isDevelopment,
-        ...(token ? {
-          getRequestOptions: async () => ({
-            headers: {
-              "Authorization": `Bearer ${typeof token === "function" ? await token() : token}`,
-            },
-          }),
-        } : {}),
-      }, reqInit);
+      const request = createKubeJsonApi(
+        {
+          serverAddress: config.cluster.server,
+          apiBase: "",
+          debug: isDevelopment,
+          ...(token
+            ? {
+                getRequestOptions: async () => ({
+                  headers: {
+                    Authorization: `Bearer ${typeof token === "function" ? await token() : token}`,
+                  },
+                }),
+              }
+            : {}),
+        },
+        reqInit,
+      );
 
       if (apiClass) {
         return new apiClass({

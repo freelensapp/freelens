@@ -1,16 +1,18 @@
 #!/usr/bin/env node
+
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "assert";
+import path from "path";
+import arg from "arg";
 import { mkdir, readFile } from "fs/promises";
 import { JSDOM } from "jsdom";
-import path from "path";
-import sharp from "sharp";
-import arg from "arg";
-import assert from "assert";
 import { platform } from "process";
+import sharp from "sharp";
 
 const options = arg({
   "--input": String,
@@ -51,7 +53,7 @@ const resolve = async (input: string) => {
   } else {
     return filePath?.replace("file://", "");
   }
-}
+};
 
 const size = options["--output-size"] ?? 16;
 const outputFolder = joinWithInitCwd(assertOption("--output"));
@@ -63,8 +65,7 @@ assert(inputFile, "input file not found");
 assert(noticeFile, "notice icon file not found");
 assert(spinnerFile, "spinner icon file not found");
 
-const getSvgStyling = (colouring: "dark" | "light") => (
-  `
+const getSvgStyling = (colouring: "dark" | "light") => `
     <style>
       ellipse {
         stroke: ${colouring === "dark" ? "white" : "black"} !important;
@@ -73,8 +74,7 @@ const getSvgStyling = (colouring: "dark" | "light") => (
         fill: ${colouring === "dark" ? "white" : "black"} !important;
       }
     </style>
-  `
-);
+  `;
 
 type TargetSystems = "macos" | "windows-or-linux";
 
@@ -86,7 +86,7 @@ const getBaseIconImage = async (system: TargetSystems) => {
   //root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
 
   return Buffer.from(root.outerHTML);
-}
+};
 
 const generateImage = (image: Buffer, size: number, namePrefix: string) => (
   console.log(`Generating ${namePrefix}.png ...`),
@@ -96,22 +96,24 @@ const generateImage = (image: Buffer, size: number, namePrefix: string) => (
     .toFile(path.join(outputFolder, `${namePrefix}.png`))
 );
 
-const generateImages = (image: Buffer, size: number, name: string) => Promise.all([
-  generateImage(image, size, name),
-  generateImage(image, size * 2, `${name}@2x`),
-  generateImage(image, size * 3, `${name}@3x`),
-  generateImage(image, size * 4, `${name}@4x`),
-]);
+const generateImages = (image: Buffer, size: number, name: string) =>
+  Promise.all([
+    generateImage(image, size, name),
+    generateImage(image, size * 2, `${name}@2x`),
+    generateImage(image, size * 3, `${name}@3x`),
+    generateImage(image, size * 4, `${name}@4x`),
+  ]);
 
 async function generateImageWithSvg(baseImage: Buffer, system: TargetSystems, filePath: string) {
   const svgFile = await getIconImage(system, filePath);
 
-  const circleBuffer = await sharp(Buffer.from(`
+  const circleBuffer = await sharp(
+    Buffer.from(`
     <svg viewBox="0 0 64 64">
       <circle cx="32" cy="32" r="32" fill="black" />
     </svg>
-  `))
-    .toBuffer();
+  `),
+  ).toBuffer();
 
   return sharp(baseImage)
     .resize({ width: 128, height: 128 })
@@ -123,14 +125,12 @@ async function generateImageWithSvg(baseImage: Buffer, system: TargetSystems, fi
         blend: "dest-out",
       },
       {
-        input: (
-          await sharp(svgFile)
-            .resize({
-              width: 60,
-              height: 60,
-            })
-            .toBuffer()
-        ),
+        input: await sharp(svgFile)
+          .resize({
+            width: 60,
+            height: 60,
+          })
+          .toBuffer(),
         top: 66,
         left: 66,
       },

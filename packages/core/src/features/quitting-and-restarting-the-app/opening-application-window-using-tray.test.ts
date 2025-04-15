@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
+import { runInAction } from "mobx";
+import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import focusApplicationInjectable from "../../main/electron-app/features/focus-application.injectable";
 import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
 import createElectronWindowInjectable from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
+import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
 import splashWindowInjectable from "../../main/start-main-application/lens-window/splash-window/splash-window.injectable";
-import { runInAction } from "mobx";
-import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("opening application window using tray", () => {
   describe("given application has started", () => {
@@ -35,38 +36,31 @@ describe("opening application window using tray", () => {
       builder.beforeApplicationStart(({ mainDi }) => {
         mainDi.override(focusApplicationInjectable, () => focusApplicationMock);
 
-        mainDi.override(
-          staticFilesDirectoryInjectable,
-          () => "/some-static-directory",
+        mainDi.override(staticFilesDirectoryInjectable, () => "/some-static-directory");
+
+        const loadFileMock = jest.fn(callForSplashWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+
+        const loadUrlMock = jest.fn(callForApplicationWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+
+        createElectronWindowMock = jest.fn(
+          (toBeDecorated): CreateElectronWindow =>
+            (configuration) => {
+              const browserWindow = toBeDecorated(configuration);
+
+              if (configuration.id === "splash") {
+                return { ...browserWindow, loadFile: loadFileMock };
+              }
+
+              if (configuration.id === "first-application-window") {
+                return { ...browserWindow, loadUrl: loadUrlMock };
+              }
+
+              return browserWindow;
+            },
         );
 
-        const loadFileMock = jest
-          .fn(callForSplashWindowHtmlMock)
-          .mockImplementationOnce(() => Promise.resolve());
-
-        const loadUrlMock = jest
-          .fn(callForApplicationWindowHtmlMock)
-          .mockImplementationOnce(() => Promise.resolve());
-
-        createElectronWindowMock = jest.fn((toBeDecorated): CreateElectronWindow => (configuration) => {
-          const browserWindow = toBeDecorated(configuration);
-
-          if (configuration.id === "splash") {
-            return { ...browserWindow, loadFile: loadFileMock };
-          }
-
-          if (configuration.id === "first-application-window") {
-            return { ...browserWindow, loadUrl: loadUrlMock };
-          }
-
-          return browserWindow;
-        });
-
         runInAction(() => {
-          (mainDi as any).decorateFunction(
-            createElectronWindowInjectable,
-            createElectronWindowMock,
-          );
+          (mainDi as any).decorateFunction(createElectronWindowInjectable, createElectronWindowMock);
         });
 
         expectWindowsToBeOpen = expectWindowsToBeOpenFor(builder);
@@ -238,14 +232,8 @@ describe("opening application window using tray", () => {
   });
 });
 
-const expectWindowsToBeOpenFor =
-  (builder: ApplicationBuilder) => (windowIds: string[]) => {
-    const windows: LensWindow[] = [
-      builder.mainDi.inject(splashWindowInjectable),
-      ...builder.applicationWindow.getAll(),
-    ];
+const expectWindowsToBeOpenFor = (builder: ApplicationBuilder) => (windowIds: string[]) => {
+  const windows: LensWindow[] = [builder.mainDi.inject(splashWindowInjectable), ...builder.applicationWindow.getAll()];
 
-    expect(
-      windows.filter((window) => window.isVisible).map((window) => window.id),
-    ).toEqual(windowIds);
-  };
+  expect(windows.filter((window) => window.isVisible).map((window) => window.id)).toEqual(windowIds);
+};

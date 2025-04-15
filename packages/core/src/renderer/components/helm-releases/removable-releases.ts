@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ObservableMap } from "mobx";
 import { computed } from "mobx";
@@ -19,13 +21,8 @@ export interface RemovableHelmRelease extends HelmRelease {
   delete: () => Promise<void>;
 }
 
-export const removableReleases = ({
-  releases,
-  releaseSelectionStatus,
-  deleteRelease,
-}: Dependencies) => {
-  const isSelected = (release: HelmRelease) =>
-    releaseSelectionStatus.get(release.getId()) || false;
+export const removableReleases = ({ releases, releaseSelectionStatus, deleteRelease }: Dependencies) => {
+  const isSelected = (release: HelmRelease) => releaseSelectionStatus.get(release.getId()) || false;
 
   return computed(() =>
     releases.value.get().map(

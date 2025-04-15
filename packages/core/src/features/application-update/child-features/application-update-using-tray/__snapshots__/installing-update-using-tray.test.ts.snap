@@ -163,11 +163,7 @@ exports[`installing update using tray when started renders 1`] = `
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -511,11 +507,7 @@ exports[`installing update using tray when started when user checks for updates 
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -859,11 +851,7 @@ exports[`installing update using tray when started when user checks for updates 
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1207,11 +1195,7 @@ exports[`installing update using tray when started when user checks for updates 
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1580,11 +1564,7 @@ exports[`installing update using tray when started when user checks for updates 
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1928,11 +1908,7 @@ exports[`installing update using tray when started when user checks for updates 
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 

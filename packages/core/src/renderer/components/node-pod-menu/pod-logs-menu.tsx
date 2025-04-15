@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import createPodLogsTabInjectable, { type PodLogsTabData } from "../dock/logs/create-pod-logs-tab.injectable";
 import type { Container } from "@freelensapp/kube-object";
-import PodMenuItem from "./pod-menu-item";
 import { Pod } from "@freelensapp/kube-object";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
+import createPodLogsTabInjectable, { type PodLogsTabData } from "../dock/logs/create-pod-logs-tab.injectable";
+import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
+import PodMenuItem from "./pod-menu-item";
 
 export interface NonInjectablePodLogsMenuProps {
   object: any;
@@ -21,13 +22,8 @@ interface Dependencies {
   createPodLogsTab: ({ selectedPod, selectedContainer }: PodLogsTabData) => any;
 }
 
-const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Dependencies> = props => {
-  const {
-    object,
-    toolbar,
-    hideDetails,
-    createPodLogsTab,
-  } = props;
+const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Dependencies> = (props) => {
+  const { object, toolbar, hideDetails, createPodLogsTab } = props;
 
   if (!object) return null;
   let pod: Pod;
@@ -66,13 +62,10 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
   );
 };
 
-export const PodLogsMenu = withInjectables<Dependencies, NonInjectablePodLogsMenuProps>(
-  NonInjectablePodLogsMenu,
-  {
-    getProps: (di, props) => ({
-      ...props,
-      hideDetails: di.inject(hideDetailsInjectable),
-      createPodLogsTab: di.inject(createPodLogsTabInjectable),
-    }),
-  },
-);
+export const PodLogsMenu = withInjectables<Dependencies, NonInjectablePodLogsMenuProps>(NonInjectablePodLogsMenu, {
+  getProps: (di, props) => ({
+    ...props,
+    hideDetails: di.inject(hideDetailsInjectable),
+    createPodLogsTab: di.inject(createPodLogsTabInjectable),
+  }),
+});

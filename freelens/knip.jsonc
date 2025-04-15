@@ -8,21 +8,17 @@
     "static/build/{freelens,main}.js!",
     "webpack/{dev-server,webpack}.ts"
   ],
-  "project": [
-    "build/*.js",
-    "integration/**/*.ts",
-    "src/**/*.ts!",
-    "static/build/*.js!",
-    "webpack/*.ts"
-  ],
+  "project": ["build/*.js", "integration/**/*.ts", "src/**/*.ts!", "static/build/*.js!", "webpack/*.ts"],
   "ignoreDependencies": [
     // it is really runtime dependency but implicitly used in Electron app
     "electron",
+    // explicit dependency to prevent to install different versions of app-build-lib
+    "electron-builder-squirrel-windows",
     // used as script to run in fork()
     "pnpm",
     // used as a hint for knip plugin
     "ts-node",
-    // only for Windows    
+    // only for Windows
     "win-ca",
     // all packages used in require() calls in webpacked files
     "@astronautlabs/jsonpath",
@@ -98,21 +94,12 @@
     "typed-regex",
     "url-parse",
     "winston",
-    "zod",
+    "zod"
   ],
-  "ignoreBinaries": [
-    "distwin-unpackedFreelens.exe"
-  ],
-  "ignoreUnresolved": [
-    ".*/__mocks__/assetMock.t"
-  ],
+  "ignoreBinaries": ["distwin-unpackedFreelens.exe", "^start:"],
+  "ignoreUnresolved": [".*/__mocks__/assetMock.t"],
   "webpack": {
-    "config": [
-      "!webpack/dev-server.ts",
-      "webpack/*.ts"
-    ]
+    "config": ["!webpack/dev-server.ts", "webpack/*.ts"]
   },
-  "exclude": [
-    "exports"
-  ]
+  "exclude": ["exports"]
 }

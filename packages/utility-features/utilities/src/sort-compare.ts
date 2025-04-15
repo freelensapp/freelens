@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -52,7 +53,7 @@ export function sortCompare<T>(left: T, right: T): Ordering {
  */
 export function sortBySemverVersion<T extends { version: string }>(versioned: T[]): T[] {
   return versioned
-    .map(versioned => ({
+    .map((versioned) => ({
       __version: coerce(versioned.version, { loose: true }),
       raw: versioned,
     }))

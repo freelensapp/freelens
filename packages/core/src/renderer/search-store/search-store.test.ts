@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { SearchStore } from "./search-store";
-import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { getDiForUnitTesting } from "../getDiForUnitTesting";
+import { SearchStore } from "./search-store";
 import searchStoreInjectable from "./search-store.injectable";
 
 const logs = [

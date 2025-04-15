@@ -1,17 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./wizard.scss";
-import React from "react";
+import { Button } from "@freelensapp/button";
+import { Spinner } from "@freelensapp/spinner";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
-import { Button } from "@freelensapp/button";
-import { Stepper } from "../stepper";
-import { SubTitle } from "../layout/sub-title";
-import { Spinner } from "@freelensapp/spinner";
 import { debounce } from "lodash";
+import React from "react";
+import { SubTitle } from "../layout/sub-title";
+import { Stepper } from "../stepper";
 
 export interface WizardCommonProps<D> {
   data?: Partial<D>;
@@ -44,8 +45,8 @@ export class Wizard<D> extends React.Component<WizardProps<D>, State> {
     const steps = React.Children.toArray(children) as React.ReactElement<WizardStepProps<D>>[];
 
     return steps
-      .filter(step => !step.props.skip)
-      .map((stepElem, i) => (
+      .filter((step) => !step.props.skip)
+      .map((stepElem, i) =>
         React.cloneElement(stepElem, {
           step: i + 1,
           wizard: this,
@@ -57,8 +58,8 @@ export class Wizard<D> extends React.Component<WizardProps<D>, State> {
           isLast: this.isLastStep,
           ...commonProps,
           ...stepElem.props,
-        })
-      ));
+        }),
+      );
   }
 
   get step() {
@@ -80,14 +81,14 @@ export class Wizard<D> extends React.Component<WizardProps<D>, State> {
 
   isFirstStep = () => this.step === 1;
   isLastStep = () => this.step === this.steps.length;
-  firstStep = (): any => this.step = 1;
+  firstStep = (): any => (this.step = 1);
   nextStep = (): any => this.step++;
   prevStep = (): any => this.step--;
-  lastStep = (): any => this.step = this.steps.length;
+  lastStep = (): any => (this.step = this.steps.length);
 
   render() {
     const { className, title, header, hideSteps } = this.props;
-    const steps = this.steps.map(stepElem => ({ title: stepElem.props.title }));
+    const steps = this.steps.map((stepElem) => ({ title: stepElem.props.title }));
     const step = React.cloneElement(this.steps[this.step - 1]);
 
     return (
@@ -171,12 +172,10 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
           if (this.unmounting) return;
           this.setState({ waiting: false });
         });
-      }
-      else if (typeof result === "boolean" && result) {
+      } else if (typeof result === "boolean" && result) {
         nextStep?.();
       }
-    }
-    else {
+    } else {
       nextStep?.();
     }
   };
@@ -207,17 +206,35 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
       return;
     }
 
-    if(evt.key === "Enter"){
+    if (evt.key === "Enter") {
       this.submit();
     }
   }
 
   render() {
     const {
-      step, isFirst, isLast, children,
-      loading, customButtons, disabledNext, scrollable,
-      hideNextBtn, hideBackBtn, beforeContent, afterContent, noValidate, skip, moreButtons,
-      waiting, className, contentClass, prevLabel, nextLabel, testIdForNext, testIdForPrev,
+      step,
+      isFirst,
+      isLast,
+      children,
+      loading,
+      customButtons,
+      disabledNext,
+      scrollable,
+      hideNextBtn,
+      hideBackBtn,
+      beforeContent,
+      afterContent,
+      noValidate,
+      skip,
+      moreButtons,
+      waiting,
+      className,
+      contentClass,
+      prevLabel,
+      nextLabel,
+      testIdForNext,
+      testIdForPrev,
     } = this.props;
 
     if (skip) {
@@ -230,7 +247,7 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
         onSubmit={prevDefault(this.submit)}
         noValidate={noValidate}
         onKeyDown={(evt) => this.keyDown(evt)}
-        ref={e => this.form = e}
+        ref={(e) => (this.form = e)}
       >
         {beforeContent}
         <div className={cssNames("step-content", { scrollable }, contentClass)}>

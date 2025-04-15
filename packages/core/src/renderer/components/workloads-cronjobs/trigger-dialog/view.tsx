@@ -1,31 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./view.scss";
 
-import React, { Component } from "react";
+import type { JobApi } from "@freelensapp/kube-api";
+import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { CronJob } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IObservableValue } from "mobx";
-import { observable, makeObservable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import React, { Component } from "react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
-import type { CronJob } from "@freelensapp/kube-object";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { cssNames } from "@freelensapp/utilities";
 import { Input } from "../../input";
-import { systemName, maxLength } from "../../input/input_validators";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { maxLength, systemName } from "../../input/input_validators";
+import { Wizard, WizardStep } from "../../wizard";
 import closeCronJobTriggerDialogInjectable from "./close.injectable";
-import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
 import cronJobTriggerDialogStateInjectable from "./state.injectable";
-import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { JobApi } from "@freelensapp/kube-api";
 
-export interface CronJobTriggerDialogProps extends Partial<DialogProps> {
-}
+export interface CronJobTriggerDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   state: IObservableValue<CronJob | undefined>;
@@ -59,23 +59,28 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
     }
 
     try {
-      await this.props.jobApi.create({
-        name: this.jobName,
-        namespace: cronJob.getNs(),
-      }, {
-        spec: cronJob.spec.jobTemplate.spec,
-        metadata: {
-          annotations: { "cronjob.kubernetes.io/instantiate": "manual" },
-          ownerReferences: [{
-            apiVersion: cronJob.apiVersion,
-            blockOwnerDeletion: true,
-            controller: true,
-            kind: cronJob.kind,
-            name: cronJob.metadata.name,
-            uid: cronJob.metadata.uid,
-          }],
+      await this.props.jobApi.create(
+        {
+          name: this.jobName,
+          namespace: cronJob.getNs(),
         },
-      });
+        {
+          spec: cronJob.spec.jobTemplate.spec,
+          metadata: {
+            annotations: { "cronjob.kubernetes.io/instantiate": "manual" },
+            ownerReferences: [
+              {
+                apiVersion: cronJob.apiVersion,
+                blockOwnerDeletion: true,
+                controller: true,
+                kind: cronJob.kind,
+                name: cronJob.metadata.name,
+                uid: cronJob.metadata.uid,
+              },
+            ],
+          },
+        },
+      );
 
       this.props.closeCronJobTriggerDialog();
     } catch (err) {
@@ -86,22 +91,16 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
   renderContents(cronJob: CronJob) {
     return (
       <Wizard
-        header={(
+        header={
           <h5>
             Trigger CronJob
             <span>{cronJob.getName()}</span>
           </h5>
-        )}
+        }
         done={this.props.closeCronJobTriggerDialog}
       >
-        <WizardStep
-          contentClass="flex gaps column"
-          next={() => this.trigger(cronJob)}
-          nextLabel="Trigger"
-        >
-          <div className="flex gaps">
-            Job name:
-          </div>
+        <WizardStep contentClass="flex gaps column" next={() => this.trigger(cronJob)} nextLabel="Trigger">
+          <div className="flex gaps">Job name:</div>
           <div className="flex gaps">
             <Input
               required
@@ -111,7 +110,7 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
               validators={[systemName, maxLength]}
               maxLength={63}
               value={this.jobName}
-              onChange={v => this.jobName = v.toLowerCase()}
+              onChange={(v) => (this.jobName = v.toLowerCase())}
               className="box grow"
             />
           </div>
@@ -140,13 +139,16 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
   }
 }
 
-export const CronJobTriggerDialog = withInjectables<Dependencies, CronJobTriggerDialogProps>(NonInjectedCronJobTriggerDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    closeCronJobTriggerDialog: di.inject(closeCronJobTriggerDialogInjectable),
-    jobApi: di.inject(jobApiInjectable),
-    state: di.inject(cronJobTriggerDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-    showErrorNotification: di.inject(showErrorNotificationInjectable),
-  }),
-});
+export const CronJobTriggerDialog = withInjectables<Dependencies, CronJobTriggerDialogProps>(
+  NonInjectedCronJobTriggerDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      closeCronJobTriggerDialog: di.inject(closeCronJobTriggerDialogInjectable),
+      jobApi: di.inject(jobApiInjectable),
+      state: di.inject(cronJobTriggerDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+      showErrorNotification: di.inject(showErrorNotificationInjectable),
+    }),
+  },
+);

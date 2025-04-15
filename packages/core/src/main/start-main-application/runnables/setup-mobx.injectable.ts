@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import * as Mobx from "mobx";
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { getInjectable } from "@ogre-tools/injectable";
+import * as Mobx from "mobx";
 
 const setupMobxInjectable = getInjectable({
   id: "setup-mobx",

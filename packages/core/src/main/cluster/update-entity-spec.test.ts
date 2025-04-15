@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -21,7 +23,7 @@ describe("update-entity-spec", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
     di.override(appPathsStateInjectable, () => ({
-      get: () => ({} as AppPaths),
+      get: () => ({}) as AppPaths,
       set: () => {},
     }));
 
@@ -69,7 +71,7 @@ describe("update-entity-spec", () => {
 
   it("given cluster icon is null, deletes icon from both", () => {
     cluster.preferences.icon = null;
-    entity.spec.icon = { src : "some-icon" };
+    entity.spec.icon = { src: "some-icon" };
 
     updateEntitySpec(entity, cluster);
     expect(entity.spec.icon).toBeUndefined();
@@ -158,5 +160,4 @@ describe("update-entity-spec", () => {
 
     expect(entity.spec.metrics?.prometheus?.type).toEqual("some-prometheus-provider-type");
   });
-
 });

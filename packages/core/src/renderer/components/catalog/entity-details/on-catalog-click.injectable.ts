@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import type { CatalogEntity } from "../../../api/catalog-entity";
@@ -16,7 +18,7 @@ const onCatalogEntityListClickInjectable = getInjectable({
     const selectedCatalogEntityParam = di.inject(selectedCatalogEntityParamInjectable);
     const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
 
-    return action(entity => {
+    return action((entity) => {
       if (selectedCatalogEntityParam.get() === entity.getId()) {
         selectedCatalogEntityParam.clear();
       } else if (selectedCatalogEntityParam.get() === undefined) {

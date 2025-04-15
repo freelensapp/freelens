@@ -1,18 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { isObservable, observable } from "mobx";
 import { toJS } from "../toJS";
 
 describe("utils/toJS(data: any)", () => {
   const y = { y: 2 };
 
-  const data = observable({ x: 1, y }, {}, {
-    deep: false, // this will keep ref to "y"
-  });
+  const data = observable(
+    { x: 1, y },
+    {},
+    {
+      deep: false, // this will keep ref to "y"
+    },
+  );
   const data2 = {
-    x: 1,  // partially observable
+    x: 1, // partially observable
     y: observable(y),
   };
 

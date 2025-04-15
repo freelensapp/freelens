@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./radio.scss";
-import React, { useContext, useRef } from "react";
-import type { StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop } from "@freelensapp/utilities";
+import React, { useContext, useRef } from "react";
 
 export interface RadioGroupProps<T> {
   className?: string;
@@ -38,9 +39,7 @@ export function RadioGroup<T>({
   children,
 }: RadioGroupProps<T>) {
   return (
-    <div
-      className={cssNames("RadioGroup", { buttonsView: asButtons }, className)}
-    >
+    <div className={cssNames("RadioGroup", { buttonsView: asButtons }, className)}>
       <radioGroupContext.Provider value={{ disabled, onSelect: onChange, value }}>
         {children}
       </radioGroupContext.Provider>
@@ -55,12 +54,7 @@ export interface RadioProps<T> {
   disabled?: boolean;
 }
 
-export function Radio<T>({
-  className,
-  label,
-  value,
-  disabled = false,
-}: RadioProps<T>) {
+export function Radio<T>({ className, label, value, disabled = false }: RadioProps<T>) {
   const ctx = useContext(radioGroupContext);
   const ref = useRef<HTMLLabelElement | null>(null);
   const checked = ctx.value === value;
@@ -72,7 +66,7 @@ export function Radio<T>({
         disabled: disabled || ctx.disabled,
       })}
       tabIndex={checked ? undefined : 0}
-      onKeyDown={event => {
+      onKeyDown={(event) => {
         // Spacebar or Enter key
         if (event.key === " " || event.key === "Enter") {
           ref.current?.click();
@@ -81,13 +75,8 @@ export function Radio<T>({
       }}
       ref={ref}
     >
-      <input
-        type="radio"
-        checked={checked}
-        onChange={() => ctx.onSelect(value)}
-        disabled={disabled || ctx.disabled}
-      />
-      <i className="tick flex center"/>
+      <input type="radio" checked={checked} onChange={() => ctx.onSelect(value)} disabled={disabled || ctx.disabled} />
+      <i className="tick flex center" />
       {label ? <div className="label">{label}</div> : null}
     </label>
   );

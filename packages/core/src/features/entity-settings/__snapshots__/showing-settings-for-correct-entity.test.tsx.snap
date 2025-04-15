@@ -163,11 +163,7 @@ exports[`Showing correct entity settings renders 1`] = `
                   Welcome to some-product-name!
                 </h2>
                 <p>
-                  To get you started we have auto-detected your clusters in your
-                   
-                  kubeconfig file and added them to the catalog, your centralized
-                   
-                  view for managing all your cloud-native resources.
+                  To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                   <br />
                   <br />
                   If you have any questions or feedback, please join us on our 
@@ -1212,8 +1208,7 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
                 class="flex items-center"
                 data-preference-page-does-not-exist-test="true"
               >
-                No settings found for
-                 
+                No settings found for 
                 entity.k8slens.dev/v1alpha1
                 /
                 WebLink

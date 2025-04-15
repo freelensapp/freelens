@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
-import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
+
 import path from "path";
 import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
+import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
   const tarFiles = await listTarEntries(filePath);
@@ -18,10 +20,8 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
   }
 
   const rootFolder = path.normalize(firstFile).split(path.sep)[0];
-  const packedInRootFolder = tarFiles.every(entry => entry.startsWith(rootFolder));
-  const manifestLocation = packedInRootFolder
-    ? path.join(rootFolder, manifestFilename)
-    : manifestFilename;
+  const packedInRootFolder = tarFiles.every((entry) => entry.startsWith(rootFolder));
+  const manifestLocation = packedInRootFolder ? path.join(rootFolder, manifestFilename) : manifestFilename;
 
   if (!tarFiles.includes(manifestLocation)) {
     throw new Error(`invalid extension bundle, ${manifestFilename} not found`);
@@ -34,11 +34,8 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
   });
 
   if (
-    isObject(manifest)
-    && (
-      hasTypedProperty(manifest, "main", isString)
-      || hasTypedProperty(manifest, "renderer", isString)
-    )
+    isObject(manifest) &&
+    (hasTypedProperty(manifest, "main", isString) || hasTypedProperty(manifest, "renderer", isString))
   ) {
     return manifest as unknown as LensExtensionManifest;
   }

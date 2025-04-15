@@ -1,22 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { observableHistoryInjectionToken, searchParamsOptions } from "@freelensapp/routing";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import { createMemoryHistory } from "history";
+import { computed, runInAction } from "mobx";
+import { createObservableHistory } from "mobx-observable-history";
+import React from "react";
+import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
+import navigateToFrontPageInjectable from "../../common/front-end-routing/navigate-to-front-page.injectable";
+import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../renderer/routes/current-path.injectable";
-import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
-import { computed, runInAction } from "mobx";
-import React from "react";
 import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
-import { observableHistoryInjectionToken, searchParamsOptions } from "@freelensapp/routing";
-import { createMemoryHistory } from "history";
-import { createObservableHistory } from "mobx-observable-history";
-import navigateToFrontPageInjectable from "../../common/front-end-routing/navigate-to-front-page.injectable";
-import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import { preferenceItemInjectionToken } from "./renderer/preference-items/preference-item-injection-token";
 
 describe("preferences - closing-preferences", () => {
@@ -98,9 +100,7 @@ describe("preferences - closing-preferences", () => {
 
     describe("when navigating to a tab in preferences", () => {
       beforeEach(() => {
-        builder.preferences.navigation.click(
-          "some-path-id-for-some-test-tab-id",
-        );
+        builder.preferences.navigation.click("some-path-id-for-some-test-tab-id");
       });
 
       it("renders", () => {
@@ -178,9 +178,7 @@ describe("preferences - closing-preferences", () => {
 
     describe("when navigating to a tab in preferences", () => {
       beforeEach(() => {
-        builder.preferences.navigation.click(
-          "some-path-id-for-some-test-tab-id",
-        );
+        builder.preferences.navigation.click("some-path-id-for-some-test-tab-id");
       });
 
       it("renders", () => {

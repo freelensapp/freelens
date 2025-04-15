@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
+import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 
+import navigateToNodesInjectable from "../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
 import nodesRouteInjectable from "../../../common/front-end-routing/routes/cluster/nodes/nodes-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import navigateToNodesInjectable from "../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
 
 const nodesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-nodes",

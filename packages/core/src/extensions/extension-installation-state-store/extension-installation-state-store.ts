@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, observable } from "mobx";
+import type { Logger } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import type { ExtendableDisposer } from "@freelensapp/utilities";
+import { ipcRenderer } from "electron";
+import { action, computed, observable } from "mobx";
 import * as uuid from "uuid";
 import { broadcastMessage } from "../../common/ipc";
-import { ipcRenderer } from "electron";
-import type { Logger } from "@freelensapp/logger";
 
 export enum ExtensionInstallationState {
   INSTALLING = "installing",
@@ -55,9 +56,7 @@ export class ExtensionInstallationStateStore {
     const curState = this.getInstallationState(extId);
 
     if (curState !== ExtensionInstallationState.IDLE) {
-      throw new Error(
-        `${Prefix}: cannot set ${extId} as installing. Is currently ${curState}.`,
-      );
+      throw new Error(`${Prefix}: cannot set ${extId} as installing. Is currently ${curState}.`);
     }
 
     this.installingExtensions.add(extId);
@@ -88,9 +87,7 @@ export class ExtensionInstallationStateStore {
   @action startPreInstall = (): ExtendableDisposer => {
     const preInstallStepId = uuid.v4();
 
-    this.dependencies.logger.debug(
-      `${Prefix}: starting a new preinstall phase: ${preInstallStepId}`,
-    );
+    this.dependencies.logger.debug(`${Prefix}: starting a new preinstall phase: ${preInstallStepId}`);
     this.preInstallIds.add(preInstallStepId);
 
     return disposer(() => {
@@ -110,9 +107,7 @@ export class ExtensionInstallationStateStore {
     const curState = this.getInstallationState(extId);
 
     if (curState !== ExtensionInstallationState.IDLE) {
-      throw new Error(
-        `${Prefix}: cannot set ${extId} as uninstalling. Is currently ${curState}.`,
-      );
+      throw new Error(`${Prefix}: cannot set ${extId} as uninstalling. Is currently ${curState}.`);
     }
 
     this.uninstallingExtensions.add(extId);
@@ -132,9 +127,7 @@ export class ExtensionInstallationStateStore {
       case ExtensionInstallationState.INSTALLING:
         return void this.installingExtensions.delete(extId);
       default:
-        throw new Error(
-          `${Prefix}: cannot clear INSTALLING state for ${extId}, it is currently ${curState}`,
-        );
+        throw new Error(`${Prefix}: cannot clear INSTALLING state for ${extId}, it is currently ${curState}`);
     }
   };
 
@@ -152,9 +145,7 @@ export class ExtensionInstallationStateStore {
       case ExtensionInstallationState.UNINSTALLING:
         return void this.uninstallingExtensions.delete(extId);
       default:
-        throw new Error(
-          `${Prefix}: cannot clear UNINSTALLING state for ${extId}, it is currently ${curState}`,
-        );
+        throw new Error(`${Prefix}: cannot clear UNINSTALLING state for ${extId}, it is currently ${curState}`);
     }
   };
 
@@ -186,15 +177,13 @@ export class ExtensionInstallationStateStore {
    * @param extId The ID of the extension
    */
   isExtensionUninstalling = (extId: string): boolean =>
-    this.getInstallationState(extId) ===
-    ExtensionInstallationState.UNINSTALLING;
+    this.getInstallationState(extId) === ExtensionInstallationState.UNINSTALLING;
 
   /**
    * Returns true if the extension is currently IDLE
    * @param extId The ID of the extension
    */
-  isExtensionIdle = (extId: string): boolean =>
-    this.getInstallationState(extId) === ExtensionInstallationState.IDLE;
+  isExtensionIdle = (extId: string): boolean => this.getInstallationState(extId) === ExtensionInstallationState.IDLE;
 
   /**
    * The current number of extensions installing

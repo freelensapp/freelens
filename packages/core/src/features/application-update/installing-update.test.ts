@@ -1,24 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
+import electronQuitAndInstallUpdateInjectable from "../../main/electron-app/features/electron-quit-and-install-update.injectable";
+import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
+import setUpdateOnQuitInjectable from "../../main/electron-app/features/set-update-on-quit.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import quitAndInstallUpdateInjectable from "./main/quit-and-install-update.injectable";
-import type { RenderResult } from "@testing-library/react";
-import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
+import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 import publishIsConfiguredInjectable from "./child-features/updating-is-enabled/main/publish-is-configured.injectable";
 import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
 import type { DownloadPlatformUpdate } from "./main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "./main/download-update/download-platform-update/download-platform-update.injectable";
-import setUpdateOnQuitInjectable from "../../main/electron-app/features/set-update-on-quit.injectable";
 import processCheckingForUpdatesInjectable from "./main/process-checking-for-updates.injectable";
-import { testUsingFakeTime } from "../../test-utils/use-fake-time";
-import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
-import electronQuitAndInstallUpdateInjectable from "../../main/electron-app/features/electron-quit-and-install-update.injectable";
+import quitAndInstallUpdateInjectable from "./main/quit-and-install-update.injectable";
 
 describe.skip("installing update", () => {
   let builder: ApplicationBuilder;
@@ -42,20 +44,11 @@ describe.skip("installing update", () => {
 
       mainDi.override(setUpdateOnQuitInjectable, () => setUpdateOnQuitMock);
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
-      mainDi.override(
-        downloadPlatformUpdateInjectable,
-        () => downloadPlatformUpdateMock,
-      );
+      mainDi.override(downloadPlatformUpdateInjectable, () => downloadPlatformUpdateMock);
 
-      mainDi.override(
-        electronQuitAndInstallUpdateInjectable,
-        () => electronQuitAndInstallUpdateMock,
-      );
+      mainDi.override(electronQuitAndInstallUpdateInjectable, () => electronQuitAndInstallUpdateMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
@@ -70,13 +63,9 @@ describe.skip("installing update", () => {
     beforeEach(async () => {
       rendered = await builder.render();
 
-      processCheckingForUpdates = builder.mainDi.inject(
-        processCheckingForUpdatesInjectable,
-      );
+      processCheckingForUpdates = builder.mainDi.inject(processCheckingForUpdatesInjectable);
 
-      quitAndInstallUpdate = builder.mainDi.inject(
-        quitAndInstallUpdateInjectable,
-      );
+      quitAndInstallUpdate = builder.mainDi.inject(quitAndInstallUpdateInjectable);
     });
 
     it("renders", () => {
@@ -84,9 +73,7 @@ describe.skip("installing update", () => {
     });
 
     it("shows normal tray icon", () => {
-      expect(builder.tray.getIconPath()).toBe(
-        "/some-static-files-directory/build/tray/trayIconTemplate.png",
-      );
+      expect(builder.tray.getIconPath()).toBe("/some-static-files-directory/build/tray/trayIconTemplate.png");
     });
 
     describe("when user checks for updates", () => {
@@ -95,10 +82,7 @@ describe.skip("installing update", () => {
       });
 
       it("checks for updates", () => {
-        expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(
-          expect.any(Object),
-          { allowDowngrade: false },
-        );
+        expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(expect.any(Object), { allowDowngrade: false });
       });
 
       it("shows tray icon for checking for updates", () => {
@@ -119,9 +103,7 @@ describe.skip("installing update", () => {
         });
 
         it("shows tray icon for normal", () => {
-          expect(builder.tray.getIconPath()).toBe(
-            "/some-static-files-directory/build/tray/trayIconTemplate.png",
-          );
+          expect(builder.tray.getIconPath()).toBe("/some-static-files-directory/build/tray/trayIconTemplate.png");
         });
 
         it("does not start downloading update", () => {
@@ -165,9 +147,7 @@ describe.skip("installing update", () => {
           });
 
           it("still shows normal tray icon", () => {
-            expect(builder.tray.getIconPath()).toBe(
-              "/some-static-files-directory/build/tray/trayIconTemplate.png",
-            );
+            expect(builder.tray.getIconPath()).toBe("/some-static-files-directory/build/tray/trayIconTemplate.png");
           });
 
           it("renders", () => {
@@ -282,8 +262,7 @@ describe.skip("installing update", () => {
                 });
 
                 it("still shows the update button", () => {
-                  const button =
-                    rendered.getByTestId("update-button");
+                  const button = rendered.getByTestId("update-button");
 
                   expect(button).toBeInTheDocument();
                 });
@@ -315,8 +294,7 @@ describe.skip("installing update", () => {
                 });
 
                 it("does not show the update button", () => {
-                  const button =
-                    rendered.queryByTestId("update-button");
+                  const button = rendered.queryByTestId("update-button");
 
                   expect(button).not.toBeInTheDocument();
                 });

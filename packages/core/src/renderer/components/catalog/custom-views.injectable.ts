@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getOrInsert, getOrInsertMap } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { orderBy } from "lodash";
 import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
-import { getOrInsert, getOrInsertMap } from "@freelensapp/utilities";
 import type { CustomCategoryViewComponents } from "./custom-views";
 
 interface Dependencies {
@@ -26,11 +28,14 @@ export interface RegisteredCustomCategoryViewDecl {
   after: CustomCategoryViewComponents[];
 }
 
-function getCustomCategoryViews({ extensions }: Dependencies): IComputedValue<Map<string, Map<string, RegisteredCustomCategoryViewDecl>>> {
+function getCustomCategoryViews({
+  extensions,
+}: Dependencies): IComputedValue<Map<string, Map<string, RegisteredCustomCategoryViewDecl>>> {
   return computed(() => {
     const res = new Map<string, Map<string, RegisteredCustomCategoryViewDecl>>();
-    const registrations = extensions.get()
-      .flatMap(ext => ext.customCategoryViews)
+    const registrations = extensions
+      .get()
+      .flatMap((ext) => ext.customCategoryViews)
       .map(({ priority = 50, ...rest }) => ({ priority, ...rest }));
     const sortedRegistrations = orderBy(registrations, "priority", "asc");
 
@@ -52,9 +57,10 @@ function getCustomCategoryViews({ extensions }: Dependencies): IComputedValue<Ma
 const customCategoryViewsInjectable = getInjectable({
   id: "custom-category-views",
 
-  instantiate: (di) => getCustomCategoryViews({
-    extensions: di.inject(rendererExtensionsInjectable),
-  }),
+  instantiate: (di) =>
+    getCustomCategoryViews({
+      extensions: di.inject(rendererExtensionsInjectable),
+    }),
 });
 
 export default customCategoryViewsInjectable;

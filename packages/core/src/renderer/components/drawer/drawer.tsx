@@ -1,24 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./drawer.scss";
 
-import React from "react";
-import { clipboard } from "electron";
-import { createPortal } from "react-dom";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames, noop } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
 import { Animate } from "@freelensapp/animate";
 import type { AnimateName } from "@freelensapp/animate";
+import { Icon } from "@freelensapp/icon";
 import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelensapp/resizing-anchor";
-import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { historyInjectionToken } from "@freelensapp/routing";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { clipboard } from "electron";
 import type { History } from "history";
+import React from "react";
+import { createPortal } from "react-dom";
 import type { StorageLayer } from "../../utils/storage-helper";
+import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 export type DrawerPosition = "top" | "left" | "right" | "bottom";
 
@@ -57,10 +58,10 @@ interface State {
 }
 
 export const resizingAnchorProps: Record<DrawerPosition, [ResizeDirection, ResizeSide, ResizeGrowthDirection]> = {
-  "right": [ResizeDirection.HORIZONTAL, ResizeSide.LEADING, ResizeGrowthDirection.RIGHT_TO_LEFT],
-  "left": [ResizeDirection.HORIZONTAL, ResizeSide.TRAILING, ResizeGrowthDirection.LEFT_TO_RIGHT],
-  "top": [ResizeDirection.VERTICAL, ResizeSide.TRAILING, ResizeGrowthDirection.TOP_TO_BOTTOM],
-  "bottom": [ResizeDirection.VERTICAL, ResizeSide.LEADING, ResizeGrowthDirection.BOTTOM_TO_TOP],
+  right: [ResizeDirection.HORIZONTAL, ResizeSide.LEADING, ResizeGrowthDirection.RIGHT_TO_LEFT],
+  left: [ResizeDirection.HORIZONTAL, ResizeSide.TRAILING, ResizeGrowthDirection.LEFT_TO_RIGHT],
+  top: [ResizeDirection.VERTICAL, ResizeSide.TRAILING, ResizeGrowthDirection.TOP_TO_BOTTOM],
+  bottom: [ResizeDirection.VERTICAL, ResizeSide.LEADING, ResizeGrowthDirection.BOTTOM_TO_TOP],
 };
 
 interface Dependencies {
@@ -145,7 +146,12 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
   };
 
   onClickOutside = (evt: MouseEvent) => {
-    const { contentElem, mouseDownTarget, close, props: { open }} = this;
+    const {
+      contentElem,
+      mouseDownTarget,
+      close,
+      props: { open },
+    } = this;
 
     if (!open || evt.defaultPrevented || contentElem?.contains(mouseDownTarget)) {
       return;
@@ -182,7 +188,20 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
   };
 
   render() {
-    const { className, contentClass, animation, open, position, title, children, toolbar, size, usePortal, "data-testid": testId, testIdForClose } = this.props;
+    const {
+      className,
+      contentClass,
+      animation,
+      open,
+      position,
+      title,
+      children,
+      toolbar,
+      size,
+      usePortal,
+      "data-testid": testId,
+      testIdForClose,
+    } = this.props;
     const { isCopied, width } = this.state;
     const copyTooltip = isCopied ? "Copied!" : "Copy";
     const copyIcon = isCopied ? "done" : "content_copy";
@@ -195,7 +214,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
         <div
           className={cssNames("Drawer", className, position)}
           style={{ "--size": drawerSize } as React.CSSProperties}
-          ref={e => this.contentElem = e}
+          ref={(e) => (this.contentElem = e)}
           data-testid={testId}
         >
           <div className="drawer-wrapper flex column">
@@ -203,43 +222,32 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
               <div className="drawer-title-text flex gaps align-center">
                 {title}
                 {canCopyTitle && (
-                  <Icon
-                    material={copyIcon}
-                    tooltip={copyTooltip}
-                    onClick={() => this.copyTitle(title)}
-                  />
+                  <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
                 )}
               </div>
               {toolbar}
-              <Icon
-                material="close"
-                tooltip="Close"
-                onClick={this.close}
-                data-testid={testIdForClose}
-              />
+              <Icon material="close" tooltip="Close" onClick={this.close} data-testid={testIdForClose} />
             </div>
             <div
               className={cssNames("drawer-content flex column box grow", contentClass)}
               onScroll={this.saveScrollPos}
-              ref={e => this.scrollElem = e}
+              ref={(e) => (this.scrollElem = e)}
             >
               {children}
             </div>
           </div>
-          {
-            !size && (
-              <ResizingAnchor
-                direction={direction}
-                placement={placement}
-                growthDirection={growthDirection}
-                getCurrentExtent={() => width}
-                onDrag={this.resizeWidth}
-                onDoubleClick={() => this.resizeWidth(defaultDrawerWidth)}
-                minExtent={300}
-                maxExtent={window.innerWidth * 0.9}
-              />
-            )
-          }
+          {!size && (
+            <ResizingAnchor
+              direction={direction}
+              placement={placement}
+              growthDirection={growthDirection}
+              getCurrentExtent={() => width}
+              onDrag={this.resizeWidth}
+              onDoubleClick={() => this.resizeWidth(defaultDrawerWidth)}
+              minExtent={300}
+              maxExtent={window.innerWidth * 0.9}
+            />
+          )}
         </div>
       </Animate>
     );
@@ -248,10 +256,13 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
   }
 }
 
-export const Drawer = withInjectables<Dependencies, DrawerProps>(NonInjectedDrawer as React.ElementType<DrawerProps & Dependencies>, {
-  getProps: (di, props) => ({
-    ...props,
-    history: di.inject(historyInjectionToken),
-    drawerStorage: di.inject(drawerStorageInjectable),
-  }),
-});
+export const Drawer = withInjectables<Dependencies, DrawerProps>(
+  NonInjectedDrawer as React.ElementType<DrawerProps & Dependencies>,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      history: di.inject(historyInjectionToken),
+      drawerStorage: di.inject(drawerStorageInjectable),
+    }),
+  },
+);

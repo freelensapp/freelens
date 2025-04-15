@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { observable, reaction } from "mobx";
-import type { StorageHelper } from "../storage-helper";
 import { toJS } from "../../../common/utils";
-import type { CreateStorageHelper } from "../create-storage-helper.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import type { CreateStorageHelper } from "../create-storage-helper.injectable";
 import createStorageHelperInjectable from "../create-storage-helper.injectable";
+import type { StorageHelper } from "../storage-helper";
 
 interface StorageModel {
   [prop: string]: any /*json-serializable*/;
@@ -42,10 +43,7 @@ describe("renderer/utils/StorageHelper", () => {
         },
         storage: {
           getItem(key: string): StorageModel {
-            return Object.assign(
-              storageHelper.defaultValue,
-              remoteStorageMock.get(key),
-            );
+            return Object.assign(storageHelper.defaultValue, remoteStorageMock.get(key));
           },
           setItem(key: string, value: StorageModel) {
             remoteStorageMock.set(key, value);
@@ -80,13 +78,13 @@ describe("renderer/utils/StorageHelper", () => {
       expect(remoteStorageMock.get(storageKey)).toEqual({ ...storageHelper.defaultValue, message: "updated" });
 
       // `draft` modified inside, returning `void` is expected
-      storageHelper.merge(draft => {
+      storageHelper.merge((draft) => {
         draft.message = "updated2";
       });
       expect(storageHelper.get()).toEqual({ ...storageHelper.defaultValue, message: "updated2" });
 
       // returning object modifies `draft` as well
-      storageHelper.merge(draft => ({
+      storageHelper.merge((draft) => ({
         message: draft.message?.replace("2", "3"),
       }));
       expect(storageHelper.get()).toEqual({ ...storageHelper.defaultValue, message: "updated3" });
@@ -114,14 +112,16 @@ describe("renderer/utils/StorageHelper", () => {
     it("storage.get() is observable", () => {
       expect(storageHelper.get()).toEqual(defaultValue);
 
-      reaction(() => toJS(storageHelper.get()), change => {
-        observedChanges.push(change);
-      });
+      reaction(
+        () => toJS(storageHelper.get()),
+        (change) => {
+          observedChanges.push(change);
+        },
+      );
 
       storageHelper.merge({ lastName: "Black" });
       storageHelper.set("whatever");
       expect(observedChanges).toEqual([{ ...defaultValue, lastName: "Black" }, "whatever"]);
     });
   });
-
 });

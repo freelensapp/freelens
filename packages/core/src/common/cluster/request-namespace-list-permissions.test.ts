@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { IncomingMessage } from "http";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { IncomingMessage } from "http";
 import { anyObject } from "jest-mock-extended";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import { cast } from "../../test-utils/cast";
@@ -33,9 +34,11 @@ describe("requestNamespaceListPermissions", () => {
 
     createSelfSubjectRulesReviewMock = asyncFn();
 
-    requestNamespaceListPermissions = createRequestNamespaceListPermissions(cast<AuthorizationV1Api>({
-      createSelfSubjectRulesReview: createSelfSubjectRulesReviewMock,
-    }));
+    requestNamespaceListPermissions = createRequestNamespaceListPermissions(
+      cast<AuthorizationV1Api>({
+        createSelfSubjectRulesReview: createSelfSubjectRulesReviewMock,
+      }),
+    );
   });
 
   describe("when a request for list permissions in a namespace has been started", () => {
@@ -46,146 +49,150 @@ describe("requestNamespaceListPermissions", () => {
     });
 
     it("should request the creation of a SelfSubjectRulesReview", () => {
-      expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-        spec: {
-          namespace: "irrelevant-namespace",
-        },
-      }));
+      expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+        anyObject({
+          spec: {
+            namespace: "irrelevant-namespace",
+          },
+        }),
+      );
     });
 
-    ([
-      {
-        description: "incomplete data",
-        status: {
-          incomplete: true,
-          resourceRules: [],
-          nonResourceRules: [],
+    (
+      [
+        {
+          description: "incomplete data",
+          status: {
+            incomplete: true,
+            resourceRules: [],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "first resourceRule has all permissions for everything",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["*"],
-              verbs: ["*"],
-            },
-            {
-              apiGroups: ["*"],
-              verbs: ["get"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "first resourceRule has all permissions for everything",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["*"],
+                verbs: ["*"],
+              },
+              {
+                apiGroups: ["*"],
+                verbs: ["get"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "first resourceRule has list permissions for everything",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["*"],
-              verbs: ["list"],
-            },
-            {
-              apiGroups: ["*"],
-              verbs: ["get"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "first resourceRule has list permissions for everything",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["*"],
+                verbs: ["list"],
+              },
+              {
+                apiGroups: ["*"],
+                verbs: ["get"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "first resourceRule has list permissions for asked resource",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["some-api-group"],
-              resources: ["some-kind"],
-              verbs: ["list"],
-            },
-            {
-              apiGroups: ["*"],
-              verbs: ["get"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "first resourceRule has list permissions for asked resource",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["some-api-group"],
+                resources: ["some-kind"],
+                verbs: ["list"],
+              },
+              {
+                apiGroups: ["*"],
+                verbs: ["get"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "last resourceRule has all permissions for everything",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["*"],
-              verbs: ["get"],
-            },
-            {
-              apiGroups: ["*"],
-              verbs: ["*"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "last resourceRule has all permissions for everything",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["*"],
+                verbs: ["get"],
+              },
+              {
+                apiGroups: ["*"],
+                verbs: ["*"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "last resourceRule has list permissions for asked resource",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["*"],
-              verbs: ["get"],
-            },
-            {
-              apiGroups: ["some-api-group"],
-              resources: ["some-kind"],
-              verbs: ["list"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "last resourceRule has list permissions for asked resource",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["*"],
+                verbs: ["get"],
+              },
+              {
+                apiGroups: ["some-api-group"],
+                resources: ["some-kind"],
+                verbs: ["list"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: true,
         },
-        expected: true,
-      },
-      {
-        description: "resourceRules has matching resource without list verb",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: ["some-api-group"],
-              resources: ["some-kind"],
-              verbs: ["get"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "resourceRules has matching resource without list verb",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: ["some-api-group"],
+                resources: ["some-kind"],
+                verbs: ["get"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: false,
         },
-        expected: false,
-      },
-      {
-        description: "resourceRules has no matching resource with list verb",
-        status: {
-          incomplete: false,
-          resourceRules: [
-            {
-              apiGroups: [""],
-              resources: ["services"],
-              verbs: ["list"],
-            },
-          ],
-          nonResourceRules: [],
+        {
+          description: "resourceRules has no matching resource with list verb",
+          status: {
+            incomplete: false,
+            resourceRules: [
+              {
+                apiGroups: [""],
+                resources: ["services"],
+                verbs: ["list"],
+              },
+            ],
+            nonResourceRules: [],
+          },
+          expected: false,
         },
-        expected: false,
-      },
-    ] as TestCase[]).forEach(({ description, status, expected }) => {
+      ] as TestCase[]
+    ).forEach(({ description, status, expected }) => {
       describe(`when api returns ${description}`, () => {
         beforeEach(async () => {
           await createSelfSubjectRulesReviewMock.resolve({

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -42,9 +43,7 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
       <div>
         {since && (
           <span>
-            Logs from
-            {" "}
-            <b>{new Date(since).toLocaleString()}</b>
+            Logs from <b>{new Date(since).toLocaleString()}</b>
           </span>
         )}
       </div>
@@ -71,4 +70,3 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
     </div>
   );
 });
-

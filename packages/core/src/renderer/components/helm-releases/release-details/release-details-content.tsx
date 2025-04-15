@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,21 +8,26 @@ import "./release-details.scss";
 
 import React from "react";
 
-import { Link } from "react-router-dom";
-import { DrawerItem, DrawerTitle } from "../../drawer";
-import { stopPropagation } from "@freelensapp/utilities";
-import { observer } from "mobx-react";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { ConfigurationInput, MinimalResourceGroup, OnlyUserSuppliedValuesAreShownToggle, ReleaseDetailsModel } from "./release-details-model/release-details-model.injectable";
-import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
 import { Button } from "@freelensapp/button";
-import { kebabCase } from "lodash/fp";
-import { Badge } from "../../badge";
-import { SubTitle } from "../../layout/sub-title";
-import { Table, TableCell, TableHead, TableRow } from "../../table";
-import { Checkbox } from "../../checkbox";
-import { MonacoEditor } from "../../monaco-editor";
 import { Spinner } from "@freelensapp/spinner";
+import { stopPropagation } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { kebabCase } from "lodash/fp";
+import { observer } from "mobx-react";
+import { Link } from "react-router-dom";
+import { Badge } from "../../badge";
+import { Checkbox } from "../../checkbox";
+import { DrawerItem, DrawerTitle } from "../../drawer";
+import { SubTitle } from "../../layout/sub-title";
+import { MonacoEditor } from "../../monaco-editor";
+import { Table, TableCell, TableHead, TableRow } from "../../table";
+import type {
+  ConfigurationInput,
+  MinimalResourceGroup,
+  OnlyUserSuppliedValuesAreShownToggle,
+  ReleaseDetailsModel,
+} from "./release-details-model/release-details-model.injectable";
+import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 
 interface ReleaseDetailsContentProps {
@@ -36,15 +42,8 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
   const loadingError = model.loadingError.get();
 
   if (loadingError) {
-    return (
-      <div data-testid="helm-release-detail-error">
-        Failed to load release:
-        {" "}
-        {loadingError}
-      </div>
-    );
+    return <div data-testid="helm-release-detail-error">Failed to load release: {loadingError}</div>;
   }
-
 
   return (
     <div>
@@ -62,9 +61,7 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
         </div>
       </DrawerItem>
 
-      <DrawerItem name="Updated">
-        {`${model.release.getUpdated()} ago (${model.release.updated})`}
-      </DrawerItem>
+      <DrawerItem name="Updated">{`${model.release.getUpdated()} ago (${model.release.updated})`}</DrawerItem>
 
       <DrawerItem name="Namespace">{model.release.getNs()}</DrawerItem>
 
@@ -74,22 +71,14 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
         </div>
       </DrawerItem>
 
-      <DrawerItem
-        name="Status"
-        className="status"
-        labelsOnly>
-        <Badge
-          label={model.release.getStatus()}
-          className={kebabCase(model.release.getStatus())}
-        />
+      <DrawerItem name="Status" className="status" labelsOnly>
+        <Badge label={model.release.getStatus()} className={kebabCase(model.release.getStatus())} />
       </DrawerItem>
 
       <ReleaseValues
         releaseId={model.id}
         configuration={model.configuration}
-        onlyUserSuppliedValuesAreShown={
-          model.onlyUserSuppliedValuesAreShown
-        }
+        onlyUserSuppliedValuesAreShown={model.onlyUserSuppliedValuesAreShown}
       />
 
       <DrawerTitle>Notes</DrawerTitle>
@@ -109,14 +98,17 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
   );
 });
 
-export const ReleaseDetailsContent = withInjectables<Dependencies, ReleaseDetailsContentProps>(NonInjectedReleaseDetailsContent, {
-  getPlaceholder: () => <Spinner center data-testid="helm-release-detail-content-spinner" />,
+export const ReleaseDetailsContent = withInjectables<Dependencies, ReleaseDetailsContentProps>(
+  NonInjectedReleaseDetailsContent,
+  {
+    getPlaceholder: () => <Spinner center data-testid="helm-release-detail-content-spinner" />,
 
-  getProps: async (di, props) => ({
-    model: await di.inject(releaseDetailsModelInjectable, props.targetRelease),
-    ...props,
-  }),
-});
+    getProps: async (di, props) => ({
+      model: await di.inject(releaseDetailsModelInjectable, props.targetRelease),
+      ...props,
+    }),
+  },
+);
 
 const ResourceGroup = ({
   group: { kind, isNamespaced, resources },
@@ -133,19 +125,13 @@ const ResourceGroup = ({
         {isNamespaced && <TableCell className="namespace">Namespace</TableCell>}
       </TableHead>
 
-      {resources.map(
-        ({ detailsUrl, name, namespace, uid }) => (
-          <TableRow key={uid}>
-            <TableCell className="name">
-              {detailsUrl ? <Link to={detailsUrl}>{name}</Link> : name}
-            </TableCell>
+      {resources.map(({ detailsUrl, name, namespace, uid }) => (
+        <TableRow key={uid}>
+          <TableCell className="name">{detailsUrl ? <Link to={detailsUrl}>{name}</Link> : name}</TableCell>
 
-            {isNamespaced && (
-              <TableCell className="namespace">{namespace}</TableCell>
-            )}
-          </TableRow>
-        ),
-      )}
+          {isNamespaced && <TableCell className="namespace">{namespace}</TableCell>}
+        </TableRow>
+      ))}
     </Table>
   </>
 );

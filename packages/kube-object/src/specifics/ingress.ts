@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { hasTypedProperty, isString, iter } from "@freelensapp/utilities";
 import type { RequireExactlyOne } from "type-fest";
-import type { TypedLocalObjectReference, NamespaceScopedMetadata } from "../api-types";
+import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
 
 export interface ILoadBalancerIngress {
@@ -40,7 +41,6 @@ function isExtensionsBackend(backend: IngressBackend): backend is ExtensionsBack
   return hasTypedProperty(backend, "serviceName", isString);
 }
 
-// eslint-disable-next-line xss/no-mixed-html
 const unknownPortString = "<unknown>";
 
 /**
@@ -125,7 +125,9 @@ export class Ingress extends KubeObject<NamespaceScopedMetadata, IngressStatus, 
   }
 
   getServiceNamePort(): ExtensionsBackend | undefined {
-    const { spec: { backend, defaultBackend } = {} } = this;
+    const {
+      spec: { backend, defaultBackend } = {},
+    } = this;
 
     const serviceName = defaultBackend?.service?.name ?? backend?.serviceName;
     const servicePort =
@@ -187,7 +189,10 @@ export interface ComputedIngressRoute {
 }
 
 export function computeRuleDeclarations(ingress: Ingress, rule: IngressRule): ComputedIngressRoute[] {
-  const { host = "*", http: { paths } = { paths: [] } } = rule;
+  const {
+    host = "*",
+    http: { paths } = { paths: [] },
+  } = rule;
   const protocol = (ingress.spec?.tls?.length ?? 0) === 0 ? "http" : "https";
 
   return paths.map(({ path = "/", backend }) => ({

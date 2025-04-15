@@ -1,22 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
+import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
+import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
 import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import type { DownloadPlatformUpdate } from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "../../main/download-update/download-platform-update/download-platform-update.injectable";
-import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
-import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import processCheckingForUpdatesInjectable from "../../main/process-checking-for-updates.injectable";
 import quitAndInstallUpdateInjectable from "../../main/quit-and-install-update.injectable";
-import { testUsingFakeTime, advanceFakeTime } from "../../../../test-utils/use-fake-time";
 
 function daysToMilliseconds(days: number) {
   return Math.round(days * 24 * 60 * 60 * 1000);
@@ -37,15 +39,9 @@ describe("encourage user to update when sufficient time passed since update was 
       checkForPlatformUpdatesMock = asyncFn();
       downloadPlatformUpdateMock = asyncFn();
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
-      mainDi.override(
-        downloadPlatformUpdateInjectable,
-        () => downloadPlatformUpdateMock,
-      );
+      mainDi.override(downloadPlatformUpdateInjectable, () => downloadPlatformUpdateMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
@@ -76,9 +72,7 @@ describe("encourage user to update when sufficient time passed since update was 
       let processCheckingForUpdates: (source: string) => Promise<{ updateIsReadyToBeInstalled: boolean }>;
 
       beforeEach(async () => {
-        processCheckingForUpdates = applicationBuilder.mainDi.inject(
-          processCheckingForUpdatesInjectable,
-        );
+        processCheckingForUpdates = applicationBuilder.mainDi.inject(processCheckingForUpdatesInjectable);
 
         processCheckingForUpdates("irrelevant");
       });

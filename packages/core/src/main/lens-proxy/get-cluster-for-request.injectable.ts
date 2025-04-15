@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { getClusterIdFromHost } from "../../common/utils";
 import { apiKubePrefix } from "../../common/vars";
@@ -24,7 +26,7 @@ const getClusterForRequestInjectable = getInjectable({
         const cluster = getClusterById(clusterId);
 
         if (cluster) {
-        // we need to swap path prefix so that request is proxied to kube api
+          // we need to swap path prefix so that request is proxied to kube api
           req.url = req.url.replace(`/${clusterId}`, apiKubePrefix);
         }
 

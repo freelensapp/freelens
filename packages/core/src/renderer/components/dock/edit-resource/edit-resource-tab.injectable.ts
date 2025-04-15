@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import editResourceTabStoreInjectable from "./store.injectable";
-import dockStoreInjectable from "../dock/store.injectable";
+
 import type { KubeObject } from "@freelensapp/kube-object";
+import { getInjectable } from "@ogre-tools/injectable";
+import { runInAction } from "mobx";
 import type { DockTabCreateSpecific, TabId } from "../dock/store";
 import { TabKind } from "../dock/store";
-import { runInAction } from "mobx";
+import dockStoreInjectable from "../dock/store.injectable";
 import getRandomIdForEditResourceTabInjectable from "./get-random-id-for-edit-resource-tab.injectable";
+import editResourceTabStoreInjectable from "./store.injectable";
 
 const createEditResourceTabInjectable = getInjectable({
   id: "create-edit-resource-tab",
@@ -19,10 +21,7 @@ const createEditResourceTabInjectable = getInjectable({
     const editResourceStore = di.inject(editResourceTabStoreInjectable);
     const getRandomId = di.inject(getRandomIdForEditResourceTabInjectable);
 
-    return (
-      object: KubeObject,
-      tabParams: DockTabCreateSpecific = {},
-    ): TabId => {
+    return (object: KubeObject, tabParams: DockTabCreateSpecific = {}): TabId => {
       // use existing tab if already opened
       const tabId = editResourceStore.getTabIdByResource(object);
 

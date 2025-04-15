@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { KubeApiQueryParams, ResourceDescriptor } from "@freelensapp/kube-api";
+import type { LocalObjectReference, Pod, PodVolumeVariants, SecretReference } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { PodVolumeVariants, Pod, SecretReference, LocalObjectReference } from "@freelensapp/kube-object";
-import type { KubeApiQueryParams, ResourceDescriptor } from "@freelensapp/kube-api";
 import { DrawerItem } from "../../../drawer";
 import type { GetDetailsUrl } from "../../../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../../../kube-detail-params/get-details-url.injectable";
@@ -17,7 +19,9 @@ export interface PodVolumeVariantSpecificProps<Kind extends keyof PodVolumeVaria
   volumeName: string;
 }
 
-export type VolumeVariantComponent<Kind extends keyof PodVolumeVariants> = React.FunctionComponent<PodVolumeVariantSpecificProps<Kind>>;
+export type VolumeVariantComponent<Kind extends keyof PodVolumeVariants> = React.FunctionComponent<
+  PodVolumeVariantSpecificProps<Kind>
+>;
 
 export interface LocalRefPropsApi {
   getUrl(desc?: Partial<ResourceDescriptor>, query?: Partial<KubeApiQueryParams>): string;
@@ -35,13 +39,7 @@ interface Dependencies {
 }
 
 const NonInjectedLocalRef = (props: LocalRefProps & Dependencies) => {
-  const {
-    pod,
-    title,
-    kubeRef,
-    api,
-    getDetailsUrl,
-  } = props;
+  const { pod, title, kubeRef, api, getDetailsUrl } = props;
 
   if (!kubeRef) {
     return null;
@@ -49,9 +47,7 @@ const NonInjectedLocalRef = (props: LocalRefProps & Dependencies) => {
 
   return (
     <DrawerItem name={title}>
-      <Link to={getDetailsUrl(api.getUrl({ namespace: pod.getNs(), ...kubeRef }))}>
-        {kubeRef.name}
-      </Link>
+      <Link to={getDetailsUrl(api.getUrl({ namespace: pod.getNs(), ...kubeRef }))}>{kubeRef.name}</Link>
     </DrawerItem>
   );
 };

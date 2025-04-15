@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { getSecondsFromUnixEpoch } from "../../../utils/date/get-current-date-time";
 import apiBaseInjectable from "../../api-base.injectable";
@@ -36,7 +38,7 @@ export interface RequestMetricsParams {
   namespace?: string;
 }
 
-export type RequestMetrics = ReturnType<typeof requestMetricsInjectable["instantiate"]>;
+export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["instantiate"]>;
 
 const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
@@ -45,8 +47,14 @@ const requestMetricsInjectable = getInjectable({
 
     function requestMetrics(query: string, params?: RequestMetricsParams): Promise<MetricData>;
     function requestMetrics(query: string[], params?: RequestMetricsParams): Promise<MetricData[]>;
-    function requestMetrics<Keys extends string>(query: Record<Keys, Partial<Record<string, string>>>, params?: RequestMetricsParams): Promise<Record<Keys, MetricData>>;
-    async function requestMetrics(query: string | string[] | Partial<Record<string, Partial<Record<string, string>>>>, params: RequestMetricsParams = {}): Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>> {
+    function requestMetrics<Keys extends string>(
+      query: Record<Keys, Partial<Record<string, string>>>,
+      params?: RequestMetricsParams,
+    ): Promise<Record<Keys, MetricData>>;
+    async function requestMetrics(
+      query: string | string[] | Partial<Record<string, Partial<Record<string, string>>>>,
+      params: RequestMetricsParams = {},
+    ): Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>> {
       const { range = 3600, step = 60, namespace } = params;
       let { start, end } = params;
 
@@ -60,8 +68,10 @@ const requestMetricsInjectable = getInjectable({
       return apiBase.post("/metrics", {
         data: query,
         query: {
-          start, end, step,
-          "kubernetes_namespace": namespace,
+          start,
+          end,
+          step,
+          kubernetes_namespace: namespace,
         },
       });
     }

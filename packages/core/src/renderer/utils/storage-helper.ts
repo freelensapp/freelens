@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Helper for working with storages (e.g. window.localStorage, NodeJS/file-system, etc.)
-import { action, comparer, computed, makeObservable, observable, observe, toJS } from "mobx";
-import type { Draft } from "immer";
-import { produce, isDraft } from "immer";
-import { isEqual, isPlainObject } from "lodash";
 import assert from "assert";
 import type { Logger } from "@freelensapp/logger";
+import type { Draft } from "immer";
+import { isDraft, produce } from "immer";
+import { isEqual, isPlainObject } from "lodash";
+// Helper for working with storages (e.g. window.localStorage, NodeJS/file-system, etc.)
+import { action, comparer, computed, makeObservable, observable, observe, toJS } from "mobx";
 
 export interface StorageChange<T> {
   key: string;
@@ -59,7 +60,11 @@ export class StorageHelper<T> implements StorageLayer<T> {
     return this.options.defaultValue;
   }
 
-  constructor(private readonly dependencies: StorageHelperDependencies, readonly key: string, private readonly options: StorageHelperOptions<T>) {
+  constructor(
+    private readonly dependencies: StorageHelperDependencies,
+    readonly key: string,
+    private readonly options: StorageHelperOptions<T>,
+  ) {
     makeObservable(this);
 
     this.storage = this.options.storage;

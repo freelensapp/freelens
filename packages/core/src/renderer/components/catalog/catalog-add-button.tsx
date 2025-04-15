@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./catalog-add-button.scss";
-import React from "react";
-import { SpeedDial, SpeedDialAction } from "@mui/material";
-import { Icon } from "@freelensapp/icon";
-import { observer } from "mobx-react";
-import { observable, makeObservable, action } from "mobx";
-import type { CatalogCategory, CatalogEntityAddMenu } from "../../api/catalog-entity";
 import { EventEmitter } from "events";
-import type { CatalogCategoryRegistry } from "../../../common/catalog";
+import { Icon } from "@freelensapp/icon";
+import { SpeedDial, SpeedDialAction } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { CatalogCategoryRegistry } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
+import type { CatalogCategory, CatalogEntityAddMenu } from "../../api/catalog-entity";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
-import autoBindReact from "auto-bind/react";
 
 export interface CatalogAddButtonProps {
   category: CatalogCategory;
@@ -91,7 +92,7 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
   }
 
   onButtonClick() {
-    const defaultAction = this.items.find(item => item.defaultAction)?.onClick;
+    const defaultAction = this.items.find((item) => item.defaultAction)?.onClick;
     const clickAction = defaultAction || (this.items.length === 1 ? this.items[0].onClick : null);
 
     clickAction?.();
@@ -100,8 +101,9 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
   get items() {
     const { category } = this.props;
 
-    return category ? this.getCategoryFilteredItems(category) :
-      this.categories.map(this.getCategoryFilteredItems).flat();
+    return category
+      ? this.getCategoryFilteredItems(category)
+      : this.categories.map(this.getCategoryFilteredItems).flat();
   }
 
   render() {
@@ -124,7 +126,7 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
           return (
             <SpeedDialAction
               key={index}
-              icon={<Icon material={menuItem.icon}/>}
+              icon={<Icon material={menuItem.icon} />}
               tooltipTitle={menuItem.title}
               onClick={(evt) => {
                 evt.stopPropagation();

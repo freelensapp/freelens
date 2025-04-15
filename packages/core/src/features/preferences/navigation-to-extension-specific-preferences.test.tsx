@@ -1,16 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { RenderResult } from "@testing-library/react";
+import React from "react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import React from "react";
 import "@testing-library/jest-dom";
-import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import logErrorInjectable from "../../common/log-error.injectable";
+import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("preferences - navigation to extension specific preferences", () => {
   let builder: ApplicationBuilder;
@@ -44,10 +46,7 @@ describe("preferences - navigation to extension specific preferences", () => {
 
     it("does not show extension preferences yet", () => {
       // Todo: check if query is correct.
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "extension",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "extension");
 
       expect(discovered).toBeNull();
     });
@@ -65,9 +64,7 @@ describe("preferences - navigation to extension specific preferences", () => {
           someOtherExtensionStubWithExtensionSpecificPreferenceItems,
         );
 
-        builder.preferences.navigation.click(
-          "some-test-extension-id",
-        );
+        builder.preferences.navigation.click("some-test-extension-id");
       });
 
       it("renders", () => {
@@ -125,10 +122,7 @@ describe("preferences - navigation to extension specific preferences", () => {
       });
 
       it("link should not be active", () => {
-        const { discovered } = discover.getSingleElement(
-          "preference-tab-link",
-          "some-test-extension-id",
-        );
+        const { discovered } = discover.getSingleElement("preference-tab-link", "some-test-extension-id");
 
         expect(discovered).not.toHaveClass("active");
       });
@@ -149,8 +143,7 @@ describe("preferences - navigation to extension specific preferences", () => {
         });
 
         it("shows only extension specific preference items", () => {
-          const { attributeValues } =
-            discover.queryAllElements("preference-item");
+          const { attributeValues } = discover.queryAllElements("preference-item");
 
           expect(attributeValues).toEqual([
             "preference-item-for-extension-some-test-extension-id-item-some-preference-item-id",
@@ -158,10 +151,7 @@ describe("preferences - navigation to extension specific preferences", () => {
         });
 
         it("link is active", () => {
-          const { discovered } = discover.getSingleElement(
-            "preference-tab-link",
-            "some-test-extension-id",
-          );
+          const { discovered } = discover.getSingleElement("preference-tab-link", "some-test-extension-id");
 
           expect(discovered).toHaveClass("active");
         });
@@ -215,19 +205,13 @@ describe("preferences - navigation to extension specific preferences", () => {
       it("shows extension tab in general area", () => {
         const { discovered } = discover
           .getSingleElement("preference-tab-group", "general-tab-group")
-          .getSingleElement(
-            "preference-tab-link",
-            "extension-registered-tab-page-id-metrics-extension-tab",
-          );
+          .getSingleElement("preference-tab-link", "extension-registered-tab-page-id-metrics-extension-tab");
 
         expect(discovered).not.toBeNull();
       });
 
       it("does not show tab group for extensions for there being no content", () => {
-        const { discovered } = discover.querySingleElement(
-          "preference-tab-group",
-          "extensions-tab-group",
-        );
+        const { discovered } = discover.querySingleElement("preference-tab-group", "extensions-tab-group");
 
         expect(discovered).toBeNull();
       });
@@ -254,9 +238,7 @@ describe("preferences - navigation to extension specific preferences", () => {
         });
 
         it("shows correct page title", () => {
-          const { discovered } = discover.getSingleElement(
-            "preference-page-title",
-          );
+          const { discovered } = discover.getSingleElement("preference-page-title");
 
           expect(discovered).toHaveTextContent("Metrics tab");
         });
@@ -265,10 +247,7 @@ describe("preferences - navigation to extension specific preferences", () => {
 
     describe("given extensions with tabs having same id", () => {
       beforeEach(() => {
-        builder.extensions.enable(
-          extensionStubWithRegisteredTab,
-          extensionStubWithSameRegisteredTab,
-        );
+        builder.extensions.enable(extensionStubWithRegisteredTab, extensionStubWithSameRegisteredTab);
       });
 
       it("shows tab from the first extension", () => {
@@ -291,9 +270,7 @@ describe("preferences - navigation to extension specific preferences", () => {
 
       describe("when navigating to first extension tab", () => {
         beforeEach(() => {
-          builder.preferences.navigation.click(
-            "extension-registered-tab-page-id-metrics-extension-tab",
-          );
+          builder.preferences.navigation.click("extension-registered-tab-page-id-metrics-extension-tab");
         });
 
         it("renders", () => {
@@ -311,9 +288,7 @@ describe("preferences - navigation to extension specific preferences", () => {
 
       describe("when navigating to second extension tab", () => {
         beforeEach(() => {
-          builder.preferences.navigation.click(
-            "extension-duplicated-tab-page-id-metrics-extension-tab",
-          );
+          builder.preferences.navigation.click("extension-duplicated-tab-page-id-metrics-extension-tab");
         });
 
         it("renders", () => {
@@ -321,8 +296,7 @@ describe("preferences - navigation to extension specific preferences", () => {
         });
 
         it("shows related preferences for this tab", () => {
-          const { attributeValues } =
-            discover.queryAllElements("preference-item");
+          const { attributeValues } = discover.queryAllElements("preference-item");
 
           expect(attributeValues).toEqual([
             "preference-item-for-extension-duplicated-tab-page-id-item-another-metrics-preference-item-id",
@@ -445,11 +419,13 @@ const extensionStubWithRegisteredTab: FakeExtensionOptions = {
       },
     ],
 
-    appPreferenceTabs: [{
-      title: "Metrics tab",
-      id: "metrics-extension-tab",
-      orderNumber: 100,
-    }],
+    appPreferenceTabs: [
+      {
+        title: "Metrics tab",
+        id: "metrics-extension-tab",
+        orderNumber: 100,
+      },
+    ],
   },
 };
 
@@ -471,10 +447,12 @@ const extensionStubWithSameRegisteredTab: FakeExtensionOptions = {
       },
     ],
 
-    appPreferenceTabs: [{
-      title: "Metrics tab",
-      id: "metrics-extension-tab",
-      orderNumber: 100,
-    }],
+    appPreferenceTabs: [
+      {
+        title: "Metrics tab",
+        id: "metrics-extension-tab",
+        orderNumber: 100,
+      },
+    ],
   },
 };

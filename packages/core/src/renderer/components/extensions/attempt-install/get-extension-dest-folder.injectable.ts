@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import path from "path";
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
 import { sanitizeExtensionName } from "../../../../extensions/lens-extension";
-import path from "path";
 
 export type GetExtensionDestFolder = (name: string) => string;
 

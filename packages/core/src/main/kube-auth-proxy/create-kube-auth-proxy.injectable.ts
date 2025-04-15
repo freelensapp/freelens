@@ -1,23 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
-import spawnInjectable from "../child-process/spawn.injectable";
+
+import assert from "assert";
+import type { ChildProcess } from "child_process";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
-import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
-import getPortFromStreamInjectable from "../utils/get-port-from-stream.injectable";
+import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import { observable, when } from "mobx";
+import { TypedRegEx } from "typed-regex";
+import type { Cluster } from "../../common/cluster/cluster";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import randomBytesInjectable from "../../common/utils/random-bytes.injectable";
-import type { ChildProcess } from "child_process";
-import { observable, when } from "mobx";
-import assert from "assert";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import kubeAuthProxyCertificateInjectable from "./kube-auth-proxy-certificate.injectable";
+import spawnInjectable from "../child-process/spawn.injectable";
 import broadcastConnectionUpdateInjectable from "../cluster/broadcast-connection-update.injectable";
-import { TypedRegEx } from "typed-regex";
+import getPortFromStreamInjectable from "../utils/get-port-from-stream.injectable";
+import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
+import kubeAuthProxyCertificateInjectable from "./kube-auth-proxy-certificate.injectable";
+import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
 
 export interface KubeAuthProxy {
   readonly apiPrefix: string;
@@ -141,10 +143,11 @@ const createKubeAuthProxyInjectable = getInjectable({
 
         port = await getPortFromStream(proxyProcess.stdout, {
           lineRegex: startingServeRegex,
-          onFind: () => broadcastConnectionUpdate({
-            level: "info",
-            message: "Authentication proxy started",
-          }),
+          onFind: () =>
+            broadcastConnectionUpdate({
+              level: "info",
+              message: "Authentication proxy started",
+            }),
         });
 
         logger.info(`[KUBE-AUTH-PROXY]: found port=${port}`);

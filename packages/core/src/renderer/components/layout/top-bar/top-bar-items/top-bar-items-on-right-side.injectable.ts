@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
@@ -21,7 +23,7 @@ const topBarItemsOnRightSideInjectable = getInjectable({
       pipeline(
         items.get(),
         filter((item) => item.isShown.get()),
-        sortBy(item => item.orderNumber),
+        sortBy((item) => item.orderNumber),
       ),
     );
   },

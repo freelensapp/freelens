@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./avatar.module.scss";
 
-import type { ImgHTMLAttributes, MouseEventHandler } from "react";
-import React from "react";
-import randomColor from "randomcolor";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
+import randomColor from "randomcolor";
+import type { ImgHTMLAttributes, MouseEventHandler } from "react";
+import React from "react";
 import { computeDefaultShortName } from "../../../common/catalog/helpers";
 
 export interface AvatarProps {
@@ -44,32 +45,24 @@ export const Avatar = ({
   "data-testid": dataTestId,
 }: AvatarProps) => (
   <div
-    className={cssNames(styles.Avatar, {
-      [styles.circle]: variant == "circle",
-      [styles.rounded]: variant == "rounded",
-      [styles.disabled]: disabled,
-    }, className)}
+    className={cssNames(
+      styles.Avatar,
+      {
+        [styles.circle]: variant == "circle",
+        [styles.rounded]: variant == "rounded",
+        [styles.disabled]: disabled,
+      },
+      className,
+    )}
     style={{
       width: `${size}px`,
       height: `${size}px`,
-      background: background || (
-        src
-          ? "transparent"
-          : randomColor({ seed: colorHash, luminosity: "dark" })
-      ),
+      background: background || (src ? "transparent" : randomColor({ seed: colorHash, luminosity: "dark" })),
     }}
     id={id}
     onClick={onClick}
     data-testid={dataTestId}
   >
-    {src
-      ? (
-        <img
-          src={src}
-          {...imgProps}
-          alt={title}
-        />
-      )
-      : children || computeDefaultShortName(title)}
+    {src ? <img src={src} {...imgProps} alt={title} /> : children || computeDefaultShortName(title)}
   </div>
 );

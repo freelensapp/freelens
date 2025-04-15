@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,9 +8,9 @@
 // Based on cover DIV element with repeating-linear-gradient style
 
 import type ChartJS from "chart.js";
+import type { PluginServiceRegistrationOptions } from "chart.js";
 import type { Moment } from "moment";
 import moment from "moment";
-import type { PluginServiceRegistrationOptions } from "chart.js";
 
 const defaultOptions = {
   stripeColor: "#ffffff08",

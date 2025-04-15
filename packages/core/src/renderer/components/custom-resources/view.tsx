@@ -1,26 +1,27 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./view.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
+import type { TableCellProps } from "@freelensapp/list-layout";
+import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
-import { TabLayout } from "../layout/tab-layout-2";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
-import { KubeObjectAge } from "../kube-object/age";
-import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectAge } from "../kube-object/age";
+import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { TableCellProps } from "@freelensapp/list-layout";
+import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
 
 enum columnId {
   name = "name",
@@ -58,7 +59,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
     }
 
     const isNamespaced = crd.isNamespaced();
-    const extraColumns = crd.getPrinterColumns(false);  // Cols with priority bigger than 0 are shown in details
+    const extraColumns = crd.getPrinterColumns(false); // Cols with priority bigger than 0 are shown in details
     const version = crd.getPreferredVersion();
 
     return (
@@ -70,17 +71,17 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
           className="CustomResources"
           store={store}
           sortingCallbacks={{
-            [columnId.name]: customResource => customResource.getName(),
-            [columnId.namespace]: customResource => customResource.getNs(),
-            [columnId.age]: customResource => -customResource.getCreationTimestamp(),
-            ...Object.fromEntries(extraColumns.map(({ name, jsonPath }) => [
-              name,
-              customResource => formatJSONValue(safeJSONPathValue(customResource, jsonPath)),
-            ])),
+            [columnId.name]: (customResource) => customResource.getName(),
+            [columnId.namespace]: (customResource) => customResource.getNs(),
+            [columnId.age]: (customResource) => -customResource.getCreationTimestamp(),
+            ...Object.fromEntries(
+              extraColumns.map(({ name, jsonPath }) => [
+                name,
+                (customResource) => formatJSONValue(safeJSONPathValue(customResource, jsonPath)),
+              ]),
+            ),
           }}
-          searchFilters={[
-            customResource => customResource.getSearchFields(),
-          ]}
+          searchFilters={[(customResource) => customResource.getSearchFields()]}
           renderHeaderTitle={crd.getResourceKind()}
           customizeHeader={({ searchProps, ...headerPlaceholders }) => ({
             searchProps: {
@@ -103,29 +104,23 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
             })),
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={customResource => [
+          renderTableContents={(customResource) => [
             customResource.getName(),
-            isNamespaced && (
-              <NamespaceSelectBadge namespace={customResource.getNs() as string} />
+            isNamespaced && <NamespaceSelectBadge namespace={customResource.getNs() as string} />,
+            ...extraColumns.map(
+              (column): TableCellProps => ({
+                "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
+                title: formatJSONValue(safeJSONPathValue(customResource, column.jsonPath)),
+              }),
             ),
-            ...extraColumns.map((column): TableCellProps => ({
-              "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
-              title: formatJSONValue(safeJSONPathValue(customResource, column.jsonPath)),
-            })),
             <KubeObjectAge key="age" object={customResource} />,
           ]}
-          failedToLoadMessage={(
+          failedToLoadMessage={
             <>
-              <p>
-                {`Failed to load ${crd.getPluralName()}`}
-              </p>
-              {!version.served && (
-                <p>
-                  {`Preferred version (${crd.getGroup()}/${version.name}) is not served`}
-                </p>
-              )}
+              <p>{`Failed to load ${crd.getPluralName()}`}</p>
+              {!version.served && <p>{`Preferred version (${crd.getGroup()}/${version.name}) is not served`}</p>}
             </>
-          )}
+          }
         />
       </TabLayout>
     );

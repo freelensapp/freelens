@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 
 const columnId = "qos";

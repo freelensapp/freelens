@@ -1,9 +1,10 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeJsonApi, DeploymentApi } from "@freelensapp/kube-api";
+import { DeploymentApi, KubeJsonApi } from "@freelensapp/kube-api";
 
 describe("DeploymentApi", () => {
   let deploymentApi: DeploymentApi;

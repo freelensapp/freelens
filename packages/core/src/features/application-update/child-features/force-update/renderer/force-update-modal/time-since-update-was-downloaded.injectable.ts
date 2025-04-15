@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import assert from "assert";
+import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import moment from "moment";
-import updateDownloadedDateTimeInjectable from "../../../../common/update-downloaded-date-time.injectable";
 import { reactiveNow } from "../../../../../../common/utils/reactive-now/reactive-now";
+import updateDownloadedDateTimeInjectable from "../../../../common/update-downloaded-date-time.injectable";
 
 const timeSinceUpdateWasDownloadedInjectable = getInjectable({
   id: "time-since-update-was-downloaded",
@@ -22,7 +24,7 @@ const timeSinceUpdateWasDownloadedInjectable = getInjectable({
 
       assert(downloadedAt);
 
-      return currentTimestamp - (moment(downloadedAt).unix() * 1000);
+      return currentTimestamp - moment(downloadedAt).unix() * 1000;
     });
   },
 });

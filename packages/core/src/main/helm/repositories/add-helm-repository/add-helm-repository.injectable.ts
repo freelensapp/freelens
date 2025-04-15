@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmRepo } from "../../../../common/helm/helm-repo";
+import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 
 const addHelmRepositoryInjectable = getInjectable({
   id: "add-helm-repository",
@@ -15,16 +17,7 @@ const addHelmRepositoryInjectable = getInjectable({
     const logger = di.inject(loggerInjectionToken);
 
     return async (repo: HelmRepo) => {
-      const {
-        name,
-        url,
-        insecureSkipTlsVerify,
-        username,
-        password,
-        caFile,
-        keyFile,
-        certFile,
-      } = repo;
+      const { name, url, insecureSkipTlsVerify, username, password, caFile, keyFile, certFile } = repo;
 
       logger.info(`[HELM]: adding repo ${name} from ${url}`);
 

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -58,9 +59,7 @@ export class WebLinkCategory extends CatalogCategory {
   };
   public spec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", WebLink),
-    ],
+    versions: [categoryVersion("v1alpha1", WebLink)],
     names: {
       kind: "WebLink",
     },

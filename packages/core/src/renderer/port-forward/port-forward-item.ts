@@ -1,11 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
-import autoBind from "auto-bind";
 import type { ItemObject } from "@freelensapp/list-layout";
+import autoBind from "auto-bind";
 
 export type ForwardedPortStatus = "Active" | "Disabled";
 export interface ForwardedPort {
@@ -72,13 +72,6 @@ export class PortForwardItem implements ItemObject {
   }
 
   getSearchFields() {
-    return [
-      this.name,
-      this.namespace,
-      this.kind,
-      this.port,
-      this.forwardPort,
-      this.status,
-    ];
+    return [this.name, this.namespace, this.kind, this.port, this.forwardPort, this.status];
   }
 }

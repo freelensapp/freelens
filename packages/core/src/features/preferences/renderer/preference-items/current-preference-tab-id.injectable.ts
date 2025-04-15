@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import preferencesRouteInjectable from "../../common/preferences-route.injectable";
 import routePathParametersInjectable from "../../../../renderer/routes/route-path-parameters.injectable";
 import preferencesRouteForLegacyExtensionsInjectable from "../../common/preferences-route-for-legacy-extensions.injectable";
+import preferencesRouteInjectable from "../../common/preferences-route.injectable";
 
 const currentPreferenceTabIdInjectable = getInjectable({
   id: "current-preference-tab-id",
@@ -15,15 +17,9 @@ const currentPreferenceTabIdInjectable = getInjectable({
     const preferencesRoute = di.inject(preferencesRouteInjectable);
     const preferencesRouteForLegacyExtensions = di.inject(preferencesRouteForLegacyExtensionsInjectable);
 
-    const nonLegacyRoutePathParameters = di.inject(
-      routePathParametersInjectable,
-      preferencesRoute,
-    );
+    const nonLegacyRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRoute);
 
-    const legacyRoutePathParameters = di.inject(
-      routePathParametersInjectable,
-      preferencesRouteForLegacyExtensions,
-    );
+    const legacyRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRouteForLegacyExtensions);
 
     return computed(() => {
       const nonLegacyPreferenceTabId = nonLegacyRoutePathParameters.get().preferenceTabId;

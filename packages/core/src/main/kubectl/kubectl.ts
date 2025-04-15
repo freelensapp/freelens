@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import fs from "fs";
+import stream from "stream";
+import { promisify } from "util";
+import type { Logger } from "@freelensapp/logger";
+import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
 import { ensureDir, pathExists } from "fs-extra";
+import got from "got/dist/source";
+import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";
 import { SemVer, coerce } from "semver";
-import got from "got/dist/source";
-import { promisify } from "util";
-import stream from "stream";
-import { noop } from "lodash/fp";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
-import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
-import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
-import type { Logger } from "@freelensapp/logger";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
-import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
 import type { Unlink } from "../../common/fs/unlink.injectable";
-import { packageMirrors, defaultPackageMirror } from "../../features/user-preferences/common/preferences-helpers";
+import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
+import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
+import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
 
 const initScriptVersionString = "# lens-initscript v3";
 
@@ -54,7 +55,10 @@ export class Kubectl {
 
   public static invalidBundle = false;
 
-  constructor(protected readonly dependencies: KubectlDependencies, clusterVersion: string) {
+  constructor(
+    protected readonly dependencies: KubectlDependencies,
+    clusterVersion: string,
+  ) {
     let version: SemVer;
     const bundledVersion = new SemVer(this.dependencies.bundledKubectlVersion);
 
@@ -72,13 +76,17 @@ export class Kubectl {
      */
     if (fromMajorMinor) {
       this.kubectlVersion = fromMajorMinor;
-      this.dependencies.logger.debug(`Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using version map`);
+      this.dependencies.logger.debug(
+        `Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using version map`,
+      );
     } else {
       /* this is the version (without possible prelease tag) to get from the download mirror */
       const ver = coerce(version.format()) ?? bundledVersion;
 
       this.kubectlVersion = ver.format();
-      this.dependencies.logger.debug(`Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using fallback`);
+      this.dependencies.logger.debug(
+        `Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using fallback`,
+      );
     }
 
     this.url = `${this.getDownloadMirror()}/v${this.kubectlVersion}/bin/${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}/${this.dependencies.kubectlBinaryName}`;
@@ -112,14 +120,14 @@ export class Kubectl {
     }
 
     // return binary name if bundled path is not functional
-    if (!await this.checkBinary(this.getBundledPath(), false)) {
+    if (!(await this.checkBinary(this.getBundledPath(), false))) {
       Kubectl.invalidBundle = true;
 
       return this.dependencies.getBasenameOfPath(this.getBundledPath());
     }
 
     try {
-      if (!await this.ensureKubectl()) {
+      if (!(await this.ensureKubectl())) {
         this.dependencies.logger.error("Failed to ensure kubectl, fallback to the bundled version");
 
         return this.getBundledPath();
@@ -153,11 +161,7 @@ export class Kubectl {
       return false;
     }
 
-    const args = [
-      "version",
-      "--client",
-      "--output", "json",
-    ];
+    const args = ["version", "--client", "--output", "json"];
     const execResult = await this.dependencies.execFile(path, args);
 
     if (!execResult.callWasSuccessful) {
@@ -183,9 +187,9 @@ export class Kubectl {
     const { response: output } = parseResult;
 
     if (
-      !isObject(output)
-      || !hasTypedProperty(output, "clientVersion", isObject)
-      || !hasTypedProperty(output.clientVersion, "gitVersion", isString)
+      !isObject(output) ||
+      !hasTypedProperty(output, "clientVersion", isObject) ||
+      !hasTypedProperty(output.clientVersion, "gitVersion", isString)
     ) {
       this.dependencies.logger.error(`Local kubectl failed to return correct shaped response, unlinking`);
       await this.dependencies.unlink(this.path);
@@ -202,7 +206,9 @@ export class Kubectl {
 
         return true;
       default:
-        this.dependencies.logger.error(`Local kubectl is version ${version}, expected ${this.kubectlVersion}, unlinking`);
+        this.dependencies.logger.error(
+          `Local kubectl is version ${version}, expected ${this.kubectlVersion}, unlinking`,
+        );
         await this.dependencies.unlink(this.path);
 
         return false;
@@ -310,14 +316,14 @@ export class Kubectl {
     const bashScriptPath = this.dependencies.joinPaths(this.dirname, ".bash_set_path");
     const bashScript = [
       initScriptVersionString,
-      "tempkubeconfig=\"$KUBECONFIG\"",
-      "test -f \"/etc/profile\" && . \"/etc/profile\"",
-      "if test -f \"$HOME/.bash_profile\"; then",
-      "  . \"$HOME/.bash_profile\"",
-      "elif test -f \"$HOME/.bash_login\"; then",
-      "  . \"$HOME/.bash_login\"",
-      "elif test -f \"$HOME/.profile\"; then",
-      "  . \"$HOME/.profile\"",
+      'tempkubeconfig="$KUBECONFIG"',
+      'test -f "/etc/profile" && . "/etc/profile"',
+      'if test -f "$HOME/.bash_profile"; then',
+      '  . "$HOME/.bash_profile"',
+      'elif test -f "$HOME/.bash_login"; then',
+      '  . "$HOME/.bash_login"',
+      'elif test -f "$HOME/.profile"; then',
+      '  . "$HOME/.profile"',
       "fi",
       `export PATH="${kubectlPath}:${binariesDir}:$PATH"`,
       'export KUBECONFIG="$tempkubeconfig"',
@@ -332,26 +338,26 @@ export class Kubectl {
     const zshScriptPath = this.dependencies.joinPaths(this.dirname, ".zlogin");
     const zshScript = [
       initScriptVersionString,
-      "tempkubeconfig=\"$KUBECONFIG\"",
+      'tempkubeconfig="$KUBECONFIG"',
 
       // restore previous ZDOTDIR
-      "export ZDOTDIR=\"$OLD_ZDOTDIR\"",
+      'export ZDOTDIR="$OLD_ZDOTDIR"',
 
       // source all the files
-      "test -f \"$OLD_ZDOTDIR/.zshenv\" && . \"$OLD_ZDOTDIR/.zshenv\"",
-      "test -f \"$OLD_ZDOTDIR/.zprofile\" && . \"$OLD_ZDOTDIR/.zprofile\"",
-      "test -f \"$OLD_ZDOTDIR/.zlogin\" && . \"$OLD_ZDOTDIR/.zlogin\"",
-      "test -f \"$OLD_ZDOTDIR/.zshrc\" && . \"$OLD_ZDOTDIR/.zshrc\"",
+      'test -f "$OLD_ZDOTDIR/.zshenv" && . "$OLD_ZDOTDIR/.zshenv"',
+      'test -f "$OLD_ZDOTDIR/.zprofile" && . "$OLD_ZDOTDIR/.zprofile"',
+      'test -f "$OLD_ZDOTDIR/.zlogin" && . "$OLD_ZDOTDIR/.zlogin"',
+      'test -f "$OLD_ZDOTDIR/.zshrc" && . "$OLD_ZDOTDIR/.zshrc"',
 
       // voodoo to replace any previous occurrences of kubectl path in the PATH
       `kubectlpath="${kubectlPath}"`,
       `binariesDir="${binariesDir}"`,
-      "p=\":$kubectlpath:\"",
-      "d=\":$PATH:\"",
+      'p=":$kubectlpath:"',
+      'd=":$PATH:"',
       `d=\${d//$p/:}`,
       `d=\${d/#:/}`,
       `export PATH="$kubectlpath:$binariesDir:\${d/%:/}"`,
-      "export KUBECONFIG=\"$tempkubeconfig\"",
+      'export KUBECONFIG="$tempkubeconfig"',
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
       `NO_PROXY="\${NO_PROXY//,localhost,/,}"`,
       `NO_PROXY="\${NO_PROXY//,127.0.0.1,/,}"`,
@@ -370,9 +376,8 @@ export class Kubectl {
   protected getDownloadMirror(): string {
     // MacOS packages are only available from default
 
-    const { url } = packageMirrors.get(this.dependencies.state.downloadMirror)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      ?? packageMirrors.get(defaultPackageMirror)!;
+    const { url } =
+      packageMirrors.get(this.dependencies.state.downloadMirror) ?? packageMirrors.get(defaultPackageMirror)!;
 
     return url;
   }

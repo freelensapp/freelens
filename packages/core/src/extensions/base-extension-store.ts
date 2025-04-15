@@ -1,21 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as path from "path";
-import type { LensExtension } from "./lens-extension";
-import type { StaticThis } from "../common/utils/singleton";
-import { getOrInsertWith } from "@freelensapp/utilities";
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import assert from "assert";
+import * as path from "path";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { getOrInsertWith } from "@freelensapp/utilities";
 import type { Options } from "conf";
-import createPersistentStorageInjectable, { type PersistentStorage } from "../features/persistent-storage/common/create.injectable";
-import type { PersistentStorageParams } from "./common-api/stores";
+import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import type { StaticThis } from "../common/utils/singleton";
+import createPersistentStorageInjectable, {
+  type PersistentStorage,
+} from "../features/persistent-storage/common/create.injectable";
 import type { Migrations } from "../features/persistent-storage/common/migrations.injectable";
+import type { PersistentStorageParams } from "./common-api/stores";
+import type { LensExtension } from "./lens-extension";
 
-export interface ExtensionStoreParams<T extends object> extends Omit<PersistentStorageParams<T>, "migrations" | "cwd" | "fromStore" | "toJSON"> {
+export interface ExtensionStoreParams<T extends object>
+  extends Omit<PersistentStorageParams<T>, "migrations" | "cwd" | "fromStore" | "toJSON"> {
   migrations?: Options<T>["migrations"];
   cwd?: string;
 }
@@ -27,7 +31,7 @@ export abstract class BaseExtensionStore<T extends object> {
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
    */
   static createInstance<T, R extends any[]>(this: StaticThis<T, R>, ...args: R): T {
-    return getOrInsertWith(BaseExtensionStore.instances, this, () =>  new this(...args)) as T;
+    return getOrInsertWith(BaseExtensionStore.instances, this, () => new this(...args)) as T;
   }
 
   /**
@@ -40,7 +44,7 @@ export abstract class BaseExtensionStore<T extends object> {
       throw new TypeError(`instance of ${this.name} is not created`);
     }
 
-    return BaseExtensionStore.instances.get(this) as (T | undefined);
+    return BaseExtensionStore.instances.get(this) as T | undefined;
   }
 
   protected persistentStorage?: PersistentStorage;
@@ -53,7 +57,7 @@ export abstract class BaseExtensionStore<T extends object> {
     } as const;
   })();
 
-  constructor(protected readonly rawParams: ExtensionStoreParams<T>) { }
+  constructor(protected readonly rawParams: ExtensionStoreParams<T>) {}
 
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
@@ -95,7 +99,10 @@ export abstract class BaseExtensionStore<T extends object> {
   protected cwd() {
     assert(this.extension, "cwd can only be called in loadExtension");
 
-    return this.rawParams.cwd ?? path.join(this.dependencies.directoryForUserData, "extension-store", this.extension.storeName);
+    return (
+      this.rawParams.cwd ??
+      path.join(this.dependencies.directoryForUserData, "extension-store", this.extension.storeName)
+    );
   }
 
   abstract fromStore(data: Partial<T>): void;

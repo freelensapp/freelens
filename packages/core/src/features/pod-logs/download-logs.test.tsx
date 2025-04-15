@@ -1,16 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { Container } from "@freelensapp/kube-object";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { act, waitFor } from "@testing-library/react";
-import getPodByIdInjectable from "../../renderer/components/workloads-pods/get-pod-by-id.injectable";
-import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
-import openSaveFileDialogInjectable from "../../renderer/utils/save-file.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import dockStoreInjectable from "../../renderer/components/dock/dock/store.injectable";
+import { dockerPod } from "../../renderer/components/dock/logs/__test__/pod.mock";
 import areLogsPresentInjectable from "../../renderer/components/dock/logs/are-logs-present.injectable";
 import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import callForLogsInjectable from "../../renderer/components/dock/logs/call-for-logs.injectable";
@@ -24,10 +24,11 @@ import loadLogsInjectable from "../../renderer/components/dock/logs/load-logs.in
 import reloadLogsInjectable from "../../renderer/components/dock/logs/reload-logs.injectable";
 import setLogTabDataInjectable from "../../renderer/components/dock/logs/set-log-tab-data.injectable";
 import stopLoadingLogsInjectable from "../../renderer/components/dock/logs/stop-loading-logs.injectable";
-import { dockerPod } from "../../renderer/components/dock/logs/__test__/pod.mock";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { Container } from "@freelensapp/kube-object";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import getPodByIdInjectable from "../../renderer/components/workloads-pods/get-pod-by-id.injectable";
+import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+import openSaveFileDialogInjectable from "../../renderer/utils/save-file.injectable";
 
 describe("download logs options in logs dock tab", () => {
   let windowDi: DiContainer;
@@ -148,7 +149,7 @@ describe("download logs options in logs dock tab", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      it("contains download dropdown button", () =>  {
+      it("contains download dropdown button", () => {
         expect(rendered.getByTestId("download-logs-dropdown")).toBeInTheDocument();
       });
 
@@ -192,7 +193,7 @@ describe("download logs options in logs dock tab", () => {
             it("logs have been called with query", () => {
               expect(callForLogsMock).toHaveBeenCalledWith(
                 { name: "dockerExporter", namespace: "default" },
-                { "previous": true, "timestamps": false, container: "docker-exporter" },
+                { previous: true, timestamps: false, container: "docker-exporter" },
               );
             });
 
@@ -267,7 +268,7 @@ describe("download logs options in logs dock tab", () => {
             it("logs have been called", () => {
               expect(callForLogsMock).toHaveBeenCalledWith(
                 { name: "dockerExporter", namespace: "default" },
-                { "previous": true, "timestamps": false, container: "docker-exporter" },
+                { previous: true, timestamps: false, container: "docker-exporter" },
               );
             });
 

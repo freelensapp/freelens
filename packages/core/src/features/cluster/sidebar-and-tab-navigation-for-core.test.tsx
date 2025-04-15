@@ -1,27 +1,29 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { flushPromises } from "@freelensapp/test-utils";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
-import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import { computed, runInAction } from "mobx";
 import { noop } from "lodash/fp";
-import routeIsActiveInjectable from "../../renderer/routes/route-is-active.injectable";
+import { computed, runInAction } from "mobx";
+import React from "react";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
-import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
+import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import routeIsActiveInjectable from "../../renderer/routes/route-is-active.injectable";
+import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
 import storageSaveDelayInjectable from "../../renderer/utils/create-storage/storage-save-delay.injectable";
-import { flushPromises } from "@freelensapp/test-utils";
-import { testUsingFakeTime, advanceFakeTime } from "../../test-utils/use-fake-time";
+import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 
 describe("cluster - sidebar and tab navigation for core", () => {
   let builder: ApplicationBuilder;
@@ -206,9 +208,7 @@ describe("cluster - sidebar and tab navigation for core", () => {
 
       describe("when a parent sidebar item is expanded", () => {
         beforeEach(() => {
-          const parentLink = rendered.getByTestId(
-            "link-for-sidebar-item-some-parent",
-          );
+          const parentLink = rendered.getByTestId("link-for-sidebar-item-some-parent");
 
           fireEvent.click(parentLink);
         });
@@ -231,9 +231,7 @@ describe("cluster - sidebar and tab navigation for core", () => {
 
         describe("when a child of the parent is selected", () => {
           beforeEach(() => {
-            const childLink = rendered.getByTestId(
-              "link-for-sidebar-item-some-child",
-            );
+            const childLink = rendered.getByTestId("link-for-sidebar-item-some-child");
 
             fireEvent.click(childLink);
           });

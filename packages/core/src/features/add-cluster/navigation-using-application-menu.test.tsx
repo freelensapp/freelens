@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -29,11 +30,7 @@ describe("add-cluster - navigation using application menu", () => {
 
   describe("when navigating to add cluster using application menu", () => {
     beforeEach(async () => {
-      await applicationBuilder.applicationMenu.click(
-        "root",
-        "file",
-        "add-cluster",
-      );
+      await applicationBuilder.applicationMenu.click("root", "file", "add-cluster");
     });
 
     it("renders", () => {

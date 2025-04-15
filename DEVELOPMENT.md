@@ -45,6 +45,8 @@ nvm use 22.14.0
 Install Pnpm:
 
 ```sh
+corepack install
+# or
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 # or
 winget install pnpm.pnpm
@@ -55,8 +57,8 @@ winget install pnpm.pnpm
 ```sh
 pnpm i
 pnpm build
-pnpm build:app
-# on Windows it must be ran in elevated mode
+pnpm build:app dir
+# note: on Windows build:app must be ran in elevated mode
 ```
 
 Run it from the directory:

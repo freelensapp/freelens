@@ -1,33 +1,35 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import type { LocalShellSessionDependencies } from "./local-shell-session";
-import { LocalShellSession } from "./local-shell-session";
-import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
-import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
-import directoryForBinariesInjectable from "../../../common/app-paths/directory-for-binaries/directory-for-binaries.injectable";
-import isMacInjectable from "../../../common/vars/is-mac.injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
-import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
 import type WebSocket from "ws";
+import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
+import directoryForBinariesInjectable from "../../../common/app-paths/directory-for-binaries/directory-for-binaries.injectable";
+import type { Cluster } from "../../../common/cluster/cluster";
+import statInjectable from "../../../common/fs/stat.injectable";
+import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
-import computeShellEnvironmentInjectable from "../../../features/shell-sync/main/compute-shell-environment.injectable";
-import spawnPtyInjectable from "../spawn-pty.injectable";
 import appNameInjectable from "../../../common/vars/app-name.injectable";
-import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
-import statInjectable from "../../../common/fs/stat.injectable";
-import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
+import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
+import isMacInjectable from "../../../common/vars/is-mac.injectable";
+import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import computeShellEnvironmentInjectable from "../../../features/shell-sync/main/compute-shell-environment.injectable";
 import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
-import shellSessionEnvsInjectable from "../shell-envs.injectable";
-import shellSessionProcessesInjectable from "../processes.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
+import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
+import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
+import shellSessionProcessesInjectable from "../processes.injectable";
+import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
+import shellSessionEnvsInjectable from "../shell-envs.injectable";
+import spawnPtyInjectable from "../spawn-pty.injectable";
+import type { LocalShellSessionDependencies } from "./local-shell-session";
+import { LocalShellSession } from "./local-shell-session";
 
 export interface OpenLocalShellSessionArgs {
   websocket: WebSocket;
@@ -70,11 +72,14 @@ const openLocalShellSessionInjectable = getInjectable({
       const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
       const directoryContainingKubectl = await kubectl.binDir();
 
-      const session = new LocalShellSession({
-        ...dependencies,
-        proxyKubeconfigPath,
-        directoryContainingKubectl,
-      }, { kubectl, ...args });
+      const session = new LocalShellSession(
+        {
+          ...dependencies,
+          proxyKubeconfigPath,
+          directoryContainingKubectl,
+        },
+        { kubectl, ...args },
+      );
 
       return session.open();
     };

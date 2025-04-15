@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import React from "react";
-import { CustomResourceDetails } from "../custom-resources/details";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
+import { CustomResourceDetails } from "../custom-resources/details";
 import currentKubeObjectInDetailsInjectable from "./current-kube-object-in-details.injectable";
 import { kubeObjectDetailItemInjectionToken } from "./kube-object-detail-items/kube-object-detail-item-injection-token";
 

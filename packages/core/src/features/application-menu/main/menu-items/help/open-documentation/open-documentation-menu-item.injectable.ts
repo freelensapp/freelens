@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
-import { docsUrl } from "../../../../../../common/vars";
-import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
+import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
+import { docsUrl } from "../../../../../../common/vars";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const openDocumentationMenuItemInjectable = getInjectable({
   id: "open-documentation-menu-item",

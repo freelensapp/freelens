@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -6,10 +7,10 @@
 import { getInjectable } from "@ogre-tools/injectable";
 
 import { getOrInsert } from "@freelensapp/utilities";
-import randomBytesInjectable from "../../../common/utils/random-bytes.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import directoryForExtensionDataInjectable from "./directory-for-extension-data.injectable";
 import ensureDirInjectable from "../../../common/fs/ensure-dir.injectable";
+import joinPathsInjectable from "../../../common/path/join-paths.injectable";
+import randomBytesInjectable from "../../../common/utils/random-bytes.injectable";
+import directoryForExtensionDataInjectable from "./directory-for-extension-data.injectable";
 import getHashInjectable from "./get-hash.injectable";
 import getPathToLegacyPackageJsonInjectable from "./get-path-to-legacy-package-json.injectable";
 import { registeredExtensionsInjectable } from "./registered-extensions.injectable";

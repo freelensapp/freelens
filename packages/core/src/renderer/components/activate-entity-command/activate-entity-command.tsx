@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -19,10 +20,7 @@ interface Dependencies {
   entities: IComputedValue<CatalogEntity[]>;
 }
 
-const NonInjectedActivateEntityCommand = observer(({
-  closeCommandOverlay,
-  entities,
-}: Dependencies) => (
+const NonInjectedActivateEntityCommand = observer(({ closeCommandOverlay, entities }: Dependencies) => (
   <Select
     id="activate-entity-input"
     menuPortalTarget={null}
@@ -34,13 +32,10 @@ const NonInjectedActivateEntityCommand = observer(({
     }}
     components={{ DropdownIndicator: null, IndicatorSeparator: null }}
     menuIsOpen={true}
-    options={(
-      entities.get()
-        .map(entity => ({
-          value: entity,
-          label: `${entity.kind}: ${entity.getName()}`,
-        }))
-    )}
+    options={entities.get().map((entity) => ({
+      value: entity,
+      label: `${entity.kind}: ${entity.getName()}`,
+    }))}
     autoFocus={true}
     escapeClearsValue={false}
     placeholder="Activate entity ..."
@@ -48,7 +43,7 @@ const NonInjectedActivateEntityCommand = observer(({
 ));
 
 export const ActivateEntityCommand = withInjectables<Dependencies>(NonInjectedActivateEntityCommand, {
-  getProps: di => ({
+  getProps: (di) => ({
     closeCommandOverlay: di.inject(commandOverlayInjectable).close,
     entities: di.inject(catalogEnitiesInjectable),
   }),

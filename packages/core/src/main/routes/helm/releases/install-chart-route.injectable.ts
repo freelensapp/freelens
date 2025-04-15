@@ -1,30 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { apiPrefix } from "../../../../common/vars";
-import { getRouteInjectable } from "../../../router/router.injectable";
+
 import Joi from "joi";
-import { payloadValidatedClusterRoute } from "../../../router/route";
+import { apiPrefix } from "../../../../common/vars";
 import type { InstallChartArgs } from "../../../helm/helm-service/install-helm-chart.injectable";
 import installClusterHelmChartInjectable from "../../../helm/helm-service/install-helm-chart.injectable";
+import { payloadValidatedClusterRoute } from "../../../router/route";
+import { getRouteInjectable } from "../../../router/router.injectable";
 
 const installChartArgsValidator = Joi.object<InstallChartArgs, true, InstallChartArgs>({
-  chart: Joi
-    .string()
-    .required(),
-  values: Joi
-    .object()
-    .required()
-    .unknown(true),
-  name: Joi
-    .string(),
-  namespace: Joi
-    .string()
-    .required(),
-  version: Joi
-    .string()
-    .required(),
+  chart: Joi.string().required(),
+  values: Joi.object().required().unknown(true),
+  name: Joi.string(),
+  namespace: Joi.string().required(),
+  version: Joi.string().required(),
 });
 
 const installChartRouteInjectable = getRouteInjectable({

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -27,7 +28,8 @@ export function cssNames(...classNames: IClassName[]): string {
     }
   }
 
-  return iter.chain(classNamesEnabled.entries())
+  return iter
+    .chain(classNamesEnabled.entries())
     .filter(([, isActive]) => isActive)
     .filterMap(([className]) => className.trim())
     .join(" ");

@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import type { KubernetesCluster } from "../../../../common/catalog-entities";
@@ -15,14 +17,10 @@ const kubernetesApiVersionColumnInjectable = getInjectable({
     registration: {
       id: "version",
       priority: 30,
-      renderCell: entity => {
+      renderCell: (entity) => {
         const k8sVersion = (entity as KubernetesCluster).metadata.kubeVersion;
 
-        return (
-          <span key="version">
-            {k8sVersion === "unknown" ? "" : k8sVersion}
-          </span>
-        );
+        return <span key="version">{k8sVersion === "unknown" ? "" : k8sVersion}</span>;
       },
       titleProps: {
         title: "Version",

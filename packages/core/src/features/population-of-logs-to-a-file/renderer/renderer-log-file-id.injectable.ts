@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import windowLocationInjectable from "../../../common/k8s-api/window-location.injectable";
-import currentlyInClusterFrameInjectable from "../../../renderer/routes/currently-in-cluster-frame.injectable";
 import { getClusterIdFromHost } from "../../../common/utils";
+import currentlyInClusterFrameInjectable from "../../../renderer/routes/currently-in-cluster-frame.injectable";
 
 const rendererLogFileIdInjectable = getInjectable({
   id: "renderer-log-file-id",

@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { toJS } from "mobx";
 import type { KubernetesCluster } from "../../common/catalog-entities";
@@ -11,7 +13,7 @@ import { enumKeys } from "../../common/utils/enum";
 
 export type UpdateEntityMetadata = (entity: KubernetesCluster, cluster: Cluster) => void;
 
-const updateEntityMetadataInjectable =  getInjectable({
+const updateEntityMetadataInjectable = getInjectable({
   id: "update-entity-metadata",
 
   instantiate: (): UpdateEntityMetadata => {

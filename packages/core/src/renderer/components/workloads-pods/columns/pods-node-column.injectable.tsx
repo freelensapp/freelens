@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { nodeApiInjectable } from "@freelensapp/kube-api-specifics";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { stopPropagation } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { Link } from "react-router-dom";
-import { nodeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Badge } from "../../badge";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import { stopPropagation } from "@freelensapp/utilities";
-import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 
 export const podsNodeColumnInjectable = getInjectable({
   id: "pods-node-column",
@@ -23,25 +25,19 @@ export const podsNodeColumnInjectable = getInjectable({
       kind: "Pod",
       apiVersion: "v1",
       priority: 50,
-      content: (pod) => (
-        pod.getNodeName()
-          ? (
-            <Badge
-              flat
-              key="node"
-              className="node"
-              tooltip={pod.getNodeName()}
-              expandable={false}
+      content: (pod) =>
+        pod.getNodeName() ? (
+          <Badge flat key="node" className="node" tooltip={pod.getNodeName()} expandable={false}>
+            <Link
+              to={getDetailsUrl(nodeApi.formatUrlForNotListing({ name: pod.getNodeName() }))}
+              onClick={stopPropagation}
             >
-              <Link
-                to={getDetailsUrl(nodeApi.formatUrlForNotListing({ name: pod.getNodeName() }))}
-                onClick={stopPropagation}>
-                {pod.getNodeName()}
-              </Link>
-            </Badge>
-          )
-          : ""
-      ),
+              {pod.getNodeName()}
+            </Link>
+          </Badge>
+        ) : (
+          ""
+        ),
       header: { title: "Node", className: "node", sortBy: columnId, id: columnId },
       sortingCallBack: (pod) => pod.getNodeName(),
     };

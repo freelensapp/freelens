@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { RenderResult } from "@testing-library/react";
-import React from "react";
+
 import type { ValidatingWebhookConfigurationData } from "@freelensapp/kube-object";
 import { ValidatingWebhookConfiguration } from "@freelensapp/kube-object";
+import type { RenderResult } from "@testing-library/react";
+import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
@@ -60,9 +62,7 @@ describe("ValidatingWebhookConfigsDetails", () => {
   it("renders", () => {
     const webhookConfig = new ValidatingWebhookConfiguration(validatingWebhookConfig);
 
-    result = render(
-      <ValidatingWebhookDetails object={webhookConfig} />,
-    );
+    result = render(<ValidatingWebhookDetails object={webhookConfig} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -73,9 +73,7 @@ describe("ValidatingWebhookConfigsDetails", () => {
       webhooks: [],
     });
 
-    result = render(
-      <ValidatingWebhookDetails object={webhookConfig} />,
-    );
+    result = render(<ValidatingWebhookDetails object={webhookConfig} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 import type { RenderResult } from "@testing-library/react";
+import { computed } from "mobx";
 import React from "react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
-import { computed } from "mobx";
 
 describe("status-bar-items-originating-from-extensions", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -66,10 +68,7 @@ describe("status-bar-items-originating-from-extensions", () => {
 
       const rightSide = rendered.getByTestId("status-bar-right");
 
-      const actual = getExpectedTestStatusBarTexts(rightSide, [
-        "extension1",
-        "extension2",
-      ]);
+      const actual = getExpectedTestStatusBarTexts(rightSide, ["extension1", "extension2"]);
 
       expect(actual).toEqual(["extension2", "extension1"]);
     });
@@ -129,11 +128,7 @@ describe("status-bar-items-originating-from-extensions", () => {
       it("shows right side status bar items in the correct order", () => {
         const rightSide = rendered.getByTestId("status-bar-right");
 
-        const actual = getExpectedTestStatusBarTexts(rightSide, [
-          "right1",
-          "right2",
-          "right3",
-        ]);
+        const actual = getExpectedTestStatusBarTexts(rightSide, ["right1", "right2", "right3"]);
 
         expect(actual).toEqual(["right3", "right2", "right1"]);
       });
@@ -164,8 +159,7 @@ describe("status-bar-items-originating-from-extensions", () => {
 });
 
 const getTestStatusBarTexts = (actual: HTMLElement) =>
-  Array.from(actual.children)
-    .map((elem) => String(elem.textContent));
+  Array.from(actual.children).map((elem) => String(elem.textContent));
 
 const getExpectedTestStatusBarTexts = (actual: HTMLElement, expectedTexts: string[]) =>
   getTestStatusBarTexts(actual).filter((textContent) => textContent && expectedTexts.includes(textContent));

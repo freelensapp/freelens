@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -10,11 +11,9 @@
  * @returns The converted parts of the name
  */
 export function getConvertedParts(name: string): (string | number)[] {
-  return name
-    .split(/[-_./\\]+/)
-    .map(part => {
-      const converted = +part;
+  return name.split(/[-_./\\]+/).map((part) => {
+    const converted = +part;
 
-      return isNaN(converted) ? part : converted;
-    });
+    return isNaN(converted) ? part : converted;
+  });
 }

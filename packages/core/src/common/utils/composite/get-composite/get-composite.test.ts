@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Composite } from "./get-composite";
-import { getCompositePaths } from "../get-composite-paths/get-composite-paths";
 import { sortBy } from "lodash/fp";
+import { getCompositePaths } from "../get-composite-paths/get-composite-paths";
+import type { Composite } from "./get-composite";
 import { getCompositeFor } from "./get-composite";
 
 interface SomeItem {
@@ -147,9 +148,7 @@ describe("get-composite", () => {
 
     expect(() => {
       getComposite(items);
-    }).toThrow(
-      'Tried to get a composite, but multiple roots where encountered: "some-root-id", "some-other-root-id"',
-    );
+    }).toThrow('Tried to get a composite, but multiple roots where encountered: "some-root-id", "some-other-root-id"');
   });
 
   it("given non-unique ids, throws", () => {
@@ -172,9 +171,7 @@ describe("get-composite", () => {
 
     expect(() => {
       getComposite(items);
-    }).toThrow(
-      'Tried to get a composite but encountered non-unique ids: "some-id"',
-    );
+    }).toThrow('Tried to get a composite but encountered non-unique ids: "some-id"');
   });
 
   it("given items with missing parent ids, when creating composite without handling for unknown parents, throws", () => {
@@ -269,9 +266,7 @@ Available parent ids are:
 
     expect(() => {
       getComposite(items);
-    }).toThrow(
-      'Tried to get a composite, but found items with self as parent: "some-id"',
-    );
+    }).toThrow('Tried to get a composite, but found items with self as parent: "some-id"');
   });
 
   it("given undefined ids, throws", () => {
@@ -344,8 +339,7 @@ Available parent ids are:
     const getComposite = getCompositeFor<SomeItem>({
       getId: (x) => x.id,
       getParentId: (x) => x.parentId,
-      transformChildren: (things) =>
-        sortBy((thing) => thing.orderNumber, things),
+      transformChildren: (things) => sortBy((thing) => thing.orderNumber, things),
     });
 
     const composite = getComposite(items);

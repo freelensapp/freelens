@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Pod, ReplicaSet } from "@freelensapp/kube-object";
 import { observable } from "mobx";
-import podStoreInjectable from "../workloads-pods/store.injectable";
-import replicasetsStoreInjectable from "../workloads-replicasets/store.injectable";
-import type { ReplicaSetStore } from "../workloads-replicasets/store";
-import { ReplicaSet, Pod } from "@freelensapp/kube-object";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
+import podStoreInjectable from "../workloads-pods/store.injectable";
+import type { ReplicaSetStore } from "../workloads-replicasets/store";
+import replicasetsStoreInjectable from "../workloads-replicasets/store.injectable";
 
 const runningReplicaSet = new ReplicaSet({
   apiVersion: "foo",
@@ -58,12 +59,14 @@ const runningPod = new Pod({
     name: "foobar",
     resourceVersion: "foobar",
     uid: "foobar",
-    ownerReferences: [{
-      uid: "runningReplicaSet",
-      apiVersion: "v1",
-      kind: "ReplicaSet",
-      name: "running",
-    }],
+    ownerReferences: [
+      {
+        uid: "runningReplicaSet",
+        apiVersion: "v1",
+        kind: "ReplicaSet",
+        name: "running",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/replicasets/default/foobar",
   },
@@ -98,12 +101,14 @@ const pendingPod = new Pod({
     name: "foobar-pending",
     resourceVersion: "foobar",
     uid: "foobar-pending",
-    ownerReferences: [{
-      uid: "pendingReplicaSet",
-      apiVersion: "v1",
-      kind: "ReplicaSet",
-      name: "pending",
-    }],
+    ownerReferences: [
+      {
+        uid: "pendingReplicaSet",
+        apiVersion: "v1",
+        kind: "ReplicaSet",
+        name: "pending",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/replicasets/default/foobar-pending",
   },
@@ -116,12 +121,14 @@ const failedPod = new Pod({
     name: "foobar-failed",
     resourceVersion: "foobar",
     uid: "foobar-failed",
-    ownerReferences: [{
-      uid: "failedReplicaSet",
-      apiVersion: "v1",
-      kind: "ReplicaSet",
-      name: "failed",
-    }],
+    ownerReferences: [
+      {
+        uid: "failedReplicaSet",
+        apiVersion: "v1",
+        kind: "ReplicaSet",
+        name: "failed",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/replicasets/default/foobar-failed",
   },
@@ -144,28 +151,26 @@ describe("ReplicaSet Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     const podStore = di.inject(podStoreInjectable);
 
     replicaSetStore = di.inject(replicasetsStoreInjectable);
-    podStore.items = observable.array([
-      runningPod,
-      failedPod,
-      pendingPod,
-    ]);
+    podStore.items = observable.array([runningPod, failedPod, pendingPod]);
   });
 
   it("gets ReplicaSet statuses in proper sorting order", () => {
-    const statuses = Object.entries(replicaSetStore.getStatuses([
-      failedReplicaSet,
-      runningReplicaSet,
-      pendingReplicaSet,
-    ]));
+    const statuses = Object.entries(
+      replicaSetStore.getStatuses([failedReplicaSet, runningReplicaSet, pendingReplicaSet]),
+    );
 
     expect(statuses).toEqual([
       ["running", 1],

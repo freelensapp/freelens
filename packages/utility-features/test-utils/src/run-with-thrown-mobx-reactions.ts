@@ -28,9 +28,7 @@ export const runWithThrownMobxReactions = (callback: () => void) => {
     _resetGlobalState();
 
     if (!error) {
-      throw new Error(
-        "Tried to run with thrown MobX reactions but nothing was thrown"
-      );
+      throw new Error("Tried to run with thrown MobX reactions but nothing was thrown");
     } else {
       throw error;
     }

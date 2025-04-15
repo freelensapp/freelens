@@ -1,21 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { asLegacyGlobalFunctionForExtensionApi, asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
+
+import { asLegacyGlobalForExtensionApi, asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
+import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store.injectable";
 import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
 import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
-import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store.injectable";
 
-import commandOverlayInjectable from "../../renderer/components/command-palette/command-overlay.injectable";
-import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
-import createWorkloadLogsTabInjectable from "../../renderer/components/dock/logs/create-workload-logs-tab.injectable";
-import sendCommandInjectable from "../../renderer/components/dock/terminal/send-command.injectable";
-import renameTabInjectable from "../../renderer/components/dock/dock/rename-tab.injectable";
-import { ConfirmDialog as _ConfirmDialog } from "../../renderer/components/confirm-dialog";
-import type { ConfirmDialogBooleanParams, ConfirmDialogParams, ConfirmDialogProps } from "../../renderer/components/confirm-dialog";
-import openConfirmDialogInjectable from "../../renderer/components/confirm-dialog/open.injectable";
-import confirmInjectable from "../../renderer/components/confirm-dialog/confirm.injectable";
 import {
   notificationsStoreInjectable,
   showCheckedErrorNotificationInjectable,
@@ -24,10 +17,22 @@ import {
   showShortInfoNotificationInjectable,
   showSuccessNotificationInjectable,
 } from "@freelensapp/notifications";
-import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
+import commandOverlayInjectable from "../../renderer/components/command-palette/command-overlay.injectable";
+import { ConfirmDialog as _ConfirmDialog } from "../../renderer/components/confirm-dialog";
+import type {
+  ConfirmDialogBooleanParams,
+  ConfirmDialogParams,
+  ConfirmDialogProps,
+} from "../../renderer/components/confirm-dialog";
+import confirmInjectable from "../../renderer/components/confirm-dialog/confirm.injectable";
+import openConfirmDialogInjectable from "../../renderer/components/confirm-dialog/open.injectable";
+import renameTabInjectable from "../../renderer/components/dock/dock/rename-tab.injectable";
+import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
+import createWorkloadLogsTabInjectable from "../../renderer/components/dock/logs/create-workload-logs-tab.injectable";
+import sendCommandInjectable from "../../renderer/components/dock/terminal/send-command.injectable";
 import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
 import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
-
+import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
 
 // layouts
 export * from "../../renderer/components/layout/main-layout";
@@ -54,11 +59,7 @@ export type {
 } from "../../renderer/components/catalog/custom-category-columns";
 
 // other components
-export type {
-  ConfirmDialogBooleanParams,
-  ConfirmDialogParams,
-  ConfirmDialogProps,
-};
+export type { ConfirmDialogBooleanParams, ConfirmDialogParams, ConfirmDialogProps };
 export const ConfirmDialog = Object.assign(_ConfirmDialog, {
   open: asLegacyGlobalFunctionForExtensionApi(openConfirmDialogInjectable),
   confirm: asLegacyGlobalFunctionForExtensionApi(confirmInjectable),
@@ -82,7 +83,7 @@ export {
   type NotificationMessage,
   type ShowNotification,
   type NotificationsStore,
-} from"@freelensapp/notifications";
+} from "@freelensapp/notifications";
 
 export const Notifications = {
   ok: asLegacyGlobalFunctionForExtensionApi(showSuccessNotificationInjectable),
@@ -104,8 +105,10 @@ export * from "../../renderer/components/chart/bar-chart";
 export * from "../../renderer/components/chart/pie-chart";
 export {
   MonacoEditor,
-  type MonacoEditorProps, type MonacoEditorId,
-  type MonacoTheme, type MonacoCustomTheme,
+  type MonacoEditorProps,
+  type MonacoEditorId,
+  type MonacoTheme,
+  type MonacoCustomTheme,
 } from "../../renderer/components/monaco-editor";
 export * from "../../renderer/components/resource-metrics/resource-metrics";
 export * from "../../renderer/components/workloads-pods/pod-charts";
@@ -132,32 +135,26 @@ export * from "../../renderer/components/status-brick";
 
 export const createTerminalTab = asLegacyGlobalFunctionForExtensionApi(createTerminalTabInjectable);
 
-export const terminalStore = Object.assign(
-  asLegacyGlobalForExtensionApi(terminalStoreInjectable),
-  {
-    sendCommand: asLegacyGlobalFunctionForExtensionApi(sendCommandInjectable),
-  },
-);
+export const terminalStore = Object.assign(asLegacyGlobalForExtensionApi(terminalStoreInjectable), {
+  sendCommand: asLegacyGlobalFunctionForExtensionApi(sendCommandInjectable),
+});
 
 const renameTab = asLegacyGlobalFunctionForExtensionApi(renameTabInjectable);
 const podStore = asLegacyGlobalForExtensionApi(podStoreInjectable);
 
-export const logTabStore = Object.assign(
-  asLegacyGlobalForExtensionApi(logTabStoreInjectable),
-  {
-    createPodTab: asLegacyGlobalFunctionForExtensionApi(createPodLogsTabInjectable),
-    createWorkloadTab: asLegacyGlobalFunctionForExtensionApi(createWorkloadLogsTabInjectable),
-    renameTab: (tabId: string): void => {
-      const { selectedPodId } = logTabStore.getData(tabId) ?? {};
-      const pod = selectedPodId && podStore.getById(selectedPodId);
+export const logTabStore = Object.assign(asLegacyGlobalForExtensionApi(logTabStoreInjectable), {
+  createPodTab: asLegacyGlobalFunctionForExtensionApi(createPodLogsTabInjectable),
+  createWorkloadTab: asLegacyGlobalFunctionForExtensionApi(createWorkloadLogsTabInjectable),
+  renameTab: (tabId: string): void => {
+    const { selectedPodId } = logTabStore.getData(tabId) ?? {};
+    const pod = selectedPodId && podStore.getById(selectedPodId);
 
-      if (pod) {
-        renameTab(tabId, `Pod ${pod.getName()}`);
-      }
-    },
-    tabs: undefined,
+    if (pod) {
+      renameTab(tabId, `Pod ${pod.getName()}`);
+    }
   },
-);
+  tabs: undefined,
+});
 
 export class TerminalStore {
   static getInstance() {

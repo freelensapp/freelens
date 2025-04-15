@@ -1,6 +1,6 @@
 import { getFeature } from "@freelensapp/feature-core";
-import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { reactApplicationFeature } from "@freelensapp/react-application";
+import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 
 export const keyboardShortcutsFeature = getFeature({
   id: "keyboard-shortcuts",

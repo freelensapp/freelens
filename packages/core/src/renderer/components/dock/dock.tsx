@@ -1,30 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./dock.scss";
-import React from "react";
-import { observer } from "mobx-react";
-import { cssNames } from "@freelensapp/utilities";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { Icon } from "@freelensapp/icon";
+import { ResizeDirection, ResizingAnchor } from "@freelensapp/resizing-anchor";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
 import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
-import { ResizeDirection, ResizingAnchor } from "@freelensapp/resizing-anchor";
+import createResourceTabInjectable from "./create-resource/create-resource-tab.injectable";
 import { CreateResource } from "./create-resource/view";
 import { DockTabs } from "./dock-tabs";
 import type { DockStore, DockTab } from "./dock/store";
 import { TabKind } from "./dock/store";
+import dockStoreInjectable from "./dock/store.injectable";
 import { EditResource } from "./edit-resource/view";
 import { InstallChart } from "./install-chart/view";
 import { LogsDockTab } from "./logs/view";
+import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
 import { TerminalWindow } from "./terminal/view";
 import { UpgradeChart } from "./upgrade-chart/view";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import createResourceTabInjectable from "./create-resource/create-resource-tab.injectable";
-import dockStoreInjectable from "./dock/store.injectable";
-import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
-import { ErrorBoundary } from "@freelensapp/error-boundary";
 
 export interface DockProps {
   className?: string;
@@ -68,14 +69,14 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
 
     if ((ctrlKey && code === "KeyW") || (metaKey && code === "KeyW")) {
       closeTab(selectedTab.id);
-      this.element.current?.focus();  // Avoid loosing focus when closing tab
+      this.element.current?.focus(); // Avoid loosing focus when closing tab
     }
 
-    if(ctrlKey && code === "Period") {
+    if (ctrlKey && code === "Period") {
       this.switchToNextTab(selectedTab, Direction.NEXT);
     }
 
-    if(ctrlKey && code === "Comma") {
+    if (ctrlKey && code === "Comma") {
       this.switchToNextTab(selectedTab, Direction.PREV);
     }
   };
@@ -127,7 +128,8 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
       <div
         className={`tab-content ${selectedTab.kind}`}
         style={{ flexBasis: height }}
-        data-testid={`dock-tab-content-for-${selectedTab.id}`}>
+        data-testid={`dock-tab-content-for-${selectedTab.id}`}
+      >
         {this.renderTab(selectedTab)}
       </div>
     );
@@ -138,11 +140,7 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
     const { isOpen, toggle, tabs, toggleFillSize, selectedTab, hasTabs, fullSize } = this.props.dockStore;
 
     return (
-      <div
-        className={cssNames("Dock", className, { isOpen, fullSize })}
-        ref={this.element}
-        tabIndex={-1}
-      >
+      <div className={cssNames("Dock", className, { isOpen, fullSize })} ref={this.element} tabIndex={-1}>
         <ResizingAnchor
           disabled={!hasTabs()}
           getCurrentExtent={() => dockStore.height}
@@ -152,15 +150,10 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
           onStart={dockStore.open}
           onMinExtentSucceed={dockStore.close}
           onMinExtentExceed={dockStore.open}
-          onDrag={extent => dockStore.height = extent}
+          onDrag={(extent) => (dockStore.height = extent)}
         />
         <div className="tabs-container flex align-center">
-          <DockTabs
-            tabs={tabs}
-            selectedTab={selectedTab}
-            autoFocus={isOpen}
-            onChangeTab={this.onChangeTab}
-          />
+          <DockTabs tabs={tabs} selectedTab={selectedTab} autoFocus={isOpen} onChangeTab={this.onChangeTab} />
           <div className={cssNames("toolbar flex gaps align-center box grow", { "pl-0": tabs.length == 0 })}>
             <div className="dock-menu box grow">
               <MenuActions
@@ -195,9 +188,7 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
             )}
           </div>
         </div>
-        <ErrorBoundary>
-          {this.renderTabContent()}
-        </ErrorBoundary>
+        <ErrorBoundary>{this.renderTabContent()}</ErrorBoundary>
       </div>
     );
   }

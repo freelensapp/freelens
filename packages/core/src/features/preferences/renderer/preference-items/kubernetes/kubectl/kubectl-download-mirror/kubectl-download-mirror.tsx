@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
+import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../../renderer/components/select";
 import { defaultPackageMirror, packageMirrors } from "../../../../../../user-preferences/common/preferences-helpers";
 import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
@@ -23,7 +25,6 @@ const downloadMirrorOptions = Array.from(packageMirrors, ([name, mirror]) => ({
   isDisabled: !mirror.platforms.has(process.platform),
 }));
 
-
 const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
   <section>
     <SubTitle title="Download mirror" />
@@ -32,7 +33,7 @@ const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
       placeholder="Download mirror for kubectl"
       options={downloadMirrorOptions}
       value={state.downloadMirror}
-      onChange={option => state.downloadMirror = option?.value ?? defaultPackageMirror}
+      onChange={(option) => (state.downloadMirror = option?.value ?? defaultPackageMirror)}
       isDisabled={!state.downloadKubectlBinaries}
       themeName="lens"
     />

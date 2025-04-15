@@ -13556,8 +13556,7 @@ exports[`showing details for helm release given application is started when navi
         <div
           data-testid="helm-release-detail-error"
         >
-          Failed to load release:
-           
+          Failed to load release: 
           some-error
         </div>
       </div>

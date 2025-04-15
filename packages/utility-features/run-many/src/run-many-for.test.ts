@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { flushPromises, getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import type { Runnable } from "./types";
-import { runManyFor } from "./run-many-for";
-import { getPromiseStatus, flushPromises } from "@freelensapp/test-utils";
 import { runInAction } from "mobx";
+import { runManyFor } from "./run-many-for";
+import type { Runnable } from "./types";
 
 describe("runManyFor", () => {
   describe("given no hierarchy, when running many", () => {
@@ -48,10 +50,7 @@ describe("runManyFor", () => {
     });
 
     it("runs all runnables at the same time", () => {
-      expect(runMock.mock.calls).toEqual([
-        ["some-call"],
-        ["some-other-call"],
-      ]);
+      expect(runMock.mock.calls).toEqual([["some-call"], ["some-other-call"]]);
     });
 
     it("does not resolve yet", async () => {
@@ -204,9 +203,7 @@ describe("runManyFor", () => {
 
     rootDi.register(someInjectable, someOtherInjectable);
 
-    const runMany = runManyFor(rootDi)(
-      someInjectionToken,
-    );
+    const runMany = runManyFor(rootDi)(someInjectionToken);
 
     return expect(() => runMany()).rejects.toThrow(
       /Runnable "some-runnable-1" is unreachable for injection token "some-injection-token": run afters "some-runnable-2" are a part of different injection tokens./,
@@ -230,10 +227,7 @@ describe("runManyFor", () => {
       id: "some-runnable-1",
       instantiate: () => ({
         run: () => runMock("some-runnable-1"),
-        runAfter: [
-          someOtherInjectable,
-          someSecondInjectable,
-        ],
+        runAfter: [someOtherInjectable, someSecondInjectable],
       }),
       injectionToken: someInjectionToken,
     });
@@ -256,9 +250,7 @@ describe("runManyFor", () => {
 
     rootDi.register(someInjectable, someOtherInjectable, someSecondInjectable);
 
-    const runMany = runManyFor(rootDi)(
-      someInjectionToken,
-    );
+    const runMany = runManyFor(rootDi)(someInjectionToken);
 
     return expect(() => runMany()).rejects.toThrow(
       /Runnable "some-runnable-3" is not part of the injection token "some-injection-token"/,
@@ -273,9 +265,7 @@ describe("runManyFor", () => {
 
       runMock = asyncFn();
 
-      const someInjectionTokenForRunnablesWithParameter = getInjectionToken<
-        Runnable<string>
-      >({
+      const someInjectionTokenForRunnablesWithParameter = getInjectionToken<Runnable<string>>({
         id: "some-injection-token",
       });
 
@@ -297,9 +287,7 @@ describe("runManyFor", () => {
 
       rootDi.register(someInjectable, someOtherInjectable);
 
-      const runMany = runManyFor(rootDi)(
-        someInjectionTokenForRunnablesWithParameter,
-      );
+      const runMany = runManyFor(rootDi)(someInjectionTokenForRunnablesWithParameter);
 
       runMany("some-parameter");
     });
@@ -373,10 +361,7 @@ describe("runManyFor", () => {
         id: "runnable-6",
         instantiate: () => ({
           run: () => runMock("runnable-6"),
-          runAfter: [
-            runnableFourInjectable,
-            runnableFiveInjectable,
-          ],
+          runAfter: [runnableFourInjectable, runnableFiveInjectable],
         }),
         injectionToken: someInjectionToken,
       });
@@ -385,10 +370,7 @@ describe("runManyFor", () => {
         id: "runnable-7",
         instantiate: () => ({
           run: () => runMock("runnable-7"),
-          runAfter: [
-            runnableFiveInjectable,
-            runnableSixInjectable,
-          ],
+          runAfter: [runnableFiveInjectable, runnableSixInjectable],
         }),
         injectionToken: someInjectionToken,
       });

@@ -1,25 +1,22 @@
+import type { DiContainer } from "@ogre-tools/injectable";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { PodLogsMenu } from "../pod-logs-menu";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { type DiRender, renderFor } from "../../test-utils/renderFor";
-import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
+import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
+import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import { PodLogsMenu } from "../pod-logs-menu";
 
-let showLogs: (container: { name: string }) => void = ()=> {};
+let showLogs: (container: { name: string }) => void = () => {};
 
 // This mock is used to get showLogs function from PodLogsMenu
-jest.mock(
-  "../pod-menu-item",
-  () => ({
-    __esModule: true,
-    default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
-      showLogs = onMenuItemClick;
+jest.mock("../pod-menu-item", () => ({
+  __esModule: true,
+  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
+    showLogs = onMenuItemClick;
 
-      return null;
-    },
-  }),
-);
+    return null;
+  },
+}));
 
 describe("pod-logs-menu", () => {
   let di: DiContainer;
@@ -40,17 +37,13 @@ describe("pod-logs-menu", () => {
   });
 
   it("given null object should render null component", () => {
-    const { container } = render(
-      <PodLogsMenu object={null as never} toolbar={false} />,
-    );
+    const { container } = render(<PodLogsMenu object={null as never} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
 
   it("given object without metadata should render null component", () => {
-    const { container } = render(
-      <PodLogsMenu object={{}} toolbar={false} />,
-    );
+    const { container } = render(<PodLogsMenu object={{}} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -61,9 +54,7 @@ describe("pod-logs-menu", () => {
     };
 
     // WHEN
-    const { container } = render(
-      <PodLogsMenu object={object} toolbar={false} />,
-    );
+    const { container } = render(<PodLogsMenu object={object} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -102,5 +93,4 @@ describe("pod-logs-menu", () => {
     expect(createPodLogsTabMock).toHaveBeenCalledTimes(1);
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
-
 });

@@ -1,6 +1,6 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { render } from "react-dom";
 import type React from "react";
+import { render } from "react-dom";
 
 export type Render = (application: React.ReactElement) => void;
 

@@ -1,32 +1,32 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Badge } from "../badge";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { cssNames } from "@freelensapp/utilities";
 import type { HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricTarget } from "@freelensapp/kube-object";
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import type { Logger } from "@freelensapp/logger";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { Link } from "react-router-dom";
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 import { getMetricName } from "./get-metric-name";
+import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
 
-export interface HpaDetailsProps extends KubeObjectDetailsProps<HorizontalPodAutoscaler> {
-}
+export interface HpaDetailsProps extends KubeObjectDetailsProps<HorizontalPodAutoscaler> {}
 
 interface Dependencies {
   apiManager: ApiManager;
@@ -49,9 +49,7 @@ class NonInjectedHorizontalPodAutoscalerDetails extends React.Component<HpaDetai
     return (
       <>
         on
-        <Link to={objectUrl}>
-          {`${kind}/${name}`}
-        </Link>
+        <Link to={objectUrl}>{`${kind}/${name}`}</Link>
       </>
     );
   }
@@ -77,9 +75,7 @@ class NonInjectedHorizontalPodAutoscalerDetails extends React.Component<HpaDetai
         case "Object": {
           return (
             <>
-              {metricName}
-              {" "}
-              {this.renderTargetLink(metric.object?.describedObject)}
+              {metricName} {this.renderTargetLink(metric.object?.describedObject)}
             </>
           );
         }
@@ -96,15 +92,12 @@ class NonInjectedHorizontalPodAutoscalerDetails extends React.Component<HpaDetai
           <TableCell className="name">Name</TableCell>
           <TableCell className="metrics">Current / Target</TableCell>
         </TableHead>
-        {
-          this.props.getMetrics(hpa)
-            .map((metrics, index) => (
-              <TableRow key={index}>
-                <TableCell className="name">{renderName(hpa.getMetrics()[index])}</TableCell>
-                <TableCell className="metrics">{metrics}</TableCell>
-              </TableRow>
-            ))
-        }
+        {this.props.getMetrics(hpa).map((metrics, index) => (
+          <TableRow key={index}>
+            <TableCell className="name">{renderName(hpa.getMetrics()[index])}</TableCell>
+            <TableCell className="metrics">{metrics}</TableCell>
+          </TableRow>
+        ))}
       </Table>
     );
   }
@@ -129,47 +122,27 @@ class NonInjectedHorizontalPodAutoscalerDetails extends React.Component<HpaDetai
         <DrawerItem name="Reference">
           {scaleTargetRef && (
             <Link to={getDetailsUrl(apiManager.lookupApiLink(scaleTargetRef, hpa))}>
-              {scaleTargetRef.kind}
-              /
-              {scaleTargetRef.name}
+              {scaleTargetRef.kind}/{scaleTargetRef.name}
             </Link>
           )}
         </DrawerItem>
 
-        <DrawerItem name="Min Pods">
-          {hpa.getMinPods()}
-        </DrawerItem>
+        <DrawerItem name="Min Pods">{hpa.getMinPods()}</DrawerItem>
 
-        <DrawerItem name="Max Pods">
-          {hpa.getMaxPods()}
-        </DrawerItem>
+        <DrawerItem name="Max Pods">{hpa.getMaxPods()}</DrawerItem>
 
-        <DrawerItem name="Replicas">
-          {hpa.getReplicas()}
-        </DrawerItem>
+        <DrawerItem name="Replicas">{hpa.getReplicas()}</DrawerItem>
 
-        <DrawerItem
-          name="Status"
-          className="status"
-          labelsOnly
-        >
-          {hpa.getReadyConditions()
-            .map(({ type, tooltip, isReady }) => (
-              <Badge
-                key={type}
-                label={type}
-                tooltip={tooltip}
-                className={cssNames({ [type.toLowerCase()]: isReady })}
-              />
-            ))}
+        <DrawerItem name="Status" className="status" labelsOnly>
+          {hpa.getReadyConditions().map(({ type, tooltip, isReady }) => (
+            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type.toLowerCase()]: isReady })} />
+          ))}
         </DrawerItem>
 
         {(hpa.getMetrics().length !== 0 || hpa.spec?.targetCPUUtilizationPercentage) && (
           <>
             <DrawerTitle>Metrics</DrawerTitle>
-            <div className="metrics">
-              {this.renderMetrics()}
-            </div>
+            <div className="metrics">{this.renderMetrics()}</div>
           </>
         )}
       </div>
@@ -177,12 +150,15 @@ class NonInjectedHorizontalPodAutoscalerDetails extends React.Component<HpaDetai
   }
 }
 
-export const HorizontalPodAutoscalerDetails = withInjectables<Dependencies, HpaDetailsProps>(NonInjectedHorizontalPodAutoscalerDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    apiManager: di.inject(apiManagerInjectable),
-    getDetailsUrl: di.inject(getDetailsUrlInjectable),
-    logger: di.inject(loggerInjectionToken),
-    getMetrics: di.inject(getHorizontalPodAutoscalerMetrics),
-  }),
-});
+export const HorizontalPodAutoscalerDetails = withInjectables<Dependencies, HpaDetailsProps>(
+  NonInjectedHorizontalPodAutoscalerDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      apiManager: di.inject(apiManagerInjectable),
+      getDetailsUrl: di.inject(getDetailsUrlInjectable),
+      logger: di.inject(loggerInjectionToken),
+      getMetrics: di.inject(getHorizontalPodAutoscalerMetrics),
+    }),
+  },
+);

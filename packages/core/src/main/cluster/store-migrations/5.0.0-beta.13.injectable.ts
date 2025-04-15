@@ -1,24 +1,28 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ClusterModel, ClusterPreferences, ClusterPrometheusPreferences } from "../../../common/cluster-types";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { isDefined } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import { moveSync, removeSync } from "fs-extra";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import { isDefined } from "@freelensapp/utilities";
+import type { ClusterModel, ClusterPreferences, ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
 import { generateNewIdFor } from "../../../common/utils/generate-new-id-for";
+import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
 
 interface Pre500ClusterModel extends ClusterModel {
   workspace?: string;
   workspaces?: string[];
 }
 
-function mergePrometheusPreferences(left: ClusterPrometheusPreferences, right: ClusterPrometheusPreferences): ClusterPrometheusPreferences {
+function mergePrometheusPreferences(
+  left: ClusterPrometheusPreferences,
+  right: ClusterPrometheusPreferences,
+): ClusterPrometheusPreferences {
   if (left.prometheus && left.prometheusProvider) {
     return {
       prometheus: left.prometheus,

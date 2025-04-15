@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, makeObservable, observable } from "mobx";
-import { disposer } from "@freelensapp/utilities";
-import type { ProtocolHandlerRegistration } from "../common/protocol-handler/registration";
 import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import { disposer } from "@freelensapp/utilities";
+import { action, computed, makeObservable, observable } from "mobx";
+import type { ProtocolHandlerRegistration } from "../common/protocol-handler/registration";
 import type { Logger } from "./common-api";
 import type { EnsureHashedDirectoryForExtension } from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
 
@@ -128,11 +129,7 @@ export function sanitizeExtensionName(name: string) {
 }
 
 export function getSanitizedPath(...parts: string[]) {
-  return parts
-    .filter(Boolean)
-    .join("/")
-    .replace(/\/+/g, "/")
-    .replace(/\/$/, "");
+  return parts.filter(Boolean).join("/").replace(/\/+/g, "/").replace(/\/$/, "");
 } // normalize multi-slashes (e.g. coming from page.id)
 
 export function extensionDisplayName(name: string, version: string) {

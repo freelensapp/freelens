@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { GetBasenameOfPath } from "../../../common/path/get-basename.injectable";
+import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
+import type { JoinPaths } from "../../../common/path/join-paths.injectable";
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
+import type { ModifyTerminalShellEnv } from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 import { ShellSession } from "../shell-session";
-import type { ModifyTerminalShellEnv } from "../shell-env-modifier/modify-terminal-shell-env.injectable";
-import type { JoinPaths } from "../../../common/path/join-paths.injectable";
-import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
-import type { GetBasenameOfPath } from "../../../common/path/get-basename.injectable";
-import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
   readonly directoryForBinaries: string;
@@ -23,7 +24,10 @@ export interface LocalShellSessionDependencies extends ShellSessionDependencies 
 export class LocalShellSession extends ShellSession {
   ShellType = "shell";
 
-  constructor(protected readonly dependencies: LocalShellSessionDependencies, args: ShellSessionArgs) {
+  constructor(
+    protected readonly dependencies: LocalShellSessionDependencies,
+    args: ShellSessionArgs,
+  ) {
     super(dependencies, args);
   }
 
@@ -55,13 +59,24 @@ export class LocalShellSession extends ShellSession {
       ? this.dependencies.directoryContainingKubectl
       : this.dependencies.getDirnameOfPath(pathFromPreferences);
 
-    switch(this.dependencies.getBasenameOfPath(shell)) {
+    switch (this.dependencies.getBasenameOfPath(shell)) {
       case "powershell.exe":
-        return ["-NoExit", "-command", `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};$Env:PATH"}`];
+        return [
+          "-NoExit",
+          "-command",
+          `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};$Env:PATH"}`,
+        ];
       case "bash":
-        return ["--init-file", this.dependencies.joinPaths(this.dependencies.directoryContainingKubectl, ".bash_set_path")];
+        return [
+          "--init-file",
+          this.dependencies.joinPaths(this.dependencies.directoryContainingKubectl, ".bash_set_path"),
+        ];
       case "fish":
-        return ["--login", "--init-command", `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`];
+        return [
+          "--login",
+          "--init-command",
+          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`,
+        ];
       case "zsh":
         return ["--login"];
       default:

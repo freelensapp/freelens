@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectable } from "@ogre-tools/injectable";
 // Cleans up a store that had the state related data stored
 import catalogCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
-import { getInjectable } from "@ogre-tools/injectable";
-import { hotbarStoreMigrationInjectionToken } from "../common/migrations-token";
 import createHotbarInjectable from "../common/create-hotbar.injectable";
+import { hotbarStoreMigrationInjectionToken } from "../common/migrations-token";
 
 const v500Alpha0HotbarStoreMigrationInjectable = getInjectable({
   id: "v5.0.0-alpha.0-hotbar-store-migration",
@@ -27,4 +28,3 @@ const v500Alpha0HotbarStoreMigrationInjectable = getInjectable({
 });
 
 export default v500Alpha0HotbarStoreMigrationInjectable;
-

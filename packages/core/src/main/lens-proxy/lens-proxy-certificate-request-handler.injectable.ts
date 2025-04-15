@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
+
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
+import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 
 const lensProxyCertificateRequestHandlerInjectable = getRequestChannelListenerInjectable({

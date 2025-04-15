@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { JsonApiError } from "@freelensapp/json-api";
 import { JsonApi } from "@freelensapp/json-api";
-import type { Response } from "@freelensapp/node-fetch";
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { Response } from "@freelensapp/node-fetch";
 
 export interface KubeJsonApiError extends JsonApiError {
   code: number;

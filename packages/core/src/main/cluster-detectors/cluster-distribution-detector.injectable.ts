@@ -1,16 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { clusterMetadataDetectorInjectionToken } from "./token";
-import { ClusterMetadataKey } from "../../common/cluster-types";
-import { getInjectable } from "@ogre-tools/injectable";
-import k8SRequestInjectable from "../k8s-request.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
-import requestClusterVersionInjectable from "./request-cluster-version.injectable";
 import type { URL } from "url";
+import { getInjectable } from "@ogre-tools/injectable";
+import { ClusterMetadataKey } from "../../common/cluster-types";
+import type { Cluster } from "../../common/cluster/cluster";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
+import k8SRequestInjectable from "../k8s-request.injectable";
+import requestClusterVersionInjectable from "./request-cluster-version.injectable";
+import { clusterMetadataDetectorInjectionToken } from "./token";
 
 const isGKE = (version: string) => version.includes("gke");
 const isEKS = (version: string) => version.includes("eks");
@@ -39,7 +40,7 @@ const clusterDistributionDetectorInjectable = getInjectable({
     const requestClusterVersion = di.inject(requestClusterVersionInjectable);
     const isOpenshift = async (cluster: Cluster) => {
       try {
-        const { paths = [] } = await k8sRequest(cluster, "") as { paths?: string[] };
+        const { paths = [] } = (await k8sRequest(cluster, "")) as { paths?: string[] };
 
         return paths.includes("/apis/project.openshift.io");
       } catch (e) {
@@ -142,4 +143,3 @@ const clusterDistributionDetectorInjectable = getInjectable({
 });
 
 export default clusterDistributionDetectorInjectable;
-

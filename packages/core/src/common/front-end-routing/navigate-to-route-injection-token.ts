@@ -1,13 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type { Route } from "./front-end-route-injection-token";
 
-type InferParametersFrom<TRoute> = TRoute extends Route<infer TParameters>
-  ? TParameters
-  : never;
+type InferParametersFrom<TRoute> = TRoute extends Route<infer TParameters> ? TParameters : never;
 
 type RequiredKeys<T> = Exclude<
   {
@@ -16,15 +16,9 @@ type RequiredKeys<T> = Exclude<
   undefined
 >;
 
-type ObjectContainingNoRequired<T> = T extends void
-  ? never
-  : RequiredKeys<T> extends []
-  ? any
-  : never;
+type ObjectContainingNoRequired<T> = T extends void ? never : RequiredKeys<T> extends [] ? any : never;
 
-type ObjectContainsNoRequired<T> = T extends ObjectContainingNoRequired<T>
-  ? true
-  : false;
+type ObjectContainsNoRequired<T> = T extends ObjectContainingNoRequired<T> ? true : false;
 
 // TODO: Missing types for:
 // - Navigating to route without parameters, with parameters
@@ -32,12 +26,10 @@ type ObjectContainsNoRequired<T> = T extends ObjectContainingNoRequired<T>
 type Parameters<TParameters> = TParameters extends void
   ? {}
   : ObjectContainsNoRequired<TParameters> extends true
-  ? { parameters?: TParameters }
-  : { parameters: TParameters };
+    ? { parameters?: TParameters }
+    : { parameters: TParameters };
 
-export type NavigateToRouteOptions<TRoute> = Parameters<
-  InferParametersFrom<TRoute>
-> & {
+export type NavigateToRouteOptions<TRoute> = Parameters<InferParametersFrom<TRoute>> & {
   query?: Record<string, string>;
   fragment?: string;
   withoutAffectingBackButton?: boolean;
@@ -45,8 +37,9 @@ export type NavigateToRouteOptions<TRoute> = Parameters<
 
 export type NavigateToRoute = <TRoute extends Route<unknown>>(
   route: TRoute,
-  options?: NavigateToRouteOptions<TRoute>) => void;
+  options?: NavigateToRouteOptions<TRoute>,
+) => void;
 
-export const navigateToRouteInjectionToken = getInjectionToken<NavigateToRoute>(
-  { id: "navigate-to-route-injection-token" },
-);
+export const navigateToRouteInjectionToken = getInjectionToken<NavigateToRoute>({
+  id: "navigate-to-route-injection-token",
+});

@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import routerInjectable, { routeInjectionToken } from "./router.injectable";
-import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { Router } from "./router";
-import type { Cluster } from "../../common/cluster/cluster";
-import { Request } from "mock-http";
-import { getInjectable } from "@ogre-tools/injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import parseRequestInjectable from "./parse-request.injectable";
-import { contentTypes } from "./router-content-types";
-import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { Route } from "./route";
+import { getInjectable } from "@ogre-tools/injectable";
+import { runInAction } from "mobx";
+import { Request } from "mock-http";
 import type { SetRequired } from "type-fest";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import type { Cluster } from "../../common/cluster/cluster";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
+import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
-import { runInAction } from "mobx";
+import parseRequestInjectable from "./parse-request.injectable";
+import type { Route } from "./route";
+import type { Router } from "./router";
+import { contentTypes } from "./router-content-types";
+import routerInjectable, { routeInjectionToken } from "./router.injectable";
 
 describe("router", () => {
   let router: Router;
@@ -30,10 +31,14 @@ describe("router", () => {
 
     const di = getDiForUnitTesting();
 
-    di.override(parseRequestInjectable, () => () => Promise.resolve({
-      payload: "some-payload",
-      mime: "some-mime",
-    }));
+    di.override(
+      parseRequestInjectable,
+      () => () =>
+        Promise.resolve({
+          payload: "some-payload",
+          mime: "some-mime",
+        }),
+    );
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(kubectlBinaryNameInjectable, () => "kubectl");
     di.override(kubectlDownloadingNormalizedArchInjectable, () => "amd64");
@@ -42,11 +47,12 @@ describe("router", () => {
     const injectable = getInjectable({
       id: "some-route",
 
-      instantiate: () => ({
-        method: "get",
-        path: "/some-path",
-        handler: routeHandlerMock,
-      } as Route<any, string>),
+      instantiate: () =>
+        ({
+          method: "get",
+          path: "/some-path",
+          handler: routeHandlerMock,
+        }) as Route<any, string>,
 
       injectionToken: routeInjectionToken,
     });
@@ -96,13 +102,11 @@ describe("router", () => {
 
       await actualPromise;
 
-      expect(responseStub.setHeader.mock.calls).toEqual([
-        ["Content-Type", "application/json"],
-      ]);
+      expect(responseStub.setHeader.mock.calls).toEqual([["Content-Type", "application/json"]]);
     });
 
     it("given JSON content-type is specified, when handler resolves with object, resolves with JSON", async () => {
-      await routeHandlerMock.resolve({ response: { some: "object" }});
+      await routeHandlerMock.resolve({ response: { some: "object" } });
 
       await actualPromise;
 
@@ -161,7 +165,7 @@ describe("router", () => {
       { contentType: "application/javascript", contentTypeObject: contentTypes.js },
       { contentType: "font/woff2", contentTypeObject: contentTypes.woff2 },
       { contentType: "font/ttf", contentTypeObject: contentTypes.ttf },
-    ].forEach(scenario => {
+    ].forEach((scenario) => {
       describe(`given content type is "${scenario.contentType}", when handler resolves with response`, () => {
         beforeEach(async () => {
           await routeHandlerMock.resolve({ response: "some-response", contentType: scenario.contentTypeObject });
@@ -170,9 +174,7 @@ describe("router", () => {
         });
 
         it("has content type specific headers", () => {
-          expect(responseStub.setHeader.mock.calls).toEqual([
-            ["Content-Type", scenario.contentType],
-          ]);
+          expect(responseStub.setHeader.mock.calls).toEqual([["Content-Type", scenario.contentType]]);
         });
 
         it("defaults to successful status code", () => {
@@ -206,7 +208,6 @@ describe("router", () => {
 
         expect(responseStub.statusCode).toBe(200);
       });
-
 
       it(`given content type is "${scenario.contentType}", when handler resolves without response, has no body`, async () => {
         await routeHandlerMock.resolve({
@@ -271,7 +272,6 @@ describe("router", () => {
           ["Content-Type", scenario.contentType],
           ["Some-Header", "some-header-value"],
         ]);
-
       });
 
       describe(`given content type is "${scenario.contentType}", when handler resolves with binary content`, () => {

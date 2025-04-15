@@ -1,20 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { AsyncResult } from "@freelensapp/utilities";
+import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { action, computed, observable, when } from "mobx";
 import type { SingleValue } from "react-select";
+import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
+import requestHelmReleaseConfigurationInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import type { HelmChartVersion } from "../../helm-charts/helm-charts/versions";
 import helmChartVersionsInjectable from "../../helm-charts/helm-charts/versions.injectable";
 import releasesInjectable from "../../helm-releases/releases.injectable";
 import updateReleaseInjectable from "../../helm-releases/update-release/update-release.injectable";
-import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
-import requestHelmReleaseConfigurationInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import { waitUntilDefined } from "@freelensapp/utilities";
 import type { SelectOption } from "../../select";
 import type { DockTab } from "../dock/store";
 import upgradeChartTabDataInjectable from "./tab-data.injectable";
@@ -43,24 +45,16 @@ const upgradeChartModelInjectable = getInjectable({
     const updateRelease = di.inject(updateReleaseInjectable);
     const tabData = await di.inject(upgradeChartTabDataInjectable, tab.id);
 
-    const release = await waitUntilDefined(() => (
+    const release = await waitUntilDefined(() =>
       releases.value
         .get()
-        .find(release => (
-          release.getName() === tabData.releaseName
-          && release.getNs() === tabData.releaseNamespace
-        ))
-    ));
+        .find((release) => release.getName() === tabData.releaseName && release.getNs() === tabData.releaseNamespace),
+    );
 
     const versions = di.inject(helmChartVersionsInjectable, release);
 
     const storedConfiguration = asyncComputed({
-      getValueFromObservedPromise: () =>
-        requestHelmReleaseConfiguration(
-          release.getName(),
-          release.getNs(),
-          true,
-        ),
+      getValueFromObservedPromise: () => requestHelmReleaseConfiguration(release.getName(), release.getNs(), true),
 
       valueWhenPending: "",
     });
@@ -85,14 +79,12 @@ const upgradeChartModelInjectable = getInjectable({
       value: computed(() => versionValue.get() ?? versions.value.get()[0]),
       set: action((option) => versionValue.set(option?.value)),
     };
-    const versionOptions = computed(() => (
-      versions.value
-        .get()
-        .map(version => ({
-          value: version,
-          label: `${version.repo}/${release.getChart()}-${version.version}`,
-        }))
-    ));
+    const versionOptions = computed(() =>
+      versions.value.get().map((version) => ({
+        value: version,
+        label: `${version.repo}/${release.getChart()}-${version.version}`,
+      })),
+    );
 
     return {
       release,
@@ -118,15 +110,11 @@ const upgradeChartModelInjectable = getInjectable({
           };
         }
 
-        const result = await updateRelease(
-          release.getName(),
-          release.getNs(),
-          {
-            chart: release.getChart(),
-            values: configration.value.get(),
-            ...selectedVersion,
-          },
-        );
+        const result = await updateRelease(release.getName(), release.getNs(), {
+          chart: release.getChart(),
+          values: configration.value.get(),
+          ...selectedVersion,
+        });
 
         if (result.callWasSuccessful === true) {
           storedConfiguration.invalidate();

@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { getOrInsertWith } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { LogEntry, transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
 
@@ -20,11 +22,7 @@ const ipcFileLoggerInjectable = getInjectable({
     const fileTransports = new Map<string, transports.FileTransportInstance>();
 
     function log({ fileId, entry }: { fileId: string; entry: LogEntry }) {
-      const transport = getOrInsertWith(
-        fileTransports,
-        fileId,
-        () => createIpcFileTransport(fileId),
-      );
+      const transport = getOrInsertWith(fileTransports, fileId, () => createIpcFileTransport(fileId));
 
       transport?.log?.(entry, () => {});
     }

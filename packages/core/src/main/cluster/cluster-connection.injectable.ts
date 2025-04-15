@@ -1,48 +1,52 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type KubeConfig, HttpError } from "@freelensapp/kubernetes-client-node";
-import { reaction, comparer, runInAction } from "mobx";
-import { ClusterStatus } from "../../common/cluster-types";
-import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
-import type { BroadcastMessage } from "../../common/ipc/broadcast-message.injectable";
-import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
+import { HttpError, type KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
-import type { KubeApiResource } from "../../common/rbac";
-import { formatKubeApiResource } from "../../common/rbac";
-import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
-import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
-import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
-import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
-import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
-import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
-import type { RequestApiResources } from "./request-api-resources.injectable";
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
-import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
-import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
-import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
-import requestApiResourcesInjectable from "./request-api-resources.injectable";
-import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
-import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
-import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
-import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
-import { replaceObservableObject } from "../../common/utils/replace-observable-object";
-import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
-import type { CreateCanI } from "../../common/cluster/create-can-i.injectable";
-import type { CreateRequestNamespaceListPermissions, RequestNamespaceListPermissions } from "../../common/cluster/create-request-namespace-list-permissions.injectable";
+import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
+import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import { comparer, reaction, runInAction } from "mobx";
+import { ClusterStatus } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
+import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
+import type { CreateCanI } from "../../common/cluster/create-can-i.injectable";
 import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
-import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
 import type { CreateCoreApi } from "../../common/cluster/create-core-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
+import type {
+  CreateRequestNamespaceListPermissions,
+  RequestNamespaceListPermissions,
+} from "../../common/cluster/create-request-namespace-list-permissions.injectable";
+import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
+import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
+import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
+import type { BroadcastMessage } from "../../common/ipc/broadcast-message.injectable";
+import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
+import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
+import type { KubeApiResource } from "../../common/rbac";
+import { formatKubeApiResource } from "../../common/rbac";
+import { replaceObservableObject } from "../../common/utils/replace-observable-object";
+import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
+import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
+import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
+import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
+import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
+import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
+import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
+import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
+import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
+import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
+import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
+import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
+import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
+import type { RequestApiResources } from "./request-api-resources.injectable";
+import requestApiResourcesInjectable from "./request-api-resources.injectable";
 
 interface Dependencies {
   readonly logger: Logger;
@@ -90,12 +94,15 @@ class ClusterConnection {
     this.eventsDisposer.push(
       reaction(
         () => this.cluster.prometheusPreferences.get(),
-        preferences => this.dependencies.prometheusHandler.setupPrometheus(preferences),
+        (preferences) => this.dependencies.prometheusHandler.setupPrometheus(preferences),
         { equals: comparer.structural },
       ),
       () => clearInterval(refreshTimer),
       () => clearInterval(refreshMetadataTimer),
-      reaction(() => this.cluster.preferences.defaultNamespace, () => this.recreateProxyKubeconfig()),
+      reaction(
+        () => this.cluster.preferences.defaultNamespace,
+        () => this.recreateProxyKubeconfig(),
+      ),
     );
   }
 
@@ -257,7 +264,9 @@ class ClusterConnection {
         return this.cluster.knownResources;
       }
 
-      this.dependencies.logger.warn(`[CLUSTER]: failed to list KUBE resources for the first time, blocking connection to cluster...`);
+      this.dependencies.logger.warn(
+        `[CLUSTER]: failed to list KUBE resources for the first time, blocking connection to cluster...`,
+      );
       this.dependencies.broadcastConnectionUpdate({
         level: "error",
         message: "Failed to list kube API resources, please reconnect...",
@@ -265,7 +274,11 @@ class ClusterConnection {
 
       return [];
     })();
-    const resourcesToShow = await this.getResourcesToShow(allowedNamespaces, knownResources, requestNamespaceListPermissions);
+    const resourcesToShow = await this.getResourcesToShow(
+      allowedNamespaces,
+      knownResources,
+      requestNamespaceListPermissions,
+    );
 
     runInAction(() => {
       this.cluster.isAdmin.set(isAdmin);
@@ -378,7 +391,10 @@ class ClusterConnection {
       if (namespaceList.length === 0 && error instanceof HttpError && error.statusCode === 403) {
         const { response } = error as HttpError & { response: Response };
 
-        this.dependencies.logger.info("[CLUSTER]: listing namespaces is forbidden, broadcasting", { clusterId: this.cluster.id, error: response.body });
+        this.dependencies.logger.info("[CLUSTER]: listing namespaces is forbidden, broadcasting", {
+          clusterId: this.cluster.id,
+          error: response.body,
+        });
         this.dependencies.broadcastMessage(clusterListNamespaceForbiddenChannel, this.cluster.id);
       }
 
@@ -386,7 +402,11 @@ class ClusterConnection {
     }
   }
 
-  protected async getResourcesToShow(allowedNamespaces: string[], knownResources: KubeApiResource[], req: RequestNamespaceListPermissions) {
+  protected async getResourcesToShow(
+    allowedNamespaces: string[],
+    knownResources: KubeApiResource[],
+    req: RequestNamespaceListPermissions,
+  ) {
     if (!allowedNamespaces.length) {
       return [];
     }
@@ -395,34 +415,33 @@ class ClusterConnection {
     const namespaceListPermissions = allowedNamespaces.map(requestNamespaceListPermissions);
     const canListResources = await Promise.all(namespaceListPermissions);
 
-    return knownResources
-      .filter((resource) => canListResources.some(fn => fn(resource)))
-      .map(formatKubeApiResource);
+    return knownResources.filter((resource) => canListResources.some((fn) => fn(resource))).map(formatKubeApiResource);
   }
 }
 
 const clusterConnectionInjectable = getInjectable({
   id: "cluster-connection",
-  instantiate: (di, cluster) => new ClusterConnection(
-    {
-      clusterVersionDetector: di.inject(clusterVersionDetectorInjectable),
-      kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
-      logger: di.inject(loggerInjectionToken),
-      prometheusHandler: di.inject(prometheusHandlerInjectable, cluster),
-      broadcastConnectionUpdate: di.inject(broadcastConnectionUpdateInjectable, cluster),
-      broadcastMessage: di.inject(broadcastMessageInjectable),
-      createListNamespaces: di.inject(createListNamespacesInjectable),
-      detectClusterMetadata: di.inject(detectClusterMetadataInjectable),
-      loadProxyKubeconfig: di.inject(loadProxyKubeconfigInjectable, cluster),
-      removeProxyKubeconfig: di.inject(removeProxyKubeconfigInjectable, cluster),
-      requestApiResources: di.inject(requestApiResourcesInjectable),
-      createAuthorizationApi: di.inject(createAuthorizationApiInjectable),
-      createCoreApi: di.inject(createCoreApiInjectable),
-      createCanI: di.inject(createCanIInjectable),
-      createRequestNamespaceListPermissions: di.inject(createRequestNamespaceListPermissionsInjectable),
-    },
-    cluster,
-  ),
+  instantiate: (di, cluster) =>
+    new ClusterConnection(
+      {
+        clusterVersionDetector: di.inject(clusterVersionDetectorInjectable),
+        kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
+        logger: di.inject(loggerInjectionToken),
+        prometheusHandler: di.inject(prometheusHandlerInjectable, cluster),
+        broadcastConnectionUpdate: di.inject(broadcastConnectionUpdateInjectable, cluster),
+        broadcastMessage: di.inject(broadcastMessageInjectable),
+        createListNamespaces: di.inject(createListNamespacesInjectable),
+        detectClusterMetadata: di.inject(detectClusterMetadataInjectable),
+        loadProxyKubeconfig: di.inject(loadProxyKubeconfigInjectable, cluster),
+        removeProxyKubeconfig: di.inject(removeProxyKubeconfigInjectable, cluster),
+        requestApiResources: di.inject(requestApiResourcesInjectable),
+        createAuthorizationApi: di.inject(createAuthorizationApiInjectable),
+        createCoreApi: di.inject(createCoreApiInjectable),
+        createCanI: di.inject(createCanIInjectable),
+        createRequestNamespaceListPermissions: di.inject(createRequestNamespaceListPermissionsInjectable),
+      },
+      cluster,
+    ),
   lifecycle: lifecycleEnum.keyedSingleton({
     getInstanceKey: (di, cluster: Cluster) => cluster.id,
   }),
