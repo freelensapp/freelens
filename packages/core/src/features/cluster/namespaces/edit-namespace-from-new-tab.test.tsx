@@ -419,7 +419,7 @@ metadata:
                 it("shows an error notification with a condensed message", () => {
                   expect(showErrorNotificationMock).toBeCalledWith(
                     <p>
-                      {"Failed to save resource:"}{" "}
+                      {"Failed to save resource: "}
                       {
                         'PodDisruptionBudget.policy "frontend-pdb" is invalid: spec.minAvailable: Invalid value: -10: must be greater than or equal to 0'
                       }
