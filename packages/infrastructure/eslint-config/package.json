@@ -33,7 +33,7 @@
     "@typescript-eslint/eslint-plugin": ">= 8.26.0",
     "@typescript-eslint/parser": ">= 8.26.0",
     "eslint": ">= 7",
-    "eslint-config-prettier": ">= 8",
+    "eslint-config-prettier": ">= 8.10.0",
     "eslint-plugin-import": ">= 2",
     "eslint-plugin-jest": ">= 27",
     "eslint-plugin-jsx-a11y": ">= 6",
