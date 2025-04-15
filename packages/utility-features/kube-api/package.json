@@ -25,8 +25,8 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch",
     "test:unit": "jest --coverage --runInBand --detectOpenHandles --forceExit",
     "lint": "lens-lint",

@@ -24,9 +24,9 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf dist",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },

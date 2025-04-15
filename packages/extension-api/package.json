@@ -22,8 +22,8 @@
   },
   "scripts": {
     "build": "webpack --config webpack/extensions.ts",
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules"
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",

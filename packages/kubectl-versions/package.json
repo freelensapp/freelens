@@ -22,7 +22,7 @@
     "precompute-versions": "tsc --pretty --project build",
     "compute-versions": "node ./build/compute-versions.mjs",
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch"
   },
   "devDependencies": {

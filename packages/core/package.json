@@ -53,12 +53,12 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "build": "pnpm dlx cross-env NODE_ENV=production webpack --config webpack/library-bundle.ts --progress",
-    "clean": "pnpm dlx rimraf dist static/build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "build": "pnpm dlx cross-env@7.0.3 NODE_ENV=production webpack --config webpack/library-bundle.ts --progress",
+    "clean": "pnpm dlx rimraf@6.0.1 dist static/build",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "test:unit": "jest",
     "test:watch": "func() { jest ${1} --watch --testPathIgnorePatterns integration; }; func",
-    "lint": "pnpm dlx cross-env PROD=true eslint --ext js,ts,tsx --max-warnings=0 .",
+    "lint": "pnpm dlx cross-env@7.0.3 PROD=true eslint --ext js,ts,tsx --max-warnings=0 .",
     "lint:fix": "pnpm lint --fix"
   },
   "config": {
