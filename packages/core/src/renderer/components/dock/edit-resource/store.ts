@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { KubeObject } from "@freelensapp/kube-object";
 import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
 import { DockTabStore } from "../dock-tab-store/dock-tab.store";
-import type { KubeObject } from "@freelensapp/kube-object";
 
 export interface EditingResource {
   resource: string; // resource path, e.g. /api/v1/namespaces/default

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectionToken } from "@ogre-tools/injectable";
 import type { ChannelRequester } from "@freelensapp/messaging";
+import { getInjectionToken } from "@ogre-tools/injectable";
 import type { activateClusterChannel, deactivateClusterChannel } from "./channels";
 
 export type RequestClusterActivation = ChannelRequester<typeof activateClusterChannel>;

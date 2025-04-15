@@ -5,28 +5,27 @@
 
 import "./view.scss";
 
-import React from "react";
 import { observer } from "mobx-react";
+import React from "react";
 
-import { NamespaceSelect } from "../../../namespaces/namespace-select";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { Input } from "../../../input";
-import { SubTitle } from "../../../layout/sub-title";
-import { Wizard, WizardStep } from "../../../wizard";
-import type { AddRoleDialogState } from "./state.injectable";
-import type { RoleStore } from "../store";
 import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import closeAddRoleDialogInjectable from "./close.injectable";
-import roleStoreInjectable from "../store.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
+import { SubTitle } from "../../../layout/sub-title";
+import { NamespaceSelect } from "../../../namespaces/namespace-select";
+import { Wizard, WizardStep } from "../../../wizard";
+import type { RoleStore } from "../store";
+import roleStoreInjectable from "../store.injectable";
+import closeAddRoleDialogInjectable from "./close.injectable";
+import type { AddRoleDialogState } from "./state.injectable";
 import addRoleDialogStateInjectable from "./state.injectable";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
-export interface AddRoleDialogProps extends Partial<DialogProps> {
-}
+export interface AddRoleDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   closeAddRoleDialog: () => void;
@@ -39,13 +38,7 @@ interface Dependencies {
 @observer
 class NonInjectedAddRoleDialog extends React.Component<AddRoleDialogProps & Dependencies> {
   createRole = async () => {
-    const {
-      closeAddRoleDialog,
-      roleStore,
-      state,
-      showDetails,
-      showCheckedErrorNotification,
-    } = this.props;
+    const { closeAddRoleDialog, roleStore, state, showDetails, showCheckedErrorNotification } = this.props;
 
     try {
       const role = await roleStore.create({
@@ -65,18 +58,9 @@ class NonInjectedAddRoleDialog extends React.Component<AddRoleDialogProps & Depe
     const header = <h5>Create Role</h5>;
 
     return (
-      <Dialog
-        {...dialogProps}
-        className="AddRoleDialog"
-        isOpen={state.isOpen.get()}
-        close={closeAddRoleDialog}
-      >
+      <Dialog {...dialogProps} className="AddRoleDialog" isOpen={state.isOpen.get()} close={closeAddRoleDialog}>
         <Wizard header={header} done={closeAddRoleDialog}>
-          <WizardStep
-            contentClass="flex gaps column"
-            nextLabel="Create"
-            next={this.createRole}
-          >
+          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.createRole}>
             <SubTitle title="Role Name" />
             <Input
               required
@@ -84,14 +68,14 @@ class NonInjectedAddRoleDialog extends React.Component<AddRoleDialogProps & Depe
               placeholder="Name"
               iconLeft="supervisor_account"
               value={state.roleName.get()}
-              onChange={v => state.roleName.set(v)}
+              onChange={(v) => state.roleName.set(v)}
             />
             <SubTitle title="Namespace" />
             <NamespaceSelect
               id="add-dialog-namespace-select-input"
               themeName="light"
               value={state.namespace.get()}
-              onChange={option => state.namespace.set(option?.value ?? "default")}
+              onChange={(option) => state.namespace.set(option?.value ?? "default")}
             />
           </WizardStep>
         </Wizard>

@@ -5,17 +5,17 @@
 
 import "./logs-dialog.scss";
 
+import { Button } from "@freelensapp/button";
+import { Icon } from "@freelensapp/icon";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { clipboard } from "electron";
+import { kebabCase } from "lodash/fp";
 import React from "react";
 import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";
-import type { ShowNotification } from "@freelensapp/notifications";
-import { Button } from "@freelensapp/button";
-import { Icon } from "@freelensapp/icon";
-import { clipboard } from "electron";
-import { kebabCase } from "lodash/fp";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 
 export interface LogsDialogProps extends DialogProps {
   title: string;
@@ -27,26 +27,14 @@ interface Dependencies {
 }
 
 const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
-  const {
-    title,
-    logs,
-    showSuccessNotification,
-    ...dialogProps
-  } = props;
+  const { title, logs, showSuccessNotification, ...dialogProps } = props;
 
   return (
-    <Dialog
-      {...dialogProps}
-      className="LogsDialog"
-      data-testid={`logs-dialog-for-${kebabCase(title)}`}
-    >
-      <Wizard
-        header={<h5>{title}</h5>}
-        done={dialogProps.close}
-      >
+    <Dialog {...dialogProps} className="LogsDialog" data-testid={`logs-dialog-for-${kebabCase(title)}`}>
+      <Wizard header={<h5>{title}</h5>} done={dialogProps.close}>
         <WizardStep
           scrollable={false}
-          customButtons={(
+          customButtons={
             <div className="buttons flex gaps align-center justify-space-between">
               <Button
                 plain
@@ -55,18 +43,16 @@ const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
                   showSuccessNotification(`Logs copied to clipboard.`);
                 }}
               >
-                <Icon material="assignment"/>
+                <Icon material="assignment" />
                 {" Copy to clipboard"}
               </Button>
               <Button plain onClick={dialogProps.close}>
                 Close
               </Button>
             </div>
-          )}
+          }
         >
-          <code className="block">
-            {logs || "There are no logs available."}
-          </code>
+          <code className="block">{logs || "There are no logs available."}</code>
         </WizardStep>
       </Wizard>
     </Dialog>

@@ -4,11 +4,11 @@
  */
 import type { RenderResult } from "@testing-library/react";
 import type { IObservableValue } from "mobx";
-import { observable, runInAction, computed } from "mobx";
+import { computed, observable, runInAction } from "mobx";
 import React from "react";
-import type { TestExtensionRenderer } from "../../../renderer/components/test-utils/get-extension-fake";
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import type { TestExtensionRenderer } from "../../../renderer/components/test-utils/get-extension-fake";
 
 describe("reactively disable global pages", () => {
   let builder: ApplicationBuilder;
@@ -26,13 +26,15 @@ describe("reactively disable global pages", () => {
       name: "test-extension",
 
       rendererOptions: {
-        globalPages: [{
-          components: {
-            Page: () => <div data-testid="some-test-page">Some page</div>,
-          },
+        globalPages: [
+          {
+            components: {
+              Page: () => <div data-testid="some-test-page">Some page</div>,
+            },
 
-          enabled: computed(() => someObservable.get()),
-        }],
+            enabled: computed(() => someObservable.get()),
+          },
+        ],
       },
     };
 

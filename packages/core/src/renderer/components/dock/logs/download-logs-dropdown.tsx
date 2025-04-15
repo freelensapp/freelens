@@ -5,11 +5,11 @@
 
 import styles from "./download-logs-dropdown.module.scss";
 
+import { Icon } from "@freelensapp/icon";
 import React, { useState } from "react";
 import { act } from "react-dom/test-utils";
-import { Icon } from "@freelensapp/icon";
-import { MenuItem } from "../../menu";
 import { Dropdown } from "../../dropdown/dropdown";
+import { MenuItem } from "../../menu";
 
 interface DownloadLogsDropdownProps {
   downloadVisibleLogs: () => void;
@@ -35,16 +35,12 @@ export function DownloadLogsDropdown({ downloadAllLogs, downloadVisibleLogs, dis
   return (
     <Dropdown
       id="download-logs-dropdown"
-      contentForToggle={(
-        <button
-          data-testid="download-logs-dropdown"
-          className={styles.dropdown}
-          disabled={waiting || disabled}
-        >
+      contentForToggle={
+        <button data-testid="download-logs-dropdown" className={styles.dropdown} disabled={waiting || disabled}>
           Download
-          <Icon material="arrow_drop_down" smallest/>
+          <Icon material="arrow_drop_down" smallest />
         </button>
-      )}
+      }
     >
       <MenuItem onClick={downloadVisibleLogs} data-testid="download-visible-logs">
         Visible logs

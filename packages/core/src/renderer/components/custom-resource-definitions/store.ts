@@ -3,14 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
+import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
+import autoBind from "auto-bind";
 import { computed, makeObservable } from "mobx";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
-import autoBind from "auto-bind";
-import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
 
-export class CustomResourceDefinitionStore extends KubeObjectStore<CustomResourceDefinition, CustomResourceDefinitionApi> {
+export class CustomResourceDefinitionStore extends KubeObjectStore<
+  CustomResourceDefinition,
+  CustomResourceDefinitionApi
+> {
   constructor(
     dependencies: KubeObjectStoreDependencies,
     api: CustomResourceDefinitionApi,
@@ -22,10 +25,7 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<CustomResourc
   }
 
   protected sortItems(items: CustomResourceDefinition[]) {
-    return super.sortItems(items, [
-      crd => crd.getGroup(),
-      crd => crd.getName(),
-    ]);
+    return super.sortItems(items, [(crd) => crd.getGroup(), (crd) => crd.getName()]);
   }
 
   @computed get groups() {
@@ -39,14 +39,14 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<CustomResourc
   }
 
   getByGroup(group: string, pluralName: string) {
-    return this.groups[group]?.find(crd => crd.getPluralName() === pluralName);
+    return this.groups[group]?.find((crd) => crd.getPluralName() === pluralName);
   }
 
   getByObject(obj: KubeObject) {
     const { kind, apiVersion } = obj;
 
-    return this.items.find(crd => (
-      kind === crd.getResourceKind() && apiVersion === `${crd.getGroup()}/${crd.getVersion()}`
-    ));
+    return this.items.find(
+      (crd) => kind === crd.getResourceKind() && apiVersion === `${crd.getGroup()}/${crd.getVersion()}`,
+    );
   }
 }

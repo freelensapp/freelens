@@ -6,13 +6,13 @@ import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import { isDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, toJS } from "mobx";
+import z from "zod";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../../persistent-storage/common/migrations.injectable";
 import { enabledExtensionsMigrationDeclarationInjectionToken } from "../main/migrations";
 import type { LensExtensionState } from "./state.injectable";
 import enabledExtensionsStateInjectable from "./state.injectable";
 import { enabledExtensionsPersistentStorageVersionInitializable } from "./storage-version";
-import z from "zod";
 
 const stateModel = z.object({
   enabled: z.boolean(),

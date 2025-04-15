@@ -6,10 +6,7 @@
 import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 
-export const computedOr = (...values: IComputedValue<boolean>[]) => computed((
-  () => values.some(value => value.get())
-));
+export const computedOr = (...values: IComputedValue<boolean>[]) => computed(() => values.some((value) => value.get()));
 
-export const computedAnd = (...values: IComputedValue<boolean>[]) => computed((
-  () => values.every(value => value.get())
-));
+export const computedAnd = (...values: IComputedValue<boolean>[]) =>
+  computed(() => values.every((value) => value.get()));

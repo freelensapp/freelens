@@ -7,10 +7,10 @@
 // Source: https://www.npmjs.com/package/marked
 import "./markdown-viewer.scss";
 
-import React, { Component } from "react";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
 import { cssNames } from "@freelensapp/utilities";
+import DOMPurify from "dompurify";
+import { marked } from "marked";
+import React, { Component } from "react";
 
 DOMPurify.addHook("afterSanitizeAttributes", function (node) {
   // Set all elements owning target to target=_blank
@@ -32,11 +32,6 @@ export class MarkdownViewer extends Component<MarkdownViewerProps> {
     const { className, markdown } = this.props;
     const html = DOMPurify.sanitize(marked.parse(markdown) as string);
 
-    return (
-      <div
-        className={cssNames("MarkDownViewer", className)}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    );
+    return <div className={cssNames("MarkDownViewer", className)} dangerouslySetInnerHTML={{ __html: html }} />;
   }
 }

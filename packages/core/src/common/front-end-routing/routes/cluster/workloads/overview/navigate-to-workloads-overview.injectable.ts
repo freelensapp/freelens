@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import workloadsOverviewRouteInjectable from "./workloads-overview-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import workloadsOverviewRouteInjectable from "./workloads-overview-route.injectable";
 
 const navigateToWorkloadsOverviewInjectable = getInjectable({
   id: "navigate-to-workloads-overview",

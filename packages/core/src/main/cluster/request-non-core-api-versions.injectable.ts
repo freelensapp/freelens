@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
-import { getInjectable } from "@ogre-tools/injectable";
 import { iter } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 
@@ -20,7 +20,8 @@ const requestNonCoreApiVersionsInjectable = getInjectable({
 
           return {
             callWasSuccessful: true,
-            response: iter.chain(groups.values())
+            response: iter
+              .chain(groups.values())
               .flatMap((group) =>
                 group.versions.map((version) => ({
                   group: group.name,

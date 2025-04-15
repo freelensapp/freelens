@@ -12,10 +12,7 @@ const updateDownloadedDateTimeInjectable = getInjectable({
   instantiate: (di) => {
     const createSyncBox = di.inject(createSyncBoxInjectable);
 
-    return createSyncBox<string | null>(
-      "update-downloaded-date-time",
-      null,
-    );
+    return createSyncBox<string | null>("update-downloaded-date-time", null);
   },
 
   injectionToken: syncBoxInjectionToken,

@@ -11,7 +11,7 @@
  * @param failFast An abort controller instance to cause the delay to short-circuit
  */
 export function delay(timeout = 1000, failFast?: AbortSignal): Promise<void> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const timeoutId = setTimeout(resolve, timeout);
 
     failFast?.addEventListener("abort", () => {

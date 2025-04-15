@@ -9,7 +9,7 @@ import clusterOverviewMetricsInjectable from "../cluster-metrics.injectable";
 import type { MetricType } from "./storage.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
 
-export type SelectedMetricsType = ReturnType<typeof selectedMetricsTypeInjectable["instantiate"]>;
+export type SelectedMetricsType = ReturnType<(typeof selectedMetricsTypeInjectable)["instantiate"]>;
 
 const selectedMetricsTypeInjectable = getInjectable({
   id: "selected-metrics-type",
@@ -36,12 +36,12 @@ const selectedMetricsTypeInjectable = getInjectable({
           return [];
       }
     });
-    const hasCPUMetrics = computed(() => (
-      normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0
-    ));
-    const hasMemoryMetrics = computed(() => (
-      normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0
-    ));
+    const hasCPUMetrics = computed(
+      () => normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0,
+    );
+    const hasMemoryMetrics = computed(
+      () => normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0,
+    );
 
     return {
       value,

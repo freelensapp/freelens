@@ -1,23 +1,23 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent, waitFor } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
+import type { HelmRepo } from "../../common/helm/helm-repo";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { HelmRepo } from "../../common/helm/helm-repo";
-import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
 import isPathInjectable from "../../renderer/components/input/validators/is-path.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { AsyncResult } from "@freelensapp/utilities";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
+import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
 
 describe("add custom helm repository in preferences", () => {
   let builder: ApplicationBuilder;
@@ -63,8 +63,10 @@ describe("add custom helm repository in preferences", () => {
       builder.preferences.navigation.click("kubernetes");
     });
 
-    it("renders", async() => {
-      await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+    it("renders", async () => {
+      await waitFor(() => {
+        expect(rendered.baseElement).toBeTruthy();
+      });
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
@@ -73,17 +75,21 @@ describe("add custom helm repository in preferences", () => {
         await Promise.all([
           getActiveHelmRepositoriesMock.resolve({
             callWasSuccessful: true,
-            response: [{
-              name: "Some active repository",
-              url: "some-url",
-              cacheFilePath: "/some-cache-file-for-active",
-            }],
+            response: [
+              {
+                name: "Some active repository",
+                url: "some-url",
+                cacheFilePath: "/some-cache-file-for-active",
+              },
+            ],
           }),
         ]);
       });
 
-      it("renders", async() => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      it("renders", async () => {
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
@@ -94,15 +100,15 @@ describe("add custom helm repository in preferences", () => {
           fireEvent.click(button);
         });
 
-        it("renders", async() => {
-          await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+        it("renders", async () => {
+          await waitFor(() => {
+            expect(rendered.baseElement).toBeTruthy();
+          });
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
         it("shows dialog", () => {
-          expect(
-            rendered.queryByTestId("add-custom-helm-repository-dialog"),
-          ).toBeInTheDocument();
+          expect(rendered.queryByTestId("add-custom-helm-repository-dialog")).toBeInTheDocument();
         });
 
         // TODO: Figure out how to close dialog by clicking outside of it
@@ -114,9 +120,7 @@ describe("add custom helm repository in preferences", () => {
           });
 
           it("does not show dialog anymore", () => {
-            expect(
-              rendered.queryByTestId("add-custom-helm-repository-dialog"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("add-custom-helm-repository-dialog")).not.toBeInTheDocument();
           });
         });
 
@@ -127,15 +131,15 @@ describe("add custom helm repository in preferences", () => {
             fireEvent.click(button);
           });
 
-          it("renders", async() => {
-            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+          it("renders", async () => {
+            await waitFor(() => {
+              expect(rendered.baseElement).toBeTruthy();
+            });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 
           it("does not show dialog anymore", () => {
-            expect(
-              rendered.queryByTestId("add-custom-helm-repository-dialog"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("add-custom-helm-repository-dialog")).not.toBeInTheDocument();
           });
         });
 
@@ -145,15 +149,17 @@ describe("add custom helm repository in preferences", () => {
 
             const nameInput = rendered.getByTestId("custom-helm-repository-name-input");
 
-            fireEvent.change(nameInput, { target: { value: "some-custom-repository" }});
+            fireEvent.change(nameInput, { target: { value: "some-custom-repository" } });
 
             const urlInput = rendered.getByTestId("custom-helm-repository-url-input");
 
-            fireEvent.change(urlInput, { target: { value: "http://some.url" }});
+            fireEvent.change(urlInput, { target: { value: "http://some.url" } });
           });
 
           it("renders", async () => {
-            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+            await waitFor(() => {
+              expect(rendered.baseElement).toBeTruthy();
+            });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 
@@ -168,7 +174,9 @@ describe("add custom helm repository in preferences", () => {
             });
 
             it("renders", async () => {
-              await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+              await waitFor(() => {
+                expect(rendered.baseElement).toBeTruthy();
+              });
               expect(rendered.baseElement).toMatchSnapshot();
             });
 
@@ -206,9 +214,7 @@ describe("add custom helm repository in preferences", () => {
               });
 
               it("shows error notification", () => {
-                expect(showErrorNotificationMock).toHaveBeenCalledWith(
-                  "Some error",
-                );
+                expect(showErrorNotificationMock).toHaveBeenCalledWith("Some error");
               });
 
               it("does not show success notification", () => {
@@ -227,10 +233,7 @@ describe("add custom helm repository in preferences", () => {
             describe("when activation resolves with success", () => {
               beforeEach(async () => {
                 await execFileMock.resolveSpecific(
-                  [
-                    "some-helm-binary-path",
-                    ["repo", "add", "some-custom-repository", "http://some.url"],
-                  ],
+                  ["some-helm-binary-path", ["repo", "add", "some-custom-repository", "http://some.url"]],
                   {
                     callWasSuccessful: true,
                     response: "",
@@ -295,8 +298,10 @@ describe("add custom helm repository in preferences", () => {
               expect(maximalOptions).toBeInTheDocument();
             });
 
-            it("renders", async() => {
-              await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+            it("renders", async () => {
+              await waitFor(() => {
+                expect(rendered.baseElement).toBeTruthy();
+              });
               expect(rendered.baseElement).toMatchSnapshot();
             });
 
@@ -321,8 +326,10 @@ describe("add custom helm repository in preferences", () => {
                 fireEvent.click(button);
               });
 
-              it("renders", async() => {
-                await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+              it("renders", async () => {
+                await waitFor(() => {
+                  expect(rendered.baseElement).toBeTruthy();
+                });
                 expect(rendered.baseElement).toMatchSnapshot();
               });
 
@@ -344,7 +351,7 @@ describe("add custom helm repository in preferences", () => {
                 ].forEach(({ selector, value }) => {
                   const input = rendered.getByTestId(`custom-helm-repository-${selector}`);
 
-                  fireEvent.change(input, { target: { value }});
+                  fireEvent.change(input, { target: { value } });
                 });
 
                 const checkbox = rendered.getByTestId(`custom-helm-repository-verify-tls-input`);
@@ -354,8 +361,10 @@ describe("add custom helm repository in preferences", () => {
                 jest.runOnlyPendingTimers();
               });
 
-              it("renders", async() => {
-                await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+              it("renders", async () => {
+                await waitFor(() => {
+                  expect(rendered.baseElement).toBeTruthy();
+                });
                 expect(rendered.baseElement).toMatchSnapshot();
               });
 

@@ -7,33 +7,26 @@ import "./release-details.scss";
 
 import React from "react";
 
-import { observer } from "mobx-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
 
 import type { IComputedValue } from "mobx";
+import { ReleaseDetailsDrawer } from "./release-details-drawer";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 import targetHelmReleaseInjectable from "./target-helm-release.injectable";
-import { ReleaseDetailsDrawer } from "./release-details-drawer";
 
 interface Dependencies {
-  targetRelease: IComputedValue<
-    TargetHelmRelease | undefined
-  >;
+  targetRelease: IComputedValue<TargetHelmRelease | undefined>;
 }
 
-const NonInjectedReleaseDetails = observer(
-  ({ targetRelease }: Dependencies) => {
-    const release = targetRelease.get();
+const NonInjectedReleaseDetails = observer(({ targetRelease }: Dependencies) => {
+  const release = targetRelease.get();
 
-    return release ? <ReleaseDetailsDrawer targetRelease={release} /> : null;
-  },
-);
+  return release ? <ReleaseDetailsDrawer targetRelease={release} /> : null;
+});
 
-export const ReleaseDetails = withInjectables<Dependencies>(
-  NonInjectedReleaseDetails,
-  {
-    getProps: (di) => ({
-      targetRelease: di.inject(targetHelmReleaseInjectable),
-    }),
-  },
-);
+export const ReleaseDetails = withInjectables<Dependencies>(NonInjectedReleaseDetails, {
+  getProps: (di) => ({
+    targetRelease: di.inject(targetHelmReleaseInjectable),
+  }),
+});

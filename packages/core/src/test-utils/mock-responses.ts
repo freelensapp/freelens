@@ -1,16 +1,22 @@
+import { PassThrough } from "stream";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { Response, Headers as NodeFetchHeaders } from "@freelensapp/node-fetch";
-import { PassThrough } from "stream";
+import type { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
   const res: jest.Mocked<Response> = {
-    buffer: jest.fn(async () => { throw new Error("buffer() is not supported"); }),
+    buffer: jest.fn(async () => {
+      throw new Error("buffer() is not supported");
+    }),
     clone: jest.fn(() => res),
-    arrayBuffer: jest.fn(async () => { throw new Error("arrayBuffer() is not supported"); }),
-    blob: jest.fn(async () => { throw new Error("blob() is not supported"); }),
+    arrayBuffer: jest.fn(async () => {
+      throw new Error("arrayBuffer() is not supported");
+    }),
+    blob: jest.fn(async () => {
+      throw new Error("blob() is not supported");
+    }),
     body: new PassThrough(),
     bodyUsed: false,
     headers: new Headers() as unknown as NodeFetchHeaders,
@@ -30,10 +36,16 @@ export const createMockResponseFromString = (url: string, data: string, statusCo
 
 export const createMockResponseFromStream = (url: string, stream: NodeJS.ReadableStream, statusCode = 200) => {
   const res: jest.Mocked<Response> = {
-    buffer: jest.fn(async () => { throw new Error("buffer() is not supported"); }),
+    buffer: jest.fn(async () => {
+      throw new Error("buffer() is not supported");
+    }),
     clone: jest.fn(() => res),
-    arrayBuffer: jest.fn(async () => { throw new Error("arrayBuffer() is not supported"); }),
-    blob: jest.fn(async () => { throw new Error("blob() is not supported"); }),
+    arrayBuffer: jest.fn(async () => {
+      throw new Error("arrayBuffer() is not supported");
+    }),
+    blob: jest.fn(async () => {
+      throw new Error("blob() is not supported");
+    }),
     body: stream,
     bodyUsed: false,
     headers: new Headers() as unknown as NodeFetchHeaders,

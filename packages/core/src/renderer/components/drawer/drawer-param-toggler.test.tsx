@@ -17,13 +17,11 @@ describe("<DrawerParamToggler />", () => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
-    result = render((
-      <DrawerParamToggler
-        label="Foo"
-      >
+    result = render(
+      <DrawerParamToggler label="Foo">
         <div data-testid="drawer-child"></div>
-      </DrawerParamToggler>
-    ));
+      </DrawerParamToggler>,
+    );
   });
 
   it("renders", () => {

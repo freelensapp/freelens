@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
 import kubernetesClusterCategoryInjectable from "../../common/catalog/categories/kubernetes-cluster.injectable";
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export {
   KubernetesCluster,
@@ -13,9 +13,7 @@ export {
   WebLink,
 } from "../../common/catalog-entities";
 
-export type {
-  KubernetesClusterCategory,
-};
+export type { KubernetesClusterCategory };
 
 export const kubernetesClusterCategory = asLegacyGlobalForExtensionApi(kubernetesClusterCategoryInjectable);
 

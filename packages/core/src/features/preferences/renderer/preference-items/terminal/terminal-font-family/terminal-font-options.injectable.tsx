@@ -25,22 +25,24 @@ const terminalFontPreferencePresenterInjectable = getInjectable({
     const terminalFonts = di.injectMany(terminalFontInjectionToken);
 
     return {
-      options: computed(() => terminalFonts.map(font => ({
-        label: (
-          <span
-            style={{
-              fontFamily: `${font.name}, var(--font-terminal)`,
-              fontSize: state.terminalConfig.fontSize,
-            }}
-          >
-            {font.name}
-          </span>
-        ),
-        value: font.name,
-        isSelected: state.terminalConfig.fontFamily === font.name || state.terminalConfig.fontFamily === font.alias,
-      }))),
+      options: computed(() =>
+        terminalFonts.map((font) => ({
+          label: (
+            <span
+              style={{
+                fontFamily: `${font.name}, var(--font-terminal)`,
+                fontSize: state.terminalConfig.fontSize,
+              }}
+            >
+              {font.name}
+            </span>
+          ),
+          value: font.name,
+          isSelected: state.terminalConfig.fontFamily === font.name || state.terminalConfig.fontFamily === font.alias,
+        })),
+      ),
       current: computed(() => state.terminalConfig.fontFamily),
-      onSelection: action(selection => {
+      onSelection: action((selection) => {
         state.terminalConfig.fontFamily = selection?.value ?? defaultTerminalFontFamily;
       }),
     };

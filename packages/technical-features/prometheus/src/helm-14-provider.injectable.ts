@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectable } from "@ogre-tools/injectable";
 import { getLensLikeQueryFor } from "./lens-provider.injectable";
 import { createPrometheusProvider, findFirstNamespacedService, prometheusProviderInjectionToken } from "./provider";
-import { getInjectable } from "@ogre-tools/injectable";
 
 const helm14PrometheusProviderInjectable = getInjectable({
   id: "helm14-prometheus-provider",

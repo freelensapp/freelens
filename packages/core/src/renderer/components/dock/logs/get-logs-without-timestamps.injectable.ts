@@ -11,8 +11,7 @@ const getLogsWithoutTimestampsInjectable = getInjectable({
   instantiate: (di) => {
     const logStore = di.inject(logStoreInjectable);
 
-    return (tabId: string): string[] =>
-      logStore.getLogsWithoutTimestamps(tabId);
+    return (tabId: string): string[] => logStore.getLogsWithoutTimestamps(tabId);
   },
 });
 

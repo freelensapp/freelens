@@ -10,7 +10,7 @@ export interface DurationAbsoluteTimestampProps {
   timestamp: string | undefined;
 }
 
-export const DurationAbsoluteTimestamp = ({ timestamp  }: DurationAbsoluteTimestampProps) => {
+export const DurationAbsoluteTimestamp = ({ timestamp }: DurationAbsoluteTimestampProps) => {
   if (!timestamp) {
     return <>{"<unknown>"}</>;
   }
@@ -20,8 +20,7 @@ export const DurationAbsoluteTimestamp = ({ timestamp  }: DurationAbsoluteTimest
       <ReactiveDuration timestamp={timestamp} />
       {" ago "}
       (
-      <LocaleDate date={timestamp} />
-      )
+      <LocaleDate date={timestamp} />)
     </>
   );
 };

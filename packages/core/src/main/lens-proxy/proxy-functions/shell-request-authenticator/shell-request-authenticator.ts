@@ -1,3 +1,5 @@
+import crypto from "crypto";
+import { promisify } from "util";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,8 +7,6 @@
 import { getOrInsertMap } from "@freelensapp/utilities";
 import type { ClusterId } from "../../../../common/cluster-types";
 import { ipcMainHandle } from "../../../../common/ipc";
-import crypto from "crypto";
-import { promisify } from "util";
 
 const randomBytes = promisify(crypto.randomBytes);
 

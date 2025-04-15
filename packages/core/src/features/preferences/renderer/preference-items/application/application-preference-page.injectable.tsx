@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
+import React from "react";
+import { HorizontalLine } from "../../../../../renderer/components/horizontal-line/horizontal-line";
+import { PreferencePageComponent } from "../../preference-page-component";
 import type { PreferenceItemComponent, PreferencePage } from "../preference-item-injection-token";
 import { preferenceItemInjectionToken } from "../preference-item-injection-token";
-import { PreferencePageComponent } from "../../preference-page-component";
-import { HorizontalLine } from "../../../../../renderer/components/horizontal-line/horizontal-line";
-import React from "react";
 
 const ApplicationPage: PreferenceItemComponent<PreferencePage> = ({ children, item }) => (
   <PreferencePageComponent title="Application" id={item.id}>

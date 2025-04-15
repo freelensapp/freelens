@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as links from "../../../features/weblinks/main/links";
 import { getInjectable } from "@ogre-tools/injectable";
 import { weblinkStoreMigrationInjectionToken } from "../../../features/weblinks/common/migration-token";
+import * as links from "../../../features/weblinks/main/links";
 import type { WeblinkData } from "../common/storage.injectable";
 
 const v545Beta1WeblinkStoreMigrationInjectable = getInjectable({
@@ -16,37 +16,39 @@ const v545Beta1WeblinkStoreMigrationInjectable = getInjectable({
       const weblinksRaw = store.get("weblinks");
       const weblinks = (Array.isArray(weblinksRaw) ? weblinksRaw : []) as WeblinkData[];
 
-      const lensWebsite = weblinks.find(weblink => weblink.name === links.lensWebsiteLinkName);
+      const lensWebsite = weblinks.find((weblink) => weblink.name === links.lensWebsiteLinkName);
 
       if (lensWebsite) {
         lensWebsite.id = links.lensWebsiteWeblinkId;
       }
 
-      const lensDocumentationWeblink = weblinks.find(weblink => weblink.name === links.lensDocumentationWeblinkName);
+      const lensDocumentationWeblink = weblinks.find((weblink) => weblink.name === links.lensDocumentationWeblinkName);
 
       if (lensDocumentationWeblink) {
         lensDocumentationWeblink.id = links.lensDocumentationWeblinkId;
       }
 
-      const lensForumsWeblink = weblinks.find(weblink => weblink.name === links.lensForumsWeblinkName);
+      const lensForumsWeblink = weblinks.find((weblink) => weblink.name === links.lensForumsWeblinkName);
 
       if (lensForumsWeblink) {
         lensForumsWeblink.id = links.lensForumsWeblinkId;
       }
 
-      const lensTwitterWeblink = weblinks.find(weblink => weblink.name === links.lensTwitterWeblinkName);
+      const lensTwitterWeblink = weblinks.find((weblink) => weblink.name === links.lensTwitterWeblinkName);
 
       if (lensTwitterWeblink) {
         lensTwitterWeblink.id = links.lensTwitterWeblinkId;
       }
 
-      const lensBlogWeblink = weblinks.find(weblink => weblink.name === links.lensBlogWeblinkName);
+      const lensBlogWeblink = weblinks.find((weblink) => weblink.name === links.lensBlogWeblinkName);
 
       if (lensBlogWeblink) {
         lensBlogWeblink.id = links.lensBlogWeblinkId;
       }
 
-      const kubernetesDocumentationWeblink = weblinks.find(weblink => weblink.name === links.kubernetesDocumentationWeblinkName);
+      const kubernetesDocumentationWeblink = weblinks.find(
+        (weblink) => weblink.name === links.kubernetesDocumentationWeblinkName,
+      );
 
       if (kubernetesDocumentationWeblink) {
         kubernetesDocumentationWeblink.id = links.kubernetesDocumentationWeblinkId;

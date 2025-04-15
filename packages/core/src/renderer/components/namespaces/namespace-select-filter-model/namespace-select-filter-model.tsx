@@ -1,17 +1,17 @@
+import { Icon } from "@freelensapp/icon";
+import { observableCrate } from "@freelensapp/utilities";
+import type { IComputedValue } from "mobx";
+import { action, comparer, computed, observable } from "mobx";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import type { IComputedValue } from "mobx";
-import { observable, action, computed, comparer } from "mobx";
-import type { NamespaceStore } from "../store";
 import type { ActionMeta, MultiValue } from "react-select";
-import { Icon } from "@freelensapp/icon";
-import type { SelectOption } from "../../select";
-import { observableCrate } from "@freelensapp/utilities";
-import type { IsMultiSelectionKey } from "./is-selection-key.injectable";
 import type { ClusterContext } from "../../../cluster-frame-context/cluster-frame-context";
+import type { SelectOption } from "../../select";
+import type { NamespaceStore } from "../store";
+import type { IsMultiSelectionKey } from "./is-selection-key.injectable";
 
 interface Dependencies {
   context: ClusterContext;
@@ -31,7 +31,10 @@ export interface NamespaceSelectFilterModel {
     close: () => void;
     readonly isOpen: IComputedValue<boolean>;
   };
-  onChange: (newValue: MultiValue<NamespaceSelectFilterOption>, actionMeta: ActionMeta<NamespaceSelectFilterOption>) => void;
+  onChange: (
+    newValue: MultiValue<NamespaceSelectFilterOption>,
+    actionMeta: ActionMeta<NamespaceSelectFilterOption>,
+  ) => void;
   onClick: () => void;
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -50,14 +53,16 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
 
   let didToggle = false;
   let isMultiSelection = false;
-  const menuState = observableCrate(SelectMenuState.Close, [{
-    from: SelectMenuState.Close,
-    to: SelectMenuState.Open,
-    onTransition: () => {
-      optionsSortingSelected.replace(selectedNames.get());
-      didToggle = false;
+  const menuState = observableCrate(SelectMenuState.Close, [
+    {
+      from: SelectMenuState.Close,
+      to: SelectMenuState.Open,
+      onTransition: () => {
+        optionsSortingSelected.replace(selectedNames.get());
+        didToggle = false;
+      },
     },
-  }]);
+  ]);
   const selectedNames = computed(() => new Set(context.contextNamespaces), {
     equals: comparer.structural,
   });
@@ -70,9 +75,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
       return 0;
     }
 
-    return isRightSelected
-      ? 1
-      : -1;
+    return isRightSelected ? 1 : -1;
   };
   const options = computed((): readonly NamespaceSelectFilterOption[] => [
     {
@@ -80,14 +83,11 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
       label: "All Namespaces",
       id: "all-namespaces",
     },
-    ...context
-      .allNamespaces
-      .sort(sortNamespacesByIfTheyHaveBeenSelected)
-      .map(namespace => ({
-        value: namespace,
-        label: namespace,
-        id: namespace,
-      })),
+    ...context.allNamespaces.sort(sortNamespacesByIfTheyHaveBeenSelected).map((namespace) => ({
+      value: namespace,
+      label: namespace,
+      id: namespace,
+    })),
   ]);
   const menuIsOpen = computed(() => menuState.get() === SelectMenuState.Open);
   const isOptionSelected: NamespaceSelectFilterModel["isOptionSelected"] = (option) => {

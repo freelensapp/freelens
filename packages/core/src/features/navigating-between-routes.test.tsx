@@ -4,20 +4,20 @@
  */
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
-import { computed, runInAction } from "mobx";
 import type { RenderResult } from "@testing-library/react";
-import { routeSpecificComponentInjectionToken } from "../renderer/routes/route-specific-component-injection-token";
+import { computed, runInAction } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
 import { frontEndRouteInjectionToken } from "../common/front-end-routing/front-end-route-injection-token";
+import { navigateToRouteInjectionToken } from "../common/front-end-routing/navigate-to-route-injection-token";
 import type { ApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
-import currentRouteInjectable from "../renderer/routes/current-route.injectable";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";
+import currentRouteInjectable from "../renderer/routes/current-route.injectable";
 import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
-import { navigateToRouteInjectionToken } from "../common/front-end-routing/navigate-to-route-injection-token";
 import routePathParametersInjectable from "../renderer/routes/route-path-parameters.injectable";
+import { routeSpecificComponentInjectionToken } from "../renderer/routes/route-specific-component-injection-token";
 
 describe("navigating between routes", () => {
   let rendered: RenderResult;
@@ -148,9 +148,7 @@ describe("navigating between routes", () => {
       it("knows current path", () => {
         const currentPath = windowDi.inject(currentPathInjectable);
 
-        expect(currentPath.get()).toBe(
-          "/some-path/some-value/some-other-value",
-        );
+        expect(currentPath.get()).toBe("/some-path/some-value/some-other-value");
       });
 
       it("knows path parameters", () => {
@@ -241,12 +239,9 @@ const routeWithOptionalPathParametersComponentInjectable = getInjectable({
     return {
       route,
 
-      Component: observer(() => (
-        <pre>{JSON.stringify(pathParameters.get(), null, 2)}</pre>
-      )),
+      Component: observer(() => <pre>{JSON.stringify(pathParameters.get(), null, 2)}</pre>),
     };
   },
 
   injectionToken: routeSpecificComponentInjectionToken,
 });
-

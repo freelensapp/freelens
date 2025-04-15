@@ -5,30 +5,24 @@
 
 import "./lease-details.scss";
 
-import React from "react";
+import type { Lease } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
+import React from "react";
 import { DrawerItem } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { Lease } from "@freelensapp/kube-object";
 
-export interface LeaseDetailsProps extends KubeObjectDetailsProps<Lease> {
-}
+export interface LeaseDetailsProps extends KubeObjectDetailsProps<Lease> {}
 
 @observer
 export class LeaseDetails extends React.Component<LeaseDetailsProps> {
-
   render() {
     const { object: lease } = this.props;
 
     return (
       <div className="LeaseDetails">
-        <DrawerItem name="Holder Identity">
-          {lease.getHolderIdentity()}
-        </DrawerItem>
+        <DrawerItem name="Holder Identity">{lease.getHolderIdentity()}</DrawerItem>
 
-        <DrawerItem name="Lease Duration Seconds">
-          {lease.getLeaseDurationSeconds()}
-        </DrawerItem>
+        <DrawerItem name="Lease Duration Seconds">{lease.getLeaseDurationSeconds()}</DrawerItem>
 
         <DrawerItem name="Lease Transitions" hidden={lease.getLeaseTransitions() === undefined}>
           {lease.getLeaseTransitions()}
@@ -38,11 +32,8 @@ export class LeaseDetails extends React.Component<LeaseDetailsProps> {
           {lease.getAcquireTime()}
         </DrawerItem>
 
-        <DrawerItem name="Renew Time">
-          {lease.getRenewTime()}
-        </DrawerItem>
-
-      </div >
+        <DrawerItem name="Renew Time">{lease.getRenewTime()}</DrawerItem>
+      </div>
     );
   }
 }

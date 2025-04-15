@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import storageClassesRouteInjectable from "./storage-classes-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import storageClassesRouteInjectable from "./storage-classes-route.injectable";
 
 const navigateToStorageClassesInjectable = getInjectable({
   id: "navigate-to-storage-classes",

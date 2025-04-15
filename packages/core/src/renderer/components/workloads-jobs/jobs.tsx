@@ -5,19 +5,19 @@
 
 import "./jobs.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import kebabCase from "lodash/kebabCase";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { JobStore } from "./store";
-import type { EventStore } from "../events/store";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import kebabCase from "lodash/kebabCase";
+import { observer } from "mobx-react";
+import React from "react";
+import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
-import jobStoreInjectable from "./store.injectable";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { JobStore } from "./store";
+import jobStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -33,10 +33,7 @@ interface Dependencies {
 }
 
 const NonInjectedJobs = observer((props: Dependencies) => {
-  const {
-    eventStore,
-    jobStore,
-  } = props;
+  const { eventStore, jobStore } = props;
 
   return (
     <SiblingsInTabLayout>
@@ -47,14 +44,12 @@ const NonInjectedJobs = observer((props: Dependencies) => {
         store={jobStore}
         dependentStores={[eventStore]} // status icon component uses event store
         sortingCallbacks={{
-          [columnId.name]: job => job.getName(),
-          [columnId.namespace]: job => job.getNs(),
-          [columnId.conditions]: job => job.getCondition()?.type,
-          [columnId.age]: job => -job.getCreationTimestamp(),
+          [columnId.name]: (job) => job.getName(),
+          [columnId.namespace]: (job) => job.getNs(),
+          [columnId.conditions]: (job) => job.getCondition()?.type,
+          [columnId.age]: (job) => -job.getCreationTimestamp(),
         }}
-        searchFilters={[
-          job => job.getSearchFields(),
-        ]}
+        searchFilters={[(job) => job.getSearchFields()]}
         renderHeaderTitle="Jobs"
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -64,15 +59,12 @@ const NonInjectedJobs = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           { title: "Conditions", className: "conditions", sortBy: columnId.conditions, id: columnId.conditions },
         ]}
-        renderTableContents={job => {
+        renderTableContents={(job) => {
           const condition = job.getCondition();
 
           return [
             job.getName(),
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={job.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={job.getNs()} />,
             `${job.getCompletions()} / ${job.getDesiredCompletions()}`,
             <KubeObjectStatusIcon key="icon" object={job} />,
             <KubeObjectAge key="age" object={job} />,

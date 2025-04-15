@@ -5,19 +5,18 @@
 
 import "./ingress-details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
 import type { ILoadBalancerIngress } from "@freelensapp/kube-object";
 import { Ingress, computeRuleDeclarations } from "@freelensapp/kube-object";
-import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
-export interface IngressDetailsProps extends KubeObjectDetailsProps<Ingress> {
-}
+export interface IngressDetailsProps extends KubeObjectDetailsProps<Ingress> {}
 
 interface Dependencies {
   logger: Logger;
@@ -26,49 +25,35 @@ interface Dependencies {
 @observer
 class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & Dependencies> {
   renderPaths(ingress: Ingress) {
-    return ingress.getRules()
-      .map((rule, index) => (
-        <div className="rules" key={index}>
-          {rule.host && (
-            <div className="host-title">
-              {`Host: ${rule.host}`}
-            </div>
-          )}
-          {rule.http && (
-            <Table className="paths">
-              <TableHead flat>
-                <TableCell className="path">Path</TableCell>
-                <TableCell className="link">Link</TableCell>
-                <TableCell className="backends">Backends</TableCell>
-              </TableHead>
-              {
-                computeRuleDeclarations(ingress, rule)
-                  .map(({ displayAsLink, service, url, pathname }) => (
-                    <TableRow key={index}>
-                      <TableCell className="path">{pathname}</TableCell>
-                      <TableCell className="link">
-                        {
-                          displayAsLink
-                            ? (
-                              <a
-                                href={url}
-                                rel="noreferrer"
-                                target="_blank"
-                              >
-                                {url}
-                              </a>
-                            )
-                            : url
-                        }
-                      </TableCell>
-                      <TableCell className="backends">{service}</TableCell>
-                    </TableRow>
-                  ))
-              }
-            </Table>
-          )}
-        </div>
-      ));
+    return ingress.getRules().map((rule, index) => (
+      <div className="rules" key={index}>
+        {rule.host && <div className="host-title">{`Host: ${rule.host}`}</div>}
+        {rule.http && (
+          <Table className="paths">
+            <TableHead flat>
+              <TableCell className="path">Path</TableCell>
+              <TableCell className="link">Link</TableCell>
+              <TableCell className="backends">Backends</TableCell>
+            </TableHead>
+            {computeRuleDeclarations(ingress, rule).map(({ displayAsLink, service, url, pathname }) => (
+              <TableRow key={index}>
+                <TableCell className="path">{pathname}</TableCell>
+                <TableCell className="link">
+                  {displayAsLink ? (
+                    <a href={url} rel="noreferrer" target="_blank">
+                      {url}
+                    </a>
+                  ) : (
+                    url
+                  )}
+                </TableCell>
+                <TableCell className="backends">{service}</TableCell>
+              </TableRow>
+            ))}
+          </Table>
+        )}
+      </div>
+    ));
   }
 
   renderIngressPoints(ingressPoints: ILoadBalancerIngress[]) {
@@ -81,14 +66,12 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
             <TableCell className="name">Hostname</TableCell>
             <TableCell className="ingresspoints">IP</TableCell>
           </TableHead>
-          {
-            ingressPoints.map(({ hostname, ip }, index) => (
-              <TableRow key={index}>
-                <TableCell className="name">{hostname ? hostname : "-"}</TableCell>
-                <TableCell className="ingresspoints">{ip ? ip : "-"}</TableCell>
-              </TableRow>
-            ))
-          }
+          {ingressPoints.map(({ hostname, ip }, index) => (
+            <TableRow key={index}>
+              <TableCell className="name">{hostname ? hostname : "-"}</TableCell>
+              <TableCell className="ingresspoints">{ip ? ip : "-"}</TableCell>
+            </TableRow>
+          ))}
         </Table>
       </div>
     );
@@ -111,19 +94,15 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
 
     return (
       <div className="IngressDetails">
-        <DrawerItem name="Ports">
-          {ingress.getPorts()}
-        </DrawerItem>
+        <DrawerItem name="Ports">{ingress.getPorts()}</DrawerItem>
         {ingress.spec.tls && (
           <DrawerItem name="TLS">
-            {ingress.spec.tls.map((tls, index) => <p key={index}>{tls.secretName}</p>)}
+            {ingress.spec.tls.map((tls, index) => (
+              <p key={index}>{tls.secretName}</p>
+            ))}
           </DrawerItem>
         )}
-        {port && (
-          <DrawerItem name="Service">
-            {`${port.serviceName}:${port.servicePort}`}
-          </DrawerItem>
-        )}
+        {port && <DrawerItem name="Service">{`${port.serviceName}:${port.servicePort}`}</DrawerItem>}
         <DrawerTitle>Rules</DrawerTitle>
         {this.renderPaths(ingress)}
 

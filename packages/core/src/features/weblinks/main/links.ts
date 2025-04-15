@@ -3,7 +3,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
 export const lensWebsiteWeblinkId = "lens-website-link";
 export const lensWebsiteLinkName = "Lens Website";
 
@@ -21,4 +20,3 @@ export const lensBlogWeblinkName = "Lens Official Blog";
 
 export const kubernetesDocumentationWeblinkId = "kubernetes-documentation-link";
 export const kubernetesDocumentationWeblinkName = "Kubernetes Documentation";
-

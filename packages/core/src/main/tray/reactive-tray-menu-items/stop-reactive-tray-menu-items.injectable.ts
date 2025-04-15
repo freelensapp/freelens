@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import reactiveTrayMenuItemsInjectable from "./reactive-tray-menu-items.injectable";
 import { onQuitOfBackEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";
+import reactiveTrayMenuItemsInjectable from "./reactive-tray-menu-items.injectable";
 
 const stopReactiveTrayMenuItemsInjectable = getInjectable({
   id: "stop-reactive-tray-menu-items",

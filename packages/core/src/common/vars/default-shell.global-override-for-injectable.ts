@@ -5,7 +5,4 @@
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import defaultShellInjectable from "./default-shell.injectable";
 
-export default getGlobalOverride(
-  defaultShellInjectable,
-  () => "some-default-shell",
-);
+export default getGlobalOverride(defaultShellInjectable, () => "some-default-shell");

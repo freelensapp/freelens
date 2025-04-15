@@ -1,21 +1,21 @@
+import { Icon } from "@freelensapp/icon";
+import type { DeploymentApi } from "@freelensapp/kube-api";
+import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { Deployment } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { Deployment } from "@freelensapp/kube-object";
-import { MenuItem } from "../menu";
-import { Icon } from "@freelensapp/icon";
-import type { OpenDeploymentScaleDialog } from "./scale/open.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
-import openDeploymentScaleDialogInjectable from "./scale/open.injectable";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { DeploymentApi } from "@freelensapp/kube-api";
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import { MenuItem } from "../menu";
+import type { OpenDeploymentScaleDialog } from "./scale/open.injectable";
+import openDeploymentScaleDialogInjectable from "./scale/open.injectable";
 
 export interface DeploymentMenuProps extends KubeObjectMenuProps<Deployment> {}
 
@@ -36,41 +36,33 @@ const NonInjectedDeploymentMenu = ({
 }: Dependencies & DeploymentMenuProps) => (
   <>
     <MenuItem onClick={() => openDeploymentScaleDialog(object)}>
-      <Icon
-        material="open_with"
-        tooltip="Scale"
-        interactive={toolbar}
-      />
+      <Icon material="open_with" tooltip="Scale" interactive={toolbar} />
       <span className="title">Scale</span>
     </MenuItem>
     <MenuItem
-      onClick={() => openConfirmDialog({
-        ok: async () =>
-        {
-          try {
-            await deploymentApi.restart({
-              namespace: object.getNs(),
-              name: object.getName(),
-            });
-          } catch (err) {
-            showCheckedErrorNotification(err, "Unknown error occurred while restarting deployment");
-          }
-        },
-        labelOk: "Restart",
-        message: (
-          <p>
-            {"Are you sure you want to restart deployment "}
-            <b>{object.getName()}</b>
-            ?
-          </p>
-        ),
-      })}
+      onClick={() =>
+        openConfirmDialog({
+          ok: async () => {
+            try {
+              await deploymentApi.restart({
+                namespace: object.getNs(),
+                name: object.getName(),
+              });
+            } catch (err) {
+              showCheckedErrorNotification(err, "Unknown error occurred while restarting deployment");
+            }
+          },
+          labelOk: "Restart",
+          message: (
+            <p>
+              {"Are you sure you want to restart deployment "}
+              <b>{object.getName()}</b>?
+            </p>
+          ),
+        })
+      }
     >
-      <Icon
-        material="autorenew"
-        tooltip="Restart"
-        interactive={toolbar}
-      />
+      <Icon material="autorenew" tooltip="Restart" interactive={toolbar} />
       <span className="title">Restart</span>
     </MenuItem>
   </>

@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult, Result } from "./result";
 import { delay } from "./delay";
 import { noop } from "./noop";
+import type { AsyncResult, Result } from "./result";
 
 /**
  * @param error The error that resulted in the failure
@@ -41,7 +41,10 @@ export interface BackoffCallerOptions<E> {
  * @param fn The function to repeatedly attempt
  * @returns The first success or the last failure
  */
-export const backoffCaller = async <T, E>(fn: () => AsyncResult<T, E>, options?: BackoffCallerOptions<E>): AsyncResult<T, E> => {
+export const backoffCaller = async <T, E>(
+  fn: () => AsyncResult<T, E>,
+  options?: BackoffCallerOptions<E>,
+): AsyncResult<T, E> => {
   const {
     initialTimeout = 1000,
     maxAttempts = 5,
@@ -65,7 +68,7 @@ export const backoffCaller = async <T, E>(fn: () => AsyncResult<T, E>, options?:
 
     await delay(timeout);
     timeout *= scaleFactor;
-  } while (attempt += 1, attempt < maxAttempts);
+  } while (((attempt += 1), attempt < maxAttempts));
 
   return result;
 };

@@ -5,16 +5,16 @@
 
 import { Agent as HttpAgent } from "http";
 import { Agent as HttpsAgent } from "https";
-import { merge } from "lodash";
 import { stringify } from "querystring";
-import type { Patch } from "rfc6902";
-import type { PartialDeep, ValueOf } from "type-fest";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import type { Logger } from "@freelensapp/logger";
 import type Fetch from "@freelensapp/node-fetch";
 import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Defaulted } from "@freelensapp/utilities";
 import { isObject, isString, json } from "@freelensapp/utilities";
+import { merge } from "lodash";
+import type { Patch } from "rfc6902";
+import type { PartialDeep, ValueOf } from "type-fest";
 
 export interface JsonApiData {}
 
@@ -83,8 +83,9 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
-export type ParamsAndQuery<Params, Query> =
-  ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
+export type ParamsAndQuery<Params, Query> = ValueOf<Query> extends QueryParam
+  ? Params & { query?: Query }
+  : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
   fetch: typeof Fetch;

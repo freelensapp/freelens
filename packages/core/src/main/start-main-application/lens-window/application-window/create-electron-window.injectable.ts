@@ -1,19 +1,19 @@
+import { applicationInformationToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import applicationWindowStateInjectable from "./application-window-state.injectable";
 import { BrowserWindow } from "electron";
-import type { ElectronWindow } from "./create-lens-window.injectable";
 import type { RequireExactlyOne } from "type-fest";
-import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-browser.injectable";
-import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path.injectable";
-import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
-import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import pathExistsSyncInjectable from "../../../../common/fs/path-exists-sync.injectable";
-import { applicationInformationToken } from "@freelensapp/application";
+import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path.injectable";
+import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-browser.injectable";
+import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
+import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
+import applicationWindowStateInjectable from "./application-window-state.injectable";
+import type { ElectronWindow } from "./create-lens-window.injectable";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
 
 export type ElectronWindowTitleBarStyle = "hiddenInset" | "hidden" | "default" | "customButtonsOnHover";
@@ -59,14 +59,11 @@ const createElectronWindowInjectable = getInjectable({
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
 
     return (configuration) => {
-      const applicationWindowState = di.inject(
-        applicationWindowStateInjectable,
-        {
-          id: configuration.id,
-          defaultHeight: configuration.defaultHeight,
-          defaultWidth: configuration.defaultWidth,
-        },
-      );
+      const applicationWindowState = di.inject(applicationWindowStateInjectable, {
+        id: configuration.id,
+        defaultHeight: configuration.defaultHeight,
+        defaultWidth: configuration.defaultWidth,
+      });
 
       const { width, height, x, y } = applicationWindowState;
 
@@ -127,18 +124,13 @@ const createElectronWindowInjectable = getInjectable({
           configuration.onDomReady?.();
         })
         .on("did-fail-load", (_event, code, desc) => {
-          logger.error(
-            `[CREATE-ELECTRON-WINDOW]: Failed to load window "${configuration.id}"`,
-            {
-              code,
-              desc,
-            },
-          );
+          logger.error(`[CREATE-ELECTRON-WINDOW]: Failed to load window "${configuration.id}"`, {
+            code,
+            desc,
+          });
         })
         .on("did-finish-load", () => {
-          logger.info(
-            `[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`,
-          );
+          logger.info(`[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`);
         })
         .setWindowOpenHandler((details) => {
           openLinkInBrowser(details.url).catch((error) => {
@@ -160,9 +152,7 @@ const createElectronWindowInjectable = getInjectable({
         },
 
         loadUrl: async (url) => {
-          logger.info(
-            `[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`,
-          );
+          logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
 
           await browserWindow.loadURL(url);
         },
@@ -171,11 +161,7 @@ const createElectronWindowInjectable = getInjectable({
         close: () => browserWindow.close(),
         send: ({ channel, data, frameInfo }) => {
           if (frameInfo) {
-            browserWindow.webContents.sendToFrame(
-              [frameInfo.processId, frameInfo.frameId],
-              channel,
-              data,
-            );
+            browserWindow.webContents.sendToFrame([frameInfo.processId, frameInfo.frameId], channel, data);
           } else {
             browserWindow.webContents.send(channel, data);
           }

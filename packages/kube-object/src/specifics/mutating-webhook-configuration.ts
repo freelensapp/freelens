@@ -4,10 +4,10 @@
  */
 
 import type {
-  LabelSelector,
   KubeJsonApiData,
   KubeObjectMetadata,
   KubeObjectScope,
+  LabelSelector,
   NamespaceScopedMetadata,
 } from "../api-types";
 import { KubeObject } from "../kube-object";

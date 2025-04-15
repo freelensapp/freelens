@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { terminalFontInjectionToken } from "./token";
 import RobotoMono from "./RobotoMonoNerdFont-Regular.ttf"; // patched font with icons
+import { terminalFontInjectionToken } from "./token";
 
 const robotoMonoTerminalFontInjectable = getInjectable({
   id: "roboto-mono-terminal-font",

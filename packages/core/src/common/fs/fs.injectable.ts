@@ -13,17 +13,7 @@ const fsInjectable = getInjectable({
   id: "fs",
   instantiate: () => {
     const {
-      promises: {
-        readFile,
-        writeFile,
-        readdir,
-        lstat,
-        rm,
-        access,
-        stat,
-        unlink,
-        rename,
-      },
+      promises: { readFile, writeFile, readdir, lstat, rm, access, stat, unlink, rename },
       ensureDir,
       ensureDirSync,
       readFileSync,
@@ -54,7 +44,7 @@ const fsInjectable = getInjectable({
       rm,
       access,
       copy: copy as (src: string, dest: string, options?: CopyOptions) => Promise<void>,
-      ensureDir: ensureDir as (path: string, options?: number | EnsureDirOptions ) => Promise<void>,
+      ensureDir: ensureDir as (path: string, options?: number | EnsureDirOptions) => Promise<void>,
       ensureDirSync,
       createReadStream,
       stat,

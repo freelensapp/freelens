@@ -1,11 +1,11 @@
+import type { App } from "electron";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import electronAppInjectable from "../../electron-app/electron-app.injectable";
-import getElectronAppPathInjectable from "./get-electron-app-path.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { App } from "electron";
+import getElectronAppPathInjectable from "./get-electron-app-path.injectable";
 
 describe("get-electron-app-path", () => {
   let getElectronAppPath: (name: string) => string;

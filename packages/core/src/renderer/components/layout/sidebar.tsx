@@ -5,40 +5,31 @@
 
 import styles from "./sidebar.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { cssNames } from "@freelensapp/utilities";
-import { SidebarItem } from "./sidebar-item";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
-import { SidebarCluster } from "./sidebar-cluster";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import { SidebarCluster } from "./sidebar-cluster";
+import { SidebarItem } from "./sidebar-item";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
   entityRegistry: CatalogEntityRegistry;
 }
 
-const NonInjectedSidebar = observer(({
-  sidebarItems,
-  entityRegistry,
-}: Dependencies) => (
+const NonInjectedSidebar = observer(({ sidebarItems, entityRegistry }: Dependencies) => (
   <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
     <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
 
     <div className={`${styles.sidebarNav} sidebar-active-status`}>
-      {
-        sidebarItems.get()
-          .map(hierarchicalSidebarItem => (
-            <SidebarItem
-              item={hierarchicalSidebarItem}
-              key={hierarchicalSidebarItem.id}
-            />
-          ))
-      }
+      {sidebarItems.get().map((hierarchicalSidebarItem) => (
+        <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id} />
+      ))}
     </div>
   </div>
 ));

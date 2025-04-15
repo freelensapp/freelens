@@ -7,10 +7,10 @@ import React from "react";
 import "@testing-library/jest-dom";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import { SidebarCluster } from "../sidebar-cluster";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
+import { SidebarCluster } from "../sidebar-cluster";
 
 describe("<SidebarCluster/>", () => {
   let result: RenderResult;
@@ -35,7 +35,7 @@ describe("<SidebarCluster/>", () => {
       },
     });
 
-    result = render(<SidebarCluster clusterEntity={clusterEntity}/>);
+    result = render(<SidebarCluster clusterEntity={clusterEntity} />);
   });
 
   it("renders w/o errors", () => {
@@ -59,4 +59,3 @@ describe("<SidebarCluster/>", () => {
     expect(result.getByText("Add to Hotbar")).toBeInTheDocument();
   });
 });
-

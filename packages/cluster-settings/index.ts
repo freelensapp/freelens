@@ -4,7 +4,7 @@ import type React from "react";
 type ClusterPreferences = {
   clusterName?: string;
   icon?: string | null;
-}
+};
 
 export interface ClusterIconMenuItem {
   id: string;

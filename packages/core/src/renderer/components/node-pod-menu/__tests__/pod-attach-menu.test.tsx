@@ -1,12 +1,12 @@
+import os from "os";
+import type { DiContainer } from "@ogre-tools/injectable";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { PodAttachMenu } from "../pod-attach-menu";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
-import os from "os";
+import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import { PodAttachMenu } from "../pod-attach-menu";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "mocked-id"),
@@ -15,17 +15,14 @@ jest.mock("uuid", () => ({
 let attachToPod: (container: { name: string }) => Promise<void> = async () => {};
 
 // This mock is used to get attachToPod function from PodAttachMenu
-jest.mock(
-  "../pod-menu-item",
-  () => ({
-    __esModule: true,
-    default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
-      attachToPod = onMenuItemClick;
+jest.mock("../pod-menu-item", () => ({
+  __esModule: true,
+  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
+    attachToPod = onMenuItemClick;
 
-      return null;
-    },
-  }),
-);
+    return null;
+  },
+}));
 
 describe("pod-attach-menu", () => {
   let di: DiContainer;
@@ -49,17 +46,13 @@ describe("pod-attach-menu", () => {
   });
 
   it("given null object should render null component", () => {
-    const { container } = render(
-      <PodAttachMenu object={null as never} toolbar={false} />,
-    );
+    const { container } = render(<PodAttachMenu object={null as never} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
 
   it("given object without metadata should render null component", () => {
-    const { container } = render(
-      <PodAttachMenu object={{}} toolbar={false} />,
-    );
+    const { container } = render(<PodAttachMenu object={{}} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -70,9 +63,7 @@ describe("pod-attach-menu", () => {
     };
 
     // WHEN
-    const { container } = render(
-      <PodAttachMenu object={object} toolbar={false} />,
-    );
+    const { container } = render(<PodAttachMenu object={object} toolbar={false} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -111,10 +102,10 @@ describe("pod-attach-menu", () => {
     // THEN
     await expect(attachToPod({ name: "test-container" })).resolves.toBeUndefined();
     expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith(
-      "exec kubectl attach -i -t -n  name -c test-container",
-      { "enter": true, "tabId": "mocked-id" },
-    );
+    expect(sendCommandMock).toHaveBeenCalledWith("exec kubectl attach -i -t -n  name -c test-container", {
+      enter: true,
+      tabId: "mocked-id",
+    });
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
 
@@ -137,11 +128,10 @@ describe("pod-attach-menu", () => {
     // THEN
     await expect(attachToPod({ name: "test-container" })).resolves.toBeUndefined();
     expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith(
-      "kubectl attach -i -t -n  name -c test-container",
-      { "enter": true, "tabId": "mocked-id" },
-    );
+    expect(sendCommandMock).toHaveBeenCalledWith("kubectl attach -i -t -n  name -c test-container", {
+      enter: true,
+      tabId: "mocked-id",
+    });
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
-
 });

@@ -1,9 +1,9 @@
+import type { KubeJsonApi } from "@freelensapp/kube-api";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { KubeJsonApi } from "@freelensapp/kube-api";
 import apiKubeInjectable from "./api-kube.injectable";
 
 export type ApiKubePatch = KubeJsonApi["patch"];

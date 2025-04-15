@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { configure } from "mobx";
-import { TextEncoder, TextDecoder as TextDecoderNode } from "util";
-import * as glob from "glob";
 import path from "path";
-import { enableMapSet, setAutoFreeze } from "immer";
+import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
 import type * as K8slensTooltip from "@freelensapp/tooltip";
+import * as glob from "glob";
+import { enableMapSet, setAutoFreeze } from "immer";
+import { configure } from "mobx";
 import React from "react";
 
 declare global {
@@ -17,7 +17,6 @@ declare global {
     globalOverridePaths: string[];
   }
 
-  // eslint-disable-next-line no-var
   var injectablePaths: Record<"main" | "renderer", InjectablePaths>;
 }
 
@@ -54,34 +53,34 @@ global.ResizeObserver = class {
 jest.mock("./renderer/components/monaco-editor/monaco-editor");
 jest.mock("@freelensapp/tooltip", () => ({
   ...jest.requireActual("@freelensapp/tooltip"),
-  withTooltip: (Target => ({ tooltip, tooltipOverrideDisabled, ...props }: any) => {
-    if (tooltip) {
-      const testId = props["data-testid"];
+  withTooltip: ((Target) =>
+    ({ tooltip, tooltipOverrideDisabled, ...props }: any) => {
+      if (tooltip) {
+        const testId = props["data-testid"];
 
-      return (
-        <>
-          <Target {...props} />
-          <div data-testid={testId && `tooltip-content-for-${testId}`}>
-            {tooltip.children || tooltip}
-          </div>
-        </>
-      );
-    }
+        return (
+          <>
+            <Target {...props} />
+            <div data-testid={testId && `tooltip-content-for-${testId}`}>{tooltip.children || tooltip}</div>
+          </>
+        );
+      }
 
-    return <Target {...props} />;
-  }) as typeof K8slensTooltip.withTooltip,
+      return <Target {...props} />;
+    }) as typeof K8slensTooltip.withTooltip,
 }));
 jest.mock("monaco-editor");
 
-const getInjectables = (environment: "renderer" | "main", filePathGlob: string) => [
-  ...glob.sync(`./{common,extensions,${environment},test-env}/**/${filePathGlob}`, {
-    cwd: __dirname,
-  }),
+const getInjectables = (environment: "renderer" | "main", filePathGlob: string) =>
+  [
+    ...glob.sync(`./{common,extensions,${environment},test-env}/**/${filePathGlob}`, {
+      cwd: __dirname,
+    }),
 
-  ...glob.sync(`./features/**/{${environment},common}/**/${filePathGlob}`, {
-    cwd: __dirname,
-  }),
-].map(x => path.resolve(__dirname, x));
+    ...glob.sync(`./features/**/{${environment},common}/**/${filePathGlob}`, {
+      cwd: __dirname,
+    }),
+  ].map((x) => path.resolve(__dirname, x));
 
 global.injectablePaths = {
   renderer: {

@@ -5,22 +5,22 @@
 
 import "./view.scss";
 
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
-import { ClusterRoleBindingDialog } from "./dialog/view";
-import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../../kube-object/age";
-import type { ClusterRoleBindingStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import clusterRoleBindingStoreInjectable from "./store.injectable";
+import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import type { ClusterRoleStore } from "../cluster-roles/store";
-import type { ServiceAccountStore } from "../service-accounts/store";
 import clusterRoleStoreInjectable from "../cluster-roles/store.injectable";
+import type { ServiceAccountStore } from "../service-accounts/store";
 import serviceAccountStoreInjectable from "../service-accounts/store.injectable";
 import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
 import openClusterRoleBindingDialogInjectable from "./dialog/open.injectable";
+import { ClusterRoleBindingDialog } from "./dialog/view";
+import type { ClusterRoleBindingStore } from "./store";
+import clusterRoleBindingStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -39,12 +39,7 @@ interface Dependencies {
 @observer
 class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
   render() {
-    const {
-      clusterRoleBindingStore,
-      clusterRoleStore,
-      serviceAccountStore,
-      openClusterRoleBindingDialog,
-    } = this.props;
+    const { clusterRoleBindingStore, clusterRoleStore, serviceAccountStore, openClusterRoleBindingDialog } = this.props;
 
     return (
       <SiblingsInTabLayout>
@@ -55,14 +50,11 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           store={clusterRoleBindingStore}
           dependentStores={[clusterRoleStore, serviceAccountStore]}
           sortingCallbacks={{
-            [columnId.name]: binding => binding.getName(),
-            [columnId.bindings]: binding => binding.getSubjectNames(),
-            [columnId.age]: binding => -binding.getCreationTimestamp(),
+            [columnId.name]: (binding) => binding.getName(),
+            [columnId.bindings]: (binding) => binding.getSubjectNames(),
+            [columnId.age]: (binding) => -binding.getCreationTimestamp(),
           }}
-          searchFilters={[
-            binding => binding.getSearchFields(),
-            binding => binding.getSubjectNames(),
-          ]}
+          searchFilters={[(binding) => binding.getSearchFields(), (binding) => binding.getSubjectNames()]}
           renderHeaderTitle="Cluster Role Bindings"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -70,7 +62,7 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
             { title: "Bindings", className: "bindings", sortBy: columnId.bindings, id: columnId.bindings },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={binding => [
+          renderTableContents={(binding) => [
             binding.getName(),
             <KubeObjectStatusIcon key="icon" object={binding} />,
             binding.getSubjectNames(),

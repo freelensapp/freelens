@@ -14,7 +14,7 @@ const findHotbarByNameInjectable = getInjectable({
   instantiate: (di): FindHotbarByName => {
     const state = di.inject(hotbarsStateInjectable);
 
-    return (name) => iter.find(state.values(), hotbar => hotbar.name.get() === name);
+    return (name) => iter.find(state.values(), (hotbar) => hotbar.name.get() === name);
   },
 });
 

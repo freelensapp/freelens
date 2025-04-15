@@ -18,7 +18,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedGeneralKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedGeneralKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -44,12 +47,15 @@ function NonInjectedGeneralKubernetesClusterSettings({ entity, getClusterById }:
   );
 }
 
-const GeneralKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedGeneralKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const GeneralKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedGeneralKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const generalKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "general-kubernetes-cluster-entity-settings",

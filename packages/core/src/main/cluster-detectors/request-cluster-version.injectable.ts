@@ -12,7 +12,7 @@ const requestClusterVersionInjectable = getInjectable({
     const k8sRequest = di.inject(k8SRequestInjectable);
 
     return async (cluster: Cluster) => {
-      const { gitVersion } = await k8sRequest(cluster, "/version") as { gitVersion: string };
+      const { gitVersion } = (await k8sRequest(cluster, "/version")) as { gitVersion: string };
 
       return gitVersion;
     };

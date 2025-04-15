@@ -1,20 +1,20 @@
+import { PassThrough } from "stream";
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { Deployment, Pod } from "@freelensapp/kube-object";
+import type { KubeJsonApiData, KubeJsonApiDataFor } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import type Fetch from "@freelensapp/node-fetch";
+import { flushPromises } from "@freelensapp/test-utils";
+import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { KubeApiWatchCallback } from "./kube-api";
-import { PassThrough } from "stream";
-import { Deployment, Pod } from "@freelensapp/kube-object";
-import type Fetch from "@freelensapp/node-fetch";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@freelensapp/test-utils";
-import type { IKubeWatchEvent } from "./kube-watch-event";
-import type { KubeJsonApiDataFor, KubeJsonApiData } from "@freelensapp/kube-object";
-import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";
-import type { Logger } from "@freelensapp/logger";
-import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
 import { KubeJsonApi } from "./kube-json-api";
+import type { IKubeWatchEvent } from "./kube-watch-event";
+import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";
 
 describe("KubeApi", () => {
   let fetchMock: AsyncFnMock<typeof Fetch>;

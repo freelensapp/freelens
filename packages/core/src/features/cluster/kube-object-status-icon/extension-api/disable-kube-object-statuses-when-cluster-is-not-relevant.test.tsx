@@ -4,26 +4,24 @@
  */
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { KubernetesCluster } from "../../../../common/catalog-entities";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
+import type { RenderResult } from "@testing-library/react";
 import { computed, runInAction } from "mobx";
 import React from "react";
+import type { KubernetesCluster } from "../../../../common/catalog-entities";
+import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
-import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
-import { KubeObjectStatusIcon } from "../../../../renderer/components/kube-object-status-icon/kube-object-status-icon";
-import { KubeObject } from "@freelensapp/kube-object";
 import { KubeObjectStatusLevel } from "../../../../common/k8s-api/kube-object-status";
+import { KubeObjectStatusIcon } from "../../../../renderer/components/kube-object-status-icon/kube-object-status-icon";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
 
 describe("disable kube object statuses when cluster is not relevant", () => {
   let builder: ApplicationBuilder;
   let rendered: RenderResult;
-  let isEnabledForClusterMock: AsyncFnMock<
-    (cluster: KubernetesCluster) => Promise<boolean>
-  >;
+  let isEnabledForClusterMock: AsyncFnMock<(cluster: KubernetesCluster) => Promise<boolean>>;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -134,11 +132,7 @@ const testRouteComponentInjectable = getInjectable({
   instantiate: (di) => ({
     route: di.inject(testRouteInjectable),
 
-    Component: () => (
-      <KubeObjectStatusIcon
-        object={getKubeObjectStub("some-kind", "some-api-version")}
-      />
-    ),
+    Component: () => <KubeObjectStatusIcon object={getKubeObjectStub("some-kind", "some-api-version")} />,
   }),
 
   injectionToken: routeSpecificComponentInjectionToken,

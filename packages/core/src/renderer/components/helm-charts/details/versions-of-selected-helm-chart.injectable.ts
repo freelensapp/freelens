@@ -11,13 +11,10 @@ const versionsOfSelectedHelmChartInjectable = getInjectable({
   id: "versions-of-selected-helm-chart",
 
   instantiate: (di, chart: HelmChart) => {
-    const requestHelmChartVersions = di.inject(
-      requestHelmChartVersionsInjectable,
-    );
+    const requestHelmChartVersions = di.inject(requestHelmChartVersionsInjectable);
 
     return asyncComputed({
-      getValueFromObservedPromise: async () =>
-        await requestHelmChartVersions(chart.getRepository(), chart.getName()),
+      getValueFromObservedPromise: async () => await requestHelmChartVersions(chart.getRepository(), chart.getName()),
 
       valueWhenPending: [],
     });

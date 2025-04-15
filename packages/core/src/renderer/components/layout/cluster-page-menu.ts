@@ -4,10 +4,10 @@
  */
 
 import type { IconProps } from "@freelensapp/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import type { IComputedValue } from "mobx";
 import type React from "react";
 import type { PageTarget } from "../../routes/page-registration";
-import type { IComputedValue } from "mobx";
-import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface ClusterPageMenuRegistration {
   id?: string;

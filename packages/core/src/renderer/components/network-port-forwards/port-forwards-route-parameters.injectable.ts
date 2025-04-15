@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import portForwardsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/port-forwards-route.injectable";
+import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 
 const portForwardsRouteParametersInjectable = getInjectable({
   id: "port-forwards-route-parameters",

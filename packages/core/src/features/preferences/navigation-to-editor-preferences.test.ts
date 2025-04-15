@@ -1,3 +1,5 @@
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,8 +7,6 @@
 import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
-import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("preferences - navigation to editor preferences", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -33,10 +33,7 @@ describe("preferences - navigation to editor preferences", () => {
       expect(rendered.container).toMatchSnapshot();
     });
     it("does not show editor preferences yet", () => {
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "editor-page",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "editor-page");
 
       expect(discovered).toBeNull();
     });
@@ -51,10 +48,7 @@ describe("preferences - navigation to editor preferences", () => {
       });
 
       it("shows editor preferences", () => {
-        const page = discover.getSingleElement(
-          "preference-page",
-          "editor-page",
-        );
+        const page = discover.getSingleElement("preference-page", "editor-page");
 
         expect(page).not.toBeNull();
       });

@@ -1,13 +1,13 @@
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { runManyFor } from "@freelensapp/run-many";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { once } from "lodash";
 import { onQuitOfBackEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
-import { runManyFor } from "@freelensapp/run-many";
-import { once } from "lodash";
 
 const setupCleanupOfBackendOnQuitInjectable = getInjectable({
   id: "setup-cleanup-of-backend-on-quit",
@@ -18,15 +18,18 @@ const setupCleanupOfBackendOnQuitInjectable = getInjectable({
       const runOnQuitOfBackEnd = runMany(onQuitOfBackEndInjectionToken);
       const app = di.inject(electronAppInjectable);
 
-      const doAsyncQuit = once(() => void (async () => {
-        try {
-          await runOnQuitOfBackEnd();
-          app.exit(0);
-        } catch (error) {
-          console.error("A beforeQuitOfBackEnd failed!!!!", error);
-          app.exit(1);
-        }
-      })());
+      const doAsyncQuit = once(
+        () =>
+          void (async () => {
+            try {
+              await runOnQuitOfBackEnd();
+              app.exit(0);
+            } catch (error) {
+              console.error("A beforeQuitOfBackEnd failed!!!!", error);
+              app.exit(1);
+            }
+          })(),
+      );
 
       app.on("will-quit", (event) => {
         event.preventDefault();

@@ -4,8 +4,8 @@
  */
 
 import type { Composite } from "../get-composite/get-composite";
-import { compositeHasDescendant } from "./composite-has-descendant";
 import { getCompositeFor } from "../get-composite/get-composite";
+import { compositeHasDescendant } from "./composite-has-descendant";
 
 describe("composite-has-descendant, given composite with children and grand children", () => {
   let composite: Composite<{ id: string; parentId?: string }>;
@@ -34,7 +34,7 @@ describe("composite-has-descendant, given composite with children and grand chil
   });
 
   it("has a child as descendant", () => {
-    const actual = compositeHasDescendant<typeof composite["value"]>(
+    const actual = compositeHasDescendant<(typeof composite)["value"]>(
       (referenceComposite) => referenceComposite.value.id === "some-child-item",
     )(composite);
 
@@ -42,18 +42,16 @@ describe("composite-has-descendant, given composite with children and grand chil
   });
 
   it("has a grand child as descendant", () => {
-    const actual = compositeHasDescendant<typeof composite["value"]>(
-      (referenceComposite) =>
-        referenceComposite.value.id === "some-grand-child-item",
+    const actual = compositeHasDescendant<(typeof composite)["value"]>(
+      (referenceComposite) => referenceComposite.value.id === "some-grand-child-item",
     )(composite);
 
     expect(actual).toBe(true);
   });
 
   it("does not have an unrelated descendant", () => {
-    const actual = compositeHasDescendant<typeof composite["value"]>(
-      (referenceComposite) =>
-        referenceComposite.value.id === "some-unknown-item",
+    const actual = compositeHasDescendant<(typeof composite)["value"]>(
+      (referenceComposite) => referenceComposite.value.id === "some-unknown-item",
     )(composite);
 
     expect(actual).toBe(false);

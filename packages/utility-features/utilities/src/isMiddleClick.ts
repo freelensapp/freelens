@@ -13,7 +13,7 @@ import type React from "react";
 
 export function isMiddleClick<E extends React.MouseEvent>(callback: (evt: E) => any) {
   return function (evt: E) {
-    if(evt.button === 1) {
+    if (evt.button === 1) {
       return callback(evt);
     }
   };

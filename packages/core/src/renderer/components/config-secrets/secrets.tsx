@@ -5,19 +5,19 @@
 
 import "./secrets.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { AddSecretDialog } from "./add-dialog/view";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { Badge } from "../badge";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { SecretStore } from "./store";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import secretStoreInjectable from "./store.injectable";
-import openAddSecretDialogInjectable from "./add-dialog/open.injectable";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import openAddSecretDialogInjectable from "./add-dialog/open.injectable";
+import { AddSecretDialog } from "./add-dialog/view";
+import type { SecretStore } from "./store";
+import secretStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -44,17 +44,14 @@ class NonInjectedSecrets extends React.Component<Dependencies> {
           className="Secrets"
           store={this.props.secretStore}
           sortingCallbacks={{
-            [columnId.name]: secret => secret.getName(),
-            [columnId.namespace]: secret => secret.getNs(),
-            [columnId.labels]: secret => secret.getLabels(),
-            [columnId.keys]: secret => secret.getKeys(),
-            [columnId.type]: secret => secret.type,
-            [columnId.age]: secret => -secret.getCreationTimestamp(),
+            [columnId.name]: (secret) => secret.getName(),
+            [columnId.namespace]: (secret) => secret.getNs(),
+            [columnId.labels]: (secret) => secret.getLabels(),
+            [columnId.keys]: (secret) => secret.getKeys(),
+            [columnId.type]: (secret) => secret.type,
+            [columnId.age]: (secret) => -secret.getCreationTimestamp(),
           }}
-          searchFilters={[
-            secret => secret.getSearchFields(),
-            secret => secret.getKeys(),
-          ]}
+          searchFilters={[(secret) => secret.getSearchFields(), (secret) => secret.getKeys()]}
           renderHeaderTitle="Secrets"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -65,21 +62,11 @@ class NonInjectedSecrets extends React.Component<Dependencies> {
             { title: "Type", className: "type", sortBy: columnId.type, id: columnId.type },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={secret => [
+          renderTableContents={(secret) => [
             secret.getName(),
             <KubeObjectStatusIcon key="icon" object={secret} />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={secret.getNs()}
-            />,
-            secret.getLabels().map(label => (
-              <Badge
-                scrollable
-                key={label}
-                label={label}
-                expandable={false}
-              />
-            )),
+            <NamespaceSelectBadge key="namespace" namespace={secret.getNs()} />,
+            secret.getLabels().map((label) => <Badge scrollable key={label} label={label} expandable={false} />),
             secret.getKeys().join(", "),
             secret.type,
             <KubeObjectAge key="age" object={secret} />,
@@ -89,7 +76,7 @@ class NonInjectedSecrets extends React.Component<Dependencies> {
             addTooltip: "Create new Secret",
           }}
         />
-        <AddSecretDialog/>
+        <AddSecretDialog />
       </SiblingsInTabLayout>
     );
   }

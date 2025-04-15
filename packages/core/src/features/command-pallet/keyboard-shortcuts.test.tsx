@@ -4,10 +4,13 @@
  */
 
 import type { RenderResult } from "@testing-library/react";
-import type {UserEvent} from "@testing-library/user-event";
+import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import platformInjectable from "../../common/vars/platform.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../renderer/components/test-utils/get-application-builder";
 
 describe("Command Pallet: keyboard shortcut tests", () => {
   let builder: ApplicationBuilder;
@@ -16,7 +19,7 @@ describe("Command Pallet: keyboard shortcut tests", () => {
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
-    user = userEvent.setup({delay: null});
+    user = userEvent.setup({ delay: null });
   });
 
   describe("when on macOS", () => {

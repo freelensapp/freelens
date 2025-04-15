@@ -3,20 +3,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { Logger } from "@freelensapp/logger";
+import { isDefined, iter } from "@freelensapp/utilities";
+import { ipcRenderer } from "electron";
+import { countBy } from "lodash";
+import { when } from "mobx";
+import { pathToRegexp } from "path-to-regexp";
 import type { match } from "react-router";
 import { matchPath } from "react-router";
-import { countBy } from "lodash";
-import { isDefined, iter } from "@freelensapp/utilities";
-import { pathToRegexp } from "path-to-regexp";
 import type Url from "url-parse";
-import { RoutingError, RoutingErrorType } from "./error";
 import type { ExtensionLoader } from "../../extensions/extension-loader";
 import type { LensExtension } from "../../extensions/lens-extension";
-import type { RouteHandler, RouteParams } from "./registration";
-import { when } from "mobx";
-import { ipcRenderer } from "electron";
-import type { Logger } from "@freelensapp/logger";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
+import { RoutingError, RoutingErrorType } from "./error";
+import type { RouteHandler, RouteParams } from "./registration";
 
 // IPC channel for protocol actions. Main broadcasts the open-url events to this channel.
 export const ProtocolHandlerIpcPrefix = "protocol-handler";
@@ -94,7 +94,10 @@ export abstract class LensProtocolRouter {
    * @param routes the array of path schemas, handler pairs to match against
    * @param url the url (in its current state)
    */
-  protected _findMatchingRoute(routes: Iterable<[string, RouteHandler]>, url: Url<Record<string, string | undefined>>): null | [match<Record<string, string>>, RouteHandler] {
+  protected _findMatchingRoute(
+    routes: Iterable<[string, RouteHandler]>,
+    url: Url<Record<string, string | undefined>>,
+  ): null | [match<Record<string, string>>, RouteHandler] {
     const matches: [match<Record<string, string>>, RouteHandler][] = [];
 
     for (const [schema, handler] of routes) {
@@ -113,17 +116,19 @@ export abstract class LensProtocolRouter {
     }
 
     // if no exact match pick the one that is the most specific
-    return matches.sort(([a], [b]) => {
-      if (a.path === "/") {
-        return 1;
-      }
+    return (
+      matches.sort(([a], [b]) => {
+        if (a.path === "/") {
+          return 1;
+        }
 
-      if (b.path === "/") {
-        return -1;
-      }
+        if (b.path === "/") {
+          return -1;
+        }
 
-      return countBy(b.path)["/"] - countBy(a.path)["/"];
-    })[0] ?? null;
+        return countBy(b.path)["/"] - countBy(a.path)["/"];
+      })[0] ?? null
+    );
   }
 
   /**
@@ -131,7 +136,11 @@ export abstract class LensProtocolRouter {
    * @param routes the array of (path schemas, handler) pairs to match against
    * @param url the url (in its current state)
    */
-  protected _route(routes: Iterable<[string, RouteHandler]>, url: Url<Record<string, string | undefined>>, extensionName?: string): RouteAttempt {
+  protected _route(
+    routes: Iterable<[string, RouteHandler]>,
+    url: Url<Record<string, string | undefined>>,
+    extensionName?: string,
+  ): RouteAttempt {
     const route = this._findMatchingRoute(routes, url);
 
     if (!route) {
@@ -169,7 +178,9 @@ export abstract class LensProtocolRouter {
    * @param url the protocol request URI that was "open"-ed
    * @returns either the found name or the instance of `LensExtension`
    */
-  protected async _findMatchingExtensionByName(url: Url<Record<string, string | undefined>>): Promise<LensExtension | string> {
+  protected async _findMatchingExtensionByName(
+    url: Url<Record<string, string | undefined>>,
+  ): Promise<LensExtension | string> {
     interface ExtensionUrlMatch {
       [EXTENSION_PUBLISHER_MATCH]: string;
       [EXTENSION_NAME_MATCH]: string;
@@ -204,7 +215,9 @@ export abstract class LensProtocolRouter {
     const extension = extensionLoader.getInstanceByName(name) as LensExtension | undefined;
 
     if (!extension) {
-      this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: Extension ${name} matched, but does not have a class for ${ipcRenderer ? "renderer" : "main"}`);
+      this.dependencies.logger.info(
+        `${LensProtocolRouter.LoggingPrefix}: Extension ${name} matched, but does not have a class for ${ipcRenderer ? "renderer" : "main"}`,
+      );
 
       return name;
     }
@@ -242,7 +255,10 @@ export abstract class LensProtocolRouter {
     url.set("pathname", url.pathname.slice(extension.name.length + 1));
 
     try {
-      const handlers = iter.map(extension.protocolHandlers, ({ pathSchema, handler }) => [pathSchema, handler] as [string, RouteHandler]);
+      const handlers = iter.map(
+        extension.protocolHandlers,
+        ({ pathSchema, handler }) => [pathSchema, handler] as [string, RouteHandler],
+      );
 
       return this._route(handlers, url, extension.name);
     } catch (error) {

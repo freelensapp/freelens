@@ -3,19 +3,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { mapValues } from "lodash";
+import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
 import React, { useContext } from "react";
+import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
+import activeThemeInjectable from "../../themes/active.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
 import type { ChartDataSets } from "../chart";
 import { BarChart } from "../chart";
-import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
-import { NoMetrics } from "../resource-metrics/no-metrics";
-import { ResourceMetricsContext } from "../resource-metrics";
-import { observer } from "mobx-react";
-import { mapValues } from "lodash";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
-import type { LensTheme } from "../../themes/lens-theme";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
-import activeThemeInjectable from "../../themes/active.injectable";
+import { ResourceMetricsContext } from "../resource-metrics";
+import { NoMetrics } from "../resource-metrics/no-metrics";
 
 export interface NodeChartsProps {}
 
@@ -23,13 +23,11 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-const NonInjectedNodeCharts = observer(({
-  activeTheme,
-}: Dependencies & NodeChartsProps) => {
+const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChartsProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
 
   if (!metrics || !object || !tab) return null;
-  if (isMetricsEmpty(metrics)) return <NoMetrics/>;
+  if (isMetricsEmpty(metrics)) return <NoMetrics />;
 
   const id = object.getId();
   const { chartCapacityColor } = activeTheme.get().colors;
@@ -47,7 +45,7 @@ const NonInjectedNodeCharts = observer(({
     podCapacity,
     fsSize,
     fsUsage,
-  } = mapValues(metrics, metric => normalizeMetrics(metric).data.result[0].values);
+  } = mapValues(metrics, (metric) => normalizeMetrics(metric).data.result[0].values);
 
   const datasets: Partial<Record<MetricsTab, ChartDataSets[]>> = {
     CPU: [

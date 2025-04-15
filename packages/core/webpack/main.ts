@@ -4,11 +4,11 @@
  */
 
 import path from "path";
-import type webpack from "webpack";
-import nodeExternals from "webpack-node-externals";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
-import { iconsAndImagesWebpackRules } from "./renderer";
+import type webpack from "webpack";
 import { DefinePlugin } from "webpack";
+import nodeExternals from "webpack-node-externals";
+import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment } from "./vars";
 
 const webpackLensMain = (): webpack.Configuration => {
@@ -34,9 +34,7 @@ const webpackLensMain = (): webpack.Configuration => {
     resolve: {
       extensions: [".json", ".js", ".ts"],
     },
-    externals: [
-      nodeExternals({ modulesFromFile: true }),
-    ],
+    externals: [nodeExternals({ modulesFromFile: true })],
     module: {
       parser: {
         javascript: {

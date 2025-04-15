@@ -3,10 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 import EventEmitter from "events";
 import { flushPromises } from "@freelensapp/test-utils";
+import type { DiContainer } from "@ogre-tools/injectable";
+import MemoryStream from "memorystream";
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
@@ -15,7 +16,6 @@ import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environme
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 import processEnvInjectable from "./env.injectable";
 import processExecPathInjectable from "./execPath.injectable";
-import MemoryStream from "memorystream";
 
 const expectedEnv = {
   SOME_ENV_VAR: "some-env-value",
@@ -51,15 +51,11 @@ describe("computeUnixShellEnvironment technical tests", () => {
         stdinValue += chunk.toString();
       });
 
-      return shellProcessFake = Object.assign(new EventEmitter(), {
+      return (shellProcessFake = Object.assign(new EventEmitter(), {
         stdin: shellStdin,
         stdout: shellStdout,
         stderr: shellStderr,
-        stdio: [
-          shellStdin,
-          shellStdout,
-          shellStderr,
-        ] as any,
+        stdio: [shellStdin, shellStdout, shellStderr] as any,
         killed: false,
         kill: jest.fn(),
         send: jest.fn(),
@@ -72,7 +68,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         spawnargs,
         spawnfile,
         [Symbol.dispose]: jest.fn(),
-      });
+      }));
     });
     di.override(spawnInjectable, () => spawnMock);
     di.override(randomUUIDInjectable, () => () => "dead-foo-bar-foo-beef");
@@ -89,10 +85,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     computeUnixShellEnvironment = di.inject(computeUnixShellEnvironmentInjectable);
   });
 
-  describe.each([
-    "/bin/csh",
-    "/bin/tcsh",
-  ])("when shell is %s", (shellPath) => {
+  describe.each(["/bin/csh", "/bin/tcsh"])("when shell is %s", (shellPath) => {
     beforeEach(async () => {
       const controller = new AbortController();
 
@@ -103,9 +96,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        [
-          "-l",
-        ],
+        ["-l"],
         expect.objectContaining({
           env: expectedEnv,
         }),
@@ -113,7 +104,9 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(`'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`);
+      expect(stdinValue).toBe(
+        `'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
+      );
     });
 
     it("should close stdin", () => {
@@ -128,11 +121,15 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: `Failed to spawn ${shellPath}: ${JSON.stringify({
-            error: "Error: some-error",
-            stdout: "",
-            stderr: "",
-          }, null, 4)}`,
+          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
+            {
+              error: "Error: some-error",
+              stdout: "",
+              stderr: "",
+            },
+            null,
+            4,
+          )}`,
         });
       });
     });
@@ -145,7 +142,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -158,7 +156,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -170,7 +169,12 @@ describe("computeUnixShellEnvironment technical tests", () => {
           ...expectedEnv,
         };
 
-        shellStdout.emit("data", Buffer.from(`some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`));
+        shellStdout.emit(
+          "data",
+          Buffer.from(
+            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+          ),
+        );
       });
 
       describe("when process successfully exits", () => {
@@ -193,11 +197,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
   });
 
-  describe.each([
-    "/bin/bash",
-    "/bin/sh",
-    "/bin/zsh",
-  ])("when shell is %s", (shellPath) => {
+  describe.each(["/bin/bash", "/bin/sh", "/bin/zsh"])("when shell is %s", (shellPath) => {
     beforeEach(async () => {
       const controller = new AbortController();
 
@@ -208,10 +208,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        [
-          "-l",
-          "-i",
-        ],
+        ["-l", "-i"],
         expect.objectContaining({
           env: expectedEnv,
         }),
@@ -219,7 +216,9 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(` '/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`);
+      expect(stdinValue).toBe(
+        ` '/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
+      );
     });
 
     it("should close stdin", () => {
@@ -234,11 +233,15 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: `Failed to spawn ${shellPath}: ${JSON.stringify({
-            error: "Error: some-error",
-            stdout: "",
-            stderr: "",
-          }, null, 4)}`,
+          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
+            {
+              error: "Error: some-error",
+              stdout: "",
+              stderr: "",
+            },
+            null,
+            4,
+          )}`,
         });
       });
     });
@@ -251,7 +254,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -264,7 +268,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -276,7 +281,12 @@ describe("computeUnixShellEnvironment technical tests", () => {
           ...expectedEnv,
         };
 
-        shellStdout.emit("data", Buffer.from(`some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`));
+        shellStdout.emit(
+          "data",
+          Buffer.from(
+            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+          ),
+        );
       });
 
       describe("when process successfully exits", () => {
@@ -299,9 +309,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
   });
 
-  describe.each([
-    "/usr/local/bin/fish",
-  ])("when shell is %s", (shellPath) => {
+  describe.each(["/usr/local/bin/fish"])("when shell is %s", (shellPath) => {
     beforeEach(async () => {
       const controller = new AbortController();
 
@@ -339,11 +347,15 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: `Failed to spawn ${shellPath}: ${JSON.stringify({
-            error: "Error: some-error",
-            stdout: "",
-            stderr: "",
-          }, null, 4)}`,
+          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
+            {
+              error: "Error: some-error",
+              stdout: "",
+              stderr: "",
+            },
+            null,
+            4,
+          )}`,
         });
       });
     });
@@ -356,7 +368,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -369,7 +382,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -381,7 +395,12 @@ describe("computeUnixShellEnvironment technical tests", () => {
           ...expectedEnv,
         };
 
-        shellStdout.emit("data", Buffer.from(`some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`));
+        shellStdout.emit(
+          "data",
+          Buffer.from(
+            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+          ),
+        );
       });
 
       describe("when process successfully exits", () => {
@@ -404,10 +423,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
   });
 
-  describe.each([
-    "/usr/local/bin/pwsh",
-    "/usr/local/bin/pwsh-preview",
-  ])("when shell is %s", (shellPath) => {
+  describe.each(["/usr/local/bin/pwsh", "/usr/local/bin/pwsh-preview"])("when shell is %s", (shellPath) => {
     beforeEach(async () => {
       const controller = new AbortController();
 
@@ -418,9 +434,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        [
-          "-Login",
-        ],
+        ["-Login"],
         expect.objectContaining({
           env: expectedEnv,
         }),
@@ -428,7 +442,9 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(`Command '/some/process/exec/path' -e 'process.stdout.write(\\"deadfoobarfoobeef\\" + JSON.stringify(process.env) + \\"deadfoobarfoobeef\\")'`);
+      expect(stdinValue).toBe(
+        `Command '/some/process/exec/path' -e 'process.stdout.write(\\"deadfoobarfoobeef\\" + JSON.stringify(process.env) + \\"deadfoobarfoobeef\\")'`,
+      );
     });
 
     it("should close stdin", () => {
@@ -443,11 +459,15 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: `Failed to spawn ${shellPath}: ${JSON.stringify({
-            error: "Error: some-error",
-            stdout: "",
-            stderr: "",
-          }, null, 4)}`,
+          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
+            {
+              error: "Error: some-error",
+              stdout: "",
+              stderr: "",
+            },
+            null,
+            4,
+          )}`,
         });
       });
     });
@@ -460,7 +480,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -473,7 +494,8 @@ describe("computeUnixShellEnvironment technical tests", () => {
       it("should resolve with a failed call", async () => {
         await expect(unixShellEnv).resolves.toEqual({
           callWasSuccessful: false,
-          error: 'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
+          error:
+            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
         });
       });
     });
@@ -485,7 +507,12 @@ describe("computeUnixShellEnvironment technical tests", () => {
           ...expectedEnv,
         };
 
-        shellStdout.emit("data", Buffer.from(`some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`));
+        shellStdout.emit(
+          "data",
+          Buffer.from(
+            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+          ),
+        );
       });
 
       describe("when process successfully exits", () => {

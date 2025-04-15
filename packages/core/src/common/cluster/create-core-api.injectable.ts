@@ -10,7 +10,7 @@ export type CreateCoreApi = (config: KubeConfig) => CoreV1Api;
 
 const createCoreApiInjectable = getInjectable({
   id: "create-core-api",
-  instantiate: (): CreateCoreApi => config => config.makeApiClient(CoreV1Api),
+  instantiate: (): CreateCoreApi => (config) => config.makeApiClient(CoreV1Api),
 });
 
 export default createCoreApiInjectable;

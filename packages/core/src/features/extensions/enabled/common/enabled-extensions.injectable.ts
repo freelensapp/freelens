@@ -12,12 +12,13 @@ const enabledExtensionsInjectable = getInjectable({
   instantiate: (di) => {
     const state = di.inject(enabledExtensionsStateInjectable);
 
-    return computed(() => (
-      iter.chain(state.values())
+    return computed(() =>
+      iter
+        .chain(state.values())
         .filter(({ enabled }) => enabled)
         .map(({ name }) => name)
-        .toArray()
-    ));
+        .toArray(),
+    );
   },
 });
 

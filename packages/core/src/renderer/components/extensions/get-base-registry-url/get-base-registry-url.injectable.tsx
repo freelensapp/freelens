@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import execFileInjectable from "../../../../common/fs/exec-file.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import { defaultExtensionRegistryUrl } from "../../../../features/user-preferences/common/preferences-helpers";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 
 const getBaseRegistryUrlInjectable = getInjectable({
   id: "get-base-registry-url",
@@ -26,23 +26,19 @@ const getBaseRegistryUrlInjectable = getInjectable({
           return extensionRegistryUrl.customUrl;
 
         case "npmrc": {
-          const filteredEnv = Object.fromEntries(
-            Object.entries(process.env)
-              .filter(([key]) => !key.startsWith("npm")),
-          );
+          const filteredEnv = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("npm")));
           const result = await execFile("pnpm", ["config", "get", "registry"], { env: filteredEnv });
 
           if (result.callWasSuccessful) {
             return result.response.trim();
           }
 
-          showErrorNotification((
+          showErrorNotification(
             <p>
               Failed to get configured registry from
-              <code>.npmrc</code>
-              . Falling back to default registry.
-            </p>
-          ));
+              <code>.npmrc</code>. Falling back to default registry.
+            </p>,
+          );
           logger.warn("[EXTENSIONS]: failed to get configured registry from .npmrc", result.error);
         }
 

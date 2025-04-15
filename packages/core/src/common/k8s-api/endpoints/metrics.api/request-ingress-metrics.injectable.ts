@@ -23,14 +23,17 @@ const requestIngressMetricsInjectable = getInjectable({
     return (ingress, namespace) => {
       const opts = { category: "ingress", ingress, namespace };
 
-      return requestMetrics({
-        bytesSentSuccess: opts,
-        bytesSentFailure: opts,
-        requestDurationSeconds: opts,
-        responseDurationSeconds: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          bytesSentSuccess: opts,
+          bytesSentFailure: opts,
+          requestDurationSeconds: opts,
+          responseDurationSeconds: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

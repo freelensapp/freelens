@@ -1,12 +1,12 @@
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { runManyFor } from "@freelensapp/run-many";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 import { afterWindowIsOpenedInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
-import { runManyFor } from "@freelensapp/run-many";
 
 const setupRunnablesAfterWindowIsOpenedInjectable = getInjectable({
   id: "setup-runnables-after-window-is-opened",

@@ -1,27 +1,26 @@
+import { pipeline } from "@ogre-tools/fp";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { Menu } from "electron";
-import type { MenuItemOpts } from "./application-menu-items.injectable";
-import type { Composite } from "../../../common/utils/composite/get-composite/get-composite";
-import type { ApplicationMenuItemTypes } from "./menu-items/application-menu-item-injection-token";
-import { pipeline } from "@ogre-tools/fp";
 import { map, sortBy } from "lodash/fp";
-import type { MenuItemRoot } from "./application-menu-item-composite.injectable";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
+import type { Composite } from "../../../common/utils/composite/get-composite/get-composite";
+import type { MenuItemRoot } from "./application-menu-item-composite.injectable";
+import type { MenuItemOpts } from "./application-menu-items.injectable";
+import type { ApplicationMenuItemTypes } from "./menu-items/application-menu-item-injection-token";
 
 const populateApplicationMenuInjectable = getInjectable({
   id: "populate-application-menu",
 
-  instantiate:
-    () => (composite: Composite<ApplicationMenuItemTypes | MenuItemRoot>) => {
-      const electronTemplate = getApplicationMenuTemplate(composite);
-      const menu = Menu.buildFromTemplate(electronTemplate);
+  instantiate: () => (composite: Composite<ApplicationMenuItemTypes | MenuItemRoot>) => {
+    const electronTemplate = getApplicationMenuTemplate(composite);
+    const menu = Menu.buildFromTemplate(electronTemplate);
 
-      Menu.setApplicationMenu(menu);
-    },
+    Menu.setApplicationMenu(menu);
+  },
 
   causesSideEffects: true,
 });
@@ -36,9 +35,7 @@ export const getApplicationMenuTemplate = (composite: Composite<ApplicationMenuI
   return topLevelMenus.map(toHierarchicalElectronMenuItem);
 };
 
-const toHierarchicalElectronMenuItem = (
-  composite: Composite<ApplicationMenuItemTypes>,
-): MenuItemOpts => {
+const toHierarchicalElectronMenuItem = (composite: Composite<ApplicationMenuItemTypes>): MenuItemOpts => {
   const value = composite.value;
 
   switch (value.kind) {
@@ -82,7 +79,7 @@ const toHierarchicalElectronMenuItem = (
       return {
         ...(id ? { id } : {}),
         ...(label ? { label } : {}),
-        ...(keyboardShortcut ? { accelerator: keyboardShortcut }: {}),
+        ...(keyboardShortcut ? { accelerator: keyboardShortcut } : {}),
         click: onClick,
       };
     }

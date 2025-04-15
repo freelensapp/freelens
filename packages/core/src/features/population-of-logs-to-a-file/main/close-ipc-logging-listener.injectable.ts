@@ -3,10 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
+import { closeIpcFileLoggerChannel } from "../common/ipc-file-logger-channel";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
-import {
-  closeIpcFileLoggerChannel,
-} from "../common/ipc-file-logger-channel";
 
 const closeIpcFileLoggingListenerInjectable = getMessageChannelListenerInjectable({
   id: "close-ipc-file-logging",

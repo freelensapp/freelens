@@ -5,12 +5,12 @@
 
 import "./table-cell.scss";
 
-import React from "react";
-import { cssNames } from "@freelensapp/utilities";
 import { Icon } from "@freelensapp/icon";
-import { Checkbox } from "../checkbox";
-import autoBindReact from "auto-bind/react";
 import type { TableCellProps } from "@freelensapp/list-layout";
+import { cssNames } from "@freelensapp/utilities";
+import autoBindReact from "auto-bind/react";
+import React from "react";
+import { Checkbox } from "../checkbox";
 
 export type TableCellElem = React.ReactElement<TableCellProps>;
 
@@ -38,16 +38,9 @@ export class TableCell extends React.Component<TableCellProps> {
     }
 
     const sortActive = _sorting.sortBy === sortBy;
-    const sortIconName = (!sortActive || _sorting.orderBy === "desc")
-      ? "arrow_drop_down"
-      : "arrow_drop_up";
+    const sortIconName = !sortActive || _sorting.orderBy === "desc" ? "arrow_drop_down" : "arrow_drop_up";
 
-    return (
-      <Icon
-        className={cssNames("sortIcon", { enabled: sortActive })}
-        material={sortIconName}
-      />
-    );
+    return <Icon className={cssNames("sortIcon", { enabled: sortActive })} material={sortIconName} />;
   }
 
   renderCheckbox() {
@@ -86,11 +79,7 @@ export class TableCell extends React.Component<TableCellProps> {
     const content = title || children;
 
     return (
-      <div
-        {...cellProps}
-        className={classNames}
-        onClick={this.onClick}
-      >
+      <div {...cellProps} className={classNames} onClick={this.onClick}>
         {this.renderCheckbox()}
         {_nowrap ? <div className="content">{content}</div> : content}
         {this.renderSortIcon()}

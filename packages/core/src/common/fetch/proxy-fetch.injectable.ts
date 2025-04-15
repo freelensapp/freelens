@@ -15,15 +15,16 @@ const proxyFetchInjectable = getInjectable({
     const { httpsProxy, allowUntrustedCAs } = di.inject(userPreferencesStateInjectable);
     const agent = httpsProxy
       ? new HttpsProxyAgent({
-        proxy: httpsProxy,
-        rejectUnauthorized: !allowUntrustedCAs,
-      })
+          proxy: httpsProxy,
+          rejectUnauthorized: !allowUntrustedCAs,
+        })
       : undefined;
 
-    return (url, init = {}) => fetch(url, {
-      agent,
-      ...init,
-    });
+    return (url, init = {}) =>
+      fetch(url, {
+        agent,
+        ...init,
+      });
   },
 });
 

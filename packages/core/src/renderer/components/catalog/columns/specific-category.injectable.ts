@@ -19,23 +19,15 @@ const getColumnsForCategoryInjectable = getInjectable({
     const nameCategoryColumn = di.inject(namedCategoryColumnInjectable);
 
     return (activeCategory) => {
-      const fromExtensions = (
-        extensionColumns
-          .get()
-          .get(activeCategory.spec.group)
-          ?.get(activeCategory.spec.names.kind)
-        ?? []
-      );
-      const fromCategory = activeCategory.spec.displayColumns?.map(({ priority = 50, ...column }) => ({
-        priority,
-        ...column,
-      })) ?? defaultCategoryColumns;
+      const fromExtensions =
+        extensionColumns.get().get(activeCategory.spec.group)?.get(activeCategory.spec.names.kind) ?? [];
+      const fromCategory =
+        activeCategory.spec.displayColumns?.map(({ priority = 50, ...column }) => ({
+          priority,
+          ...column,
+        })) ?? defaultCategoryColumns;
 
-      return [
-        nameCategoryColumn,
-        ...fromExtensions,
-        ...fromCategory,
-      ];
+      return [nameCategoryColumn, ...fromExtensions, ...fromCategory];
     };
   },
 });

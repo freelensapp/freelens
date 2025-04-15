@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
+import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
 import type { DockTabStoreOptions } from "./dock-tab.store";
 import { DockTabStore } from "./dock-tab.store";
-import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
 
 const createDockTabStoreInjectable = getInjectable({
   id: "create-dock-tab-store",

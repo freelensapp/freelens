@@ -1,9 +1,9 @@
+import { urlBuilderFor } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 export type RequestDeleteHelmRelease = (name: string, namespace: string) => Promise<void>;

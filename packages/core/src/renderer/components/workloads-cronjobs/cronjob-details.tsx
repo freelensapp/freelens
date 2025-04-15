@@ -5,29 +5,28 @@
 
 import "./cronjob-details.scss";
 
-import React from "react";
-import kebabCase from "lodash/kebabCase";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Badge } from "../badge/badge";
-import type { JobStore } from "../workloads-jobs/store";
-import { Link } from "react-router-dom";
-import type { CronJobStore } from "./store";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { Job } from "@freelensapp/kube-object";
 import { CronJob } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import kebabCase from "lodash/kebabCase";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { Link } from "react-router-dom";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import cronJobStoreInjectable from "./store.injectable";
-import jobStoreInjectable from "../workloads-jobs/store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import { Badge } from "../badge/badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { JobStore } from "../workloads-jobs/store";
+import jobStoreInjectable from "../workloads-jobs/store.injectable";
+import type { CronJobStore } from "./store";
+import cronJobStoreInjectable from "./store.injectable";
 
-export interface CronJobDetailsProps extends KubeObjectDetailsProps<CronJob> {
-}
+export interface CronJobDetailsProps extends KubeObjectDetailsProps<CronJob> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -40,11 +39,7 @@ interface Dependencies {
 @observer
 class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.jobStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.jobStore])]);
   }
 
   render() {
@@ -65,21 +60,11 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
     return (
       <div className="CronJobDetails">
         <DrawerItem name="Schedule">
-          {
-            cronJob.isNeverRun()
-              ? `never (${cronJob.getSchedule()})`
-              : cronJob.getSchedule()
-          }
+          {cronJob.isNeverRun() ? `never (${cronJob.getSchedule()})` : cronJob.getSchedule()}
         </DrawerItem>
-        <DrawerItem name="Active">
-          {cronJobStore.getActiveJobsNum(cronJob)}
-        </DrawerItem>
-        <DrawerItem name="Suspend">
-          {cronJob.getSuspendFlag()}
-        </DrawerItem>
-        <DrawerItem name="Last schedule">
-          {cronJob.getLastScheduleTime()}
-        </DrawerItem>
+        <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
+        <DrawerItem name="Suspend">{cronJob.getSuspendFlag()}</DrawerItem>
+        <DrawerItem name="Last schedule">{cronJob.getLastScheduleTime()}</DrawerItem>
         {childJobs.length > 0 && (
           <>
             <DrawerTitle>Jobs</DrawerTitle>
@@ -90,30 +75,19 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
               return (
                 <div className="job" key={job.getId()}>
                   <div className="title">
-                    <Link to={() => job.selfLink ? getDetailsUrl(job.selfLink) : ""}>
-                      {job.getName()}
-                    </Link>
+                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{job.getName()}</Link>
                   </div>
-                  <DrawerItem
-                    name="Condition"
-                    className="conditions"
-                    labelsOnly
-                  >
-                    {condition && (
-                      <Badge
-                        label={condition.type}
-                        className={kebabCase(condition.type)}
-                      />
-                    )}
+                  <DrawerItem name="Condition" className="conditions" labelsOnly>
+                    {condition && <Badge label={condition.type} className={kebabCase(condition.type)} />}
                   </DrawerItem>
                   <DrawerItem name="Selector" labelsOnly>
-                    {
-                      selectors.map(label => <Badge key={label} label={label}/>)
-                    }
+                    {selectors.map((label) => (
+                      <Badge key={label} label={label} />
+                    ))}
                   </DrawerItem>
                 </div>
-              );})
-            }
+              );
+            })}
           </>
         )}
       </div>

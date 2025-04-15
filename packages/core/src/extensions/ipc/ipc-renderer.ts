@@ -1,13 +1,13 @@
+import type { Disposer } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { ipcRenderer } from "electron";
-import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
+import { once } from "lodash";
 import { Disposers } from "../lens-extension";
 import type { LensRendererExtension } from "../lens-renderer-extension";
-import type { Disposer } from "@freelensapp/utilities";
-import { once } from "lodash";
+import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
 
 export abstract class IpcRenderer extends IpcRegistrar {
   constructor(extension: LensRendererExtension) {
@@ -28,12 +28,18 @@ export abstract class IpcRenderer extends IpcRegistrar {
   listen(channel: string, listener: (event: Electron.IpcRendererEvent, ...args: any[]) => any): Disposer {
     const prefixedChannel = `extensions@${this[IpcPrefix]}:${channel}`;
     const cleanup = once(() => {
-      console.debug(`[IPC-RENDERER]: removing extension listener`, { channel, extension: { name: this.extension.name, version: this.extension.version }});
+      console.debug(`[IPC-RENDERER]: removing extension listener`, {
+        channel,
+        extension: { name: this.extension.name, version: this.extension.version },
+      });
 
       return ipcRenderer.removeListener(prefixedChannel, listener);
     });
 
-    console.debug(`[IPC-RENDERER]: adding extension listener`, { channel, extension: { name: this.extension.name, version: this.extension.version }});
+    console.debug(`[IPC-RENDERER]: adding extension listener`, {
+      channel,
+      extension: { name: this.extension.name, version: this.extension.version },
+    });
     ipcRenderer.addListener(prefixedChannel, listener);
     this.extension[Disposers].push(cleanup);
 

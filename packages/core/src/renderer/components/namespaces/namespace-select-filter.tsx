@@ -5,15 +5,19 @@
 
 import "./namespace-select-filter.scss";
 
-import React from "react";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import type { PlaceholderProps } from "react-select";
 import { components } from "react-select";
-import type { NamespaceStore } from "./store";
 import { Select } from "../select";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { NamespaceSelectFilterModel, NamespaceSelectFilterOption, SelectAllNamespaces } from "./namespace-select-filter-model/namespace-select-filter-model";
+import type {
+  NamespaceSelectFilterModel,
+  NamespaceSelectFilterOption,
+  SelectAllNamespaces,
+} from "./namespace-select-filter-model/namespace-select-filter-model";
 import namespaceSelectFilterModelInjectable from "./namespace-select-filter-model/namespace-select-filter-model.injectable";
+import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
 
 interface NamespaceSelectFilterProps {
@@ -52,12 +56,15 @@ const NonInjectedNamespaceSelectFilter = observer(({ model, id }: Dependencies &
   </div>
 ));
 
-export const NamespaceSelectFilter = withInjectables<Dependencies, NamespaceSelectFilterProps>(NonInjectedNamespaceSelectFilter, {
-  getProps: (di, props) => ({
-    model: di.inject(namespaceSelectFilterModelInjectable),
-    ...props,
-  }),
-});
+export const NamespaceSelectFilter = withInjectables<Dependencies, NamespaceSelectFilterProps>(
+  NonInjectedNamespaceSelectFilter,
+  {
+    getProps: (di, props) => ({
+      model: di.inject(namespaceSelectFilterModelInjectable),
+      ...props,
+    }),
+  },
+);
 
 export interface CustomPlaceholderProps extends PlaceholderProps<NamespaceSelectFilterOption, true> {}
 
@@ -65,29 +72,25 @@ interface PlaceholderDependencies {
   namespaceStore: NamespaceStore;
 }
 
-const NonInjectedPlaceholder = observer(({ namespaceStore, ...props }: CustomPlaceholderProps & PlaceholderDependencies) => {
-  const getPlaceholder = () => {
-    const namespaces = namespaceStore.contextNamespaces;
+const NonInjectedPlaceholder = observer(
+  ({ namespaceStore, ...props }: CustomPlaceholderProps & PlaceholderDependencies) => {
+    const getPlaceholder = () => {
+      const namespaces = namespaceStore.contextNamespaces;
 
-    if (namespaceStore.areAllSelectedImplicitly || namespaces.length === 0) {
-      return "All namespaces";
-    }
+      if (namespaceStore.areAllSelectedImplicitly || namespaces.length === 0) {
+        return "All namespaces";
+      }
 
-    const prefix = namespaces.length === 1
-      ? "Namespace"
-      : "Namespaces";
+      const prefix = namespaces.length === 1 ? "Namespace" : "Namespaces";
 
-    return `${prefix}: ${namespaces.join(", ")}`;
-  };
+      return `${prefix}: ${namespaces.join(", ")}`;
+    };
 
-  return (
-    <components.Placeholder {...props}>
-      {getPlaceholder()}
-    </components.Placeholder>
-  );
-});
+    return <components.Placeholder {...props}>{getPlaceholder()}</components.Placeholder>;
+  },
+);
 
-const Placeholder = withInjectables<PlaceholderDependencies, CustomPlaceholderProps>( NonInjectedPlaceholder, {
+const Placeholder = withInjectables<PlaceholderDependencies, CustomPlaceholderProps>(NonInjectedPlaceholder, {
   getProps: (di, props) => ({
     namespaceStore: di.inject(namespaceStoreInjectable),
     ...props,

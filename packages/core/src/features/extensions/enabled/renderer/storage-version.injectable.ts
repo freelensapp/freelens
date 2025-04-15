@@ -5,7 +5,10 @@
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectablesForInitializable } from "../../../../common/initializable-state/create";
 import { beforeFrameStartsSecondInjectionToken } from "../../../../renderer/before-frame-starts/tokens";
-import { enabledExtensionsPersistentStorageVersionChannel, enabledExtensionsPersistentStorageVersionInitializable } from "../common/storage-version";
+import {
+  enabledExtensionsPersistentStorageVersionChannel,
+  enabledExtensionsPersistentStorageVersionInitializable,
+} from "../common/storage-version";
 
 const {
   initializationInjectable: enabledExtensionsPersistentStorageVersionInitializationInjectable,

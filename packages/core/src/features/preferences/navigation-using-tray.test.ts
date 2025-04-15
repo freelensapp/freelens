@@ -1,3 +1,5 @@
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,8 +7,6 @@
 import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
-import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("show-about-using-tray", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -25,10 +25,7 @@ describe("show-about-using-tray", () => {
   });
 
   it("does not show application preferences yet", () => {
-    const { discovered } = discover.querySingleElement(
-      "preference-page",
-      "application-page",
-    );
+    const { discovered } = discover.querySingleElement("preference-page", "application-page");
 
     expect(discovered).toBeNull();
   });
@@ -43,10 +40,7 @@ describe("show-about-using-tray", () => {
     });
 
     it("shows application preferences", () => {
-      const { discovered } = discover.getSingleElement(
-        "preference-page",
-        "application-page",
-      );
+      const { discovered } = discover.getSingleElement("preference-page", "application-page");
 
       expect(discovered).not.toBeNull();
     });

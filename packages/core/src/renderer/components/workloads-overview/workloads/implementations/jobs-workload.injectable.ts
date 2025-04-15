@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { workloadInjectionToken } from "../workload-injection-token";
+import { computed } from "mobx";
+import navigateToJobsInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/jobs/navigate-to-jobs.injectable";
 import { ResourceNames } from "../../../../utils/rbac";
 import namespaceStoreInjectable from "../../../namespaces/store.injectable";
 import jobStoreInjectable from "../../../workloads-jobs/store.injectable";
-import navigateToJobsInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/jobs/navigate-to-jobs.injectable";
-import { computed } from "mobx";
+import { workloadInjectionToken } from "../workload-injection-token";
 
 const jobsWorkloadInjectable = getInjectable({
   id: "jobs-workload",
@@ -25,13 +25,9 @@ const jobsWorkloadInjectable = getInjectable({
       },
       open: navigate,
 
-      amountOfItems: computed(
-        () => store.getAllByNs(namespaceStore.contextNamespaces).length,
-      ),
+      amountOfItems: computed(() => store.getAllByNs(namespaceStore.contextNamespaces).length),
 
-      status: computed(() =>
-        store.getStatuses(store.getAllByNs(namespaceStore.contextNamespaces)),
-      ),
+      status: computed(() => store.getStatuses(store.getAllByNs(namespaceStore.contextNamespaces))),
 
       title: ResourceNames.jobs,
       orderNumber: 60,

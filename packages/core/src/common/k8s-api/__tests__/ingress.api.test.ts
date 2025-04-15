@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computeRuleDeclarations, Ingress } from "@freelensapp/kube-object";
+import { Ingress, computeRuleDeclarations } from "@freelensapp/kube-object";
 
 describe("Ingress", () => {
   it("given no loadbalancer ingresses in status property, loadbalancers should be an empty array", () => {
@@ -38,12 +38,14 @@ describe("Ingress", () => {
       },
       status: {
         loadBalancer: {
-          ingress: [{
-            ip: "10.0.0.27",
-          },
-          {
-            hostname: "localhost",
-          }],
+          ingress: [
+            {
+              ip: "10.0.0.27",
+            },
+            {
+              hostname: "localhost",
+            },
+          ],
         },
       },
     });
@@ -69,17 +71,19 @@ describe("computeRuleDeclarations", () => {
     const result = computeRuleDeclarations(ingress, {
       host: "foo.bar",
       http: {
-        paths: [{
-          pathType: "Exact",
-          backend: {
-            service: {
-              name: "my-service",
-              port: {
-                number: 8080,
+        paths: [
+          {
+            pathType: "Exact",
+            backend: {
+              service: {
+                name: "my-service",
+                port: {
+                  number: 8080,
+                },
               },
             },
           },
-        }],
+        ],
       },
     });
 
@@ -106,17 +110,19 @@ describe("computeRuleDeclarations", () => {
     const result = computeRuleDeclarations(ingress, {
       host: "foo.bar",
       http: {
-        paths: [{
-          pathType: "Exact",
-          backend: {
-            service: {
-              name: "my-service",
-              port: {
-                number: 8080,
+        paths: [
+          {
+            pathType: "Exact",
+            backend: {
+              service: {
+                name: "my-service",
+                port: {
+                  number: 8080,
+                },
               },
             },
           },
-        }],
+        ],
       },
     });
 
@@ -137,25 +143,29 @@ describe("computeRuleDeclarations", () => {
     });
 
     ingress.spec = {
-      tls: [{
-        secretName: "my-secret",
-      }],
+      tls: [
+        {
+          secretName: "my-secret",
+        },
+      ],
     };
 
     const result = computeRuleDeclarations(ingress, {
       host: "foo.bar",
       http: {
-        paths: [{
-          pathType: "Exact",
-          backend: {
-            service: {
-              name: "my-service",
-              port: {
-                number: 8080,
+        paths: [
+          {
+            pathType: "Exact",
+            backend: {
+              service: {
+                name: "my-service",
+                port: {
+                  number: 8080,
+                },
               },
             },
           },
-        }],
+        ],
       },
     });
 

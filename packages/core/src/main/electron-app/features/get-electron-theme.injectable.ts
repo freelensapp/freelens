@@ -11,7 +11,7 @@ const getElectronThemeInjectable = getInjectable({
   instantiate: (di) => {
     const nativeTheme = di.inject(nativeThemeInjectable);
 
-    return () => nativeTheme.shouldUseDarkColors ? "dark" : "light";
+    return () => (nativeTheme.shouldUseDarkColors ? "dark" : "light");
   },
 });
 

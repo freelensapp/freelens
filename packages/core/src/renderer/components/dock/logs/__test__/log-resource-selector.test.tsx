@@ -5,22 +5,22 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
+import assert from "assert";
+import type { UserEvent } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import * as selectEvent from "react-select-event";
-import { LogResourceSelector } from "../resource-selector";
-import { dockerPod, deploymentPod1, deploymentPod2 } from "./pod.mock";
+import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import fsInjectable from "../../../../../common/fs/fs.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
+import { SearchStore } from "../../../../search-store/search-store";
 import type { DiRender } from "../../../test-utils/renderFor";
 import { renderFor } from "../../../test-utils/renderFor";
-import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import type { TabId } from "../../dock/store";
 import callForLogsInjectable from "../call-for-logs.injectable";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
 import { LogTabViewModel } from "../logs-view-model";
-import type { TabId } from "../../dock/store";
-import type { UserEvent } from "@testing-library/user-event";
-import userEvent from "@testing-library/user-event";
-import { SearchStore } from "../../../../search-store/search-store";
-import assert from "assert";
-import fsInjectable from "../../../../../common/fs/fs.injectable";
+import { LogResourceSelector } from "../resource-selector";
+import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
 
 function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependencies>): LogTabViewModel {
   return new LogTabViewModel(tabId, {
@@ -167,8 +167,12 @@ describe("<LogResourceSelector />", () => {
       assert(selector);
 
       selectEvent.openMenu(selector);
-      expect(await findByText("deploymentPod2", { selector: ".pod-selector-menu .Select__option" })).toBeInTheDocument();
-      expect(await findByText("deploymentPod1", { selector: ".pod-selector-menu .Select__option" })).toBeInTheDocument();
+      expect(
+        await findByText("deploymentPod2", { selector: ".pod-selector-menu .Select__option" }),
+      ).toBeInTheDocument();
+      expect(
+        await findByText("deploymentPod1", { selector: ".pod-selector-menu .Select__option" }),
+      ).toBeInTheDocument();
     });
 
     it("renders sibling containers in dropdown", async () => {
@@ -187,9 +191,11 @@ describe("<LogResourceSelector />", () => {
     it("renders pod owner as badge", async () => {
       const { findByText } = render(<LogResourceSelector model={model} />);
 
-      expect(await findByText("super-deployment", {
-        exact: false,
-      })).toBeInTheDocument();
+      expect(
+        await findByText("super-deployment", {
+          exact: false,
+        }),
+      ).toBeInTheDocument();
     });
 
     it("updates tab name if selected pod changes", async () => {

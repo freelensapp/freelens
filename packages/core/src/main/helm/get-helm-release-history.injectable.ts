@@ -11,7 +11,10 @@ export interface GetHelmReleaseHistoryData {
   namespace: string;
 }
 
-export type GetHelmReleaseHistory = (kubeconfigPath: string, data: GetHelmReleaseHistoryData) => Promise<HelmReleaseRevision[]>;
+export type GetHelmReleaseHistory = (
+  kubeconfigPath: string,
+  data: GetHelmReleaseHistoryData,
+) => Promise<HelmReleaseRevision[]>;
 
 const getHelmReleaseHistoryInjectable = getInjectable({
   id: "get-helm-release-history",
@@ -22,9 +25,12 @@ const getHelmReleaseHistoryInjectable = getInjectable({
       const result = await execHelm([
         "history",
         name,
-        "--output", "json",
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
+        "--output",
+        "json",
+        "--namespace",
+        namespace,
+        "--kubeconfig",
+        kubeconfigPath,
       ]);
 
       if (result.callWasSuccessful) {

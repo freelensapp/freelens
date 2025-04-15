@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ClusterScopedMetadata } from "../api-types";
+import type { ClusterScopedMetadata, KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { PreemptionPolicy } from "../types/preemption-policy";
 

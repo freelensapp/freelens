@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import catalogSyncToRendererInjectable from "./catalog-sync-to-renderer.injectable";
 import { afterQuitOfFrontEndInjectionToken } from "../start-main-application/runnable-tokens/phases";
+import catalogSyncToRendererInjectable from "./catalog-sync-to-renderer.injectable";
 
 const stopCatalogSyncInjectable = getInjectable({
   id: "stop-catalog-sync",

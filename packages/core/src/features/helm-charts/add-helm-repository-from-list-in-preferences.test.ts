@@ -1,21 +1,21 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { waitFor, type RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
+import { type RenderResult, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
+import type { HelmRepo } from "../../common/helm/helm-repo";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { HelmRepo } from "../../common/helm/helm-repo";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { AsyncResult } from "@freelensapp/utilities";
-import userEvent from "@testing-library/user-event";
 
 describe("add helm repository from list in preferences", () => {
   let builder: ApplicationBuilder;
@@ -27,7 +27,7 @@ describe("add helm repository from list in preferences", () => {
   let callForPublicHelmRepositoriesMock: AsyncFnMock<() => Promise<HelmRepo[]>>;
 
   beforeEach(async () => {
-    builder = getApplicationBuilder(userEvent.setup({delay: null}));
+    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
 
     execFileMock = asyncFn();
     getActiveHelmRepositoriesMock = asyncFn();
@@ -86,29 +86,33 @@ describe("add helm repository from list in preferences", () => {
 
           getActiveHelmRepositoriesMock.resolve({
             callWasSuccessful: true,
-            response: [{
-              name: "Some already active repository",
-              url: "some-url",
-              cacheFilePath: "/some-cache-file-for-active",
-            }],
+            response: [
+              {
+                name: "Some already active repository",
+                url: "some-url",
+                cacheFilePath: "/some-cache-file-for-active",
+              },
+            ],
           }),
         ]);
       });
 
-      it("renders", async() => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      it("renders", async () => {
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
       describe("when select for adding public repositories is clicked", () => {
         beforeEach(() => {
-          builder.select.openMenu(
-            "selection-of-active-public-helm-repository",
-          );
+          builder.select.openMenu("selection-of-active-public-helm-repository");
         });
 
-        it("renders", async() => {
-          await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+        it("renders", async () => {
+          await waitFor(() => {
+            expect(rendered.baseElement).toBeTruthy();
+          });
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
@@ -122,8 +126,10 @@ describe("add helm repository from list in preferences", () => {
             );
           });
 
-          it("renders", async() => {
-            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+          it("renders", async () => {
+            await waitFor(() => {
+              expect(rendered.baseElement).toBeTruthy();
+            });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 
@@ -157,9 +163,7 @@ describe("add helm repository from list in preferences", () => {
             });
 
             it("shows error notification", () => {
-              expect(showErrorNotificationMock).toHaveBeenCalledWith(
-                "Some error",
-              );
+              expect(showErrorNotificationMock).toHaveBeenCalledWith("Some error");
             });
 
             it("does not show success notification", () => {
@@ -178,10 +182,7 @@ describe("add helm repository from list in preferences", () => {
           describe("when adding resolves", () => {
             beforeEach(async () => {
               await execFileMock.resolveSpecific(
-                [
-                  "some-helm-binary-path",
-                  ["repo", "add", "Some to be added repository", "some-other-url"],
-                ],
+                ["some-helm-binary-path", ["repo", "add", "Some to be added repository", "some-other-url"]],
                 {
                   callWasSuccessful: true,
                   response: "",
@@ -228,9 +229,7 @@ describe("add helm repository from list in preferences", () => {
 
               describe("when select for selecting active repositories is clicked", () => {
                 beforeEach(() => {
-                  builder.select.openMenu(
-                    "selection-of-active-public-helm-repository",
-                  );
+                  builder.select.openMenu("selection-of-active-public-helm-repository");
                 });
 
                 it("renders", () => {
@@ -270,10 +269,7 @@ describe("add helm repository from list in preferences", () => {
                   describe("when removing resolves", () => {
                     beforeEach(async () => {
                       await execFileMock.resolveSpecific(
-                        [
-                          "some-helm-binary-path",
-                          ["repo", "remove", "Some already active repository"],
-                        ],
+                        ["some-helm-binary-path", ["repo", "remove", "Some already active repository"]],
                         {
                           callWasSuccessful: true,
                           response: "",

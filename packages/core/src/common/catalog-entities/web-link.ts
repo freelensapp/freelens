@@ -58,9 +58,7 @@ export class WebLinkCategory extends CatalogCategory {
   };
   public spec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", WebLink),
-    ],
+    versions: [categoryVersion("v1alpha1", WebLink)],
     names: {
       kind: "WebLink",
     },

@@ -5,12 +5,12 @@
 
 import "./details-resources.scss";
 
+import type { Node } from "@freelensapp/kube-object";
+import React from "react";
 import { Table } from "../table/table";
+import { TableCell } from "../table/table-cell";
 import { TableHead } from "../table/table-head";
 import { TableRow } from "../table/table-row";
-import React from "react";
-import type { Node } from "@freelensapp/kube-object";
-import { TableCell } from "../table/table-cell";
 
 export interface NodeDetailsResourcesProps {
   node: Node;
@@ -25,7 +25,7 @@ function toMi(resource: string | undefined) {
   return resource;
 }
 
-export function NodeDetailsResources({ type, node: { status = {}}}: NodeDetailsResourcesProps) {
+export function NodeDetailsResources({ type, node: { status = {} } }: NodeDetailsResourcesProps) {
   const resourceStatus = status[type];
 
   if (!resourceStatus) {
@@ -34,10 +34,7 @@ export function NodeDetailsResources({ type, node: { status = {}}}: NodeDetailsR
 
   return (
     <div className="NodeDetailsResources flex column">
-      <Table
-        selectable
-        scrollable={false}
-      >
+      <Table selectable scrollable={false}>
         <TableHead sticky={false} flat>
           <TableCell className="cpu">CPU</TableCell>
           <TableCell className="memory">Memory</TableCell>
@@ -49,11 +46,7 @@ export function NodeDetailsResources({ type, node: { status = {}}}: NodeDetailsR
         <TableRow>
           <TableCell className="cpu">{resourceStatus.cpu}</TableCell>
           <TableCell className="memory">{toMi(resourceStatus.memory)}</TableCell>
-          <TableCell
-            className="ephemeral-storage"
-          >
-            {toMi(resourceStatus["ephemeral-storage"])}
-          </TableCell>
+          <TableCell className="ephemeral-storage">{toMi(resourceStatus["ephemeral-storage"])}</TableCell>
           <TableCell className="hugepages-1Gi">{resourceStatus["hugepages-1Gi"]}</TableCell>
           <TableCell className="hugepages-2Mi">{resourceStatus["hugepages-2Mi"]}</TableCell>
           <TableCell className="pods">{resourceStatus.pods}</TableCell>

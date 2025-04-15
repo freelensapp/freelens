@@ -17,7 +17,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedMetricsKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedMetricsKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -29,7 +32,7 @@ function NonInjectedMetricsKubernetesClusterSettings({ entity, getClusterById }:
       <section>
         <ClusterPrometheusSetting cluster={cluster} />
       </section>
-      <hr/>
+      <hr />
       <section>
         <ClusterMetricsSetting cluster={cluster} />
         <ShowMetricsSetting cluster={cluster} />
@@ -38,12 +41,15 @@ function NonInjectedMetricsKubernetesClusterSettings({ entity, getClusterById }:
   );
 }
 
-const MetricsKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedMetricsKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const MetricsKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedMetricsKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const metricsKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "metrics-kubernetes-cluster-entity-settings",

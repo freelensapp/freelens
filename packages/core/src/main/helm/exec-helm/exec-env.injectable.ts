@@ -12,10 +12,7 @@ const execHelmEnvInjectable = getInjectable({
     const httpsProxyConfiguration = di.inject(httpsProxyConfigurationInjectable);
 
     return computed(() => {
-      const {
-        HTTPS_PROXY = httpsProxyConfiguration.get(),
-        ...env
-      } = process.env;
+      const { HTTPS_PROXY = httpsProxyConfiguration.get(), ...env } = process.env;
 
       return { HTTPS_PROXY, ...env } as Partial<Record<string, string>>;
     });

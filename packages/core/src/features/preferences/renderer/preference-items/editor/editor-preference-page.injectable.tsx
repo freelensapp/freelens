@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
+import React from "react";
+import { PreferencePageComponent } from "../../preference-page-component";
 import type { PreferenceItemComponent, PreferencePage } from "../preference-item-injection-token";
 import { preferenceItemInjectionToken } from "../preference-item-injection-token";
-import { PreferencePageComponent } from "../../preference-page-component";
-import React from "react";
 
 const EditorPage: PreferenceItemComponent<PreferencePage> = ({ children, item }) => (
   <PreferencePageComponent title="Editor" id={item.id}>

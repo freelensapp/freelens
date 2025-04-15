@@ -4,9 +4,9 @@
  */
 
 import "./checkbox.scss";
-import React from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop } from "@freelensapp/utilities";
+import React from "react";
 
 export interface CheckboxProps {
   className?: string;
@@ -18,7 +18,16 @@ export interface CheckboxProps {
   children?: StrictReactNode;
 }
 
-export function Checkbox({ label, inline, className, value, children, onChange = noop, disabled, ...inputProps }: CheckboxProps) {
+export function Checkbox({
+  label,
+  inline,
+  className,
+  value,
+  children,
+  onChange = noop,
+  disabled,
+  ...inputProps
+}: CheckboxProps) {
   const componentClass = cssNames("Checkbox flex align-center", className, {
     inline,
     checked: value,
@@ -32,9 +41,9 @@ export function Checkbox({ label, inline, className, value, children, onChange =
         type="checkbox"
         checked={value}
         disabled={disabled}
-        onChange={event => onChange(event.target.checked, event)}
+        onChange={(event) => onChange(event.target.checked, event)}
       />
-      <i className="box flex align-center"/>
+      <i className="box flex align-center" />
       {label ? <span className="label">{label}</span> : null}
       {children}
     </label>

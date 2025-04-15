@@ -18,12 +18,7 @@ const deleteHelmReleaseInjectable = getInjectable({
     const execHelm = di.inject(execHelmInjectable);
 
     return async (kubeconfigPath, { name, namespace }) => {
-      const result = await execHelm([
-        "delete",
-        name,
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
-      ]);
+      const result = await execHelm(["delete", name, "--namespace", namespace, "--kubeconfig", kubeconfigPath]);
 
       if (result.callWasSuccessful) {
         return result.response;

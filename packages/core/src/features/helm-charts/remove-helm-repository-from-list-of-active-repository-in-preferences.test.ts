@@ -1,20 +1,20 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent, waitFor } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
+import type { HelmRepo } from "../../common/helm/helm-repo";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { HelmRepo } from "../../common/helm/helm-repo";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
 
 describe("remove helm repository from list of active repositories in preferences", () => {
   let builder: ApplicationBuilder;
@@ -48,7 +48,9 @@ describe("remove helm repository from list of active repositories in preferences
     });
 
     it("renders", async () => {
-      await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      await waitFor(() => {
+        expect(rendered.baseElement).toBeTruthy();
+      });
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
@@ -56,11 +58,13 @@ describe("remove helm repository from list of active repositories in preferences
       beforeEach(async () => {
         getActiveHelmRepositoriesMock.resolve({
           callWasSuccessful: true,
-          response: [{
-            name: "some-active-repository",
-            url: "some-url",
-            cacheFilePath: "/some-cache-file",
-          }],
+          response: [
+            {
+              name: "some-active-repository",
+              url: "some-url",
+              cacheFilePath: "/some-cache-file",
+            },
+          ],
         });
       });
 
@@ -73,15 +77,15 @@ describe("remove helm repository from list of active repositories in preferences
           execFileMock.mockClear();
           getActiveHelmRepositoriesMock.mockClear();
 
-          const removeButton = rendered.getByTestId(
-            "remove-helm-repository-some-active-repository",
-          );
+          const removeButton = rendered.getByTestId("remove-helm-repository-some-active-repository");
 
           fireEvent.click(removeButton);
         });
 
         it("renders", async () => {
-          await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+          await waitFor(() => {
+            expect(rendered.baseElement).toBeTruthy();
+          });
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
@@ -103,10 +107,7 @@ describe("remove helm repository from list of active repositories in preferences
         describe("when removing resolves", () => {
           beforeEach(async () => {
             await execFileMock.resolveSpecific(
-              [
-                "some-helm-binary-path",
-                ["repo", "remove", "some-active-repository"],
-              ],
+              ["some-helm-binary-path", ["repo", "remove", "some-active-repository"]],
               {
                 callWasSuccessful: true,
                 response: "",
@@ -115,7 +116,9 @@ describe("remove helm repository from list of active repositories in preferences
           });
 
           it("renders", async () => {
-            await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+            await waitFor(() => {
+              expect(rendered.baseElement).toBeTruthy();
+            });
             expect(rendered.baseElement).toMatchSnapshot();
           });
 

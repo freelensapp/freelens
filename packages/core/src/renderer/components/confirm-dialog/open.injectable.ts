@@ -13,7 +13,7 @@ const openConfirmDialogInjectable = getInjectable({
   instantiate: (di): OpenConfirmDialog => {
     const state = di.inject(confirmDialogStateInjectable);
 
-    return params => state.set(params);
+    return (params) => state.set(params);
   },
 });
 

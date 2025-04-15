@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import countdownStateInjectable from "../../../../../../renderer/components/countdown/countdown-state.injectable";
-import secondsAfterInstallStartsInjectable from "./seconds-after-install-starts.injectable";
 import restartAndInstallUpdateInjectable from "../../../../renderer/restart-and-install-update.injectable";
+import secondsAfterInstallStartsInjectable from "./seconds-after-install-starts.injectable";
 
 const installUpdateCountdownInjectable = getInjectable({
   id: "install-update-countdown",

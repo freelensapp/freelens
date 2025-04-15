@@ -1,30 +1,24 @@
+import { loggerTransportInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerTransportInjectionToken } from "@freelensapp/logger";
-import type winston from "winston";
 import { MESSAGE } from "triple-beam";
+import type winston from "winston";
 
-import IpcLogTransport from "./ipc-transport";
-import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
-import {
-  closeIpcFileLoggerChannel,
-  ipcFileLoggerChannel,
-} from "../common/ipc-file-logger-channel";
-import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
+import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
+import { closeIpcFileLoggerChannel, ipcFileLoggerChannel } from "../common/ipc-file-logger-channel";
+import IpcLogTransport from "./ipc-transport";
+import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 
 /**
  * Winston uses symbol property for the actual message.
  *
  * For that to get through IPC, use the internalMessage property instead
  */
-function serializeLogForIpc(
-  fileId: string,
-  entry: winston.LogEntry,
-): IpcFileLogObject {
+function serializeLogForIpc(fileId: string, entry: winston.LogEntry): IpcFileLogObject {
   return {
     fileId,
     entry: {
@@ -42,13 +36,8 @@ const ipcLogTransportInjectable = getInjectable({
     const fileId = di.inject(rendererLogFileIdInjectable);
 
     return new IpcLogTransport({
-      sendIpcLogMessage: (entry) =>
-        messageToChannel(
-          ipcFileLoggerChannel,
-          serializeLogForIpc(fileId, entry),
-        ),
-      closeIpcLogging: () =>
-        messageToChannel(closeIpcFileLoggerChannel, fileId),
+      sendIpcLogMessage: (entry) => messageToChannel(ipcFileLoggerChannel, serializeLogForIpc(fileId, entry)),
+      closeIpcLogging: () => messageToChannel(closeIpcFileLoggerChannel, fileId),
       handleExceptions: false,
       level: "info",
     });

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
+import commandLineArgs from "command-line-args";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { SemVer } from "semver";
-import commandLineArgs from "command-line-args";
 
 const options = commandLineArgs([
   {
@@ -56,7 +56,10 @@ const showPatch = Boolean(options.patch);
 const showPrerelease = options.prerelease !== undefined;
 const showJson = Boolean(options.json);
 
-const showOptionsSet = [+showMajor, +showMinor, +showPatch, +showPrerelease, +showJson].reduce((prev, cur) => prev + cur, 0);
+const showOptionsSet = [+showMajor, +showMinor, +showPatch, +showPrerelease, +showJson].reduce(
+  (prev, cur) => prev + cur,
+  0,
+);
 
 if (showOptionsSet === 0) {
   console.error("One of the following must be provided: --major, --minor, --patch, --prerelease, --json");
@@ -78,15 +81,17 @@ if (showMajor) {
   console.log(version.patch.toString());
 } else if (showPrerelease) {
   if ((options.prerelease ?? true) === true) {
-    console.log(JSON.stringify(version.prerelease))
+    console.log(JSON.stringify(version.prerelease));
   } else if (version.prerelease.length > options.prerelease) {
     console.log(version.prerelease[options.prerelease].toString());
   }
 } else if (showJson) {
-  console.log(JSON.stringify({
-    major: version.major,
-    minor: version.minor,
-    patch: version.patch,
-    prerelease: version.prerelease,
-  }));
+  console.log(
+    JSON.stringify({
+      major: version.major,
+      minor: version.minor,
+      patch: version.patch,
+      prerelease: version.prerelease,
+    }),
+  );
 }

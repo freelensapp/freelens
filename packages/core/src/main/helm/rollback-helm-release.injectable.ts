@@ -23,8 +23,10 @@ const rollbackHelmReleaseInjectable = getInjectable({
         "rollback",
         name,
         `${revision}`,
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
+        "--namespace",
+        namespace,
+        "--kubeconfig",
+        kubeconfigPath,
       ]);
 
       if (!result.callWasSuccessful) {

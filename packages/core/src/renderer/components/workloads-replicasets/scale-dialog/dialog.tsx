@@ -5,26 +5,25 @@
 
 import "./dialog.scss";
 
-import React, { Component } from "react";
-import type { IObservableValue } from "mobx";
-import { computed, observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import type { DialogProps } from "../../dialog";
-import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
 import { Icon } from "@freelensapp/icon";
-import { Slider } from "../../slider";
-import { cssNames } from "@freelensapp/utilities";
-import type { ReplicaSet } from "@freelensapp/kube-object";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { ReplicaSetApi } from "@freelensapp/kube-api";
 import { replicaSetApiInjectable } from "@freelensapp/kube-api-specifics";
-import replicaSetScaleDialogStateInjectable from "./state.injectable";
+import type { ReplicaSet } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { ReplicaSetApi } from "@freelensapp/kube-api";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IObservableValue } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React, { Component } from "react";
+import type { DialogProps } from "../../dialog";
+import { Dialog } from "../../dialog";
+import { Slider } from "../../slider";
+import { Wizard, WizardStep } from "../../wizard";
+import replicaSetScaleDialogStateInjectable from "./state.injectable";
 
-export interface ReplicaSetScaleDialogProps extends Partial<DialogProps> {
-}
+export interface ReplicaSetScaleDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   replicaSetApi: ReplicaSetApi;
@@ -68,9 +67,7 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
     const { currentReplicas } = this;
     const defaultMax = 50;
 
-    return currentReplicas <= defaultMax
-      ? defaultMax * 2
-      : currentReplicas * 2;
+    return currentReplicas <= defaultMax ? defaultMax * 2 : currentReplicas * 2;
   }
 
   scale = async (replicaSet: ReplicaSet) => {
@@ -78,10 +75,13 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
 
     try {
       if (currentReplicas !== desiredReplicas) {
-        await this.props.replicaSetApi.scale({
-          name: replicaSet.getName(),
-          namespace: replicaSet.getNs(),
-        }, desiredReplicas);
+        await this.props.replicaSetApi.scale(
+          {
+            name: replicaSet.getName(),
+            namespace: replicaSet.getNs(),
+          },
+          desiredReplicas,
+        );
       }
       close();
     } catch (err) {
@@ -105,12 +105,12 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
 
     return (
       <Wizard
-        header={(
+        header={
           <h5>
             {"Scale Replica Set "}
             <span>{replicaSet.getName()}</span>
           </h5>
-        )}
+        }
         done={this.close}
       >
         <WizardStep
@@ -127,11 +127,7 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
               {`Desired number of replicas: ${desiredReplicas}`}
             </div>
             <div className="slider-container flex align-center" data-testid="slider">
-              <Slider
-                value={desiredReplicas}
-                max={scaleMax}
-                onChange={onChange}
-              />
+              <Slider value={desiredReplicas} max={scaleMax} onChange={onChange} />
             </div>
             <div className="plus-minus-container flex gaps">
               <Icon
@@ -139,16 +135,12 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
                 onClick={this.desiredReplicasDown}
                 data-testid="desired-replicas-down"
               />
-              <Icon
-                material="add_circle_outline"
-                onClick={this.desiredReplicasUp}
-                data-testid="desired-replicas-up"
-              />
+              <Icon material="add_circle_outline" onClick={this.desiredReplicasUp} data-testid="desired-replicas-up" />
             </div>
           </div>
           {warning && (
             <div className="warning" data-testid="warning">
-              <Icon material="warning"/>
+              <Icon material="warning" />
               High number of replicas may cause cluster performance issues
             </div>
           )}
@@ -176,11 +168,14 @@ class NonInjectedReplicaSetScaleDialog extends Component<ReplicaSetScaleDialogPr
   }
 }
 
-export const ReplicaSetScaleDialog = withInjectables<Dependencies, ReplicaSetScaleDialogProps>(NonInjectedReplicaSetScaleDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    replicaSetApi: di.inject(replicaSetApiInjectable),
-    state: di.inject(replicaSetScaleDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-  }),
-});
+export const ReplicaSetScaleDialog = withInjectables<Dependencies, ReplicaSetScaleDialogProps>(
+  NonInjectedReplicaSetScaleDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      replicaSetApi: di.inject(replicaSetApiInjectable),
+      state: di.inject(replicaSetScaleDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    }),
+  },
+);

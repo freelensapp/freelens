@@ -21,13 +21,7 @@ const NonInjectedWorkloadEvents = observer(({ workloadEventsAreAllowed }: Depend
     return null;
   }
 
-  return (
-    <Events
-      className="box grow"
-      compact
-      hideFilters
-    />
-  );
+  return <Events className="box grow" compact hideFilters />;
 });
 
 export const WorkloadEvents = withInjectables<Dependencies, WorkloadEventsProps>(NonInjectedWorkloadEvents, {

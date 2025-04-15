@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CatalogEntity } from "../../common/catalog";
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
+import type { CatalogEntity } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../main/catalog/entity-registry.injectable";
 

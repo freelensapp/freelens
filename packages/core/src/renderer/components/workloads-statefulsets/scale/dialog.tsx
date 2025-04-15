@@ -5,26 +5,25 @@
 
 import "./dialog.scss";
 
+import { Icon } from "@freelensapp/icon";
+import type { StatefulSetApi } from "@freelensapp/kube-api";
+import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { StatefulSet } from "@freelensapp/kube-object";
-import React, { Component } from "react";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IObservableValue } from "mobx";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import React, { Component } from "react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
-import { Icon } from "@freelensapp/icon";
 import { Slider } from "../../slider";
-import { cssNames } from "@freelensapp/utilities";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
+import { Wizard, WizardStep } from "../../wizard";
 import statefulSetDialogStateInjectable from "./dialog-state.injectable";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { StatefulSetApi } from "@freelensapp/kube-api";
 
-export interface StatefulSetScaleDialogProps extends Partial<DialogProps> {
-}
+export interface StatefulSetScaleDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   statefulSetApi: StatefulSetApi;
@@ -68,9 +67,7 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
     const { currentReplicas } = this;
     const defaultMax = 50;
 
-    return currentReplicas <= defaultMax
-      ? defaultMax * 2
-      : currentReplicas * 2;
+    return currentReplicas <= defaultMax ? defaultMax * 2 : currentReplicas * 2;
   }
 
   scale = async (statefulSet: StatefulSet) => {
@@ -78,10 +75,13 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
 
     try {
       if (currentReplicas !== desiredReplicas) {
-        await this.props.statefulSetApi.scale({
-          name: statefulSet.getName(),
-          namespace: statefulSet.getNs(),
-        }, desiredReplicas);
+        await this.props.statefulSetApi.scale(
+          {
+            name: statefulSet.getName(),
+            namespace: statefulSet.getNs(),
+          },
+          desiredReplicas,
+        );
       }
       close();
     } catch (error) {
@@ -105,12 +105,12 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
 
     return (
       <Wizard
-        header={(
+        header={
           <h5>
             {"Scale Stateful Set "}
             <span>{statefulSet.getName()}</span>
           </h5>
-        )}
+        }
         done={this.close}
       >
         <WizardStep
@@ -127,11 +127,7 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
               {`Desired number of replicas: ${desiredReplicas}`}
             </div>
             <div className="slider-container flex align-center" data-testid="slider">
-              <Slider
-                value={desiredReplicas}
-                max={scaleMax}
-                onChange={onChange}
-              />
+              <Slider value={desiredReplicas} max={scaleMax} onChange={onChange} />
             </div>
             <div className="plus-minus-container flex gaps">
               <Icon
@@ -139,16 +135,12 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
                 onClick={this.desiredReplicasDown}
                 data-testid="desired-replicas-down"
               />
-              <Icon
-                material="add_circle_outline"
-                onClick={this.desiredReplicasUp}
-                data-testid="desired-replicas-up"
-              />
+              <Icon material="add_circle_outline" onClick={this.desiredReplicasUp} data-testid="desired-replicas-up" />
             </div>
           </div>
           {warning && (
             <div className="warning" data-testid="warning">
-              <Icon material="warning"/>
+              <Icon material="warning" />
               High number of replicas may cause cluster performance issues
             </div>
           )}
@@ -176,11 +168,14 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
   }
 }
 
-export const StatefulSetScaleDialog = withInjectables<Dependencies, StatefulSetScaleDialogProps>(NonInjectedStatefulSetScaleDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    statefulSetApi: di.inject(statefulSetApiInjectable),
-    state: di.inject(statefulSetDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-  }),
-});
+export const StatefulSetScaleDialog = withInjectables<Dependencies, StatefulSetScaleDialogProps>(
+  NonInjectedStatefulSetScaleDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      statefulSetApi: di.inject(statefulSetApiInjectable),
+      state: di.inject(statefulSetDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    }),
+  },
+);

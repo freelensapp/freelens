@@ -1,14 +1,14 @@
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
-import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import setupShellInjectable from "../../../features/shell-sync/main/setup-shell.injectable";
+import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
 
 const initializeExtensionsInjectable = getInjectable({
   id: "initialize-extensions",
@@ -43,10 +43,7 @@ const initializeExtensionsInjectable = getInjectable({
 
         extensionLoader.initExtensions(extensions);
       } catch (error: any) {
-        showErrorPopup(
-          "Lens Error",
-          `Could not load extensions${error?.message ? `: ${error.message}` : ""}`,
-        );
+        showErrorPopup("Lens Error", `Could not load extensions${error?.message ? `: ${error.message}` : ""}`);
 
         console.error(error);
         console.trace();

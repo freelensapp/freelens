@@ -7,13 +7,13 @@ import styles from "./helm-charts.module.scss";
 
 import React from "react";
 
-import { observer } from "mobx-react";
-import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
+import { Spinner } from "@freelensapp/spinner";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { Spinner } from "@freelensapp/spinner";
+import { observer } from "mobx-react";
 import type { HelmRepo } from "../../../../../common/helm/helm-repo";
 import { RemovableItem } from "../../../../preferences/renderer/removable-item/removable-item";
+import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
 import removeHelmRepositoryInjectable from "./remove-helm-repository.injectable";
 
 interface Dependencies {
@@ -54,7 +54,6 @@ const NonInjectedActiveHelmRepositories = observer(({ activeHelmRepositories, re
       ))}
     </div>
   );
-
 });
 
 export const HelmRepositories = withInjectables<Dependencies>(

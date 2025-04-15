@@ -4,14 +4,14 @@
  */
 
 import { Pod } from "@freelensapp/kube-object";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import { Cluster } from "../../../common/cluster/cluster";
 
 const runningPod = new Pod({
   apiVersion: "foo",
@@ -127,24 +127,23 @@ describe("Pod Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     podStore = di.inject(podStoreInjectable);
   });
 
   it("gets Pod statuses in proper sorting order", () => {
-    const statuses = Object.entries(podStore.getStatuses([
-      pendingPod,
-      runningPod,
-      succeededPod,
-      failedPod,
-      evictedPod,
-      evictedPod,
-    ]));
+    const statuses = Object.entries(
+      podStore.getStatuses([pendingPod, runningPod, succeededPod, failedPod, evictedPod, evictedPod]),
+    );
 
     expect(statuses).toEqual([
       ["Succeeded", 1],
@@ -156,14 +155,9 @@ describe("Pod Store tests", () => {
   });
 
   it("counts statuses properly", () => {
-    const statuses = Object.entries(podStore.getStatuses([
-      pendingPod,
-      pendingPod,
-      pendingPod,
-      runningPod,
-      failedPod,
-      failedPod,
-    ]));
+    const statuses = Object.entries(
+      podStore.getStatuses([pendingPod, pendingPod, pendingPod, runningPod, failedPod, failedPod]),
+    );
 
     expect(statuses).toEqual([
       ["Running", 1],

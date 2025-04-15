@@ -19,7 +19,7 @@ describe("hovering hotbar menu tests", () => {
 
     result = await builder.render();
 
-    user = userEvent.setup({delay: null});
+    user = userEvent.setup({ delay: null });
   });
 
   it("renders", () => {

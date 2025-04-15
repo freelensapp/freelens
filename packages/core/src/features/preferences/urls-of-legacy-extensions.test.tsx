@@ -1,13 +1,13 @@
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
+import React from "react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
-import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import React from "react";
 import type { Navigate } from "../../renderer/navigation/navigate.injectable";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
 
@@ -97,9 +97,7 @@ describe("preferences: URLs of legacy extensions", () => {
       });
 
       it("shows the custom preferences", () => {
-        const { discovered } = discover.getSingleElement(
-          "some-preference",
-        );
+        const { discovered } = discover.getSingleElement("some-preference");
 
         expect(discovered).not.toBeNull();
       });
@@ -115,9 +113,7 @@ describe("preferences: URLs of legacy extensions", () => {
       });
 
       it("cannot find contents of the arbitrary custom preference tabs", () => {
-        const { discovered } = discover.querySingleElement(
-          "some-preference",
-        );
+        const { discovered } = discover.querySingleElement("some-preference");
 
         expect(discovered).toBeNull();
       });
@@ -282,9 +278,7 @@ describe("preferences: URLs of legacy extensions", () => {
       });
 
       it("shows the custom preferences", () => {
-        const { discovered } = discover.getSingleElement(
-          "some-preference",
-        );
+        const { discovered } = discover.getSingleElement("some-preference");
 
         expect(discovered).not.toBeNull();
       });
@@ -300,10 +294,7 @@ describe("preferences: URLs of legacy extensions", () => {
       });
 
       it("cannot find contents of the arbitrary custom preference tabs", () => {
-        const { discovered } = discover.querySingleElement(
-          "some-preference",
-          "some-preference-in-custom-tab",
-        );
+        const { discovered } = discover.querySingleElement("some-preference", "some-preference-in-custom-tab");
 
         expect(discovered).toBeNull();
       });
@@ -318,10 +309,7 @@ describe("preferences: URLs of legacy extensions", () => {
       });
 
       it("shows preferences of default preference page of the extension", () => {
-        const { discovered } = discover.getSingleElement(
-          "some-preference",
-          "some-preference-in-default-tab",
-        );
+        const { discovered } = discover.getSingleElement("some-preference", "some-preference-in-default-tab");
 
         expect(discovered).not.toBeNull();
       });

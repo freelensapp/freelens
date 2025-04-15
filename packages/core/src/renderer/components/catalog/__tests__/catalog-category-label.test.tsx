@@ -30,7 +30,7 @@ class CatalogCategoryWithoutBadge extends CatalogCategory {
 
 class CatalogCategoryWithBadge extends CatalogCategoryWithoutBadge {
   getBadge() {
-    return (<div>Test Badge</div>);
+    return <div>Test Badge</div>;
   }
 }
 
@@ -38,7 +38,7 @@ describe("CatalogCategoryLabel", () => {
   it("renders without a badge", async () => {
     const category = new CatalogCategoryWithoutBadge();
 
-    render(<CatalogCategoryLabel category={category}/>);
+    render(<CatalogCategoryLabel category={category} />);
 
     expect(await screen.findByText("Test Category")).toBeInTheDocument();
   });
@@ -46,7 +46,7 @@ describe("CatalogCategoryLabel", () => {
   it("renders with a badge", async () => {
     const category = new CatalogCategoryWithBadge();
 
-    render(<CatalogCategoryLabel category={category}/>);
+    render(<CatalogCategoryLabel category={category} />);
 
     expect(await screen.findByText("Test Category")).toBeInTheDocument();
     expect(await screen.findByText("Test Badge")).toBeInTheDocument();

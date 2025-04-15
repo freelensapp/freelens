@@ -21,10 +21,7 @@ const clusterOverviewMetricsInjectable = getInjectable({
       getValueFromObservedPromise: async () => {
         now(everyMinute);
 
-        const nodeNames = selectedNodeRoleForMetrics
-          .nodes
-          .get()
-          .map(node => node.getName());
+        const nodeNames = selectedNodeRoleForMetrics.nodes.get().map((node) => node.getName());
 
         return requestClusterMetricsByNodeNames(nodeNames);
       },

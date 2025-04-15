@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../application-menu-item-injection-token";
 import appNameInjectable from "../../../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../../../common/vars/is-mac.injectable";
+import applicationMenuItemInjectionToken from "../application-menu-item-injection-token";
 
 const primaryMenuItemInjectable = getInjectable({
   id: "primary-application-menu-item",

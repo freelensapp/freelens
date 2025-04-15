@@ -4,10 +4,10 @@
  */
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
+import ingressClassesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/ingress-class/ingress-classes-route.injectable";
+import navigateToIngressClassesInjectable from "../../../common/front-end-routing/routes/cluster/network/ingress-class/navigate-to-ingress-classes.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
-import navigateToIngressClassesInjectable from "../../../common/front-end-routing/routes/cluster/network/ingress-class/navigate-to-ingress-classes.injectable";
-import ingressClassesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/ingress-class/ingress-classes-route.injectable";
 
 const ingressClassesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-ingress-classes",

@@ -1,19 +1,19 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { Namespace } from "@freelensapp/kube-object";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import type { RequestKubeResource } from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
-import requestKubeResourceInjectable from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { TabKind } from "../../../renderer/components/dock/dock/store";
-import { Namespace } from "@freelensapp/kube-object";
+import type { RequestKubeResource } from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
+import requestKubeResourceInjectable from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("cluster/namespaces - edit namespaces from previously opened tab", () => {
   let builder: ApplicationBuilder;
@@ -27,10 +27,7 @@ describe("cluster/namespaces - edit namespaces from previously opened tab", () =
     requestKubeResourceMock = asyncFn();
 
     builder.beforeWindowStart(({ windowDi }) => {
-      windowDi.override(
-        directoryForLensLocalStorageInjectable,
-        () => "/some-directory-for-lens-local-storage",
-      );
+      windowDi.override(directoryForLensLocalStorageInjectable, () => "/some-directory-for-lens-local-storage");
 
       windowDi.override(requestKubeResourceInjectable, () => requestKubeResourceMock);
     });
@@ -50,31 +47,28 @@ describe("cluster/namespaces - edit namespaces from previously opened tab", () =
       builder.beforeWindowStart(async ({ windowDi }) => {
         const writeJsonFile = windowDi.inject(writeJsonFileInjectable);
 
-        await writeJsonFile(
-          "/some-directory-for-lens-local-storage/some-cluster-id.json",
-          {
-            dock: {
-              height: 300,
-              tabs: [
-                {
-                  id: "some-first-tab-id",
-                  kind: TabKind.EDIT_RESOURCE,
-                  title: "Namespace: some-namespace",
-                  pinned: false,
-                },
-              ],
-
-              isOpen: true,
-            },
-
-            edit_resource_store: {
-              "some-first-tab-id": {
-                resource: "/apis/some-api-version/namespaces/some-uid",
-                draft: "some-saved-configuration",
+        await writeJsonFile("/some-directory-for-lens-local-storage/some-cluster-id.json", {
+          dock: {
+            height: 300,
+            tabs: [
+              {
+                id: "some-first-tab-id",
+                kind: TabKind.EDIT_RESOURCE,
+                title: "Namespace: some-namespace",
+                pinned: false,
               },
+            ],
+
+            isOpen: true,
+          },
+
+          edit_resource_store: {
+            "some-first-tab-id": {
+              resource: "/apis/some-api-version/namespaces/some-uid",
+              draft: "some-saved-configuration",
             },
           },
-        );
+        });
       });
 
       rendered = await builder.render();
@@ -85,21 +79,15 @@ describe("cluster/namespaces - edit namespaces from previously opened tab", () =
     });
 
     it("shows dock tab for editing namespace", () => {
-      expect(
-        rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-      ).toBeInTheDocument();
+      expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
     });
 
     it("shows spinner in the dock tab", () => {
-      expect(
-        rendered.getByTestId("edit-resource-tab-spinner"),
-      ).toBeInTheDocument();
+      expect(rendered.getByTestId("edit-resource-tab-spinner")).toBeInTheDocument();
     });
 
     it("calls for namespace", () => {
-      expect(requestKubeResourceMock).toHaveBeenCalledWith(
-        "/apis/some-api-version/namespaces/some-uid",
-      );
+      expect(requestKubeResourceMock).toHaveBeenCalledWith("/apis/some-api-version/namespaces/some-uid");
     });
 
     describe("when call for namespace resolves with namespace", () => {
@@ -134,9 +122,7 @@ describe("cluster/namespaces - edit namespaces from previously opened tab", () =
       });
 
       it("has the saved configuration in editor", () => {
-        const input = rendered.getByTestId(
-          "monaco-editor-for-some-first-tab-id",
-        ) as HTMLTextAreaElement;
+        const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLTextAreaElement;
 
         expect(input.value).toBe("some-saved-configuration");
       });

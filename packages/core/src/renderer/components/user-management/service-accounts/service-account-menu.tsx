@@ -4,13 +4,13 @@
  */
 import React from "react";
 
-import type { KubeObjectMenuProps } from "../../kube-object-menu";
-import type { ServiceAccount } from "@freelensapp/kube-object";
-import { MenuItem } from "../../menu";
 import { Icon } from "@freelensapp/icon";
-import type { OpenServiceAccountKubeConfigDialog } from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
+import type { ServiceAccount } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { KubeObjectMenuProps } from "../../kube-object-menu";
+import type { OpenServiceAccountKubeConfigDialog } from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
 import openServiceAccountKubeConfigDialogInjectable from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
+import { MenuItem } from "../../menu";
 
 interface Dependencies {
   openServiceAccountKubeConfigDialog: OpenServiceAccountKubeConfigDialog;
@@ -21,19 +21,18 @@ function NonInjectedServiceAccountMenu(props: KubeObjectMenuProps<ServiceAccount
 
   return (
     <MenuItem onClick={() => openServiceAccountKubeConfigDialog(object)}>
-      <Icon
-        material="insert_drive_file"
-        tooltip="Kubeconfig File"
-        interactive={toolbar}
-      />
+      <Icon material="insert_drive_file" tooltip="Kubeconfig File" interactive={toolbar} />
       <span className="title">Kubeconfig</span>
     </MenuItem>
   );
 }
 
-export const ServiceAccountMenu = withInjectables<Dependencies, KubeObjectMenuProps<ServiceAccount>>(NonInjectedServiceAccountMenu, {
-  getProps: (di, props) => ({
-    ...props,
-    openServiceAccountKubeConfigDialog: di.inject(openServiceAccountKubeConfigDialogInjectable),
-  }),
-});
+export const ServiceAccountMenu = withInjectables<Dependencies, KubeObjectMenuProps<ServiceAccount>>(
+  NonInjectedServiceAccountMenu,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      openServiceAccountKubeConfigDialog: di.inject(openServiceAccountKubeConfigDialogInjectable),
+    }),
+  },
+);

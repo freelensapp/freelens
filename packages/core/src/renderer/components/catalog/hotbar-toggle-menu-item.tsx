@@ -6,12 +6,12 @@ import React, { useState } from "react";
 
 import { MenuItem } from "../menu";
 
-import type { CatalogEntity } from "../../api/catalog-entity";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
-import type { StrictReactNode } from "@freelensapp/utilities";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 interface Dependencies {
   activeHotbar: IComputedValue<Hotbar | undefined>;
@@ -43,14 +43,17 @@ function NonInjectedHotbarToggleMenuItem({
         }
       }}
     >
-      {itemInHotbar ? removeContent : addContent }
+      {itemInHotbar ? removeContent : addContent}
     </MenuItem>
   );
 }
 
-export const HotbarToggleMenuItem = withInjectables<Dependencies, HotbarToggleMenuItemProps>(NonInjectedHotbarToggleMenuItem, {
-  getProps: (di, props) => ({
-    ...props,
-    activeHotbar: di.inject(activeHotbarInjectable),
-  }),
-});
+export const HotbarToggleMenuItem = withInjectables<Dependencies, HotbarToggleMenuItemProps>(
+  NonInjectedHotbarToggleMenuItem,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      activeHotbar: di.inject(activeHotbarInjectable),
+    }),
+  },
+);

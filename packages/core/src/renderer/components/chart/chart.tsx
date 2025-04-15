@@ -4,14 +4,14 @@
  */
 
 import "./chart.scss";
-import type { CSSProperties } from "react";
-import React from "react";
+import { cssNames } from "@freelensapp/utilities";
 import type { PluginServiceRegistrationOptions } from "chart.js";
 import ChartJS from "chart.js";
 import { remove } from "lodash";
-import { cssNames } from "@freelensapp/utilities";
-import { StatusBrick } from "../status-brick";
+import type { CSSProperties } from "react";
+import React from "react";
 import { Badge } from "../badge";
+import { StatusBrick } from "../status-brick";
 
 export interface ChartData extends ChartJS.ChartData {
   datasets?: ChartDataSets[];
@@ -24,16 +24,16 @@ export interface ChartDataSets extends ChartJS.ChartDataSets {
 
 export interface ChartProps {
   data: ChartData;
-  options?: ChartJS.ChartOptions;  // Passed to ChartJS instance
+  options?: ChartJS.ChartOptions; // Passed to ChartJS instance
   width?: number | string;
   height?: number | string;
   type?: ChartKind;
-  showChart?: boolean;  // Possible to show legend only if false
+  showChart?: boolean; // Possible to show legend only if false
   showLegend?: boolean;
   legendPosition?: "bottom";
-  legendColors?: string[];  // Hex colors for each of the labels in data object
+  legendColors?: string[]; // Hex colors for each of the labels in data object
   plugins?: PluginServiceRegistrationOptions[];
-  redraw?: boolean;  // If true - recreate chart instance with no animation
+  redraw?: boolean; // If true - recreate chart instance with no animation
   title?: string;
   className?: string;
   "data-testid"?: string;
@@ -93,11 +93,13 @@ export class Chart extends React.Component<ChartProps> {
 
     this.currentChartData = {
       ...data,
-      datasets: data.datasets && data.datasets.map(set => {
-        return {
-          ...set,
-        };
-      }),
+      datasets:
+        data.datasets &&
+        data.datasets.map((set) => {
+          return {
+            ...set,
+          };
+        }),
     };
   }
 
@@ -110,27 +112,27 @@ export class Chart extends React.Component<ChartProps> {
 
     this.memoizeDataProps();
 
-    const datasets: ChartDataSets[] = (this.chart.config.data ??= {}).datasets ??= [];
-    const nextDatasets: ChartDataSets[] = (this.currentChartData ??= {}).datasets ??= [];
+    const datasets: ChartDataSets[] = ((this.chart.config.data ??= {}).datasets ??= []);
+    const nextDatasets: ChartDataSets[] = ((this.currentChartData ??= {}).datasets ??= []);
 
     // Remove stale datasets if they're not available in nextDatasets
     if (datasets.length > nextDatasets.length) {
       const sets = [...datasets];
 
-      sets.forEach(set => {
-        if (!nextDatasets.find(next => next.id === set.id)) {
-          remove(datasets, (item => item.id === set.id));
+      sets.forEach((set) => {
+        if (!nextDatasets.find((next) => next.id === set.id)) {
+          remove(datasets, (item) => item.id === set.id);
         }
       });
     }
 
     // Mutating inner chart datasets to enable seamless transitions
     nextDatasets.forEach((next, datasetIndex) => {
-      const index = datasets.findIndex(set => set.id === next.id);
+      const index = datasets.findIndex((set) => set.id === next.id);
 
       if (index !== -1) {
-        const data = datasets[index].data = (datasets[index].data ?? []).slice();  // "Clean" mobx observables data to use in ChartJS
-        const nextData = next.data ??= [];
+        const data = (datasets[index].data = (datasets[index].data ?? []).slice()); // "Clean" mobx observables data to use in ChartJS
+        const nextData = (next.data ??= []);
 
         data.splice(next.data.length);
 
@@ -156,16 +158,20 @@ export class Chart extends React.Component<ChartProps> {
     if (!this.props.showLegend) return null;
     const { data, legendColors } = this.props;
     const { labels, datasets } = data;
-    const labelElem = (title: string | undefined, color: string | CSSProperties["backgroundColor"], tooltip?: string) => (
+    const labelElem = (
+      title: string | undefined,
+      color: string | CSSProperties["backgroundColor"],
+      tooltip?: string,
+    ) => (
       <Badge
         key={title}
         className="LegendBadge flex gaps align-center"
-        label={(
+        label={
           <div className="flex items-center">
-            <StatusBrick style={{ backgroundColor: color }} className="flex-shrink-0"/>
+            <StatusBrick style={{ backgroundColor: color }} className="flex-shrink-0" />
             <span>{title}</span>
           </div>
-        )}
+        }
         tooltip={tooltip}
         expandable={false}
       />
@@ -173,18 +179,14 @@ export class Chart extends React.Component<ChartProps> {
 
     return (
       <div className="legend flex wrap">
-        {
-          labels
-            ? labels.map((label, index) => {
+        {labels
+          ? labels.map((label, index) => {
               const { backgroundColor = [] } = datasets?.[0] ?? {};
               const color = legendColors ? legendColors[index] : (backgroundColor as string[])[index];
 
               return labelElem(label as string, color);
             })
-            : datasets?.map(({ borderColor, label, tooltip }) =>
-              labelElem(label, borderColor as string, tooltip),
-            )
-        }
+          : datasets?.map(({ borderColor, label, tooltip }) => labelElem(label, borderColor as string, tooltip))}
       </div>
     );
   }
@@ -216,18 +218,11 @@ export class Chart extends React.Component<ChartProps> {
     const { width, height, showChart, title, className, "data-testid": dataTestId } = this.props;
 
     return (
-      <div
-        className={cssNames("Chart", className)}
-        data-testid={dataTestId}
-      >
+      <div className={cssNames("Chart", className)} data-testid={dataTestId}>
         {title && <div className="chart-title">{title}</div>}
         {showChart && (
           <div className="chart-container">
-            <canvas
-              ref={this.canvas}
-              width={width}
-              height={height}
-            />
+            <canvas ref={this.canvas} width={width} height={height} />
             <div className="chartjs-tooltip flex column"></div>
           </div>
         )}

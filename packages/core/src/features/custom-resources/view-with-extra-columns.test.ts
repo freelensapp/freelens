@@ -4,7 +4,7 @@
  */
 
 import type { KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
-import { KubeObject, CustomResourceDefinition } from "@freelensapp/kube-object";
+import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import type { RenderResult } from "@testing-library/react";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
@@ -18,7 +18,9 @@ describe("Viewing Custom Resources with extra columns", () => {
   let builder: ApplicationBuilder;
   let result: RenderResult;
   let customResourceDefinitionStore: CustomResourceDefinitionStore;
-  let customResourceStore: CustomResourceStore<KubeObject<KubeObjectMetadata<KubeObjectScope.Cluster>, void, { someColumn: Record<string, unknown> }>>;
+  let customResourceStore: CustomResourceStore<
+    KubeObject<KubeObjectMetadata<KubeObjectScope.Cluster>, void, { someColumn: Record<string, unknown> }>
+  >;
   let customResource: CustomResourceDefinition;
 
   beforeEach(async () => {
@@ -64,9 +66,7 @@ describe("Viewing Custom Resources with extra columns", () => {
         },
       });
 
-      customResourceDefinitionStore.items.replace([
-        customResource,
-      ]);
+      customResourceDefinitionStore.items.replace([customResource]);
 
       customResourceStore = apiManager.getStore(customResource.getResourceApiBase()) as typeof customResourceStore;
 
@@ -82,7 +82,7 @@ describe("Viewing Custom Resources with extra columns", () => {
           },
           spec: {
             someColumn: {
-              "foo": "bar",
+              foo: "bar",
             },
           },
         }),
@@ -118,6 +118,8 @@ describe("Viewing Custom Resources with extra columns", () => {
   });
 
   it("shows some value for in the cells of 'some-column' column", () => {
-    expect(result.getByTestId("custom-resource-column-cell-some-column-for-some-resource")).toHaveTextContent(JSON.stringify({ foo: "bar" }));
+    expect(result.getByTestId("custom-resource-column-cell-some-column-for-some-resource")).toHaveTextContent(
+      JSON.stringify({ foo: "bar" }),
+    );
   });
 });

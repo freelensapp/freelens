@@ -1,10 +1,10 @@
+import assert from "assert";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import hostedClusterIdInjectable from "../cluster-frame-context/hosted-cluster-id.injectable";
 import defaultWebsocketApiParamsInjectable from "./default-websocket-api-params.injectable";
 import type { TerminalApiDependencies, TerminalApiQuery } from "./terminal-api";
@@ -24,10 +24,13 @@ const createTerminalApiInjectable = getInjectable({
     return (query) => {
       assert(hostedClusterId, "Can only create terminal APIs within a cluster frame");
 
-      return new TerminalApi({
-        hostedClusterId,
-        ...deps,
-      }, query);
+      return new TerminalApi(
+        {
+          hostedClusterId,
+          ...deps,
+        },
+        query,
+      );
     };
   },
 });

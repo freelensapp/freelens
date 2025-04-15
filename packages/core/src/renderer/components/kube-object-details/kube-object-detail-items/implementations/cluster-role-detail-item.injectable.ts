@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-injection-token";
 import { computed } from "mobx";
 import { ClusterRoleDetails } from "../../../user-management/cluster-roles";
 import currentKubeObjectInDetailsInjectable from "../../current-kube-object-in-details.injectable";
+import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-injection-token";
 import { kubeObjectMatchesToKindAndApiVersion } from "../kube-object-matches-to-kind-and-api-version";
 
 const clusterRoleDetailItemInjectable = getInjectable({
@@ -27,7 +27,4 @@ const clusterRoleDetailItemInjectable = getInjectable({
 
 export default clusterRoleDetailItemInjectable;
 
-export const isClusterRole = kubeObjectMatchesToKindAndApiVersion(
-  "ClusterRole",
-  ["rbac.authorization.k8s.io/v1"],
-);
+export const isClusterRole = kubeObjectMatchesToKindAndApiVersion("ClusterRole", ["rbac.authorization.k8s.io/v1"]);

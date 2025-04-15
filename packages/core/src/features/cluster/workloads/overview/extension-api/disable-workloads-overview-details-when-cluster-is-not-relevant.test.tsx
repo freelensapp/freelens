@@ -5,18 +5,16 @@
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
-import type { KubernetesCluster } from "../../../../../common/catalog-entities";
-import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
-import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
 import React from "react";
+import type { KubernetesCluster } from "../../../../../common/catalog-entities";
+import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
+import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 
 describe("disable workloads overview details when cluster is not relevant", () => {
   let builder: ApplicationBuilder;
   let rendered: RenderResult;
-  let isEnabledForClusterMock: AsyncFnMock<
-    (cluster: KubernetesCluster) => Promise<boolean>
-  >;
+  let isEnabledForClusterMock: AsyncFnMock<(cluster: KubernetesCluster) => Promise<boolean>>;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -35,9 +33,7 @@ describe("disable workloads overview details when cluster is not relevant", () =
         kubeWorkloadsOverviewItems: [
           {
             components: {
-              Details: () => (
-                <div data-testid="some-detail-component">Some detail component</div>
-              ),
+              Details: () => <div data-testid="some-detail-component">Some detail component</div>,
             },
           },
         ],
@@ -48,9 +44,7 @@ describe("disable workloads overview details when cluster is not relevant", () =
 
     const windowDi = builder.applicationWindow.only.di;
 
-    const navigateToWorkloadsOverview = windowDi.inject(
-      navigateToWorkloadsOverviewInjectable,
-    );
+    const navigateToWorkloadsOverview = windowDi.inject(navigateToWorkloadsOverviewInjectable);
 
     navigateToWorkloadsOverview();
 

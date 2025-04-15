@@ -1,11 +1,11 @@
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { onQuitOfBackEndInjectionToken } from "../runnable-tokens/phases";
 import shellSessionProcessesInjectable from "../../shell-session/processes.injectable";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
+import { onQuitOfBackEndInjectionToken } from "../runnable-tokens/phases";
 
 const cleanUpShellSessionsInjectable = getInjectable({
   id: "clean-up-shell-sessions",

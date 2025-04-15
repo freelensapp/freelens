@@ -29,12 +29,15 @@ function NonInjectedProxyKubernetesClusterSettings({ entity, getClusterById }: E
   );
 }
 
-const ProxyKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedProxyKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const ProxyKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedProxyKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const proxyKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "proxy-kubernetes-cluster-entity-settings",

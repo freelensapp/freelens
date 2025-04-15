@@ -1,13 +1,13 @@
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import verticalPodAutoscalersRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/vertical-pod-autoscalers/vertical-pod-autoscalers-route.injectable";
-import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
-import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToVerticalPodAutoscalersInjectable from "../../../common/front-end-routing/routes/cluster/config/vertical-pod-autoscalers/navigate-to-vertical-pod-autoscalers.injectable";
+import verticalPodAutoscalersRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/vertical-pod-autoscalers/vertical-pod-autoscalers-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
 
 const verticalPodAutoscalersSidebarItemInjectable = getInjectable({
   id: "sidebar-item-vertical-pod-autoscalers",

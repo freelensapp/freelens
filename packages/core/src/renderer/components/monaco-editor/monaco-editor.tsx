@@ -3,25 +3,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./monaco-editor.module.scss";
-import React from "react";
-import { observer } from "mobx-react";
-import type { IComputedValue } from "mobx";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
-import { editor, Uri } from "monaco-editor";
-import type { MonacoTheme } from "./monaco-themes";
-import { type MonacoValidator, monacoValidators } from "./monaco-validators";
-import { debounce, merge } from "lodash";
-import { cssNames, disposer } from "@freelensapp/utilities";
-import type { LensTheme } from "../../themes/lens-theme";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import activeThemeInjectable from "../../themes/active.injectable";
-import getEditorHeightFromLinesCountInjectable from "./get-editor-height-from-lines-number.injectable";
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { cssNames, disposer } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { debounce, merge } from "lodash";
+import type { IComputedValue } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { observer } from "mobx-react";
+import { Uri, editor } from "monaco-editor";
+import React from "react";
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
+import activeThemeInjectable from "../../themes/active.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import getEditorHeightFromLinesCountInjectable from "./get-editor-height-from-lines-number.injectable";
+import styles from "./monaco-editor.module.scss";
+import type { MonacoTheme } from "./monaco-themes";
+import { type MonacoValidator, monacoValidators } from "./monaco-validators";
 
 export type MonacoEditorId = string;
 
@@ -103,9 +103,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     }
 
     const { language, value: rawValue } = this.props;
-    const value = typeof rawValue === "string"
-      ? rawValue
-      : "";
+    const value = typeof rawValue === "string" ? rawValue : "";
 
     if (typeof rawValue !== "string") {
       this.props.logger.error(`[MONACO-EDITOR]: Passed a non-string default value`, { rawValue });
@@ -115,10 +113,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 
   @computed get options(): editor.IStandaloneEditorConstructionOptions {
-    return merge({},
-      this.props.state.editorConfiguration,
-      this.props.options,
-    );
+    return merge({}, this.props.state.editorConfiguration, this.props.options);
   }
 
   @computed
@@ -134,7 +129,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
    * @private
    */
   private bindResizeObserver() {
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
 
@@ -201,7 +196,6 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       this.dispose();
       this.editor.dispose();
     }
-
   }
 
   protected createEditor() {
@@ -229,11 +223,11 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       this.editor.focus();
     }
 
-    const onDidLayoutChangeDisposer = this.editor.onDidLayoutChange(layoutInfo => {
+    const onDidLayoutChangeDisposer = this.editor.onDidLayoutChange((layoutInfo) => {
       this.props.onDidLayoutChange?.(layoutInfo);
     });
 
-    const onValueChangeDisposer = this.editor.onDidChangeModelContent(event => {
+    const onValueChangeDisposer = this.editor.onDidChangeModelContent((event) => {
       const value = this.editor.getValue();
 
       this.props.onChange?.(value, event);
@@ -247,10 +241,17 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     this.dispose.push(
       reaction(() => this.model, this.onModelChange),
       reaction(() => this.theme, editor.setTheme),
-      reaction(() => this.props.value, value => this.setValue(value), {
-        fireImmediately: true,
-      }),
-      reaction(() => this.options, opts => this.editor.updateOptions(opts)),
+      reaction(
+        () => this.props.value,
+        (value) => this.setValue(value),
+        {
+          fireImmediately: true,
+        },
+      ),
+      reaction(
+        () => this.options,
+        (opts) => this.editor.updateOptions(opts),
+      ),
 
       () => onDidLayoutChangeDisposer.dispose(),
       () => onValueChangeDisposer.dispose(),
@@ -284,7 +285,6 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   @action
   validate(value = this.getValue()) {
     const validators: MonacoValidator[] = [
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       monacoValidators[this.props.language!], // parsing syntax check
     ].filter(Boolean);
 
@@ -317,22 +317,25 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
         data-test-id="monaco-editor"
         className={cssNames(styles.MonacoEditor, className)}
         style={css}
-        ref={elem => this.containerElem = elem}
+        ref={(elem) => (this.containerElem = elem)}
       />
     );
   }
 }
 
-const ForwardedRefMonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps & Dependencies>((
-  (props, ref) => <NonInjectedMonacoEditor innerRef={ref} {...props} />
+const ForwardedRefMonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps & Dependencies>((props, ref) => (
+  <NonInjectedMonacoEditor innerRef={ref} {...props} />
 ));
 
-export const MonacoEditor = withInjectables<Dependencies, MonacoEditorProps, MonacoEditorRef>(ForwardedRefMonacoEditor, {
-  getProps: (di, props) => ({
-    ...props,
-    state: di.inject(userPreferencesStateInjectable),
-    activeTheme: di.inject(activeThemeInjectable),
-    getEditorHeightFromLinesCount: di.inject(getEditorHeightFromLinesCountInjectable),
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const MonacoEditor = withInjectables<Dependencies, MonacoEditorProps, MonacoEditorRef>(
+  ForwardedRefMonacoEditor,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      state: di.inject(userPreferencesStateInjectable),
+      activeTheme: di.inject(activeThemeInjectable),
+      getEditorHeightFromLinesCount: di.inject(getEditorHeightFromLinesCountInjectable),
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

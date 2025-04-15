@@ -24,11 +24,7 @@ const selectedHelmChartInjectable = getInjectable({
 
       return helmCharts.value
         .get()
-        .find(
-          (chart) =>
-            chart.getName() === dereferencedChartName &&
-            chart.getRepository() === deferencedRepository,
-        );
+        .find((chart) => chart.getName() === dereferencedChartName && chart.getRepository() === deferencedRepository);
     });
   },
 });

@@ -40,7 +40,6 @@ const deregisterFeatureRecursed = (di: DiContainer, feature: Feature, dependedBy
   }
 
   if (dependedBy) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const oldNumberOfDependents = featureContext.dependedBy.get(dependedBy)!;
     const newNumberOfDependants = oldNumberOfDependents - 1;
 

@@ -17,15 +17,14 @@ export interface URLParams<P extends object = {}, Q extends object = {}> {
   fragment?: string;
 }
 
-export function buildURL<P extends object = {}, Q extends object = {}>(path: string, { params, query, fragment }: URLParams<P, Q> = {}) {
+export function buildURL<P extends object = {}, Q extends object = {}>(
+  path: string,
+  { params, query, fragment }: URLParams<P, Q> = {},
+) {
   const pathBuilder = compile(String(path));
 
   const queryParams = query ? new URLSearchParams(Object.entries(query)).toString() : "";
-  const parts = [
-    pathBuilder(params),
-    queryParams && `?${queryParams}`,
-    fragment && `#${fragment}`,
-  ];
+  const parts = [pathBuilder(params), queryParams && `?${queryParams}`, fragment && `#${fragment}`];
 
   return parts.filter(isDefined).join("");
 }
@@ -36,16 +35,15 @@ export function buildURLPositional<P extends object = {}, Q extends object = {}>
   };
 }
 
-export type UrlParamsFor<Pathname extends string> =
-  Pathname extends `${string}/:${infer A}?/${infer Tail}`
-    ? Partial<Record<A, string>> & UrlParamsFor<`/${Tail}`>
-    : Pathname extends `${string}/:${infer A}/${infer Tail}`
-      ? Record<A, string> & UrlParamsFor<`/${Tail}`>
-      : Pathname extends `${string}/:${infer A}?`
-        ? Partial<Record<A, string>>
-        : Pathname extends `${string}/:${infer A}`
-          ? Record<A, string>
-          : {};
+export type UrlParamsFor<Pathname extends string> = Pathname extends `${string}/:${infer A}?/${infer Tail}`
+  ? Partial<Record<A, string>> & UrlParamsFor<`/${Tail}`>
+  : Pathname extends `${string}/:${infer A}/${infer Tail}`
+    ? Record<A, string> & UrlParamsFor<`/${Tail}`>
+    : Pathname extends `${string}/:${infer A}?`
+      ? Partial<Record<A, string>>
+      : Pathname extends `${string}/:${infer A}`
+        ? Record<A, string>
+        : {};
 
 export interface UrlBuilder<Pathname extends string> {
   compile(params: UrlParamsFor<Pathname>, query?: object, fragment?: string): string;

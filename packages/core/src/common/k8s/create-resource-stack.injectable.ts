@@ -1,3 +1,4 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -7,7 +8,6 @@ import type { KubernetesCluster } from "../catalog-entities";
 import readDirectoryInjectable from "../fs/read-directory.injectable";
 import readFileInjectable from "../fs/read-file.injectable";
 import { kubectlApplyAllInjectionToken, kubectlDeleteAllInjectionToken } from "../kube-helpers/channels";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import joinPathsInjectable from "../path/join-paths.injectable";
 import type { ResourceApplyingStack, ResourceStackDependencies } from "./resource-stack";
 import { ResourceStack } from "./resource-stack";

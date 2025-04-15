@@ -12,19 +12,22 @@ export type RemoveUndefinedFromValues<K> = {
 /**
  * This type helps define which fields of some type will always be defined
  */
-export type Defaulted<Params, DefaultParams extends keyof Params> = RemoveUndefinedFromValues<Required<Pick<Params, DefaultParams>>> & Omit<Params, DefaultParams>;
+export type Defaulted<Params, DefaultParams extends keyof Params> = RemoveUndefinedFromValues<
+  Required<Pick<Params, DefaultParams>>
+> &
+  Omit<Params, DefaultParams>;
 
 export type OptionVariant<Key, Base, RequiredKey extends keyof Base> = {
   type: Key;
 } & Pick<Base, RequiredKey> & {
-  [OtherKey in Exclude<keyof Base, RequiredKey>]?: undefined;
-};
+    [OtherKey in Exclude<keyof Base, RequiredKey>]?: undefined;
+  };
 
 export type SingleOrMany<T> = T | T[];
 
-export type IfEquals<T, U, Y=unknown, N=never> =
-  (<G>() => G extends T ? 1 : 2) extends
-  (<G>() => G extends U ? 1 : 2) ? Y : N;
+export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 : 2) extends <G>() => G extends U ? 1 : 2
+  ? Y
+  : N;
 
 export type MaybeSetRequired<BaseType, Keys extends keyof BaseType, Query> = Query extends true
   ? SetRequired<BaseType, Keys>

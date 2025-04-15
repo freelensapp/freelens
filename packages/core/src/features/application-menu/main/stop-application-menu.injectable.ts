@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuReactivityInjectable from "./application-menu-reactivity.injectable";
 import { onQuitOfBackEndInjectionToken } from "../../../main/start-main-application/runnable-tokens/phases";
+import applicationMenuReactivityInjectable from "./application-menu-reactivity.injectable";
 
 const stopApplicationMenuInjectable = getInjectable({
   id: "stop-application-menu",

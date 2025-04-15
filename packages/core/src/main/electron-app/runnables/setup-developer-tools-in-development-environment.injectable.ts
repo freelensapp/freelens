@@ -1,11 +1,11 @@
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { nodeEnvInjectionToken } from "../../../common/vars/node-env-injection-token";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 
 const setupDeveloperToolsInDevelopmentEnvironmentInjectable = getInjectable({
   id: "setup-developer-tools-in-development-environment",
@@ -23,10 +23,7 @@ const setupDeveloperToolsInDevelopmentEnvironmentInjectable = getInjectable({
 
       void (async () => {
         try {
-          const {
-            default: devToolsInstaller,
-            REACT_DEVELOPER_TOOLS,
-          } = await import("electron-devtools-installer");
+          const { default: devToolsInstaller, REACT_DEVELOPER_TOOLS } = await import("electron-devtools-installer");
 
           const name = await devToolsInstaller([REACT_DEVELOPER_TOOLS]);
 

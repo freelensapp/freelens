@@ -4,7 +4,12 @@
  */
 import type { Composite } from "../get-composite/get-composite";
 
-const _findComposite = <T>(currentLeftIds: string[], currentId: string, currentRightIds: string[], composite: Composite<T>): Composite<T> => {
+const _findComposite = <T>(
+  currentLeftIds: string[],
+  currentId: string,
+  currentRightIds: string[],
+  composite: Composite<T>,
+): Composite<T> => {
   const [nextId, ...nextRightIds] = currentRightIds;
   const nextLeftIds = [...currentLeftIds, currentId];
 

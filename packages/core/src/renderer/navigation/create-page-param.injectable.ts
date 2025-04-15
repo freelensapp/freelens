@@ -1,9 +1,9 @@
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import type { PageParamDependencies, PageParamInit } from "./page-param";
 import { PageParam } from "./page-param";
 

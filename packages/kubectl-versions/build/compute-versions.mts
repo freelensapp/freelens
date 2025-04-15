@@ -1,10 +1,10 @@
-import fetch from "node-fetch";
-import { TypedRegEx } from "typed-regex";
-import { XMLParser } from "fast-xml-parser";
-import semver from "semver";
-import { writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import { XMLParser } from "fast-xml-parser";
+import { writeFile } from "fs/promises";
+import fetch from "node-fetch";
+import semver from "semver";
+import { TypedRegEx } from "typed-regex";
 
 const { SemVer } = semver;
 
@@ -21,7 +21,9 @@ async function requestGreatestKubectlPatchVersion(majorMinor: string): Promise<s
       const parser = new XMLParser();
       const errorBody = parser.parse(await response.text());
 
-      throw new Error(`failed to get stable version for ${majorMinor}: ${errorBody?.Error?.Message ?? response.statusText}`);
+      throw new Error(
+        `failed to get stable version for ${majorMinor}: ${errorBody?.Error?.Message ?? response.statusText}`,
+      );
     } catch {
       throw new Error(`failed to get stable version for ${majorMinor}: ${response.statusText}`);
     }
@@ -50,8 +52,7 @@ async function requestAllVersions(): Promise<[string, string][]> {
     .map((value, index) => `1.${index}`)
     .map(async (majorMinor) => [majorMinor, await requestGreatestKubectlPatchVersion(majorMinor)] as const);
 
-  return (await Promise.all(majorMinorRequests))
-    .filter((entry): entry is [string, string] => !!entry[1]);
+  return (await Promise.all(majorMinorRequests)).filter((entry): entry is [string, string] => !!entry[1]);
 }
 
 async function main() {

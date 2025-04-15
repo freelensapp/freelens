@@ -3,42 +3,42 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { DiContainer } from "@ogre-tools/injectable";
-import fsInjectable from "../common/fs/fs.injectable";
-import { createFsFromVolume, Volume } from "memfs";
 import type {
   ensureDirSync as ensureDirSyncImpl,
   readJsonSync as readJsonSyncImpl,
   writeJsonSync as writeJsonSyncImpl,
 } from "fs-extra";
+import { Volume, createFsFromVolume } from "memfs";
+import fsInjectable from "../common/fs/fs.injectable";
 
 export const getOverrideFsWithFakes = () => {
   const root = createFsFromVolume(Volume.fromJSON({}));
 
   const readJsonSync = ((file: string, opts) => {
-    const options = typeof opts === "string"
-      ? {
-        encoding: opts,
-      }
-      : opts;
+    const options =
+      typeof opts === "string"
+        ? {
+            encoding: opts,
+          }
+        : opts;
     const value = root.readFileSync(file, options as any) as string;
 
     return JSON.parse(value, options?.reviver);
   }) as typeof readJsonSyncImpl;
   const writeJsonSync = ((file: string, object, opts) => {
-    const options = typeof opts === "string"
-      ? {
-        encoding: opts,
-      }
-      : opts;
+    const options =
+      typeof opts === "string"
+        ? {
+            encoding: opts,
+          }
+        : opts;
 
     root.writeFileSync(file, JSON.stringify(object, options?.replacer, options?.spaces), options as any);
   }) as typeof writeJsonSyncImpl;
   const ensureDirSync = ((path, opts) => {
-    const mode = typeof opts === "number"
-      ? opts
-      : opts?.mode;
+    const mode = typeof opts === "number" ? opts : opts?.mode;
 
-    root.mkdirSync(path, {mode, recursive: true});
+    root.mkdirSync(path, { mode, recursive: true });
   }) as typeof ensureDirSyncImpl;
 
   return (di: DiContainer) => {
@@ -57,7 +57,9 @@ export const getOverrideFsWithFakes = () => {
       lstat: root.promises.lstat as any,
       rm: root.promises.rm,
       access: root.promises.access,
-      copy: async (src, dest) => { throw new Error(`Tried to copy '${src}' to '${dest}'. Copying is not yet supported`); },
+      copy: async (src, dest) => {
+        throw new Error(`Tried to copy '${src}' to '${dest}'. Copying is not yet supported`);
+      },
       ensureDir: async (path, opts) => ensureDirSync(path, opts),
       ensureDirSync,
       createReadStream: root.createReadStream as any,

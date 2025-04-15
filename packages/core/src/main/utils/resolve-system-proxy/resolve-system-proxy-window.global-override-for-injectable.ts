@@ -9,11 +9,12 @@ import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.in
 
 export default getGlobalOverride(
   resolveSystemProxyWindowInjectable,
-  async () => ({
-    webContents: {
-      session: {
-        resolveProxy: () => "DIRECT",
-      } as unknown as Session,
-    } as unknown as WebContents,
-  } as unknown as BrowserWindow),
+  async () =>
+    ({
+      webContents: {
+        session: {
+          resolveProxy: () => "DIRECT",
+        } as unknown as Session,
+      } as unknown as WebContents,
+    }) as unknown as BrowserWindow,
 );

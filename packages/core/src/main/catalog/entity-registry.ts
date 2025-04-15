@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, type IComputedValue, type IObservableArray, makeObservable, observable } from "mobx";
+import { iter } from "@freelensapp/utilities";
+import { type IComputedValue, type IObservableArray, action, computed, makeObservable, observable } from "mobx";
 import type { CatalogEntity } from "../../common/catalog";
 import type { HasCategoryForEntity } from "../../common/catalog/has-category-for-entity.injectable";
-import { iter } from "@freelensapp/utilities";
 
 interface Dependencies {
   readonly hasCategoryForEntity: HasCategoryForEntity;
@@ -20,7 +20,10 @@ export class CatalogEntityRegistry {
   }
 
   @action addObservableSource(id: string, source: IObservableArray<CatalogEntity>) {
-    this.sources.set(id, computed(() => source));
+    this.sources.set(
+      id,
+      computed(() => source),
+    );
   }
 
   @action addComputedSource(id: string, source: IComputedValue<CatalogEntity[]>) {
@@ -34,14 +37,14 @@ export class CatalogEntityRegistry {
   @computed get items(): CatalogEntity[] {
     return Array.from(
       iter.filter(
-        iter.flatMap(this.sources.values(), source => source.get()),
-        entity => this.dependencies.hasCategoryForEntity(entity),
+        iter.flatMap(this.sources.values(), (source) => source.get()),
+        (entity) => this.dependencies.hasCategoryForEntity(entity),
       ),
     );
   }
 
   findById(id: string): CatalogEntity | undefined {
-    return this.items.find(entity => entity.getId() === id);
+    return this.items.find((entity) => entity.getId() === id);
   }
 
   filterItemsForApiKind(apiVersion: string, kind: string): CatalogEntity[] {

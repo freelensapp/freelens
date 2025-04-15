@@ -5,14 +5,14 @@
 
 import "./error-boundary.scss";
 
+import { Button } from "@freelensapp/button";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { ObservableHistory } from "mobx-observable-history";
+import { observer } from "mobx-react";
 import type { ErrorInfo } from "react";
 import React from "react";
-import { observer } from "mobx-react";
-import { Button } from "@freelensapp/button";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import type { ObservableHistory } from "mobx-observable-history";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
 const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";
 const forumsUrl = "https://forums.k8slens.dev";

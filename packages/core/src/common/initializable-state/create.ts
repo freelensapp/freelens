@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "assert";
 import type { Runnable } from "@freelensapp/run-many";
 import type { DiContainerForInjection, Injectable, InjectionToken } from "@ogre-tools/injectable";
-import { getInjectionToken, getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
+import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 
 export interface Initializable<T> {
   readonly rootId: string;
@@ -27,21 +27,18 @@ export type ImplInitializableInjectionTokensArgs<T> = {
   init: (di: DiContainerForInjection) => T | Promise<T>;
 } & (
   | {
-    phase: InjectionToken<Runnable<void>, void>;
-    runAfter?: Injectable<Runnable<void>, Runnable<void>, void>[];
-  }
+      phase: InjectionToken<Runnable<void>, void>;
+      runAfter?: Injectable<Runnable<void>, Runnable<void>, void>[];
+    }
   | {
-    runAfter: Injectable<Runnable<void>, Runnable<void>, void>;
-    phase?: undefined;
-  }
+      runAfter: Injectable<Runnable<void>, Runnable<void>, void>;
+      phase?: undefined;
+    }
 );
 
 export const getInjectablesForInitializable = <T>({
   init,
-  token: {
-    rootId,
-    stateToken,
-  },
+  token: { rootId, stateToken },
   ...rest
 }: ImplInitializableInjectionTokensArgs<T>) => {
   let state: InitState<T> = { set: false };

@@ -6,8 +6,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import getTrayIconPathInjectable from "../../../../../../main/tray/menu-icon/get-tray-icon-path.injectable";
 import { trayIconInjectionToken } from "../../../../../../main/tray/menu-icon/tray-icon-injection-token";
-import updatesAreBeingDiscoveredInjectable from "../../../../common/updates-are-being-discovered.injectable";
 import updateIsBeingDownloadedInjectable from "../../../../common/update-is-being-downloaded.injectable";
+import updatesAreBeingDiscoveredInjectable from "../../../../common/updates-are-being-discovered.injectable";
 
 const checkingForUpdatesTrayIconInjectable = getInjectable({
   id: "checking-for-updates-tray-icon",
@@ -20,11 +20,7 @@ const checkingForUpdatesTrayIconInjectable = getInjectable({
     return {
       iconPath: getTrayIconPath("checking-for-updates"),
       priority: 1,
-      shouldBeShown: computed(
-        () =>
-          updatesAreBeingDiscovered.value.get() ||
-          updateIsBeingDownloaded.value.get(),
-      ),
+      shouldBeShown: computed(() => updatesAreBeingDiscovered.value.get() || updateIsBeingDownloaded.value.get()),
     };
   },
 

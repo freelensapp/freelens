@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { PortForwards } from "./port-forwards";
 import portForwardsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/port-forwards-route.injectable";
 import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
+import { PortForwards } from "./port-forwards";
 
 const portForwardsRouteComponentInjectable = getInjectable({
   id: "port-forwards-route-component",

@@ -1,7 +1,7 @@
-import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
+import { enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IpcRendererEvent } from "electron";
-import { enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
+import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
 
 const enlistMessageChannelListenerInjectable = getInjectable({
   id: "enlist-message-channel-listener-for-renderer",

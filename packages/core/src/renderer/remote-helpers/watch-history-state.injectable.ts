@@ -4,9 +4,9 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import { emitWindowLocationChanged } from "../ipc";
-import { reaction } from "mobx";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { reaction } from "mobx";
+import { emitWindowLocationChanged } from "../ipc";
 
 const watchHistoryStateInjectable = getInjectable({
   id: "watch-history-state",
@@ -14,10 +14,7 @@ const watchHistoryStateInjectable = getInjectable({
   instantiate: (di) => {
     const observableHistory = di.inject(observableHistoryInjectionToken);
 
-    return () => reaction(
-      () => observableHistory.location,
-      emitWindowLocationChanged,
-    );
+    return () => reaction(() => observableHistory.location, emitWindowLocationChanged);
   },
 
   causesSideEffects: true,

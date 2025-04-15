@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { isErrnoException } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../common/fs/fs.injectable";
+import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 
 export type UserStoreFileNameMigration = () => Promise<void>;
 

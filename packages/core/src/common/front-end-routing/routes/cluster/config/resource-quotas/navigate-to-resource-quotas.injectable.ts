@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import resourceQuotasRouteInjectable from "./resource-quotas-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import resourceQuotasRouteInjectable from "./resource-quotas-route.injectable";
 
 const navigateToResourceQuotasInjectable = getInjectable({
   id: "navigate-to-resource-quotas",

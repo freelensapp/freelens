@@ -5,26 +5,26 @@
 
 import "./pod-container-port.scss";
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { ContainerPort, Pod } from "@freelensapp/kube-object";
-import { action, makeObservable, observable, reaction } from "mobx";
-import { cssNames } from "@freelensapp/utilities";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { Button } from "@freelensapp/button";
+import type { ContainerPort, Pod } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { Spinner } from "@freelensapp/spinner";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { action, makeObservable, observable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { ForwardedPort, PortForwardStore } from "../../port-forward";
 import { predictProtocol } from "../../port-forward";
-import { Spinner } from "@freelensapp/spinner";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
-import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
-import type { Logger } from "@freelensapp/logger";
 import aboutPortForwardingInjectable from "../../port-forward/about-port-forwarding.injectable";
 import notifyErrorPortForwardingInjectable from "../../port-forward/notify-error-port-forwarding.injectable";
 import type { OpenPortForward } from "../../port-forward/open-port-forward.injectable";
 import openPortForwardInjectable from "../../port-forward/open-port-forward.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
+import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 
 export interface PodContainerPortProps {
   pod: Pod;
@@ -56,7 +56,10 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
 
   componentDidMount() {
     disposeOnUnmount(this, [
-      reaction(() => this.props.pod, () => this.checkExistingPortForwarding()),
+      reaction(
+        () => this.props.pod,
+        () => this.checkExistingPortForwarding(),
+      ),
     ]);
   }
 
@@ -124,7 +127,9 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
           this.props.aboutPortForwarding();
         }
       } else {
-        this.props.notifyErrorPortForwarding(`Error occurred starting port-forward, the local port may not be available or the ${portForward.kind} ${portForward.name} may not be reachable`);
+        this.props.notifyErrorPortForwarding(
+          `Error occurred starting port-forward, the local port may not be available or the ${portForward.kind} ${portForward.name} may not be reachable`,
+        );
       }
     } catch (error) {
       this.props.logger.error("[POD-CONTAINER-PORT]:", error, portForward);
@@ -176,7 +181,10 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
           protocol: predictProtocol(port.name),
         };
 
-        this.props.openPortForwardDialog(portForward, { openInBrowser: true, onClose: () => this.checkExistingPortForwarding() });
+        this.props.openPortForwardDialog(portForward, {
+          openInBrowser: true,
+          onClose: () => this.checkExistingPortForwarding(),
+        });
       }
     });
 
@@ -187,12 +195,9 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
         </span>
         <Button primary onClick={portForwardAction}>
           {" "}
-          {this.isPortForwarded ? (this.isActive ? "Stop/Remove" : "Remove") : "Forward..."}
-          {" "}
+          {this.isPortForwarded ? (this.isActive ? "Stop/Remove" : "Remove") : "Forward..."}{" "}
         </Button>
-        {this.waiting && (
-          <Spinner />
-        )}
+        {this.waiting && <Spinner />}
       </div>
     );
   }

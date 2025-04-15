@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ClusterId, ClusterState } from "../../../../common/cluster-types";
 import type { MessageChannel, RequestChannel } from "@freelensapp/messaging";
+import type { ClusterId, ClusterState } from "../../../../common/cluster-types";
 
 export interface ClusterStateSync {
   clusterId: ClusterId;

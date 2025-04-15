@@ -1,29 +1,28 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { showInfoNotificationInjectable } from "@freelensapp/notifications";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+import type { IComputedValue } from "mobx";
+import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
+import getBuildVersionInjectable from "../../../../main/electron-app/features/get-build-version.injectable";
+import setUpdateOnQuitInjectable from "../../../../main/electron-app/features/set-update-on-quit.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import quitAndInstallUpdateInjectable from "../../main/quit-and-install-update.injectable";
-import type { RenderResult } from "@testing-library/react";
-import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
 import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
+import selectedUpdateChannelInjectable from "../../common/selected-update-channel.injectable";
+import type { ReleaseChannel, UpdateChannel } from "../../common/update-channels";
+import { updateChannels } from "../../common/update-channels";
 import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import type { UpdateChannel, ReleaseChannel } from "../../common/update-channels";
-import { updateChannels } from "../../common/update-channels";
 import type { DownloadPlatformUpdate } from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "../../main/download-update/download-platform-update/download-platform-update.injectable";
-import selectedUpdateChannelInjectable from "../../common/selected-update-channel.injectable";
-import type { IComputedValue } from "mobx";
-import setUpdateOnQuitInjectable from "../../../../main/electron-app/features/set-update-on-quit.injectable";
-import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import processCheckingForUpdatesInjectable from "../../main/process-checking-for-updates.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import getBuildVersionInjectable
-  from "../../../../main/electron-app/features/get-build-version.injectable";
+import quitAndInstallUpdateInjectable from "../../main/quit-and-install-update.injectable";
 
 describe("selection of update stability", () => {
   let builder: ApplicationBuilder;
@@ -45,20 +44,11 @@ describe("selection of update stability", () => {
 
       mainDi.override(setUpdateOnQuitInjectable, () => setUpdateOnQuitMock);
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
-      mainDi.override(
-        downloadPlatformUpdateInjectable,
-        () => downloadPlatformUpdateMock,
-      );
+      mainDi.override(downloadPlatformUpdateInjectable, () => downloadPlatformUpdateMock);
 
-      mainDi.override(
-        quitAndInstallUpdateInjectable,
-        () => quitAndInstallUpdateMock,
-      );
+      mainDi.override(quitAndInstallUpdateInjectable, () => quitAndInstallUpdateMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
@@ -94,9 +84,7 @@ describe("selection of update stability", () => {
       };
 
       beforeEach(() => {
-        selectedUpdateChannel = mainDi.inject(
-          selectedUpdateChannelInjectable,
-        );
+        selectedUpdateChannel = mainDi.inject(selectedUpdateChannelInjectable);
 
         selectedUpdateChannel.setValue(updateChannels.alpha.id);
 
@@ -104,10 +92,7 @@ describe("selection of update stability", () => {
       });
 
       it('checks updates from update channel "alpha"', () => {
-        expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(
-          updateChannels.alpha,
-          { allowDowngrade: false },
-        );
+        expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(updateChannels.alpha, { allowDowngrade: false });
       });
 
       it("when update is discovered, does not check update from other update channels", async () => {
@@ -131,10 +116,7 @@ describe("selection of update stability", () => {
         });
 
         it('checks updates from update channel "beta"', () => {
-          expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(
-            updateChannels.beta,
-            { allowDowngrade: false },
-          );
+          expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(updateChannels.beta, { allowDowngrade: false });
         });
 
         it("when update is discovered, does not check update from other update channels", async () => {
@@ -158,10 +140,7 @@ describe("selection of update stability", () => {
           });
 
           it('finally checks updates from update channel "latest"', () => {
-            expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(
-              updateChannels.latest,
-              { allowDowngrade: false },
-            );
+            expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(updateChannels.latest, { allowDowngrade: false });
           });
 
           it("when update is discovered, does not check update from other update channels", async () => {
@@ -185,9 +164,7 @@ describe("selection of update stability", () => {
       };
 
       beforeEach(() => {
-        selectedUpdateChannel = mainDi.inject(
-          selectedUpdateChannelInjectable,
-        );
+        selectedUpdateChannel = mainDi.inject(selectedUpdateChannelInjectable);
 
         selectedUpdateChannel.setValue(updateChannels.beta.id);
       });
@@ -270,10 +247,7 @@ describe("selection of update stability", () => {
 
     processCheckingForUpdates("irrelevant");
 
-    expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(
-      updateChannels.latest,
-      { allowDowngrade: false },
-    );
+    expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(updateChannels.latest, { allowDowngrade: false });
   });
 
   it('given no update channel selection is stored and currently using alpha release, when checking for updates, checks for updates from "alpha" channel', async () => {

@@ -1,20 +1,20 @@
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
-import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
-import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
-import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import { toJS } from "../../../common/utils";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import selectedUpdateChannelInjectable from "../../application-update/common/selected-update-channel.injectable";
 import type { ReleaseChannel } from "../../application-update/common/update-channels";
-import userPreferencesStateInjectable from "./state.injectable";
+import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
+import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
+import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import type { UserPreferencesModel } from "./preferences-helpers";
+import userPreferencesStateInjectable from "./state.injectable";
 
 export interface UserStoreModel {
   preferences: UserPreferencesModel;
@@ -33,14 +33,16 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
       configName: "lens-user-store",
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, userPreferencesMigrationInjectionToken),
-      fromStore: action(({ preferences = {}}) => {
+      fromStore: action(({ preferences = {} }) => {
         logger.debug("fromStore()", { preferences });
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
-        state.downloadKubectlBinaries = descriptors.downloadKubectlBinaries.fromStore(preferences.downloadKubectlBinaries);
+        state.downloadKubectlBinaries = descriptors.downloadKubectlBinaries.fromStore(
+          preferences.downloadKubectlBinaries,
+        );
         state.downloadMirror = descriptors.downloadMirror.fromStore(preferences.downloadMirror);
         state.editorConfiguration = descriptors.editorConfiguration.fromStore(preferences.editorConfiguration);
         state.extensionRegistryUrl = descriptors.extensionRegistryUrl.fromStore(preferences.extensionRegistryUrl);
@@ -58,29 +60,30 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         // TODO: Switch to action-based saving instead saving stores by reaction
         selectedUpdateChannel.setValue(preferences?.updateChannel as ReleaseChannel);
       }),
-      toJSON: () => toJS({
-        preferences: {
-          allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
-          allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
-          colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
-          downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
-          downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
-          downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),
-          editorConfiguration: descriptors.editorConfiguration.toStore(state.editorConfiguration),
-          extensionRegistryUrl: descriptors.extensionRegistryUrl.toStore(state.extensionRegistryUrl),
-          hiddenTableColumns: descriptors.hiddenTableColumns.toStore(state.hiddenTableColumns),
-          httpsProxy: descriptors.httpsProxy.toStore(state.httpsProxy),
-          kubectlBinariesPath: descriptors.kubectlBinariesPath.toStore(state.kubectlBinariesPath),
-          localeTimezone: descriptors.localeTimezone.toStore(state.localeTimezone),
-          openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
-          shell: descriptors.shell.toStore(state.shell),
-          syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
-          terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
-          terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
-          terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
-          updateChannel: selectedUpdateChannel.value.get().id,
-        },
-      }),
+      toJSON: () =>
+        toJS({
+          preferences: {
+            allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
+            allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
+            colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
+            downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
+            downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
+            downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),
+            editorConfiguration: descriptors.editorConfiguration.toStore(state.editorConfiguration),
+            extensionRegistryUrl: descriptors.extensionRegistryUrl.toStore(state.extensionRegistryUrl),
+            hiddenTableColumns: descriptors.hiddenTableColumns.toStore(state.hiddenTableColumns),
+            httpsProxy: descriptors.httpsProxy.toStore(state.httpsProxy),
+            kubectlBinariesPath: descriptors.kubectlBinariesPath.toStore(state.kubectlBinariesPath),
+            localeTimezone: descriptors.localeTimezone.toStore(state.localeTimezone),
+            openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
+            shell: descriptors.shell.toStore(state.shell),
+            syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
+            terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
+            terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
+            terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            updateChannel: selectedUpdateChannel.value.get().id,
+          },
+        }),
     });
   },
 });

@@ -3,44 +3,44 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { HotbarAddCommand } from "../../hotbar/hotbar-add-command";
-import { HotbarRemoveCommand } from "../../hotbar/hotbar-remove-command";
-import { HotbarSwitchCommand } from "../../hotbar/hotbar-switch-command";
-import { HotbarRenameCommand } from "../../hotbar/hotbar-rename-command";
-import { ActivateEntityCommand } from "../../activate-entity-command";
-import type { CommandContext, CommandRegistration } from "./commands";
 import { getInjectable } from "@ogre-tools/injectable";
-import commandOverlayInjectable from "../command-overlay.injectable";
-import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
-import type { DockTabCreate } from "../../dock/dock/store";
-import navigateToHelmChartsInjectable from "../../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
-import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import React from "react";
 import navigateToConfigMapsInjectable from "../../../../common/front-end-routing/routes/cluster/config/config-maps/navigate-to-config-maps.injectable";
-import navigateToSecretsInjectable from "../../../../common/front-end-routing/routes/cluster/config/secrets/navigate-to-secrets.injectable";
-import navigateToResourceQuotasInjectable from "../../../../common/front-end-routing/routes/cluster/config/resource-quotas/navigate-to-resource-quotas.injectable";
-import navigateToLimitRangesInjectable from "../../../../common/front-end-routing/routes/cluster/config/limit-ranges/navigate-to-limit-ranges.injectable";
 import navigateToHorizontalPodAutoscalersInjectable from "../../../../common/front-end-routing/routes/cluster/config/horizontal-pod-autoscalers/navigate-to-horizontal-pod-autoscalers.injectable";
+import navigateToLimitRangesInjectable from "../../../../common/front-end-routing/routes/cluster/config/limit-ranges/navigate-to-limit-ranges.injectable";
 import navigateToPodDisruptionBudgetsInjectable from "../../../../common/front-end-routing/routes/cluster/config/pod-disruption-budgets/navigate-to-pod-disruption-budgets.injectable";
 import navigateToPriorityClassesInjectable from "../../../../common/front-end-routing/routes/cluster/config/priority-classes/navigate-to-priority-classes.injectable";
-import navigateToServicesInjectable from "../../../../common/front-end-routing/routes/cluster/network/services/navigate-to-services.injectable";
+import navigateToResourceQuotasInjectable from "../../../../common/front-end-routing/routes/cluster/config/resource-quotas/navigate-to-resource-quotas.injectable";
+import navigateToSecretsInjectable from "../../../../common/front-end-routing/routes/cluster/config/secrets/navigate-to-secrets.injectable";
+import navigateToHelmChartsInjectable from "../../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
+import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToEndpointsInjectable from "../../../../common/front-end-routing/routes/cluster/network/endpoints/navigate-to-endpoints.injectable";
 import navigateToIngressesInjectable from "../../../../common/front-end-routing/routes/cluster/network/ingresses/navigate-to-ingresses.injectable";
 import navigateToNetworkPoliciesInjectable from "../../../../common/front-end-routing/routes/cluster/network/network-policies/navigate-to-network-policies.injectable";
+import navigateToServicesInjectable from "../../../../common/front-end-routing/routes/cluster/network/services/navigate-to-services.injectable";
 import navigateToNodesInjectable from "../../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
-import navigateToPodsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
-import navigateToDeploymentsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/deployments/navigate-to-deployments.injectable";
-import navigateToDaemonsetsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/daemonsets/navigate-to-daemonsets.injectable";
-import navigateToStatefulsetsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/statefulsets/navigate-to-statefulsets.injectable";
-import navigateToJobsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/jobs/navigate-to-jobs.injectable";
 import navigateToCronJobsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/cron-jobs/navigate-to-cron-jobs.injectable";
+import navigateToDaemonsetsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/daemonsets/navigate-to-daemonsets.injectable";
+import navigateToDeploymentsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/deployments/navigate-to-deployments.injectable";
+import navigateToJobsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/jobs/navigate-to-jobs.injectable";
+import navigateToPodsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
+import navigateToStatefulsetsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/statefulsets/navigate-to-statefulsets.injectable";
 import navigateToEntitySettingsInjectable from "../../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
+import { ActivateEntityCommand } from "../../activate-entity-command";
+import type { DockTabCreate } from "../../dock/dock/store";
+import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
+import { HotbarAddCommand } from "../../hotbar/hotbar-add-command";
+import { HotbarRemoveCommand } from "../../hotbar/hotbar-remove-command";
+import { HotbarRenameCommand } from "../../hotbar/hotbar-rename-command";
+import { HotbarSwitchCommand } from "../../hotbar/hotbar-switch-command";
+import commandOverlayInjectable from "../command-overlay.injectable";
+import type { CommandContext, CommandRegistration } from "./commands";
 
+import navigateToCustomResourceDefinitionsInjectable from "../../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resource-definitions.injectable";
 // TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
 import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
 import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
 import hasCatalogEntitySettingItemsInjectable from "../../entity-settings/has-settings.injectable";
-import navigateToCustomResourceDefinitionsInjectable from "../../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resource-definitions.injectable";
 
 export function isKubernetesClusterActive(context: CommandContext): boolean {
   return context.entity?.kind === "KubernetesCluster";
@@ -212,9 +212,7 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
       id: "entity.viewSettings",
       title: ({ entity }) => `${entity.kind}/${entity.getName()}: View Settings`,
       action: ({ entity }) => dependencies.navigateToEntitySettings(entity.getId()),
-      isActive: ({ entity }) => (
-        entity && dependencies.hasCatalogEntitySettingItems(entity)
-      ),
+      isActive: ({ entity }) => entity && dependencies.hasCatalogEntitySettingItems(entity),
     },
     {
       id: "cluster.openTerminal",
@@ -253,34 +251,35 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
 const internalCommandsInjectable = getInjectable({
   id: "internal-commands",
 
-  instantiate: (di) => getInternalCommands({
-    openCommandDialog: di.inject(commandOverlayInjectable).open,
-    hasCatalogEntitySettingItems: di.inject(hasCatalogEntitySettingItemsInjectable),
-    createTerminalTab: di.inject(createTerminalTabInjectable),
-    navigateToPreferences: di.inject(navigateToPreferencesInjectable),
-    navigateToHelmCharts: di.inject(navigateToHelmChartsInjectable),
-    navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
-    navigateToConfigMaps: di.inject(navigateToConfigMapsInjectable),
-    navigateToSecrets: di.inject(navigateToSecretsInjectable),
-    navigateToResourceQuotas: di.inject(navigateToResourceQuotasInjectable),
-    navigateToLimitRanges: di.inject(navigateToLimitRangesInjectable),
-    navigateToHorizontalPodAutoscalers: di.inject(navigateToHorizontalPodAutoscalersInjectable),
-    navigateToPodDisruptionBudgets: di.inject(navigateToPodDisruptionBudgetsInjectable),
-    navigateToPriorityClasses: di.inject(navigateToPriorityClassesInjectable),
-    navigateToServices: di.inject(navigateToServicesInjectable),
-    navigateToEndpoints: di.inject(navigateToEndpointsInjectable),
-    navigateToIngresses: di.inject(navigateToIngressesInjectable),
-    navigateToNetworkPolicies: di.inject(navigateToNetworkPoliciesInjectable),
-    navigateToNodes: di.inject(navigateToNodesInjectable),
-    navigateToPods: di.inject(navigateToPodsInjectable),
-    navigateToDeployments: di.inject(navigateToDeploymentsInjectable),
-    navigateToDaemonsets: di.inject(navigateToDaemonsetsInjectable),
-    navigateToStatefulsets: di.inject(navigateToStatefulsetsInjectable),
-    navigateToJobs: di.inject(navigateToJobsInjectable),
-    navigateToCronJobs: di.inject(navigateToCronJobsInjectable),
-    navigateToCustomResourceDefinitions: di.inject(navigateToCustomResourceDefinitionsInjectable),
-    navigateToEntitySettings: di.inject(navigateToEntitySettingsInjectable),
-  }),
+  instantiate: (di) =>
+    getInternalCommands({
+      openCommandDialog: di.inject(commandOverlayInjectable).open,
+      hasCatalogEntitySettingItems: di.inject(hasCatalogEntitySettingItemsInjectable),
+      createTerminalTab: di.inject(createTerminalTabInjectable),
+      navigateToPreferences: di.inject(navigateToPreferencesInjectable),
+      navigateToHelmCharts: di.inject(navigateToHelmChartsInjectable),
+      navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
+      navigateToConfigMaps: di.inject(navigateToConfigMapsInjectable),
+      navigateToSecrets: di.inject(navigateToSecretsInjectable),
+      navigateToResourceQuotas: di.inject(navigateToResourceQuotasInjectable),
+      navigateToLimitRanges: di.inject(navigateToLimitRangesInjectable),
+      navigateToHorizontalPodAutoscalers: di.inject(navigateToHorizontalPodAutoscalersInjectable),
+      navigateToPodDisruptionBudgets: di.inject(navigateToPodDisruptionBudgetsInjectable),
+      navigateToPriorityClasses: di.inject(navigateToPriorityClassesInjectable),
+      navigateToServices: di.inject(navigateToServicesInjectable),
+      navigateToEndpoints: di.inject(navigateToEndpointsInjectable),
+      navigateToIngresses: di.inject(navigateToIngressesInjectable),
+      navigateToNetworkPolicies: di.inject(navigateToNetworkPoliciesInjectable),
+      navigateToNodes: di.inject(navigateToNodesInjectable),
+      navigateToPods: di.inject(navigateToPodsInjectable),
+      navigateToDeployments: di.inject(navigateToDeploymentsInjectable),
+      navigateToDaemonsets: di.inject(navigateToDaemonsetsInjectable),
+      navigateToStatefulsets: di.inject(navigateToStatefulsetsInjectable),
+      navigateToJobs: di.inject(navigateToJobsInjectable),
+      navigateToCronJobs: di.inject(navigateToCronJobsInjectable),
+      navigateToCustomResourceDefinitions: di.inject(navigateToCustomResourceDefinitionsInjectable),
+      navigateToEntitySettings: di.inject(navigateToEntitySettingsInjectable),
+    }),
 });
 
 export default internalCommandsInjectable;

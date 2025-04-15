@@ -30,9 +30,7 @@ describe("reactively hide workloads overview details item", () => {
         kubeWorkloadsOverviewItems: [
           {
             components: {
-              Details: () => (
-                <div data-testid="some-workload-overview-detail-item">Some detail component</div>
-              ),
+              Details: () => <div data-testid="some-workload-overview-detail-item">Some detail component</div>,
             },
 
             visible: computed(() => someObservable.get()),
@@ -45,9 +43,7 @@ describe("reactively hide workloads overview details item", () => {
 
     const windowDi = builder.applicationWindow.only.di;
 
-    const navigateToWorkloadsOverview = windowDi.inject(
-      navigateToWorkloadsOverviewInjectable,
-    );
+    const navigateToWorkloadsOverview = windowDi.inject(navigateToWorkloadsOverviewInjectable);
 
     navigateToWorkloadsOverview();
 

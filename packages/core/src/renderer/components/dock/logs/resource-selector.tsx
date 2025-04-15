@@ -5,15 +5,15 @@
 
 import "./resource-selector.scss";
 
-import React from "react";
 import { observer } from "mobx-react";
+import React from "react";
 
+import type { Container, Pod } from "@freelensapp/kube-object";
+import type { SingleValue } from "react-select";
 import { Badge } from "../../badge";
 import type { SelectOption } from "../../select";
 import { Select } from "../../select";
 import type { LogTabViewModel } from "./logs-view-model";
-import type { Container, Pod } from "@freelensapp/kube-object";
-import type { SingleValue } from "react-select";
 
 export interface LogResourceSelectorProps {
   model: LogTabViewModel;
@@ -34,12 +34,12 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
     return null;
   }
 
-  const podOptions = pods.map(pod => ({
+  const podOptions = pods.map((pod) => ({
     value: pod,
     label: pod.getName(),
   }));
   const allContainers = pod.getAllContainers();
-  const container = allContainers.find(container => container.name === selectedContainer) ?? null;
+  const container = allContainers.find((container) => container.name === selectedContainer) ?? null;
   const onContainerChange = (option: SingleValue<SelectOption<Container>>) => {
     if (!option) {
       return;
@@ -67,14 +67,14 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
   const containerSelectOptions = [
     {
       label: "Containers",
-      options: pod.getContainers().map(container => ({
+      options: pod.getContainers().map((container) => ({
         value: container,
         label: container.name,
       })),
     },
     {
       label: "Init Containers",
-      options: pod.getInitContainers().map(container => ({
+      options: pod.getInitContainers().map((container) => ({
         value: container,
         label: container.name,
       })),
@@ -83,18 +83,12 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
 
   return (
     <div className="LogResourceSelector flex gaps align-center">
-      <span>Namespace</span>
-      {" "}
-      <Badge data-testid="namespace-badge" label={pod.getNs()} />
-      {
-        owner && (
-          <>
-            <span>Owner</span>
-            {" "}
-            <Badge data-testid="namespace-badge" label={`${owner.kind} ${owner.name}`} />
-          </>
-        )
-      }
+      <span>Namespace</span> <Badge data-testid="namespace-badge" label={pod.getNs()} />
+      {owner && (
+        <>
+          <span>Owner</span> <Badge data-testid="namespace-badge" label={`${owner.kind} ${owner.name}`} />
+        </>
+      )}
       <span>Pod</span>
       <Select
         options={podOptions}

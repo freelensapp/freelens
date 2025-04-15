@@ -10,7 +10,7 @@ const lensThemesInjectable = getInjectable({
   instantiate: (di) => {
     const themes = di.injectMany(lensThemeDeclarationInjectionToken);
 
-    return new Map(themes.map(theme => [theme.name, theme]));
+    return new Map(themes.map((theme) => [theme.name, theme]));
   },
 });
 

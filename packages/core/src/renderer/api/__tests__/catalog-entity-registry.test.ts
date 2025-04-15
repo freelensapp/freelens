@@ -3,16 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { CatalogCategory } from "../catalog-entity";
-import { KubernetesCluster, WebLink } from "../../../common/catalog-entities";
 import { observable } from "mobx";
 import type { CatalogCategoryRegistry } from "../../../common/catalog";
 import { categoryVersion } from "../../../common/catalog";
+import { KubernetesCluster, WebLink } from "../../../common/catalog-entities";
+import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import { CatalogCategory } from "../catalog-entity";
 import type { CatalogEntityRegistry } from "../catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../catalog/entity/registry.injectable";
-import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
-
 
 class FooBarCategory extends CatalogCategory {
   public readonly apiVersion = "entityRegistry.k8slens.dev/v1alpha1";
@@ -23,9 +22,7 @@ class FooBarCategory extends CatalogCategory {
   };
   public spec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", WebLink),
-    ],
+    versions: [categoryVersion("v1alpha1", WebLink)],
     names: {
       kind: "FooBar",
     },
@@ -88,20 +85,22 @@ describe("CatalogEntityRegistry", () => {
 
   describe("updateItems", () => {
     it("adds new catalog item", () => {
-      const items = [{
-        apiVersion: "entity.k8slens.dev/v1alpha1",
-        kind: "KubernetesCluster",
-        metadata: {
-          uid: "123",
-          name: "foobar",
-          source: "test",
-          labels: {},
+      const items = [
+        {
+          apiVersion: "entity.k8slens.dev/v1alpha1",
+          kind: "KubernetesCluster",
+          metadata: {
+            uid: "123",
+            name: "foobar",
+            source: "test",
+            labels: {},
+          },
+          status: {
+            phase: "disconnected",
+          },
+          spec: {},
         },
-        status: {
-          phase: "disconnected",
-        },
-        spec: {},
-      }];
+      ];
 
       entityRegistry.updateItems(items);
       expect(entityRegistry.items.get().length).toEqual(1);
@@ -126,20 +125,22 @@ describe("CatalogEntityRegistry", () => {
     });
 
     it("updates existing items", () => {
-      const items = [{
-        apiVersion: "entity.k8slens.dev/v1alpha1",
-        kind: "KubernetesCluster",
-        metadata: {
-          uid: "123",
-          name: "foobar",
-          source: "test",
-          labels: {},
+      const items = [
+        {
+          apiVersion: "entity.k8slens.dev/v1alpha1",
+          kind: "KubernetesCluster",
+          metadata: {
+            uid: "123",
+            name: "foobar",
+            source: "test",
+            labels: {},
+          },
+          status: {
+            phase: "disconnected",
+          },
+          spec: {},
         },
-        status: {
-          phase: "disconnected",
-        },
-        spec: {},
-      }];
+      ];
 
       entityRegistry.updateItems(items);
       expect(entityRegistry.items.get().length).toEqual(1);
@@ -153,20 +154,22 @@ describe("CatalogEntityRegistry", () => {
     });
 
     it("updates activeEntity", () => {
-      const items = [{
-        apiVersion: "entity.k8slens.dev/v1alpha1",
-        kind: "KubernetesCluster",
-        metadata: {
-          uid: "123",
-          name: "foobar",
-          source: "test",
-          labels: {},
+      const items = [
+        {
+          apiVersion: "entity.k8slens.dev/v1alpha1",
+          kind: "KubernetesCluster",
+          metadata: {
+            uid: "123",
+            name: "foobar",
+            source: "test",
+            labels: {},
+          },
+          status: {
+            phase: "disconnected",
+          },
+          spec: {},
         },
-        status: {
-          phase: "disconnected",
-        },
-        spec: {},
-      }];
+      ];
 
       entityRegistry.updateItems(items);
       entityRegistry.activeEntity = entityRegistry.items.get()[0];
@@ -286,7 +289,7 @@ describe("CatalogEntityRegistry", () => {
     expect(entityRegistry.items.get().length).toBe(3);
     expect(entityRegistry.filteredItems.length).toBe(3);
 
-    const d = entityRegistry.addCatalogFilter(entity => entity.kind === KubernetesCluster.kind);
+    const d = entityRegistry.addCatalogFilter((entity) => entity.kind === KubernetesCluster.kind);
 
     expect(entityRegistry.items.get().length).toBe(3);
     expect(entityRegistry.filteredItems.length).toBe(1);

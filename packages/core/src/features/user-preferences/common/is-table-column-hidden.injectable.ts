@@ -30,7 +30,7 @@ const isTableColumnHiddenInjectable = getInjectable({
         return false;
       }
 
-      return columnIds.some(columnId => columnId && config.has(columnId));
+      return columnIds.some((columnId) => columnId && config.has(columnId));
     };
   },
 });

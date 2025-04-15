@@ -1,10 +1,10 @@
+import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 import editClusterRoleBindingNameStateInjectable from "./edit-name-state.injectable";
 import clusterRoleBindingDialogStateInjectable from "./state.injectable";
 

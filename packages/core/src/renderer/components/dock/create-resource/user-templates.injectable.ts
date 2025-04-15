@@ -1,21 +1,21 @@
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
+import { delay, getOrInsert, isErrnoException } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { computed, observable } from "mobx";
-import { delay, getOrInsert, isErrnoException } from "@freelensapp/utilities";
 import { readFile } from "fs/promises";
-import { hasCorrectExtension } from "./has-correct-extension";
-import type { RawTemplate, RawTemplates } from "./create-resource-templates.injectable";
-import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
+import { computed, observable } from "mobx";
 import watchInjectable from "../../../../common/fs/watch/watch.injectable";
-import getRelativePathInjectable from "../../../../common/path/get-relative-path.injectable";
 import homeDirectoryPathInjectable from "../../../../common/os/home-directory-path.injectable";
 import getDirnameOfPathInjectable from "../../../../common/path/get-dirname.injectable";
+import getRelativePathInjectable from "../../../../common/path/get-relative-path.injectable";
+import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import parsePathInjectable from "../../../../common/path/parse.injectable";
 import { waitForPath } from "../../../../common/utils/wait-for-path";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
+import type { RawTemplate, RawTemplates } from "./create-resource-templates.injectable";
+import { hasCorrectExtension } from "./has-correct-extension";
 
 const userCreateResourceTemplatesInjectable = getInjectable({
   id: "user-create-resource-templates",
@@ -34,9 +34,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
 
       for (const [filePath, value] of templates) {
         const rawRelative = getDirnameOfPath(getRelativePath(userTemplatesFolder, filePath));
-        const title = rawRelative === "."
-          ? "ungrouped"
-          : rawRelative;
+        const title = rawRelative === "." ? "ungrouped" : rawRelative;
 
         getOrInsert(res, title, []).push({
           label: parsePath(filePath).name,
@@ -67,7 +65,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
         templates.set(filePath, contents);
       } catch (error) {
         if (isErrnoException(error) && error.code === "ENOENT") {
-        // ignore, file disappeared
+          // ignore, file disappeared
         } else {
           logger.warn(`encountered error while reading ${filePath}`, error);
         }
@@ -78,12 +76,15 @@ const userCreateResourceTemplatesInjectable = getInjectable({
     };
 
     (async () => {
-      for (let i = 1;; i *= 2) {
+      for (let i = 1; ; i *= 2) {
         try {
           await waitForPath(userTemplatesFolder);
           break;
         } catch (error) {
-          logger.warn(`encountered error while waiting for ${userTemplatesFolder} to exist, waiting and trying again`, error);
+          logger.warn(
+            `encountered error while waiting for ${userTemplatesFolder} to exist, waiting and trying again`,
+            error,
+          );
           await delay(i * 1000); // exponential backoff in seconds
         }
       }
@@ -104,7 +105,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
         .on("add", onAddOrChange)
         .on("change", onAddOrChange)
         .on("unlink", onUnlink)
-        .on("error", error => {
+        .on("error", (error) => {
           logger.warn(`encountered error while watching files under ${userTemplatesFolder}`, error);
         });
     })();

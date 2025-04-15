@@ -7,11 +7,16 @@ import type { PageParam } from "../navigation/page-param";
 import type { ExtensionPageParametersInstantiationParam } from "./extension-page-parameters.injectable";
 import extensionPageParametersInjectable from "./extension-page-parameters.injectable";
 
-export type GetExtensionPageParameters = (param: ExtensionPageParametersInstantiationParam) => Record<string, PageParam<unknown>>;
+export type GetExtensionPageParameters = (
+  param: ExtensionPageParametersInstantiationParam,
+) => Record<string, PageParam<unknown>>;
 
 const getExtensionPageParametersInjectable = getInjectable({
   id: "get-extension-page-parameters",
-  instantiate: (di): GetExtensionPageParameters => (param) => di.inject(extensionPageParametersInjectable, param),
+  instantiate:
+    (di): GetExtensionPageParameters =>
+    (param) =>
+      di.inject(extensionPageParametersInjectable, param),
 });
 
 export default getExtensionPageParametersInjectable;

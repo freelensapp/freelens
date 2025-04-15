@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Cluster } from "../../../../../common/cluster/cluster";
-import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import enabledMetricsInjectable from "../metrics-enabled.injectable";
-import activeEntityInternalClusterInjectable from "../get-active-cluster-entity.injectable";
+import type { DiContainer } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 import { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
-import type { DiContainer } from "@ogre-tools/injectable";
+import { Cluster } from "../../../../../common/cluster/cluster";
+import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
+import activeEntityInternalClusterInjectable from "../get-active-cluster-entity.injectable";
+import enabledMetricsInjectable from "../metrics-enabled.injectable";
 
 describe("metrics-enabled", () => {
   let cluster: Cluster;
@@ -49,4 +49,3 @@ describe("metrics-enabled", () => {
     expect(di.inject(enabledMetricsInjectable, ClusterMetricsResourceType.Pod).get()).toBe(false);
   });
 });
-

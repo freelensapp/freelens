@@ -5,14 +5,14 @@
 
 import styles from "./dock-tabs.module.scss";
 
+import { cssVar } from "@freelensapp/utilities";
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { useResizeObserver } from "../../hooks";
 import { Tabs } from "../tabs/tabs";
 import { DockTab } from "./dock-tab";
 import type { DockTab as DockTabModel } from "./dock/store";
 import { TabKind } from "./dock/store";
 import { TerminalTab } from "./terminal/dock-tab";
-import { cssVar } from "@freelensapp/utilities";
-import { useResizeObserver } from "../../hooks";
 
 export interface DockTabsProps {
   tabs: DockTabModel[];
@@ -56,7 +56,7 @@ export const DockTabs = ({ tabs, autoFocus, selectedTab, onChangeTab }: DockTabs
   };
 
   const updateScrollbarVisibility = () => {
-    const allTabsShrunk = getTabElements().every(tab => tab.offsetWidth == minTabSize.current);
+    const allTabsShrunk = getTabElements().every((tab) => tab.offsetWidth == minTabSize.current);
 
     setShowScrollbar(allTabsShrunk);
   };
@@ -83,11 +83,7 @@ export const DockTabs = ({ tabs, autoFocus, selectedTab, onChangeTab }: DockTabs
   });
 
   return (
-    <div
-      className={styles.dockTabs}
-      ref={elem}
-      role="tablist"
-    >
+    <div className={styles.dockTabs} ref={elem} role="tablist">
       <Tabs
         autoFocus={autoFocus}
         value={selectedTab}
@@ -96,7 +92,9 @@ export const DockTabs = ({ tabs, autoFocus, selectedTab, onChangeTab }: DockTabs
         scrollable={showScrollbar}
         className={styles.tabs}
       >
-        {tabs.map(tab => <Fragment key={tab.id}>{renderTab(tab)}</Fragment>)}
+        {tabs.map((tab) => (
+          <Fragment key={tab.id}>{renderTab(tab)}</Fragment>
+        ))}
       </Tabs>
     </div>
   );

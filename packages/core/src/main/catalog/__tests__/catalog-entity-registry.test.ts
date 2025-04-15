@@ -4,13 +4,13 @@
  */
 
 import { observable, reaction } from "mobx";
-import type { WebLinkSpec, WebLinkStatus } from "../../../common/catalog-entities";
-import { WebLink } from "../../../common/catalog-entities";
 import type { CatalogEntityMetadata } from "../../../common/catalog";
 import { CatalogEntity } from "../../../common/catalog";
+import type { WebLinkSpec, WebLinkStatus } from "../../../common/catalog-entities";
+import { WebLink } from "../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import catalogEntityRegistryInjectable from "../entity-registry.injectable";
 import type { CatalogEntityRegistry } from "../entity-registry";
+import catalogEntityRegistryInjectable from "../entity-registry.injectable";
 
 class InvalidEntity extends CatalogEntity<CatalogEntityMetadata, WebLinkStatus, WebLinkSpec> {
   public readonly apiVersion = "entity.k8slens.dev/v1alpha1";
@@ -71,7 +71,7 @@ describe("CatalogEntityRegistry", () => {
   });
 
   describe("addSource", () => {
-    it ("allows to add an observable source", () => {
+    it("allows to add an observable source", () => {
       const source = observable.array<WebLink>([]);
 
       entityRegistry.addObservableSource("test", source);
@@ -82,20 +82,23 @@ describe("CatalogEntityRegistry", () => {
       expect(entityRegistry.items.length).toEqual(1);
     });
 
-    it ("added source change triggers reaction", (done) => {
+    it("added source change triggers reaction", (done) => {
       const source = observable.array<WebLink>([]);
 
       entityRegistry.addObservableSource("test", source);
-      reaction(() => entityRegistry.items, () => {
-        done();
-      });
+      reaction(
+        () => entityRegistry.items,
+        () => {
+          done();
+        },
+      );
 
       source.push(entity);
     });
   });
 
   describe("removeSource", () => {
-    it ("removes source", () => {
+    it("removes source", () => {
       const source = observable.array<WebLink>([]);
 
       entityRegistry.addObservableSource("test", source);

@@ -15,7 +15,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedNamespaceKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedNamespaceKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -29,12 +32,15 @@ function NonInjectedNamespaceKubernetesClusterSettings({ entity, getClusterById 
   );
 }
 
-const NamespaceKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedNamespaceKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const NamespaceKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedNamespaceKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const namespaceKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "namespace-kubernetes-cluster-entity-settings",

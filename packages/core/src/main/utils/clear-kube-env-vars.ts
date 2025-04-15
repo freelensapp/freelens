@@ -14,8 +14,5 @@ const anyKubeconfig = /^kubeconfig$/i;
  * @param env The current copy of env
  */
 export function clearKubeconfigEnvVars(env: Partial<Record<string, string>>): Partial<Record<string, string>> {
-  return Object.fromEntries(
-    Object.entries(env)
-      .filter(([key]) => anyKubeconfig.exec(key) === null),
-  );
+  return Object.fromEntries(Object.entries(env).filter(([key]) => anyKubeconfig.exec(key) === null));
 }

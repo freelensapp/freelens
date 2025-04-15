@@ -5,22 +5,22 @@
 
 import "./notifications.scss";
 
-import React from "react";
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { Animate } from "@freelensapp/animate";
+import { Icon } from "@freelensapp/icon";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import type { Disposer } from "@freelensapp/utilities";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { notificationsStoreInjectable } from "./notifications-store.injectable";
 import type {
   CreateNotificationOptions,
   Notification,
   NotificationMessage,
   NotificationsStore,
 } from "./notifications.store";
-import { Animate } from "@freelensapp/animate";
-import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { notificationsStoreInjectable } from "./notifications-store.injectable";
 
 export type ShowNotification = (message: NotificationMessage, opts?: CreateNotificationOptions) => Disposer;
 

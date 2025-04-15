@@ -3,27 +3,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { observer } from "mobx-react";
-import type { Cluster } from "../../../common/cluster/cluster";
-import { Input } from "../input";
-import { SubTitle } from "../layout/sub-title";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { Spinner } from "@freelensapp/spinner";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { action, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { Cluster } from "../../../common/cluster/cluster";
 import type { ValidateDirectory } from "../../../common/fs/validate-directory.injectable";
 import validateDirectoryInjectable from "../../../common/fs/validate-directory.injectable";
 import type { ResolveTilde } from "../../../common/path/resolve-tilde.injectable";
 import resolveTildeInjectable from "../../../common/path/resolve-tilde.injectable";
-import Gutter from "../gutter/gutter";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
+import Gutter from "../gutter/gutter";
+import { Input } from "../input";
+import { SubTitle } from "../layout/sub-title";
 import type { LocalTerminalSettingPresenter } from "./local-terminal-setting-presenter.injectable";
 import localTerminalSettingPresenterInjectable from "./local-terminal-setting-presenter.injectable";
-import { Spinner } from "@freelensapp/spinner";
-import { action, runInAction } from "mobx";
 
 export interface ClusterLocalTerminalSettingProps {
   cluster: Cluster;
@@ -100,70 +100,63 @@ const NonInjectedClusterLocalTerminalSetting = observer((props: Dependencies & C
   return (
     <>
       <section className="working-directory">
-        <SubTitle title="Working Directory"/>
+        <SubTitle title="Working Directory" />
         <Input
           theme="round-black"
           value={presenter.directory.get()}
           data-testid="working-directory"
-          onChange={value => presenter.directory.set(value)}
+          onChange={(value) => presenter.directory.set(value)}
           onBlur={() => commitDirectory(presenter.directory.get())}
           placeholder={isWindows ? "$USERPROFILE" : "$HOME"}
-          iconRight={(
+          iconRight={
             <>
-              {
-                presenter.directory.get() && (
-                  <Icon
-                    material="close"
-                    title="Clear"
-                    onClick={() => setAndCommitDirectory("")}
-                    smallest
-                    style={{ marginRight: "var(--margin)" }}
-                  />
-                )
-              }
-              <Icon
-                material="folder"
-                title="Pick from filesystem"
-                onClick={openFilePicker}
-                smallest
-              />
+              {presenter.directory.get() && (
+                <Icon
+                  material="close"
+                  title="Clear"
+                  onClick={() => setAndCommitDirectory("")}
+                  smallest
+                  style={{ marginRight: "var(--margin)" }}
+                />
+              )}
+              <Icon material="folder" title="Pick from filesystem" onClick={openFilePicker} smallest />
             </>
-          )}
+          }
         />
         <small className="hint">
-          An explicit start path where the terminal will be launched,
-          {" "}
-          this is used as the current working directory (cwd) for the shell process.
+          An explicit start path where the terminal will be launched, this is used as the current working directory
+          (cwd) for the shell process.
         </small>
       </section>
       <Gutter />
       <section className="default-namespace">
-        <SubTitle title="Default Namespace"/>
+        <SubTitle title="Default Namespace" />
         <Input
           theme="round-black"
           data-testid="default-namespace"
           value={presenter.defaultNamespace.get()}
-          onChange={value => presenter.defaultNamespace.set(value)}
+          onChange={(value) => presenter.defaultNamespace.set(value)}
           onBlur={commitDefaultNamespace}
           placeholder={presenter.placeholderDefaultNamespace}
         />
-        <small className="hint">
-          Default namespace used for kubectl.
-        </small>
+        <small className="hint">Default namespace used for kubectl.</small>
       </section>
     </>
   );
 });
 
-export const ClusterLocalTerminalSetting = withInjectables<Dependencies, ClusterLocalTerminalSettingProps>(NonInjectedClusterLocalTerminalSetting, {
-  getPlaceholder: () => <Spinner center />,
-  getProps: async (di, props) => ({
-    ...props,
-    showErrorNotification: di.inject(showErrorNotificationInjectable),
-    validateDirectory: di.inject(validateDirectoryInjectable),
-    resolveTilde: di.inject(resolveTildeInjectable),
-    isWindows: di.inject(isWindowsInjectable),
-    openPathPickingDialog: di.inject(openPathPickingDialogInjectable),
-    presenter: await di.inject(localTerminalSettingPresenterInjectable, props.cluster),
-  }),
-});
+export const ClusterLocalTerminalSetting = withInjectables<Dependencies, ClusterLocalTerminalSettingProps>(
+  NonInjectedClusterLocalTerminalSetting,
+  {
+    getPlaceholder: () => <Spinner center />,
+    getProps: async (di, props) => ({
+      ...props,
+      showErrorNotification: di.inject(showErrorNotificationInjectable),
+      validateDirectory: di.inject(validateDirectoryInjectable),
+      resolveTilde: di.inject(resolveTildeInjectable),
+      isWindows: di.inject(isWindowsInjectable),
+      openPathPickingDialog: di.inject(openPathPickingDialogInjectable),
+      presenter: await di.inject(localTerminalSettingPresenterInjectable, props.cluster),
+    }),
+  },
+);

@@ -5,24 +5,23 @@
 
 import "./dialog.scss";
 
-import React from "react";
-import type { IObservableValue } from "mobx";
-import { action, observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import type { DialogProps } from "../../dialog";
-import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
 import type { Namespace } from "@freelensapp/kube-object";
-import { Input } from "../../input";
-import { systemName } from "../../input/input_validators";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import namespaceStoreInjectable from "../store.injectable";
-import addNamespaceDialogStateInjectable
-  from "./state.injectable";
-import type { NamespaceStore } from "../store";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import type { IObservableValue } from "mobx";
+import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { DialogProps } from "../../dialog";
+import { Dialog } from "../../dialog";
+import { Input } from "../../input";
+import { systemName } from "../../input/input_validators";
+import { Wizard, WizardStep } from "../../wizard";
+import type { NamespaceStore } from "../store";
+import namespaceStoreInjectable from "../store.injectable";
+import addNamespaceDialogStateInjectable from "./state.injectable";
 
 export interface AddNamespaceDialogProps extends DialogProps {
   onSuccess?(ns: Namespace): void;
@@ -76,22 +75,9 @@ class NonInjectedAddNamespaceDialog extends React.Component<AddNamespaceDialogPr
     const isOpen = state.get();
 
     return (
-      <Dialog
-        {...dialogProps}
-        className="AddNamespaceDialog"
-        isOpen={isOpen}
-        onClose={this.reset}
-        close={this.close}
-      >
-        <Wizard
-          header={<h5>Create Namespace</h5>}
-          done={this.close}
-        >
-          <WizardStep
-            contentClass="flex gaps column"
-            nextLabel="Create"
-            next={this.addNamespace}
-          >
+      <Dialog {...dialogProps} className="AddNamespaceDialog" isOpen={isOpen} onClose={this.reset} close={this.close}>
+        <Wizard header={<h5>Create Namespace</h5>} done={this.close}>
+          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.addNamespace}>
             <Input
               required
               autoFocus
@@ -100,7 +86,7 @@ class NonInjectedAddNamespaceDialog extends React.Component<AddNamespaceDialogPr
               trim
               validators={systemName}
               value={namespace}
-              onChange={v => this.namespace = v.toLowerCase()}
+              onChange={(v) => (this.namespace = v.toLowerCase())}
             />
           </WizardStep>
         </Wizard>
@@ -109,11 +95,14 @@ class NonInjectedAddNamespaceDialog extends React.Component<AddNamespaceDialogPr
   }
 }
 
-export const AddNamespaceDialog = withInjectables<Dependencies, AddNamespaceDialogProps>(NonInjectedAddNamespaceDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    namespaceStore: di.inject(namespaceStoreInjectable),
-    state: di.inject(addNamespaceDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-  }),
-});
+export const AddNamespaceDialog = withInjectables<Dependencies, AddNamespaceDialogProps>(
+  NonInjectedAddNamespaceDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      namespaceStore: di.inject(namespaceStoreInjectable),
+      state: di.inject(addNamespaceDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    }),
+  },
+);

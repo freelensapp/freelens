@@ -1,12 +1,12 @@
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CreateHotbarData } from "./types";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import type { HotbarDependencies } from "./hotbar";
 import { Hotbar } from "./hotbar";
+import type { CreateHotbarData } from "./types";
 
 export type CreateHotbar = (data: CreateHotbarData) => Hotbar;
 

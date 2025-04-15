@@ -1,14 +1,14 @@
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { getInjectable } from "@ogre-tools/injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
-import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
-import React from "react";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
-import { workloadOverviewDetailInjectionToken } from "../../../../../renderer/components/workloads-overview/workload-overview-details/workload-overview-detail-injection-token";
-import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
+import React from "react";
+import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
+import { workloadOverviewDetailInjectionToken } from "../../../../../renderer/components/workloads-overview/workload-overview-details/workload-overview-detail-injection-token";
 
 describe("order of workload overview details", () => {
   let rendered: RenderResult;
@@ -41,34 +41,19 @@ describe("order of workload overview details", () => {
         kubeWorkloadsOverviewItems: [
           {
             components: {
-              Details: () => (
-                <div
-                  data-testid="workload-overview-detail"
-                  id="some-extension-item-without-priority"
-                />
-              ),
+              Details: () => <div data-testid="workload-overview-detail" id="some-extension-item-without-priority" />,
             },
           },
           {
             priority: 70,
             components: {
-              Details: () => (
-                <div
-                  data-testid="workload-overview-detail"
-                  id="some-extension-item-with-high-priority"
-                />
-              ),
+              Details: () => <div data-testid="workload-overview-detail" id="some-extension-item-with-high-priority" />,
             },
           },
           {
             priority: 10,
             components: {
-              Details: () => (
-                <div
-                  data-testid="workload-overview-detail"
-                  id="some-extension-item-with-low-priority"
-                />
-              ),
+              Details: () => <div data-testid="workload-overview-detail" id="some-extension-item-with-low-priority" />,
             },
           },
         ],
@@ -79,7 +64,7 @@ describe("order of workload overview details", () => {
   });
 
   it("shows items in correct order", () => {
-    const actual = rendered.queryAllByTestId("workload-overview-detail").map(x => x.id);
+    const actual = rendered.queryAllByTestId("workload-overview-detail").map((x) => x.id);
 
     expect(actual).toEqual([
       "some-core-item-with-low-order-number",
@@ -99,12 +84,7 @@ const someCoreItemWithLowOrderNumberInjectable = getInjectable({
     orderNumber: 30,
     enabled: computed(() => true),
 
-    Component: () => (
-      <div
-        data-testid="workload-overview-detail"
-        id="some-core-item-with-low-order-number"
-      />
-    ),
+    Component: () => <div data-testid="workload-overview-detail" id="some-core-item-with-low-order-number" />,
   }),
 
   injectionToken: workloadOverviewDetailInjectionToken,
@@ -117,12 +97,7 @@ const someCoreItemWithDefaultOrderNumberInjectable = getInjectable({
     orderNumber: 50,
     enabled: computed(() => true),
 
-    Component: () => (
-      <div
-        data-testid="workload-overview-detail"
-        id="some-core-item-with-default-order-number"
-      />
-    ),
+    Component: () => <div data-testid="workload-overview-detail" id="some-core-item-with-default-order-number" />,
   }),
 
   injectionToken: workloadOverviewDetailInjectionToken,
@@ -135,12 +110,7 @@ const someCoreItemWithHighOrderNumberInjectable = getInjectable({
     orderNumber: 60,
     enabled: computed(() => true),
 
-    Component: () => (
-      <div
-        data-testid="workload-overview-detail"
-        id="some-core-item-with-high-order-number"
-      />
-    ),
+    Component: () => <div data-testid="workload-overview-detail" id="some-core-item-with-high-order-number" />,
   }),
 
   injectionToken: workloadOverviewDetailInjectionToken,

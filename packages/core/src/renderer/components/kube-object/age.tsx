@@ -21,8 +21,5 @@ export interface KubeObjectAgeProps {
 }
 
 export const KubeObjectAge = ({ object, compact = true }: KubeObjectAgeProps) => (
-  <ReactiveDuration
-    timestamp={object.metadata.creationTimestamp}
-    compact={compact}
-  />
+  <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
 );

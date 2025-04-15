@@ -6,10 +6,10 @@ import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import type { IComputedValue } from "mobx";
 import { computed, observe } from "mobx";
-import React from "react";
 import { observer } from "mobx-react";
-import { reactiveNow } from "./reactive-now";
+import React from "react";
 import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
+import { reactiveNow } from "./reactive-now";
 
 describe("reactiveNow", () => {
   let someComputed: IComputedValue<boolean>;
@@ -28,11 +28,9 @@ describe("reactiveNow", () => {
     let rendered: RenderResult;
 
     beforeEach(() => {
-      const TestComponent = observer(
-        ({ someComputed }: { someComputed: IComputedValue<boolean> }) => (
-          <div>{someComputed.get() ? "true" : "false"}</div>
-        ),
-      );
+      const TestComponent = observer(({ someComputed }: { someComputed: IComputedValue<boolean> }) => (
+        <div>{someComputed.get() ? "true" : "false"}</div>
+      ));
 
       rendered = render(<TestComponent someComputed={someComputed} />);
     });
@@ -52,9 +50,13 @@ describe("reactiveNow", () => {
     let actual: boolean;
 
     beforeEach(() => {
-      observe(someComputed, (changed) => {
-        actual = changed.newValue as boolean;
-      }, true);
+      observe(
+        someComputed,
+        (changed) => {
+          actual = changed.newValue as boolean;
+        },
+        true,
+      );
     });
 
     it("given time passes, works", () => {

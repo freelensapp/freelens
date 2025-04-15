@@ -7,4 +7,4 @@ import type { KubeObject } from "@freelensapp/kube-object";
 export const kubeObjectMatchesToKindAndApiVersion =
   (kind: string, apiVersions: string[]) =>
   <TKubeObject extends KubeObject>(item: TKubeObject | undefined) =>
-      !!item && item.kind === kind && apiVersions.includes(item.apiVersion);
+    !!item && item.kind === kind && apiVersions.includes(item.apiVersion);

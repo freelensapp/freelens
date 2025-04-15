@@ -3,34 +3,34 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import type { SelectOption } from "../../select";
-import { Select } from "../../select";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { Spinner } from "@freelensapp/spinner";
+import { isObject, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import yaml, { dump } from "js-yaml";
 import type { IComputedValue } from "mobx";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import type { CreateResourceTabStore } from "./store";
-import { EditorPanel } from "../editor-panel";
-import { InfoPanel } from "../info-panel";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import type { Logger } from "@freelensapp/logger";
-import type { ApiManager } from "../../../../common/k8s-api/api-manager";
-import { isObject, prevDefault } from "@freelensapp/utilities";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import createResourceTabStoreInjectable from "./store.injectable";
-import createResourceTemplatesInjectable from "./create-resource-templates.injectable";
-import { Spinner } from "@freelensapp/spinner";
+import React from "react";
 import type { GroupBase } from "react-select";
-import type { Navigate } from "../../../navigation/navigate.injectable";
-import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
+import type { ApiManager } from "../../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
-import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import navigateInjectable from "../../../navigation/navigate.injectable";
 import type { RequestKubeObjectCreation } from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
 import requestKubeObjectCreationInjectable from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { Navigate } from "../../../navigation/navigate.injectable";
+import navigateInjectable from "../../../navigation/navigate.injectable";
+import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
+import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
+import type { SelectOption } from "../../select";
+import { Select } from "../../select";
+import { EditorPanel } from "../editor-panel";
+import { InfoPanel } from "../info-panel";
+import createResourceTemplatesInjectable from "./create-resource-templates.injectable";
+import type { CreateResourceTabStore } from "./store";
+import createResourceTabStoreInjectable from "./store.injectable";
 
 export interface CreateResourceProps {
   tabId: string;
@@ -99,12 +99,15 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
         throw result.error;
       }
 
-      const { kind, apiVersion, metadata: { name, namespace }} = result.response;
+      const {
+        kind,
+        apiVersion,
+        metadata: { name, namespace },
+      } = result.response;
 
-      const close = this.props.showSuccessNotification((
+      const close = this.props.showSuccessNotification(
         <p>
-          {kind}
-          {" "}
+          {kind}{" "}
           <a
             onClick={prevDefault(() => {
               const resourceLink = apiManager.lookupApiLink({ kind, apiVersion, name, namespace });
@@ -116,13 +119,13 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
             {name}
           </a>
           {" successfully created."}
-        </p>
-      ));
+        </p>,
+      );
     });
 
     const results = await Promise.allSettled(creatingResources);
 
-    if (results.some(result => result.status === "rejected")) {
+    if (results.some((result) => result.status === "rejected")) {
       return;
     }
 
@@ -138,7 +141,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
           className="TemplateSelect"
           placeholder="Select Template ..."
           options={this.props.createResourceTemplates.get()}
-          formatGroupLabel={group => group.label}
+          formatGroupLabel={(group) => group.label}
           menuPlacement="top"
           onChange={(option) => {
             if (option) {
@@ -163,12 +166,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
           submitLabel="Create"
           showNotifications={false}
         />
-        <EditorPanel
-          tabId={tabId}
-          value={data}
-          onChange={this.onChange}
-          onError={this.onError}
-        />
+        <EditorPanel tabId={tabId} value={data} onChange={this.onChange} onError={this.onError} />
       </div>
     );
   }

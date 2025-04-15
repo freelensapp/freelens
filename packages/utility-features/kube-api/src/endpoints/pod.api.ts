@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
+import { KubeStatus, Pod, isKubeStatusData } from "@freelensapp/kube-object";
 import type {
   DeleteResourceDescriptor,
   DerivedKubeApiOptions,
@@ -10,8 +12,6 @@ import type {
   ResourceDescriptor,
 } from "../kube-api";
 import { KubeApi } from "../kube-api";
-import type { KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
-import { isKubeStatusData, KubeStatus, Pod } from "@freelensapp/kube-object";
 
 export class PodApi extends KubeApi<Pod> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

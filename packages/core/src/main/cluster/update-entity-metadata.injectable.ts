@@ -11,7 +11,7 @@ import { enumKeys } from "../../common/utils/enum";
 
 export type UpdateEntityMetadata = (entity: KubernetesCluster, cluster: Cluster) => void;
 
-const updateEntityMetadataInjectable =  getInjectable({
+const updateEntityMetadataInjectable = getInjectable({
   id: "update-entity-metadata",
 
   instantiate: (): UpdateEntityMetadata => {

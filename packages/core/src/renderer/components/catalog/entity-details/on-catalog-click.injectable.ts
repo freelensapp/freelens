@@ -16,7 +16,7 @@ const onCatalogEntityListClickInjectable = getInjectable({
     const selectedCatalogEntityParam = di.inject(selectedCatalogEntityParamInjectable);
     const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
 
-    return action(entity => {
+    return action((entity) => {
       if (selectedCatalogEntityParam.get() === entity.getId()) {
         selectedCatalogEntityParam.clear();
       } else if (selectedCatalogEntityParam.get() === undefined) {

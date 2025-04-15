@@ -25,7 +25,10 @@ export interface ClusterMetricData {
   fsUsage: MetricData;
 }
 
-export type RequestClusterMetricsByNodeNames = (nodeNames: string[], params?: RequestMetricsParams) => Promise<ClusterMetricData>;
+export type RequestClusterMetricsByNodeNames = (
+  nodeNames: string[],
+  params?: RequestMetricsParams,
+) => Promise<ClusterMetricData>;
 
 const requestClusterMetricsByNodeNamesInjectable = getInjectable({
   id: "get-cluster-metrics-by-node-names",
@@ -38,24 +41,27 @@ const requestClusterMetricsByNodeNamesInjectable = getInjectable({
         nodes: nodeNames.join("|"),
       };
 
-      return requestMetrics({
-        memoryUsage: opts,
-        workloadMemoryUsage: opts,
-        memoryRequests: opts,
-        memoryLimits: opts,
-        memoryCapacity: opts,
-        memoryAllocatableCapacity: opts,
-        cpuUsage: opts,
-        cpuRequests: opts,
-        cpuLimits: opts,
-        cpuCapacity: opts,
-        cpuAllocatableCapacity: opts,
-        podUsage: opts,
-        podCapacity: opts,
-        podAllocatableCapacity: opts,
-        fsSize: opts,
-        fsUsage: opts,
-      }, params);
+      return requestMetrics(
+        {
+          memoryUsage: opts,
+          workloadMemoryUsage: opts,
+          memoryRequests: opts,
+          memoryLimits: opts,
+          memoryCapacity: opts,
+          memoryAllocatableCapacity: opts,
+          cpuUsage: opts,
+          cpuRequests: opts,
+          cpuLimits: opts,
+          cpuCapacity: opts,
+          cpuAllocatableCapacity: opts,
+          podUsage: opts,
+          podCapacity: opts,
+          podAllocatableCapacity: opts,
+          fsSize: opts,
+          fsUsage: opts,
+        },
+        params,
+      );
     };
   },
 });

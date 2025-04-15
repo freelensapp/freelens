@@ -1,13 +1,13 @@
+import { object } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
-import createPersistentStorageInjectable from "../../../features/persistent-storage/common/create.injectable";
 import { action } from "mobx";
-import { object } from "@freelensapp/utilities";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
+import createPersistentStorageInjectable from "../../../features/persistent-storage/common/create.injectable";
+import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
 
 const fileSystemProvisionerStoreInjectable = getInjectable({
   id: "file-system-provisioner-store",
@@ -21,7 +21,7 @@ const fileSystemProvisionerStoreInjectable = getInjectable({
       configName: "lens-filesystem-provisioner-store",
       accessPropertiesByDotNotation: false, // To make dots safe in cluster context names
       projectVersion: storeMigrationVersion,
-      fromStore: action(({ extensions = {}}) => {
+      fromStore: action(({ extensions = {} }) => {
         registeredExtensions.replace(object.entries(extensions));
       }),
       toJSON: () => ({

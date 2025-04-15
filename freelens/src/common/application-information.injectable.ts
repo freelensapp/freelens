@@ -1,23 +1,17 @@
+import { applicationInformationToken } from "@freelensapp/application";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import packageJson from "../../package.json";
-import { applicationInformationToken } from "@freelensapp/application";
 
 const applicationInformationInjectable = getInjectable({
   id: "application-information",
   instantiate: () => {
     const {
       version,
-      config: {
-        bundledHelmVersion,
-        bundledKubectlVersion,
-        contentSecurityPolicy,
-        k8sProxyVersion,
-        welcomeRoute,
-      },
+      config: { bundledHelmVersion, bundledKubectlVersion, contentSecurityPolicy, k8sProxyVersion, welcomeRoute },
       productName,
       copyright,
       description,

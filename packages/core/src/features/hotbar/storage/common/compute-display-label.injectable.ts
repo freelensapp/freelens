@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Hotbar } from "./hotbar";
 import computeDisplayIndexInjectable from "./compute-display-index.injectable";
+import type { Hotbar } from "./hotbar";
 
 export type ComputeHotbarDisplayLabel = (hotbar: Hotbar) => string;
 

@@ -1,23 +1,23 @@
+import path from "path";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
+import type { Disposer } from "@freelensapp/utilities";
+import { noop } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
-import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import type { Disposer } from "@freelensapp/utilities";
-import { noop } from "@freelensapp/utilities";
-import { extensionDisplayName } from "../../../../extensions/lens-extension";
-import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import path from "path";
 import fse from "fs-extra";
 import { when } from "mobx";
 import React from "react";
-import type { InstallRequestValidated } from "./create-temp-files-and-validate.injectable";
 import extractTarInjectable from "../../../../common/fs/extract-tar.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { showInfoNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
+import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import { extensionDisplayName } from "../../../../extensions/lens-extension";
+import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
+import type { InstallRequestValidated } from "./create-temp-files-and-validate.injectable";
+import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 
 export type UnpackExtension = (request: InstallRequestValidated, disposeDownloading?: Disposer) => Promise<void>;
 
@@ -33,14 +33,14 @@ const unpackExtensionInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
     const displayErrorMessage = (message: string, displayName: string) => {
-      showErrorNotification((
+      showErrorNotification(
         <p>
           {"Installing extension "}
           <b>{displayName}</b>
           {" has failed: "}
           <em>{message}</em>
-        </p>
-      ));
+        </p>,
+      );
     };
 
     return async (request, disposeDownloading) => {
@@ -56,15 +56,12 @@ const unpackExtensionInjectable = getInjectable({
 
       const displayName = extensionDisplayName(name, version);
       const extensionFolder = getExtensionDestFolder(name);
-      const unpackingTempFolder = path.join(
-        path.dirname(tempFile),
-        `${path.basename(tempFile)}-unpacked`,
-      );
+      const unpackingTempFolder = path.join(path.dirname(tempFile), `${path.basename(tempFile)}-unpacked`);
 
       logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile });
 
       try {
-      // extract to temp folder first
+        // extract to temp folder first
         await fse.remove(unpackingTempFolder).catch(noop);
         await fse.ensureDir(unpackingTempFolder);
         await extractTar(tempFile, { cwd: unpackingTempFolder });
@@ -74,8 +71,8 @@ const unpackExtensionInjectable = getInjectable({
         let unpackedRootFolder = unpackingTempFolder;
 
         if (unpackedFiles.length === 1) {
-        // check if %extension.tgz was packed with single top folder,
-        // e.g. "npm pack %ext_name" downloads file with "package" root folder within tarball
+          // check if %extension.tgz was packed with single top folder,
+          // e.g. "npm pack %ext_name" downloads file with "package" root folder within tarball
           unpackedRootFolder = path.join(unpackingTempFolder, unpackedFiles[0]);
         }
 
@@ -88,31 +85,26 @@ const unpackExtensionInjectable = getInjectable({
             // Enable installed extensions by default.
             extensionLoader.setIsEnabled(id, true);
 
-            showInfoNotification((
+            showInfoNotification(
               <p>
                 {"Extension "}
                 <b>{displayName}</b>
                 {" successfully installed!"}
-              </p>
-            ));
+              </p>,
+            );
           })
-          .catch(error => {
+          .catch((error) => {
             // There was an error during plugin installation
-            logger.info(
-              `[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`,
-              { error });
+            logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`, { error });
             displayErrorMessage("There was an error during the installation", displayName);
           });
       } catch (error) {
         const message = getMessageFromError(error);
 
-        logger.info(
-          `[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`,
-          { error },
-        );
+        logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`, { error });
         displayErrorMessage(message, displayName);
       } finally {
-      // Remove install state once finished
+        // Remove install state once finished
         extensionInstallationStateStore.clearInstalling(id);
 
         // clean up

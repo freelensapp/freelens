@@ -1,9 +1,9 @@
+import type { RenderResult } from "@testing-library/react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import type { RenderResult } from "@testing-library/react";
 
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
@@ -39,9 +39,7 @@ describe("extendability-using-extension-api", () => {
           topBarItems: [
             {
               components: {
-                Item: () => (
-                  <div data-testid="some-top-bar-item">Some-content</div>
-                ),
+                Item: () => <div data-testid="some-top-bar-item">Some-content</div>,
               },
             },
           ],

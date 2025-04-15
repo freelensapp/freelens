@@ -12,7 +12,7 @@ describe("observable-crate", () => {
   });
 
   it("has a definite type if the initial value is provided", () => {
-    expect (() => {
+    expect(() => {
       const res: ObservableCrate<number> = observableCrate(0);
 
       void res;

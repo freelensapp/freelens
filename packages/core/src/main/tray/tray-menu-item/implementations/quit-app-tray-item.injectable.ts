@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { trayMenuItemInjectionToken } from "../tray-menu-item-injection-token";
 import { computed } from "mobx";
 import requestQuitOfAppInjectable from "../../../electron-app/features/require-quit.injectable";
+import { trayMenuItemInjectionToken } from "../tray-menu-item-injection-token";
 
 const quitAppTrayItemInjectable = getInjectable({
   id: "quit-app-tray-item",

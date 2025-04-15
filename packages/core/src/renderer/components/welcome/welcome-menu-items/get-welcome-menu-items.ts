@@ -4,18 +4,15 @@
  */
 import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import type { NavigateToCatalog } from "../../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 
 interface Dependencies {
   extensions: IComputedValue<LensRendererExtension[]>;
   navigateToCatalog: NavigateToCatalog;
 }
 
-export const getWelcomeMenuItems = ({
-  extensions,
-  navigateToCatalog,
-}: Dependencies) => {
+export const getWelcomeMenuItems = ({ extensions, navigateToCatalog }: Dependencies) => {
   const browseClusters = {
     title: "Browse Clusters in Catalog",
     icon: "view_list",
@@ -27,8 +24,5 @@ export const getWelcomeMenuItems = ({
       }),
   };
 
-  return computed(() => [
-    browseClusters,
-    ...extensions.get().flatMap((extension) => extension.welcomeMenus),
-  ]);
+  return computed(() => [browseClusters, ...extensions.get().flatMap((extension) => extension.welcomeMenus)]);
 };

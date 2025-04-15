@@ -3,20 +3,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { isDefined, isErrnoException } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import * as uuid from "uuid";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import catalogCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
-import { isDefined, isErrnoException } from "@freelensapp/utilities";
-import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
-import { getInjectable } from "@ogre-tools/injectable";
-import { hotbarStoreMigrationInjectionToken } from "../common/migrations-token";
-import readJsonSyncInjectable from "../../../../common/fs/read-json-sync.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { generateNewIdFor } from "../../../../common/utils/generate-new-id-for";
 import type { ClusterModel } from "../../../../common/cluster-types";
-import { defaultHotbarCells } from "../common/types";
-import type { HotbarData } from "../common/hotbar";
+import readJsonSyncInjectable from "../../../../common/fs/read-json-sync.injectable";
+import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
+import { generateNewIdFor } from "../../../../common/utils/generate-new-id-for";
 import createHotbarInjectable from "../common/create-hotbar.injectable";
+import type { HotbarData } from "../common/hotbar";
+import { hotbarStoreMigrationInjectionToken } from "../common/migrations-token";
+import { defaultHotbarCells } from "../common/types";
 
 interface Pre500WorkspaceStoreModel {
   workspaces: {
@@ -46,7 +46,9 @@ const v500Beta10HotbarStoreMigrationInjectable = getInjectable({
       const logger = di.inject(loggerInjectionToken);
       const createHotbar = di.inject(createHotbarInjectable);
       const rawHotbars = store.get("hotbars");
-      const hotbars: HotbarData[] = Array.isArray(rawHotbars) ? rawHotbars.filter(h => h && typeof h === "object") : [];
+      const hotbars: HotbarData[] = Array.isArray(rawHotbars)
+        ? rawHotbars.filter((h) => h && typeof h === "object")
+        : [];
 
       // Hotbars might be empty, if some of the previous migrations weren't run
       if (hotbars.length === 0) {
@@ -57,8 +59,12 @@ const v500Beta10HotbarStoreMigrationInjectable = getInjectable({
       }
 
       try {
-        const workspaceStoreData: Pre500WorkspaceStoreModel = readJsonSync(joinPaths(userDataPath, "lens-workspace-store.json"));
-        const { clusters = [] }: Pre500ClusterStoreModel = readJsonSync(joinPaths(userDataPath, "lens-cluster-store.json"));
+        const workspaceStoreData: Pre500WorkspaceStoreModel = readJsonSync(
+          joinPaths(userDataPath, "lens-workspace-store.json"),
+        );
+        const { clusters = [] }: Pre500ClusterStoreModel = readJsonSync(
+          joinPaths(userDataPath, "lens-cluster-store.json"),
+        );
         const workspaceHotbars = new Map<string, HotbarData>(); // mapping from WorkspaceId to HotBar
 
         for (const { id, name } of workspaceStoreData.workspaces) {
@@ -72,7 +78,10 @@ const v500Beta10HotbarStoreMigrationInjectable = getInjectable({
 
         {
           // grab the default named hotbar or the first.
-          const defaultHotbarIndex = Math.max(0, hotbars.findIndex(hotbar => hotbar.name === "default"));
+          const defaultHotbarIndex = Math.max(
+            0,
+            hotbars.findIndex((hotbar) => hotbar.name === "default"),
+          );
           const [{ name, id, items }] = hotbars.splice(defaultHotbarIndex, 1);
 
           workspaceHotbars.set("default", {
@@ -125,9 +134,9 @@ const v500Beta10HotbarStoreMigrationInjectable = getInjectable({
          *
          * if every hotbar has elements that all not the `catalog-entity` item
          */
-        if (hotbars.every(hotbar => hotbar.items.every(item => item?.entity?.uid !== "catalog-entity"))) {
+        if (hotbars.every((hotbar) => hotbar.items.every((item) => item?.entity?.uid !== "catalog-entity"))) {
           // note, we will add a new whole hotbar here called "default" if that was previously removed
-          const defaultHotbarIndex = hotbars.findIndex(hotbar => hotbar.name === "default");
+          const defaultHotbarIndex = hotbars.findIndex((hotbar) => hotbar.name === "default");
 
           if (defaultHotbarIndex >= 0) {
             const defaultHotbar = createHotbar(hotbars[defaultHotbarIndex]);
@@ -150,7 +159,6 @@ const v500Beta10HotbarStoreMigrationInjectable = getInjectable({
             hotbars.unshift(hotbar.toJSON());
           }
         }
-
       } catch (error) {
         // ignore files being missing
         if (isErrnoException(error) && error.code !== "ENOENT") {

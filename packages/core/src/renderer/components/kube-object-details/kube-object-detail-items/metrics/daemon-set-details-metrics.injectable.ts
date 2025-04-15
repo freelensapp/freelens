@@ -13,10 +13,7 @@ const daemonSetMetricsInjectable = getInjectable({
   instantiate: (di) => {
     const getMetricsKubeObjectDetailItem = di.inject(getMetricsKubeObjectDetailItemInjectable);
 
-    return getMetricsKubeObjectDetailItem(
-      daemonSetDetailsMetricsInjectionToken,
-      ClusterMetricsResourceType.DaemonSet,
-    );
+    return getMetricsKubeObjectDetailItem(daemonSetDetailsMetricsInjectionToken, ClusterMetricsResourceType.DaemonSet);
   },
   injectionToken: kubeObjectDetailItemInjectionToken,
 });

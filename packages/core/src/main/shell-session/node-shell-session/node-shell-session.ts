@@ -3,19 +3,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { v4 as uuid } from "uuid";
-import { Watch, CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import { NodeApi } from "@freelensapp/kube-api";
+import type { Pod } from "@freelensapp/kube-object";
+import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { get, once } from "lodash";
+import { v4 as uuid } from "uuid";
+import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
+import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
+import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
+import { TerminalChannels } from "../../../common/terminal/channels";
+import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 import { ShellOpenError, ShellSession } from "../shell-session";
-import { get, once } from "lodash";
-import { NodeApi } from "@freelensapp/kube-api";
-import { TerminalChannels } from "../../../common/terminal/channels";
-import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
-import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
-import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
-import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
-import type { Pod } from "@freelensapp/kube-object";
 
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;
@@ -34,7 +34,10 @@ export class NodeShellSession extends ShellSession {
   protected readonly nodeName: string;
   protected readonly cwd: string | undefined = undefined;
 
-  constructor(protected readonly dependencies: NodeShellSessionDependencies, { nodeName, ...args }: NodeShellSessionArgs) {
+  constructor(
+    protected readonly dependencies: NodeShellSessionDependencies,
+    { nodeName, ...args }: NodeShellSessionArgs,
+  ) {
     super(dependencies, args);
     this.nodeName = nodeName;
   }
@@ -46,7 +49,7 @@ export class NodeShellSession extends ShellSession {
     const cleanup = once(() => {
       coreApi
         .deleteNamespacedPod(this.podName, "kube-system")
-        .catch(error => this.dependencies.logger.warn(`[NODE-SHELL]: failed to remove pod shell`, error));
+        .catch((error) => this.dependencies.logger.warn(`[NODE-SHELL]: failed to remove pod shell`, error));
     });
 
     this.websocket.once("close", cleanup);
@@ -62,12 +65,7 @@ export class NodeShellSession extends ShellSession {
         data: `Error occurred: ${get(error, "response.body.message", error ? String(error) : "unknown error")}`,
       });
 
-      throw new ShellOpenError(
-        "failed to create node pod",
-        error instanceof Error
-          ? { cause: error }
-          : undefined,
-      );
+      throw new ShellOpenError("failed to create node pod", error instanceof Error ? { cause: error } : undefined);
     }
 
     const env = await this.getCachedShellEnv();
@@ -77,15 +75,14 @@ export class NodeShellSession extends ShellSession {
   }
 
   protected async createNodeShellPod(coreApi: CoreV1Api) {
-    const {
-      imagePullSecret,
-      nodeShellImage,
-    } = this.cluster.preferences;
+    const { imagePullSecret, nodeShellImage } = this.cluster.preferences;
 
     const imagePullSecrets = imagePullSecret
-      ? [{
-        name: imagePullSecret,
-      }]
+      ? [
+          {
+            name: imagePullSecret,
+          },
+        ]
       : undefined;
 
     const nodeApi = this.dependencies.createKubeApi(NodeApi, {
@@ -101,14 +98,16 @@ export class NodeShellSession extends ShellSession {
     const nodeOsImage = node.getOperatingSystemImage();
 
     let image: string;
-    let command: string[]; 
+    let command: string[];
     let args: string[];
     let securityContext: any;
 
     switch (nodeOs) {
       default:
-        this.dependencies.logger.warn(`[NODE-SHELL-SESSION]: could not determine node OS, falling back with assumption of linux`);
-        // fallthrough
+        this.dependencies.logger.warn(
+          `[NODE-SHELL-SESSION]: could not determine node OS, falling back with assumption of linux`,
+        );
+      // fallthrough
       case "linux":
         image = nodeShellImage || initialNodeShellImage;
         command = ["nsenter"];
@@ -126,7 +125,13 @@ export class NodeShellSession extends ShellSession {
       case "windows":
         image = nodeShellImage || initialNodeShellWindowsImage;
         command = ["cmd.exe"];
-        args = ["/c", "%CONTAINER_SANDBOX_MOUNT_POINT%\\Program Files\\PowerShell\\latest\\pwsh.exe", "-nol", "-wd", "C:\\"];
+        args = [
+          "/c",
+          "%CONTAINER_SANDBOX_MOUNT_POINT%\\Program Files\\PowerShell\\latest\\pwsh.exe",
+          "-nol",
+          "-wd",
+          "C:\\",
+        ];
         securityContext = {
           privileged: true,
           windowsOptions: {
@@ -137,24 +142,26 @@ export class NodeShellSession extends ShellSession {
         break;
     }
 
-    return coreApi
-      .createNamespacedPod("kube-system", {
-        metadata: {
-          name: this.podName,
-          namespace: "kube-system",
-        },
-        spec: {
-          nodeName: this.nodeName,
-          restartPolicy: "Never",
-          terminationGracePeriodSeconds: 0,
-          hostPID: true,
-          hostIPC: true,
-          hostNetwork: true,
-          tolerations: [{
+    return coreApi.createNamespacedPod("kube-system", {
+      metadata: {
+        name: this.podName,
+        namespace: "kube-system",
+      },
+      spec: {
+        nodeName: this.nodeName,
+        restartPolicy: "Never",
+        terminationGracePeriodSeconds: 0,
+        hostPID: true,
+        hostIPC: true,
+        hostNetwork: true,
+        tolerations: [
+          {
             operator: "Exists",
-          }],
-          priorityClassName: "system-node-critical",
-          containers: [{
+          },
+        ],
+        priorityClassName: "system-node-critical",
+        containers: [
+          {
             name: "shell",
             image,
             securityContext,
@@ -163,10 +170,11 @@ export class NodeShellSession extends ShellSession {
             stdin: true,
             stdinOnce: true,
             tty: true,
-          }],
-          imagePullSecrets,
-        },
-      });
+          },
+        ],
+        imagePullSecrets,
+      },
+    });
   }
 
   protected waitForRunningPod(kc: KubeConfig): Promise<void> {
@@ -174,7 +182,8 @@ export class NodeShellSession extends ShellSession {
 
     return new Promise((resolve, reject) => {
       new Watch(kc)
-        .watch(`/api/v1/namespaces/kube-system/pods`,
+        .watch(
+          `/api/v1/namespaces/kube-system/pods`,
           {},
           // callback is called for each received object.
           (type, { metadata: { name }, status }: Pod) => {
@@ -183,7 +192,9 @@ export class NodeShellSession extends ShellSession {
                 case "Running":
                   return resolve();
                 case "Failed":
-                  return reject(`Failed to be created: ${(status as unknown as Record<string, string>).message || "unknown error"}`);
+                  return reject(
+                    `Failed to be created: ${(status as unknown as Record<string, string>).message || "unknown error"}`,
+                  );
               }
             }
           },
@@ -193,15 +204,17 @@ export class NodeShellSession extends ShellSession {
             reject(err);
           },
         )
-        .then(req => {
-          setTimeout(() => {
-            this.dependencies.logger.error(`[NODE-SHELL]: aborting wait for ${this.podName}, timing out`);
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            req.abort();
-            reject("Pod creation timed out");
-          }, 2 * 60 * 1000); // 2 * 60 * 1000
+        .then((req) => {
+          setTimeout(
+            () => {
+              this.dependencies.logger.error(`[NODE-SHELL]: aborting wait for ${this.podName}, timing out`);
+              req.abort();
+              reject("Pod creation timed out");
+            },
+            2 * 60 * 1000,
+          ); // 2 * 60 * 1000
         })
-        .catch(error => {
+        .catch((error) => {
           this.dependencies.logger.error(`[NODE-SHELL]: waiting for ${this.podName} failed: ${String(error)}`);
           reject(error);
         });

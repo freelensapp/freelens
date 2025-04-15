@@ -9,7 +9,10 @@ import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToEntitySettingsInjectable from "../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "../cluster/storage/common/add.injectable";
 
 describe("Showing correct entity settings", () => {
@@ -71,22 +74,28 @@ describe("Showing correct entity settings", () => {
       const addCluster = windowDi.inject(addClusterInjectable);
 
       await writeJsonFile(clusterEntity.spec.kubeconfigPath, {
-        contexts: [{
-          name: clusterEntity.spec.kubeconfigContext,
-          context: {
-            cluster: "some-cluster",
-            user: "some-user",
+        contexts: [
+          {
+            name: clusterEntity.spec.kubeconfigContext,
+            context: {
+              cluster: "some-cluster",
+              user: "some-user",
+            },
           },
-        }],
-        clusters: [{
-          name: "some-cluster",
-          cluster: {
-            server: "https://localhost:9999",
+        ],
+        clusters: [
+          {
+            name: "some-cluster",
+            cluster: {
+              server: "https://localhost:9999",
+            },
           },
-        }],
-        users: [{
-          name: "some-user",
-        }],
+        ],
+        users: [
+          {
+            name: "some-user",
+          },
+        ],
       });
 
       addCluster({
@@ -228,7 +237,9 @@ describe("Showing correct entity settings", () => {
     });
 
     it("shows no settings page info", () => {
-      expect(rendered.baseElement.querySelector("[data-preference-page-does-not-exist-test='true']")).toBeInTheDocument();
+      expect(
+        rendered.baseElement.querySelector("[data-preference-page-does-not-exist-test='true']"),
+      ).toBeInTheDocument();
     });
   });
 });

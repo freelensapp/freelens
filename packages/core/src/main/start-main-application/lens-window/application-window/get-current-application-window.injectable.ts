@@ -9,8 +9,7 @@ import { applicationWindowInjectionToken } from "./application-window-injection-
 const getCurrentApplicationWindowInjectable = getInjectable({
   id: "get-current-application-window",
 
-  instantiate: (di) => () =>
-    first(di.injectMany(applicationWindowInjectionToken)),
+  instantiate: (di) => () => first(di.injectMany(applicationWindowInjectionToken)),
 });
 
 export default getCurrentApplicationWindowInjectable;

@@ -7,11 +7,7 @@
 // Available for lens-extensions via NPM-package "@freelensapp/extensions"
 
 import * as Common from "./common-api";
-import * as Renderer from "./renderer-api";
 import * as Main from "./main-api";
+import * as Renderer from "./renderer-api";
 
-export {
-  Common,
-  Renderer,
-  Main,
-};
+export { Common, Renderer, Main };

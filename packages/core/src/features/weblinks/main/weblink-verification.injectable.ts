@@ -47,58 +47,57 @@ const weblinkVerificationStartableStoppableInjectable = getInjectable({
       return dispose;
     };
 
-    return getStartableStoppable("weblink-verification", () => disposer(
-      reaction(
-        () => weblinks.get(),
-        (links) => {
-          const seenWeblinks = new Set<string>();
+    return getStartableStoppable("weblink-verification", () =>
+      disposer(
+        reaction(
+          () => weblinks.get(),
+          (links) => {
+            const seenWeblinks = new Set<string>();
 
-          for (const weblinkData of links) {
-            seenWeblinks.add(weblinkData.id);
+            for (const weblinkData of links) {
+              seenWeblinks.add(weblinkData.id);
 
-            if (!weblinkVerifications.has(weblinkData.id)) {
-              const link = new WebLink({
-                metadata: {
-                  uid: weblinkData.id,
-                  name: weblinkData.name,
-                  source: "local",
-                  labels: {},
-                },
-                spec: {
-                  url: weblinkData.url,
-                },
-                status: {
-                  phase: "available",
-                  active: true,
-                },
-              });
+              if (!weblinkVerifications.has(weblinkData.id)) {
+                const link = new WebLink({
+                  metadata: {
+                    uid: weblinkData.id,
+                    name: weblinkData.name,
+                    source: "local",
+                    labels: {},
+                  },
+                  spec: {
+                    url: weblinkData.url,
+                  },
+                  status: {
+                    phase: "available",
+                    active: true,
+                  },
+                });
 
-              weblinkVerifications.set(weblinkData.id, [
-                link,
-                startPeriodicallyCheckingWebLink(link),
-              ]);
+                weblinkVerifications.set(weblinkData.id, [link, startPeriodicallyCheckingWebLink(link)]);
+              }
             }
-          }
 
-          // Stop checking and remove weblinks that are no longer in the store
-          for (const [weblinkId, [, disposer]] of weblinkVerifications) {
-            if (!seenWeblinks.has(weblinkId)) {
-              disposer();
-              weblinkVerifications.delete(weblinkId);
+            // Stop checking and remove weblinks that are no longer in the store
+            for (const [weblinkId, [, disposer]] of weblinkVerifications) {
+              if (!seenWeblinks.has(weblinkId)) {
+                disposer();
+                weblinkVerifications.delete(weblinkId);
+              }
             }
+          },
+          {
+            fireImmediately: true,
+          },
+        ),
+        () => {
+          // Stop the validations
+          for (const [, [, disposer]] of weblinkVerifications) {
+            disposer();
           }
-        },
-        {
-          fireImmediately: true,
         },
       ),
-      () => {
-        // Stop the validations
-        for (const [, [, disposer]] of weblinkVerifications) {
-          disposer();
-        }
-      },
-    ));
+    );
   },
 });
 

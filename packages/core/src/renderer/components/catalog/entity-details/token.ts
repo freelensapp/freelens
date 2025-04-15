@@ -10,7 +10,7 @@ export interface CatalogEntityDetailsProps<T extends CatalogEntity> {
   entity: T;
 }
 
-export type CatalogEntityDetailsComponent<T  extends CatalogEntity> = React.ComponentType<CatalogEntityDetailsProps<T>>;
+export type CatalogEntityDetailsComponent<T extends CatalogEntity> = React.ComponentType<CatalogEntityDetailsProps<T>>;
 
 export interface CatalogEntityDetailComponents<T extends CatalogEntity> {
   Details: CatalogEntityDetailsComponent<T>;

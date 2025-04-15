@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Extensions } from "./extensions";
 import extensionsRouteInjectable from "../../../common/front-end-routing/routes/extensions/extensions-route.injectable";
 import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
+import { Extensions } from "./extensions";
 
 const extensionsRouteComponentInjectable = getInjectable({
   id: "extensions-route-component",

@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { transports } from "winston";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { noop } from "@freelensapp/utilities";
+import type { transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
 
 export default getGlobalOverride(
@@ -14,5 +14,5 @@ export default getGlobalOverride(
     ({
       log: noop,
       close: noop,
-    } as typeof transports.File),
+    }) as typeof transports.File,
 );

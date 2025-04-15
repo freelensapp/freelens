@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
+import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
+import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import countBy from "lodash/countBy";
 import { observable } from "mobx";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
-import type { Pod, PodMetrics, KubeObject, NamespaceScopedMetadata } from "@freelensapp/kube-object";
-import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
 
 export interface PodStoreDependencies extends KubeObjectStoreDependencies {
   readonly podMetricsApi: PodMetricsApi;
@@ -37,42 +37,41 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   }
 
   getPodsByOwner(workload: KubeObject<NamespaceScopedMetadata, unknown, unknown>): Pod[] {
-    return this.items.filter(pod => (
-      pod.getOwnerRefs()
-        .find(owner => owner.uid === workload.getId())
-    ));
+    return this.items.filter((pod) => pod.getOwnerRefs().find((owner) => owner.uid === workload.getId()));
   }
 
   getPodsByOwnerId(workloadId: string): Pod[] {
-    return this.items.filter(pod => {
-      return pod.getOwnerRefs().find(owner => owner.uid === workloadId);
+    return this.items.filter((pod) => {
+      return pod.getOwnerRefs().find((owner) => owner.uid === workloadId);
     });
   }
 
   getPodsByNode(node: string) {
     if (!this.isLoaded) return [];
 
-    return this.items.filter(pod => pod.spec.nodeName === node);
+    return this.items.filter((pod) => pod.spec.nodeName === node);
   }
 
   getStatuses(pods: Pod[]) {
-    return countBy(pods.map(pod => pod.getStatus()).sort().reverse());
+    return countBy(
+      pods
+        .map((pod) => pod.getStatus())
+        .sort()
+        .reverse(),
+    );
   }
 
   getPodKubeMetrics(pod: Pod) {
     const containers = pod.getContainers();
     const empty = { cpu: 0, memory: 0 };
-    const metrics = this.kubeMetrics.find(metric => {
-      return [
-        metric.getName() === pod.getName(),
-        metric.getNs() === pod.getNs(),
-      ].every(v => v);
+    const metrics = this.kubeMetrics.find((metric) => {
+      return [metric.getName() === pod.getName(), metric.getNs() === pod.getNs()].every((v) => v);
     });
 
     if (!metrics) return empty;
 
     return containers.reduce((total, container) => {
-      const metric = metrics.containers.find(item => item.name == container.name);
+      const metric = metrics.containers.find((item) => item.name == container.name);
       let cpu = "0";
       let memory = "0";
 

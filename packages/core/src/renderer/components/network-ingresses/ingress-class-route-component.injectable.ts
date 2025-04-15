@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
 import ingressClassesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/ingress-class/ingress-classes-route.injectable";
+import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
 import { IngressClasses } from "./ingress-classes";
 
 const ingressClassesRouteComponentInjectable = getInjectable({

@@ -3,18 +3,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ExtensionLoader } from "../extension-loader";
-import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
+import { delay } from "@freelensapp/utilities";
+import type { IpcRenderer } from "electron";
 import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
-import { delay } from "@freelensapp/utilities";
-import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
-import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
-import type { IpcRenderer } from "electron";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
 import type { LensExtensionState } from "../../features/extensions/enabled/common/state.injectable";
 import enabledExtensionsStateInjectable from "../../features/extensions/enabled/common/state.injectable";
+import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
+import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
+import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
+import type { ExtensionLoader } from "../extension-loader";
+import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
 
 const manifestPath = "manifest/path";
 const manifestPath2 = "manifest/path2";
@@ -30,83 +30,87 @@ describe("ExtensionLoader", () => {
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(currentlyInClusterFrameInjectable, () => false);
 
-    di.override(ipcRendererInjectable, () => ({
-      invoke: jest.fn(async (channel: string) => {
-        if (channel === "extension-loader:main:state") {
-          return [
-            [
-              manifestPath,
-              {
-                manifest: {
-                  name: "TestExtension",
-                  version: "1.0.0",
-                },
-                id: manifestPath,
-                absolutePath: "/test/1",
-                manifestPath,
-                isBundled: false,
-                isEnabled: true,
-              },
-            ],
-            [
-              manifestPath2,
-              {
-                manifest: {
-                  name: "TestExtension2",
-                  version: "2.0.0",
-                },
-                id: manifestPath2,
-                absolutePath: "/test/2",
-                manifestPath: manifestPath2,
-                isBundled: false,
-                isEnabled: true,
-              },
-            ],
-          ];
-        }
-
-        return [];
-      }),
-
-      on: (channel: string, listener: (event: any, ...args: any[]) => void) => {
-        if (channel === "extension-loader:main:state") {
-          // First initialize with extensions 1 and 2
-          // and then broadcast event to remove extension 2 and add extension number 3
-          setTimeout(() => {
-            listener({}, [
-              [
-                manifestPath,
-                {
-                  manifest: {
-                    name: "TestExtension",
-                    version: "1.0.0",
-                  },
-                  id: manifestPath,
-                  absolutePath: "/test/1",
+    di.override(
+      ipcRendererInjectable,
+      () =>
+        ({
+          invoke: jest.fn(async (channel: string) => {
+            if (channel === "extension-loader:main:state") {
+              return [
+                [
                   manifestPath,
-                  isBundled: false,
-                  isEnabled: true,
-                },
-              ],
-              [
-                manifestPath3,
-                {
-                  manifest: {
-                    name: "TestExtension3",
-                    version: "3.0.0",
+                  {
+                    manifest: {
+                      name: "TestExtension",
+                      version: "1.0.0",
+                    },
+                    id: manifestPath,
+                    absolutePath: "/test/1",
+                    manifestPath,
+                    isBundled: false,
+                    isEnabled: true,
                   },
-                  id: manifestPath3,
-                  absolutePath: "/test/3",
-                  manifestPath: manifestPath3,
-                  isBundled: false,
-                  isEnabled: true,
-                },
-              ],
-            ]);
-          }, 10);
-        }
-      },
-    }) as unknown as IpcRenderer);
+                ],
+                [
+                  manifestPath2,
+                  {
+                    manifest: {
+                      name: "TestExtension2",
+                      version: "2.0.0",
+                    },
+                    id: manifestPath2,
+                    absolutePath: "/test/2",
+                    manifestPath: manifestPath2,
+                    isBundled: false,
+                    isEnabled: true,
+                  },
+                ],
+              ];
+            }
+
+            return [];
+          }),
+
+          on: (channel: string, listener: (event: any, ...args: any[]) => void) => {
+            if (channel === "extension-loader:main:state") {
+              // First initialize with extensions 1 and 2
+              // and then broadcast event to remove extension 2 and add extension number 3
+              setTimeout(() => {
+                listener({}, [
+                  [
+                    manifestPath,
+                    {
+                      manifest: {
+                        name: "TestExtension",
+                        version: "1.0.0",
+                      },
+                      id: manifestPath,
+                      absolutePath: "/test/1",
+                      manifestPath,
+                      isBundled: false,
+                      isEnabled: true,
+                    },
+                  ],
+                  [
+                    manifestPath3,
+                    {
+                      manifest: {
+                        name: "TestExtension3",
+                        version: "3.0.0",
+                      },
+                      id: manifestPath3,
+                      absolutePath: "/test/3",
+                      manifestPath: manifestPath3,
+                      isBundled: false,
+                      isEnabled: true,
+                    },
+                  ],
+                ]);
+              }, 10);
+            }
+          },
+        }) as unknown as IpcRenderer,
+    );
 
     extensionLoader = di.inject(extensionLoaderInjectable);
     enabledExtensionsState = di.inject(enabledExtensionsStateInjectable);
@@ -121,28 +125,34 @@ describe("ExtensionLoader", () => {
     // Assert the extensions after the extension broadcast event
     expect(extensionLoader.userExtensions.get()).toEqual(
       new Map([
-        ["manifest/path", {
-          absolutePath: "/test/1",
-          id: "manifest/path",
-          isBundled: false,
-          isEnabled: true,
-          manifest: {
-            name: "TestExtension",
-            version: "1.0.0",
+        [
+          "manifest/path",
+          {
+            absolutePath: "/test/1",
+            id: "manifest/path",
+            isBundled: false,
+            isEnabled: true,
+            manifest: {
+              name: "TestExtension",
+              version: "1.0.0",
+            },
+            manifestPath: "manifest/path",
           },
-          manifestPath: "manifest/path",
-        }],
-        ["manifest/path3", {
-          absolutePath: "/test/3",
-          id: "manifest/path3",
-          isBundled: false,
-          isEnabled: true,
-          manifest: {
-            name: "TestExtension3",
-            version: "3.0.0",
+        ],
+        [
+          "manifest/path3",
+          {
+            absolutePath: "/test/3",
+            id: "manifest/path3",
+            isBundled: false,
+            isEnabled: true,
+            manifest: {
+              name: "TestExtension3",
+              version: "3.0.0",
+            },
+            manifestPath: "manifest/path3",
           },
-          manifestPath: "manifest/path3",
-        }],
+        ],
       ]),
     );
   });

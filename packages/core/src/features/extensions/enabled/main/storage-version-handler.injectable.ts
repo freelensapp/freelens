@@ -4,7 +4,10 @@
  */
 
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
-import { enabledExtensionsPersistentStorageVersionChannel, enabledExtensionsPersistentStorageVersionInitializable } from "../common/storage-version";
+import {
+  enabledExtensionsPersistentStorageVersionChannel,
+  enabledExtensionsPersistentStorageVersionInitializable,
+} from "../common/storage-version";
 
 const enabledExtensionsPersistentStorageVersionChannelHandler = getRequestChannelListenerInjectable({
   id: "enabled-extensions-persistent-storage-version-handler",

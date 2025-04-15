@@ -3,19 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./notice.module.scss";
+import { cssNames } from "@freelensapp/utilities";
 import type { DOMAttributes } from "react";
 import React from "react";
-import { cssNames } from "@freelensapp/utilities";
+import styles from "./notice.module.scss";
 
 export interface NoticeProps extends DOMAttributes<any> {
   className?: string;
 }
 
 export function Notice(props: NoticeProps) {
-  return (
-    <div className={cssNames(styles.notice, props.className)}>
-      {props.children}
-    </div>
-  );
+  return <div className={cssNames(styles.notice, props.className)}>{props.children}</div>;
 }

@@ -19,13 +19,14 @@ const requestFilePathsInjectable = getInjectable({
   instantiate: (di): RequestFilePaths => {
     const openPathPickingDialog = di.inject(openPathPickingDialogInjectable);
 
-    return async ({ filter, ...opts }) => await openPathPickingDialog({
-      properties: ["openFile", "showHiddenFiles"],
-      message: "Select file",
-      buttonLabel: "Use file",
-      filters: [filter, { name: "Any", extensions: ["*"] }],
-      ...opts,
-    });
+    return async ({ filter, ...opts }) =>
+      await openPathPickingDialog({
+        properties: ["openFile", "showHiddenFiles"],
+        message: "Select file",
+        buttonLabel: "Use file",
+        filters: [filter, { name: "Any", extensions: ["*"] }],
+        ...opts,
+      });
   },
 });
 

@@ -5,29 +5,27 @@
 
 import "./details.scss";
 
-import React from "react";
-import upperFirst from "lodash/upperFirst";
-import kebabCase from "lodash/kebabCase";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem } from "../drawer";
-import { Badge } from "../badge";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { formatNodeTaint, Node } from "@freelensapp/kube-object";
-import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import { NodeDetailsResources } from "./details-resources";
-import { DrawerTitle } from "../drawer/drawer-title";
+import { Node, formatNodeTaint } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import kebabCase from "lodash/kebabCase";
+import upperFirst from "lodash/upperFirst";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import { DrawerTitle } from "../drawer/drawer-title";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import loadPodsFromAllNamespacesInjectable from "../workloads-pods/load-pods-from-all-namespaces.injectable";
+import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import loadPodsFromAllNamespacesInjectable
-  from "../workloads-pods/load-pods-from-all-namespaces.injectable";
+import { NodeDetailsResources } from "./details-resources";
 
-export interface NodeDetailsProps extends KubeObjectDetailsProps<Node> {
-}
+export interface NodeDetailsProps extends KubeObjectDetailsProps<Node> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -39,11 +37,7 @@ interface Dependencies {
 @observer
 class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.podStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
 
     this.props.loadPodsFromAllNamespaces();
   }
@@ -70,46 +64,30 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
       <div className="NodeDetails">
         {addresses && (
           <DrawerItem name="Addresses">
-            {
-              addresses.map(({ type, address }) => (
-                <p key={type}>
-                  {`${type}: ${address}`}
-                </p>
-              ))
-            }
+            {addresses.map(({ type, address }) => (
+              <p key={type}>{`${type}: ${address}`}</p>
+            ))}
           </DrawerItem>
         )}
         {nodeInfo && (
           <>
-            <DrawerItem name="OS">
-              {`${nodeInfo.operatingSystem} (${nodeInfo.architecture})`}
-            </DrawerItem>
-            <DrawerItem name="OS Image">
-              {nodeInfo.osImage}
-            </DrawerItem>
-            <DrawerItem name="Kernel version">
-              {nodeInfo.kernelVersion}
-            </DrawerItem>
-            <DrawerItem name="Container runtime">
-              {nodeInfo.containerRuntimeVersion}
-            </DrawerItem>
-            <DrawerItem name="Kubelet version">
-              {nodeInfo.kubeletVersion}
-            </DrawerItem>
+            <DrawerItem name="OS">{`${nodeInfo.operatingSystem} (${nodeInfo.architecture})`}</DrawerItem>
+            <DrawerItem name="OS Image">{nodeInfo.osImage}</DrawerItem>
+            <DrawerItem name="Kernel version">{nodeInfo.kernelVersion}</DrawerItem>
+            <DrawerItem name="Container runtime">{nodeInfo.containerRuntimeVersion}</DrawerItem>
+            <DrawerItem name="Kubelet version">{nodeInfo.kubeletVersion}</DrawerItem>
           </>
         )}
         {taints.length > 0 && (
           <DrawerItem name="Taints" labelsOnly>
-            {taints.map(taint => <Badge key={taint.key} label={formatNodeTaint(taint)} />)}
+            {taints.map((taint) => (
+              <Badge key={taint.key} label={formatNodeTaint(taint)} />
+            ))}
           </DrawerItem>
         )}
         {conditions && (
-          <DrawerItem
-            name="Conditions"
-            className="conditions"
-            labelsOnly
-          >
-            {conditions.map(condition => (
+          <DrawerItem name="Conditions" className="conditions" labelsOnly>
+            {conditions.map((condition) => (
               <Badge
                 key={condition.type}
                 label={condition.type}
@@ -118,22 +96,21 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
                   formatters: {
                     tableView: true,
                   },
-                  children: Object.entries(condition)
-                    .map(([key, value]) => (
-                      <div key={key} className="flex gaps align-center">
-                        <div className="name">{upperFirst(key)}</div>
-                        <div className="value">{value}</div>
-                      </div>
-                    )),
+                  children: Object.entries(condition).map(([key, value]) => (
+                    <div key={key} className="flex gaps align-center">
+                      <div className="name">{upperFirst(key)}</div>
+                      <div className="value">{value}</div>
+                    </div>
+                  )),
                 }}
               />
             ))}
           </DrawerItem>
         )}
         <DrawerTitle>Capacity</DrawerTitle>
-        <NodeDetailsResources node={node} type="capacity"/>
+        <NodeDetailsResources node={node} type="capacity" />
         <DrawerTitle>Allocatable</DrawerTitle>
-        <NodeDetailsResources node={node} type="allocatable"/>
+        <NodeDetailsResources node={node} type="allocatable" />
         <PodDetailsList
           pods={childPods}
           owner={node}

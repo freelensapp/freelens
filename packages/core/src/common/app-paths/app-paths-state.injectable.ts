@@ -12,7 +12,7 @@ const appPathsStateInjectable = getInjectable({
     let state: AppPaths;
 
     return {
-      get: () =>{
+      get: () => {
         if (!state) {
           throw new Error("Tried to get app paths before state is setupped.");
         }

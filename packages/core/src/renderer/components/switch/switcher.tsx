@@ -20,12 +20,7 @@ export interface SwitcherProps {
  */
 export function Switcher({ disabled, checked, onChange, name, children }: SwitcherProps) {
   return (
-    <Switch
-      disabled={disabled}
-      checked={checked}
-      name={name}
-      onChange={(checked, event) => onChange?.(event, checked)}
-    >
+    <Switch disabled={disabled} checked={checked} name={name} onChange={(checked, event) => onChange?.(event, checked)}>
       {children}
     </Switch>
   );

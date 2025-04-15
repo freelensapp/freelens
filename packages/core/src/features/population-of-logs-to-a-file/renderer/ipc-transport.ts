@@ -1,9 +1,9 @@
+import { setImmediate } from "timers";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { LogEntry } from "winston";
-import { setImmediate } from "timers";
 import type { TransportStreamOptions } from "winston-transport";
 import TransportStream from "winston-transport";
 

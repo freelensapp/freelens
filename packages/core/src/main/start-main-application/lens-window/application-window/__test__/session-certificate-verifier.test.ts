@@ -4,9 +4,9 @@
  */
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import setupLensProxyCertificateInjectable from "../../../../start-main-application/runnables/setup-lens-proxy-certificate.injectable";
 import lensProxyCertificateInjectable from "../../../../../common/certificate/lens-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
+import setupLensProxyCertificateInjectable from "../../../../start-main-application/runnables/setup-lens-proxy-certificate.injectable";
 import sessionCertificateVerifierInjectable, { ChromiumNetError } from "../session-certificate-verifier.injectable";
 
 const externalCertificate = `-----BEGIN CERTIFICATE-----
@@ -58,9 +58,12 @@ describe("sessionCertificateVerifier", () => {
     const lensProxyCertificate = di.inject(lensProxyCertificateInjectable).get();
     const callback = jest.fn();
 
-    sessionCertificateVerifier({
-      certificate: { data: lensProxyCertificate.cert },
-    } as any, callback);
+    sessionCertificateVerifier(
+      {
+        certificate: { data: lensProxyCertificate.cert },
+      } as any,
+      callback,
+    );
 
     expect(callback).toHaveBeenCalledWith(ChromiumNetError.SUCCESS);
   });
@@ -69,9 +72,12 @@ describe("sessionCertificateVerifier", () => {
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
     const callback = jest.fn();
 
-    sessionCertificateVerifier({
-      certificate: { data: externalCertificate },
-    } as any, callback);
+    sessionCertificateVerifier(
+      {
+        certificate: { data: externalCertificate },
+      } as any,
+      callback,
+    );
 
     expect(callback).toHaveBeenCalledWith(ChromiumNetError.RESULT_FROM_CHROMIUM);
   });

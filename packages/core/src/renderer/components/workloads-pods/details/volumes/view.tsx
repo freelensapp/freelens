@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
+import type { Pod } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Pod } from "@freelensapp/kube-object";
 import { DrawerTitle } from "../../../drawer";
-import { Icon } from "@freelensapp/icon";
 import { VolumeVariant } from "./variant";
 
 export interface PodVolumesProps {
@@ -24,7 +24,7 @@ export const PodVolumes = observer(({ pod }: PodVolumesProps) => {
   return (
     <>
       <DrawerTitle>Volumes</DrawerTitle>
-      {volumes.map(volume => (
+      {volumes.map((volume) => (
         <div key={volume.name} className="volume">
           <div className="title flex gaps">
             <Icon small material="storage" />

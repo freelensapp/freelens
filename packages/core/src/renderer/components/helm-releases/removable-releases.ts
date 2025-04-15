@@ -19,13 +19,8 @@ export interface RemovableHelmRelease extends HelmRelease {
   delete: () => Promise<void>;
 }
 
-export const removableReleases = ({
-  releases,
-  releaseSelectionStatus,
-  deleteRelease,
-}: Dependencies) => {
-  const isSelected = (release: HelmRelease) =>
-    releaseSelectionStatus.get(release.getId()) || false;
+export const removableReleases = ({ releases, releaseSelectionStatus, deleteRelease }: Dependencies) => {
+  const isSelected = (release: HelmRelease) => releaseSelectionStatus.get(release.getId()) || false;
 
   return computed(() =>
     releases.value.get().map(

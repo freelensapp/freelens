@@ -1,3 +1,7 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
+import { Spinner } from "@freelensapp/spinner";
+import { iter, tuple } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -6,21 +10,17 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
+import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import { Notice } from "../../../../../../renderer/components/extensions/notice";
-import { iter, tuple } from "@freelensapp/utilities";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { PathPicker } from "../../../../../../renderer/components/path-picker/path-picker";
-import { Spinner } from "@freelensapp/spinner";
-import { RemovableItem } from "../../../removable-item/removable-item";
-import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
-import type { DiscoverAllKubeconfigSyncKinds } from "./discover-all-sync-kinds.injectable";
-import type { DiscoverKubeconfigSyncKind, SyncKind } from "./discover-sync-kind.injectable";
-import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
-import discoverAllKubeconfigSyncKindsInjectable from "./discover-all-sync-kinds.injectable";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+import { RemovableItem } from "../../../removable-item/removable-item";
+import type { DiscoverAllKubeconfigSyncKinds } from "./discover-all-sync-kinds.injectable";
+import discoverAllKubeconfigSyncKindsInjectable from "./discover-all-sync-kinds.injectable";
+import type { DiscoverKubeconfigSyncKind, SyncKind } from "./discover-sync-kind.injectable";
+import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
 
 interface Entry extends SyncKind {
   filePath: string;
@@ -46,10 +46,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
 
   async componentDidMount() {
     const mapEntries = await Promise.all(
-      iter.map(
-        this.props.state.syncKubeconfigEntries,
-        ([filePath]) => this.props.discoverKubeconfigSyncKind(filePath),
-      ),
+      iter.map(this.props.state.syncKubeconfigEntries, ([filePath]) => this.props.discoverKubeconfigSyncKind(filePath)),
     );
 
     this.syncs.replace(mapEntries);
@@ -58,7 +55,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
     disposeOnUnmount(this, [
       reaction(
         () => Array.from(this.syncs.entries(), ([filePath, kind]) => tuple.from(filePath, kind)),
-        syncs => {
+        (syncs) => {
           this.props.state.syncKubeconfigEntries.replace(syncs);
         },
       ),
@@ -96,9 +93,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
         className="mt-3"
         icon={this.getIconName(entry)}
       >
-        <div className="flex-grow break-all">
-          {entry.filePath}
-        </div>
+        <div className="flex-grow break-all">{entry.filePath}</div>
       </RemovableItem>
     );
   };
@@ -122,11 +117,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
       );
     }
 
-    return (
-      <div>
-        {entries.map(this.renderEntry)}
-      </div>
-    );
+    return <div>{entries.map(this.renderEntry)}</div>;
   }
 
   renderSyncButtons() {
@@ -168,7 +159,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
         <h2 data-testid="kubernetes-sync-header">Kubeconfig Syncs</h2>
 
         {this.renderSyncButtons()}
-        <SubTitle title="Synced Items" className="pt-5"/>
+        <SubTitle title="Synced Items" className="pt-5" />
         {this.renderEntries()}
       </section>
     );

@@ -1,15 +1,13 @@
+import { historyInjectionToken } from "@freelensapp/routing";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Router } from "react-router";
-import { historyInjectionToken } from "@freelensapp/routing";
 import React from "react";
+import { Router } from "react-router";
 
-import {
-  reactApplicationHigherOrderComponentInjectionToken,
-} from "@freelensapp/react-application";
+import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
 
 const routingReactApplicationHocInjectable = getInjectable({
   id: "routing-react-application-hoc",
@@ -17,12 +15,7 @@ const routingReactApplicationHocInjectable = getInjectable({
   instantiate: (di) => {
     const history = di.inject(historyInjectionToken);
 
-    return ({ children }) =>
-      (
-        <Router history={history}>
-          {children}
-        </Router>
-      );
+    return ({ children }) => <Router history={history}>{children}</Router>;
   },
 
   injectionToken: reactApplicationHigherOrderComponentInjectionToken,

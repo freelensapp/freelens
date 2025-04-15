@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
+import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
+import type { IntervalFn } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 import { observable } from "mobx";
-import type { PodLogsQuery, Pod } from "@freelensapp/kube-object";
-import { waitUntilDefined, getOrInsertWith, interval } from "@freelensapp/utilities";
-import type { IntervalFn } from "@freelensapp/utilities";
 import type { TabId } from "../dock/store";
 import type { CallForLogs } from "./call-for-logs.injectable";
 import type { LogTabData } from "./tab-store";
@@ -31,10 +31,7 @@ export class LogStore {
       error = error.error;
     }
 
-    const message = [
-      `Failed to load logs: ${error.message}`,
-      `Reason: ${error.reason} (${error.code})`,
-    ];
+    const message = [`Failed to load logs: ${error.message}`, `Reason: ${error.reason} (${error.code})`];
 
     this.stopLoadingLogs(tabId);
     this.podLogs.set(tabId, message);
@@ -46,7 +43,11 @@ export class LogStore {
    * Also, it handles loading errors, rewriting whole logs with error
    * messages
    */
-  public async load(tabId: TabId, computedPod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>): Promise<void> {
+  public async load(
+    tabId: TabId,
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ): Promise<void> {
     try {
       const logs = await this.loadLogs(computedPod, logTabData, {
         tailLines: this.getLogLines(tabId) + logLinesToLoad,
@@ -59,14 +60,18 @@ export class LogStore {
     }
   }
 
-  private getRefresher(tabId: TabId, computedPod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>): IntervalFn {
-    return getOrInsertWith(this.refreshers, tabId, () => (
+  private getRefresher(
+    tabId: TabId,
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ): IntervalFn {
+    return getOrInsertWith(this.refreshers, tabId, () =>
       interval(10, () => {
         if (this.podLogs.has(tabId)) {
           this.loadMore(tabId, computedPod, logTabData);
         }
-      })
-    ));
+      }),
+    );
   }
 
   /**
@@ -83,7 +88,11 @@ export class LogStore {
    * starting from last line received.
    * @param tabId
    */
-  public async loadMore(tabId: TabId, computedPod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>): Promise<void> {
+  public async loadMore(
+    tabId: TabId,
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ): Promise<void> {
     const oldLogs = this.podLogs.get(tabId);
 
     if (!oldLogs?.length) {
@@ -109,13 +118,14 @@ export class LogStore {
    * @param params request parameters described in IPodLogsQuery interface
    * @returns A fetch request promise
    */
-  private async loadLogs(computedPod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>, params: Partial<PodLogsQuery>): Promise<string[]> {
+  private async loadLogs(
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+    params: Partial<PodLogsQuery>,
+  ): Promise<string[]> {
     const {
       pod,
-      tabData: {
-        selectedContainer,
-        showPrevious,
-      },
+      tabData: { selectedContainer, showPrevious },
     } = await waitUntilDefined(() => {
       const pod = computedPod.get();
       const tabData = logTabData.get();
@@ -129,12 +139,15 @@ export class LogStore {
     const namespace = pod.getNs();
     const name = pod.getName();
 
-    const result = await this.dependencies.callForLogs({ namespace, name }, {
-      ...params,
-      timestamps: true,  // Always setting timestamp to separate old logs from new ones
-      container: selectedContainer,
-      previous: showPrevious,
-    });
+    const result = await this.dependencies.callForLogs(
+      { namespace, name },
+      {
+        ...params,
+        timestamps: true, // Always setting timestamp to separate old logs from new ones
+        container: selectedContainer,
+        previous: showPrevious,
+      },
+    );
 
     return result.trimEnd().replace(/\r/g, "\n").split("\n");
   }
@@ -148,7 +161,7 @@ export class LogStore {
     return this.logs.length;
   }
 
-  getLogLines(tabId: TabId): number{
+  getLogLines(tabId: TabId): number {
     return this.getLogs(tabId).length;
   }
 
@@ -156,15 +169,15 @@ export class LogStore {
     return !this.podLogs.has(tabId);
   }
 
-  getLogs(tabId: TabId): string[]{
+  getLogs(tabId: TabId): string[] {
     return this.podLogs.get(tabId) ?? [];
   }
 
-  getLogsWithoutTimestamps(tabId: TabId): string[]{
+  getLogsWithoutTimestamps(tabId: TabId): string[] {
     return this.getLogs(tabId).map(this.removeTimestamps);
   }
 
-  getTimestampSplitLogs(tabId: TabId): [string, string][]{
+  getTimestampSplitLogs(tabId: TabId): [string, string][] {
     return this.getLogs(tabId).map(this.splitOutTimestamp);
   }
 
@@ -182,7 +195,7 @@ export class LogStore {
    * @returns Logs without timestamps
    */
   get logsWithoutTimestamps(): string[] {
-    return this.logs.map(item => this.removeTimestamps(item));
+    return this.logs.map((item) => this.removeTimestamps(item));
   }
 
   /**
@@ -222,7 +235,11 @@ export class LogStore {
     this.podLogs.delete(tabId);
   }
 
-  reload(tabId: TabId, computedPod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>): Promise<void> {
+  reload(
+    tabId: TabId,
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ): Promise<void> {
     this.clearLogs(tabId);
 
     return this.load(tabId, computedPod, logTabData);

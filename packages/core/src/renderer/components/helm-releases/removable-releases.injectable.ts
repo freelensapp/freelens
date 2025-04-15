@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import releasesInjectable from "./releases.injectable";
 import deleteReleaseInjectable from "./delete-release/delete-release.injectable";
+import releasesInjectable from "./releases.injectable";
 import { removableReleases } from "./removable-releases";
 
 const removableReleasesInjectable = getInjectable({

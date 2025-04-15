@@ -3,30 +3,36 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "@freelensapp/utilities";
 import type { KubeApi } from "@freelensapp/kube-api";
 import { KubeObject } from "@freelensapp/kube-object";
+import { noop } from "@freelensapp/utilities";
 import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 import { KubeObjectStore } from "../kube-object.store";
 
 class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
-  constructor(private readonly _loadItems: (params: KubeObjectStoreLoadingParams) => KubeObject[], api: Partial<KubeApi<KubeObject>>) {
-    super({
-      context: {
-        allNamespaces: [],
-        contextNamespaces: [],
-        hasSelectedAll: false,
-        isGlobalWatchEnabled: () => true,
-        isLoadingAll: () => true,
+  constructor(
+    private readonly _loadItems: (params: KubeObjectStoreLoadingParams) => KubeObject[],
+    api: Partial<KubeApi<KubeObject>>,
+  ) {
+    super(
+      {
+        context: {
+          allNamespaces: [],
+          contextNamespaces: [],
+          hasSelectedAll: false,
+          isGlobalWatchEnabled: () => true,
+          isLoadingAll: () => true,
+        },
+        logger: {
+          debug: noop,
+          error: noop,
+          info: noop,
+          silly: noop,
+          warn: noop,
+        },
       },
-      logger: {
-        debug: noop,
-        error: noop,
-        info: noop,
-        silly: noop,
-        warn: noop,
-      },
-    }, api as KubeApi<KubeObject>);
+      api as KubeApi<KubeObject>,
+    );
   }
 
   async loadItems(params: KubeObjectStoreLoadingParams) {

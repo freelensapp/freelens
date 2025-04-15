@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, observable, reaction } from "mobx";
-import type { StorageLayer } from "../../../utils/storage-helper";
-import type { CreateStorage } from "../../../utils/create-storage/create-storage.injectable";
-import type { TabId } from "../dock/store";
 import autoBind from "auto-bind";
+import { action, observable, reaction } from "mobx";
 import { toJS } from "../../../../common/utils";
+import type { CreateStorage } from "../../../utils/create-storage/create-storage.injectable";
+import type { StorageLayer } from "../../../utils/storage-helper";
+import type { TabId } from "../dock/store";
 
 export interface DockTabStoreOptions {
   autoInit?: boolean; // load data from storage when `storageKey` is provided and bind events, default: true
@@ -25,17 +25,23 @@ export class DockTabStore<T> {
   protected readonly storage?: StorageLayer<DockTabStorageState<T>>;
   private readonly data = observable.map<TabId, T>();
 
-  constructor(protected readonly dependencies: DockTabStoreDependencies, protected readonly options: DockTabStoreOptions) {
+  constructor(
+    protected readonly dependencies: DockTabStoreDependencies,
+    protected readonly options: DockTabStoreOptions,
+  ) {
     autoBind(this);
     this.options.autoInit ??= true;
 
     const { storageKey, autoInit } = this.options;
 
     if (autoInit && storageKey) {
-      const storage = this.storage = this.dependencies.createStorage(storageKey, {});
+      const storage = (this.storage = this.dependencies.createStorage(storageKey, {}));
 
       this.data.replace(storage.get());
-      reaction(() => this.toJSON(), data => storage.set(data));
+      reaction(
+        () => this.toJSON(),
+        (data) => storage.set(data),
+      );
     }
   }
 

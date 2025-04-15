@@ -4,11 +4,11 @@
  */
 
 import type {
+  ClusterScopedMetadata,
   KubeJsonApiData,
   KubeObjectMetadata,
   KubeObjectScope,
   Toleration,
-  ClusterScopedMetadata,
 } from "../api-types";
 import { KubeObject } from "../kube-object";
 

@@ -36,7 +36,9 @@ describe("hiding Update Channel preference with updating is not enabled", () => 
   });
 
   it("does not show the update channel preference", () => {
-    expect(() => getElement("preference-item", "update-channel")).toThrowError(`Couldn't find HTML-element with attribute "data-preference-item-test" with value "update-channel".`);
+    expect(() => getElement("preference-item", "update-channel")).toThrowError(
+      `Couldn't find HTML-element with attribute "data-preference-item-test" with value "update-channel".`,
+    );
   });
 });
 

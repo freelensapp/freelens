@@ -3,18 +3,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import { registerFeature } from "@freelensapp/feature-core";
+import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import type { Logger } from "@freelensapp/logger";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";
-import { createContainer } from "@ogre-tools/injectable";
 import type { DiRender } from "@freelensapp/test-utils";
 import { renderFor } from "@freelensapp/test-utils";
-import { Icon } from "./icon";
-import { runInAction } from "mobx";
-import { registerFeature } from "@freelensapp/feature-core";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
+import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { registerInjectableReact } from "@ogre-tools/injectable-react";
+import { runInAction } from "mobx";
+import React from "react";
+import { Icon } from "./icon";
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
   let logger: jest.MockedObject<Logger>;

@@ -8,9 +8,10 @@ import { PageFiltersStore } from "./store";
 
 const pageFiltersStoreInjectable = getInjectable({
   id: "page-filters-store",
-  instantiate: (di) => new PageFiltersStore({
-    searchUrlParam: di.inject(searchUrlPageParamInjectable),
-  }),
+  instantiate: (di) =>
+    new PageFiltersStore({
+      searchUrlParam: di.inject(searchUrlPageParamInjectable),
+    }),
 });
 
 export default pageFiltersStoreInjectable;

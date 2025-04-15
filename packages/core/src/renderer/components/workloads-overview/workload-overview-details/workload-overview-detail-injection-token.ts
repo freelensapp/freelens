@@ -12,7 +12,6 @@ export interface WorkloadOverviewDetail {
   enabled: IComputedValue<boolean>;
 }
 
-export const workloadOverviewDetailInjectionToken =
-  getInjectionToken<WorkloadOverviewDetail>({
-    id: "workload-overview-detail-injection-token",
-  });
+export const workloadOverviewDetailInjectionToken = getInjectionToken<WorkloadOverviewDetail>({
+  id: "workload-overview-detail-injection-token",
+});

@@ -5,24 +5,23 @@
 
 import "./config-map-details.scss";
 
-import React from "react";
-import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerTitle } from "../drawer";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { Button } from "@freelensapp/button";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ConfigMap } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import type { ConfigMapStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import configMapStoreInjectable from "./store.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { autorun, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { MonacoEditor } from "../monaco-editor";
+import type { ConfigMapStore } from "./store";
+import configMapStoreInjectable from "./store.injectable";
 
-export interface ConfigMapDetailsProps extends KubeObjectDetailsProps<ConfigMap> {
-}
+export interface ConfigMapDetailsProps extends KubeObjectDetailsProps<ConfigMap> {}
 
 interface Dependencies {
   configMapStore: ConfigMapStore;
@@ -63,13 +62,13 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
           ...configMap,
           data: Object.fromEntries(this.data),
         });
-        this.props.showSuccessNotification((
+        this.props.showSuccessNotification(
           <p>
             {"ConfigMap "}
             <b>{configMap.getName()}</b>
             {" successfully updated."}
-          </p>
-        ));
+          </p>,
+        );
       } catch (error) {
         this.props.showErrorNotification(`Failed to save config map: ${String(error)}`);
       } finally {
@@ -95,44 +94,34 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
 
     return (
       <div className="ConfigMapDetails">
-        {
-          data.length > 0 && (
-            <>
-              <DrawerTitle>Data</DrawerTitle>
-              {
-                data.map(([name, value = ""]) => (
-                  <div key={name} className="data">
-                    <div className="name">{name}</div>
-                    <MonacoEditor
-                      id={`config-map-data-${name}`}
-                      style={{
-                        resize: "vertical",
-                        overflow: "hidden",
-                        border: "1px solid var(--borderFaintColor)",
-                        borderRadius: "4px",
-                      }}
-                      value={value}
-                      onChange={v => this.data.set(name, v)}
-                      setInitialHeight
-                      options={{
-                        scrollbar: {
-                          alwaysConsumeMouseWheel: false,
-                        },
-                      }}
-                    />
-                  </div>
-                ))
-              }
-              <Button
-                primary
-                label="Save"
-                waiting={this.isSaving}
-                className="save-btn"
-                onClick={this.save}
-              />
-            </>
-          )
-        }
+        {data.length > 0 && (
+          <>
+            <DrawerTitle>Data</DrawerTitle>
+            {data.map(([name, value = ""]) => (
+              <div key={name} className="data">
+                <div className="name">{name}</div>
+                <MonacoEditor
+                  id={`config-map-data-${name}`}
+                  style={{
+                    resize: "vertical",
+                    overflow: "hidden",
+                    border: "1px solid var(--borderFaintColor)",
+                    borderRadius: "4px",
+                  }}
+                  value={value}
+                  onChange={(v) => this.data.set(name, v)}
+                  setInitialHeight
+                  options={{
+                    scrollbar: {
+                      alwaysConsumeMouseWheel: false,
+                    },
+                  }}
+                />
+              </div>
+            ))}
+            <Button primary label="Save" waiting={this.isSaving} className="save-btn" onClick={this.save} />
+          </>
+        )}
       </div>
     );
   }

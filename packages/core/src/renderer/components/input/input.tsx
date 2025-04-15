@@ -5,19 +5,19 @@
 
 import "./input.scss";
 
-import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
-import React from "react";
-import type { StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
-import { debouncePromise, isPromiseSettledFulfilled, cssNames } from "@freelensapp/utilities";
 import { Icon } from "@freelensapp/icon";
 import type { TooltipProps } from "@freelensapp/tooltip";
 import { Tooltip } from "@freelensapp/tooltip";
-import * as Validators from "./input_validators";
-import type { InputValidator, InputValidation, InputValidationResult, SyncValidationMessage } from "./input_validators";
-import uniqueId from "lodash/uniqueId";
-import { debounce } from "lodash";
-import * as uuid from "uuid";
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, debouncePromise, isPromiseSettledFulfilled } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
+import { debounce } from "lodash";
+import uniqueId from "lodash/uniqueId";
+import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+import React from "react";
+import * as uuid from "uuid";
+import * as Validators from "./input_validators";
+import type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage } from "./input_validators";
 
 const {
   conditionalValidators,
@@ -28,25 +28,13 @@ const {
   ...InputValidators
 } = Validators;
 
-export {
-  InputValidators,
-  asyncInputValidator,
-  inputValidator,
-  isAsyncValidator,
-  unionInputValidatorsAsync,
-};
-export type {
-  InputValidator,
-  InputValidation,
-  InputValidationResult,
-  SyncValidationMessage,
-};
+export { InputValidators, asyncInputValidator, inputValidator, isAsyncValidator, unionInputValidatorsAsync };
+export type { InputValidator, InputValidation, InputValidationResult, SyncValidationMessage };
 
 type InputElement = HTMLInputElement | HTMLTextAreaElement;
-type InputElementProps =
-  InputHTMLAttributes<HTMLInputElement>
-  & TextareaHTMLAttributes<HTMLTextAreaElement>
-  & DOMAttributes<InputElement>;
+type InputElementProps = InputHTMLAttributes<HTMLInputElement> &
+  TextareaHTMLAttributes<HTMLTextAreaElement> &
+  DOMAttributes<InputElement>;
 
 export interface IconDataFnArg {
   isDirty: boolean;
@@ -124,9 +112,7 @@ export class Input extends React.Component<InputProps, State> {
 
   setValue(value = "") {
     if (value !== this.getValue() && this.input) {
-      Object.getOwnPropertyDescriptor(this.input.constructor.prototype, "value")
-        ?.set
-        ?.call(this.input, value);
+      Object.getOwnPropertyDescriptor(this.input.constructor.prototype, "value")?.set?.call(this.input, value);
       this.input.dispatchEvent(new Event("input", { bubbles: true }));
     }
   }
@@ -160,7 +146,6 @@ export class Input extends React.Component<InputProps, State> {
 
     const lineHeight = parseFloat(window.getComputedStyle(textArea).lineHeight);
     const rowsCount = (this.getValue().match(/\n/g) || []).length + 1;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const height = lineHeight * Math.min(Math.max(rowsCount, rows!), maxRows!);
 
     textArea.style.height = `${height}px`;
@@ -189,15 +174,19 @@ export class Input extends React.Component<InputProps, State> {
         if (!validationId) {
           this.validationId = validationId = uniqueId("validation_id_");
         }
-        asyncValidators.push((async () => {
-          try {
-            await validator.validate(value, this.props);
+        asyncValidators.push(
+          (async () => {
+            try {
+              await validator.validate(value, this.props);
 
-            return undefined;
-          } catch (error) {
-            return this.getValidatorError(value, validator) || (error instanceof Error ? error.message : String(error));
-          }
-        })());
+              return undefined;
+            } catch (error) {
+              return (
+                this.getValidatorError(value, validator) || (error instanceof Error ? error.message : String(error))
+              );
+            }
+          })(),
+        );
       }
     }
 
@@ -210,10 +199,12 @@ export class Input extends React.Component<InputProps, State> {
       const asyncErrors = await Promise.allSettled(asyncValidators);
 
       if (this.validationId === validationId) {
-        errors.push(...asyncErrors
-          .filter(isPromiseSettledFulfilled)
-          .map(res => res.value)
-          .filter(Boolean));
+        errors.push(
+          ...asyncErrors
+            .filter(isPromiseSettledFulfilled)
+            .map((res) => res.value)
+            .filter(Boolean),
+        );
 
         this.setValidation(errors);
       }
@@ -231,21 +222,16 @@ export class Input extends React.Component<InputProps, State> {
   }
 
   private getValidatorError(value: string, { message }: InputValidator) {
-    return typeof message === "function"
-      ? message(value, this.props)
-      : message;
+    return typeof message === "function" ? message(value, this.props) : message;
   }
 
   private setupValidators() {
     const persistentValidators = conditionalValidators
       // add conditional validators if matches input props
-      .filter(validator => validator.condition?.(this.props));
+      .filter((validator) => validator.condition?.(this.props));
     const selfValidators = this.props.validators ? [this.props.validators].flat() : [];
 
-    this.validators = [
-      ...persistentValidators,
-      ...selfValidators,
-    ].map((validator) => {
+    this.validators = [...persistentValidators, ...selfValidators].map((validator) => {
       if (isAsyncValidator(validator)) {
         validator.validate = debouncePromise(validator.validate, validator.debounce);
       }
@@ -394,8 +380,21 @@ export class Input extends React.Component<InputProps, State> {
 
   render() {
     const {
-      multiLine, showValidationLine, validators, theme, maxRows, children, showErrorsAsTooltip,
-      maxLength, rows, disabled, autoSelectOnFocus, iconLeft, iconRight, contentRight, id,
+      multiLine,
+      showValidationLine,
+      validators,
+      theme,
+      maxRows,
+      children,
+      showErrorsAsTooltip,
+      maxLength,
+      rows,
+      disabled,
+      autoSelectOnFocus,
+      iconLeft,
+      iconRight,
+      contentRight,
+      id,
       dirty: _dirty, // excluded from passing to input-element
       trim,
       blurOnEnter,
@@ -420,7 +419,7 @@ export class Input extends React.Component<InputProps, State> {
       onBlur: this.onBlur,
       onChange: this.onChange,
       onKeyDown: this.onKeyDown,
-      rows: multiLine ? (rows || 1) : null,
+      rows: multiLine ? rows || 1 : null,
       ref: this.bindRef,
       spellCheck: "false",
       disabled,
@@ -428,12 +427,12 @@ export class Input extends React.Component<InputProps, State> {
     const showErrors = errors.length > 0 && !valid && dirty;
     const errorsInfo = (
       <div className="errors box grow">
-        {errors.map((error, i) => <p key={i}>{error}</p>)}
+        {errors.map((error, i) => (
+          <p key={i}>{error}</p>
+        ))}
       </div>
     );
-    const componentId = id || showErrorsAsTooltip
-      ? `input_tooltip_id_${uuid.v4()}`
-      : undefined;
+    const componentId = id || showErrorsAsTooltip ? `input_tooltip_id_${uuid.v4()}` : undefined;
     let tooltipError: StrictReactNode;
 
     if (showErrorsAsTooltip && showErrors) {
@@ -441,7 +440,6 @@ export class Input extends React.Component<InputProps, State> {
 
       tooltipProps.className = cssNames("InputTooltipError", tooltipProps.className);
       tooltipError = (
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         <Tooltip targetId={componentId!} {...tooltipProps}>
           <div className="flex gaps align-center">
             <Icon material="error_outline" />
@@ -456,10 +454,7 @@ export class Input extends React.Component<InputProps, State> {
         {tooltipError}
         <label className="input-area flex gaps align-center" id="">
           {this.renderIcon(iconLeft)}
-          {multiLine
-            ? <textarea {...inputProps as object} />
-            : <input {...inputProps as object} />
-          }
+          {multiLine ? <textarea {...(inputProps as object)} /> : <input {...(inputProps as object)} />}
           {this.renderIcon(iconRight)}
           {contentRight}
         </label>

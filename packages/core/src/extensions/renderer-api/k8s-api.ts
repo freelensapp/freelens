@@ -1,13 +1,17 @@
+import * as kubeApiSpecifics from "@freelensapp/kube-api-specifics";
+import {
+  asLegacyGlobalForExtensionApi,
+  asLegacyGlobalFunctionForExtensionApi,
+  getLegacyGlobalDiForExtensionApi,
+} from "@freelensapp/legacy-global-di";
+import requestMetricsInjectable from "../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { KubeResource } from "../../common/rbac";
 import { apiResourceRecord } from "../../common/rbac";
-import { getLegacyGlobalDiForExtensionApi, asLegacyGlobalForExtensionApi, asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
-import * as kubeApiSpecifics from "@freelensapp/kube-api-specifics";
 import { shouldShowResourceInjectionToken } from "../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
-import requestMetricsInjectable from "../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 
 export function isAllowedResource(resources: KubeResource | KubeResource[]) {
   const di = getLegacyGlobalDiForExtensionApi();

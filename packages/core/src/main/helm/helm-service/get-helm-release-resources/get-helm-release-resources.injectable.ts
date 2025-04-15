@@ -1,11 +1,11 @@
+import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import requestHelmManifestInjectable from "./call-for-helm-manifest/call-for-helm-manifest.injectable";
-import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
-import type { AsyncResult } from "@freelensapp/utilities";
 
 export type GetHelmReleaseResources = (
   name: string,
@@ -28,11 +28,9 @@ const getHelmReleaseResourcesInjectable = getInjectable({
 
       return {
         callWasSuccessful: true,
-        response: result.response.flatMap(item => (
-          Array.isArray(item.items)
-            ? (item as KubeJsonApiDataList).items
-            : item as KubeJsonApiData
-        )),
+        response: result.response.flatMap((item) =>
+          Array.isArray(item.items) ? (item as KubeJsonApiDataList).items : (item as KubeJsonApiData),
+        ),
       };
     };
   },

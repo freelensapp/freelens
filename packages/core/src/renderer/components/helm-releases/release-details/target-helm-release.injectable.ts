@@ -6,7 +6,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import helmReleasesRouteParametersInjectable from "../helm-releases-route-parameters.injectable";
 
-export interface TargetHelmRelease { name: string; namespace: string }
+export interface TargetHelmRelease {
+  name: string;
+  namespace: string;
+}
 
 const targetHelmReleaseInjectable = getInjectable({
   id: "target-helm-release",

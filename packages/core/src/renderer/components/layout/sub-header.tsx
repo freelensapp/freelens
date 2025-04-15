@@ -4,9 +4,9 @@
  */
 
 import "./sub-header.scss";
-import React from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export interface SubHeaderProps {
   className?: string;
@@ -20,15 +20,15 @@ export class SubHeader extends React.Component<SubHeaderProps> {
     const { withLine, compact, children } = this.props;
     let { className } = this.props;
 
-    className = cssNames("SubHeader", {
-      withLine,
-      compact,
-    }, className);
-
-    return (
-      <div className={className}>
-        {children}
-      </div>
+    className = cssNames(
+      "SubHeader",
+      {
+        withLine,
+        compact,
+      },
+      className,
     );
+
+    return <div className={className}>{children}</div>;
   }
 }

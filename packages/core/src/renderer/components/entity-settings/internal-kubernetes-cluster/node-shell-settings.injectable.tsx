@@ -15,7 +15,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedNodeShellKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedNodeShellKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -29,12 +32,15 @@ function NonInjectedNodeShellKubernetesClusterSettings({ entity, getClusterById 
   );
 }
 
-const NodeShellKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedNodeShellKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const NodeShellKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedNodeShellKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const nodeShellKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "node-shell-kubernetes-cluster-entity-settings",

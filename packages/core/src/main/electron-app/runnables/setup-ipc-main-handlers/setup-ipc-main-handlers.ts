@@ -4,19 +4,23 @@
  */
 import type { IpcMainInvokeEvent } from "electron";
 import { BrowserWindow, Menu } from "electron";
-import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
-import { clusterSetFrameIdHandler, clusterStates } from "../../../../common/ipc/cluster";
-import type { ClusterId } from "../../../../common/cluster-types";
-import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
 import type { IComputedValue, ObservableMap } from "mobx";
-import { windowActionHandleChannel, windowLocationChangedChannel, windowOpenAppMenuAsContextMenuChannel } from "../../../../common/ipc/window";
-import { handleWindowAction, onLocationChange } from "../../../ipc/window";
-import type { ApplicationMenuItemTypes } from "../../../../features/application-menu/main/menu-items/application-menu-item-injection-token";
-import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
-import { getApplicationMenuTemplate } from "../../../../features/application-menu/main/populate-application-menu.injectable";
-import type { MenuItemRoot } from "../../../../features/application-menu/main/application-menu-item-composite.injectable";
-import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
+import type { ClusterId } from "../../../../common/cluster-types";
 import type { Cluster } from "../../../../common/cluster/cluster";
+import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
+import { clusterSetFrameIdHandler, clusterStates } from "../../../../common/ipc/cluster";
+import {
+  windowActionHandleChannel,
+  windowLocationChangedChannel,
+  windowOpenAppMenuAsContextMenuChannel,
+} from "../../../../common/ipc/window";
+import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
+import type { MenuItemRoot } from "../../../../features/application-menu/main/application-menu-item-composite.injectable";
+import type { ApplicationMenuItemTypes } from "../../../../features/application-menu/main/menu-items/application-menu-item-injection-token";
+import { getApplicationMenuTemplate } from "../../../../features/application-menu/main/populate-application-menu.injectable";
+import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import { handleWindowAction, onLocationChange } from "../../../ipc/window";
 
 interface Dependencies {
   applicationMenuItemComposite: IComputedValue<Composite<ApplicationMenuItemTypes | MenuItemRoot>>;
@@ -60,10 +64,10 @@ export const setupIpcMainHandlers = ({
     });
   });
 
-  ipcMainHandle(clusterStates, () => (
-    clusters.get().map(cluster => ({
+  ipcMainHandle(clusterStates, () =>
+    clusters.get().map((cluster) => ({
       id: cluster.id,
       state: cluster.getState(),
-    }))
-  ));
+    })),
+  );
 };

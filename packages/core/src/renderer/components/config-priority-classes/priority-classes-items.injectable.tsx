@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import priorityClassesRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/priority-classes/priority-classes-route.injectable";
-import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToPriorityClassesInjectable from "../../../common/front-end-routing/routes/cluster/config/priority-classes/navigate-to-priority-classes.injectable";
+import priorityClassesRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/priority-classes/priority-classes-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
 
 const priorityClassesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-priority-classes",

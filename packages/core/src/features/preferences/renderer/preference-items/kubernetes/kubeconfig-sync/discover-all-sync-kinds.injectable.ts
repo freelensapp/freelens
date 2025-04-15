@@ -13,7 +13,7 @@ const discoverAllKubeconfigSyncKindsInjectable = getInjectable({
   instantiate: (di): DiscoverAllKubeconfigSyncKinds => {
     const discoverKubeconfigSyncKind = di.inject(discoverKubeconfigSyncKindInjectable);
 
-    return filePaths => Promise.all(filePaths.map(discoverKubeconfigSyncKind));
+    return (filePaths) => Promise.all(filePaths.map(discoverKubeconfigSyncKind));
   },
 });
 

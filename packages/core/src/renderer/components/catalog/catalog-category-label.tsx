@@ -18,7 +18,7 @@ export const CatalogCategoryLabel = ({ category }: CatalogCategoryLabelProps) =>
   return (
     <div className="flex">
       <div>{category.metadata.name}</div>
-      {badge ? (<div className="flex items-center">{badge}</div>) : null}
+      {badge ? <div className="flex items-center">{badge}</div> : null}
     </div>
   );
 };

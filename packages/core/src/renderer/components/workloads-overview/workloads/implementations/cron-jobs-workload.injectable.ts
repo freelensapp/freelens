@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { workloadInjectionToken } from "../workload-injection-token";
-import { ResourceNames } from "../../../../utils/rbac";
+import { computed } from "mobx";
 import navigateToCronJobsInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/cron-jobs/navigate-to-cron-jobs.injectable";
+import { ResourceNames } from "../../../../utils/rbac";
 import namespaceStoreInjectable from "../../../namespaces/store.injectable";
 import cronJobsStoreInjectable from "../../../workloads-cronjobs/store.injectable";
-import { computed } from "mobx";
+import { workloadInjectionToken } from "../workload-injection-token";
 
 const cronJobsWorkloadInjectable = getInjectable({
   id: "cron-jobs-workload",
@@ -24,12 +24,8 @@ const cronJobsWorkloadInjectable = getInjectable({
         group: "batch",
       },
       open: navigate,
-      amountOfItems: computed(
-        () => store.getAllByNs(namespaceStore.contextNamespaces).length,
-      ),
-      status: computed(() =>
-        store.getStatuses(store.getAllByNs(namespaceStore.contextNamespaces)),
-      ),
+      amountOfItems: computed(() => store.getAllByNs(namespaceStore.contextNamespaces).length),
+      status: computed(() => store.getStatuses(store.getAllByNs(namespaceStore.contextNamespaces))),
       title: ResourceNames.cronjobs,
       orderNumber: 70,
     };

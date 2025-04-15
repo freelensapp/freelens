@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import isMacInjectable from "../../../../../../common/vars/is-mac.injectable";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const closeWindowMenuItemInjectable = getInjectable({
   id: "close-window-application-menu-item",

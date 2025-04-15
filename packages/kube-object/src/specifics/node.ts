@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isObject, cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
+import { cpuUnitsToNumber, isObject, unitsToBytes } from "@freelensapp/utilities";
 import { TypedRegEx } from "typed-regex";
 import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
@@ -42,7 +42,6 @@ const masterNodeLabels = ["master", "control-plane"];
  * This regex is used in the `getRoleLabels()` method bellow, but placed here
  * as factoring out regexes is best practice.
  */
-// eslint-disable-next-line xss/no-mixed-html
 const nodeRoleLabelKeyMatcher = TypedRegEx("^.*node-role.kubernetes.io/+(?<role>.+)$");
 
 export interface NodeSpec {

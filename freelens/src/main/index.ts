@@ -1,20 +1,16 @@
-import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
-import { runInAction } from "mobx";
-import {
-  mainExtensionApi as Main,
-  commonExtensionApi as Common,
-  registerLensCore,
-} from "@freelensapp/core/main";
-import { createContainer } from "@ogre-tools/injectable";
-import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
+import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
+import { applicationFeatureForElectronMain } from "@freelensapp/application-for-electron-main";
+import { commonExtensionApi as Common, mainExtensionApi as Main, registerLensCore } from "@freelensapp/core/main";
 import { registerFeature } from "@freelensapp/feature-core";
-import { applicationFeature, startApplicationInjectionToken } from '@freelensapp/application'
-import { applicationFeatureForElectronMain } from '@freelensapp/application-for-electron-main'
-import { messagingFeatureForMain } from "@freelensapp/messaging-for-main";
-import { loggerFeature } from "@freelensapp/logger";
-import { randomFeature } from "@freelensapp/random";
 import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
+import { loggerFeature } from "@freelensapp/logger";
+import { messagingFeatureForMain } from "@freelensapp/messaging-for-main";
 import { prometheusFeature } from "@freelensapp/prometheus";
+import { randomFeature } from "@freelensapp/random";
+import { createContainer } from "@ogre-tools/injectable";
+import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
+import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
+import { runInAction } from "mobx";
 
 const environment = "main";
 
@@ -58,7 +54,7 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication().catch((error) => {
   console.error(error);
   process.exit(1);
-})
+});
 
 export {
   Mobx,
@@ -68,4 +64,4 @@ export {
 export const LensExtensions = {
   Main,
   Common,
-}
+};

@@ -3,17 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Pod, StatefulSet } from "@freelensapp/kube-object";
 import { observable } from "mobx";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import type { StatefulSetStore } from "../workloads-statefulsets/store";
 import statefulSetStoreInjectable from "../workloads-statefulsets/store.injectable";
-import { StatefulSet, Pod } from "@freelensapp/kube-object";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import { Cluster } from "../../../common/cluster/cluster";
 
 const runningStatefulSet = new StatefulSet({
   apiVersion: "foo",
@@ -58,12 +58,14 @@ const runningPod = new Pod({
     name: "foobar",
     resourceVersion: "foobar",
     uid: "foobar",
-    ownerReferences: [{
-      uid: "runningStatefulSet",
-      apiVersion: "v1",
-      kind: "StatefulSet",
-      name: "running",
-    }],
+    ownerReferences: [
+      {
+        uid: "runningStatefulSet",
+        apiVersion: "v1",
+        kind: "StatefulSet",
+        name: "running",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/statefulsets/default/foobar",
   },
@@ -98,12 +100,14 @@ const pendingPod = new Pod({
     name: "foobar-pending",
     resourceVersion: "foobar",
     uid: "foobar-pending",
-    ownerReferences: [{
-      uid: "pendingStatefulSet",
-      apiVersion: "v1",
-      kind: "StatefulSet",
-      name: "pending",
-    }],
+    ownerReferences: [
+      {
+        uid: "pendingStatefulSet",
+        apiVersion: "v1",
+        kind: "StatefulSet",
+        name: "pending",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/statefulsets/default/foobar-pending",
   },
@@ -116,12 +120,14 @@ const failedPod = new Pod({
     name: "foobar-failed",
     resourceVersion: "foobar",
     uid: "foobar-failed",
-    ownerReferences: [{
-      uid: "failedStatefulSet",
-      apiVersion: "v1",
-      kind: "StatefulSet",
-      name: "failed",
-    }],
+    ownerReferences: [
+      {
+        uid: "failedStatefulSet",
+        apiVersion: "v1",
+        kind: "StatefulSet",
+        name: "failed",
+      },
+    ],
     namespace: "default",
     selfLink: "/apis/apps/v1/statefulsets/default/foobar-failed",
   },
@@ -144,30 +150,28 @@ describe("StatefulSet Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     statefulSetStore = di.inject(statefulSetStoreInjectable);
 
     const podStore = di.inject(podStoreInjectable);
 
     // Add pods to pod store
-    podStore.items = observable.array([
-      runningPod,
-      failedPod,
-      pendingPod,
-    ]);
+    podStore.items = observable.array([runningPod, failedPod, pendingPod]);
   });
 
   it("gets StatefulSet statuses in proper sorting order", () => {
-    const statuses = Object.entries(statefulSetStore.getStatuses([
-      failedStatefulSet,
-      runningStatefulSet,
-      pendingStatefulSet,
-    ]));
+    const statuses = Object.entries(
+      statefulSetStore.getStatuses([failedStatefulSet, runningStatefulSet, pendingStatefulSet]),
+    );
 
     expect(statuses).toEqual([
       ["running", 1],

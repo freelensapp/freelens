@@ -1,15 +1,18 @@
+import { patchTypeHeaders } from "@freelensapp/kube-api";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
 import type { JsonPatch } from "../../../../../common/k8s-api/kube-object.store";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
-import { patchTypeHeaders } from "@freelensapp/kube-api";
 import apiKubePatchInjectable from "../../../../k8s/api-kube-patch.injectable";
 
-export type RequestPatchKubeResource = (selfLink: string, patch: JsonPatch) => AsyncResult<{ name: string; kind: string }>;
+export type RequestPatchKubeResource = (
+  selfLink: string,
+  patch: JsonPatch,
+) => AsyncResult<{ name: string; kind: string }>;
 
 const requestPatchKubeResourceInjectable = getInjectable({
   id: "request-patch-kube-resource",
@@ -18,11 +21,15 @@ const requestPatchKubeResourceInjectable = getInjectable({
 
     return async (selfLink, patch) => {
       try {
-        const { metadata, kind } = await apiKubePatch(selfLink, { data: patch }, {
-          headers: {
-            "content-type": patchTypeHeaders.json,
+        const { metadata, kind } = await apiKubePatch(
+          selfLink,
+          { data: patch },
+          {
+            headers: {
+              "content-type": patchTypeHeaders.json,
+            },
           },
-        });
+        );
 
         return {
           callWasSuccessful: true,

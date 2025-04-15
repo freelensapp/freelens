@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import type { Cluster } from "../../../common/cluster/cluster";
-import { SubTitle } from "../layout/sub-title";
 import { EditableList } from "../editable-list";
-import { observable, makeObservable } from "mobx";
 import { systemName } from "../input/input_validators";
+import { SubTitle } from "../layout/sub-title";
 
 export interface ClusterAccessibleNamespacesProps {
   cluster: Cluster;
@@ -43,7 +43,8 @@ export class ClusterAccessibleNamespaces extends React.Component<ClusterAccessib
           inputTheme="round-black"
         />
         <small className="hint">
-          This setting is useful for manually specifying which namespaces you have access to. This is useful when you do not have permissions to list namespaces.
+          This setting is useful for manually specifying which namespaces you have access to. This is useful when you do
+          not have permissions to list namespaces.
         </small>
       </>
     );

@@ -20,7 +20,10 @@ export class RoutingError<Query> extends Error {
    */
   public extensionName?: string;
 
-  constructor(public type: RoutingErrorType, public url: Url<Query>) {
+  constructor(
+    public type: RoutingErrorType,
+    public url: Url<Query>,
+  ) {
     super("routing error");
   }
 

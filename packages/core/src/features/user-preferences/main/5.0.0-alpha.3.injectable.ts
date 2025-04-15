@@ -33,4 +33,3 @@ const v500Alpha3UserPreferencesStorageMigrationInjectable = getInjectable({
 });
 
 export default v500Alpha3UserPreferencesStorageMigrationInjectable;
-

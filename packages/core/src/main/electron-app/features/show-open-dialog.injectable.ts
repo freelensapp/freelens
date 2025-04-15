@@ -10,7 +10,7 @@ export type ShowOpenDialog = (options: OpenDialogOptions) => Promise<Electron.Op
 
 const showOpenDialogInjectable = getInjectable({
   id: "show-open-dialog",
-  instantiate: (): ShowOpenDialog => opts => dialog.showOpenDialog(opts),
+  instantiate: (): ShowOpenDialog => (opts) => dialog.showOpenDialog(opts),
   causesSideEffects: true,
 });
 

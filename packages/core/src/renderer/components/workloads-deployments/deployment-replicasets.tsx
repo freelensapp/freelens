@@ -5,22 +5,21 @@
 
 import "./deployment-replicasets.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
 import type { ReplicaSet } from "@freelensapp/kube-object";
-import { KubeObjectMenu } from "../kube-object-menu";
 import { Spinner } from "@freelensapp/spinner";
 import { prevDefault, stopPropagation } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
 import { DrawerTitle } from "../drawer";
-import { Table, TableCell, TableHead, TableRow } from "../table";
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
+import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
+import { KubeObjectMenu } from "../kube-object-menu";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 import type { ReplicaSetStore } from "../workloads-replicasets/store";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
-
 
 enum sortBy {
   name = "name",
@@ -50,15 +49,14 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
   }
 
   render() {
-    const {
-      replicaSets,
-      replicaSetStore,
-      showDetails,
-    } = this.props;
+    const { replicaSets, replicaSetStore, showDetails } = this.props;
 
-    if (!replicaSets.length && !replicaSetStore.isLoaded) return (
-      <div className="ReplicaSets"><Spinner center/></div>
-    );
+    if (!replicaSets.length && !replicaSetStore.isLoaded)
+      return (
+        <div className="ReplicaSets">
+          <Spinner center />
+        </div>
+      );
     if (!replicaSets.length) return null;
 
     return (
@@ -79,42 +77,55 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
           className="box grow"
         >
           <TableHead flat sticky={false}>
-            <TableCell className="name" sortBy={sortBy.name}>Name</TableCell>
-            <TableCell className="warning"/>
-            <TableCell className="namespace" sortBy={sortBy.namespace}>Namespace</TableCell>
-            <TableCell className="pods" sortBy={sortBy.pods}>Pods</TableCell>
-            <TableCell className="age" sortBy={sortBy.age}>Age</TableCell>
-            <TableCell className="actions"/>
+            <TableCell className="name" sortBy={sortBy.name}>
+              Name
+            </TableCell>
+            <TableCell className="warning" />
+            <TableCell className="namespace" sortBy={sortBy.namespace}>
+              Namespace
+            </TableCell>
+            <TableCell className="pods" sortBy={sortBy.pods}>
+              Pods
+            </TableCell>
+            <TableCell className="age" sortBy={sortBy.age}>
+              Age
+            </TableCell>
+            <TableCell className="actions" />
           </TableHead>
-          {
-            replicaSets.map(replica => (
-              <TableRow
-                key={replica.getId()}
-                sortItem={replica}
-                nowrap
-                onClick={prevDefault(() => showDetails(replica.selfLink, false))}
-              >
-                <TableCell className="name">{replica.getName()}</TableCell>
-                <TableCell className="warning"><KubeObjectStatusIcon key="icon" object={replica} /></TableCell>
-                <TableCell className="namespace">{replica.getNs()}</TableCell>
-                <TableCell className="pods">{this.getPodsLength(replica)}</TableCell>
-                <TableCell className="age"><KubeObjectAge key="age" object={replica} /></TableCell>
-                <TableCell className="actions" onClick={stopPropagation}>
-                  <KubeObjectMenu object={replica} />
-                </TableCell>
-              </TableRow>
-            ))
-          }
+          {replicaSets.map((replica) => (
+            <TableRow
+              key={replica.getId()}
+              sortItem={replica}
+              nowrap
+              onClick={prevDefault(() => showDetails(replica.selfLink, false))}
+            >
+              <TableCell className="name">{replica.getName()}</TableCell>
+              <TableCell className="warning">
+                <KubeObjectStatusIcon key="icon" object={replica} />
+              </TableCell>
+              <TableCell className="namespace">{replica.getNs()}</TableCell>
+              <TableCell className="pods">{this.getPodsLength(replica)}</TableCell>
+              <TableCell className="age">
+                <KubeObjectAge key="age" object={replica} />
+              </TableCell>
+              <TableCell className="actions" onClick={stopPropagation}>
+                <KubeObjectMenu object={replica} />
+              </TableCell>
+            </TableRow>
+          ))}
         </Table>
       </div>
     );
   }
 }
 
-export const DeploymentReplicaSets = withInjectables<Dependencies, DeploymentReplicaSetsProps>(NonInjectedDeploymentReplicaSets, {
-  getProps: (di, props) => ({
-    ...props,
-    replicaSetStore: di.inject(replicaSetStoreInjectable),
-    showDetails: di.inject(showDetailsInjectable),
-  }),
-});
+export const DeploymentReplicaSets = withInjectables<Dependencies, DeploymentReplicaSetsProps>(
+  NonInjectedDeploymentReplicaSets,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      replicaSetStore: di.inject(replicaSetStoreInjectable),
+      showDetails: di.inject(showDetailsInjectable),
+    }),
+  },
+);

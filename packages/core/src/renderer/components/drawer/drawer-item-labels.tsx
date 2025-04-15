@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObject } from "@freelensapp/kube-object";
 import React from "react";
+import { Badge } from "../badge";
 import type { DrawerItemProps } from "./drawer-item";
 import { DrawerItem } from "./drawer-item";
-import { Badge } from "../badge";
-import { KubeObject } from "@freelensapp/kube-object";
 
 export interface DrawerItemLabelsProps extends DrawerItemProps {
   labels: string[] | Partial<Record<string, string>>;
@@ -20,9 +20,7 @@ export function DrawerItemLabels(props: DrawerItemLabelsProps) {
     return null;
   }
 
-  const labelStrings = Array.isArray(labels)
-    ? labels
-    : KubeObject.stringifyLabels(labels);
+  const labelStrings = Array.isArray(labels) ? labels : KubeObject.stringifyLabels(labels);
 
   if (labelStrings.length === 0) {
     return null;
@@ -30,12 +28,8 @@ export function DrawerItemLabels(props: DrawerItemLabelsProps) {
 
   return (
     <DrawerItem {...itemProps} labelsOnly>
-      {labelStrings.map(label => (
-        <Badge
-          key={label}
-          label={label}
-          title={label}
-        />
+      {labelStrings.map((label) => (
+        <Badge key={label} label={label} title={label} />
       ))}
     </DrawerItem>
   );

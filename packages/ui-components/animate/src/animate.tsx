@@ -4,14 +4,14 @@
  */
 
 import "./animate.scss";
-import React, { useEffect, useState } from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { RequestAnimationFrame } from "./request-animation-frame.injectable";
-import { requestAnimationFrameInjectable } from "./request-animation-frame.injectable";
+import React, { useEffect, useState } from "react";
 import { defaultEnterDurationForAnimatedInjectable } from "./default-enter-duration.injectable";
 import { defaultLeaveDurationForAnimatedInjectable } from "./default-leave-duration.injectable";
+import type { RequestAnimationFrame } from "./request-animation-frame.injectable";
+import { requestAnimationFrameInjectable } from "./request-animation-frame.injectable";
 
 export type AnimateName = "opacity" | "slide-right" | "opacity-scale" | string;
 
@@ -47,7 +47,6 @@ const NonInjectedAnimate = (propsAndDeps: AnimateProps & Dependencies) => {
   const [showClassNameEnter, setShowClassNameEnter] = useState(false);
   const [showClassNameLeave, setShowClassNameLeave] = useState(false);
 
-  // eslint-disable-next-line xss/no-mixed-html
   const contentElem = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<any>>;
   const classNames = cssNames("Animate", name, contentElem.props.className, {
     enter: showClassNameEnter,

@@ -5,18 +5,15 @@
 
 import "./status-brick.scss";
 
-import React from "react";
+import { withTooltip } from "@freelensapp/tooltip";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { withTooltip } from "@freelensapp/tooltip";
+import React from "react";
 
 export interface StatusBrickProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;
 }
 
 export const StatusBrick = withTooltip(({ className, ...elemProps }: StatusBrickProps) => (
-  <div
-    className={cssNames("StatusBrick", className)}
-    {...elemProps}
-  />
+  <div className={cssNames("StatusBrick", className)} {...elemProps} />
 ));

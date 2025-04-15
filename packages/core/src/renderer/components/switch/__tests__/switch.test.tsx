@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 import { fireEvent, render } from "@testing-library/react";
+import React from "react";
 import "@testing-library/jest-dom";
 import { Switch } from "../switch";
 
@@ -22,7 +22,7 @@ describe("<Switch/>", () => {
   });
 
   it("passes disabled and checked attributes to input", () => {
-    const { container } = render(<Switch checked disabled/>);
+    const { container } = render(<Switch checked disabled />);
     const checkbox = container.querySelector("input[type=checkbox]");
 
     expect(checkbox).toHaveAttribute("disabled");
@@ -31,7 +31,7 @@ describe("<Switch/>", () => {
 
   it("onClick event fired", () => {
     const onClick = jest.fn();
-    const { getByTestId } = render(<Switch onClick={onClick}/>);
+    const { getByTestId } = render(<Switch onClick={onClick} />);
     const switcher = getByTestId("switch");
 
     fireEvent.click(switcher);
@@ -41,7 +41,7 @@ describe("<Switch/>", () => {
 
   it("onClick event not fired for disabled item", () => {
     const onClick = jest.fn();
-    const { getByTestId } = render(<Switch onClick={onClick} disabled/>);
+    const { getByTestId } = render(<Switch onClick={onClick} disabled />);
     const switcher = getByTestId("switch");
 
     fireEvent.click(switcher);
@@ -51,7 +51,7 @@ describe("<Switch/>", () => {
 
   it("returns true checked attribute in a onChange callback", () => {
     const onClick = jest.fn();
-    const { getByTestId } = render(<Switch onChange={onClick} checked={true}/>);
+    const { getByTestId } = render(<Switch onChange={onClick} checked={true} />);
     const switcher = getByTestId("switch");
 
     fireEvent.click(switcher);
@@ -61,7 +61,7 @@ describe("<Switch/>", () => {
 
   it("returns false checked attribute in a onChange callback", () => {
     const onClick = jest.fn();
-    const { getByTestId } = render(<Switch onChange={onClick}/>);
+    const { getByTestId } = render(<Switch onChange={onClick} />);
     const switcher = getByTestId("switch");
 
     fireEvent.click(switcher);

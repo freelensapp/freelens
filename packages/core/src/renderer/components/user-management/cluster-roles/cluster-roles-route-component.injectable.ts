@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { ClusterRoles } from "./view";
 import clusterRolesRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/cluster-roles/cluster-roles-route.injectable";
 import { routeSpecificComponentInjectionToken } from "../../../routes/route-specific-component-injection-token";
+import { ClusterRoles } from "./view";
 
 const clusterRolesRouteComponentInjectable = getInjectable({
   id: "cluster-roles-route-component",

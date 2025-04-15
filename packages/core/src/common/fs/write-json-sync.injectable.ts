@@ -11,10 +11,7 @@ export type WriteJsonSync = (filePath: string, contents: unknown) => void;
 const writeJsonSyncInjectable = getInjectable({
   id: "write-json-sync",
   instantiate: (di): WriteJsonSync => {
-    const {
-      writeJsonSync,
-      ensureDirSync,
-    } = di.inject(fsInjectable);
+    const { writeJsonSync, ensureDirSync } = di.inject(fsInjectable);
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
 
     return (filePath, content) => {

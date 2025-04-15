@@ -1,18 +1,21 @@
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { runInAction } from "mobx";
+import { observer } from "mobx-react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import { Select } from "../../../../../../renderer/components/select";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { Input } from "../../../../../../renderer/components/input";
 import { isUrl } from "../../../../../../renderer/components/input/input_validators";
-import { runInAction } from "mobx";
-import { observer } from "mobx-react";
+import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
+import { Select } from "../../../../../../renderer/components/select";
+import {
+  defaultExtensionRegistryUrl,
+  defaultExtensionRegistryUrlLocation,
+} from "../../../../../user-preferences/common/preferences-helpers";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
-import { defaultExtensionRegistryUrlLocation, defaultExtensionRegistryUrl } from "../../../../../user-preferences/common/preferences-helpers";
 
 interface Dependencies {
   state: UserPreferencesState;
@@ -45,8 +48,7 @@ const NonInjectedExtensionInstallRegistry = observer(({ state }: Dependencies) =
         value={state.extensionRegistryUrl.location}
         onChange={(value) =>
           runInAction(() => {
-            state.extensionRegistryUrl.location =
-              value?.value ?? defaultExtensionRegistryUrlLocation;
+            state.extensionRegistryUrl.location = value?.value ?? defaultExtensionRegistryUrlLocation;
 
             if (state.extensionRegistryUrl.location === "custom") {
               state.extensionRegistryUrl.customUrl = "";
@@ -56,9 +58,7 @@ const NonInjectedExtensionInstallRegistry = observer(({ state }: Dependencies) =
         themeName="lens"
       />
       <p className="mt-4 mb-5 leading-relaxed">
-        {
-          "This setting is to change the registry URL for installing extensions by name. "
-        }
+        {"This setting is to change the registry URL for installing extensions by name. "}
         {`If you are unable to access the default registry (${defaultExtensionRegistryUrl}) you can change it in your `}
         <b>.npmrc</b>
         {" file or in the input below."}

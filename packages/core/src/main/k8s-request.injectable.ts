@@ -23,15 +23,7 @@ const k8sRequestInjectable = getInjectable({
   instantiate: (di): K8sRequest => {
     const lensFetch = di.inject(lensFetchInjectable);
 
-    return async (
-      cluster,
-      pathnameAndQuery,
-      {
-        timeout = 30_000,
-        signal,
-        ...init
-      } = {},
-    ) => {
+    return async (cluster, pathnameAndQuery, { timeout = 30_000, signal, ...init } = {}) => {
       const controller = timeout ? withTimeout(timeout) : undefined;
 
       if (controller && signal) {
@@ -40,11 +32,14 @@ const k8sRequestInjectable = getInjectable({
 
       const response = await lensFetch(`/${cluster.id}${pathnameAndQuery}`, {
         ...init,
-        signal: controller?.signal ?? signal as any,
+        signal: controller?.signal ?? (signal as any),
       });
 
       if (response.status < 200 || response.status >= 300) {
-        throw new Error(`Failed to ${init.method ?? "get"} ${pathnameAndQuery} for clusterId=${cluster.id}: ${response.statusText}`, { cause: response });
+        throw new Error(
+          `Failed to ${init.method ?? "get"} ${pathnameAndQuery} for clusterId=${cluster.id}: ${response.statusText}`,
+          { cause: response },
+        );
       }
 
       return response.json();

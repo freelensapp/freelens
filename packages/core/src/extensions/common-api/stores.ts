@@ -7,9 +7,6 @@ import type { PersistentStorageParams } from "../../features/persistent-storage/
 import type { ExtensionStoreParams } from "../base-extension-store";
 import { BaseExtensionStore as ExtensionStore } from "../base-extension-store";
 
-export type {
-  ExtensionStoreParams,
-  PersistentStorageParams,
-};
+export type { ExtensionStoreParams, PersistentStorageParams };
 
 export { ExtensionStore };

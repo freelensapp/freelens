@@ -1,14 +1,14 @@
+import type { SendMessageToChannel } from "@freelensapp/messaging";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { DiContainer } from "@ogre-tools/injectable";
 import { MESSAGE } from "triple-beam";
-import type { SendMessageToChannel } from "@freelensapp/messaging";
-import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
-import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
+import ipcLogTransportInjectable from "./ipc-transport.injectable";
+import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 
 describe("renderer log transport through ipc", () => {
   let di: DiContainer;

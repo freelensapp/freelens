@@ -5,14 +5,19 @@
 
 import type { HpaMetricType, LabelSelector } from "@freelensapp/kube-object";
 
-type MetricNames = Partial<Record<"resource" | "pods" | "object" | "external" | "containerResource", {
-  name?: string;
-  metricName?: string;
-  metric?: {
-    name?: string;
-    selector?: LabelSelector;
-  };
-}>>;
+type MetricNames = Partial<
+  Record<
+    "resource" | "pods" | "object" | "external" | "containerResource",
+    {
+      name?: string;
+      metricName?: string;
+      metric?: {
+        name?: string;
+        selector?: LabelSelector;
+      };
+    }
+  >
+>;
 
 interface Metric extends MetricNames {
   type: HpaMetricType;

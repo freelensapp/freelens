@@ -5,11 +5,7 @@
 
 import { useEffect } from "react";
 
-export function useResizeObserver(
-  element: Element | undefined | null,
-  callback: ResizeObserverCallback,
-) {
-
+export function useResizeObserver(element: Element | undefined | null, callback: ResizeObserverCallback) {
   useEffect(() => {
     if (element) {
       const observer = new ResizeObserver(callback);

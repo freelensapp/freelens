@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
+import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
 import type { ContentSource, ElectronWindowTitleBarStyle } from "./create-electron-window.injectable";
 import createElectronWindowInjectable from "./create-electron-window.injectable";
-import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
 
 export interface ElectronWindow {
   show: () => void;
@@ -99,10 +99,7 @@ const createLensWindowInjectable = getInjectable({
               },
             });
 
-            const {
-              file: filePathForContent,
-              url: urlForContent,
-            } = configuration.getContentSource();
+            const { file: filePathForContent, url: urlForContent } = configuration.getContentSource();
 
             const beforeOpen = configuration.beforeOpen?.();
 

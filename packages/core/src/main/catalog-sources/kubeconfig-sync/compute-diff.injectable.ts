@@ -1,24 +1,28 @@
+import { createHash } from "crypto";
+import { homedir } from "os";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { createHash } from "crypto";
 import type { ObservableMap } from "mobx";
 import { action } from "mobx";
-import { homedir } from "os";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import type { CatalogEntity } from "../../../common/catalog";
 import { Cluster } from "../../../common/cluster/cluster";
 import { loadConfigFromString } from "../../../common/kube-helpers";
+import getClusterByIdInjectable from "../../../features/cluster/storage/common/get-by-id.injectable";
 import clustersThatAreBeingDeletedInjectable from "../../cluster/are-being-deleted.injectable";
+import clusterConnectionInjectable from "../../cluster/cluster-connection.injectable";
 import { catalogEntityFromCluster } from "../../cluster/manager";
 import configToModelsInjectable from "./config-to-models.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
-import clusterConnectionInjectable from "../../cluster/cluster-connection.injectable";
-import getClusterByIdInjectable from "../../../features/cluster/storage/common/get-by-id.injectable";
 
-export type ComputeKubeconfigDiff = (contents: string, source: ObservableMap<string, [Cluster, CatalogEntity]>, filePath: string) => void;
+export type ComputeKubeconfigDiff = (
+  contents: string,
+  source: ObservableMap<string, [Cluster, CatalogEntity]>,
+  filePath: string,
+) => void;
 
 const computeKubeconfigDiffInjectable = getInjectable({
   id: "compute-kubeconfig-diff",
@@ -34,7 +38,10 @@ const computeKubeconfigDiffInjectable = getInjectable({
         const { config, error } = loadConfigFromString(contents);
 
         if (error) {
-          logger.warn(`encountered errors while loading config: ${error.message}`, { filePath, details: error.details });
+          logger.warn(`encountered errors while loading config: ${error.message}`, {
+            filePath,
+            details: error.details,
+          });
         }
 
         const rawModels = configToModels(config, filePath);

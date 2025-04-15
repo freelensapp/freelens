@@ -1,24 +1,24 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { isObject } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import { reduce } from "lodash";
 import React from "react";
 import { SemVer } from "semver";
+import type { PackageJson } from "type-fest";
 import URLParse from "url-parse";
-import { getInjectable } from "@ogre-tools/injectable";
-import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
-import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
-import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import confirmInjectable from "../confirm-dialog/confirm.injectable";
-import { reduce } from "lodash";
-import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
-import { withTimeout } from "../../../common/fetch/timeout-controller";
 import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
 import downloadJsonInjectable from "../../../common/fetch/download-json/normal.injectable";
-import type { PackageJson } from "type-fest";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import { withTimeout } from "../../../common/fetch/timeout-controller";
+import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
+import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import confirmInjectable from "../confirm-dialog/confirm.injectable";
+import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
+import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
 
 export interface ExtensionInfo {
   name: string;
@@ -90,7 +90,9 @@ const attemptInstallByInfoInjectable = getInjectable({
         if (error instanceof SyntaxError) {
           // assume invalid JSON
           logger.warn("Set registry has invalid json", { url: baseUrl }, error);
-          showErrorNotification("Failed to get valid registry information for extension. Registry did not return valid JSON");
+          showErrorNotification(
+            "Failed to get valid registry information for extension. Registry did not return valid JSON",
+          );
         } else {
           logger.error("Failed to download registry information", error);
           showErrorNotification(`Failed to get valid registry information for extension. ${error}`);
@@ -102,23 +104,18 @@ const attemptInstallByInfoInjectable = getInjectable({
       let version = versionOrTagName;
 
       if (versionOrTagName) {
-        validDistTagName:
-        if (!json.versions[versionOrTagName]) {
+        validDistTagName: if (!json.versions[versionOrTagName]) {
           if (json["dist-tags"]) {
             const potentialVersion = json["dist-tags"][versionOrTagName];
 
             if (potentialVersion) {
               if (!json.versions[potentialVersion]) {
-                showErrorNotification((
+                showErrorNotification(
                   <p>
-                    Configured registry claims to have tag
-                    {" "}
-                    <code>{versionOrTagName}</code>
-                    .
-                    {" "}
-                    But does not have version infomation for the reference.
-                  </p>
-                ));
+                    Configured registry claims to have tag <code>{versionOrTagName}</code>. But does not have version
+                    infomation for the reference.
+                  </p>,
+                );
 
                 return disposer();
               }
@@ -128,25 +125,24 @@ const attemptInstallByInfoInjectable = getInjectable({
             }
           }
 
-          showErrorNotification((
+          showErrorNotification(
             <p>
               {"The "}
               <em>{name}</em>
               {" extension does not have a version or tag "}
-              <code>{versionOrTagName}</code>
-              .
-            </p>
-          ));
+              <code>{versionOrTagName}</code>.
+            </p>,
+          );
 
           return disposer();
         }
       } else {
         const versions = Object.keys(json.versions)
-          .map(version => new SemVer(version, { loose: true }))
+          .map((version) => new SemVer(version, { loose: true }))
           // ignore pre-releases for auto picking the version
-          .filter(version => version.prerelease.length === 0);
+          .filter((version) => version.prerelease.length === 0);
 
-        const latestVersion = reduce(versions, (prev, curr) => prev.compareMain(curr) === -1 ? curr : prev);
+        const latestVersion = reduce(versions, (prev, curr) => (prev.compareMain(curr) === -1 ? curr : prev));
 
         version = latestVersion?.format();
       }
@@ -163,7 +159,10 @@ const attemptInstallByInfoInjectable = getInjectable({
 
       if (!tarballUrl) {
         showErrorNotification("Configured registry has invalid data model. Please verify that it is like NPM's.");
-        logger.warn(`[ATTEMPT-INSTALL-BY-INFO]: registry returned unexpected data, final version is ${version} but the versions object is missing .dist.tarball as a string`, versionInfo);
+        logger.warn(
+          `[ATTEMPT-INSTALL-BY-INFO]: registry returned unexpected data, final version is ${version} but the versions object is missing .dist.tarball as a string`,
+          versionInfo,
+        );
 
         return disposer();
       }
@@ -173,10 +172,7 @@ const attemptInstallByInfoInjectable = getInjectable({
           message: (
             <p>
               {"Are you sure you want to install "}
-              <b>
-                {`${name}@${version}`}
-              </b>
-              ?
+              <b>{`${name}@${version}`}</b>?
             </p>
           ),
           labelCancel: "Cancel",

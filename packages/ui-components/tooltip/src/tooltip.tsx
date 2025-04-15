@@ -5,13 +5,13 @@
 
 import "./tooltip.scss";
 
-import React from "react";
-import { createPortal } from "react-dom";
-import { observer } from "mobx-react";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { observable, makeObservable, action, runInAction } from "mobx";
 import autoBindReact from "auto-bind/react";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { createPortal } from "react-dom";
 import { computeNextPosition } from "./helpers";
 
 export enum TooltipPosition {

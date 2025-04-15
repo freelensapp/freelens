@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import splashWindowInjectable from "./splash-window/splash-window.injectable";
 import { identity, some } from "lodash/fp";
 import focusApplicationInjectable from "../../electron-app/features/focus-application.injectable";
-import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
 import createFirstApplicationWindowInjectable from "./application-window/create-first-application-window.injectable";
+import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
+import splashWindowInjectable from "./splash-window/splash-window.injectable";
 const someIsTruthy = some(identity);
 
 const showApplicationWindowInjectable = getInjectable({
@@ -31,10 +31,7 @@ const showApplicationWindowInjectable = getInjectable({
         return;
       }
 
-      const windowIsAlreadyBeingShown = someIsTruthy([
-        applicationWindow.isVisible,
-        splashWindow.isStarting,
-      ]);
+      const windowIsAlreadyBeingShown = someIsTruthy([applicationWindow.isVisible, splashWindow.isStarting]);
 
       if (windowIsAlreadyBeingShown) {
         return;

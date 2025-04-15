@@ -4,10 +4,8 @@
  */
 import { getMessageChannel, getRequestChannel } from "@freelensapp/messaging";
 
-export const syncBoxChannel =
-  getMessageChannel<{ id: string; value: any }>("sync-box-channel");
+export const syncBoxChannel = getMessageChannel<{ id: string; value: any }>("sync-box-channel");
 
-export const syncBoxInitialValueChannel = getRequestChannel<
-  void,
-  { id: string; value: any }[]
->("sync-box-initial-value-channel");
+export const syncBoxInitialValueChannel = getRequestChannel<void, { id: string; value: any }[]>(
+  "sync-box-initial-value-channel",
+);

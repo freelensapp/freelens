@@ -5,18 +5,18 @@
 
 import "./view.scss";
 
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
-import { AddClusterRoleDialog } from "./add-dialog/view";
-import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../../kube-object/age";
-import type { ClusterRoleStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import clusterRoleStoreInjectable from "./store.injectable";
+import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import type { OpenAddClusterRoleDialog } from "./add-dialog/open.injectable";
 import openAddClusterRoleDialogInjectable from "./add-dialog/open.injectable";
+import { AddClusterRoleDialog } from "./add-dialog/view";
+import type { ClusterRoleStore } from "./store";
+import clusterRoleStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -32,10 +32,7 @@ interface Dependencies {
 @observer
 class NonInjectedClusterRoles extends React.Component<Dependencies> {
   render() {
-    const {
-      openAddClusterRoleDialog,
-      clusterRoleStore,
-    } = this.props;
+    const { openAddClusterRoleDialog, clusterRoleStore } = this.props;
 
     return (
       <SiblingsInTabLayout>
@@ -45,19 +42,17 @@ class NonInjectedClusterRoles extends React.Component<Dependencies> {
           className="ClusterRoles"
           store={clusterRoleStore}
           sortingCallbacks={{
-            [columnId.name]: clusterRole => clusterRole.getName(),
-            [columnId.age]: clusterRole => -clusterRole.getCreationTimestamp(),
+            [columnId.name]: (clusterRole) => clusterRole.getName(),
+            [columnId.age]: (clusterRole) => -clusterRole.getCreationTimestamp(),
           }}
-          searchFilters={[
-            clusterRole => clusterRole.getSearchFields(),
-          ]}
+          searchFilters={[(clusterRole) => clusterRole.getSearchFields()]}
           renderHeaderTitle="Cluster Roles"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
             { className: "warning", showWithColumn: columnId.name },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={clusterRole => [
+          renderTableContents={(clusterRole) => [
             clusterRole.getName(),
             <KubeObjectStatusIcon key="icon" object={clusterRole} />,
             <KubeObjectAge key="age" object={clusterRole} />,
@@ -67,7 +62,7 @@ class NonInjectedClusterRoles extends React.Component<Dependencies> {
             addTooltip: "Create new ClusterRole",
           }}
         />
-        <AddClusterRoleDialog/>
+        <AddClusterRoleDialog />
       </SiblingsInTabLayout>
     );
   }

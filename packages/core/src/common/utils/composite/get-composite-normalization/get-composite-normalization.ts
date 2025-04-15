@@ -16,9 +16,7 @@ export const getCompositeNormalization = <T>(composite: Composite<T>) => {
     return [
       pathAndCompositeTuple,
 
-      ...composite.children.flatMap((child) =>
-        _normalizeComposite(child, currentPath),
-      ),
+      ...composite.children.flatMap((child) => _normalizeComposite(child, currentPath)),
     ];
   };
 

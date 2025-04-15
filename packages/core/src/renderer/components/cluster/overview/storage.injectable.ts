@@ -18,13 +18,10 @@ const clusterOverviewStorageInjectable = getInjectable({
   instantiate: (di) => {
     const createStorage = di.inject(createStorageInjectable);
 
-    return createStorage<ClusterOverviewStorageState>(
-      "cluster_overview",
-      {
-        metricType: "cpu", // setup defaults
-        metricNodeRole: "worker",
-      },
-    );
+    return createStorage<ClusterOverviewStorageState>("cluster_overview", {
+      metricType: "cpu", // setup defaults
+      metricNodeRole: "worker",
+    });
   },
 });
 

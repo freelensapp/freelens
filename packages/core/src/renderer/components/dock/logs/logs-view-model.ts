@@ -1,19 +1,19 @@
+import assert from "assert";
+import type { ResourceDescriptor } from "@freelensapp/kube-api";
+import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
+import { isDefined } from "@freelensapp/utilities";
+import type { IComputedValue } from "mobx";
+import { computed } from "mobx";
+import type { SearchStore } from "../../../search-store/search-store";
+import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
+import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
+import type { TabId } from "../dock/store";
+import type { LoadLogs } from "./load-logs.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { LogTabData } from "./tab-store";
-import type { IComputedValue } from "mobx";
-import { computed } from "mobx";
-import type { TabId } from "../dock/store";
-import type { SearchStore } from "../../../search-store/search-store";
-import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
-import { isDefined } from "@freelensapp/utilities";
-import assert from "assert";
-import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
-import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
-import type { LoadLogs } from "./load-logs.injectable";
-import type { ResourceDescriptor } from "@freelensapp/kube-api";
 
 export interface LogTabViewModelDependencies {
   getLogs: (tabId: TabId) => string[];
@@ -22,7 +22,11 @@ export interface LogTabViewModelDependencies {
   getLogTabData: (tabId: TabId) => LogTabData | undefined;
   setLogTabData: (tabId: TabId, data: LogTabData) => void;
   loadLogs: LoadLogs;
-  reloadLogs: (tabId: TabId, pod: IComputedValue<Pod | undefined>, logTabData: IComputedValue<LogTabData | undefined>) => Promise<void>;
+  reloadLogs: (
+    tabId: TabId,
+    pod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ) => Promise<void>;
   renameTab: (tabId: TabId, title: string) => void;
   stopLoadingLogs: (tabId: TabId) => void;
   getPodById: GetPodById;
@@ -34,7 +38,10 @@ export interface LogTabViewModelDependencies {
 }
 
 export class LogTabViewModel {
-  constructor(protected readonly tabId: TabId, private readonly dependencies: LogTabViewModelDependencies) {}
+  constructor(
+    protected readonly tabId: TabId,
+    private readonly dependencies: LogTabViewModelDependencies,
+  ) {}
 
   get searchStore() {
     return this.dependencies.searchStore;
@@ -87,9 +94,7 @@ export class LogTabViewModel {
 
     if (pod && tabData) {
       const fileName = pod.getName();
-      const logsToDownload: string[] = tabData.showTimestamps
-        ? this.logs.get()
-        : this.logsWithoutTimestamps.get();
+      const logsToDownload: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
 
       this.dependencies.downloadLogs(`${fileName}.log`, logsToDownload);
     }
@@ -101,7 +106,11 @@ export class LogTabViewModel {
 
     if (pod && tabData) {
       const params = { name: pod.getName(), namespace: pod.getNs() };
-      const query = { timestamps: tabData.showTimestamps, previous: tabData.showPrevious, container: tabData.selectedContainer };
+      const query = {
+        timestamps: tabData.showTimestamps,
+        previous: tabData.showPrevious,
+        container: tabData.selectedContainer,
+      };
 
       return this.dependencies.downloadAllLogs(params, query);
     }

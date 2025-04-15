@@ -5,22 +5,22 @@
 
 import "./deployments.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
 import type { Deployment } from "@freelensapp/kube-object";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import orderBy from "lodash/orderBy";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { DeploymentStore } from "./store";
+import { observer } from "mobx-react";
+import React from "react";
 import type { EventStore } from "../events/store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import deploymentStoreInjectable from "./store.injectable";
 import eventStoreInjectable from "../events/store.injectable";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { DeploymentStore } from "./store";
+import deploymentStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -48,21 +48,14 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
     const conditions = orderBy(deployment.getConditions(true), "type", "asc");
 
     return conditions.map(({ type, message }) => (
-      <span
-        key={type}
-        className={cssNames("condition", kebabCase(type))}
-        title={message}
-      >
+      <span key={type} className={cssNames("condition", kebabCase(type))} title={message}>
         {type}
       </span>
     ));
   }
 
   render() {
-    const {
-      deploymentStore,
-      eventStore,
-    } = this.props;
+    const { deploymentStore, eventStore } = this.props;
 
     return (
       <SiblingsInTabLayout>
@@ -73,16 +66,13 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
           store={deploymentStore}
           dependentStores={[eventStore]} // status icon component uses event store
           sortingCallbacks={{
-            [columnId.name]: deployment => deployment.getName(),
-            [columnId.namespace]: deployment => deployment.getNs(),
-            [columnId.replicas]: deployment => deployment.getReplicas(),
-            [columnId.age]: deployment => -deployment.getCreationTimestamp(),
-            [columnId.condition]: deployment => deployment.getConditionsText(),
+            [columnId.name]: (deployment) => deployment.getName(),
+            [columnId.namespace]: (deployment) => deployment.getNs(),
+            [columnId.replicas]: (deployment) => deployment.getReplicas(),
+            [columnId.age]: (deployment) => -deployment.getCreationTimestamp(),
+            [columnId.condition]: (deployment) => deployment.getConditionsText(),
           }}
-          searchFilters={[
-            deployment => deployment.getSearchFields(),
-            deployment => deployment.getConditionsText(),
-          ]}
+          searchFilters={[(deployment) => deployment.getSearchFields(), (deployment) => deployment.getConditionsText()]}
           renderHeaderTitle="Deployments"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -108,13 +98,10 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
               id: columnId.condition,
             },
           ]}
-          renderTableContents={deployment => [
+          renderTableContents={(deployment) => [
             deployment.getName(),
             <KubeObjectStatusIcon key="icon" object={deployment} />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={deployment.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={deployment.getNs()} />,
             this.renderPods(deployment),
             deployment.getReplicas(),
             <KubeObjectAge key="age" object={deployment} />,

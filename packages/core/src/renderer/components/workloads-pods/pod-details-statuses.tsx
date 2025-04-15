@@ -4,10 +4,10 @@
  */
 
 import "./pod-details-statuses.scss";
-import React from "react";
+import type { Pod } from "@freelensapp/kube-object";
 import countBy from "lodash/countBy";
 import kebabCase from "lodash/kebabCase";
-import type { Pod } from "@freelensapp/kube-object";
+import React from "react";
 
 export interface PodDetailsStatusesProps {
   pods: Pod[];
@@ -18,18 +18,15 @@ export class PodDetailsStatuses extends React.Component<PodDetailsStatusesProps>
     const { pods } = this.props;
 
     if (!pods.length) return null;
-    const statuses = countBy(pods.map(pod => pod.getStatus()));
+    const statuses = countBy(pods.map((pod) => pod.getStatus()));
 
     return (
       <div className="PodDetailsStatuses">
-        {
-          Object.entries(statuses)
-            .map(([phase, count]) => (
-              <span key={phase} className={kebabCase(phase)}>
-                {`${phase}: ${count}`}
-              </span>
-            ))
-        }
+        {Object.entries(statuses).map(([phase, count]) => (
+          <span key={phase} className={kebabCase(phase)}>
+            {`${phase}: ${count}`}
+          </span>
+        ))}
       </div>
     );
   }

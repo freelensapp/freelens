@@ -14,10 +14,7 @@ const updateCanBeDowngradedInjectable = getInjectable({
     const selectedUpdateChannel = di.inject(selectedUpdateChannelInjectable);
     const releaseChannel = di.inject(releaseChannelInjectable);
 
-    return computed(() => (
-      selectedUpdateChannel.value.get().id === "latest"
-      && releaseChannel !== "latest"
-    ));
+    return computed(() => selectedUpdateChannel.value.get().id === "latest" && releaseChannel !== "latest");
   },
 });
 

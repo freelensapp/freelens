@@ -4,25 +4,18 @@
  */
 
 import path from "path";
-import type webpack from "webpack";
+import corePackageJson from "@freelensapp/core/package.json";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import CircularDependencyPlugin from "circular-dependency-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
-import CircularDependencyPlugin from "circular-dependency-plugin";
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
+import type webpack from "webpack";
 import type { WebpackPluginInstance } from "webpack";
 import { DefinePlugin } from "webpack";
-import {
-  assetsFolderName,
-  isDevelopment,
-  rendererDir,
-  buildDir,
-  htmlTemplate,
-  publicPath,
-} from "./vars";
-import corePackageJson from "@freelensapp/core/package.json";
+import { assetsFolderName, buildDir, htmlTemplate, isDevelopment, publicPath, rendererDir } from "./vars";
 
 const renderer: webpack.Configuration = {
   target: "electron-renderer",
@@ -55,7 +48,8 @@ const renderer: webpack.Configuration = {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
   async externals({ request }) {
-    const externalModulesRegex = /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
+    const externalModulesRegex =
+      /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
 
     if (externalModulesRegex.test(request)) {
       return Promise.resolve(`node-commonjs ${request}`);
@@ -127,7 +121,7 @@ const renderer: webpack.Configuration = {
         {
           from: path.resolve(
             path.dirname(require.resolve("@freelensapp/core/package.json")),
-            corePackageJson.exports["./fonts"]
+            corePackageJson.exports["./fonts"],
           ),
           to: "fonts/[name][ext]",
         },
@@ -180,9 +174,7 @@ export interface CssModulesWebpackRuleOptions {
 /**
  * Import CSS or SASS styles with modules support (*.module.scss)
  */
-export function cssModulesWebpackRule({
-  styleLoader,
-}: CssModulesWebpackRuleOptions = {}): webpack.RuleSetRule {
+export function cssModulesWebpackRule({ styleLoader }: CssModulesWebpackRuleOptions = {}): webpack.RuleSetRule {
   styleLoader ??= isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader;
 
   return {

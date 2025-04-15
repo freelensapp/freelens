@@ -53,41 +53,53 @@ describe("requestNonCoreApiVersions", () => {
 
     describe("when api groups request resolves to single group", () => {
       beforeEach(async () => {
-        await k8sRequestMock.resolve({ groups: [{
-          name: "some-name",
-          versions: [{
-            groupVersion: "some-name/v1",
-            version: "v1",
-          }],
-        }] } as V1APIGroupList);
+        await k8sRequestMock.resolve({
+          groups: [
+            {
+              name: "some-name",
+              versions: [
+                {
+                  groupVersion: "some-name/v1",
+                  version: "v1",
+                },
+              ],
+            },
+          ],
+        } as V1APIGroupList);
       });
 
       it("should return single entry in list", async () => {
         expect(await versionsRequest).toEqual({
           callWasSuccessful: true,
-          response: [{
-            group: "some-name",
-            path: "/apis/some-name/v1",
-          }],
+          response: [
+            {
+              group: "some-name",
+              path: "/apis/some-name/v1",
+            },
+          ],
         });
       });
     });
 
     describe("when api groups request resolves to single group with multiple versions", () => {
       beforeEach(async () => {
-        await k8sRequestMock.resolve({ groups: [{
-          name: "some-name",
-          versions: [
+        await k8sRequestMock.resolve({
+          groups: [
             {
-              groupVersion: "some-name/v1",
-              version: "v1",
-            },
-            {
-              groupVersion: "some-name/v1beta1",
-              version: "v1beta1",
+              name: "some-name",
+              versions: [
+                {
+                  groupVersion: "some-name/v1",
+                  version: "v1",
+                },
+                {
+                  groupVersion: "some-name/v1beta1",
+                  version: "v1beta1",
+                },
+              ],
             },
           ],
-        }] } as V1APIGroupList);
+        } as V1APIGroupList);
       });
 
       it("should return multiple entries in list", async () => {
@@ -109,34 +121,36 @@ describe("requestNonCoreApiVersions", () => {
 
     describe("when api groups request resolves to multiple groups with multiple versions", () => {
       beforeEach(async () => {
-        await k8sRequestMock.resolve({ groups: [
-          {
-            name: "some-name",
-            versions: [
-              {
-                groupVersion: "some-name/v1",
-                version: "v1",
-              },
-              {
-                groupVersion: "some-name/v1beta1",
-                version: "v1beta1",
-              },
-            ],
-          },
-          {
-            name: "some-other-name.foo.com",
-            versions: [
-              {
-                groupVersion: "some-other-name.foo.com/v1",
-                version: "v1",
-              },
-              {
-                groupVersion: "some-other-name.foo.com/v1beta1",
-                version: "v1beta1",
-              },
-            ],
-          },
-        ] } as V1APIGroupList);
+        await k8sRequestMock.resolve({
+          groups: [
+            {
+              name: "some-name",
+              versions: [
+                {
+                  groupVersion: "some-name/v1",
+                  version: "v1",
+                },
+                {
+                  groupVersion: "some-name/v1beta1",
+                  version: "v1beta1",
+                },
+              ],
+            },
+            {
+              name: "some-other-name.foo.com",
+              versions: [
+                {
+                  groupVersion: "some-other-name.foo.com/v1",
+                  version: "v1",
+                },
+                {
+                  groupVersion: "some-other-name.foo.com/v1beta1",
+                  version: "v1beta1",
+                },
+              ],
+            },
+          ],
+        } as V1APIGroupList);
       });
 
       it("should return multiple entries in list", async () => {

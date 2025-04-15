@@ -15,11 +15,11 @@ const requestCoreApiVersionsInjectable = getInjectable({
     return {
       request: async (cluster) => {
         try {
-          const { versions } = await k8sRequest(cluster, "/api") as V1APIVersions;
+          const { versions } = (await k8sRequest(cluster, "/api")) as V1APIVersions;
 
           return {
             callWasSuccessful: true,
-            response: versions.map(version => ({
+            response: versions.map((version) => ({
               group: "",
               path: `/api/${version}`,
             })),

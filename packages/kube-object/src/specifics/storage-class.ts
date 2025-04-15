@@ -4,7 +4,7 @@
  */
 
 import autoBind from "auto-bind";
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ClusterScopedMetadata } from "../api-types";
+import type { ClusterScopedMetadata, KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "../api-types";
 import { KubeObject } from "../kube-object";
 
 export interface TopologySelectorLabelRequirement {

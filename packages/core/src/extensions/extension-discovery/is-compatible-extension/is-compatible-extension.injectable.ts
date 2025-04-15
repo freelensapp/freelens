@@ -8,9 +8,10 @@ import { isCompatibleExtension } from "./is-compatible-extension";
 
 const isCompatibleExtensionInjectable = getInjectable({
   id: "is-compatible-extension",
-  instantiate: (di) => isCompatibleExtension({
-    extensionApiVersion: di.inject(extensionApiVersionInjectable),
-  }),
+  instantiate: (di) =>
+    isCompatibleExtension({
+      extensionApiVersion: di.inject(extensionApiVersionInjectable),
+    }),
 });
 
 export default isCompatibleExtensionInjectable;

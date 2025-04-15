@@ -33,16 +33,11 @@ export type UpdateClusterModel = Omit<ClusterModel, "id">;
  * A type validator for `UpdateClusterModel` so that only expected types are present
  */
 export const updateClusterModelChecker = Joi.object<UpdateClusterModel>({
-  kubeConfigPath: Joi.string()
-    .required()
-    .min(1),
-  contextName: Joi.string()
-    .required()
-    .min(1),
+  kubeConfigPath: Joi.string().required().min(1),
+  contextName: Joi.string().required().min(1),
   preferences: Joi.object(),
   metadata: Joi.object(),
-  accessibleNamespaces: Joi.array()
-    .items(Joi.string()),
+  accessibleNamespaces: Joi.array().items(Joi.string()),
   labels: Joi.object().pattern(Joi.string(), Joi.string()),
 });
 
@@ -51,9 +46,7 @@ export const updateClusterModelChecker = Joi.object<UpdateClusterModel>({
  * covered by `updateClusterModelChecker`
  */
 export const clusterModelIdChecker = Joi.object<Pick<ClusterModel, "id">>({
-  id: Joi.string()
-    .required()
-    .min(1),
+  id: Joi.string().required().min(1),
 });
 
 /**

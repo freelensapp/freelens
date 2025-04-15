@@ -1,19 +1,19 @@
+import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
-import { validatePackage } from "./validate-package";
-import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import React from "react";
-import type { InstallRequest } from "./attempt-install.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
-import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import tempDirectoryPathInjectable from "../../../../common/os/temp-directory-path.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
+import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
+import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
+import type { InstallRequest } from "./attempt-install.injectable";
+import { validatePackage } from "./validate-package";
 
 export interface InstallRequestValidated {
   fileName: string;
@@ -35,11 +35,7 @@ const createTempFilesAndValidateInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const tempDirectoryPath = di.inject(tempDirectoryPathInjectable);
 
-    const getTempExtensionPackagePath = (fileName: string) => joinPaths(
-      tempDirectoryPath,
-      "lens-extensions",
-      fileName,
-    );
+    const getTempExtensionPackagePath = (fileName: string) => joinPaths(tempDirectoryPath, "lens-extensions", fileName);
 
     return async ({ fileName, data }) => {
       // validate packages
@@ -48,11 +44,7 @@ const createTempFilesAndValidateInjectable = getInjectable({
       try {
         await writeFile(tempFile, data);
         const manifest = await validatePackage(tempFile);
-        const id = joinPaths(
-          extensionDiscovery.nodeModulesPath,
-          manifest.name,
-          "package.json",
-        );
+        const id = joinPaths(extensionDiscovery.nodeModulesPath, manifest.name, "package.json");
 
         return {
           fileName,
@@ -64,11 +56,8 @@ const createTempFilesAndValidateInjectable = getInjectable({
       } catch (error) {
         const message = getMessageFromError(error);
 
-        logger.info(
-          `[EXTENSION-INSTALLATION]: installing ${fileName} has failed: ${message}`,
-          { error },
-        );
-        showErrorNotification((
+        logger.info(`[EXTENSION-INSTALLATION]: installing ${fileName} has failed: ${message}`, { error });
+        showErrorNotification(
           <div className="flex column gaps">
             <p>
               {"Installing "}
@@ -79,8 +68,8 @@ const createTempFilesAndValidateInjectable = getInjectable({
               {"Reason: "}
               <em>{message}</em>
             </p>
-          </div>
-        ));
+          </div>,
+        );
       }
 
       return null;

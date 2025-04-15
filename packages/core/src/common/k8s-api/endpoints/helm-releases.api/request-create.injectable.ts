@@ -1,12 +1,12 @@
+import { urlBuilderFor } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import yaml from "js-yaml";
-import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmReleaseUpdateDetails } from "../helm-releases.api";
-import { urlBuilderFor } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
+import type { HelmReleaseUpdateDetails } from "../helm-releases.api";
 
 interface HelmReleaseCreatePayload {
   name?: string;

@@ -23,7 +23,10 @@ export class PageParam<Value = any> {
   readonly name: string;
   readonly isMulti: boolean;
 
-  constructor(protected readonly dependencies: PageParamDependencies, private init: PageParamInit<Value>) {
+  constructor(
+    protected readonly dependencies: PageParamDependencies,
+    private init: PageParamInit<Value>,
+  ) {
     makeObservable(this);
     const { name, defaultValue } = init;
 
@@ -59,7 +62,6 @@ export class PageParam<Value = any> {
 
   get(): Value {
     // TODO: cleanup
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.parse(this.getRaw()) ?? this.defaultValue!;
   }
 
@@ -80,7 +82,7 @@ export class PageParam<Value = any> {
 
     if (this.isMulti) {
       this.clear();
-      values.forEach(value => {
+      values.forEach((value) => {
         this.dependencies.history.searchParams.append(this.name, value);
       });
     } else {
@@ -110,7 +112,7 @@ export class PageParam<Value = any> {
       searchParams.delete(this.name);
     }
 
-    this.stringify(value).forEach(value => {
+    this.stringify(value).forEach((value) => {
       searchParams.append(this.name, value);
     });
 

@@ -11,12 +11,12 @@ export const json = {
       return {
         callWasSuccessful: true,
         response: JSON.parse(input) as unknown,
-      }
+      };
     } catch (error) {
       return {
         callWasSuccessful: false,
         error: error as Error,
-      }
+      };
     }
   },
 };

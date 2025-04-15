@@ -1,3 +1,5 @@
+import type { Environments } from "@freelensapp/legacy-global-di";
+import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,8 +7,6 @@
 import type { DiContainer } from "@ogre-tools/injectable";
 import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { runInAction } from "mobx";
-import type { Environments } from "@freelensapp/legacy-global-di";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export function registerLensCore(di: DiContainer, environment: Environments) {
   setLegacyGlobalDiForExtensionApi(di, environment);

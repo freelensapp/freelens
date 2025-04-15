@@ -1,10 +1,10 @@
+import type { AsyncResult } from "@freelensapp/utilities";
+import { urlBuilderFor } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import { urlBuilderFor } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 const requestValuesEndpoint = urlBuilderFor("/v2/charts/:repo/:name/values");
@@ -16,9 +16,7 @@ const requestHelmChartValuesInjectable = getInjectable({
   instantiate: (di): RequestHelmChartValues => {
     const apiBase = di.inject(apiBaseInjectable);
 
-    return (repo, name, version) => (
-      apiBase.get(requestValuesEndpoint.compile({ repo, name }, { version }))
-    );
+    return (repo, name, version) => apiBase.get(requestValuesEndpoint.compile({ repo, name }, { version }));
   },
 });
 

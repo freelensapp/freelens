@@ -5,23 +5,23 @@
 
 import styles from "./namespace-tree-view.module.scss";
 
-import { SvgIcon } from "@mui/material";
-import TreeView from "@mui/lab/TreeView";
+import type { Namespace } from "@freelensapp/kube-object";
+import { prevDefault } from "@freelensapp/utilities";
 import TreeItem, { useTreeItem } from "@mui/lab/TreeItem";
+import type { TreeItemContentProps } from "@mui/lab/TreeItem/TreeItemContent";
+import TreeView from "@mui/lab/TreeView";
+import { SvgIcon } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import clsx from "clsx";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Namespace } from "@freelensapp/kube-object";
 import { DrawerTitle } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { SubnamespaceBadge } from "./subnamespace-badge";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import type { NamespaceTree } from "./store";
-import type { TreeItemContentProps } from "@mui/lab/TreeItem/TreeItemContent";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import { prevDefault } from "@freelensapp/utilities";
+import { SubnamespaceBadge } from "./subnamespace-badge";
 
 interface NamespaceTreeViewProps {
   tree: NamespaceTree;
@@ -33,7 +33,7 @@ interface Dependencies {
 }
 
 function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dependencies & NamespaceTreeViewProps) {
-  const [expanded, setExpanded] = React.useState<string[]>(namespaces.map(ns => ns.getId()));
+  const [expanded, setExpanded] = React.useState<string[]>(namespaces.map((ns) => ns.getId()));
 
   const classes = { group: styles.group, label: styles.label };
 
@@ -41,25 +41,10 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
     props: TreeItemContentProps,
     ref,
   ) {
-    const {
-      classes,
-      className,
-      label,
-      nodeId,
-      icon: iconProp,
-      expansionIcon,
-      displayIcon,
-    } = props;
+    const { classes, className, label, nodeId, icon: iconProp, expansionIcon, displayIcon } = props;
 
-    const {
-      disabled,
-      expanded,
-      selected,
-      focused,
-      handleExpansion,
-      handleSelection,
-      preventSelection,
-    } = useTreeItem(nodeId);
+    const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } =
+      useTreeItem(nodeId);
 
     const icon = iconProp || expansionIcon || displayIcon;
 
@@ -67,11 +52,11 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
       preventSelection(event);
     };
 
-    const handleExpansionClick = prevDefault((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => handleExpansion(event));
+    const handleExpansionClick = prevDefault((event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+      handleExpansion(event),
+    );
 
-    const handleSelectionClick = (
-      event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    ) => {
+    const handleSelectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       handleSelection(event);
     };
 
@@ -89,11 +74,7 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         <div onClick={handleExpansionClick} className={classes.iconContainer}>
           {icon}
         </div>
-        <Typography
-          onClick={handleSelectionClick}
-          component="div"
-          className={classes.label}
-        >
+        <Typography onClick={handleSelectionClick} component="div" className={classes.label}>
           {label}
         </Typography>
       </div>
@@ -112,17 +93,16 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         data-testid={`namespace-${nodes.id}`}
         classes={classes}
         ContentComponent={ExpandOnIconClickComponent}
-        label={(
+        label={
           <>
             <Link key={nodes.namespace.getId()} to={getDetailsUrl(nodes.namespace.selfLink)}>
               {nodes.namespace.getName()}
-            </Link>
-            {" "}
+            </Link>{" "}
             {nodes.namespace.isSubnamespace() && (
               <SubnamespaceBadge id={`namespace-details-badge-for-${nodes.namespace.getId()}`} />
             )}
           </>
-        )}
+        }
       >
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </TreeItem>
@@ -136,7 +116,11 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         defaultExpanded={[tree.id]}
         defaultCollapseIcon={<MinusSquareIcon />}
         defaultExpandIcon={<PlusSquareIcon />}
-        defaultEndIcon={(<div style={{ opacity: 0.3 }}><MinusSquareIcon /></div>)}
+        defaultEndIcon={
+          <div style={{ opacity: 0.3 }}>
+            <MinusSquareIcon />
+          </div>
+        }
         expanded={expanded}
         onNodeToggle={handleToggle}
       >

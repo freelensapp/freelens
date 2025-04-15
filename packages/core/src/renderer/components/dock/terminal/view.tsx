@@ -5,19 +5,19 @@
 
 import "./terminal-window.scss";
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { cssNames } from "@freelensapp/utilities";
-import type { Terminal } from "./terminal";
-import type { TerminalStore } from "./store";
-import type { LensTheme } from "../../../themes/lens-theme";
-import type { DockTab, DockStore } from "../dock/store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import dockStoreInjectable from "../dock/store.injectable";
-import terminalStoreInjectable from "./store.injectable";
 import assert from "assert";
-import activeThemeInjectable from "../../../themes/active.injectable";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import activeThemeInjectable from "../../../themes/active.injectable";
+import type { LensTheme } from "../../../themes/lens-theme";
+import type { DockStore, DockTab } from "../dock/store";
+import dockStoreInjectable from "../dock/store.injectable";
+import type { TerminalStore } from "./store";
+import terminalStoreInjectable from "./store.injectable";
+import type { Terminal } from "./terminal";
 
 export interface TerminalWindowProps {
   tab: DockTab;
@@ -40,7 +40,6 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
 
     assert(terminal, "Terminal must be created for tab before mounting");
     this.terminal = terminal;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.terminal.attachTo(this.elem!);
 
     disposeOnUnmount(this, [
@@ -58,7 +57,6 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
 
     assert(terminal, "Terminal must be created for tab before mounting");
     this.terminal = terminal;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.terminal.attachTo(this.elem!);
   }
 
@@ -70,7 +68,7 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
     return (
       <div
         className={cssNames("TerminalWindow", this.props.activeTheme.get().type)}
-        ref={elem => this.elem = elem}
+        ref={(elem) => (this.elem = elem)}
       />
     );
   }

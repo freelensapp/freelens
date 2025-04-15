@@ -3,19 +3,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.injectable";
+import type { DaemonSetApi } from "@freelensapp/kube-api";
 import type { DaemonSet, Pod } from "@freelensapp/kube-object";
 import { PodStatusPhase } from "@freelensapp/kube-object";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
-import type { DaemonSetApi } from "@freelensapp/kube-api";
+import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.injectable";
 
 export interface DaemonSetStoreDependencies extends KubeObjectStoreDependencies {
   readonly getPodsByOwnerId: GetPodsByOwnerId;
 }
 
 export class DaemonSetStore extends KubeObjectStore<DaemonSet, DaemonSetApi> {
-  constructor(protected readonly dependencies: DaemonSetStoreDependencies, api: DaemonSetApi, opts?: KubeObjectStoreOptions) {
+  constructor(
+    protected readonly dependencies: DaemonSetStoreDependencies,
+    api: DaemonSetApi,
+    opts?: KubeObjectStoreOptions,
+  ) {
     super(dependencies, api, opts);
   }
 
@@ -30,7 +34,7 @@ export class DaemonSetStore extends KubeObjectStore<DaemonSet, DaemonSetApi> {
     const status = { running: 0, failed: 0, pending: 0 };
 
     for (const daemonSet of daemonSets ?? []) {
-      const statuses = new Set(this.getChildPods(daemonSet).map(pod => pod.getStatus()));
+      const statuses = new Set(this.getChildPods(daemonSet).map((pod) => pod.getStatus()));
 
       if (statuses.has(PodStatusPhase.FAILED)) {
         status.failed++;

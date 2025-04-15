@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import directoryForBinariesInjectable from "../directory-for-binaries/directory-for-binaries.injectable";
 import joinPathsInjectable from "../../path/join-paths.injectable";
+import directoryForBinariesInjectable from "../directory-for-binaries/directory-for-binaries.injectable";
 
 const directoryForKubectlBinariesInjectable = getInjectable({
   id: "directory-for-kubectl-binaries",

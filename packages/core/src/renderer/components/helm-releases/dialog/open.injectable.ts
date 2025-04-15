@@ -14,7 +14,7 @@ const openHelmReleaseRollbackDialogInjectable = getInjectable({
   instantiate: (di): OpenHelmReleaseRollbackDialog => {
     const state = di.inject(releaseRollbackDialogStateInjectable);
 
-    return release => state.set(release);
+    return (release) => state.set(release);
   },
 });
 

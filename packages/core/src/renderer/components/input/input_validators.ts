@@ -3,18 +3,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InputProps } from "./input";
-import fse from "fs-extra";
-import { TypedRegEx } from "typed-regex";
-import type { SetRequired } from "type-fest";
 import type { StrictReactNode } from "@freelensapp/utilities";
+import fse from "fs-extra";
+import type { SetRequired } from "type-fest";
+import { TypedRegEx } from "typed-regex";
+import type { InputProps } from "./input";
 
-export type InputValidationResult<IsAsync extends boolean> =
-  IsAsync extends true
-    ? Promise<void>
-    : boolean;
+export type InputValidationResult<IsAsync extends boolean> = IsAsync extends true ? Promise<void> : boolean;
 
-export type InputValidation<IsAsync extends boolean> = (value: string, props?: InputProps) => InputValidationResult<IsAsync>;
+export type InputValidation<IsAsync extends boolean> = (
+  value: string,
+  props?: InputProps,
+) => InputValidationResult<IsAsync>;
 
 export type SyncValidationMessage = StrictReactNode | ((value: string, props?: InputProps) => StrictReactNode);
 
@@ -53,7 +53,10 @@ export interface SyncInputValidator {
   debounce?: undefined;
 }
 
-export type InputValidator<IsAsync extends boolean = boolean> = SyncInputValidator | AsyncInputValidator | (IsAsync extends boolean ? LegacyInputValidator : never);
+export type InputValidator<IsAsync extends boolean = boolean> =
+  | SyncInputValidator
+  | AsyncInputValidator
+  | (IsAsync extends boolean ? LegacyInputValidator : never);
 
 export function isAsyncValidator(validator: InputValidator): validator is AsyncInputValidator {
   return typeof validator.debounce === "number";
@@ -83,7 +86,7 @@ export function unionInputValidators(
 ): SyncInputValidator {
   return inputValidator({
     ...baseValidator,
-    validate: (value, props) => validators.some(validator => validator.validate(value, props)),
+    validate: (value, props) => validators.some((validator) => validator.validate(value, props)),
   });
 }
 
@@ -96,9 +99,7 @@ export function unionInputValidatorsAsync(
   ...validators: InputValidator[]
 ): AsyncInputValidator {
   const longestDebounce = Math.max(
-    ...validators
-      .filter(isAsyncValidator)
-      .map(validator => validator.debounce ?? 0),
+    ...validators.filter(isAsyncValidator).map((validator) => validator.debounce ?? 0),
     0,
   );
 
@@ -134,13 +135,16 @@ export function unionInputValidatorsAsync(
 export const isRequired = inputValidator({
   condition: ({ required }) => required,
   message: () => `This field is required`,
-  validate: value => !!value.trim(),
+  validate: (value) => !!value.trim(),
 });
 
 export const isEmail = inputValidator({
   condition: ({ type }) => type === "email",
   message: () => `Wrong email format`,
-  validate: value => !!value.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/),
+  validate: (value) =>
+    !!value.match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    ),
 });
 
 export const isNumber = inputValidator({
@@ -149,7 +153,9 @@ export const isNumber = inputValidator({
     const minMax: string = [
       typeof min === "number" ? `min: ${min}` : undefined,
       typeof max === "number" ? `max: ${max}` : undefined,
-    ].filter(Boolean).join(", ");
+    ]
+      .filter(Boolean)
+      .join(", ");
 
     return `Invalid number${minMax ? ` (${minMax})` : ""}`;
   },
@@ -167,7 +173,7 @@ export const isNumber = inputValidator({
 export const isUrl = inputValidator({
   condition: ({ type }) => type === "url",
   message: () => `Wrong url format`,
-  validate: value => {
+  validate: (value) => {
     try {
       return Boolean(new URL(value));
     } catch (err) {
@@ -181,7 +187,10 @@ export const isUrl = inputValidator({
  * - https://github.com/phenax/typed-regex/issues/6
  * - https://github.com/phenax/typed-regex/issues/7
  */
-export const isExtensionNameInstallRegex = TypedRegEx("^(?<name>(@[-\\w]+\\/)?[-\\w]+)(@(?<version>[a-z0-9-_.]+))?$", "gi") as {
+export const isExtensionNameInstallRegex = TypedRegEx(
+  "^(?<name>(@[-\\w]+\\/)?[-\\w]+)(@(?<version>[a-z0-9-_.]+))?$",
+  "gi",
+) as {
   isMatch(val: string): boolean;
   captures(val: string): undefined | { name: string; version?: string };
 };
@@ -189,14 +198,14 @@ export const isExtensionNameInstallRegex = TypedRegEx("^(?<name>(@[-\\w]+\\/)?[-
 export const isExtensionNameInstall = inputValidator({
   condition: ({ type }) => type === "text",
   message: () => "Not an extension name with optional version",
-  validate: value => isExtensionNameInstallRegex.isMatch(value),
+  validate: (value) => isExtensionNameInstallRegex.isMatch(value),
 });
 
 export const isPath = asyncInputValidator({
   debounce: 100,
   condition: ({ type }) => type === "text",
-  validate: async value => {
-    if (!await fse.pathExists(value)) {
+  validate: async (value) => {
+    if (!(await fse.pathExists(value))) {
       throw new Error(`"${value}" is not a valid file path`);
     }
   },
@@ -217,15 +226,14 @@ export const maxLength = inputValidator({
 const systemNameMatcher = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
 
 export const systemName = inputValidator({
-  message: () => `A System Name must be lowercase DNS labels separated by dots. DNS labels are alphanumerics and dashes enclosed by alphanumerics.`,
-  validate: value => !!value.match(systemNameMatcher),
+  message: () =>
+    `A System Name must be lowercase DNS labels separated by dots. DNS labels are alphanumerics and dashes enclosed by alphanumerics.`,
+  validate: (value) => !!value.match(systemNameMatcher),
 });
 
 export const accountId = inputValidator({
   message: () => `Invalid account ID`,
-  validate: (value) => (isEmail.validate(value) || systemName.validate(value)),
+  validate: (value) => isEmail.validate(value) || systemName.validate(value),
 });
 
-export const conditionalValidators = [
-  isRequired, isEmail, isNumber, isUrl, minLength, maxLength,
-];
+export const conditionalValidators = [isRequired, isEmail, isNumber, isUrl, minLength, maxLength];

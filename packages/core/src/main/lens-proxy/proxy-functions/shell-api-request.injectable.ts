@@ -1,15 +1,15 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import shellRequestAuthenticatorInjectable from "./shell-request-authenticator/shell-request-authenticator.injectable";
-import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
-import type { LensProxyApiRequest } from "../lens-proxy";
 import URLParse from "url-parse";
 import { Server as WebSocketServer } from "ws";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
+import type { LensProxyApiRequest } from "../lens-proxy";
+import shellRequestAuthenticatorInjectable from "./shell-request-authenticator/shell-request-authenticator.injectable";
 
 const shellApiRequestInjectable = getInjectable({
   id: "shell-api-request",
@@ -22,7 +22,9 @@ const shellApiRequestInjectable = getInjectable({
 
     return ({ req, socket, head }) => {
       const cluster = getClusterForRequest(req);
-      const { query: { node: nodeName, shellToken, id: tabId }} = new URLParse(req.url, true);
+      const {
+        query: { node: nodeName, shellToken, id: tabId },
+      } = new URLParse(req.url, true);
 
       if (!tabId || !cluster || !authenticateRequest(cluster.id, tabId, shellToken)) {
         socket.write("Invalid shell request");
@@ -31,8 +33,9 @@ const shellApiRequestInjectable = getInjectable({
         const ws = new WebSocketServer({ noServer: true });
 
         ws.handleUpgrade(req, socket, head, (websocket) => {
-          openShellSession({ websocket, cluster, tabId, nodeName })
-            .catch(error => logger.error(`[SHELL-SESSION]: failed to open a ${nodeName ? "node" : "local"} shell`, error));
+          openShellSession({ websocket, cluster, tabId, nodeName }).catch((error) =>
+            logger.error(`[SHELL-SESSION]: failed to open a ${nodeName ? "node" : "local"} shell`, error),
+          );
         });
       }
     };

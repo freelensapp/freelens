@@ -13,10 +13,7 @@ const directoryForLensLocalStorageInjectable = getInjectable({
     const joinPaths = di.inject(joinPathsInjectable);
     const directoryForUserData = di.inject(directoryForUserDataInjectable);
 
-    return joinPaths(
-      directoryForUserData,
-      "lens-local-storage",
-    );
+    return joinPaths(directoryForUserData, "lens-local-storage");
   },
 });
 

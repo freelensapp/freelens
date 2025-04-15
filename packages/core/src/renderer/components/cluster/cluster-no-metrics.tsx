@@ -5,11 +5,11 @@
 
 import styles from "./cluster-no-metrics.module.scss";
 
-import React from "react";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
-import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
+import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 
@@ -22,7 +22,11 @@ interface Dependencies {
   clusterId: string | undefined;
 }
 
-export function NonInjectedClusterNoMetrics({ className, navigateToEntitySettings, clusterId }: Dependencies & ClusterNoMetricsProps) {
+export function NonInjectedClusterNoMetrics({
+  className,
+  navigateToEntitySettings,
+  clusterId,
+}: Dependencies & ClusterNoMetricsProps) {
   function openMetricSettingsPage() {
     if (clusterId) {
       navigateToEntitySettings(clusterId, "metrics");
@@ -31,9 +35,13 @@ export function NonInjectedClusterNoMetrics({ className, navigateToEntitySetting
 
   return (
     <div className={cssNames(styles.ClusterNoMetrics, className)} data-testid="no-metrics-message">
-      <Icon material="info"/>
+      <Icon material="info" />
       <p>Metrics are not available due to missing or invalid Prometheus configuration.</p>
-      <p><span className={styles.link} onClick={openMetricSettingsPage}>Open cluster settings</span></p>
+      <p>
+        <span className={styles.link} onClick={openMetricSettingsPage}>
+          Open cluster settings
+        </span>
+      </p>
     </div>
   );
 }

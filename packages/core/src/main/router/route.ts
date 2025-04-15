@@ -3,29 +3,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Cluster } from "../../common/cluster/cluster";
 import type http from "http";
-import type httpProxy from "http-proxy";
-import type { LensApiResultContentType } from "./router-content-types";
 import type { URLSearchParams } from "url";
+import type httpProxy from "http-proxy";
 import type Joi from "joi";
+import type { Cluster } from "../../common/cluster/cluster";
+import type { LensApiResultContentType } from "./router-content-types";
 
-export type InferParam<
-  T extends string,
-  PathParams extends Record<string, string>,
-> =
-  T extends `{${infer P}?}`
-    ? PathParams & Partial<Record<P, string>>
-    : T extends `{${infer P}}`
-      ? PathParams & Record<P, string>
-      : PathParams;
+export type InferParam<T extends string, PathParams extends Record<string, string>> = T extends `{${infer P}?}`
+  ? PathParams & Partial<Record<P, string>>
+  : T extends `{${infer P}}`
+    ? PathParams & Record<P, string>
+    : PathParams;
 
-export type InferParamFromPath<P extends string> =
-  P extends `${string}/{${infer B}*}${infer Tail}`
-    ? Tail extends ""
-      ? Record<B, string>
-      : never
-    : P extends `${infer A}/${infer B}`
+export type InferParamFromPath<P extends string> = P extends `${string}/{${infer B}*}${infer Tail}`
+  ? Tail extends ""
+    ? Record<B, string>
+    : never
+  : P extends `${infer A}/${infer B}`
     ? InferParam<A, Record<string, string> & InferParamFromPath<B>>
     : InferParam<P, {}>;
 
@@ -54,11 +49,9 @@ export interface LensApiResult<Response> {
   proxy?: httpProxy;
 }
 
-export type RouteResponse<Response> =
-  | LensApiResult<Response>
-  | void;
+export type RouteResponse<Response> = LensApiResult<Response> | void;
 
-export interface RouteHandler<TResponse, Path extends string>{
+export interface RouteHandler<TResponse, Path extends string> {
   (request: LensApiRequest<Path>): RouteResponse<TResponse> | Promise<RouteResponse<TResponse>>;
 }
 
@@ -90,7 +83,7 @@ export function route<Path extends string>(parts: BaseRoutePaths<Path>): BindHan
   });
 }
 
-export interface ClusterRouteHandler<Response, Path extends string>{
+export interface ClusterRouteHandler<Response, Path extends string> {
   (request: ClusterLensApiRequest<Path>): RouteResponse<Response> | Promise<RouteResponse<Response>>;
 }
 
@@ -126,22 +119,26 @@ export interface BindValidatedClusterHandler<Path extends string, Payload> {
   <Response>(handler: ValidatedClusterRouteHandler<Payload, Response, Path>): Route<Response, Path>;
 }
 
-export function payloadValidatedClusterRoute<Path extends string, Payload>({ payloadValidator, ...parts }: ValidatorBaseRoutePaths<Path, Payload>): BindValidatedClusterHandler<Path, Payload> {
+export function payloadValidatedClusterRoute<Path extends string, Payload>({
+  payloadValidator,
+  ...parts
+}: ValidatorBaseRoutePaths<Path, Payload>): BindValidatedClusterHandler<Path, Payload> {
   const boundClusterRoute = clusterRoute(parts);
 
-  return (handler) => boundClusterRoute(({ payload, ...rest }) => {
-    const validationResult = payloadValidator.validate(payload);
+  return (handler) =>
+    boundClusterRoute(({ payload, ...rest }) => {
+      const validationResult = payloadValidator.validate(payload);
 
-    if (validationResult.error) {
-      return {
-        error: validationResult.error,
-        statusCode: 400,
-      };
-    }
+      if (validationResult.error) {
+        return {
+          error: validationResult.error,
+          statusCode: 400,
+        };
+      }
 
-    return handler({
-      payload: validationResult.value,
-      ...rest,
+      return handler({
+        payload: validationResult.value,
+        ...rest,
+      });
     });
-  });
 }

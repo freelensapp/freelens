@@ -13,10 +13,7 @@ const podMetricsInjectable = getInjectable({
   instantiate: (di) => {
     const getMetricsKubeObjectDetailItem = di.inject(getMetricsKubeObjectDetailItemInjectable);
 
-    return getMetricsKubeObjectDetailItem(
-      podDetailsMetricsInjectionToken,
-      ClusterMetricsResourceType.Pod,
-    );
+    return getMetricsKubeObjectDetailItem(podDetailsMetricsInjectionToken, ClusterMetricsResourceType.Pod);
   },
   injectionToken: kubeObjectDetailItemInjectionToken,
 });

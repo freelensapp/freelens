@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import type { Logger } from "@freelensapp/logger";
 import type { PrometheusProvider, PrometheusService } from "@freelensapp/prometheus";
+import type { IComputedValue } from "mobx";
 import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type { Cluster } from "../../../common/cluster/cluster";
-import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import type { GetPrometheusProviderByKind } from "../../prometheus/get-by-kind.injectable";
-import type { IComputedValue } from "mobx";
-import type { Logger } from "@freelensapp/logger";
 import type { LoadProxyKubeconfig } from "../load-proxy-kubeconfig.injectable";
 
 export interface PrometheusDetails {
@@ -36,16 +36,12 @@ export interface ClusterPrometheusHandler {
   getPrometheusDetails(): Promise<PrometheusDetails>;
 }
 
-const ensurePrometheusPath = ({ service, namespace, port }: PrometheusService) => `${namespace}/services/${service}:${port}`;
+const ensurePrometheusPath = ({ service, namespace, port }: PrometheusService) =>
+  `${namespace}/services/${service}:${port}`;
 
 export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster]): ClusterPrometheusHandler => {
   const [deps, cluster] = args;
-  const {
-    getPrometheusProviderByKind,
-    loadProxyKubeconfig,
-    logger,
-    prometheusProviders,
-  } = deps;
+  const { getPrometheusProviderByKind, loadProxyKubeconfig, logger, prometheusProviders } = deps;
 
   let prometheusProvider: string | undefined = undefined;
   let prometheus: PrometheusServicePreferences | undefined = undefined;
@@ -92,7 +88,7 @@ export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster])
     const proxyConfig = await loadProxyKubeconfig();
     const apiClient = proxyConfig.makeApiClient(CoreV1Api);
     const potentialServices = await Promise.allSettled(
-      providers.map(provider => provider.getPrometheusService(apiClient)),
+      providers.map((provider) => provider.getPrometheusService(apiClient)),
     );
     const errors = [];
 

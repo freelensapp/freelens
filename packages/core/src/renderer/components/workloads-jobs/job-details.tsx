@@ -5,29 +5,28 @@
 
 import "./job-details.scss";
 
-import React from "react";
+import { Job } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem } from "../drawer";
-import { Badge } from "../badge";
-import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
-import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
-import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
-import type { JobStore } from "./store";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Job } from "@freelensapp/kube-object";
-import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
+import { PodDetailsList } from "../workloads-pods/pod-details-list";
+import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
+import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
 import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+import type { JobStore } from "./store";
 import jobStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-export interface JobDetailsProps extends KubeObjectDetailsProps<Job> {
-}
+export interface JobDetailsProps extends KubeObjectDetailsProps<Job> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -39,11 +38,7 @@ interface Dependencies {
 @observer
 class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.podStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
   }
 
   render() {
@@ -68,51 +63,37 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
     return (
       <div className="JobDetails">
         <DrawerItem name="Selector" labelsOnly>
-          {
-            Object.keys(selectors).map(label => <Badge key={label} label={label}/>)
-          }
+          {Object.keys(selectors).map((label) => (
+            <Badge key={label} label={label} />
+          ))}
         </DrawerItem>
         {nodeSelector.length > 0 && (
           <DrawerItem name="Node Selector" labelsOnly>
-            {
-              nodeSelector.map(label => (
-                <Badge key={label} label={label}/>
-              ))
-            }
+            {nodeSelector.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
           </DrawerItem>
         )}
         {images.length > 0 && (
           <DrawerItem name="Images">
-            {
-              images.map(image => <p key={image}>{image}</p>)
-            }
+            {images.map((image) => (
+              <p key={image}>{image}</p>
+            ))}
           </DrawerItem>
         )}
-        <DrawerItem
-          name="Conditions"
-          className="conditions"
-          labelsOnly
-        >
+        <DrawerItem name="Conditions" className="conditions" labelsOnly>
           {condition && (
-            <Badge
-              className={kebabCase(condition.type)}
-              label={condition.type}
-              tooltip={condition.message}
-            />
+            <Badge className={kebabCase(condition.type)} label={condition.type} tooltip={condition.message} />
           )}
         </DrawerItem>
-        <DrawerItem name="Completions">
-          {job.getDesiredCompletions()}
-        </DrawerItem>
-        <DrawerItem name="Parallelism">
-          {job.getParallelism()}
-        </DrawerItem>
-        <PodDetailsTolerations workload={job}/>
-        <PodDetailsAffinities workload={job}/>
+        <DrawerItem name="Completions">{job.getDesiredCompletions()}</DrawerItem>
+        <DrawerItem name="Parallelism">{job.getParallelism()}</DrawerItem>
+        <PodDetailsTolerations workload={job} />
+        <PodDetailsAffinities workload={job} />
         <DrawerItem name="Pod Status" className="pod-status">
-          <PodDetailsStatuses pods={childPods}/>
+          <PodDetailsStatuses pods={childPods} />
         </DrawerItem>
-        <PodDetailsList pods={childPods} owner={job}/>
+        <PodDetailsList pods={childPods} owner={job} />
       </div>
     );
   }

@@ -32,10 +32,7 @@ const nonMultiProjectConfigs = [
   "coverageThreshold",
 ];
 
-const toJestMultiProjectConfig = (
-  { packageJson, jestConfig, packagePath },
-  projectNumber
-) => ({
+const toJestMultiProjectConfig = ({ packageJson, jestConfig, packagePath }, projectNumber) => ({
   rootDir: packagePath,
 
   displayName: {
@@ -61,15 +58,9 @@ const getJestConfigsAndPackageJsons = (rootDir) => {
 };
 
 module.exports = (rootDir) => ({
-  projects: getJestConfigsAndPackageJsons(rootDir).map(
-    toJestMultiProjectConfig
-  ),
+  projects: getJestConfigsAndPackageJsons(rootDir).map(toJestMultiProjectConfig),
 
   verbose: false,
 
-  watchPlugins: [
-    "jest-watch-typeahead/filename",
-    "jest-watch-typeahead/testname",
-    "jest-watch-select-projects",
-  ],
+  watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname", "jest-watch-select-projects"],
 });

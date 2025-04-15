@@ -10,7 +10,7 @@ import { runManyFor } from "@freelensapp/run-many";
 import type { DiContainer, InjectionToken } from "@ogre-tools/injectable";
 import { createContainer, getInjectionToken } from "@ogre-tools/injectable";
 import type { ImplInitializableInjectionTokensArgs, Initializable } from "./create";
-import { getInjectablesForInitializable, getInitializable } from "./create";
+import { getInitializable, getInjectablesForInitializable } from "./create";
 
 describe("InitializableTokens technical tests", () => {
   let di: DiContainer;

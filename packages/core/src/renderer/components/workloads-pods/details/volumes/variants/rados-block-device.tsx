@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import type { SecretApi } from "@freelensapp/kube-api";
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import { DrawerItem } from "../../../../drawer";
 import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 import { LocalRef } from "../variant-helpers";
@@ -35,47 +35,31 @@ const NonInjectedRadosBlockDevice = (props: PodVolumeVariantSpecificProps<"rbd">
     <>
       <DrawerItem name="Ceph Monitors">
         <ul>
-          {monitors.map(monitor => <li key={monitor}>{monitor}</li>)}
+          {monitors.map((monitor) => (
+            <li key={monitor}>{monitor}</li>
+          ))}
         </ul>
       </DrawerItem>
-      <DrawerItem name="Image">
-        {image}
-      </DrawerItem>
-      <DrawerItem name="Filesystem Type">
-        {fsType}
-      </DrawerItem>
-      <DrawerItem name="Pool">
-        {pool}
-      </DrawerItem>
-      <DrawerItem name="User">
-        {user}
-      </DrawerItem>
-      {
-        secretRef
-          ? (
-            <LocalRef
-              pod={pod}
-              title="Authentication Secret"
-              kubeRef={secretRef}
-              api={secretApi}
-            />
-          )
-          : (
-            <DrawerItem name="Keyright Path">
-              {keyring}
-            </DrawerItem>
-          )
-      }
-      <DrawerItem name="Readonly">
-        {readOnly.toString()}
-      </DrawerItem>
+      <DrawerItem name="Image">{image}</DrawerItem>
+      <DrawerItem name="Filesystem Type">{fsType}</DrawerItem>
+      <DrawerItem name="Pool">{pool}</DrawerItem>
+      <DrawerItem name="User">{user}</DrawerItem>
+      {secretRef ? (
+        <LocalRef pod={pod} title="Authentication Secret" kubeRef={secretRef} api={secretApi} />
+      ) : (
+        <DrawerItem name="Keyright Path">{keyring}</DrawerItem>
+      )}
+      <DrawerItem name="Readonly">{readOnly.toString()}</DrawerItem>
     </>
   );
 };
 
-export const RadosBlockDevice = withInjectables<Dependencies, PodVolumeVariantSpecificProps<"rbd">>(NonInjectedRadosBlockDevice, {
-  getProps: (di, props) => ({
-    ...props,
-    secretApi: di.inject(secretApiInjectable),
-  }),
-});
+export const RadosBlockDevice = withInjectables<Dependencies, PodVolumeVariantSpecificProps<"rbd">>(
+  NonInjectedRadosBlockDevice,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      secretApi: di.inject(secretApiInjectable),
+    }),
+  },
+);

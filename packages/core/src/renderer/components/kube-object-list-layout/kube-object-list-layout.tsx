@@ -5,37 +5,38 @@
 
 import "./kube-object-list-layout.scss";
 
-import React from "react";
-import { computed, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { Disposer } from "@freelensapp/utilities";
-import { hasTypedProperty, isObject, isString, cssNames, isDefined } from "@freelensapp/utilities";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
-import { ItemListLayout } from "../item-object-list/list-layout";
-import { KubeObjectMenu } from "../kube-object-menu";
-import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
-import { ResourceKindMap, ResourceNames } from "../../utils/rbac";
 import { Icon } from "@freelensapp/icon";
-import { TooltipPosition } from "@freelensapp/tooltip";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import type { KubeApi } from "@freelensapp/kube-api";
-import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { PageParam } from "../../navigation/page-param";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
-import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
-import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { kubeObjectListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { TooltipPosition } from "@freelensapp/tooltip";
+import type { Disposer } from "@freelensapp/utilities";
+import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { sortBy } from "lodash";
+import { computed, observable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
+import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
+import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import type { PageParam } from "../../navigation/page-param";
+import { ResourceKindMap, ResourceNames } from "../../utils/rbac";
+import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
+import { ItemListLayout } from "../item-object-list/list-layout";
+import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
+import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
+import { KubeObjectMenu } from "../kube-object-menu";
+import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 
-export type KubeItemListStore<K extends KubeObject> = ItemListStore<K, false> & SubscribableStore & {
-  getByPath: (path: string) => K | undefined;
-  readonly contextItems: K[];
-};
+export type KubeItemListStore<K extends KubeObject> = ItemListStore<K, false> &
+  SubscribableStore & {
+    getByPath: (path: string) => K | undefined;
+    readonly contextItems: K[];
+  };
 
 export interface KubeObjectListLayoutProps<
   K extends KubeObject,
@@ -64,14 +65,9 @@ interface Dependencies {
   generalColumns: GeneralKubeObjectListLayoutColumn[];
 }
 
-const matchesApiFor = (api: SubscribableStore["api"]) => (column: GeneralKubeObjectListLayoutColumn) => (
-  column.kind === api.kind
-  && (
-    isString(api.apiVersionWithGroup)
-      ? [column.apiVersion].flat().includes(api.apiVersionWithGroup)
-      : true
-  )
-);
+const matchesApiFor = (api: SubscribableStore["api"]) => (column: GeneralKubeObjectListLayoutColumn) =>
+  column.kind === api.kind &&
+  (isString(api.apiVersionWithGroup) ? [column.apiVersion].flat().includes(api.apiVersionWithGroup) : true);
 
 const getLoadErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
@@ -109,16 +105,19 @@ class NonInjectedKubeObjectListLayout<
     const { store, dependentStores = [], subscribeStores } = this.props;
     const stores = Array.from(new Set([store, ...dependentStores]));
     const reactions: Disposer[] = [
-      reaction(() => this.props.clusterFrameContext.contextNamespaces.slice(), () => {
-        // clear load errors
-        this.loadErrors.length = 0;
-      }),
+      reaction(
+        () => this.props.clusterFrameContext.contextNamespaces.slice(),
+        () => {
+          // clear load errors
+          this.loadErrors.length = 0;
+        },
+      ),
     ];
 
     if (subscribeStores) {
       reactions.push(
         this.props.subscribeToStores(stores, {
-          onLoadFailure: error => {
+          onLoadFailure: (error) => {
             this.loadErrors.push(getLoadErrorMessage(error));
           },
         }),
@@ -140,7 +139,9 @@ class NonInjectedKubeObjectListLayout<
         tooltip={{
           children: (
             <>
-              {this.loadErrors.map((error, index) => <p key={index}>{error}</p>)}
+              {this.loadErrors.map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
             </>
           ),
           preferredPositions: TooltipPosition.BOTTOM,
@@ -166,10 +167,7 @@ class NonInjectedKubeObjectListLayout<
       ...layoutProps
     } = this.props;
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
-    const targetColumns = [
-      ...(columns ?? []),
-      ...generalColumns.filter(matchesApiFor(store.api)),
-    ];
+    const targetColumns = [...(columns ?? []), ...generalColumns.filter(matchesApiFor(store.api))];
 
     void items;
     void dependentStores;
@@ -180,10 +178,10 @@ class NonInjectedKubeObjectListLayout<
       }
     });
 
-    const headers = sortBy([
-      ...(renderTableHeader || []).map((header, index) => ({ priority: (20 - index), header })),
-      ...targetColumns,
-    ], (v) => -v.priority).map((col) => col.header);
+    const headers = sortBy(
+      [...(renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header })), ...targetColumns],
+      (v) => -v.priority,
+    ).map((col) => col.header);
 
     return (
       <ItemListLayout<K, false>
@@ -197,7 +195,9 @@ class NonInjectedKubeObjectListLayout<
             filters: (
               <>
                 {filters}
-                {store.api.isNamespaced && <NamespaceSelectFilter id="kube-object-list-layout-namespace-select-input" />}
+                {store.api.isNamespaced && (
+                  <NamespaceSelectFilter id="kube-object-list-layout-namespace-select-input" />
+                )}
               </>
             ),
             searchProps: {
@@ -214,20 +214,19 @@ class NonInjectedKubeObjectListLayout<
           }),
           ...[customizeHeader].filter(isDefined).flat(),
         ]}
-        renderItemMenu={item => <KubeObjectMenu object={item} />}
+        renderItemMenu={(item) => <KubeObjectMenu object={item} />}
         onDetails={onDetails ?? ((item) => toggleDetails(item.selfLink))}
         sortingCallbacks={sortingCallbacks}
         renderTableHeader={headers}
-        renderTableContents={(item) => (
+        renderTableContents={(item) =>
           sortBy(
             [
-              ...(renderTableContents(item).map((content, index) => ({ priority: (20 - index), content }))),
+              ...renderTableContents(item).map((content, index) => ({ priority: 20 - index, content })),
               ...targetColumns.map((col) => ({ priority: col.priority, content: col.content(item) })),
             ],
             (item) => -item.priority,
-          )
-            .map((value) => value.content)
-        )}
+          ).map((value) => value.content)
+        }
         spinnerTestId="kube-object-list-layout-spinner"
         {...layoutProps}
       />
@@ -237,7 +236,11 @@ class NonInjectedKubeObjectListLayout<
 
 export const KubeObjectListLayout = withInjectables<
   Dependencies,
-  KubeObjectListLayoutProps<KubeObject, KubeApi<KubeObject, KubeJsonApiDataFor<KubeObject>>, KubeJsonApiDataFor<KubeObject>>
+  KubeObjectListLayoutProps<
+    KubeObject,
+    KubeApi<KubeObject, KubeJsonApiDataFor<KubeObject>>,
+    KubeJsonApiDataFor<KubeObject>
+  >
 >(NonInjectedKubeObjectListLayout, {
   getProps: (di, props) => ({
     ...props,
@@ -247,8 +250,6 @@ export const KubeObjectListLayout = withInjectables<
     toggleKubeDetailsPane: di.inject(toggleKubeDetailsPaneInjectable),
     generalColumns: di.injectMany(kubeObjectListLayoutColumnInjectionToken),
   }),
-}) as <
-  K extends KubeObject,
-  A extends KubeApi<K, D>,
-  D extends KubeJsonApiDataFor<K> = KubeJsonApiDataFor<K>,
->(props: KubeObjectListLayoutProps<K, A, D>) => React.ReactElement;
+}) as <K extends KubeObject, A extends KubeApi<K, D>, D extends KubeJsonApiDataFor<K> = KubeJsonApiDataFor<K>>(
+  props: KubeObjectListLayoutProps<K, A, D>,
+) => React.ReactElement;

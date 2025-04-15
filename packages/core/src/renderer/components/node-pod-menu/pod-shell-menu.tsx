@@ -3,18 +3,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "os";
+import { Pod } from "@freelensapp/kube-object";
+import type { Container } from "@freelensapp/kube-object";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { App } from "../../../extensions/common-api";
 import type { DockTabCreateSpecific } from "../dock/dock/store";
+import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
-import { App } from "../../../extensions/common-api";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
-import { Pod } from "@freelensapp/kube-object";
-import os from "os";
 import PodMenuItem from "./pod-menu-item";
-import type { Container } from "@freelensapp/kube-object";
-import { v4 as uuidv4 } from "uuid";
 
 export interface PodShellMenuProps {
   object: any;
@@ -27,14 +27,8 @@ interface Dependencies {
   hideDetails: HideDetails;
 }
 
-const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = props => {
-  const {
-    object,
-    toolbar,
-    createTerminalTab,
-    sendCommand,
-    hideDetails,
-  } = props;
+const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (props) => {
+  const { object, toolbar, createTerminalTab, sendCommand, hideDetails } = props;
 
   if (!object) return null;
   let pod: Pod;
@@ -50,18 +44,10 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
 
-  const execShell = async (container: Container) =>  {
+  const execShell = async (container: Container) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
-    const commandParts = [
-      kubectlPath,
-      "exec",
-      "-i",
-      "-t",
-      "-n",
-      pod.getNs(),
-      pod.getName(),
-    ];
+    const commandParts = [kubectlPath, "exec", "-i", "-t", "-n", pod.getNs(), pod.getName()];
 
     if (os.platform() !== "win32") {
       commandParts.unshift("exec");
@@ -89,8 +75,7 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
     sendCommand(commandParts.join(" "), {
       enter: true,
       tabId: shellId,
-    })
-      .then(hideDetails);
+    }).then(hideDetails);
   };
 
   return (
@@ -106,14 +91,11 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
   );
 };
 
-export const PodShellMenu = withInjectables<Dependencies, PodShellMenuProps>(
-  NonInjectablePodShellMenu,
-  {
-    getProps: (di, props) => ({
-      ...props,
-      createTerminalTab: di.inject(createTerminalTabInjectable),
-      sendCommand: di.inject(sendCommandInjectable),
-      hideDetails: di.inject(hideDetailsInjectable),
-    }),
-  },
-);
+export const PodShellMenu = withInjectables<Dependencies, PodShellMenuProps>(NonInjectablePodShellMenu, {
+  getProps: (di, props) => ({
+    ...props,
+    createTerminalTab: di.inject(createTerminalTabInjectable),
+    sendCommand: di.inject(sendCommandInjectable),
+    hideDetails: di.inject(hideDetailsInjectable),
+  }),
+});

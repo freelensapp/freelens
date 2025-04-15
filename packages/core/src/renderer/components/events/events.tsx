@@ -5,33 +5,33 @@
 
 import "./events.scss";
 
-import React from "react";
-import { computed, observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import { orderBy } from "lodash";
-import { TabLayout } from "../layout/tab-layout-2";
-import type { EventStore } from "./store";
-import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { Icon } from "@freelensapp/icon";
+import type { KubeEventApi } from "@freelensapp/kube-api";
 import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
-import type { TableSortParams, TableSortCallbacks } from "../table";
-import type { HeaderCustomizer } from "../item-object-list";
 import { Tooltip } from "@freelensapp/tooltip";
-import { Link } from "react-router-dom";
 import type { IClassName } from "@freelensapp/utilities";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import navigateToEventsInjectable  from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
-import { KubeObjectAge } from "../kube-object/age";
-import { ReactiveDuration } from "../duration/reactive-duration";
+import { orderBy } from "lodash";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { Link } from "react-router-dom";
+import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import eventStoreInjectable from "./store.injectable";
+import { ReactiveDuration } from "../duration/reactive-duration";
+import type { HeaderCustomizer } from "../item-object-list";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectAge } from "../kube-object/age";
+import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { KubeEventApi } from "@freelensapp/kube-api";
+import type { TableSortCallbacks, TableSortParams } from "../table";
+import type { EventStore } from "./store";
+import eventStoreInjectable from "./store.injectable";
 
 enum columnId {
   message = "message",
@@ -71,12 +71,12 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   });
 
   private sortingCallbacks: TableSortCallbacks<KubeEvent> = {
-    [columnId.namespace]: event => event.getNs(),
-    [columnId.type]: event => event.type,
-    [columnId.object]: event => event.involvedObject.name,
-    [columnId.count]: event => event.count,
-    [columnId.age]: event => -event.getCreationTimestamp(),
-    [columnId.lastSeen]: event => event.lastTimestamp ? -new Date(event.lastTimestamp).getTime() : 0,
+    [columnId.namespace]: (event) => event.getNs(),
+    [columnId.type]: (event) => event.type,
+    [columnId.object]: (event) => event.involvedObject.name,
+    [columnId.count]: (event) => event.count,
+    [columnId.age]: (event) => -event.getCreationTimestamp(),
+    [columnId.lastSeen]: (event) => (event.lastTimestamp ? -new Date(event.lastTimestamp).getTime() : 0),
   };
 
   constructor(props: Dependencies & EventsProps) {
@@ -132,12 +132,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
       info: (
         <>
           {info}
-          <Icon
-            small
-            material="help_outline"
-            className="help-icon"
-            tooltip={`Limited to ${eventStore.limit}`}
-          />
+          <Icon small material="help_outline" className="help-icon" tooltip={`Limited to ${eventStore.limit}`} />
         </>
       ),
       title,
@@ -163,14 +158,14 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
         tableProps={{
           sortSyncWithUrl: false,
           sortByDefault: this.sorting,
-          onSort: params => Object.assign(this.sorting, params),
+          onSort: (params) => Object.assign(this.sorting, params),
         }}
         sortingCallbacks={this.sortingCallbacks}
         searchFilters={[
-          event => event.getSearchFields(),
-          event => event.message,
-          event => event.getSource(),
-          event => event.involvedObject.name,
+          (event) => event.getSearchFields(),
+          (event) => event.message,
+          (event) => event.getSource(),
+          (event) => event.involvedObject.name,
         ]}
         renderTableHeader={[
           { title: "Type", className: "type", sortBy: columnId.type, id: columnId.type },
@@ -182,7 +177,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           { title: "Last Seen", className: "last-seen", sortBy: columnId.lastSeen, id: columnId.lastSeen },
         ]}
-        renderTableContents={event => {
+        renderTableContents={(event) => {
           const { involvedObject, type, message } = event;
           const tooltipId = `message-${event.getId()}`;
           const isWarning = event.isWarning();
@@ -200,9 +195,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
                 </>
               ),
             },
-            compact
-              ? <NamespaceSelectBadge key="namespace" namespace={event.getNs()} />
-              : event.getNs(),
+            compact ? <NamespaceSelectBadge key="namespace" namespace={event.getNs()} /> : event.getNs(),
             <Link
               key="link"
               to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
@@ -223,11 +216,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
       return events;
     }
 
-    return (
-      <TabLayout>
-        {events}
-      </TabLayout>
-    );
+    return <TabLayout>{events}</TabLayout>;
   }
 }
 

@@ -4,7 +4,7 @@
  */
 
 import { unitsToBytes } from "@freelensapp/utilities";
-import type { TypedLocalObjectReference, LabelSelector, ObjectReference, ClusterScopedMetadata } from "../api-types";
+import type { ClusterScopedMetadata, LabelSelector, ObjectReference, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { ResourceRequirements } from "../types/resource-requirements";
 

@@ -1,6 +1,6 @@
+import { enlistRequestChannelListenerInjectionToken } from "@freelensapp/messaging";
 /* c8 ignore start */
 import { getInjectable } from "@ogre-tools/injectable";
-import { enlistRequestChannelListenerInjectionToken } from "@freelensapp/messaging";
 
 const enlistRequestChannelListenerInjectable = getInjectable({
   id: "enlist-request-channel-listener-for-renderer",

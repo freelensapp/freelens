@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { terminalFontInjectionToken } from "./token";
 import SauceCodePro from "./SauceCodeProNerdFont-Regular.ttf";
+import { terminalFontInjectionToken } from "./token";
 
 const sauceCodeProTerminalFontInjectable = getInjectable({
   id: "sauce-code-pro-terminal-font",

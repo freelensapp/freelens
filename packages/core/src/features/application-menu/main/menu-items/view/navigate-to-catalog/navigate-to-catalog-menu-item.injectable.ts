@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import navigateToCatalogInjectable from "../../../../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const navigateToCatalogMenuItemInjectable = getInjectable({
   id: "navigate-to-catalog-menu-item",

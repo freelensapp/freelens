@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, observable, makeObservable } from "mobx";
-import { once } from "lodash";
-import { iter, getOrInsertMap, strictSet } from "@freelensapp/utilities";
+import { getOrInsertMap, iter, strictSet } from "@freelensapp/utilities";
 import type { Disposer } from "@freelensapp/utilities";
+import { once } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
 import type { CatalogCategory, CatalogEntityData, CatalogEntityKindData } from "./catalog-entity";
 
 export type CategoryFilter = (category: CatalogCategory) => any;
@@ -43,15 +43,8 @@ export class CatalogCategoryRegistry {
   }
 
   @computed get filteredItems() {
-    return Array.from(
-      iter.reduce(
-        this.filters,
-        iter.filter,
-        this.items.values() as IterableIterator<CatalogCategory>,
-      ),
-    );
+    return Array.from(iter.reduce(this.filters, iter.filter, this.items.values() as IterableIterator<CatalogCategory>));
   }
-
 
   getForGroupKind<T extends CatalogCategory>(group: string, kind: string): T | undefined {
     return this.groupKinds.get(group)?.get(kind) as T;
@@ -91,7 +84,7 @@ export class CatalogCategoryRegistry {
   }
 
   getByName(name: string) {
-    return this.items.find(category => category.metadata?.name == name);
+    return this.items.find((category) => category.metadata?.name == name);
   }
 
   /**

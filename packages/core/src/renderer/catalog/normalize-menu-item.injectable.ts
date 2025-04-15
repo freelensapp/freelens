@@ -12,7 +12,9 @@ export interface NormalizedCatalogEntityContextMenu {
   onClick: () => void;
 }
 
-export type NormalizeCatalogEntityContextMenu = (menuItem: CatalogEntityContextMenu) => NormalizedCatalogEntityContextMenu;
+export type NormalizeCatalogEntityContextMenu = (
+  menuItem: CatalogEntityContextMenu,
+) => NormalizedCatalogEntityContextMenu;
 
 const normalizeCatalogEntityContextMenuInjectable = getInjectable({
   id: "normalize-catalog-entity-context-menu",

@@ -4,11 +4,11 @@
  */
 
 import "./react-table.scss";
+import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
 import React, { useCallback, useMemo } from "react";
 import type { Row, UseTableOptions } from "react-table";
 import { useFlexLayout, useSortBy, useTable } from "react-table";
-import { Icon } from "@freelensapp/icon";
-import { cssNames } from "@freelensapp/utilities";
 
 export interface ReactTableProps<Data extends object> extends UseTableOptions<Data> {
   headless?: boolean;
@@ -23,13 +23,7 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
     [],
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
       data,
@@ -64,13 +58,9 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
     <div {...getTableProps()} className="table">
       {!headless && (
         <div className="thead">
-          {headerGroups.map(headerGroup => (
-            <div
-              {...headerGroup.getHeaderGroupProps()}
-              key={headerGroup.getHeaderGroupProps().key}
-              className="tr"
-            >
-              {headerGroup.headers.map(column => (
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()} key={headerGroup.getHeaderGroupProps().key} className="tr">
+              {headerGroup.headers.map((column) => (
                 <div
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   key={column.getHeaderProps().key}
@@ -79,17 +69,15 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
                   {column.render("Header")}
                   {/* Sort direction indicator */}
                   <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? <Icon material="arrow_drop_down" small/>
-                        : <Icon material="arrow_drop_up" small/>
-                      : !column.disableSortBy && (
-                        <Icon
-                          material="arrow_drop_down"
-                          small
-                          className="disabledArrow"
-                        />
-                      )}
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <Icon material="arrow_drop_down" small />
+                      ) : (
+                        <Icon material="arrow_drop_up" small />
+                      )
+                    ) : (
+                      !column.disableSortBy && <Icon material="arrow_drop_down" small className="disabledArrow" />
+                    )}
                   </span>
                 </div>
               ))}
@@ -98,9 +86,7 @@ export function ReactTable<Data extends object>({ columns, data, headless }: Rea
         </div>
       )}
 
-      <div {...getTableBodyProps()}>
-        {rows.map(renderRow)}
-      </div>
+      <div {...getTableBodyProps()}>{rows.map(renderRow)}</div>
     </div>
   );
 }

@@ -7,10 +7,9 @@ export interface RequestChannel<Request, Response> {
   _responseSignature?: Response;
 }
 
-export type RequestChannelHandler<Channel> =
-  Channel extends RequestChannel<infer Request, infer Response>
-    ? (req: Request) => Promise<Response> | Response
-    : never;
+export type RequestChannelHandler<Channel> = Channel extends RequestChannel<infer Request, infer Response>
+  ? (req: Request) => Promise<Response> | Response
+  : never;
 
 export interface RequestChannelListener<Channel> {
   id: string;

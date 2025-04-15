@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import activeThemeInjectable from "../../renderer/themes/active.injectable";
 import type { LensTheme } from "../../renderer/themes/lens-theme";
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export const activeTheme = asLegacyGlobalForExtensionApi(activeThemeInjectable);
 

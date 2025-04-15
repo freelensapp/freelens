@@ -1,13 +1,15 @@
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { match, RouteProps } from "react-router";
+import type { RouteProps, match } from "react-router";
 import { matchPath } from "react-router";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 
-export type MatchRoute = <Params extends { [K in keyof Params]?: string }>(route: string | string[] | RouteProps) => match<Params> | null;
+export type MatchRoute = <Params extends { [K in keyof Params]?: string }>(
+  route: string | string[] | RouteProps,
+) => match<Params> | null;
 
 const matchRouteInjectable = getInjectable({
   id: "match-route",

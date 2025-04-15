@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { terminalFontInjectionToken } from "./token";
 import RedHatMono from "./RedHatMono-Regular.ttf";
+import { terminalFontInjectionToken } from "./token";
 
 const redHatMonoTerminalFontInjectable = getInjectable({
   id: "red-hat-mono-terminal-font",

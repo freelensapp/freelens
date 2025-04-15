@@ -1,12 +1,12 @@
+import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { runManyFor } from "@freelensapp/run-many";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { runManyFor } from "@freelensapp/run-many";
 import * as tokens from "../before-frame-starts/tokens";
 import currentlyInClusterFrameInjectable from "../routes/currently-in-cluster-frame.injectable";
-import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 
 const startFrameInjectable = getInjectable({
   id: "start-frame",

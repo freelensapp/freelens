@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
-import type { RenderResult } from "@testing-library/react";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
 
 describe("<StatusBar />", () => {
   let builder: ApplicationBuilder;
@@ -42,30 +42,25 @@ describe("<StatusBar />", () => {
     });
   });
 
-  describe.each([
-    undefined,
-    "hello",
-    6,
-    null,
-    [],
-    [{}],
-    {},
-  ])("when an extension is enabled with an invalid data type, (%p)", (value) => {
-    beforeEach(() => {
-      builder.extensions.enable({
-        id: "some-id",
-        name: "some-name",
+  describe.each([undefined, "hello", 6, null, [], [{}], {}])(
+    "when an extension is enabled with an invalid data type, (%p)",
+    (value) => {
+      beforeEach(() => {
+        builder.extensions.enable({
+          id: "some-id",
+          name: "some-name",
 
-        rendererOptions: {
-          statusBarItems: [value as any],
-        },
+          rendererOptions: {
+            statusBarItems: [value as any],
+          },
+        });
       });
-    });
 
-    it("renders", () => {
-      expect(result.baseElement).toMatchSnapshot();
-    });
-  });
+      it("renders", () => {
+        expect(result.baseElement).toMatchSnapshot();
+      });
+    },
+  );
 
   describe("when an extension is enabled using a deprecated registration of a plain ReactNode", () => {
     beforeEach(() => {
@@ -74,9 +69,11 @@ describe("<StatusBar />", () => {
         name: "some-name",
 
         rendererOptions: {
-          statusBarItems: [{
-            item: "heeeeeeee",
-          }],
+          statusBarItems: [
+            {
+              item: "heeeeeeee",
+            },
+          ],
         },
       });
     });
@@ -93,9 +90,11 @@ describe("<StatusBar />", () => {
         name: "some-name",
 
         rendererOptions: {
-          statusBarItems: [{
-            item: () => "heeeeeeee",
-          }],
+          statusBarItems: [
+            {
+              item: () => "heeeeeeee",
+            },
+          ],
         },
       });
     });
@@ -147,7 +146,7 @@ describe("<StatusBar />", () => {
 
     it("sort positioned items properly", async () => {
       const elems = result.getAllByTestId("sortedElem");
-      const positions = elems.map(elem => elem.textContent);
+      const positions = elems.map((elem) => elem.textContent);
 
       expect(positions).toEqual(["left1", "left2", "right2", "right1"]);
     });
@@ -157,10 +156,7 @@ describe("<StatusBar />", () => {
     expect([...result.getByTestId("status-bar").classList]).toEqual(["StatusBar"]);
   });
 
-  describe.each([
-    "warning" as const,
-    "error" as const,
-  ])("when StatusBar's status is set to %p", (value) => {
+  describe.each(["warning" as const, "error" as const])("when StatusBar's status is set to %p", (value) => {
     beforeEach(() => {
       const di = builder.applicationWindow.only.di;
       const setStatusBarStatus = di.inject(setStatusBarStatusInjectable);

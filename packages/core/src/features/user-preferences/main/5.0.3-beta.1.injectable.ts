@@ -3,20 +3,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { isErrnoException } from "@freelensapp/utilities";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import isLogicalChildPathInjectable from "../../../common/path/is-logical-child-path.injectable";
-import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import { userPreferencesMigrationInjectionToken } from "../../../features/user-preferences/common/migrations-token";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
+import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
+import isLogicalChildPathInjectable from "../../../common/path/is-logical-child-path.injectable";
+import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import type { ClusterStoreModel } from "../../../features/cluster/storage/common/storage.injectable";
-import type { UserPreferencesModel, KubeconfigSyncEntry } from "../common/preferences-helpers";
+import { userPreferencesMigrationInjectionToken } from "../../../features/user-preferences/common/migrations-token";
+import type { KubeconfigSyncEntry, UserPreferencesModel } from "../common/preferences-helpers";
 
 const v503Beta1UserPreferencesStorageMigrationInjectable = getInjectable({
   id: "v5.0.3-beta.1-preferences-storage-migration",
@@ -35,10 +35,12 @@ const v503Beta1UserPreferencesStorageMigrationInjectable = getInjectable({
       version: "5.0.3-beta.1",
       run(store) {
         try {
-          const { syncKubeconfigEntries = [], ...preferences } = (store.get("preferences") ?? {}) as UserPreferencesModel;
-          const { clusters = [] }: ClusterStoreModel = readJsonSync(joinPaths(userDataPath, "lens-cluster-store.json"), "utf-8") ?? {};
+          const { syncKubeconfigEntries = [], ...preferences } = (store.get("preferences") ??
+            {}) as UserPreferencesModel;
+          const { clusters = [] }: ClusterStoreModel =
+            readJsonSync(joinPaths(userDataPath, "lens-cluster-store.json"), "utf-8") ?? {};
           const extensionDataDir = joinPaths(userDataPath, "extension_data");
-          const syncPaths = new Set(syncKubeconfigEntries.map(s => s.filePath));
+          const syncPaths = new Set(syncKubeconfigEntries.map((s) => s.filePath));
 
           syncPaths.add(kubeDirectoryPath);
 
@@ -72,7 +74,7 @@ const v503Beta1UserPreferencesStorageMigrationInjectable = getInjectable({
             syncPaths.add(cluster.kubeConfigPath);
           }
 
-          const updatedSyncEntries: KubeconfigSyncEntry[] = [...syncPaths].map(filePath => ({ filePath }));
+          const updatedSyncEntries: KubeconfigSyncEntry[] = [...syncPaths].map((filePath) => ({ filePath }));
 
           logger.info("Final list of synced paths", updatedSyncEntries);
           store.set("preferences", { ...preferences, syncKubeconfigEntries: updatedSyncEntries });

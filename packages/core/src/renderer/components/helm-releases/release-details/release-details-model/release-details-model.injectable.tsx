@@ -1,36 +1,36 @@
+import assert from "assert";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { waitUntilDefined } from "@freelensapp/utilities";
+import { pipeline } from "@ogre-tools/fp";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { IComputedValue, IObservableValue } from "mobx";
-import { runInAction, action, observable, computed } from "mobx";
-import type { TargetHelmRelease } from "../target-helm-release.injectable";
-import type { RequestDetailedHelmRelease, DetailedHelmRelease } from "./request-detailed-helm-release.injectable";
-import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-release.injectable";
-import type { LensTheme } from "../../../../themes/lens-theme";
-import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
-import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
-import { pipeline } from "@ogre-tools/fp";
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { groupBy, map } from "lodash/fp";
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
-import type { GetResourceDetailsUrl } from "./get-resource-details-url.injectable";
-import getResourceDetailsUrlInjectable from "./get-resource-details-url.injectable";
-import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
-import updateReleaseInjectable from "../../update-release/update-release.injectable";
-import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import type { IComputedValue, IObservableValue } from "mobx";
+import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import createUpgradeChartTabInjectable from "../../../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
-import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
 import type { NavigateToHelmReleases } from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
-import assert from "assert";
-import activeThemeInjectable from "../../../../themes/active.injectable";
+import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
+import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
+import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
+import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
 import hostedClusterIdInjectable from "../../../../cluster-frame-context/hosted-cluster-id.injectable";
+import activeThemeInjectable from "../../../../themes/active.injectable";
+import type { LensTheme } from "../../../../themes/lens-theme";
+import createUpgradeChartTabInjectable from "../../../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import helmChartRepoInjectable from "../../helm-chart-repo.injectable";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-import { waitUntilDefined } from "@freelensapp/utilities";
+import updateReleaseInjectable from "../../update-release/update-release.injectable";
+import type { TargetHelmRelease } from "../target-helm-release.injectable";
+import type { GetResourceDetailsUrl } from "./get-resource-details-url.injectable";
+import getResourceDetailsUrlInjectable from "./get-resource-details-url.injectable";
+import type { DetailedHelmRelease, RequestDetailedHelmRelease } from "./request-detailed-helm-release.injectable";
+import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-release.injectable";
 
 const releaseDetailsModelInjectable = getInjectable({
   id: "release-details-model",
@@ -139,19 +139,14 @@ export class ReleaseDetailsModel {
       });
 
       if (!result.callWasSuccessful) {
-        this.dependencies.showCheckedErrorNotification(
-          result.error,
-          "Unknown error occurred while updating release",
-        );
+        this.dependencies.showCheckedErrorNotification(result.error, "Unknown error occurred while updating release");
 
         return;
       }
 
       this.dependencies.showSuccessNotification(
         <p>
-          Release
-          {" "}
-          <b>{name}</b>
+          Release <b>{name}</b>
           {" successfully updated!"}
         </p>,
       );
@@ -203,12 +198,11 @@ export class ReleaseDetailsModel {
 
     const { name, namespace } = this.release;
 
-    const configuration =
-      await this.dependencies.requestHelmReleaseConfiguration(
-        name,
-        namespace,
-        !this.onlyUserSuppliedValuesAreShown.value.get(),
-      );
+    const configuration = await this.dependencies.requestHelmReleaseConfiguration(
+      name,
+      namespace,
+      !this.onlyUserSuppliedValuesAreShown.value.get(),
+    );
 
     runInAction(() => {
       this.configuration.isLoading.set(false);
@@ -245,13 +239,9 @@ export class ReleaseDetailsModel {
       map(([kind, resources]) => ({
         kind,
 
-        resources: resources.map(
-          toMinimalResourceFor(this.dependencies.getResourceDetailsUrl, kind),
-        ),
+        resources: resources.map(toMinimalResourceFor(this.dependencies.getResourceDetailsUrl, kind)),
 
-        isNamespaced: resources.some(
-          (resource) => !!resource.metadata.namespace,
-        ),
+        isNamespaced: resources.some((resource) => !!resource.metadata.namespace),
       })),
     );
   }
@@ -286,18 +276,13 @@ export interface MinimalResource {
 
 const toMinimalResourceFor =
   (getResourceDetailsUrl: GetResourceDetailsUrl, kind: string) =>
-    (resource: KubeJsonApiData): MinimalResource => {
-      const { name, namespace, uid } = resource.metadata;
+  (resource: KubeJsonApiData): MinimalResource => {
+    const { name, namespace, uid } = resource.metadata;
 
-      return {
-        uid,
-        name,
-        namespace,
-        detailsUrl: getResourceDetailsUrl(
-          kind,
-          resource.apiVersion,
-          namespace,
-          name,
-        ),
-      };
+    return {
+      uid,
+      name,
+      namespace,
+      detailsUrl: getResourceDetailsUrl(kind, resource.apiVersion, namespace, name),
     };
+  };

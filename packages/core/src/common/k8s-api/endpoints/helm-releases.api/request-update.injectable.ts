@@ -1,10 +1,10 @@
+import { urlBuilderFor } from "@freelensapp/utilities";
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor } from "@freelensapp/utilities";
-import type { AsyncResult } from "@freelensapp/utilities";
 import apiBaseInjectable from "../../api-base.injectable";
 
 interface HelmReleaseUpdatePayload {
@@ -17,7 +17,7 @@ interface HelmReleaseUpdatePayload {
 export type RequestHelmReleaseUpdate = (
   name: string,
   namespace: string,
-  payload: HelmReleaseUpdatePayload
+  payload: HelmReleaseUpdatePayload,
 ) => AsyncResult<void, unknown>;
 
 const requestUpdateEndpoint = urlBuilderFor("/v2/releases/:namespace/:name");

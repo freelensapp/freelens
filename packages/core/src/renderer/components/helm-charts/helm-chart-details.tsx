@@ -5,27 +5,27 @@
 
 import "./helm-chart-details.scss";
 
-import React, { Component } from "react";
-import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
-import { observer } from "mobx-react";
-import { Drawer, DrawerItem } from "../drawer";
-import { stopPropagation } from "@freelensapp/utilities";
-import { MarkdownViewer } from "../markdown-viewer";
-import { Spinner } from "@freelensapp/spinner";
+import assert from "assert";
 import { Button } from "@freelensapp/button";
-import { Select } from "../select";
-import { Badge } from "../badge";
-import {styled, Tooltip} from "@mui/material";
+import { Spinner } from "@freelensapp/spinner";
+import { stopPropagation } from "@freelensapp/utilities";
+import { Tooltip, styled } from "@mui/material";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { observer } from "mobx-react";
+import React, { Component } from "react";
+import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import { Badge } from "../badge";
 import createInstallChartTabInjectable from "../dock/install-chart/create-install-chart-tab.injectable";
-import { HelmChartIcon } from "./icon";
+import { Drawer, DrawerItem } from "../drawer";
+import { MarkdownViewer } from "../markdown-viewer";
+import { Select } from "../select";
 import readmeOfSelectHelmChartInjectable from "./details/readme-of-selected-helm-chart.injectable";
 import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-chart-details-version-selection.injectable";
-import assert from "assert";
-import autoBindReact from "auto-bind/react";
+import { HelmChartIcon } from "./icon";
 
 export interface HelmChartDetailsProps {
   hideDetails(): void;
@@ -70,62 +70,47 @@ class NonInjectedHelmChartDetails extends Component<HelmChartDetailsProps & Depe
 
     return (
       <div className="introduction flex align-flex-start">
-        <HelmChartIcon
-          imageUrl={selectedChart.getIcon()}
-          className="intro-logo"
-        />
+        <HelmChartIcon imageUrl={selectedChart.getIcon()} className="intro-logo" />
         <div className="intro-contents box grow">
           <div className="description flex align-center justify-space-between" data-testid="selected-chart-description">
             {selectedChart.getDescription()}
-            <Button
-              primary
-              label="Install"
-              onClick={this.install}
-              data-testid={`install-chart-for-${testId}`}
-            />
+            <Button primary label="Install" onClick={this.install} data-testid={`install-chart-for-${testId}`} />
           </div>
-          <DrawerItem
-            name="Version"
-            className="version"
-            onClick={stopPropagation}
-          >
+          <DrawerItem name="Version" className="version" onClick={stopPropagation}>
             <Select
               id={`helm-chart-version-selector-${testId}`}
               themeName="outlined"
               menuPortalTarget={null}
               options={this.props.versionSelection.options.get()}
-              formatOptionLabel={({ value: chart }) => (
-                chart.deprecated
-                  ? (
-                    <LargeTooltip title="Deprecated" placement="left">
-                      <span className="deprecated">{chart.version}</span>
-                    </LargeTooltip>
-                  )
-                  : chart.version
-              )}
+              formatOptionLabel={({ value: chart }) =>
+                chart.deprecated ? (
+                  <LargeTooltip title="Deprecated" placement="left">
+                    <span className="deprecated">{chart.version}</span>
+                  </LargeTooltip>
+                ) : (
+                  chart.version
+                )
+              }
               isOptionDisabled={({ value: chart }) => chart.deprecated}
               value={this.props.versionSelection.value.get()}
               onChange={this.props.versionSelection.onChange}
             />
           </DrawerItem>
           <DrawerItem name="Home">
-            <a
-              href={selectedChart.getHome()}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={selectedChart.getHome()} target="_blank" rel="noreferrer">
               {selectedChart.getHome()}
             </a>
           </DrawerItem>
           <DrawerItem name="Maintainers" className="maintainers">
-            {selectedChart.getMaintainers()
-              .map(({ name, email }) => (
-                <li key={name}>{`${name}<${email}>`}</li>
-              ))}
+            {selectedChart.getMaintainers().map(({ name, email }) => (
+              <li key={name}>{`${name}<${email}>`}</li>
+            ))}
           </DrawerItem>
           {selectedChart.getKeywords().length > 0 && (
             <DrawerItem name="Keywords" labelsOnly>
-              {selectedChart.getKeywords().map(key => <Badge key={key} label={key} />)}
+              {selectedChart.getKeywords().map((key) => (
+                <Badge key={key} label={key} />
+              ))}
             </DrawerItem>
           )}
         </div>
@@ -153,11 +138,7 @@ class NonInjectedHelmChartDetails extends Component<HelmChartDetailsProps & Depe
       <div className="box grow">
         {this.renderIntroduction(this.chart)}
 
-        {readmeIsLoading ? (
-          <Spinner center data-testid="spinner-for-chart-readme" />
-        ) : (
-          this.renderReadme()
-        )}
+        {readmeIsLoading ? <Spinner center data-testid="spinner-for-chart-readme" /> : this.renderReadme()}
       </div>
     );
   }

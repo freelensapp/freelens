@@ -3,15 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import url from "url";
+import type { Logger } from "@freelensapp/logger";
+import { ipcRenderer } from "electron";
+import { once } from "lodash";
+import isEqual from "lodash/isEqual";
+import { makeObservable, observable } from "mobx";
+import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import type { WebSocketApiDependencies, WebSocketEvents } from "./websocket-api";
 import { WebSocketApi } from "./websocket-api";
-import isEqual from "lodash/isEqual";
-import url from "url";
-import { makeObservable, observable } from "mobx";
-import { ipcRenderer } from "electron";
-import type { Logger } from "@freelensapp/logger";
-import { once } from "lodash";
-import { type TerminalMessage, TerminalChannels } from "../../common/terminal/channels";
 
 enum TerminalColor {
   RED = "\u001b[31m",
@@ -46,7 +46,10 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
 
   @observable public isReady = false;
 
-  constructor(protected readonly dependencies: TerminalApiDependencies, protected readonly query: TerminalApiQuery) {
+  constructor(
+    protected readonly dependencies: TerminalApiDependencies,
+    protected readonly query: TerminalApiQuery,
+  ) {
     super(dependencies, {
       flushOnOpen: false,
       pingInterval: 30,
@@ -67,7 +70,11 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
       this.emitStatus("Connecting ...");
     }
 
-    const authTokenArray = await ipcRenderer.invoke("cluster:shell-api", this.dependencies.hostedClusterId, this.query.id);
+    const authTokenArray = await ipcRenderer.invoke(
+      "cluster:shell-api",
+      this.dependencies.hostedClusterId,
+      this.query.id,
+    );
 
     if (!(authTokenArray instanceof Uint8Array)) {
       throw new TypeError("ShellApi token is not a Uint8Array");

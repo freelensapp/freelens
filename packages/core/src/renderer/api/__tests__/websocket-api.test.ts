@@ -20,9 +20,12 @@ describe("WebsocketApi tests", () => {
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    api = new TestWebSocketApi({
-      defaultParams: di.inject(defaultWebsocketApiParamsInjectable),
-    }, {});
+    api = new TestWebSocketApi(
+      {
+        defaultParams: di.inject(defaultWebsocketApiParamsInjectable),
+      },
+      {},
+    );
   });
 
   describe("before connection", () => {

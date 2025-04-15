@@ -11,8 +11,7 @@ const getTimestampSplitLogsInjectable = getInjectable({
   instantiate: (di) => {
     const logStore = di.inject(logStoreInjectable);
 
-    return (tabId: string): [string, string][] =>
-      logStore.getTimestampSplitLogs(tabId);
+    return (tabId: string): [string, string][] => logStore.getTimestampSplitLogs(tabId);
   },
 });
 

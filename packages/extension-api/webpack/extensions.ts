@@ -3,7 +3,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
 import path from "path";
 import type webpack from "webpack";
 
@@ -34,11 +33,7 @@ export default function generateExtensionTypes(): webpack.Configuration {
       /require.extensions is not supported by webpack./, // handlebars
     ],
     stats: "errors-warnings",
-    externals: [
-      "@freelensapp/core/common",
-      "@freelensapp/core/main",
-      "@freelensapp/core/renderer",
-    ],
+    externals: ["@freelensapp/core/common", "@freelensapp/core/main", "@freelensapp/core/renderer"],
     module: {
       rules: [
         {

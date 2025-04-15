@@ -11,10 +11,7 @@ export type WriteBufferSync = (filePath: string, contents: Buffer) => void;
 const writeBufferSyncInjectable = getInjectable({
   id: "write-buffer-sync",
   instantiate: (di): WriteBufferSync => {
-    const {
-      writeFileSync,
-      ensureDirSync,
-    } = di.inject(fsInjectable);
+    const { writeFileSync, ensureDirSync } = di.inject(fsInjectable);
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
 
     return (filePath, contents) => {

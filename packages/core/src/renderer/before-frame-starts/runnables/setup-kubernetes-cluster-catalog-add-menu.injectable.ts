@@ -22,14 +22,12 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
       const isLinux = di.inject(isLinuxInjectable);
       const openPathPickingDialog = di.inject(openPathPickingDialogInjectable);
 
-      kubernetesClusterCategory.on("catalogAddMenu", ctx => {
-        ctx.menuItems.push(
-          {
-            icon: "text_snippet",
-            title: "Add from kubeconfig",
-            onClick: navigateToAddCluster,
-          },
-        );
+      kubernetesClusterCategory.on("catalogAddMenu", (ctx) => {
+        ctx.menuItems.push({
+          icon: "text_snippet",
+          title: "Add from kubeconfig",
+          onClick: navigateToAddCluster,
+        });
 
         if (isWindows || isLinux) {
           ctx.menuItems.push(
@@ -37,38 +35,39 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
               icon: "create_new_folder",
               title: "Sync kubeconfig folder(s)",
               defaultAction: true,
-              onClick: () => openPathPickingDialog({
-                message: "Sync folder(s)",
-                buttonLabel: "Sync",
-                properties: ["showHiddenFiles", "multiSelections", "openDirectory"],
-                onPick: addSyncEntries,
-              }),
+              onClick: () =>
+                openPathPickingDialog({
+                  message: "Sync folder(s)",
+                  buttonLabel: "Sync",
+                  properties: ["showHiddenFiles", "multiSelections", "openDirectory"],
+                  onPick: addSyncEntries,
+                }),
             },
             {
               icon: "note_add",
               title: "Sync kubeconfig file(s)",
-              onClick: () => openPathPickingDialog({
-                message: "Sync file(s)",
-                buttonLabel: "Sync",
-                properties: ["showHiddenFiles", "multiSelections", "openFile"],
-                onPick: addSyncEntries,
-              }),
+              onClick: () =>
+                openPathPickingDialog({
+                  message: "Sync file(s)",
+                  buttonLabel: "Sync",
+                  properties: ["showHiddenFiles", "multiSelections", "openFile"],
+                  onPick: addSyncEntries,
+                }),
             },
           );
         } else {
-          ctx.menuItems.push(
-            {
-              icon: "create_new_folder",
-              title: "Sync kubeconfig(s)",
-              defaultAction: true,
-              onClick: () => openPathPickingDialog({
+          ctx.menuItems.push({
+            icon: "create_new_folder",
+            title: "Sync kubeconfig(s)",
+            defaultAction: true,
+            onClick: () =>
+              openPathPickingDialog({
                 message: "Sync file(s)",
                 buttonLabel: "Sync",
                 properties: ["showHiddenFiles", "multiSelections", "openFile", "openDirectory"],
                 onPick: addSyncEntries,
               }),
-            },
-          );
+          });
         }
       });
     },

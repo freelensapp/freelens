@@ -3,17 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from  "./sidebar-items.module.scss";
+import styles from "./sidebar-items.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { NavLink } from "react-router-dom";
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import type { StorageLayer } from "../../utils/storage-helper";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
-import type { StorageLayer } from "../../utils/storage-helper";
 
 interface Dependencies {
   sidebarStorage: StorageLayer<SidebarStorageState>;
@@ -27,7 +27,7 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
   const { item, sidebarStorage } = props;
   const id = item.id;
   const expanded = sidebarStorage.get().expanded[id] ?? false;
-  const isExpandable = item.children.length > 0 && item.children.some(item => item.isVisible.get());
+  const isExpandable = item.children.length > 0 && item.children.some((item) => item.isVisible.get());
   const isActive = item.isActive.get();
 
   const toggleExpand = () => {

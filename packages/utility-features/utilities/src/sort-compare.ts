@@ -52,7 +52,7 @@ export function sortCompare<T>(left: T, right: T): Ordering {
  */
 export function sortBySemverVersion<T extends { version: string }>(versioned: T[]): T[] {
   return versioned
-    .map(versioned => ({
+    .map((versioned) => ({
       __version: coerce(versioned.version, { loose: true }),
       raw: versioned,
     }))

@@ -1,12 +1,12 @@
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { defaultHotbarCells } from "../../features/hotbar/storage/common/types";
 import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
 import { hotbarTooManyItemsChannel } from "../../common/ipc/hotbar";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { defaultHotbarCells } from "../../features/hotbar/storage/common/types";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 import listNamespacesForbiddenHandlerInjectable from "./list-namespaces-forbidden-handler.injectable";
 

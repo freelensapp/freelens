@@ -4,7 +4,7 @@
  */
 
 import type { StrictReactNode } from "@freelensapp/utilities";
-import { render, RenderResult } from "@testing-library/react";
+import { RenderResult, render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import React from "react";
 import { withTooltip } from "./withTooltip";

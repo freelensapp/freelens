@@ -4,11 +4,11 @@
  */
 
 import "./resizing-anchor.scss";
-import React from "react";
-import { action, observable, makeObservable } from "mobx";
-import _ from "lodash";
 import { cssNames, noop } from "@freelensapp/utilities";
+import _ from "lodash";
+import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 
 export enum ResizeDirection {
   HORIZONTAL = "horizontal",

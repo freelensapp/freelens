@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import jobsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/jobs/jobs-route.injectable";
-import workloadsSidebarItemInjectable from "../workloads/workloads-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import jobsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/jobs/jobs-route.injectable";
 import navigateToJobsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/jobs/navigate-to-jobs.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import workloadsSidebarItemInjectable from "../workloads/workloads-sidebar-item.injectable";
 
 const jobsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-jobs",

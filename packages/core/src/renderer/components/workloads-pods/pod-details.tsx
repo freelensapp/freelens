@@ -5,31 +5,35 @@
 
 import "./pod-details.scss";
 
-import React from "react";
+import type { NodeApi, PriorityClassApi, RuntimeClassApi, ServiceAccountApi } from "@freelensapp/kube-api";
+import {
+  nodeApiInjectable,
+  priorityClassApiInjectable,
+  runtimeClassApiInjectable,
+  serviceAccountApiInjectable,
+} from "@freelensapp/kube-api-specifics";
+import { Pod } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { cssNames, stopPropagation } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { observer } from "mobx-react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Pod } from "@freelensapp/kube-object";
-import type { NodeApi, PriorityClassApi, RuntimeClassApi, ServiceAccountApi } from "@freelensapp/kube-api";
-import { DrawerItem } from "../drawer";
 import { Badge } from "../badge";
-import { cssNames, stopPropagation } from "@freelensapp/utilities";
-import { PodDetailsAffinities } from "./pod-details-affinities";
-import { PodDetailsTolerations } from "./pod-details-tolerations";
-import { PodDetailsSecrets } from "./pod-details-secrets";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { Logger } from "@freelensapp/logger";
-import { PodVolumes } from "./details/volumes/view";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { DrawerItem } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { nodeApiInjectable, runtimeClassApiInjectable, serviceAccountApiInjectable, priorityClassApiInjectable } from "@freelensapp/kube-api-specifics";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { PodDetailsContainers } from "./details/containers/pod-details-containers";
 import { PodDetailsInitContainers } from "./details/containers/pod-details-init-containers";
+import { PodVolumes } from "./details/volumes/view";
+import { PodDetailsAffinities } from "./pod-details-affinities";
+import { PodDetailsSecrets } from "./pod-details-secrets";
+import { PodDetailsTolerations } from "./pod-details-tolerations";
 
-export interface PodDetailsProps extends KubeObjectDetailsProps<Pod> {
-}
+export interface PodDetailsProps extends KubeObjectDetailsProps<Pod> {}
 
 interface Dependencies {
   getDetailsUrl: GetDetailsUrl;
@@ -66,90 +70,69 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     const runtimeClassName = pod.getRuntimeClassName();
     const serviceAccountName = pod.getServiceAccountName();
 
-    const priorityClassDetailsUrl = getDetailsUrl(this.props.priorityClassApi.formatUrlForNotListing({
-      name: priorityClassName,
-    }));
-    const runtimeClassDetailsUrl = getDetailsUrl(this.props.runtimeClassApi.formatUrlForNotListing({
-      name: runtimeClassName,
-    }));
-    const serviceAccountDetailsUrl = getDetailsUrl(this.props.serviceAccountApi.formatUrlForNotListing({
-      name: serviceAccountName,
-      namespace,
-    }));
+    const priorityClassDetailsUrl = getDetailsUrl(
+      this.props.priorityClassApi.formatUrlForNotListing({
+        name: priorityClassName,
+      }),
+    );
+    const runtimeClassDetailsUrl = getDetailsUrl(
+      this.props.runtimeClassApi.formatUrlForNotListing({
+        name: runtimeClassName,
+      }),
+    );
+    const serviceAccountDetailsUrl = getDetailsUrl(
+      this.props.serviceAccountApi.formatUrlForNotListing({
+        name: serviceAccountName,
+        namespace,
+      }),
+    );
 
     return (
       <div className="PodDetails">
         <DrawerItem name="Status">
-          <span className={cssNames("status", kebabCase(pod.getStatusMessage()))}>
-            {pod.getStatusMessage()}
-          </span>
+          <span className={cssNames("status", kebabCase(pod.getStatusMessage()))}>{pod.getStatusMessage()}</span>
         </DrawerItem>
         <DrawerItem name="Node" hidden={!nodeName}>
-          <Link to={getDetailsUrl(nodeApi.formatUrlForNotListing({ name: nodeName }))}>
-            {nodeName}
-          </Link>
+          <Link to={getDetailsUrl(nodeApi.formatUrlForNotListing({ name: nodeName }))}>{nodeName}</Link>
         </DrawerItem>
-        <DrawerItem name="Pod IP">
-          {podIP}
-        </DrawerItem>
-        <DrawerItem
-          name="Pod IPs"
-          hidden={podIPs.length === 0}
-          labelsOnly
-        >
-          {podIPs.map(label => <Badge key={label} label={label} />)}
+        <DrawerItem name="Pod IP">{podIP}</DrawerItem>
+        <DrawerItem name="Pod IPs" hidden={podIPs.length === 0} labelsOnly>
+          {podIPs.map((label) => (
+            <Badge key={label} label={label} />
+          ))}
         </DrawerItem>
         <DrawerItem name="Service Account">
-          <Link
-            key="link"
-            to={serviceAccountDetailsUrl}
-            onClick={stopPropagation}
-          >
+          <Link key="link" to={serviceAccountDetailsUrl} onClick={stopPropagation}>
             {serviceAccountName}
           </Link>
         </DrawerItem>
         <DrawerItem name="Priority Class" hidden={priorityClassName === ""}>
-          <Link
-            key="link"
-            to={priorityClassDetailsUrl}
-            onClick={stopPropagation}
-          >
+          <Link key="link" to={priorityClassDetailsUrl} onClick={stopPropagation}>
             {priorityClassName}
           </Link>
         </DrawerItem>
-        <DrawerItem name="QoS Class">
-          {pod.getQosClass()}
-        </DrawerItem>
+        <DrawerItem name="QoS Class">{pod.getQosClass()}</DrawerItem>
         <DrawerItem name="Runtime Class" hidden={runtimeClassName === ""}>
-          <Link
-            key="link"
-            to={runtimeClassDetailsUrl}
-            onClick={stopPropagation}
-          >
+          <Link key="link" to={runtimeClassDetailsUrl} onClick={stopPropagation}>
             {runtimeClassName}
           </Link>
         </DrawerItem>
 
-        <DrawerItem
-          name="Conditions"
-          className="conditions"
-          hidden={conditions.length === 0}
-          labelsOnly
-        >
-          {
-            conditions.map(({ type, status, lastTransitionTime }) => (
-              <Badge
-                key={type}
-                label={type}
-                disabled={status === "False"}
-                tooltip={`Last transition time: ${lastTransitionTime ?? "<unknown>"}`}
-              />
-            ))
-          }
+        <DrawerItem name="Conditions" className="conditions" hidden={conditions.length === 0} labelsOnly>
+          {conditions.map(({ type, status, lastTransitionTime }) => (
+            <Badge
+              key={type}
+              label={type}
+              disabled={status === "False"}
+              tooltip={`Last transition time: ${lastTransitionTime ?? "<unknown>"}`}
+            />
+          ))}
         </DrawerItem>
 
         <DrawerItem name="Node Selector" hidden={nodeSelector.length === 0}>
-          {nodeSelector.map(label => <Badge key={label} label={label} />)}
+          {nodeSelector.map((label) => (
+            <Badge key={label} label={label} />
+          ))}
         </DrawerItem>
 
         <PodDetailsTolerations workload={pod} />

@@ -3,25 +3,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 import { fireEvent } from "@testing-library/react";
+import React from "react";
 import "@testing-library/jest-dom";
-import { TopBar } from "./top-bar";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiContainer } from "@ogre-tools/injectable";
+import { computed, observable } from "mobx";
+import platformInjectable from "../../../../common/vars/platform.injectable";
+import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
+import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
-import { computed, observable } from "mobx";
-import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
-import closeWindowInjectable from "./top-bar-items/window-controls/close-window/close-window.injectable";
-import goBackInjectable from "./top-bar-items/navigation-to-back/go-back/go-back.injectable";
-import maximizeWindowInjectable from "./top-bar-items/window-controls/maximize-window/maximize-window.injectable";
-import openAppContextMenuInjectable from "./top-bar-items/context-menu/open-app-context-menu/open-app-context-menu.injectable";
-import toggleMaximizeWindowInjectable from "./toggle-maximize-window/toggle-maximize-window.injectable";
 import topBarStateInjectable from "./state.injectable";
-import platformInjectable from "../../../../common/vars/platform.injectable";
+import toggleMaximizeWindowInjectable from "./toggle-maximize-window/toggle-maximize-window.injectable";
+import { TopBar } from "./top-bar";
+import openAppContextMenuInjectable from "./top-bar-items/context-menu/open-app-context-menu/open-app-context-menu.injectable";
+import goBackInjectable from "./top-bar-items/navigation-to-back/go-back/go-back.injectable";
 import goForwardInjectable from "./top-bar-items/navigation-to-forward/go-forward/go-forward.injectable";
-import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
+import closeWindowInjectable from "./top-bar-items/window-controls/close-window/close-window.injectable";
+import maximizeWindowInjectable from "./top-bar-items/window-controls/maximize-window/maximize-window.injectable";
 
 describe("<TopBar/>", () => {
   let di: DiContainer;
@@ -37,12 +37,12 @@ describe("<TopBar/>", () => {
     di = getDiForUnitTesting();
 
     di.override(rendererExtensionsInjectable, () => computed(() => []));
-    di.override(openAppContextMenuInjectable, () => openAppContextMenu = jest.fn());
-    di.override(goBackInjectable, () => goBack = jest.fn());
-    di.override(goForwardInjectable, () => goForward = jest.fn());
-    di.override(closeWindowInjectable, () => closeWindow = jest.fn());
-    di.override(maximizeWindowInjectable, () => maximizeWindow = jest.fn());
-    di.override(toggleMaximizeWindowInjectable, () => toggleMaximizeWindow = jest.fn());
+    di.override(openAppContextMenuInjectable, () => (openAppContextMenu = jest.fn()));
+    di.override(goBackInjectable, () => (goBack = jest.fn()));
+    di.override(goForwardInjectable, () => (goForward = jest.fn()));
+    di.override(closeWindowInjectable, () => (closeWindow = jest.fn()));
+    di.override(maximizeWindowInjectable, () => (maximizeWindow = jest.fn()));
+    di.override(toggleMaximizeWindowInjectable, () => (toggleMaximizeWindow = jest.fn()));
     di.override(currentlyInClusterFrameInjectable, () => false);
 
     render = renderFor(di);
@@ -50,40 +50,42 @@ describe("<TopBar/>", () => {
 
   describe("with both previous and next history enabled", () => {
     beforeEach(() => {
-      di.override(topBarStateInjectable, () => observable.object({
-        prevEnabled: true,
-        nextEnabled: true,
-      }));
+      di.override(topBarStateInjectable, () =>
+        observable.object({
+          prevEnabled: true,
+          nextEnabled: true,
+        }),
+      );
     });
 
     it("renders w/o errors", () => {
-      const { container } = render(<TopBar/>);
+      const { container } = render(<TopBar />);
 
       expect(container).toBeInstanceOf(HTMLElement);
     });
 
     it("renders home button", async () => {
-      const { findByTestId } = render(<TopBar/>);
+      const { findByTestId } = render(<TopBar />);
 
       expect(await findByTestId("home-button")).toBeInTheDocument();
     });
 
     it("renders history arrows", async () => {
-      const { findByTestId } = render(<TopBar/>);
+      const { findByTestId } = render(<TopBar />);
 
       expect(await findByTestId("history-back")).toBeInTheDocument();
       expect(await findByTestId("history-forward")).toBeInTheDocument();
     });
 
     it("enables arrow by ipc event", async () => {
-      const { findByTestId } = render(<TopBar/>);
+      const { findByTestId } = render(<TopBar />);
 
       expect(await findByTestId("history-back")).not.toHaveClass("disabled");
       expect(await findByTestId("history-forward")).not.toHaveClass("disabled");
     });
 
     it("triggers browser history back and forward", async () => {
-      const { findByTestId } = render(<TopBar/>);
+      const { findByTestId } = render(<TopBar />);
 
       const prevButton = await findByTestId("history-back");
       const nextButton = await findByTestId("history-forward");
@@ -103,7 +105,7 @@ describe("<TopBar/>", () => {
       });
 
       it("doesn't show windows title", () => {
-        const { queryByTestId } = render(<TopBar/>);
+        const { queryByTestId } = render(<TopBar />);
 
         expect(queryByTestId("window-menu")).not.toBeInTheDocument();
         expect(queryByTestId("window-minimize")).not.toBeInTheDocument();
@@ -118,7 +120,7 @@ describe("<TopBar/>", () => {
       });
 
       it("does show windows title buttons", () => {
-        const { queryByTestId } = render(<TopBar/>);
+        const { queryByTestId } = render(<TopBar />);
 
         expect(queryByTestId("window-menu")).toBeInTheDocument();
         expect(queryByTestId("window-minimize")).toBeInTheDocument();
@@ -154,7 +156,7 @@ describe("<TopBar/>", () => {
       });
 
       it("does show windows title buttons", () => {
-        const { queryByTestId } = render(<TopBar/>);
+        const { queryByTestId } = render(<TopBar />);
 
         expect(queryByTestId("window-menu")).toBeInTheDocument();
         expect(queryByTestId("window-minimize")).toBeInTheDocument();

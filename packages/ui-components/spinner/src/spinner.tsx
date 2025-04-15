@@ -5,8 +5,8 @@
 
 import "./spinner.scss";
 
-import React from "react";
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export interface SpinnerProps extends React.HTMLProps<any> {
   singleColor?: boolean;

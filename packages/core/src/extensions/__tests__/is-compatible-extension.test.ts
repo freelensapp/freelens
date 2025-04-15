@@ -29,20 +29,26 @@ describe("Extension/App versions compatibility checks", () => {
   });
 
   it("throws for incorrect or not supported version format", () => {
-    expect(() => isCompatible({
-      extLensEngineVersion: ">=2.0",
-      extensionApiVersion: "2.0",
-    })).toThrow(/Invalid format/i);
+    expect(() =>
+      isCompatible({
+        extLensEngineVersion: ">=2.0",
+        extensionApiVersion: "2.0",
+      }),
+    ).toThrow(/Invalid format/i);
 
-    expect(() => isCompatible({
-      extLensEngineVersion: "~2.0",
-      extensionApiVersion: "2.0",
-    })).toThrow(/Invalid format/i);
+    expect(() =>
+      isCompatible({
+        extLensEngineVersion: "~2.0",
+        extensionApiVersion: "2.0",
+      }),
+    ).toThrow(/Invalid format/i);
 
-    expect(() => isCompatible({
-      extLensEngineVersion: "*",
-      extensionApiVersion: "1.0",
-    })).toThrow(/Invalid format/i);
+    expect(() =>
+      isCompatible({
+        extLensEngineVersion: "*",
+        extensionApiVersion: "1.0",
+      }),
+    ).toThrow(/Invalid format/i);
   });
 });
 

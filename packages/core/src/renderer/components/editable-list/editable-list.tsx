@@ -9,10 +9,10 @@ import { observer } from "mobx-react";
 import React from "react";
 
 import { Icon } from "@freelensapp/icon";
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+import autoBindReact from "auto-bind/react";
 import type { InputProps, InputValidator } from "../input";
 import { Input } from "../input";
-import type { StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
-import autoBindReact from "auto-bind/react";
 
 export interface EditableListProps<T> {
   items: T[];
@@ -61,22 +61,20 @@ class DefaultedEditableList<T> extends React.Component<EditableListProps<T> & ty
             validators={validators}
             placeholder={placeholder}
             blurOnEnter={false}
-            iconRight={({ isDirty }) => isDirty ? <Icon material="keyboard_return" size={16} /> : null}
+            iconRight={({ isDirty }) => (isDirty ? <Icon material="keyboard_return" size={16} /> : null)}
           />
         </div>
         <div className="el-contents">
-          {
-            items.map((item, index) => (
-              <div key={`${item}${index}`} className="el-item">
-                <div className="el-value-container">
-                  <div className="el-value">{renderItem(item, index)}</div>
-                </div>
-                <div className="el-value-remove">
-                  <Icon material="delete_outline" onClick={() => remove(({ index, oldItem: item }))} />
-                </div>
+          {items.map((item, index) => (
+            <div key={`${item}${index}`} className="el-item">
+              <div className="el-value-container">
+                <div className="el-value">{renderItem(item, index)}</div>
               </div>
-            ))
-          }
+              <div className="el-value-remove">
+                <Icon material="delete_outline" onClick={() => remove({ index, oldItem: item })} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -84,5 +82,5 @@ class DefaultedEditableList<T> extends React.Component<EditableListProps<T> & ty
 }
 
 export function EditableList<T>(props: EditableListProps<T>) {
-  return <DefaultedEditableList {...props as object}/>;
+  return <DefaultedEditableList {...(props as object)} />;
 }

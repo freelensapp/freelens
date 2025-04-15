@@ -1,14 +1,14 @@
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import { reaction } from "mobx";
 import type { MinimalTrayMenuItem } from "../electron-tray/electron-tray.injectable";
 import electronTrayInjectable from "../electron-tray/electron-tray.injectable";
-import trayMenuItemsInjectable from "../tray-menu-item/tray-menu-items.injectable";
 import type { TrayMenuItem } from "../tray-menu-item/tray-menu-item-injection-token";
+import trayMenuItemsInjectable from "../tray-menu-item/tray-menu-items.injectable";
 
 const reactiveTrayMenuItemsInjectable = getInjectable({
   id: "reactive-tray-menu-items",

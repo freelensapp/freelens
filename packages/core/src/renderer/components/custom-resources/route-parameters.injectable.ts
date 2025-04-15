@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import customResourcesRouteInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/custom-resources-route.injectable";
+import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 
 const customResourcesRouteParametersInjectable = getInjectable({
   id: "custom-resources-route-parameters",

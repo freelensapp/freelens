@@ -18,15 +18,18 @@ const apiBaseInjectable = getInjectable({
     const serverAddress = di.inject(apiBaseServerAddressInjectionToken);
     const hostHeaderValue = di.inject(apiBaseHostHeaderInjectionToken);
 
-    return createJsonApi({
-      serverAddress,
-      apiBase: apiPrefix,
-      debug: isDevelopment || isDebugging,
-    }, {
-      headers: {
-        "Host": hostHeaderValue,
+    return createJsonApi(
+      {
+        serverAddress,
+        apiBase: apiPrefix,
+        debug: isDevelopment || isDebugging,
       },
-    });
+      {
+        headers: {
+          Host: hostHeaderValue,
+        },
+      },
+    );
   },
 });
 

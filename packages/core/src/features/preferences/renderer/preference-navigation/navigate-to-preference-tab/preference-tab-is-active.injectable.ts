@@ -16,10 +16,7 @@ const preferenceTabIsActiveInjectable = getInjectable({
     const routeIsActive = di.inject(routeIsActiveInjectable, route);
     const currentTabId = di.inject(currentPreferenceTabIdInjectable);
 
-    return computed(
-      () =>
-        routeIsActive.get() && currentTabId.get() === tabId,
-    );
+    return computed(() => routeIsActive.get() && currentTabId.get() === tabId);
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({

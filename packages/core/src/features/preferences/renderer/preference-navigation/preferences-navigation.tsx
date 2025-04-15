@@ -1,38 +1,31 @@
+import { Icon } from "@freelensapp/icon";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { checkThatAllDiscriminablesAreExhausted } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
+import { compositeHasDescendant } from "../../../../common/utils/composite/composite-has-descendant/composite-has-descendant";
+import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
+import { Map } from "../../../../renderer/components/map/map";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { Tabs } from "../../../../renderer/components/tabs";
-import React from "react";
-import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import type { PreferenceItemTypes } from "../preference-items/preference-item-injection-token";
-import { Map } from "../../../../renderer/components/map/map";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
-import preferencesCompositeInjectable from "../preference-items/preferences-composite.injectable";
-import { observer } from "mobx-react";
-import { PreferencesNavigationTab } from "./preferences-navigation-tab";
-import { compositeHasDescendant } from "../../../../common/utils/composite/composite-has-descendant/composite-has-descendant";
 import type { PreferenceTabsRoot } from "../preference-items/preference-tab-root";
-import { Icon } from "@freelensapp/icon";
-import { checkThatAllDiscriminablesAreExhausted } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
+import preferencesCompositeInjectable from "../preference-items/preferences-composite.injectable";
 import type { NavigateToPreferenceTab } from "./navigate-to-preference-tab/navigate-to-preference-tab.injectable";
 import navigateToPreferenceTabInjectable from "./navigate-to-preference-tab/navigate-to-preference-tab.injectable";
+import { PreferencesNavigationTab } from "./preferences-navigation-tab";
 
 interface Dependencies {
   composite: IComputedValue<Composite<PreferenceItemTypes | PreferenceTabsRoot>>;
   navigateToPreferenceTab: NavigateToPreferenceTab;
 }
 
-const NonInjectedPreferencesNavigation = observer(({
-  composite,
-  navigateToPreferenceTab,
-}: Dependencies) => (
-  <Tabs<string>
-    className="flex column"
-    scrollable={false}
-    onChange={navigateToPreferenceTab}
-  >
+const NonInjectedPreferencesNavigation = observer(({ composite, navigateToPreferenceTab }: Dependencies) => (
+  <Tabs<string> className="flex column" scrollable={false} onChange={navigateToPreferenceTab}>
     {toNavigationHierarchy(composite.get())}
   </Tabs>
 ));
@@ -62,18 +55,11 @@ const toNavigationHierarchy = (composite: Composite<PreferenceItemTypes | Prefer
       return (
         <div data-preference-tab-group-test={value.id}>
           <div className="header flex items-center">
-            {value.iconName && (
-              <Icon
-                material={value.iconName}
-                smallest
-                className="mr-3" />
-            )}
+            {value.iconName && <Icon material={value.iconName} smallest className="mr-3" />}
             {value.label}
           </div>
 
-          <Map items={composite.children.filter(hasContent)}>
-            {toNavigationHierarchy}
-          </Map>
+          <Map items={composite.children.filter(hasContent)}>{toNavigationHierarchy}</Map>
         </div>
       );
     }

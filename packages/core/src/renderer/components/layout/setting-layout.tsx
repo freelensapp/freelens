@@ -5,14 +5,14 @@
 
 import "./setting-layout.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { CloseButton } from "./close-button";
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { observer } from "mobx-react";
+import React from "react";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { CloseButton } from "./close-button";
 
 export interface SettingLayoutProps extends React.DOMAttributes<any> {
   className?: IClassName;
@@ -75,33 +75,32 @@ export class SettingLayout extends React.Component<SettingLayoutProps> {
 
   render() {
     const {
-      contentClass, provideBackButtonNavigation,
-      contentGaps, navigation, children, back, closeButtonProps, ...elemProps
+      contentClass,
+      provideBackButtonNavigation,
+      contentGaps,
+      navigation,
+      children,
+      back,
+      closeButtonProps,
+      ...elemProps
     } = this.props;
     const className = cssNames("SettingLayout", { showNavigation: navigation }, this.props.className);
 
     return (
       <div {...elemProps} className={className}>
-        { navigation && (
+        {navigation && (
           <nav className="sidebarRegion">
-            <div className="sidebar">
-              {navigation}
-            </div>
+            <div className="sidebar">{navigation}</div>
           </nav>
         )}
         <div className="contentRegion" id="ScrollSpyRoot">
-          <div className={cssNames("content", contentClass, contentGaps && "flex column gaps")}>
-            {children}
-          </div>
+          <div className={cssNames("content", contentClass, contentGaps && "flex column gaps")}>{children}</div>
           <div className="toolsRegion">
-            {
-              this.props.provideBackButtonNavigation && (
-                <div className="fixed top-[60px]">
-
-                  <CloseButton onClick={back} {...closeButtonProps}/>
-                </div>
-              )
-            }
+            {this.props.provideBackButtonNavigation && (
+              <div className="fixed top-[60px]">
+                <CloseButton onClick={back} {...closeButtonProps} />
+              </div>
+            )}
           </div>
         </div>
       </div>

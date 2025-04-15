@@ -15,9 +15,7 @@ const releaseSecretsInjectable = getInjectable({
     const secretStore = di.inject(secretStoreInjectable);
 
     const releaseSecrets = computed(() =>
-      secretStore.contextItems.filter((secret) =>
-        secret.type.startsWith("helm.sh/release"),
-      ),
+      secretStore.contextItems.filter((secret) => secret.type.startsWith("helm.sh/release")),
     );
 
     let unsubscribe: () => void;

@@ -50,26 +50,29 @@ const entitySettingExtensionRegistratorInjectable = getInjectable({
 
 export default entitySettingExtensionRegistratorInjectable;
 
-const getInjectableForEntitySettingRegistrationFor = (extension: LensRendererExtension) => ({
-  apiVersions,
-  components,
-  kind,
-  title,
-  group = "Extensions",
-  id = btoa(title),
-  priority,
-  source,
-}: EntitySettingRegistration) => getInjectable({
-  id: `${extension.manifest.name}:${group}/${kind}:${id}`,
-  instantiate: () => ({
-    apiVersions: new Set(apiVersions),
+const getInjectableForEntitySettingRegistrationFor =
+  (extension: LensRendererExtension) =>
+  ({
+    apiVersions,
     components,
-    id,
     kind,
-    orderNumber: priority ?? 50,
     title,
-    group,
+    group = "Extensions",
+    id = btoa(title),
+    priority,
     source,
-  }),
-  injectionToken: entitySettingInjectionToken,
-});
+  }: EntitySettingRegistration) =>
+    getInjectable({
+      id: `${extension.manifest.name}:${group}/${kind}:${id}`,
+      instantiate: () => ({
+        apiVersions: new Set(apiVersions),
+        components,
+        id,
+        kind,
+        orderNumber: priority ?? 50,
+        title,
+        group,
+        source,
+      }),
+      injectionToken: entitySettingInjectionToken,
+    });

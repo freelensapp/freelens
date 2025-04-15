@@ -5,21 +5,21 @@
 
 import styles from "./dock-tab.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import { Icon } from "@freelensapp/icon";
+import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames, prevDefault, isMiddleClick } from "@freelensapp/utilities";
-import type { DockStore, DockTab as DockTabModel } from "./dock/store";
+import { cssNames, isMiddleClick, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import isMacInjectable from "../../../common/vars/is-mac.injectable";
+import { Menu, MenuItem } from "../menu";
 import type { TabProps } from "../tabs";
 import { Tab } from "../tabs";
-import { Icon } from "@freelensapp/icon";
-import { Menu, MenuItem } from "../menu";
-import { observable } from "mobx";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { DockStore, DockTab as DockTabModel } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
-import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
-import isMacInjectable from "../../../common/vars/is-mac.injectable";
-import autoBindReact from "auto-bind/react";
 
 export interface DockTabProps extends TabProps<DockTabModel> {
   moreActions?: StrictReactNode;
@@ -59,9 +59,7 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
         close={() => this.menuVisible.set(false)}
         toggleEvent="contextmenu"
       >
-        <MenuItem onClick={() => closeTab(tabId)}>
-          Close
-        </MenuItem>
+        <MenuItem onClick={() => closeTab(tabId)}>Close</MenuItem>
         <MenuItem onClick={() => closeAllTabs()} disabled={closeAllDisabled}>
           Close all tabs
         </MenuItem>
@@ -94,7 +92,7 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
             [styles.pinned]: pinned,
           })}
           onContextMenu={() => this.menuVisible.set(true)}
-          label={(
+          label={
             <div className="flex align-center" onAuxClick={isMiddleClick(close)}>
               <span className={styles.title}>{title}</span>
               {moreActions}
@@ -117,7 +115,7 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
                 {title}
               </Tooltip>
             </div>
-          )}
+          }
           data-testid={`dock-tab-for-${id}`}
         />
         {this.renderMenu(id)}

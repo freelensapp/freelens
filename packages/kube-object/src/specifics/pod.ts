@@ -5,7 +5,6 @@
 
 import { isDefined } from "@freelensapp/utilities";
 import type { RequireExactlyOne } from "type-fest";
-import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type {
   Affinity,
   KubeObjectMetadata,
@@ -15,6 +14,7 @@ import type {
 } from "../api-types";
 import { KubeObject } from "../kube-object";
 import type { Container, ObjectFieldSelector, PodSecurityContext, Probe, ResourceFieldSelector } from "../types";
+import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type { SecretReference } from "./secret";
 
 // Reference: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#read-log-pod-v1-core

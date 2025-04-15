@@ -23,16 +23,8 @@ export function Dropdown(props: DropdownProps) {
 
   return (
     <div {...rest}>
-      <div id={id}>
-        {contentForToggle}
-      </div>
-      <Menu
-        usePortal
-        htmlFor={id}
-        isOpen={opened}
-        close={toggle}
-        open={toggle}
-      >
+      <div id={id}>{contentForToggle}</div>
+      <Menu usePortal htmlFor={id} isOpen={opened} close={toggle} open={toggle}>
         {children}
       </Menu>
     </div>

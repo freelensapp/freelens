@@ -5,24 +5,24 @@
 
 import "./file-picker.scss";
 
-import React from "react";
-import fse from "fs-extra";
 import path from "path";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
-import { observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import _ from "lodash";
 import type { StrictReactNode } from "@freelensapp/utilities";
+import fse from "fs-extra";
+import _ from "lodash";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 
 export interface FileUploadProps {
-    uploadDir: string;
-    rename?: boolean;
-    handler(path: string[]): void;
+  uploadDir: string;
+  rename?: boolean;
+  handler(path: string[]): void;
 }
 
 export interface MemoryUseProps {
-    handler(file: File[]): void;
+  handler(file: File[]): void;
 }
 
 enum FileInputStatus {
@@ -48,26 +48,26 @@ export enum OverTotalSizeLimitStyle {
 }
 
 export interface BaseProps {
-    accept?: string;
-    label: StrictReactNode;
-    multiple?: boolean;
+  accept?: string;
+  label: StrictReactNode;
+  multiple?: boolean;
 
-    // limit is the optional maximum number of files to upload
-    // the larger number is upper limit, the lower is lower limit
-    // the lower limit is capped at 0 and the upper limit is capped at Infinity
-    limit?: [number, number];
+  // limit is the optional maximum number of files to upload
+  // the larger number is upper limit, the lower is lower limit
+  // the lower limit is capped at 0 and the upper limit is capped at Infinity
+  limit?: [number, number];
 
-    // default is "Reject"
-    onOverLimit?: OverLimitStyle;
+  // default is "Reject"
+  onOverLimit?: OverLimitStyle;
 
-    // individual files are checked before the total size.
-    maxSize?: number;
-    // default is "Reject"
-    onOverSizeLimit?: OverSizeLimitStyle;
+  // individual files are checked before the total size.
+  maxSize?: number;
+  // default is "Reject"
+  onOverSizeLimit?: OverSizeLimitStyle;
 
-    maxTotalSize?: number;
-    // default is "Reject"
-    onOverTotalSizeLimit?: OverTotalSizeLimitStyle;
+  maxTotalSize?: number;
+  // default is "Reject"
+  onOverTotalSizeLimit?: OverTotalSizeLimitStyle;
 }
 
 export type FilePickerProps = BaseProps & (MemoryUseProps | FileUploadProps);
@@ -93,7 +93,10 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
   }
 
   handleFileCount(files: File[]): File[] {
-    const { limit: [minLimit, maxLimit] = [0, Infinity], onOverLimit } = this.props;
+    const {
+      limit: [minLimit, maxLimit] = [0, Infinity],
+      onOverLimit,
+    } = this.props;
 
     if (files.length > maxLimit) {
       switch (onOverLimit) {
@@ -117,10 +120,10 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
 
     switch (onOverSizeLimit) {
       case OverSizeLimitStyle.FILTER:
-        return files.filter(file => file.size <= maxSize );
+        return files.filter((file) => file.size <= maxSize);
 
       case OverSizeLimitStyle.REJECT: {
-        const firstFileToLarge = files.find(file => file.size > maxSize);
+        const firstFileToLarge = files.find((file) => file.size > maxSize);
 
         if (firstFileToLarge) {
           throw `${firstFileToLarge.name} is too large. Maximum size is ${maxSize}. Has size of ${firstFileToLarge.size}`;
@@ -134,7 +137,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
   handleTotalFileSizes(files: File[]): File[] {
     const { maxTotalSize, onOverTotalSizeLimit } = this.props;
 
-    const totalSize = _.sum(files.map(f => f.size));
+    const totalSize = _.sum(files.map((f) => f.size));
 
     if (totalSize <= maxTotalSize) {
       return files;
@@ -144,7 +147,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
       case OverTotalSizeLimitStyle.FILTER_LARGEST:
         files = _.orderBy(files, ["size"]);
 
-        // fallthrough
+      // fallthrough
       case OverTotalSizeLimitStyle.FILTER_LAST: {
         let newTotalSize = totalSize;
 
@@ -177,7 +180,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
         this.status = FileInputStatus.PROCESSING;
 
         const paths: string[] = [];
-        const promises = totalSizeLimitedFiles.map(async file => {
+        const promises = totalSizeLimitedFiles.map(async (file) => {
           const destinationPath = path.join(uploadDir, file.name);
 
           paths.push(destinationPath);
@@ -205,9 +208,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
     return (
       <div className="FilePicker">
         <label className="flex gaps align-center" htmlFor="file-upload">
-          {label}
-          {" "}
-          {this.getIconRight()}
+          {label} {this.getIconRight()}
         </label>
         <input
           id="file-upload"
@@ -233,4 +234,6 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
   }
 }
 
-export const FilePicker = (props: FilePickerProps) => <DefaultedFilePicker {...(props as FilePickerProps & typeof defaultProps)} />;
+export const FilePicker = (props: FilePickerProps) => (
+  <DefaultedFilePicker {...(props as FilePickerProps & typeof defaultProps)} />
+);

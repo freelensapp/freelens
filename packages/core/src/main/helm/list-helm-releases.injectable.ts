@@ -1,14 +1,17 @@
+import type { AsyncResult } from "@freelensapp/utilities";
+import { isObject } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import execHelmInjectable from "./exec-helm/exec-helm.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import { isObject } from "@freelensapp/utilities";
 import type { ListedHelmRelease } from "../../features/helm-releases/common/channels";
+import execHelmInjectable from "./exec-helm/exec-helm.injectable";
 
-export type ListHelmReleases = (pathToKubeconfig: string, namespace?: string) => AsyncResult<ListedHelmRelease[], string>;
+export type ListHelmReleases = (
+  pathToKubeconfig: string,
+  namespace?: string,
+) => AsyncResult<ListedHelmRelease[], string>;
 
 const listHelmReleasesInjectable = getInjectable({
   id: "list-helm-releases",
@@ -20,8 +23,10 @@ const listHelmReleasesInjectable = getInjectable({
         "ls",
         "--all",
         // By default 256 results are listed, we want to list practically all
-        "--max", "9999",
-        "--output", "json",
+        "--max",
+        "9999",
+        "--output",
+        "json",
       ];
 
       if (namespace) {
@@ -42,9 +47,7 @@ const listHelmReleasesInjectable = getInjectable({
       }
 
       const rawOutput = JSON.parse(result.response);
-      const output = Array.isArray(rawOutput)
-        ? rawOutput.filter(isObject)
-        : [];
+      const output = Array.isArray(rawOutput) ? rawOutput.filter(isObject) : [];
 
       return {
         callWasSuccessful: true,

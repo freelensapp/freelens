@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import servicesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/services/services-route.injectable";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToServicesInjectable from "../../../common/front-end-routing/routes/cluster/network/services/navigate-to-services.injectable";
+import servicesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/services/services-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
 
 const servicesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-services",

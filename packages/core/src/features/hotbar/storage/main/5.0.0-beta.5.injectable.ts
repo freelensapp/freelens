@@ -48,4 +48,3 @@ const v500Beta5HotbarStoreMigrationInjectable = getInjectable({
 });
 
 export default v500Beta5HotbarStoreMigrationInjectable;
-

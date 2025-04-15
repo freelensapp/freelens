@@ -27,7 +27,7 @@ class TestCatalogCategoryWithoutBadge extends CatalogCategory {
 
 class TestCatalogCategoryWithBadge extends TestCatalogCategoryWithoutBadge {
   getBadge() {
-    return (<div>Test Badge</div>);
+    return <div>Test Badge</div>;
   }
 }
 

@@ -17,7 +17,6 @@ export function useMutationObserver(
   callback: MutationCallback,
   options: MutationObserverInit = config,
 ) {
-
   useEffect(() => {
     if (root) {
       const observer = new MutationObserver(callback);

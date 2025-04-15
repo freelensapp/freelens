@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, observable, makeObservable } from "mobx";
 import autoBind from "auto-bind";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export class SearchStore {
   /**
@@ -76,8 +76,7 @@ export class SearchStore {
   private findOccurrences(lines: string[], query?: string): number[] {
     const regex = new RegExp(SearchStore.escapeRegex(query), "gi");
 
-    return lines
-      .flatMap((line, index) => Array.from(line.matchAll(regex), () => index));
+    return lines.flatMap((line, index) => Array.from(line.matchAll(regex), () => index));
   }
 
   /**
@@ -140,7 +139,7 @@ export class SearchStore {
    * @param occurrence Number of the overlay within one line
    */
   public isActiveOverlay(line: number, occurrence: number): boolean {
-    const firstLineIndex = this.occurrences.findIndex(item => item === line);
+    const firstLineIndex = this.occurrences.findIndex((item) => item === line);
 
     return firstLineIndex + occurrence === this.activeOverlayIndex;
   }

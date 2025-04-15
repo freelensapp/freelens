@@ -10,7 +10,7 @@ export type GetResourceDetailsUrl = (
   kind: string,
   apiVersion: string,
   namespace: string | undefined,
-  name: string
+  name: string,
 ) => string;
 
 const getResourceDetailsUrlInjectable = getInjectable({
@@ -21,9 +21,7 @@ const getResourceDetailsUrlInjectable = getInjectable({
     const getDetailsUrl = di.inject(getDetailsUrlInjectable);
 
     const getKubeApi = (kind: string, apiVersion: string) =>
-      apiManager.getApi(
-        (api) => api.kind === kind && api.apiVersionWithGroup == apiVersion,
-      );
+      apiManager.getApi((api) => api.kind === kind && api.apiVersionWithGroup == apiVersion);
 
     return (kind, apiVersion, namespace, name) => {
       const kubeApi = getKubeApi(kind, apiVersion);

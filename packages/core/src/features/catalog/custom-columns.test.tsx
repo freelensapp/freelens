@@ -177,14 +177,18 @@ describe("custom category columns for catalog", () => {
     beforeEach(() => {
       const catalogCategoryRegistry = builder.applicationWindow.only.di.inject(catalogCategoryRegistryInjectable);
 
-      catalogCategoryRegistry.add(new TestCategory([{
-        id: "foo",
-        renderCell: () => null,
-        titleProps: {
-          title: "Foo",
-          "data-testid": "my-custom-column",
-        },
-      }]));
+      catalogCategoryRegistry.add(
+        new TestCategory([
+          {
+            id: "foo",
+            renderCell: () => null,
+            titleProps: {
+              title: "Foo",
+              "data-testid": "my-custom-column",
+            },
+          },
+        ]),
+      );
     });
 
     it("renders", () => {

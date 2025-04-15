@@ -1,15 +1,15 @@
+import type { DiContainer } from "@ogre-tools/injectable";
+import directoryForIntegrationTestingInjectable from "../../main/app-paths/directory-for-integration-testing/directory-for-integration-testing.injectable";
+import getElectronAppPathInjectable from "../../main/app-paths/get-electron-app-path/get-electron-app-path.injectable";
+import setElectronAppPathInjectable from "../../main/app-paths/set-electron-app-path/set-electron-app-path.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { AppPaths } from "./app-path-injection-token";
-import getElectronAppPathInjectable from "../../main/app-paths/get-electron-app-path/get-electron-app-path.injectable";
 import type { PathName } from "./app-path-names";
-import setElectronAppPathInjectable from "../../main/app-paths/set-electron-app-path/set-electron-app-path.injectable";
-import directoryForIntegrationTestingInjectable from "../../main/app-paths/directory-for-integration-testing/directory-for-integration-testing.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { DiContainer } from "@ogre-tools/injectable";
 import appPathsInjectable from "./app-paths.injectable";
 
 describe("app-paths", () => {
@@ -46,13 +46,9 @@ describe("app-paths", () => {
             defaultAppPathsStub[key],
       );
 
-      mainDi.override(
-        setElectronAppPathInjectable,
-        () =>
-          (key: PathName, path: string): void => {
-            defaultAppPathsStub[key] = path;
-          },
-      );
+      mainDi.override(setElectronAppPathInjectable, () => (key: PathName, path: string): void => {
+        defaultAppPathsStub[key] = path;
+      });
     });
   });
 
@@ -121,10 +117,7 @@ describe("app-paths", () => {
 
     beforeEach(async () => {
       builder.beforeApplicationStart(({ mainDi }) => {
-        mainDi.override(
-          directoryForIntegrationTestingInjectable,
-          () => "/some-integration-testing-app-data",
-        );
+        mainDi.override(directoryForIntegrationTestingInjectable, () => "/some-integration-testing-app-data");
       });
 
       await builder.render();

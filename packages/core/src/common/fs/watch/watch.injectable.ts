@@ -1,12 +1,12 @@
+import type { Stats } from "fs";
+import type { SingleOrMany } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { watch } from "chokidar";
-import type { Stats } from "fs";
 import type TypedEventEmitter from "typed-emitter";
-import type { SingleOrMany } from "@freelensapp/utilities";
 
 export interface AlwaysStatWatcherEvents {
   add: (path: string, stats: Stats) => void;
@@ -20,12 +20,8 @@ export interface MaybeStatWatcherEvents {
   change: (path: string, stats?: Stats) => void;
 }
 
-export type WatcherEvents<AlwaysStat extends boolean> = BaseWatcherEvents
-  & (
-    AlwaysStat extends true
-      ? AlwaysStatWatcherEvents
-      : MaybeStatWatcherEvents
-  );
+export type WatcherEvents<AlwaysStat extends boolean> = BaseWatcherEvents &
+  (AlwaysStat extends true ? AlwaysStatWatcherEvents : MaybeStatWatcherEvents);
 
 export interface BaseWatcherEvents {
   error: (error: Error) => void;
@@ -127,12 +123,11 @@ export type WatcherOptions<AlwaysStat extends boolean> = {
   awaitWriteFinish?: AwaitWriteFinishOptions | boolean;
 } & (AlwaysStat extends true
   ? {
-    alwaysStat: true;
-  }
+      alwaysStat: true;
+    }
   : {
-    alwaysStat?: false;
-  }
-);
+      alwaysStat?: false;
+    });
 
 export interface AwaitWriteFinishOptions {
   /**
@@ -146,7 +141,10 @@ export interface AwaitWriteFinishOptions {
   pollInterval?: number;
 }
 
-export type Watch = <AlwaysStat extends boolean = false>(path: string, options?: WatcherOptions<AlwaysStat>) => Watcher<AlwaysStat>;
+export type Watch = <AlwaysStat extends boolean = false>(
+  path: string,
+  options?: WatcherOptions<AlwaysStat>,
+) => Watcher<AlwaysStat>;
 
 // TODO: Introduce wrapper to allow simpler API
 const watchInjectable = getInjectable({

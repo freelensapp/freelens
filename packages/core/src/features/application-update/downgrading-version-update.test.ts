@@ -1,20 +1,20 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
+import getBuildVersionInjectable from "../../main/electron-app/features/get-build-version.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
 import publishIsConfiguredInjectable from "./child-features/updating-is-enabled/main/publish-is-configured.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
+import selectedUpdateChannelInjectable from "./common/selected-update-channel.injectable";
+import { updateChannels } from "./common/update-channels";
 import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import processCheckingForUpdatesInjectable from "./main/process-checking-for-updates.injectable";
-import selectedUpdateChannelInjectable from "./common/selected-update-channel.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { updateChannels } from "./common/update-channels";
-import getBuildVersionInjectable from "../../main/electron-app/features/get-build-version.injectable";
 
 describe.skip("downgrading version update", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -27,10 +27,7 @@ describe.skip("downgrading version update", () => {
     applicationBuilder.beforeApplicationStart(({ mainDi }) => {
       checkForPlatformUpdatesMock = asyncFn();
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
@@ -101,7 +98,7 @@ describe.skip("downgrading version update", () => {
       downgradeIsAllowed: false,
     },
   ].forEach(({ appVersion, updateChannel, downgradeIsAllowed }) => {
-    it(`given application version "${appVersion}" and update channel "${updateChannel.id}", when checking for updates, can${downgradeIsAllowed ? "": "not"} downgrade`, async () => {
+    it(`given application version "${appVersion}" and update channel "${updateChannel.id}", when checking for updates, can${downgradeIsAllowed ? "" : "not"} downgrade`, async () => {
       mainDi.override(getBuildVersionInjectable, () => () => appVersion);
 
       await applicationBuilder.render();
@@ -114,7 +111,9 @@ describe.skip("downgrading version update", () => {
 
       processCheckingForUpdates("irrelevant");
 
-      expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(expect.any(Object), { allowDowngrade: downgradeIsAllowed });
+      expect(checkForPlatformUpdatesMock).toHaveBeenCalledWith(expect.any(Object), {
+        allowDowngrade: downgradeIsAllowed,
+      });
     });
   });
 });

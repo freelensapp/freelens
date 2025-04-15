@@ -35,11 +35,21 @@ describe("technical unit tests for local shell sessions", () => {
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
     di.override(buildVersionStateInjectable, () => "1.1.1");
-    di.override(pathExistsInjectable, () => () => { throw new Error("tried call pathExists without override"); });
-    di.override(pathExistsSyncInjectable, () => () => { throw new Error("tried call pathExistsSync without override"); });
-    di.override(readJsonSyncInjectable, () => () => { throw new Error("tried call readJsonSync without override"); });
-    di.override(writeJsonSyncInjectable, () => () => { throw new Error("tried call writeJsonSync without override"); });
-    di.override(statInjectable, () => () => { throw new Error("tried call stat without override"); });
+    di.override(pathExistsInjectable, () => () => {
+      throw new Error("tried call pathExists without override");
+    });
+    di.override(pathExistsSyncInjectable, () => () => {
+      throw new Error("tried call pathExistsSync without override");
+    });
+    di.override(readJsonSyncInjectable, () => () => {
+      throw new Error("tried call readJsonSync without override");
+    });
+    di.override(writeJsonSyncInjectable, () => () => {
+      throw new Error("tried call writeJsonSync without override");
+    });
+    di.override(statInjectable, () => () => {
+      throw new Error("tried call stat without override");
+    });
     di.inject(lensProxyPortInjectable).set(1111);
   });
 
@@ -53,14 +63,22 @@ describe("technical unit tests for local shell sessions", () => {
       spawnPtyMock = jest.fn();
       di.override(spawnPtyInjectable, () => spawnPtyMock);
 
-      di.override(createKubectlInjectable, () => () => ({
-        binDir: async () => "/some-kubectl-binary-dir",
-        getBundledPath: () => "/some-bundled-kubectl-path",
-      }) as Partial<Kubectl> as Kubectl);
+      di.override(
+        createKubectlInjectable,
+        () => () =>
+          ({
+            binDir: async () => "/some-kubectl-binary-dir",
+            getBundledPath: () => "/some-bundled-kubectl-path",
+          }) as Partial<Kubectl> as Kubectl,
+      );
 
-      di.override(kubeconfigManagerInjectable, () => ({
-        ensurePath: async () => "/some-proxy-kubeconfig-file",
-      } as Partial<KubeconfigManager> as KubeconfigManager));
+      di.override(
+        kubeconfigManagerInjectable,
+        () =>
+          ({
+            ensurePath: async () => "/some-proxy-kubeconfig-file",
+          }) as Partial<KubeconfigManager> as KubeconfigManager,
+      );
 
       openLocalShellSession = di.inject(openLocalShellSessionInjectable);
     });
@@ -73,7 +91,7 @@ describe("technical unit tests for local shell sessions", () => {
           expect(options.env).toMatchObject({
             MY_TEST_ENV_VAR: "true",
           });
-        
+
           return {
             cols: 80,
             rows: 40,

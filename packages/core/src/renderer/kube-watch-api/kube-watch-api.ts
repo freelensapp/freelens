@@ -1,13 +1,16 @@
+import type { Logger } from "@freelensapp/logger";
+import type { Disposer } from "@freelensapp/utilities";
+import { WrappedAbortController, disposer, getOrInsert, noop } from "@freelensapp/utilities";
+import { once } from "lodash";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { comparer, reaction } from "mobx";
-import type { Disposer } from "@freelensapp/utilities";
-import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelensapp/utilities";
-import { once } from "lodash";
-import type { Logger } from "@freelensapp/logger";
-import type { KubeObjectStoreLoadAllParams, KubeObjectStoreSubscribeParams } from "../../common/k8s-api/kube-object.store";
+import type {
+  KubeObjectStoreLoadAllParams,
+  KubeObjectStoreSubscribeParams,
+} from "../../common/k8s-api/kube-object.store";
 import type { ClusterContext } from "../cluster-frame-context/cluster-frame-context";
 
 // Kubernetes watch-api client
@@ -129,28 +132,35 @@ export class KubeWatchApi {
      */
     loadThenSubscribe(namespaces).catch(noop);
 
-    const cancelReloading = isNamespaceFilterWatch && store.api.isNamespaced
-      ? reaction(
-        // Note: must slice because reaction won't fire if it isn't there
-        () => [this.dependencies.clusterContext.contextNamespaces.slice(), this.dependencies.clusterContext.hasSelectedAll] as const,
-        ([namespaces, curSelectedAll], [prevNamespaces, prevSelectedAll]) => {
-          if (curSelectedAll && prevSelectedAll) {
-            const action = namespaces.length > prevNamespaces.length ? "created" : "deleted";
+    const cancelReloading =
+      isNamespaceFilterWatch && store.api.isNamespaced
+        ? reaction(
+            // Note: must slice because reaction won't fire if it isn't there
+            () =>
+              [
+                this.dependencies.clusterContext.contextNamespaces.slice(),
+                this.dependencies.clusterContext.hasSelectedAll,
+              ] as const,
+            ([namespaces, curSelectedAll], [prevNamespaces, prevSelectedAll]) => {
+              if (curSelectedAll && prevSelectedAll) {
+                const action = namespaces.length > prevNamespaces.length ? "created" : "deleted";
 
-            return console.debug(`[KUBE-WATCH-API]: Not changing watch for ${store.api.apiBase} because a new namespace was ${action} but all namespaces are selected`);
-          }
+                return console.debug(
+                  `[KUBE-WATCH-API]: Not changing watch for ${store.api.apiBase} because a new namespace was ${action} but all namespaces are selected`,
+                );
+              }
 
-          console.log(`[KUBE-WATCH-API]: changing watch ${store.api.apiBase}`, namespaces);
-          childController.abort();
-          unsubscribe();
-          childController = new WrappedAbortController(parent);
-          loadThenSubscribe(namespaces).catch(noop);
-        },
-        {
-          equals: comparer.shallow,
-        },
-      )
-      : noop; // don't watch namespaces if namespaces were provided
+              console.log(`[KUBE-WATCH-API]: changing watch ${store.api.apiBase}`, namespaces);
+              childController.abort();
+              unsubscribe();
+              childController = new WrappedAbortController(parent);
+              loadThenSubscribe(namespaces).catch(noop);
+            },
+            {
+              equals: comparer.shallow,
+            },
+          )
+        : noop; // don't watch namespaces if namespaces were provided
 
     return () => {
       if (isNamespaceFilterWatch && this.#watch.dec(store) === 0) {
@@ -165,12 +175,14 @@ export class KubeWatchApi {
   subscribeStores: SubscribeStores = (stores, { namespaces, onLoadFailure } = {}) => {
     const parent = new AbortController();
     const unsubscribe = disposer(
-      ...stores.map(store => this.subscribeStore({
-        store,
-        parent,
-        namespaces,
-        onLoadFailure,
-      })),
+      ...stores.map((store) =>
+        this.subscribeStore({
+          store,
+          parent,
+          namespaces,
+          onLoadFailure,
+        }),
+      ),
     );
 
     // unsubscribe
@@ -181,9 +193,7 @@ export class KubeWatchApi {
   };
 
   protected log(message: any, meta: any) {
-    const log = message instanceof Error
-      ? this.dependencies.logger.error
-      : this.dependencies.logger.debug;
+    const log = message instanceof Error ? this.dependencies.logger.error : this.dependencies.logger.debug;
 
     log("[KUBE-WATCH-API]:", message, {
       time: new Date().toLocaleString(),

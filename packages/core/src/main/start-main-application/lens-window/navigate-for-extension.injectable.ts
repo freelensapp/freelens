@@ -1,21 +1,21 @@
+import assert from "assert";
+import { iter } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { iter } from "@freelensapp/utilities";
 import clusterFramesInjectable from "../../../common/cluster-frames.injectable";
-import showApplicationWindowInjectable from "./show-application-window.injectable";
-import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
-import assert from "assert";
 import type { NavigateForExtensionArgs } from "../../../features/extensions/navigate/common/channel";
 import { navigateForExtensionChannel } from "../../../features/extensions/navigate/common/channel";
+import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
+import showApplicationWindowInjectable from "./show-application-window.injectable";
 
 export type NavigateForExtension = (
   extId: string,
   pageId?: string,
   params?: Record<string, any>,
-  frameId?: number
+  frameId?: number,
 ) => Promise<void>;
 
 const navigateForExtensionInjectable = getInjectable({
@@ -26,22 +26,14 @@ const navigateForExtensionInjectable = getInjectable({
     const clusterFrames = di.inject(clusterFramesInjectable);
     const showApplicationWindow = di.inject(showApplicationWindowInjectable);
 
-    return async (
-      extId: string,
-      pageId?: string,
-      params?: Record<string, any>,
-      frameId?: number,
-    ) => {
+    return async (extId: string, pageId?: string, params?: Record<string, any>, frameId?: number) => {
       await showApplicationWindow();
 
       const applicationWindow = getApplicationWindow();
 
       assert(applicationWindow);
 
-      const frameInfo = iter.find(
-        clusterFrames.values(),
-        (frameInfo) => frameInfo.frameId === frameId,
-      );
+      const frameInfo = iter.find(clusterFrames.values(), (frameInfo) => frameInfo.frameId === frameId);
 
       applicationWindow.send({
         channel: navigateForExtensionChannel.id,

@@ -11,7 +11,7 @@ const clusterConfiguredAccessibleNamespacesInjectable = getInjectable({
   instantiate: (di) => {
     const hostedCluster = di.inject(hostedClusterInjectable);
 
-    return computed(() => [...hostedCluster?.accessibleNamespaces ?? []]);
+    return computed(() => [...(hostedCluster?.accessibleNamespaces ?? [])]);
   },
 });
 

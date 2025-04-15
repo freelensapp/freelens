@@ -5,24 +5,24 @@
 
 import styles from "./hotbar-entity-icon.module.scss";
 
-import React from "react";
 import type { IComputedValue } from "mobx";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 
-import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
+import { Icon } from "@freelensapp/icon";
 import type { IClassName } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
-import { HotbarIcon } from "./hotbar-icon";
-import { LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
-import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
+import { LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
+import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
 import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
+import { HotbarIcon } from "./hotbar-icon";
 
 export interface HotbarEntityIconProps {
   entity: CatalogEntity;
@@ -81,10 +81,12 @@ class NonInjectedHotbarEntityIcon extends React.Component<HotbarEntityIconProps 
   }
 
   onMenuOpen() {
-    this.menuItems.replace([{
-      title: "Remove from Hotbar",
-      onClick: () => this.props.remove(this.props.entity.getId()),
-    }]);
+    this.menuItems.replace([
+      {
+        title: "Remove from Hotbar",
+        onClick: () => this.props.remove(this.props.entity.getId()),
+      },
+    ]);
 
     this.props.visitEntityContextMenu(this.props.entity, {
       menuItems: this.menuItems,
@@ -108,11 +110,7 @@ class NonInjectedHotbarEntityIcon extends React.Component<HotbarEntityIconProps 
         onMenuOpen={() => this.onMenuOpen()}
         disabled={!entity}
         menuItems={this.menuItems}
-        tooltip={(
-          entity.metadata.source
-            ? `${entity.getName()} (${entity.metadata.source})`
-            : entity.getName()
-        )}
+        tooltip={entity.metadata.source ? `${entity.getName()} (${entity.metadata.source})` : entity.getName()}
         onClick={onClick}
       >
         {this.renderLedIcon()}

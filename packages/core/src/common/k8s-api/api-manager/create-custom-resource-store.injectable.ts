@@ -1,12 +1,12 @@
+import type { KubeApi } from "@freelensapp/kube-api";
+import type { KubeObject } from "@freelensapp/kube-object";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { KubeApi } from "@freelensapp/kube-api";
-import type { KubeObject } from "@freelensapp/kube-object";
 import type { KubeObjectStoreDependencies } from "../kube-object.store";
 import { CustomResourceStore } from "./resource.store";
 

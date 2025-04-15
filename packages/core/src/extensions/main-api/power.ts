@@ -1,9 +1,9 @@
+import type { Disposer } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { powerMonitor } from "electron";
-import type { Disposer } from "@freelensapp/utilities";
 
 /**
  * Event listener for system power events

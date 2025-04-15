@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { observable, makeObservable } from "mobx";
 import EventEmitter from "events";
+import type { Defaulted } from "@freelensapp/utilities";
+import { makeObservable, observable } from "mobx";
 import type TypedEventEmitter from "typed-emitter";
 import type { Arguments } from "typed-emitter";
-import type { Defaulted } from "@freelensapp/utilities";
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
 interface WebsocketApiParams {
@@ -67,7 +67,9 @@ export interface WebSocketApiDependencies {
   readonly defaultParams: DefaultWebsocketApiParams;
 }
 
-export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter as { new<T>(): TypedEventEmitter<T> })<Events> {
+export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter as {
+  new <T>(): TypedEventEmitter<T>;
+})<Events> {
   protected socket: WebSocket | null = null;
   protected pendingCommands: string[] = [];
   protected reconnectTimer?: number;
@@ -76,7 +78,10 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
 
   @observable readyState = WebSocketApiState.PENDING;
 
-  constructor(protected readonly dependencies: WebSocketApiDependencies, params: WebsocketApiParams) {
+  constructor(
+    protected readonly dependencies: WebSocketApiDependencies,
+    params: WebsocketApiParams,
+  ) {
     super();
     makeObservable(this);
     this.params = {
@@ -90,7 +95,7 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
     }
   }
 
-  isConnected(): this is (WebSocketApi<Events> & { socket: WebSocket }) {
+  isConnected(): this is WebSocketApi<Events> & { socket: WebSocket } {
     return this.socket?.readyState === WebSocket.OPEN;
   }
 
@@ -100,10 +105,10 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
 
     // start new connection
     this.socket = new WebSocket(url);
-    this.socket.addEventListener("open", ev => this._onOpen(ev));
-    this.socket.addEventListener("message", ev => this._onMessage(ev));
-    this.socket.addEventListener("error", ev => this._onError(ev));
-    this.socket.addEventListener("close", ev => this._onClose(ev));
+    this.socket.addEventListener("open", (ev) => this._onOpen(ev));
+    this.socket.addEventListener("message", (ev) => this._onMessage(ev));
+    this.socket.addEventListener("error", (ev) => this._onError(ev));
+    this.socket.addEventListener("close", (ev) => this._onClose(ev));
     this.readyState = WebSocketApiState.CONNECTING;
   }
 
@@ -157,14 +162,14 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
   }
 
   protected _onOpen(evt: Event) {
-    this.emit("open", ...[] as Arguments<Events["open"]>);
+    this.emit("open", ...([] as Arguments<Events["open"]>));
     if (this.params.flushOnOpen) this.flush();
     this.readyState = WebSocketApiState.OPEN;
     this.writeLog("%cOPEN", "color:green;font-weight:bold;", evt);
   }
 
   protected _onMessage({ data }: MessageEvent): void {
-    this.emit("data", ...[data] as Arguments<Events["data"]>);
+    this.emit("data", ...([data] as Arguments<Events["data"]>));
     this.writeLog("%cMESSAGE", "color:black;font-weight:bold;", data);
   }
 
@@ -188,7 +193,7 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
       }
     } else {
       this.readyState = WebSocketApiState.CLOSED;
-      this.emit("close", ...[] as Arguments<Events["close"]>);
+      this.emit("close", ...([] as Arguments<Events["close"]>));
     }
     this.writeLog("%cCLOSE", `color:${error ? "red" : "black"};font-weight:bold;`, evt);
   }

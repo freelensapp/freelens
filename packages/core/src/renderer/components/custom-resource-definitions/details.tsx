@@ -5,29 +5,30 @@
 
 import "./details.scss";
 
+import { CustomResourceDefinition } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { observer } from "mobx-react";
-import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Table, TableCell, TableHead, TableRow } from "../table";
 import { Input } from "../input";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { MonacoEditor } from "../monaco-editor";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
-export interface CustomResourceDefinitionDetailsProps extends KubeObjectDetailsProps<CustomResourceDefinition> {
-}
+export interface CustomResourceDefinitionDetailsProps extends KubeObjectDetailsProps<CustomResourceDefinition> {}
 
 interface Dependencies {
   logger: Logger;
 }
 
 @observer
-class NonInjectedCustomResourceDefinitionDetails extends React.Component<CustomResourceDefinitionDetailsProps & Dependencies> {
+class NonInjectedCustomResourceDefinitionDetails extends React.Component<
+  CustomResourceDefinitionDetailsProps & Dependencies
+> {
   render() {
     const { object: crd } = this.props;
 
@@ -36,7 +37,10 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<CustomR
     }
 
     if (!(crd instanceof CustomResourceDefinition)) {
-      this.props.logger.error("[CustomResourceDefinitionDetails]: passed object that is not an instanceof CustomResourceDefinition", crd);
+      this.props.logger.error(
+        "[CustomResourceDefinitionDetails]: passed object that is not an instanceof CustomResourceDefinition",
+        crd,
+      );
 
       return null;
     }
@@ -47,60 +51,38 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<CustomR
 
     return (
       <div className="CustomResourceDefinitionDetails">
-        <DrawerItem name="Group">
-          {crd.getGroup()}
-        </DrawerItem>
-        <DrawerItem name="Version">
-          {crd.getVersion()}
-        </DrawerItem>
-        <DrawerItem name="Stored versions">
-          {crd.getStoredVersions()}
-        </DrawerItem>
-        <DrawerItem name="Scope">
-          {crd.getScope()}
-        </DrawerItem>
+        <DrawerItem name="Group">{crd.getGroup()}</DrawerItem>
+        <DrawerItem name="Version">{crd.getVersion()}</DrawerItem>
+        <DrawerItem name="Stored versions">{crd.getStoredVersions()}</DrawerItem>
+        <DrawerItem name="Scope">{crd.getScope()}</DrawerItem>
         <DrawerItem name="Resource">
-          <Link to={crd.getResourceUrl()}>
-            {crd.getResourceTitle()}
-          </Link>
+          <Link to={crd.getResourceUrl()}>{crd.getResourceTitle()}</Link>
         </DrawerItem>
         <DrawerItem name="Conversion" className="flex gaps align-flex-start">
-          <Input
-            multiLine
-            theme="round-black"
-            className="box grow"
-            value={crd.getConversion()}
-            readOnly
-          />
+          <Input multiLine theme="round-black" className="box grow" value={crd.getConversion()} readOnly />
         </DrawerItem>
-        <DrawerItem
-          name="Conditions"
-          className="conditions"
-          labelsOnly
-        >
-          {
-            crd.getConditions().map(condition => {
-              const { type, message, lastTransitionTime, status } = condition;
+        <DrawerItem name="Conditions" className="conditions" labelsOnly>
+          {crd.getConditions().map((condition) => {
+            const { type, message, lastTransitionTime, status } = condition;
 
-              return (
-                <Badge
-                  key={type}
-                  label={type}
-                  disabled={status === "False"}
-                  className={type}
-                  tooltip={(
-                    <>
-                      <p>{message}</p>
-                      <p>
-                        Last transition time:
-                        {lastTransitionTime}
-                      </p>
-                    </>
-                  )}
-                />
-              );
-            })
-          }
+            return (
+              <Badge
+                key={type}
+                label={type}
+                disabled={status === "False"}
+                className={type}
+                tooltip={
+                  <>
+                    <p>{message}</p>
+                    <p>
+                      Last transition time:
+                      {lastTransitionTime}
+                    </p>
+                  </>
+                }
+              />
+            );
+          })}
         </DrawerItem>
         <DrawerTitle>Names</DrawerTitle>
         <Table selectable className="names box grow">
@@ -126,32 +108,26 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<CustomR
                 <TableCell className="type">Type</TableCell>
                 <TableCell className="json-path">JSON Path</TableCell>
               </TableHead>
-              {
-                printerColumns.map((column, index) => {
-                  const { name, type, jsonPath } = column;
+              {printerColumns.map((column, index) => {
+                const { name, type, jsonPath } = column;
 
-                  return (
-                    <TableRow key={index}>
-                      <TableCell className="name">{name}</TableCell>
-                      <TableCell className="type">{type}</TableCell>
-                      <TableCell className="json-path">
-                        <Badge label={jsonPath}/>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              }
+                return (
+                  <TableRow key={index}>
+                    <TableCell className="name">{name}</TableCell>
+                    <TableCell className="type">{type}</TableCell>
+                    <TableCell className="json-path">
+                      <Badge label={jsonPath} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </Table>
           </>
         )}
         {validation && (
           <>
             <DrawerTitle>Validation</DrawerTitle>
-            <MonacoEditor
-              readOnly
-              value={validation}
-              style={{ height: 400 }}
-            />
+            <MonacoEditor readOnly value={validation} style={{ height: 400 }} />
           </>
         )}
       </div>
@@ -159,9 +135,12 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<CustomR
   }
 }
 
-export const CustomResourceDefinitionDetails = withInjectables<Dependencies, CustomResourceDefinitionDetailsProps>(NonInjectedCustomResourceDefinitionDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const CustomResourceDefinitionDetails = withInjectables<Dependencies, CustomResourceDefinitionDetailsProps>(
+  NonInjectedCustomResourceDefinitionDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

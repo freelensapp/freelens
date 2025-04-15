@@ -5,7 +5,7 @@ import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment, mainDir } from "./vars";
 
-const main: webpack.Configuration = ({
+const main: webpack.Configuration = {
   name: "freelens-app-main",
   context: __dirname,
   target: "electron-main",
@@ -25,9 +25,7 @@ const main: webpack.Configuration = ({
   resolve: {
     extensions: [".json", ".js", ".ts"],
   },
-  externals: [
-    nodeExternals({ modulesFromFile: true }),
-  ],
+  externals: [nodeExternals({ modulesFromFile: true })],
   module: {
     parser: {
       javascript: {
@@ -53,6 +51,6 @@ const main: webpack.Configuration = ({
       CONTEXT_MATCHER_FOR_FEATURES: `/\\/(renderer|common)\\/.+\\.injectable\\.tsx?$/`,
     }),
   ],
-});
+};
 
 export default main;

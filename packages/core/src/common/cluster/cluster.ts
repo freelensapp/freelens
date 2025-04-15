@@ -3,13 +3,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed, observable, toJS, runInAction } from "mobx";
-import type { KubeApiResource } from "../rbac";
-import type { ClusterState, ClusterId, ClusterMetadata, ClusterModel, ClusterPreferences, ClusterPrometheusPreferences, UpdateClusterModel } from "../cluster-types";
-import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
-import type { IObservableValue } from "mobx";
-import { replaceObservableObject } from "../utils/replace-observable-object";
 import { pick } from "lodash";
+import { computed, observable, runInAction, toJS } from "mobx";
+import type { IObservableValue } from "mobx";
+import type {
+  ClusterId,
+  ClusterMetadata,
+  ClusterModel,
+  ClusterPreferences,
+  ClusterPrometheusPreferences,
+  ClusterState,
+  UpdateClusterModel,
+} from "../cluster-types";
+import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
+import type { KubeApiResource } from "../rbac";
+import { replaceObservableObject } from "../utils/replace-observable-object";
 
 export class Cluster {
   /**
@@ -115,7 +123,9 @@ export class Cluster {
   /**
    * Prometheus preferences
    */
-  readonly prometheusPreferences = computed(() => pick(toJS(this.preferences), "prometheus", "prometheusProvider") as ClusterPrometheusPreferences);
+  readonly prometheusPreferences = computed(
+    () => pick(toJS(this.preferences), "prometheus", "prometheusProvider") as ClusterPrometheusPreferences,
+  );
 
   constructor({ id, ...model }: ClusterModel) {
     const { error } = clusterModelIdChecker.validate({ id });

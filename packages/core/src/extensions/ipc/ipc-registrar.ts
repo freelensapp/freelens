@@ -1,11 +1,11 @@
+import { createHash } from "crypto";
+import { broadcastMessage } from "../../common/ipc";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { Singleton } from "../../common/utils/singleton";
 import type { LensExtension } from "../lens-extension";
-import { createHash } from "crypto";
-import { broadcastMessage } from "../../common/ipc";
 
 export const IpcPrefix = Symbol();
 

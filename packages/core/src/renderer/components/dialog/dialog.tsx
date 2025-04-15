@@ -5,16 +5,16 @@
 
 import "./dialog.scss";
 
-import React from "react";
-import { createPortal } from "react-dom";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { reaction } from "mobx";
 import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop, stopPropagation } from "@freelensapp/utilities";
-import type { ObservableHistory } from "mobx-observable-history";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { reaction } from "mobx";
+import type { ObservableHistory } from "mobx-observable-history";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { createPortal } from "react-dom";
 
 // todo: refactor + handle animation-end in props.onClose()?
 
@@ -42,7 +42,10 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedDialog extends React.PureComponent<DialogProps & Dependencies & typeof NonInjectedDialog.defaultProps, DialogState> {
+class NonInjectedDialog extends React.PureComponent<
+  DialogProps & Dependencies & typeof NonInjectedDialog.defaultProps,
+  DialogState
+> {
   private readonly contentElem = React.createRef<HTMLDivElement>();
   private readonly ref = React.createRef<HTMLDivElement>();
 
@@ -75,7 +78,10 @@ class NonInjectedDialog extends React.PureComponent<DialogProps & Dependencies &
     }
 
     disposeOnUnmount(this, [
-      reaction(() => this.props.navigation.toString(), () => this.close()),
+      reaction(
+        () => this.props.navigation.toString(),
+        () => this.close(),
+      ),
     ]);
   }
 
@@ -155,10 +161,7 @@ class NonInjectedDialog extends React.PureComponent<DialogProps & Dependencies &
         ref={this.ref}
         data-testid={testId}
       >
-        <div
-          className="box"
-          ref={this.contentElem}
-        >
+        <div className="box" ref={this.contentElem}>
           {this.props.children}
         </div>
       </div>

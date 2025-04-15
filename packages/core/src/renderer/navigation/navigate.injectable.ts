@@ -1,12 +1,12 @@
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { LocationDescriptor } from "history";
-import { action } from "mobx";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { createPath } from "history";
+import { action } from "mobx";
 
 export type Navigate = (location: LocationDescriptor) => void;
 

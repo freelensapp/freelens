@@ -1,9 +1,9 @@
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { rootFrameHasRenderedChannel } from "../../../common/root-frame/root-frame-rendered-channel";
 
 const broadcastThatRootFrameIsRenderedInjectable = getInjectable({

@@ -75,9 +75,7 @@ describe("cluster - custom resources in sidebar", () => {
 
   describe("when custom resource exists", () => {
     beforeEach(() => {
-      customResourceDefinitionStore.items.replace([
-        customResourceDefinition,
-      ]);
+      customResourceDefinitionStore.items.replace([customResourceDefinition]);
     });
 
     it("renders", () => {
@@ -155,17 +153,23 @@ describe("cluster - custom resources in sidebar", () => {
           });
 
           it("formats the some.group.com sidebar item title correctly", () => {
-            expect(result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild).toHaveTextContent("some\u200b.group\u200b.com", {
+            expect(
+              result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild,
+            ).toHaveTextContent("some\u200b.group\u200b.com", {
               normalizeWhitespace: false,
             });
           });
 
           it("shows some-resources group sidebar item", () => {
-            expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources")).toBeInTheDocument();
+            expect(
+              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+            ).toBeInTheDocument();
           });
 
           it("formats the some-resources sidebar item title correctly", () => {
-            expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources")).toHaveTextContent("Some Resource");
+            expect(
+              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+            ).toHaveTextContent("Some Resource");
           });
         });
       });

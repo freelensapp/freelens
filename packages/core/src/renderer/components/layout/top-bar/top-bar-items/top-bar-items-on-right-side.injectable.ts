@@ -21,7 +21,7 @@ const topBarItemsOnRightSideInjectable = getInjectable({
       pipeline(
         items.get(),
         filter((item) => item.isShown.get()),
-        sortBy(item => item.orderNumber),
+        sortBy((item) => item.orderNumber),
       ),
     );
   },

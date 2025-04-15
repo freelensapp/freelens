@@ -5,16 +5,16 @@
 
 import "./network-policies.scss";
 
-import React from "react";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../kube-object/age";
-import type { NetworkPolicyStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import networkPolicyStoreInjectable from "./store.injectable";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { NetworkPolicyStore } from "./store";
+import networkPolicyStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -38,13 +38,11 @@ class NonInjectedNetworkPolicies extends React.Component<Dependencies> {
           className="NetworkPolicies"
           store={this.props.networkPolicyStore}
           sortingCallbacks={{
-            [columnId.name]: networkPolicy => networkPolicy.getName(),
-            [columnId.namespace]: networkPolicy => networkPolicy.getNs(),
-            [columnId.age]: networkPolicy => -networkPolicy.getCreationTimestamp(),
+            [columnId.name]: (networkPolicy) => networkPolicy.getName(),
+            [columnId.namespace]: (networkPolicy) => networkPolicy.getNs(),
+            [columnId.age]: (networkPolicy) => -networkPolicy.getCreationTimestamp(),
           }}
-          searchFilters={[
-            networkPolicy => networkPolicy.getSearchFields(),
-          ]}
+          searchFilters={[(networkPolicy) => networkPolicy.getSearchFields()]}
           renderHeaderTitle="Network Policies"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -53,13 +51,10 @@ class NonInjectedNetworkPolicies extends React.Component<Dependencies> {
             { title: "Policy Types", className: "type", id: columnId.types },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={networkPolicy => [
+          renderTableContents={(networkPolicy) => [
             networkPolicy.getName(),
             <KubeObjectStatusIcon key="icon" object={networkPolicy} />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={networkPolicy.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={networkPolicy.getNs()} />,
             networkPolicy.getTypes().join(", "),
             <KubeObjectAge key="age" object={networkPolicy} />,
           ]}

@@ -4,10 +4,10 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { CreateHotbarData, CreateHotbarOptions } from "./types";
 import activeHotbarIdInjectable from "./active-id.injectable";
-import hotbarsStateInjectable from "./state.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
+import hotbarsStateInjectable from "./state.injectable";
+import type { CreateHotbarData, CreateHotbarOptions } from "./types";
 
 export type AddHotbar = (data: CreateHotbarData, options?: CreateHotbarOptions) => void;
 

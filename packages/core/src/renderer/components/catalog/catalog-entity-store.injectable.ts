@@ -5,14 +5,14 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 
-import type { IComputedValue, IObservableValue } from "mobx";
-import { computed, observable, reaction } from "mobx";
-import type { CatalogEntity } from "../../api/catalog-entity";
-import type { CatalogCategory } from "../../../common/catalog";
 import type { Disposer } from "@freelensapp/utilities";
 import { disposer } from "@freelensapp/utilities";
-import type { ItemListStore } from "../item-object-list";
+import type { IComputedValue, IObservableValue } from "mobx";
+import { computed, observable, reaction } from "mobx";
+import type { CatalogCategory } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
+import type { CatalogEntity } from "../../api/catalog-entity";
+import type { ItemListStore } from "../item-object-list";
 import selectedCatalogEntityParamInjectable from "./entity-details/selected-uid.injectable";
 
 export type CatalogEntityStore = ItemListStore<CatalogEntity, false> & {
@@ -53,11 +53,12 @@ const catalogEntityStoreInjectable = getInjectable({
     return {
       entities,
       activeCategory,
-      watch: () => disposer(
-        reaction(() => entities.get(), loadAll),
-        reaction(() => activeCategory.get(), loadAll, { delay: 100 }),
-      ),
-      onRun: entity => catalogEntityRegistry.onRun(entity),
+      watch: () =>
+        disposer(
+          reaction(() => entities.get(), loadAll),
+          reaction(() => activeCategory.get(), loadAll, { delay: 100 }),
+        ),
+      onRun: (entity) => catalogEntityRegistry.onRun(entity),
       failedLoading: false,
       getTotalCount: () => entities.get().length,
       isLoaded: true,

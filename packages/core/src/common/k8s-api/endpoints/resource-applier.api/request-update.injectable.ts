@@ -1,11 +1,11 @@
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { AsyncResult, Result } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
-import type { AsyncResult, Result } from "@freelensapp/utilities";
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 export type RequestKubeObjectCreation = (resourceDescriptor: string) => AsyncResult<KubeJsonApiData, string>;
 
@@ -15,7 +15,7 @@ const requestKubeObjectCreationInjectable = getInjectable({
     const apiBase = di.inject(apiBaseInjectable);
 
     return async (data) => {
-      const result = await apiBase.post("/stack", { data }) as Result<string, string>;
+      const result = (await apiBase.post("/stack", { data })) as Result<string, string>;
 
       if (!result.callWasSuccessful) {
         return result;

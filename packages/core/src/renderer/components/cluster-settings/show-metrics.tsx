@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { Cluster } from "../../../common/cluster/cluster";
-import { observable, reaction, makeObservable } from "mobx";
-import { Badge } from "../badge/badge";
 import { Icon } from "@freelensapp/icon";
+import { makeObservable, observable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import type { Cluster } from "../../../common/cluster/cluster";
+import { Badge } from "../badge/badge";
 import { Notice } from "../extensions/notice";
 
 export interface ShowMetricsSettingProps {
@@ -28,9 +28,12 @@ export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps>
     this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
 
     disposeOnUnmount(this, [
-      reaction(() => this.props.cluster.preferences.hiddenMetrics, () => {
-        this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
-      }),
+      reaction(
+        () => this.props.cluster.preferences.hiddenMetrics,
+        () => {
+          this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
+        },
+      ),
     ]);
   }
 
@@ -43,42 +46,25 @@ export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps>
     const metrics = Array.from(this.hiddenMetrics);
 
     if (!metrics.length) {
-      return (
-        <div className="flex-grow text-center">All metrics are visible on the UI</div>
-      );
+      return <div className="flex-grow text-center">All metrics are visible on the UI</div>;
     }
 
-    return (
-      metrics.map(name => {
-        const tooltipId = `${name}`;
+    return metrics.map((name) => {
+      const tooltipId = `${name}`;
 
-        return (
-          <Badge
-            key={name}
-            flat
-            expandable={false}
-          >
-            <span id={tooltipId}>{name}</span>
-            <Icon
-              smallest
-              material="clear"
-              onClick={() => this.removeMetric(name)}
-              tooltip="Remove"
-              className="mx-3"
-            />
-          </Badge>
-        );
-      })
-    );
+      return (
+        <Badge key={name} flat expandable={false}>
+          <span id={tooltipId}>{name}</span>
+          <Icon smallest material="clear" onClick={() => this.removeMetric(name)} tooltip="Remove" className="mx-3" />
+        </Badge>
+      );
+    });
   }
 
   render() {
-
     return (
       <Notice>
-        <div className="MetricsSelect flex wrap gaps leading-relaxed">
-          {this.renderMetrics()}
-        </div>
+        <div className="MetricsSelect flex wrap gaps leading-relaxed">{this.renderMetrics()}</div>
       </Notice>
     );
   }

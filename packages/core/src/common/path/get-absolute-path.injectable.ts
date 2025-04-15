@@ -1,9 +1,9 @@
+import path from "path";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import path from "path";
 
 export type GetAbsolutePath = (...args: string[]) => string;
 

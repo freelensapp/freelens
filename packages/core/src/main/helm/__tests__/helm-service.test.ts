@@ -3,13 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { AsyncResult } from "@freelensapp/utilities";
+import { sortBySemverVersion } from "@freelensapp/utilities";
+import type { HelmRepo } from "../../../common/helm/helm-repo";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 import listHelmChartsInjectable from "../helm-service/list-helm-charts.injectable";
 import getActiveHelmRepositoriesInjectable from "../repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import type { HelmRepo } from "../../../common/helm/helm-repo";
-import { sortBySemverVersion } from "@freelensapp/utilities";
-import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 
 describe("Helm Service tests", () => {
   let listHelmCharts: () => Promise<any>;
@@ -20,10 +20,7 @@ describe("Helm Service tests", () => {
 
     getActiveHelmRepositoriesMock = jest.fn();
 
-    di.override(
-      helmChartManagerInjectable,
-      (di, repo) => new HelmChartManagerFake(repo) as unknown,
-    );
+    di.override(helmChartManagerInjectable, (di, repo) => new HelmChartManagerFake(repo) as unknown);
 
     di.override(getActiveHelmRepositoriesInjectable, () => getActiveHelmRepositoriesMock);
 
@@ -111,7 +108,7 @@ describe("Helm Service tests", () => {
             created: "now",
           },
         ],
-        "redis": [
+        redis: [
           {
             apiVersion: "3.0.0",
             name: "apm-server",
@@ -131,7 +128,7 @@ describe("Helm Service tests", () => {
         ],
       },
       experiment: {
-        "fairwind": [
+        fairwind: [
           {
             apiVersion: "3.0.0",
             name: "fairwind",
@@ -158,11 +155,13 @@ describe("Helm Service tests", () => {
     getActiveHelmRepositoriesMock.mockReturnValue(
       Promise.resolve({
         callWasSuccessful: true,
-        response: [{
-          name: "bitnami",
-          url: "bitnamiurl",
-          cacheFilePath: "/some-cache-file-path-for-bitnami",
-        }],
+        response: [
+          {
+            name: "bitnami",
+            url: "bitnamiurl",
+            cacheFilePath: "/some-cache-file-path-for-bitnami",
+          },
+        ],
       }),
     );
 
@@ -170,7 +169,7 @@ describe("Helm Service tests", () => {
 
     expect(charts).toEqual({
       bitnami: {
-        "hotdog": [
+        hotdog: [
           {
             apiVersion: "3.0.0",
             name: "hotdog",
@@ -188,7 +187,7 @@ describe("Helm Service tests", () => {
             created: "now",
           },
         ],
-        "pretzel": [
+        pretzel: [
           {
             apiVersion: "3.0.0",
             name: "pretzel",
@@ -212,141 +211,150 @@ describe("Helm Service tests", () => {
 });
 
 const charts = new Map([
-  ["stable", {
-    "invalid-semver": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "weird-versioning",
-        version: "I am not semver",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "weird-versioning",
-        version: "v4.3.0",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "weird-versioning",
-        version: "I am not semver but more",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "weird-versioning",
-        version: "v4.4.0",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-    ]),
-    "apm-server": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "apm-server",
-        version: "2.1.7",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "apm-server",
-        version: "2.1.6",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-    ]),
-    "redis": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "apm-server",
-        version: "1.0.0",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "apm-server",
-        version: "0.0.9",
-        repo: "stable",
-        digest: "test",
-        created: "now",
-      },
-    ]),
-  }],
-  ["experiment", {
-    "fairwind": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "fairwind",
-        version: "0.0.1",
-        repo: "experiment",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "fairwind",
-        version: "0.0.2",
-        repo: "experiment",
-        digest: "test",
-        deprecated: true,
-        created: "now",
-      },
-    ]),
-  }],
-  ["bitnami", {
-    "hotdog": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "hotdog",
-        version: "1.0.1",
-        repo: "bitnami",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "hotdog",
-        version: "1.0.2",
-        repo: "bitnami",
-        digest: "test",
-        created: "now",
-      },
-    ]),
-    "pretzel": sortBySemverVersion([
-      {
-        apiVersion: "3.0.0",
-        name: "pretzel",
-        version: "1.0",
-        repo: "bitnami",
-        digest: "test",
-        created: "now",
-      },
-      {
-        apiVersion: "3.0.0",
-        name: "pretzel",
-        version: "1.0.1",
-        repo: "bitnami",
-        digest: "test",
-        created: "now",
-      },
-    ]),
-  }],
+  [
+    "stable",
+    {
+      "invalid-semver": sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "weird-versioning",
+          version: "I am not semver",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "weird-versioning",
+          version: "v4.3.0",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "weird-versioning",
+          version: "I am not semver but more",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "weird-versioning",
+          version: "v4.4.0",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+      ]),
+      "apm-server": sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "apm-server",
+          version: "2.1.7",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "apm-server",
+          version: "2.1.6",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+      ]),
+      redis: sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "apm-server",
+          version: "1.0.0",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "apm-server",
+          version: "0.0.9",
+          repo: "stable",
+          digest: "test",
+          created: "now",
+        },
+      ]),
+    },
+  ],
+  [
+    "experiment",
+    {
+      fairwind: sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "fairwind",
+          version: "0.0.1",
+          repo: "experiment",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "fairwind",
+          version: "0.0.2",
+          repo: "experiment",
+          digest: "test",
+          deprecated: true,
+          created: "now",
+        },
+      ]),
+    },
+  ],
+  [
+    "bitnami",
+    {
+      hotdog: sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "hotdog",
+          version: "1.0.1",
+          repo: "bitnami",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "hotdog",
+          version: "1.0.2",
+          repo: "bitnami",
+          digest: "test",
+          created: "now",
+        },
+      ]),
+      pretzel: sortBySemverVersion([
+        {
+          apiVersion: "3.0.0",
+          name: "pretzel",
+          version: "1.0",
+          repo: "bitnami",
+          digest: "test",
+          created: "now",
+        },
+        {
+          apiVersion: "3.0.0",
+          name: "pretzel",
+          version: "1.0.1",
+          repo: "bitnami",
+          digest: "test",
+          created: "now",
+        },
+      ]),
+    },
+  ],
 ]);
 
 class HelmChartManagerFake {
-  constructor(private repo: HelmRepo){ }
+  constructor(private repo: HelmRepo) {}
 
   public async charts(): Promise<any> {
     return charts.get(this.repo.name) ?? {};

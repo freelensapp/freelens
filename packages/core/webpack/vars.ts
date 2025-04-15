@@ -13,9 +13,7 @@ export const buildDir = path.join(process.cwd(), "static", "build");
 export const extensionEntry = path.join(process.cwd(), "src", "extensions", "extension-api.ts");
 export const extensionOutDir = path.join(process.cwd(), "packages", "extensions", "dist");
 export const rendererDir = path.join(process.cwd(), "src", "renderer");
-export const appName = isDevelopment
-  ? `${packageInfo.productName}Dev`
-  : packageInfo.productName;
+export const appName = isDevelopment ? `${packageInfo.productName}Dev` : packageInfo.productName;
 export const htmlTemplate = path.resolve(rendererDir, "template.html");
 export const webpackDevServerPort = Number(process.env.WEBPACK_DEV_SERVER_PORT) || 9191;
 

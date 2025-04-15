@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import helmChartsRouteInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/helm-charts-route.injectable";
+import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 
 const helmChartsRouteParametersInjectable = getInjectable({
   id: "helm-charts-route-parameters",

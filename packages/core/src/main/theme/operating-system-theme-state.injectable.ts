@@ -15,9 +15,7 @@ const operatingSystemThemeStateInjectable = getInjectable({
     const getElectronTheme = di.inject(getElectronThemeInjectable);
     const defaultTheme = getElectronTheme();
 
-    return observable.box<Theme>(
-      defaultTheme,
-    );
+    return observable.box<Theme>(defaultTheme);
   },
 });
 

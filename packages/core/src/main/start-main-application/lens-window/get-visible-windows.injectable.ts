@@ -8,10 +8,7 @@ import { applicationWindowInjectionToken } from "./application-window/applicatio
 const getVisibleWindowsInjectable = getInjectable({
   id: "get-visible-windows",
 
-  instantiate: (di) => () => (
-    di.injectMany(applicationWindowInjectionToken)
-      .filter(window => window.isVisible)
-  ),
+  instantiate: (di) => () => di.injectMany(applicationWindowInjectionToken).filter((window) => window.isVisible),
 });
 
 export default getVisibleWindowsInjectable;

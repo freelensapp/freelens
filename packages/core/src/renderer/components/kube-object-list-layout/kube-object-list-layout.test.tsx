@@ -4,25 +4,25 @@
  */
 import type { DiContainer } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
-import { KubeObjectListLayout } from "./index";
-import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
-import podStoreInjectable from "../workloads-pods/store.injectable";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import type { PodStore } from "../workloads-pods/store";
-import { Cluster } from "../../../common/cluster/cluster";
-import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
-import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import podStoreInjectable from "../workloads-pods/store.injectable";
+import { KubeObjectListLayout } from "./index";
 
 describe("kube-object-list-layout", () => {
   let di: DiContainer;
@@ -37,11 +37,15 @@ describe("kube-object-list-layout", () => {
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
     di.override(isTableColumnHiddenInjectable, () => () => false);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     render = renderFor(di);
 
@@ -61,43 +65,39 @@ describe("kube-object-list-layout", () => {
     let result: RenderResult;
 
     it("renders", () => {
-      result = render((
+      result = render(
         <div>
           <KubeObjectListLayout
             className="Pods"
             store={podStore}
-            tableId = "workloads_pods"
+            tableId="workloads_pods"
             isConfigurable
             renderHeaderTitle="Pods"
-            renderTableContents={pod => [
-              <div key={pod.getName()}>{pod.getName()}</div>,
-            ]}
+            renderTableContents={(pod) => [<div key={pod.getName()}>{pod.getName()}</div>]}
             columns={di.injectMany(podListLayoutColumnInjectionToken)}
           />
-        </div>
-      ));
+        </div>,
+      );
 
       expect(result.baseElement).toMatchSnapshot();
     });
 
     describe("given resourcename", () => {
       it("uses resourcename in search placeholder", () => {
-        result = render((
+        result = render(
           <div>
             <KubeObjectListLayout
               className="Pods"
               store={podStore}
-              tableId = "workloads_pods"
+              tableId="workloads_pods"
               isConfigurable
               renderHeaderTitle="Pods"
-              renderTableContents={pod => [
-                <div key={pod.getName()}>{pod.getName()}</div>,
-              ]}
+              renderTableContents={(pod) => [<div key={pod.getName()}>{pod.getName()}</div>]}
               resourceName="My Custom Items"
               searchFilters={[() => null]}
             />
-          </div>
-        ));
+          </div>,
+        );
 
         expect(result.getByPlaceholderText("Search My Custom Items...")).toBeInTheDocument();
       });

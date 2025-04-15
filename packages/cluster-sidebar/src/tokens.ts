@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
-import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface SidebarItemRegistration {
   id?: undefined;

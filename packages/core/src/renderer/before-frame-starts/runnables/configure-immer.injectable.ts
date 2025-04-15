@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { setAutoFreeze, enableMapSet } from "immer";
+import { enableMapSet, setAutoFreeze } from "immer";
 import { beforeFrameStartsFirstInjectionToken } from "../tokens";
 
 const configureImmerInjectable = getInjectable({

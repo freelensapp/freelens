@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import persistentVolumesRouteInjectable from "./persistent-volumes-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import persistentVolumesRouteInjectable from "./persistent-volumes-route.injectable";
 
 const navigateToPersistentVolumesInjectable = getInjectable({
   id: "navigate-to-persistent-volumes",

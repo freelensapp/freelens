@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import clusterRolesRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/cluster-roles/cluster-roles-route.injectable";
-import userManagementSidebarItemInjectable from "../user-management-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../../routes/route-is-active.injectable";
+import clusterRolesRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/cluster-roles/cluster-roles-route.injectable";
 import navigateToClusterRolesInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/cluster-roles/navigate-to-cluster-roles.injectable";
+import routeIsActiveInjectable from "../../../routes/route-is-active.injectable";
+import userManagementSidebarItemInjectable from "../user-management-sidebar-item.injectable";
 
 const clusterRolesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-cluster-roles",

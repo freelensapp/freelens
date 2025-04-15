@@ -16,17 +16,18 @@ describe("unionPATHs", () => {
   });
 
   it("should remove duplicate entries, appending non duplicates in order received", () => {
-    expect(unionPATHs(
-      `/bin/bar${path.delimiter}/usr/bin`,
-      `/bin/bar${path.delimiter}/usr/lens/bat`,
-    )).toBe(`/bin/bar${path.delimiter}/usr/bin${path.delimiter}/usr/lens/bat`);
+    expect(unionPATHs(`/bin/bar${path.delimiter}/usr/bin`, `/bin/bar${path.delimiter}/usr/lens/bat`)).toBe(
+      `/bin/bar${path.delimiter}/usr/bin${path.delimiter}/usr/lens/bat`,
+    );
   });
 
   it("should remove duplicate entries, appending non duplicates in order received, 3", () => {
-    expect(unionPATHs(
-      `/bin/bar${path.delimiter}/usr/bin`,
-      `/bin/bar${path.delimiter}/usr/lens/bat`,
-      `/usr/local/lens${path.delimiter}/usr/bin`,
-    )).toBe(`/bin/bar${path.delimiter}/usr/bin${path.delimiter}/usr/lens/bat${path.delimiter}/usr/local/lens`);
+    expect(
+      unionPATHs(
+        `/bin/bar${path.delimiter}/usr/bin`,
+        `/bin/bar${path.delimiter}/usr/lens/bat`,
+        `/usr/local/lens${path.delimiter}/usr/bin`,
+      ),
+    ).toBe(`/bin/bar${path.delimiter}/usr/bin${path.delimiter}/usr/lens/bat${path.delimiter}/usr/local/lens`);
   });
 });

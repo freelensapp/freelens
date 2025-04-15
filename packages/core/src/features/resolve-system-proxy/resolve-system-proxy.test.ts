@@ -4,12 +4,12 @@
  */
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import type { ResolveSystemProxy } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
 import { resolveSystemProxyInjectionToken } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
 import resolveSystemProxyFromElectronInjectable from "../../main/utils/resolve-system-proxy/resolve-system-proxy-from-electron.injectable";
-import { getPromiseStatus } from "@freelensapp/test-utils";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("resolve-system-proxy", () => {
   let builder: ApplicationBuilder;
@@ -22,10 +22,7 @@ describe("resolve-system-proxy", () => {
     resolveSystemProxyFromElectronMock = asyncFn();
 
     builder.beforeApplicationStart(({ mainDi }) => {
-      mainDi.override(
-        resolveSystemProxyFromElectronInjectable,
-        () => resolveSystemProxyFromElectronMock,
-      );
+      mainDi.override(resolveSystemProxyFromElectronInjectable, () => resolveSystemProxyFromElectronMock);
     });
 
     await builder.render();
@@ -33,9 +30,7 @@ describe("resolve-system-proxy", () => {
 
   describe("given in main, when called with URL", () => {
     beforeEach(async () => {
-      const resolveSystemProxyInMain = builder.mainDi.inject(
-        resolveSystemProxyInjectionToken,
-      );
+      const resolveSystemProxyInMain = builder.mainDi.inject(resolveSystemProxyInjectionToken);
 
       actualPromise = resolveSystemProxyInMain("some-url");
     });
@@ -61,9 +56,7 @@ describe("resolve-system-proxy", () => {
     beforeEach(async () => {
       const windowDi = builder.applicationWindow.only.di;
 
-      const resolveSystemProxyInRenderer = windowDi.inject(
-        resolveSystemProxyInjectionToken,
-      );
+      const resolveSystemProxyInRenderer = windowDi.inject(resolveSystemProxyInjectionToken);
 
       actualPromise = resolveSystemProxyInRenderer("some-url");
     });

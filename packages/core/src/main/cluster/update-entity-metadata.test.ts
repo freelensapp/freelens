@@ -24,7 +24,7 @@ describe("update-entity-metadata", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
     di.override(appPathsStateInjectable, () => ({
-      get: () => ({} as AppPaths),
+      get: () => ({}) as AppPaths,
       set: () => {},
     }));
 

@@ -4,28 +4,27 @@
  */
 
 import "./replicaset-details.scss";
-import React from "react";
-import { DrawerItem } from "../drawer";
-import { Badge } from "../badge";
-import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
-import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
-import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ReplicaSet } from "@freelensapp/kube-object";
-import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
+import { PodDetailsList } from "../workloads-pods/pod-details-list";
+import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
+import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
 import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import type { ReplicaSetStore } from "./store";
 import replicaSetStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-export interface ReplicaSetDetailsProps extends KubeObjectDetailsProps<ReplicaSet> {
-}
+export interface ReplicaSetDetailsProps extends KubeObjectDetailsProps<ReplicaSet> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -37,11 +36,7 @@ interface Dependencies {
 @observer
 class NonInjectedReplicaSetDetails extends React.Component<ReplicaSetDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.podStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
   }
   render() {
     const { object: replicaSet, replicaSetStore, logger } = this.props;
@@ -66,34 +61,32 @@ class NonInjectedReplicaSetDetails extends React.Component<ReplicaSetDetailsProp
       <div className="ReplicaSetDetails">
         {selectors.length > 0 && (
           <DrawerItem name="Selector" labelsOnly>
-            {
-              selectors.map(label => <Badge key={label} label={label}/>)
-            }
+            {selectors.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
           </DrawerItem>
         )}
         {nodeSelector.length > 0 && (
           <DrawerItem name="Node Selector" labelsOnly>
-            {
-              nodeSelector.map(label => <Badge key={label} label={label}/>)
-            }
+            {nodeSelector.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
           </DrawerItem>
         )}
         {images.length > 0 && (
           <DrawerItem name="Images">
-            {
-              images.map(image => <p key={image}>{image}</p>)
-            }
+            {images.map((image) => (
+              <p key={image}>{image}</p>
+            ))}
           </DrawerItem>
         )}
-        <DrawerItem name="Replicas">
-          {`${availableReplicas || 0} current / ${replicas || 0} desired`}
-        </DrawerItem>
-        <PodDetailsTolerations workload={replicaSet}/>
-        <PodDetailsAffinities workload={replicaSet}/>
+        <DrawerItem name="Replicas">{`${availableReplicas || 0} current / ${replicas || 0} desired`}</DrawerItem>
+        <PodDetailsTolerations workload={replicaSet} />
+        <PodDetailsAffinities workload={replicaSet} />
         <DrawerItem name="Pod Status" className="pod-status">
-          <PodDetailsStatuses pods={childPods}/>
+          <PodDetailsStatuses pods={childPods} />
         </DrawerItem>
-        <PodDetailsList pods={childPods} owner={replicaSet}/>
+        <PodDetailsList pods={childPods} owner={replicaSet} />
       </div>
     );
   }

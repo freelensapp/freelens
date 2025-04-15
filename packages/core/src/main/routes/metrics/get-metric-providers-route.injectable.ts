@@ -4,9 +4,9 @@
  */
 
 import { apiPrefix } from "../../../common/vars";
-import { getRouteInjectable } from "../../router/router.injectable";
-import { route } from "../../router/route";
 import prometheusProvidersInjectable from "../../prometheus/providers.injectable";
+import { route } from "../../router/route";
+import { getRouteInjectable } from "../../router/router.injectable";
 
 const getMetricProvidersRouteInjectable = getRouteInjectable({
   id: "get-metric-providers-route",
@@ -18,11 +18,7 @@ const getMetricProvidersRouteInjectable = getRouteInjectable({
       method: "get",
       path: `${apiPrefix}/metrics/providers`,
     })(() => ({
-      response: (
-        prometheusProviders
-          .get()
-          .map(({ name, kind: id, isConfigurable }) => ({ name, id, isConfigurable }))
-      ),
+      response: prometheusProviders.get().map(({ name, kind: id, isConfigurable }) => ({ name, id, isConfigurable })),
     }));
   },
 });

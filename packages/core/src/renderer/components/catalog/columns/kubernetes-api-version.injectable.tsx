@@ -15,14 +15,10 @@ const kubernetesApiVersionColumnInjectable = getInjectable({
     registration: {
       id: "version",
       priority: 30,
-      renderCell: entity => {
+      renderCell: (entity) => {
         const k8sVersion = (entity as KubernetesCluster).metadata.kubeVersion;
 
-        return (
-          <span key="version">
-            {k8sVersion === "unknown" ? "" : k8sVersion}
-          </span>
-        );
+        return <span key="version">{k8sVersion === "unknown" ? "" : k8sVersion}</span>;
       },
       titleProps: {
         title: "Version",

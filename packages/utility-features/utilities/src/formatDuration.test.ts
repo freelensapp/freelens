@@ -29,7 +29,6 @@ describe("human format durations", () => {
   });
 
   describe("when compact is true", () => {
-
     test("duration under 3 hours return minutes", () => {
       const res = formatDuration(1 * hour + 35 * minute);
 
@@ -87,8 +86,6 @@ describe("human format durations", () => {
       const zeroHours = formatDuration(6 * day + 2 * minute);
 
       expect(zeroHours).toBe("6d");
-
     });
   });
-
 });

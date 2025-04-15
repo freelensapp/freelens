@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
-import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export { Singleton } from "../../common/utils/singleton";
 

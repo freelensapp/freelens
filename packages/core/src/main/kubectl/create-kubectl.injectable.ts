@@ -1,25 +1,25 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { KubectlDependencies } from "./kubectl";
-import { Kubectl } from "./kubectl";
 import directoryForKubectlBinariesInjectable from "../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
-import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
-import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
-import kubectlBinaryNameInjectable from "./binary-name.injectable";
-import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
-import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundled-binaries-dir.injectable";
-import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
-import kubectlVersionMapInjectable from "./version-map.injectable";
-import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
-import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import unlinkInjectable from "../../common/fs/unlink.injectable";
+import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
+import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
+import joinPathsInjectable from "../../common/path/join-paths.injectable";
+import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundled-binaries-dir.injectable";
+import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
+import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import kubectlBinaryNameInjectable from "./binary-name.injectable";
+import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
+import type { KubectlDependencies } from "./kubectl";
+import { Kubectl } from "./kubectl";
+import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
+import kubectlVersionMapInjectable from "./version-map.injectable";
 
 export type CreateKubectl = (version: string) => Kubectl;
 

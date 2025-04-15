@@ -1,11 +1,11 @@
+import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import periodicalCheckForUpdatesInjectable from "./periodical-check-for-updates.injectable";
 import updatingIsEnabledInjectable from "../../updating-is-enabled/main/updating-is-enabled.injectable";
-import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
+import periodicalCheckForUpdatesInjectable from "./periodical-check-for-updates.injectable";
 
 const startCheckingForUpdatesInjectable = getInjectable({
   id: "start-checking-for-updates",

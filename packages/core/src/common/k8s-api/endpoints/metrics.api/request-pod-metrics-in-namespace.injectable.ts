@@ -26,17 +26,20 @@ const requestPodMetricsInNamespaceInjectable = getInjectable({
     return (namespace, selector) => {
       const opts = { category: "pods", pods: ".*", namespace, selector };
 
-      return requestMetrics({
-        cpuUsage: opts,
-        memoryUsage: opts,
-        fsUsage: opts,
-        fsWrites: opts,
-        fsReads: opts,
-        networkReceive: opts,
-        networkTransmit: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          cpuUsage: opts,
+          memoryUsage: opts,
+          fsUsage: opts,
+          fsWrites: opts,
+          fsReads: opts,
+          networkReceive: opts,
+          networkTransmit: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

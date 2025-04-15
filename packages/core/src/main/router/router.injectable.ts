@@ -4,10 +4,10 @@
  */
 import type { Injectable, InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { Router } from "./router";
+import createHandlerForRouteInjectable from "./create-handler-for-route.injectable";
 import parseRequestInjectable from "./parse-request.injectable";
 import type { Route } from "./route";
-import createHandlerForRouteInjectable from "./create-handler-for-route.injectable";
+import { Router } from "./router";
 
 export const routeInjectionToken = getInjectionToken<Route<unknown, string>>({
   id: "route-injection-token",
@@ -25,11 +25,12 @@ export function getRouteInjectable<T, Path extends string>(
 const routerInjectable = getInjectable({
   id: "router",
 
-  instantiate: (di) => new Router({
-    parseRequest: di.inject(parseRequestInjectable),
-    routes: di.injectMany(routeInjectionToken),
-    createHandlerForRoute: di.inject(createHandlerForRouteInjectable),
-  }),
+  instantiate: (di) =>
+    new Router({
+      parseRequest: di.inject(parseRequestInjectable),
+      routes: di.injectMany(routeInjectionToken),
+      createHandlerForRoute: di.inject(createHandlerForRouteInjectable),
+    }),
 });
 
 export default routerInjectable;

@@ -1,14 +1,14 @@
+import type { AsyncResult } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
-import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import getHelmReleaseResourcesInjectable from "./get-helm-release-resources/get-helm-release-resources.injectable";
 import type { HelmReleaseDataWithResources } from "../../../features/helm-releases/common/channels";
+import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import getHelmReleaseDataInjectable from "./get-helm-release-data.injectable";
+import getHelmReleaseResourcesInjectable from "./get-helm-release-resources/get-helm-release-resources.injectable";
 
 export interface GetHelmReleaseArgs {
   cluster: Cluster;
@@ -29,11 +29,7 @@ const getHelmReleaseInjectable = getInjectable({
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
       const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
 
-      const releaseResult = await getHelmReleaseData(
-        releaseName,
-        namespace,
-        proxyKubeconfigPath,
-      );
+      const releaseResult = await getHelmReleaseData(releaseName, namespace, proxyKubeconfigPath);
 
       if (!releaseResult.callWasSuccessful) {
         return {
@@ -42,11 +38,7 @@ const getHelmReleaseInjectable = getInjectable({
         };
       }
 
-      const resourcesResult = await getHelmReleaseResources(
-        releaseName,
-        namespace,
-        proxyKubeconfigPath,
-      );
+      const resourcesResult = await getHelmReleaseResources(releaseName, namespace, proxyKubeconfigPath);
 
       if (!resourcesResult.callWasSuccessful) {
         return {

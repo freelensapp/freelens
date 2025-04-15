@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import type WebSocket from "ws";
+import type { Cluster } from "../../common/cluster/cluster";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
 
@@ -24,11 +24,8 @@ const openShellSessionInjectable = getInjectable({
     const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
     const openNodeShellSession = di.inject(openNodeShellSessionInjectable);
 
-    return ({ nodeName, ...args }) => (
-      nodeName
-        ? openNodeShellSession({ nodeName, ...args })
-        : openLocalShellSession(args)
-    );
+    return ({ nodeName, ...args }) =>
+      nodeName ? openNodeShellSession({ nodeName, ...args }) : openLocalShellSession(args);
   },
 });
 

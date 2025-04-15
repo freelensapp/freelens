@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import statefulsetsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/statefulsets/statefulsets-route.injectable";
-import workloadsSidebarItemInjectable from "../workloads/workloads-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToStatefulsetsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/statefulsets/navigate-to-statefulsets.injectable";
+import statefulsetsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/statefulsets/statefulsets-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import workloadsSidebarItemInjectable from "../workloads/workloads-sidebar-item.injectable";
 
 const statefulSetsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-stateful-sets",

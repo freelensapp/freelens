@@ -1,9 +1,13 @@
+import type {
+  HorizontalPodAutoscaler,
+  HorizontalPodAutoscalerMetricSpec,
+  HorizontalPodAutoscalerMetricStatus,
+} from "@freelensapp/kube-object";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HorizontalPodAutoscaler, HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricStatus } from "@freelensapp/kube-object";
 import { getMetricName } from "./get-metric-name";
 import { HorizontalPodAutoscalerV1MetricParser } from "./metric-parser-v1";
 import { HorizontalPodAutoscalerV2MetricParser } from "./metric-parser-v2";
@@ -20,16 +24,17 @@ const getHorizontalPodAutoscalerMetrics = getInjectable({
     const cpuUtilization = hpa.spec?.targetCPUUtilizationPercentage;
 
     if (cpuUtilization) {
-      const utilizationCurrent = hpa.status?.currentCPUUtilizationPercentage ? `${hpa.status.currentCPUUtilizationPercentage}%` : "unknown";
+      const utilizationCurrent = hpa.status?.currentCPUUtilizationPercentage
+        ? `${hpa.status.currentCPUUtilizationPercentage}%`
+        : "unknown";
       const utilizationTarget = cpuUtilization ? `${cpuUtilization}%` : "unknown";
 
       return [`${utilizationCurrent} / ${utilizationTarget}`];
     }
 
     return metrics.map((metric) => {
-      const currentMetric = currentMetrics.find(current =>
-        current.type === metric.type
-        && getMetricName(current) === getMetricName(metric),
+      const currentMetric = currentMetrics.find(
+        (current) => current.type === metric.type && getMetricName(current) === getMetricName(metric),
       );
 
       const h2Values = getMetricValues<HorizontalPodAutoscalerV2MetricParser>(hpaV2Parser, currentMetric, metric);
@@ -45,7 +50,11 @@ const getHorizontalPodAutoscalerMetrics = getInjectable({
   },
 });
 
-function getMetricValues<Type extends Parser>(parser: Type, current: HorizontalPodAutoscalerMetricStatus | undefined, target: HorizontalPodAutoscalerMetricSpec) {
+function getMetricValues<Type extends Parser>(
+  parser: Type,
+  current: HorizontalPodAutoscalerMetricStatus | undefined,
+  target: HorizontalPodAutoscalerMetricSpec,
+) {
   switch (target.type) {
     case "Resource":
       return parser.getResource({ current: current?.resource, target: target.resource });

@@ -2,9 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import {
-  getApplicationMenuOperationSystemActionInjectable,
-} from "../../get-application-menu-operation-system-action-injectable";
+import { getApplicationMenuOperationSystemActionInjectable } from "../../get-application-menu-operation-system-action-injectable";
 
 export const actionForToggleDevTools = getApplicationMenuOperationSystemActionInjectable({
   id: "toggle-dev-tools",

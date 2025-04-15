@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { workloadOverviewDetailInjectionToken } from "../workload-overview-detail-injection-token";
-import { OverviewStatuses } from "../../overview-statuses";
 import { computed } from "mobx";
+import { OverviewStatuses } from "../../overview-statuses";
+import { workloadOverviewDetailInjectionToken } from "../workload-overview-detail-injection-token";
 
 const overviewStatusesInjectable = getInjectable({
   id: "overview-statuses",

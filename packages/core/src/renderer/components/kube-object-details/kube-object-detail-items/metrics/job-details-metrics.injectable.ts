@@ -13,10 +13,7 @@ const jobMetricsInjectable = getInjectable({
   instantiate: (di) => {
     const getMetricsKubeObjectDetailItem = di.inject(getMetricsKubeObjectDetailItemInjectable);
 
-    return getMetricsKubeObjectDetailItem(
-      jobDetailsMetricsInjectionToken,
-      ClusterMetricsResourceType.Job,
-    );
+    return getMetricsKubeObjectDetailItem(jobDetailsMetricsInjectionToken, ClusterMetricsResourceType.Job);
   },
   injectionToken: kubeObjectDetailItemInjectionToken,
 });

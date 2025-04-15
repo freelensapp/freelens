@@ -3,16 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type IObservableValue, type IObservableArray, observable, runInAction, toJS } from "mobx";
-import type { CatalogEntity } from "../../../../common/catalog";
-import { getShortName } from "../../../../common/catalog/helpers";
-import type { HotbarItem, CreateHotbarData } from "./types";
-import { defaultHotbarCells } from "./types";
-import { broadcastMessage } from "../../../../common/ipc";
-import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
-import * as uuid from "uuid";
 import type { Logger } from "@freelensapp/logger";
 import { tuple } from "@freelensapp/utilities";
+import { type IObservableArray, type IObservableValue, observable, runInAction, toJS } from "mobx";
+import * as uuid from "uuid";
+import type { CatalogEntity } from "../../../../common/catalog";
+import { getShortName } from "../../../../common/catalog/helpers";
+import { broadcastMessage } from "../../../../common/ipc";
+import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
+import type { CreateHotbarData, HotbarItem } from "./types";
+import { defaultHotbarCells } from "./types";
 
 export interface HotbarDependencies {
   readonly logger: Logger;
@@ -29,7 +29,10 @@ export class Hotbar {
   readonly name: IObservableValue<string>;
   readonly items: IObservableArray<HotbarItem | null>;
 
-  constructor(private readonly dependencies: HotbarDependencies, data: CreateHotbarData) {
+  constructor(
+    private readonly dependencies: HotbarDependencies,
+    data: CreateHotbarData,
+  ) {
     this.id = data.id ?? uuid.v4();
     this.name = observable.box(data.name);
     this.items = observable.array(data.items ?? tuple.filled(defaultHotbarCells, null));
@@ -46,7 +49,7 @@ export class Hotbar {
   }
 
   hasEntity(entityId: string) {
-    return this.items.findIndex(item => item?.entity.uid === entityId) >= 0;
+    return this.items.findIndex((item) => item?.entity.uid === entityId) >= 0;
   }
 
   private findClosestEmptyIndex(from: number, direction = 1) {
@@ -64,14 +67,7 @@ export class Hotbar {
       const source = this.items[from];
       const moveDown = from < to;
 
-      if (
-        from < 0 ||
-        to < 0 ||
-        from >= this.items.length ||
-        to >= this.items.length ||
-        isNaN(from) ||
-        isNaN(to)
-      ) {
+      if (from < 0 || to < 0 || from >= this.items.length || to >= this.items.length || isNaN(from) || isNaN(to)) {
         throw new Error("Invalid 'from' or 'to' arguments");
       }
 
@@ -158,10 +154,11 @@ export class Hotbar {
         this.items[cellIndex] = newItem;
       });
     } else {
-      this.dependencies.logger.error(
-        "cannot pin entity to hotbar outside of index range",
-        { entityId: uid, hotbarId: this.id, cellIndex },
-      );
+      this.dependencies.logger.error("cannot pin entity to hotbar outside of index range", {
+        entityId: uid,
+        hotbarId: this.id,
+        cellIndex,
+      });
     }
   }
 

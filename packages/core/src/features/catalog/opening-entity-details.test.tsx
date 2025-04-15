@@ -7,11 +7,14 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import { advanceFakeTime } from "../../test-utils/use-fake-time";
+import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
 import showEntityDetailsInjectable from "../../renderer/components/catalog/entity-details/show.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../renderer/components/test-utils/get-application-builder";
+import { advanceFakeTime } from "../../test-utils/use-fake-time";
 import addClusterInjectable from "../cluster/storage/common/add.injectable";
 
 describe("opening catalog entity details panel", () => {
@@ -73,22 +76,28 @@ describe("opening catalog entity details panel", () => {
       const addCluster = windowDi.inject(addClusterInjectable);
 
       await writeJsonFile(clusterEntity.spec.kubeconfigPath, {
-        contexts: [{
-          name: clusterEntity.spec.kubeconfigContext,
-          context: {
-            cluster: "some-cluster",
-            user: "some-user",
+        contexts: [
+          {
+            name: clusterEntity.spec.kubeconfigContext,
+            context: {
+              cluster: "some-cluster",
+              user: "some-user",
+            },
           },
-        }],
-        clusters: [{
-          name: "some-cluster",
-          cluster: {
-            server: "https://localhost:9999",
+        ],
+        clusters: [
+          {
+            name: "some-cluster",
+            cluster: {
+              server: "https://localhost:9999",
+            },
           },
-        }],
-        users: [{
-          name: "some-user",
-        }],
+        ],
+        users: [
+          {
+            name: "some-user",
+          },
+        ],
       });
 
       addCluster({

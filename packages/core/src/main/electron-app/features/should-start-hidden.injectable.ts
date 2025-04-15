@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import electronAppInjectable from "../electron-app.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
+import electronAppInjectable from "../electron-app.injectable";
 
 const shouldStartHiddenInjectable = getInjectable({
   id: "should-start-hidden",
@@ -17,10 +17,7 @@ const shouldStartHiddenInjectable = getInjectable({
 
     // Start the app without showing the main window when auto starting on login
     // (On Windows and Linux, we get a flag. On MacOS, we get special API.)
-    return (
-      commandLineArguments.includes("--hidden") ||
-      (isMac && app.getLoginItemSettings().wasOpenedAsHidden)
-    );
+    return commandLineArguments.includes("--hidden") || (isMac && app.getLoginItemSettings().wasOpenedAsHidden);
   },
 });
 

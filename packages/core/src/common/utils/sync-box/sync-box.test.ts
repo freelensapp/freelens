@@ -39,9 +39,13 @@ describe("sync-box", () => {
 
       syncBoxInMain = applicationBuilder.mainDi.inject(someInjectable);
 
-      observe(syncBoxInMain.value, ({ newValue }) => {
-        valueInMain = newValue as string;
-      }, true);
+      observe(
+        syncBoxInMain.value,
+        ({ newValue }) => {
+          valueInMain = newValue as string;
+        },
+        true,
+      );
 
       runInAction(() => {
         syncBoxInMain.set("some-value-from-main");
@@ -58,8 +62,7 @@ describe("sync-box", () => {
       let rendererDi: DiContainer;
 
       beforeEach(async () => {
-        const applicationWindow =
-          applicationBuilder.applicationWindow.create("some-window-id");
+        const applicationWindow = applicationBuilder.applicationWindow.create("some-window-id");
 
         await applicationWindow.start();
 
@@ -67,9 +70,13 @@ describe("sync-box", () => {
 
         syncBoxInRenderer = rendererDi.inject(someInjectable);
 
-        observe(syncBoxInRenderer.value, ({ newValue }) => {
-          valueInRenderer = newValue as string;
-        }, true);
+        observe(
+          syncBoxInRenderer.value,
+          ({ newValue }) => {
+            valueInRenderer = newValue as string;
+          },
+          true,
+        );
       });
 
       it("has the value from main", () => {
@@ -108,13 +115,21 @@ describe("sync-box", () => {
       syncBoxInMain = applicationBuilder.mainDi.inject(someInjectable);
       syncBoxInRenderer = applicationWindow.di.inject(someInjectable);
 
-      observe(syncBoxInRenderer.value, ({ newValue }) => {
-        valueInRenderer = newValue as string;
-      }, true);
+      observe(
+        syncBoxInRenderer.value,
+        ({ newValue }) => {
+          valueInRenderer = newValue as string;
+        },
+        true,
+      );
 
-      observe(syncBoxInMain.value, ({ newValue }) => {
-        valueInMain = newValue as string;
-      }, true);
+      observe(
+        syncBoxInMain.value,
+        ({ newValue }) => {
+          valueInMain = newValue as string;
+        },
+        true,
+      );
     });
 
     it("knows initial value in main", () => {

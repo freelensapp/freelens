@@ -17,11 +17,7 @@ export function getGlobalOverride<
 >(
   injectable:
     | InjectionToken<InjectionInstance, InstantiationParam>
-    | Injectable<
-        InjectionInstance,
-        InjectionTokenInstance,
-        InstantiationParam
-      >,
+    | Injectable<InjectionInstance, InjectionTokenInstance, InstantiationParam>,
   overridingInstantiate: Instantiate<InjectionInstance, InstantiationParam>,
 ) {
   return {

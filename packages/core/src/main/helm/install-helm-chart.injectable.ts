@@ -36,14 +36,7 @@ const installHelmChartInjectable = getInjectable({
     const removePath = di.inject(removePathInjectable);
     const execHelm = di.inject(execHelmInjectable);
 
-    return async ({
-      chart,
-      kubeconfigPath,
-      name,
-      namespace,
-      values,
-      version,
-    }) => {
+    return async ({ chart, kubeconfigPath, name, namespace, values, version }) => {
       const valuesFilePath = tempy.file({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, dump(values));
@@ -56,10 +49,14 @@ const installHelmChartInjectable = getInjectable({
 
       args.push(
         chart,
-        "--version", version,
-        "--values", valuesFilePath,
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
+        "--version",
+        version,
+        "--values",
+        valuesFilePath,
+        "--namespace",
+        namespace,
+        "--kubeconfig",
+        kubeconfigPath,
       );
 
       if (!name) {

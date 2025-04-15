@@ -4,10 +4,10 @@
  */
 
 import "./wizard-layout.scss";
-import React from "react";
-import { observer } from "mobx-react";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
+import { observer } from "mobx-react";
+import React from "react";
 
 export interface WizardLayoutProps extends React.DOMAttributes<any> {
   className?: IClassName;
@@ -16,34 +16,22 @@ export interface WizardLayoutProps extends React.DOMAttributes<any> {
   contentClass?: IClassName;
   infoPanelClass?: IClassName;
   infoPanel?: StrictReactNode;
-  centered?: boolean;  // Centering content horizontally
+  centered?: boolean; // Centering content horizontally
 }
 
 @observer
 export class WizardLayout extends React.Component<WizardLayoutProps> {
   render() {
-    const {
-      className, contentClass, infoPanelClass, infoPanel, header, headerClass, centered,
-      children, ...props
-    } = this.props;
+    const { className, contentClass, infoPanelClass, infoPanel, header, headerClass, centered, children, ...props } =
+      this.props;
 
     return (
       <div {...props} className={cssNames("WizardLayout", { centered }, className)}>
-        {header && (
-          <div className={cssNames("head-col flex gaps align-center", headerClass)}>
-            {header}
-          </div>
-        )}
+        {header && <div className={cssNames("head-col flex gaps align-center", headerClass)}>{header}</div>}
         <div className={cssNames("content-col flex column gaps", contentClass)}>
-          <div className="flex column gaps">
-            {children}
-          </div>
+          <div className="flex column gaps">{children}</div>
         </div>
-        {infoPanel && (
-          <div className={cssNames("info-col flex column gaps", infoPanelClass)}>
-            {infoPanel}
-          </div>
-        )}
+        {infoPanel && <div className={cssNames("info-col flex column gaps", infoPanelClass)}>{infoPanel}</div>}
       </div>
     );
   }

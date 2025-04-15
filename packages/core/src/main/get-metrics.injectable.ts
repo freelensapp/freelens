@@ -1,3 +1,4 @@
+import { object } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,10 +6,13 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Cluster } from "../common/cluster/cluster";
 import type { RequestMetricsParams } from "../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
-import { object } from "@freelensapp/utilities";
 import k8sRequestInjectable from "./k8s-request.injectable";
 
-export type GetMetrics = (cluster: Cluster, prometheusPath: string, queryParams: RequestMetricsParams & { query: string }) => Promise<unknown>;
+export type GetMetrics = (
+  cluster: Cluster,
+  prometheusPath: string,
+  queryParams: RequestMetricsParams & { query: string },
+) => Promise<unknown>;
 
 const getMetricsInjectable = getInjectable({
   id: "get-metrics",
@@ -16,11 +20,7 @@ const getMetricsInjectable = getInjectable({
   instantiate: (di): GetMetrics => {
     const k8sRequest = di.inject(k8sRequestInjectable);
 
-    return async (
-      cluster,
-      prometheusPath,
-      queryParams,
-    ) => {
+    return async (cluster, prometheusPath, queryParams) => {
       const prometheusPrefix = cluster.preferences.prometheus?.prefix || "";
       const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
       const body = new FormData();

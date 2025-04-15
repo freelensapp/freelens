@@ -3,21 +3,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { cssNames } from "@freelensapp/utilities";
-import type { PortForwardItem, PortForwardStore } from "../../port-forward";
-import type { MenuActionsProps } from "../menu/menu-actions";
-import { MenuActions } from "../menu/menu-actions";
-import { MenuItem } from "../menu";
 import { Icon } from "@freelensapp/icon";
 import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
-import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import autoBindReact from "auto-bind/react";
+import React from "react";
+import type { PortForwardItem, PortForwardStore } from "../../port-forward";
 import type { OpenPortForward } from "../../port-forward/open-port-forward.injectable";
 import openPortForwardInjectable from "../../port-forward/open-port-forward.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import autoBindReact from "auto-bind/react";
+import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
+import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import { MenuItem } from "../menu";
+import type { MenuActionsProps } from "../menu/menu-actions";
+import { MenuActions } from "../menu/menu-actions";
 
 export interface PortForwardMenuProps extends MenuActionsProps {
   portForward: PortForwardItem;
@@ -43,7 +43,9 @@ class NonInjectedPortForwardMenu<Props extends PortForwardMenuProps & Dependenci
     try {
       this.portForwardStore.remove(portForward);
     } catch (error) {
-      showErrorNotification(`Error occurred stopping the port-forward from port ${portForward.forwardPort}. The port-forward may still be active.`);
+      showErrorNotification(
+        `Error occurred stopping the port-forward from port ${portForward.forwardPort}. The port-forward may still be active.`,
+      );
     }
   }
 
@@ -59,7 +61,9 @@ class NonInjectedPortForwardMenu<Props extends PortForwardMenuProps & Dependenci
     if (pf.status === "Disabled") {
       const { name, kind, forwardPort } = portForward;
 
-      showErrorNotification(`Error occurred starting port-forward, the local port ${forwardPort} may not be available or the ${kind} ${name} may not be reachable`);
+      showErrorNotification(
+        `Error occurred starting port-forward, the local port ${forwardPort} may not be available or the ${kind} ${name} may not be reachable`,
+      );
     }
   };
 
@@ -69,11 +73,7 @@ class NonInjectedPortForwardMenu<Props extends PortForwardMenuProps & Dependenci
     if (portForward.status === "Active") {
       return (
         <MenuItem onClick={() => this.portForwardStore.stop(portForward)}>
-          <Icon
-            material="stop"
-            tooltip="Stop port-forward"
-            interactive={toolbar}
-          />
+          <Icon material="stop" tooltip="Stop port-forward" interactive={toolbar} />
           <span className="title">Stop</span>
         </MenuItem>
       );
@@ -81,11 +81,7 @@ class NonInjectedPortForwardMenu<Props extends PortForwardMenuProps & Dependenci
 
     return (
       <MenuItem onClick={this.startPortForwarding}>
-        <Icon
-          material="play_arrow"
-          tooltip="Start port-forward"
-          interactive={toolbar}
-        />
+        <Icon material="play_arrow" tooltip="Start port-forward" interactive={toolbar} />
         <span className="title">Start</span>
       </MenuItem>
     );
@@ -98,22 +94,14 @@ class NonInjectedPortForwardMenu<Props extends PortForwardMenuProps & Dependenci
 
     return (
       <>
-        { portForward.status === "Active" && (
+        {portForward.status === "Active" && (
           <MenuItem onClick={() => this.props.openPortForward(portForward)}>
-            <Icon
-              material="open_in_browser"
-              interactive={toolbar}
-              tooltip="Open in browser"
-            />
+            <Icon material="open_in_browser" interactive={toolbar} tooltip="Open in browser" />
             <span className="title">Open</span>
           </MenuItem>
         )}
         <MenuItem onClick={() => this.props.openPortForwardDialog(portForward)}>
-          <Icon
-            material="edit"
-            tooltip="Change port or protocol"
-            interactive={toolbar}
-          />
+          <Icon material="edit" tooltip="Change port or protocol" interactive={toolbar} />
           <span className="title">Edit</span>
         </MenuItem>
         {this.renderStartStopMenuItem()}

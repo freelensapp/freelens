@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { runInAction } from "mobx";
 import { inspect } from "util";
+import { runInAction } from "mobx";
 import { isDefined } from "./type-narrowing";
 
 /**
@@ -81,7 +81,6 @@ export async function getOrInsertWithAsync<K, V>(map: Map<K, V>, key: K, asyncBu
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return map.get(key)!;
 }
 

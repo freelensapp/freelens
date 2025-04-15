@@ -15,34 +15,37 @@ import { buildDir, webpackDevServerPort } from "./vars";
  */
 const compiler = Webpack(renderer);
 
-const server = new WebpackDevServer({
-  setupExitSignals: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-  allowedHosts: ".renderer.freelens.app",
-  host: "127.0.0.1",
-  port: webpackDevServerPort,
-  static: buildDir, // aka `devServer.contentBase` in webpack@4
-  hot: "only", // use HMR only without errors
-  liveReload: false,
-  devMiddleware: {
-    writeToDisk: true,
-    index: "index.html",
-    publicPath: "/build",
-  },
-  proxy: [
-    {
-      pathRewrite: {
-        "^/$": "/build/",
-      },
+const server = new WebpackDevServer(
+  {
+    setupExitSignals: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
     },
-  ],
-  client: {
-    overlay: false, // don't show warnings and errors on top of rendered app view
-    logging: "error",
+    allowedHosts: ".renderer.freelens.app",
+    host: "127.0.0.1",
+    port: webpackDevServerPort,
+    static: buildDir, // aka `devServer.contentBase` in webpack@4
+    hot: "only", // use HMR only without errors
+    liveReload: false,
+    devMiddleware: {
+      writeToDisk: true,
+      index: "index.html",
+      publicPath: "/build",
+    },
+    proxy: [
+      {
+        pathRewrite: {
+          "^/$": "/build/",
+        },
+      },
+    ],
+    client: {
+      overlay: false, // don't show warnings and errors on top of rendered app view
+      logging: "error",
+    },
   },
-}, compiler);
+  compiler,
+);
 
 console.info(`[WEBPACK-DEV-SERVER]: created with options`, server.options);
 

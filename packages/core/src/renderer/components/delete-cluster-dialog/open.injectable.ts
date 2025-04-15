@@ -15,12 +15,13 @@ const openDeleteClusterDialogInjectable = getInjectable({
   instantiate: (di): OpenDeleteClusterDialog => {
     const state = di.inject(deleteClusterDialogStateInjectable);
 
-    return (config, cluster) => state.set({
-      cluster,
-      config,
-      newCurrentContext: "",
-      showContextSwitch: isCurrentContext(config, cluster),
-    });
+    return (config, cluster) =>
+      state.set({
+        cluster,
+        config,
+        newCurrentContext: "",
+        showContextSwitch: isCurrentContext(config, cluster),
+      });
   },
 });
 

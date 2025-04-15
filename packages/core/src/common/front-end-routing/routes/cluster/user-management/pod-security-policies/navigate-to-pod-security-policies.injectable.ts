@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import podSecurityPoliciesRouteInjectable from "./pod-security-policies-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import podSecurityPoliciesRouteInjectable from "./pod-security-policies-route.injectable";
 
 const navigateToPodSecurityPoliciesInjectable = getInjectable({
   id: "navigate-to-pod-security-policies",

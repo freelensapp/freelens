@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import routesInjectable from "./routes.injectable";
 import { matches } from "lodash/fp";
 import { computed } from "mobx";
 import { matchPath } from "react-router";
 import currentPathInjectable from "./current-path.injectable";
+import routesInjectable from "./routes.injectable";
 
 const matchingRouteInjectable = getInjectable({
   id: "matching-route",

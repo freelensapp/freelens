@@ -1,17 +1,17 @@
+import type { ReplicaSetApi } from "@freelensapp/kube-api";
+import { replicaSetApiInjectable } from "@freelensapp/kube-api-specifics";
+import { ReplicaSet } from "@freelensapp/kube-object";
+import { fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
+import { type DiRender, renderFor } from "../../test-utils/renderFor";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { ReplicaSetScaleDialog } from "./dialog";
-import { waitFor, fireEvent } from "@testing-library/react";
-import React from "react";
-import type { ReplicaSetApi } from "@freelensapp/kube-api";
-import { ReplicaSet } from "@freelensapp/kube-object";
 import type { OpenReplicaSetScaleDialog } from "./open.injectable";
-import { replicaSetApiInjectable } from "@freelensapp/kube-api-specifics";
-import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import openReplicaSetScaleDialogInjectable from "./open.injectable";
 
 const dummyReplicaSet = new ReplicaSet({
@@ -28,7 +28,7 @@ const dummyReplicaSet = new ReplicaSet({
   spec: {
     replicas: 1,
     selector: {
-      matchLabels: { "label": "label" },
+      matchLabels: { label: "label" },
     },
     template: {
       metadata: {
@@ -37,16 +37,20 @@ const dummyReplicaSet = new ReplicaSet({
         },
       },
       spec: {
-        containers: [{
-          name: "dummy",
-          image: "dummy",
-          imagePullPolicy: "Always",
-        }],
-        initContainers: [{
-          name: "dummy",
-          image: "dummy",
-          imagePullPolicy: "Always",
-        }],
+        containers: [
+          {
+            name: "dummy",
+            image: "dummy",
+            imagePullPolicy: "Always",
+          },
+        ],
+        initContainers: [
+          {
+            name: "dummy",
+            image: "dummy",
+            imagePullPolicy: "Always",
+          },
+        ],
         priority: 1,
         serviceAccountName: "dummy",
         serviceAccount: "dummy",
@@ -62,13 +66,15 @@ const dummyReplicaSet = new ReplicaSet({
     readyReplicas: 1,
     availableReplicas: 1,
     observedGeneration: 1,
-    conditions: [{
-      type: "dummy",
-      status: "True",
-      lastTransitionTime: "dummy",
-      reason: "dummy",
-      message: "dummy",
-    }],
+    conditions: [
+      {
+        type: "dummy",
+        status: "True",
+        lastTransitionTime: "dummy",
+        reason: "dummy",
+        message: "dummy",
+      },
+    ],
   },
 });
 
@@ -125,7 +131,7 @@ describe("<ReplicaSetScaleDialog />", () => {
     await waitFor(async () => {
       expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas}`);
       expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-      expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas}`);
+      expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas}`);
     });
 
     const up = await component.findByTestId("desired-replicas-up");
@@ -134,12 +140,12 @@ describe("<ReplicaSetScaleDialog />", () => {
     fireEvent.click(up);
     expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas + 1}`);
     expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-    expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas + 1}`);
+    expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas + 1}`);
 
     fireEvent.click(down);
     expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas}`);
     expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-    expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas}`);
+    expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas}`);
 
     // edge case, desiredScale must >= 0
     let times = 10;
@@ -148,7 +154,7 @@ describe("<ReplicaSetScaleDialog />", () => {
       fireEvent.click(down);
     }
     expect(await component.findByTestId("desired-scale")).toHaveTextContent("0");
-    expect((component.baseElement.querySelector("input")?.value)).toBe("0");
+    expect(component.baseElement.querySelector("input")?.value).toBe("0");
 
     // edge case, desiredScale must <= scaleMax (100)
     times = 120;
@@ -157,8 +163,9 @@ describe("<ReplicaSetScaleDialog />", () => {
       fireEvent.click(up);
     }
     expect(await component.findByTestId("desired-scale")).toHaveTextContent("100");
-    expect((component.baseElement.querySelector("input")?.value)).toBe("100");
-    expect(await component.findByTestId("warning"))
-      .toHaveTextContent("High number of replicas may cause cluster performance issues");
+    expect(component.baseElement.querySelector("input")?.value).toBe("100");
+    expect(await component.findByTestId("warning")).toHaveTextContent(
+      "High number of replicas may cause cluster performance issues",
+    );
   });
 });

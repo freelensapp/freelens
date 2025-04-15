@@ -5,8 +5,8 @@
 
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { dumpYaml } from "@freelensapp/kubernetes-client-node";
-import * as lockFile from "proper-lockfile";
 import { getInjectable } from "@ogre-tools/injectable";
+import * as lockFile from "proper-lockfile";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
 
 export type SaveKubeconfig = (config: KubeConfig, path: string) => Promise<void>;

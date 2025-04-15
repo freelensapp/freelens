@@ -1,20 +1,20 @@
+import { KubeObject } from "@freelensapp/kube-object";
+import { getInjectable } from "@ogre-tools/injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import { getInjectable } from "@ogre-tools/injectable";
-import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import type { IObservableValue } from "mobx";
-import { observable, runInAction, computed } from "mobx";
+import { computed, observable, runInAction } from "mobx";
 import React from "react";
+import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
-import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
-import { KubeObject } from "@freelensapp/kube-object";
 import { KubeObjectStatusLevel } from "../../../../common/k8s-api/kube-object-status";
 import { KubeObjectStatusIcon } from "../../../../renderer/components/kube-object-status-icon";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
 
 describe("reactively hide kube object status", () => {
   let builder: ApplicationBuilder;
@@ -68,9 +68,7 @@ describe("reactively hide kube object status", () => {
   });
 
   it("does not show the kube object status", () => {
-    const actual = rendered.baseElement.querySelectorAll(
-      ".KubeObjectStatusIcon",
-    );
+    const actual = rendered.baseElement.querySelectorAll(".KubeObjectStatusIcon");
 
     expect(actual).toHaveLength(0);
   });
@@ -80,9 +78,7 @@ describe("reactively hide kube object status", () => {
       someObservable.set(true);
     });
 
-    const actual = rendered.baseElement.querySelectorAll(
-      ".KubeObjectStatusIcon",
-    );
+    const actual = rendered.baseElement.querySelectorAll(".KubeObjectStatusIcon");
 
     expect(actual).toHaveLength(1);
   });
@@ -106,11 +102,7 @@ const testRouteComponentInjectable = getInjectable({
   instantiate: (di) => ({
     route: di.inject(testRouteInjectable),
 
-    Component: () => (
-      <KubeObjectStatusIcon
-        object={getKubeObjectStub("some-kind", "some-api-version")}
-      />
-    ),
+    Component: () => <KubeObjectStatusIcon object={getKubeObjectStub("some-kind", "some-api-version")} />,
   }),
 
   injectionToken: routeSpecificComponentInjectionToken,

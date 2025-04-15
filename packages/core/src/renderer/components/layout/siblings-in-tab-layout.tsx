@@ -1,3 +1,5 @@
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import type { StrictReactNode } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -8,8 +10,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import siblingTabsInjectable from "../../routes/sibling-tabs.injectable";
 import { TabLayout } from "./tab-layout-2";
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
-import type { StrictReactNode } from "@freelensapp/utilities";
 
 interface SiblingTabLayoutProps {
   children: StrictReactNode;
@@ -26,10 +26,7 @@ const NonInjectedSiblingsInTabLayout = observer(
 
     if (dereferencedTabs.length) {
       return (
-        <TabLayout
-          tabs={dereferencedTabs}
-          {...other}
-        >
+        <TabLayout tabs={dereferencedTabs} {...other}>
           {children}
         </TabLayout>
       );

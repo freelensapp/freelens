@@ -1,19 +1,17 @@
+import { Icon } from "@freelensapp/icon";
+import type { ReplicaSet } from "@freelensapp/kube-object";
+import { withInjectables } from "@ogre-tools/injectable-react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
 import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { MenuItem } from "../menu";
-import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import type { OpenReplicaSetScaleDialog } from "./scale-dialog/open.injectable";
 import openReplicaSetScaleDialogInjectable from "./scale-dialog/open.injectable";
 
-export interface ReplicaSetMenuProps extends KubeObjectMenuProps<ReplicaSet> {
-
-}
+export interface ReplicaSetMenuProps extends KubeObjectMenuProps<ReplicaSet> {}
 
 interface Dependencies {
   openReplicaSetScaleDialog: OpenReplicaSetScaleDialog;
@@ -26,11 +24,7 @@ const NonInjectedReplicaSetMenu = ({
 }: Dependencies & ReplicaSetMenuProps) => (
   <>
     <MenuItem onClick={() => openReplicaSetScaleDialog(object)}>
-      <Icon
-        material="open_with"
-        tooltip="Scale"
-        interactive={toolbar}
-      />
+      <Icon material="open_with" tooltip="Scale" interactive={toolbar} />
       <span className="title">Scale</span>
     </MenuItem>
   </>

@@ -5,20 +5,20 @@
 
 import "./upgrade-chart.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { cssNames } from "@freelensapp/utilities";
-import type { DockTab } from "../dock/store";
-import { InfoPanel } from "../info-panel";
 import { Spinner } from "@freelensapp/spinner";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
 import { Badge } from "../../badge";
-import { EditorPanel } from "../editor-panel";
+import type { HelmChartVersion } from "../../helm-charts/helm-charts/versions";
 import type { SelectOption } from "../../select";
 import { Select } from "../../select";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { DockTab } from "../dock/store";
+import { EditorPanel } from "../editor-panel";
+import { InfoPanel } from "../info-panel";
 import type { UpgradeChartModel } from "./upgrade-chart-model.injectable";
 import upgradeChartModelInjectable from "./upgrade-chart-model.injectable";
-import type { HelmChartVersion } from "../../helm-charts/helm-charts/versions";
 
 export interface UpgradeChartProps {
   className?: string;
@@ -65,17 +65,11 @@ export class NonInjectedUpgradeChart extends React.Component<UpgradeChartProps &
           submit={this.upgrade}
           submitLabel="Upgrade"
           submittingMessage="Updating.."
-          controls={(
+          controls={
             <div className="upgrade flex gaps align-center">
-              <span>Release</span>
-              {" "}
-              <Badge label={release.getName()} />
-              <span>Namespace</span>
-              {" "}
-              <Badge label={release.getNs()} />
-              <span>Version</span>
-              {" "}
-              <Badge label={release.getVersion()} />
+              <span>Release</span> <Badge label={release.getName()} />
+              <span>Namespace</span> <Badge label={release.getNs()} />
+              <span>Version</span> <Badge label={release.getVersion()} />
               <span>Upgrade version</span>
               <Select<HelmChartVersion, SelectOption<HelmChartVersion>, false>
                 id="char-version-input"
@@ -86,7 +80,7 @@ export class NonInjectedUpgradeChart extends React.Component<UpgradeChartProps &
                 onChange={model.version.set}
               />
             </div>
-          )}
+          }
         />
         <EditorPanel
           tabId={tabId}

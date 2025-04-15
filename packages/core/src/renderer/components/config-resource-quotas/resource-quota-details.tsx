@@ -4,21 +4,27 @@
  */
 
 import "./resource-quota-details.scss";
-import React from "react";
+import { ResourceQuota } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import {
+  cpuUnitsToNumber,
+  cssNames,
+  hasDefinedTupleValue,
+  metricUnitsToNumber,
+  object,
+  unitsToBytes,
+} from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { observer } from "mobx-react";
+import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { cpuUnitsToNumber, cssNames, unitsToBytes, metricUnitsToNumber, object, hasDefinedTupleValue } from "@freelensapp/utilities";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { ResourceQuota } from "@freelensapp/kube-object";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-export interface ResourceQuotaDetailsProps extends KubeObjectDetailsProps<ResourceQuota> {
-}
+export interface ResourceQuotaDetailsProps extends KubeObjectDetailsProps<ResourceQuota> {}
 
 function transformUnit(name: string, value: string): number | undefined {
   if (name.includes("memory") || name.includes("storage")) {
@@ -33,9 +39,10 @@ function transformUnit(name: string, value: string): number | undefined {
 }
 
 function renderQuotas(quota: ResourceQuota): JSX.Element[] {
-  const { hard = {}, used = {}} = quota.status ?? {};
+  const { hard = {}, used = {} } = quota.status ?? {};
 
-  return object.entries(hard)
+  return object
+    .entries(hard)
     .filter(hasDefinedTupleValue)
     .map(([name, rawMax]) => {
       const rawCurrent = used[name] ?? "0";
@@ -46,32 +53,21 @@ function renderQuotas(quota: ResourceQuota): JSX.Element[] {
         return (
           <div key={name} className={cssNames("param", kebabCase(name))}>
             <span className="title">{name}</span>
-            <span className="value">
-              {`${rawCurrent} / ${rawMax}`}
-            </span>
+            <span className="value">{`${rawCurrent} / ${rawMax}`}</span>
           </div>
         );
       }
 
-      const usage = max === 0
-        ? 100 // special case 0 max as always 100% usage
-        : current / max * 100;
+      const usage =
+        max === 0
+          ? 100 // special case 0 max as always 100% usage
+          : (current / max) * 100;
 
       return (
         <div key={name} className={cssNames("param", kebabCase(name))}>
           <span className="title">{name}</span>
-          <span className="value">
-            {`${rawCurrent} / ${rawMax}`}
-          </span>
-          <LineProgress
-            max={max}
-            value={current}
-            tooltip={(
-              <p>
-                {`Set: ${rawMax}. Usage: ${+usage.toFixed(2)}%`}
-              </p>
-            )}
-          />
+          <span className="value">{`${rawCurrent} / ${rawMax}`}</span>
+          <LineProgress max={max} value={current} tooltip={<p>{`Set: ${rawMax}. Usage: ${+usage.toFixed(2)}%`}</p>} />
         </div>
       );
     });
@@ -111,19 +107,17 @@ class NonInjectedResourceQuotaDetails extends React.Component<ResourceQuotaDetai
                 <TableCell>Scope name</TableCell>
                 <TableCell>Values</TableCell>
               </TableHead>
-              {
-                quota.getScopeSelector().map((selector, index) => {
-                  const { operator, scopeName, values } = selector;
+              {quota.getScopeSelector().map((selector, index) => {
+                const { operator, scopeName, values } = selector;
 
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>{operator}</TableCell>
-                      <TableCell>{scopeName}</TableCell>
-                      <TableCell>{values.join(", ")}</TableCell>
-                    </TableRow>
-                  );
-                })
-              }
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{operator}</TableCell>
+                    <TableCell>{scopeName}</TableCell>
+                    <TableCell>{values.join(", ")}</TableCell>
+                  </TableRow>
+                );
+              })}
             </Table>
           </>
         )}
@@ -132,9 +126,12 @@ class NonInjectedResourceQuotaDetails extends React.Component<ResourceQuotaDetai
   }
 }
 
-export const ResourceQuotaDetails = withInjectables<Dependencies, ResourceQuotaDetailsProps>(NonInjectedResourceQuotaDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const ResourceQuotaDetails = withInjectables<Dependencies, ResourceQuotaDetailsProps>(
+  NonInjectedResourceQuotaDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

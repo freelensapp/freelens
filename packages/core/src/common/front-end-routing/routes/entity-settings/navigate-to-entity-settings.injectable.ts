@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import entitySettingsRouteInjectable from "./entity-settings-route.injectable";
 import { navigateToRouteInjectionToken } from "../../navigate-to-route-injection-token";
+import entitySettingsRouteInjectable from "./entity-settings-route.injectable";
 
 export type NavigateToEntitySettings = (entityId: string, targetTabId?: string) => void;
 
@@ -15,8 +15,7 @@ const navigateToEntitySettingsInjectable = getInjectable({
     const navigateToRoute = di.inject(navigateToRouteInjectionToken);
     const route = di.inject(entitySettingsRouteInjectable);
 
-    return (entityId, targetTabId) =>
-      navigateToRoute(route, { parameters: { entityId }, fragment: targetTabId });
+    return (entityId, targetTabId) => navigateToRoute(route, { parameters: { entityId }, fragment: targetTabId });
   },
 });
 

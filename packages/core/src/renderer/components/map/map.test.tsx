@@ -13,12 +13,7 @@ describe("Map", () => {
 
     beforeEach(() => {
       rendered = render(
-        <Map
-          items={[]}
-          getPlaceholder={() => (
-            <div data-testid="some-placeholder">Some placeholder</div>
-          )}
-        >
+        <Map items={[]} getPlaceholder={() => <div data-testid="some-placeholder">Some placeholder</div>}>
           {() => <div data-testid="some-row">Irrelevant</div>}
         </Map>,
       );
@@ -41,11 +36,7 @@ describe("Map", () => {
     let rendered: RenderResult;
 
     beforeEach(() => {
-      rendered = render(
-        <Map items={[]}>
-          {() => <div data-testid="some-row">Irrelevant</div>}
-        </Map>,
-      );
+      rendered = render(<Map items={[]}>{() => <div data-testid="some-row">Irrelevant</div>}</Map>);
     });
 
     it("renders", () => {
@@ -64,9 +55,7 @@ describe("Map", () => {
       rendered = render(
         <Map
           items={[{ id: "some-item-id" }, { id: "some-other-item-id" }]}
-          getPlaceholder={() => (
-            <div data-testid="some-placeholder">Some placeholder</div>
-          )}
+          getPlaceholder={() => <div data-testid="some-placeholder">Some placeholder</div>}
         >
           {(item) => <div data-testid={item.id} />}
         </Map>,
@@ -78,9 +67,7 @@ describe("Map", () => {
     });
 
     it("does not render placeholder", () => {
-      expect(
-        rendered.queryByTestId("some-placeholder"),
-      ).not.toBeInTheDocument();
+      expect(rendered.queryByTestId("some-placeholder")).not.toBeInTheDocument();
     });
 
     it("renders items", () => {
@@ -94,11 +81,7 @@ describe("Map", () => {
     beforeEach(() => {
       rendered = render(
         <Map
-          items={[
-            { id: "some-item-id" },
-            { id: "some-other-item-id" },
-            { id: "some-another-item-id" },
-          ]}
+          items={[{ id: "some-item-id" }, { id: "some-other-item-id" }, { id: "some-another-item-id" }]}
           getSeparator={() => <div data-testid="separator">Some separator</div>}
         >
           {(item) => <div data-testid={item.id} />}
@@ -125,11 +108,7 @@ describe("Map", () => {
     beforeEach(() => {
       rendered = render(
         <Map
-          items={[
-            { id: "some-item-id" },
-            { id: "some-other-item-id" },
-            { id: "some-another-item-id" },
-          ]}
+          items={[{ id: "some-item-id" }, { id: "some-other-item-id" }, { id: "some-another-item-id" }]}
           getSeparator={(left, right) => (
             <div data-testid={`separator-between-${left.id}-and-${right.id}`}>
               Some separator between

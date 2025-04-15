@@ -15,15 +15,10 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
       const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(di);
 
-      reaction(
-        () => sidebarItems.get(),
-        injectableDifferencingRegistrator,
-        { fireImmediately: true },
-      );
+      reaction(() => sidebarItems.get(), injectableDifferencingRegistrator, { fireImmediately: true });
     },
   }),
   injectionToken: beforeClusterFrameStartsSecondInjectionToken,
 });
 
 export default customResourceDefinitionGroupsSidebarItemsRegistratorInjectable;
-

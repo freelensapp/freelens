@@ -5,19 +5,19 @@
 
 import "./view.scss";
 
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
-import { CreateServiceAccountDialog } from "./create-dialog/view";
-import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { KubeObjectAge } from "../../kube-object/age";
-import type { ServiceAccountStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import serviceAccountStoreInjectable from "./store.injectable";
+import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
+import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
 import type { OpenCreateServiceAccountDialog } from "./create-dialog/open.injectable";
 import openCreateServiceAccountDialogInjectable from "./create-dialog/open.injectable";
-import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
+import { CreateServiceAccountDialog } from "./create-dialog/view";
+import type { ServiceAccountStore } from "./store";
+import serviceAccountStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -33,10 +33,7 @@ interface Dependencies {
 @observer
 class NonInjectedServiceAccounts extends React.Component<Dependencies> {
   render() {
-    const {
-      serviceAccountStore,
-      openCreateServiceAccountDialog,
-    } = this.props;
+    const { serviceAccountStore, openCreateServiceAccountDialog } = this.props;
 
     return (
       <SiblingsInTabLayout>
@@ -46,13 +43,11 @@ class NonInjectedServiceAccounts extends React.Component<Dependencies> {
           className="ServiceAccounts"
           store={serviceAccountStore}
           sortingCallbacks={{
-            [columnId.name]: account => account.getName(),
-            [columnId.namespace]: account => account.getNs(),
-            [columnId.age]: account => -account.getCreationTimestamp(),
+            [columnId.name]: (account) => account.getName(),
+            [columnId.namespace]: (account) => account.getNs(),
+            [columnId.age]: (account) => -account.getCreationTimestamp(),
           }}
-          searchFilters={[
-            account => account.getSearchFields(),
-          ]}
+          searchFilters={[(account) => account.getSearchFields()]}
           renderHeaderTitle="Service Accounts"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -60,13 +55,10 @@ class NonInjectedServiceAccounts extends React.Component<Dependencies> {
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={account => [
+          renderTableContents={(account) => [
             account.getName(),
             <KubeObjectStatusIcon key="icon" object={account} />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={account.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={account.getNs()} />,
             <KubeObjectAge key="age" object={account} />,
           ]}
           addRemoveButtons={{
@@ -74,7 +66,7 @@ class NonInjectedServiceAccounts extends React.Component<Dependencies> {
             addTooltip: "Create new Service Account",
           }}
         />
-        <CreateServiceAccountDialog/>
+        <CreateServiceAccountDialog />
       </SiblingsInTabLayout>
     );
   }

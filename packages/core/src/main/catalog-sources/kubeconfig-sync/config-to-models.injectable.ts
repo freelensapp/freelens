@@ -20,7 +20,10 @@ const configToModelsInjectable = getInjectable({
 
       for (const { config, validationResult } of splitConfig(rootConfig)) {
         if (validationResult.error) {
-          logger.debug(`context failed validation: ${validationResult.error}`, { context: config.currentContext, filePath });
+          logger.debug(`context failed validation: ${validationResult.error}`, {
+            context: config.currentContext,
+            filePath,
+          });
         } else {
           validConfigs.push({
             kubeConfigPath: filePath,

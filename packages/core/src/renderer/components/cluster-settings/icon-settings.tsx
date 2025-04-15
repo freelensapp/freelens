@@ -3,6 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import {
+  clusterIconSettingsComponentInjectionToken,
+  clusterIconSettingsMenuInjectionToken,
+} from "@freelensapp/cluster-settings";
+import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
@@ -13,10 +20,6 @@ import type { Cluster } from "../../../common/cluster/cluster";
 import { Avatar } from "../avatar";
 import { FilePicker, OverSizeLimitStyle } from "../file-picker";
 import { MenuActions, MenuItem } from "../menu";
-import type { ShowNotification } from "@freelensapp/notifications";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import { clusterIconSettingsComponentInjectionToken, clusterIconSettingsMenuInjectionToken } from "@freelensapp/cluster-settings";
-import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
 
 export interface ClusterIconSettingProps {
   cluster: Cluster;
@@ -28,7 +31,6 @@ interface Dependencies {
   settingComponents: IComputedValue<ClusterIconSettingsComponent[]>;
   showErrorNotification: ShowNotification;
 }
-
 
 const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps & Dependencies) => {
   const element = React.createRef<HTMLDivElement>();
@@ -50,10 +52,7 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
   };
 
   const onUploadClick = () => {
-    element
-      .current
-      ?.querySelector<HTMLInputElement>("input[type=file]")
-      ?.click();
+    element.current?.querySelector<HTMLInputElement>("input[type=file]")?.click();
   };
 
   return (
@@ -62,7 +61,7 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
         <div className="mr-5">
           <FilePicker
             accept="image/*"
-            label={(
+            label={
               <Avatar
                 colorHash={`${entity.getName()}-${entity.metadata.source}`}
                 title={entity.getName()}
@@ -70,7 +69,7 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
                 size={53}
                 background={entity.spec.icon?.background}
               />
-            )}
+            }
             onOverSizeLimit={OverSizeLimitStyle.FILTER}
             handler={onIconPick}
           />
@@ -82,41 +81,37 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
           autoCloseOnSelect={true}
           triggerIcon={{ material: "more_horiz" }}
         >
-          <MenuItem onClick={onUploadClick}>
-            Upload Icon
-          </MenuItem>
-          {props.menuItems.get().map(item => (
+          <MenuItem onClick={onUploadClick}>Upload Icon</MenuItem>
+          {props.menuItems.get().map((item) => (
             <MenuItem
               onClick={() => item.onClick(cluster.preferences)}
               key={item.id}
-              disabled={item.disabled?.(cluster.preferences)}>
+              disabled={item.disabled?.(cluster.preferences)}
+            >
               {item.title}
             </MenuItem>
-          ),
-          )}
+          ))}
         </MenuActions>
       </div>
-      {props.settingComponents.get().map(item => {
-        return (
-          <item.Component
-            key={item.id}
-            preferences={cluster.preferences}
-          />
-        );
+      {props.settingComponents.get().map((item) => {
+        return <item.Component key={item.id} preferences={cluster.preferences} />;
       })}
     </div>
   );
 });
 
-export const ClusterIconSetting = withInjectables<Dependencies, ClusterIconSettingProps>(NonInjectedClusterIconSetting, {
-  getProps: (di, props) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
-   
-    return {
-      ...props,
-      menuItems: computedInjectMany(clusterIconSettingsMenuInjectionToken),
-      settingComponents: computedInjectMany(clusterIconSettingsComponentInjectionToken),
-      showErrorNotification: di.inject(showErrorNotificationInjectable),
-    };
+export const ClusterIconSetting = withInjectables<Dependencies, ClusterIconSettingProps>(
+  NonInjectedClusterIconSetting,
+  {
+    getProps: (di, props) => {
+      const computedInjectMany = di.inject(computedInjectManyInjectable);
+
+      return {
+        ...props,
+        menuItems: computedInjectMany(clusterIconSettingsMenuInjectionToken),
+        settingComponents: computedInjectMany(clusterIconSettingsComponentInjectionToken),
+        showErrorNotification: di.inject(showErrorNotificationInjectable),
+      };
+    },
   },
-});
+);

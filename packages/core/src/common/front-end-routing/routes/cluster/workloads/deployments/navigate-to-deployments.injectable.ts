@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import deploymentsRouteInjectable from "./deployments-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import deploymentsRouteInjectable from "./deployments-route.injectable";
 
 const navigateToDeploymentsInjectable = getInjectable({
   id: "navigate-to-deployments",

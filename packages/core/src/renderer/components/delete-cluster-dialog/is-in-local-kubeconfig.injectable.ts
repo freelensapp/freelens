@@ -13,7 +13,7 @@ const isInLocalKubeconfigInjectable = getInjectable({
   instantiate: (di): IsInLocalKubeconfig => {
     const directoryForKubeConfigs = di.inject(directoryForKubeConfigsInjectable);
 
-    return cluster => cluster.kubeConfigPath.get().startsWith(directoryForKubeConfigs);
+    return (cluster) => cluster.kubeConfigPath.get().startsWith(directoryForKubeConfigs);
   },
 });
 

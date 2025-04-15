@@ -20,4 +20,3 @@ export interface AppPreferenceRegistration {
 export interface RegisteredAppPreference extends AppPreferenceRegistration {
   id: string;
 }
-

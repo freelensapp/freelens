@@ -5,11 +5,11 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 
 import type { KubeObject } from "@freelensapp/kube-object";
-import { computed } from "mobx";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
-import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
-import { filter, map, sortBy } from "lodash/fp";
 import { pipeline } from "@ogre-tools/fp";
+import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { filter, map, sortBy } from "lodash/fp";
+import { computed } from "mobx";
+import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
 const kubeObjectMenuItemsInjectable = getInjectable({
   id: "kube-object-menu-items",
@@ -24,9 +24,7 @@ const kubeObjectMenuItemsInjectable = getInjectable({
 
         filter(
           (item) =>
-            item.kind === kubeObject?.kind &&
-            item.apiVersions.includes(kubeObject?.apiVersion) &&
-            item.enabled.get(),
+            item.kind === kubeObject?.kind && item.apiVersions.includes(kubeObject?.apiVersion) && item.enabled.get(),
         ),
 
         sortBy((item) => item.orderNumber),

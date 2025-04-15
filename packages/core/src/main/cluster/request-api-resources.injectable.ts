@@ -3,15 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { KubeApiResource } from "../../common/rbac";
-import type { Cluster } from "../../common/cluster/cluster";
-import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
-import { backoffCaller, withConcurrencyLimit, byOrderNumber } from "@freelensapp/utilities";
-import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
+import { backoffCaller, byOrderNumber, withConcurrencyLimit } from "@freelensapp/utilities";
 import type { AsyncResult } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import type { Cluster } from "../../common/cluster/cluster";
+import type { KubeApiResource } from "../../common/rbac";
+import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
+import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
 
 export type RequestApiResources = (cluster: Cluster) => AsyncResult<KubeApiResource[], Error>;
 
@@ -24,8 +24,7 @@ const requestApiResourcesInjectable = getInjectable({
   id: "request-api-resources",
   instantiate: (di): RequestApiResources => {
     const logger = di.inject(loggerInjectionToken);
-    const apiVersionRequesters = di.injectMany(apiVersionsRequesterInjectionToken)
-      .sort(byOrderNumber);
+    const apiVersionRequesters = di.injectMany(apiVersionsRequesterInjectionToken).sort(byOrderNumber);
     const requestKubeApiResourcesFor = di.inject(requestKubeApiResourcesForInjectable);
 
     return async (...args) => {
@@ -42,7 +41,10 @@ const requestApiResourcesInjectable = getInjectable({
               message: `Failed to list kube API resource kinds, attempt ${attempt}: ${error}`,
               level: "warning",
             });
-            logger.warn(`[LIST-API-RESOURCES]: failed to list kube api resources: ${error}`, { attempt, clusterId: cluster.id });
+            logger.warn(`[LIST-API-RESOURCES]: failed to list kube api resources: ${error}`, {
+              attempt,
+              clusterId: cluster.id,
+            });
           },
         });
 
@@ -53,9 +55,9 @@ const requestApiResourcesInjectable = getInjectable({
         groupLists.push(...result.response);
       }
 
-      const apiResourceRequests = groupLists.map(async listGroup => (
-        Object.assign(await requestKubeApiResources(listGroup), { listGroup })
-      ));
+      const apiResourceRequests = groupLists.map(async (listGroup) =>
+        Object.assign(await requestKubeApiResources(listGroup), { listGroup }),
+      );
       const results = await Promise.all(apiResourceRequests);
       const resources: KubeApiResource[] = [];
 

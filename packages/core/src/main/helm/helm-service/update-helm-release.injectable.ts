@@ -1,16 +1,16 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import tempy from "tempy";
-import getHelmReleaseInjectable from "./get-helm-release.injectable";
-import writeFileInjectable from "../../../common/fs/write-file.injectable";
+import type { Cluster } from "../../../common/cluster/cluster";
 import removePathInjectable from "../../../common/fs/remove.injectable";
-import execHelmInjectable from "../exec-helm/exec-helm.injectable";
+import writeFileInjectable from "../../../common/fs/write-file.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
+import execHelmInjectable from "../exec-helm/exec-helm.injectable";
+import getHelmReleaseInjectable from "./get-helm-release.injectable";
 
 export interface UpdateChartArgs {
   chart: string;
@@ -42,10 +42,14 @@ const updateHelmReleaseInjectable = getInjectable({
           "upgrade",
           releaseName,
           data.chart,
-          "--version", data.version,
-          "--values", valuesFilePath,
-          "--namespace", namespace,
-          "--kubeconfig", proxyKubeconfigPath,
+          "--version",
+          data.version,
+          "--values",
+          valuesFilePath,
+          "--namespace",
+          namespace,
+          "--kubeconfig",
+          proxyKubeconfigPath,
         ]);
 
         if (result.callWasSuccessful === false) {

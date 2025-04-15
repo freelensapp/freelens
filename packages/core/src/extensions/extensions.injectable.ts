@@ -14,11 +14,12 @@ const extensionsInjectable = getInjectable({
     const extensionInstances = di.inject(extensionInstancesInjectable);
     const isExtensionEnabled = di.inject(isExtensionEnabledInjectable);
 
-    return computed(() => (
-      iter.chain(extensionInstances.values())
-        .filter(extension => extension.isBundled || isExtensionEnabled(extension.id))
-        .toArray()
-    ));
+    return computed(() =>
+      iter
+        .chain(extensionInstances.values())
+        .filter((extension) => extension.isBundled || isExtensionEnabled(extension.id))
+        .toArray(),
+    );
   },
 });
 

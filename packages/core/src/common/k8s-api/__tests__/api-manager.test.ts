@@ -3,6 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeApi } from "@freelensapp/kube-api";
+import { KubeObject } from "@freelensapp/kube-object";
+import {
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+  loggerInjectionToken,
+} from "@freelensapp/logger";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
@@ -11,20 +19,16 @@ import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import { logErrorInjectionToken, loggerInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import type { ApiManager } from "../api-manager";
 import apiManagerInjectable from "../api-manager/manager.injectable";
-import { KubeApi } from "@freelensapp/kube-api";
-import { KubeObject } from "@freelensapp/kube-object";
 import { KubeObjectStore } from "../kube-object.store";
 
-// eslint-disable-next-line no-restricted-imports
-import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
-import { Cluster } from "../../cluster/cluster";
-import { runInAction } from "mobx";
-import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 import assert from "assert";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
+import { runInAction } from "mobx";
+import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
+import { Cluster } from "../../cluster/cluster";
+import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 
 class TestApi extends KubeApi<KubeObject> {
   protected checkPreferredVersion() {
@@ -32,9 +36,7 @@ class TestApi extends KubeApi<KubeObject> {
   }
 }
 
-class TestStore extends KubeObjectStore<KubeObject, TestApi> {
-
-}
+class TestStore extends KubeObjectStore<KubeObject, TestApi> {}
 
 describe("ApiManager", () => {
   let apiManager: ApiManager;
@@ -47,11 +49,15 @@ describe("ApiManager", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     apiManager = di.inject(apiManagerInjectable);
   });
@@ -60,22 +66,28 @@ describe("ApiManager", () => {
     it("re-register store if apiBase changed", () => {
       const apiBase = "api/v1/foo";
       const fallbackApiBase = "/apis/extensions/v1beta1/foo";
-      const kubeApi = new TestApi({
-        logError: di.inject(logErrorInjectionToken),
-        logInfo: di.inject(logInfoInjectionToken),
-        logWarn: di.inject(logWarningInjectionToken),
-        maybeKubeApi: di.inject(maybeKubeApiInjectable),
-      }, {
-        objectConstructor: KubeObject,
-        apiBase,
-        kind: "foo",
-        fallbackApiBases: [fallbackApiBase],
-        checkPreferredVersion: true,
-      });
-      const kubeStore = new TestStore({
-        context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
-        logger: di.inject(loggerInjectionToken),
-      }, kubeApi);
+      const kubeApi = new TestApi(
+        {
+          logError: di.inject(logErrorInjectionToken),
+          logInfo: di.inject(logInfoInjectionToken),
+          logWarn: di.inject(logWarningInjectionToken),
+          maybeKubeApi: di.inject(maybeKubeApiInjectable),
+        },
+        {
+          objectConstructor: KubeObject,
+          apiBase,
+          kind: "foo",
+          fallbackApiBases: [fallbackApiBase],
+          checkPreferredVersion: true,
+        },
+      );
+      const kubeStore = new TestStore(
+        {
+          context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+          logger: di.inject(loggerInjectionToken),
+        },
+        kubeApi,
+      );
 
       apiManager.registerApi(kubeApi);
 
@@ -98,20 +110,26 @@ describe("ApiManager", () => {
   describe("technical tests for autorun", () => {
     it("given two extensions register apis with the same apibase, settle into using the second", () => {
       const apiBase = "/apis/aquasecurity.github.io/v1alpha1/vulnerabilityreports";
-      const firstApi = Object.assign(new ExternalKubeApi({
-        objectConstructor: KubeObject,
-        apiBase,
-        kind: "VulnerabilityReport",
-      }), {
-        myField: 1,
-      });
-      const secondApi = Object.assign(new ExternalKubeApi({
-        objectConstructor: KubeObject,
-        apiBase,
-        kind: "VulnerabilityReport",
-      }), {
-        myField: 2,
-      });
+      const firstApi = Object.assign(
+        new ExternalKubeApi({
+          objectConstructor: KubeObject,
+          apiBase,
+          kind: "VulnerabilityReport",
+        }),
+        {
+          myField: 1,
+        },
+      );
+      const secondApi = Object.assign(
+        new ExternalKubeApi({
+          objectConstructor: KubeObject,
+          apiBase,
+          kind: "VulnerabilityReport",
+        }),
+        {
+          myField: 2,
+        },
+      );
 
       void firstApi;
       void secondApi;
@@ -127,29 +145,34 @@ describe("ApiManager", () => {
 
     beforeEach(() => {
       runInAction(() => {
-        di.register(getInjectable({
-          id: `default-kube-api-for-custom-resource-definition-${apiBase}`,
-          instantiate: (di) => {
-            const objectConstructor = class extends KubeObject {
-              static readonly kind = "VulnerabilityReport";
-              static readonly namespaced = true;
-              static readonly apiBase = apiBase;
-            };
+        di.register(
+          getInjectable({
+            id: `default-kube-api-for-custom-resource-definition-${apiBase}`,
+            instantiate: (di) => {
+              const objectConstructor = class extends KubeObject {
+                static readonly kind = "VulnerabilityReport";
+                static readonly namespaced = true;
+                static readonly apiBase = apiBase;
+              };
 
-            return Object.assign(
-              new KubeApi({
-                logError: di.inject(logErrorInjectionToken),
-                logInfo: di.inject(logInfoInjectionToken),
-                logWarn: di.inject(logWarningInjectionToken),
-                maybeKubeApi: di.inject(maybeKubeApiInjectable),
-              }, { objectConstructor }),
-              {
-                myField: 1,
-              },
-            );
-          },
-          injectionToken: customResourceDefinitionApiInjectionToken,
-        }));
+              return Object.assign(
+                new KubeApi(
+                  {
+                    logError: di.inject(logErrorInjectionToken),
+                    logInfo: di.inject(logInfoInjectionToken),
+                    logWarn: di.inject(logWarningInjectionToken),
+                    maybeKubeApi: di.inject(maybeKubeApiInjectable),
+                  },
+                  { objectConstructor },
+                ),
+                {
+                  myField: 1,
+                },
+              );
+            },
+            injectionToken: customResourceDefinitionApiInjectionToken,
+          }),
+        );
       });
     });
 
@@ -165,13 +188,16 @@ describe("ApiManager", () => {
 
     describe("given that an extension registers an api with the same apibase", () => {
       beforeEach(() => {
-        void Object.assign(new ExternalKubeApi({
-          objectConstructor: KubeObject,
-          apiBase,
-          kind: "VulnerabilityReport",
-        }), {
-          myField: 2,
-        });
+        void Object.assign(
+          new ExternalKubeApi({
+            objectConstructor: KubeObject,
+            apiBase,
+            kind: "VulnerabilityReport",
+          }),
+          {
+            myField: 2,
+          },
+        );
       });
 
       it("the extension's instance is retrievable instead from apiManager", () => {
@@ -190,15 +216,20 @@ describe("ApiManager", () => {
 
           assert(api);
 
-          apiManager.registerStore(Object.assign(
-            new KubeObjectStore({
-              context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
-              logger: di.inject(loggerInjectionToken),
-            }, api),
-            {
-              someField: 2,
-            },
-          ));
+          apiManager.registerStore(
+            Object.assign(
+              new KubeObjectStore(
+                {
+                  context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+                  logger: di.inject(loggerInjectionToken),
+                },
+                api,
+              ),
+              {
+                someField: 2,
+              },
+            ),
+          );
         });
 
         it("can gets the custom KubeObjectStore instance instead", () => {

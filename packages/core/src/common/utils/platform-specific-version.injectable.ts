@@ -17,13 +17,12 @@ const platformSpecificVersionInjectable = getInjectable({
   instantiate: (di: DiContainerForInjection) => {
     const targetPlatform = di.inject(platformInjectable);
 
-    return <T>(token: InjectionToken<PlatformSpecific<T>, void>) => (
-      di.injectMany(token)
-        .find(impl => impl.platform === targetPlatform)
-        ?.instantiate()
-    );
+    return <T>(token: InjectionToken<PlatformSpecific<T>, void>) =>
+      di
+        .injectMany(token)
+        .find((impl) => impl.platform === targetPlatform)
+        ?.instantiate();
   },
 });
 
 export default platformSpecificVersionInjectable;
-

@@ -1,17 +1,13 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { getOrInsert, iter, object } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { InjectionToken } from "@ogre-tools/injectable";
-import { lifecycleEnum, getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { getOrInsert, iter, object } from "@freelensapp/utilities";
+import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 
-export type AllowedSetValue<T> = T extends (...args: any[]) => any
-  ? never
-  : T extends undefined | symbol
-    ? never
-    : T;
+export type AllowedSetValue<T> = T extends (...args: any[]) => any ? never : T extends undefined | symbol ? never : T;
 
 export interface MigrationStore {
   readonly path: string;
@@ -40,14 +36,21 @@ const persistentStorageMigrationsInjectable = getInjectable({
       getOrInsert(migrations, decl.version, []).push(decl.run);
     }
 
-    return iter.chain(migrations.entries())
-      .map(([v, fns]) => [v, (store: MigrationStore) => {
-        logger.info(`Running ${v} migration for ${store.path}`);
+    return iter
+      .chain(migrations.entries())
+      .map(
+        ([v, fns]) =>
+          [
+            v,
+            (store: MigrationStore) => {
+              logger.info(`Running ${v} migration for ${store.path}`);
 
-        for (const fn of fns) {
-          fn(store);
-        }
-      }] as const)
+              for (const fn of fns) {
+                fn(store);
+              }
+            },
+          ] as const,
+      )
       .collect(object.fromEntries);
   },
   lifecycle: lifecycleEnum.keyedSingleton({

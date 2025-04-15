@@ -1,22 +1,22 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
+import showMessagePopupInjectable from "../../../../main/electron-app/features/show-message-popup.injectable";
+import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
+import type { LensWindow } from "../../../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
+import getCurrentApplicationWindowInjectable from "../../../../main/start-main-application/lens-window/application-window/get-current-application-window.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { RenderResult } from "@testing-library/react";
-import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
 import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
 import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
 import type { DownloadPlatformUpdate } from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "../../main/download-update/download-platform-update/download-platform-update.injectable";
-import type { LensWindow } from "../../../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
-import getCurrentApplicationWindowInjectable from "../../../../main/start-main-application/lens-window/application-window/get-current-application-window.injectable";
-import showMessagePopupInjectable from "../../../../main/electron-app/features/show-message-popup.injectable";
-import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
 
 describe("installing update using tray", () => {
   let builder: ApplicationBuilder;
@@ -32,24 +32,14 @@ describe("installing update using tray", () => {
       downloadPlatformUpdateMock = asyncFn();
       showMessagePopupMock = asyncFn();
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
-      mainDi.override(
-        downloadPlatformUpdateInjectable,
-        () => downloadPlatformUpdateMock,
-      );
+      mainDi.override(downloadPlatformUpdateInjectable, () => downloadPlatformUpdateMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
 
-      mainDi.override(
-        showMessagePopupInjectable,
-        () => showMessagePopupMock,
-      );
-
+      mainDi.override(showMessagePopupInjectable, () => showMessagePopupMock);
     });
   });
 
@@ -72,9 +62,7 @@ describe("installing update using tray", () => {
       let getCurrentApplicationWindow: () => LensWindow | undefined;
 
       beforeEach(() => {
-        getCurrentApplicationWindow = builder.mainDi.inject(
-          getCurrentApplicationWindowInjectable,
-        );
+        getCurrentApplicationWindow = builder.mainDi.inject(getCurrentApplicationWindowInjectable);
 
         builder.applicationWindow.closeAll();
 
@@ -148,15 +136,11 @@ describe("installing update using tray", () => {
       });
 
       it("user cannot check for updates again", () => {
-        expect(
-          builder.tray.get("check-for-updates")?.enabled,
-        ).toBe(false);
+        expect(builder.tray.get("check-for-updates")?.enabled).toBe(false);
       });
 
       it("name of tray item for checking updates indicates that checking is happening", () => {
-        expect(
-          builder.tray.get("check-for-updates")?.label,
-        ).toBe("Checking for Updates...");
+        expect(builder.tray.get("check-for-updates")?.label).toBe("Checking for Updates...");
       });
 
       it("user cannot install update yet", () => {
@@ -179,7 +163,7 @@ describe("installing update using tray", () => {
             "No Updates Available",
             "You're all good",
             "You've got the latest version of Lens,\nthanks for staying on the ball.",
-            { "textWidth": 300 },
+            { textWidth: 300 },
           );
         });
 
@@ -188,15 +172,11 @@ describe("installing update using tray", () => {
         });
 
         it("user can check for updates again", () => {
-          expect(
-            builder.tray.get("check-for-updates")?.enabled,
-          ).toBe(true);
+          expect(builder.tray.get("check-for-updates")?.enabled).toBe(true);
         });
 
         it("name of tray item for checking updates no longer indicates that checking is happening", () => {
-          expect(
-            builder.tray.get("check-for-updates")?.label,
-          ).toBe("Check for Updates...");
+          expect(builder.tray.get("check-for-updates")?.label).toBe("Check for Updates...");
         });
 
         it("renders", () => {
@@ -213,23 +193,17 @@ describe("installing update using tray", () => {
         });
 
         it("user cannot check for updates again yet", () => {
-          expect(
-            builder.tray.get("check-for-updates")?.enabled,
-          ).toBe(false);
+          expect(builder.tray.get("check-for-updates")?.enabled).toBe(false);
         });
 
         it("name of tray item for checking updates indicates that downloading is happening", () => {
-          expect(
-            builder.tray.get("check-for-updates")?.label,
-          ).toBe("Downloading update some-version (0%)...");
+          expect(builder.tray.get("check-for-updates")?.label).toBe("Downloading update some-version (0%)...");
         });
 
         it("when download progresses with decimals, percentage increases as integers", () => {
           downloadPlatformUpdateMock.mock.calls[0][0]({ percentage: 42.424242 });
 
-          expect(
-            builder.tray.get("check-for-updates")?.label,
-          ).toBe("Downloading update some-version (42%)...");
+          expect(builder.tray.get("check-for-updates")?.label).toBe("Downloading update some-version (42%)...");
         });
 
         it("user still cannot install update", () => {
@@ -246,21 +220,15 @@ describe("installing update using tray", () => {
           });
 
           it("user cannot install update", () => {
-            expect(
-              builder.tray.get("install-update"),
-            ).toBeNull();
+            expect(builder.tray.get("install-update")).toBeNull();
           });
 
           it("user can check for updates again", () => {
-            expect(
-              builder.tray.get("check-for-updates")?.enabled,
-            ).toBe(true);
+            expect(builder.tray.get("check-for-updates")?.enabled).toBe(true);
           });
 
           it("name of tray item for checking updates no longer indicates that downloading is happening", () => {
-            expect(
-              builder.tray.get("check-for-updates")?.label,
-            ).toBe("Check for Updates...");
+            expect(builder.tray.get("check-for-updates")?.label).toBe("Check for Updates...");
           });
 
           it("renders", () => {
@@ -274,21 +242,15 @@ describe("installing update using tray", () => {
           });
 
           it("user can install update", () => {
-            expect(
-              builder.tray.get("install-update")?.label,
-            ).toBe("Install update some-version");
+            expect(builder.tray.get("install-update")?.label).toBe("Install update some-version");
           });
 
           it("user can check for updates again", () => {
-            expect(
-              builder.tray.get("check-for-updates")?.enabled,
-            ).toBe(true);
+            expect(builder.tray.get("check-for-updates")?.enabled).toBe(true);
           });
 
           it("name of tray item for checking updates no longer indicates that downloading is happening", () => {
-            expect(
-              builder.tray.get("check-for-updates")?.label,
-            ).toBe("Check for Updates...");
+            expect(builder.tray.get("check-for-updates")?.label).toBe("Check for Updates...");
           });
 
           it("renders", () => {

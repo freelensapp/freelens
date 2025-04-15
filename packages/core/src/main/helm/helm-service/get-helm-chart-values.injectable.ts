@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import getActiveHelmRepositoryInjectable from "../repositories/get-active-helm-repository.injectable";
 import type { HelmRepo } from "../../../common/helm/helm-repo";
 import helmChartManagerInjectable from "../helm-chart-manager.injectable";
+import getActiveHelmRepositoryInjectable from "../repositories/get-active-helm-repository.injectable";
 
 const getHelmChartValuesInjectable = getInjectable({
   id: "get-helm-chart-values",

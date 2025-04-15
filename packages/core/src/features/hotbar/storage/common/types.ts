@@ -3,7 +3,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
 export interface HotbarItem {
   entity: {
     uid: string;

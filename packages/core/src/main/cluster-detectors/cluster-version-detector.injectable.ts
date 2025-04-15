@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { clusterMetadataDetectorInjectionToken } from "./token";
-import { ClusterMetadataKey } from "../../common/cluster-types";
 import { getInjectable } from "@ogre-tools/injectable";
+import { ClusterMetadataKey } from "../../common/cluster-types";
 import requestClusterVersionInjectable from "./request-cluster-version.injectable";
+import { clusterMetadataDetectorInjectionToken } from "./token";
 
 const clusterVersionDetectorInjectable = getInjectable({
   id: "cluster-version-detector",
@@ -25,4 +25,3 @@ const clusterVersionDetectorInjectable = getInjectable({
 });
 
 export default clusterVersionDetectorInjectable;
-

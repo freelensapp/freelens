@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import priorityClassesRouteInjectable from "./priority-classes-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import priorityClassesRouteInjectable from "./priority-classes-route.injectable";
 
 const navigateToPriorityClassesInjectable = getInjectable({
   id: "navigate-to-priority-classes",

@@ -14,11 +14,7 @@ const updateIsReadyToBeInstalledInjectable = getInjectable({
     const discoveredUpdateVersion = di.inject(discoveredUpdateVersionInjectable);
     const updateIsBeingDownloaded = di.inject(updateIsBeingDownloadedInjectable);
 
-    return computed(
-      () =>
-        !!discoveredUpdateVersion.value.get() &&
-        !updateIsBeingDownloaded.value.get(),
-    );
+    return computed(() => !!discoveredUpdateVersion.value.get() && !updateIsBeingDownloaded.value.get());
   },
 });
 

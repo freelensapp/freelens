@@ -7,39 +7,24 @@ import { HashSet, ObservableHashSet } from "./hash-set";
 
 describe("ObservableHashSet<T>", () => {
   it("should not throw on creation", () => {
-    expect(() => new ObservableHashSet<{ a: number }>([], item => item.a.toString())).not.toThrowError();
+    expect(() => new ObservableHashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrowError();
   });
 
   it("should be initialized", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
   });
 
   it("has should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     expect(res.has({ a: 5 })).toBe(false);
   });
 
   it("forEach should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     let a = 1;
 
@@ -49,12 +34,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("delete should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     expect(res.delete({ a: 1 })).toBe(true);
@@ -66,12 +46,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("toggle should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     res.toggle({ a: 1 });
@@ -83,12 +58,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("add should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 6 })).toBe(false);
     res.add({ a: 6 });
@@ -96,12 +66,9 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("add should treat the hash to be the same as equality", () => {
-    const res = new ObservableHashSet([
-      { a: 1, foobar: "hello" },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1, foobar: "hello" }, { a: 2 }, { a: 3 }, { a: 4 }], (item) =>
+      item.a.toString(),
+    );
 
     expect(res.has({ a: 1 })).toBe(true);
     res.add({ a: 1, foobar: "goodbye" });
@@ -109,12 +76,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("clear should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
     res.clear();
@@ -122,12 +84,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("replace should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
     res.replace([{ a: 13 }]);
@@ -137,28 +94,13 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("toJSON should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
-    expect(res.toJSON()).toStrictEqual([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ]);
+    expect(res.toJSON()).toStrictEqual([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }]);
   });
 
   it("values should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.values();
 
     expect(iter.next()).toStrictEqual({
@@ -188,12 +130,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("keys should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.keys();
 
     expect(iter.next()).toStrictEqual({
@@ -223,12 +160,7 @@ describe("ObservableHashSet<T>", () => {
   });
 
   it("entries should work as expected", () => {
-    const res = new ObservableHashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new ObservableHashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.entries();
 
     expect(iter.next()).toStrictEqual({
@@ -260,39 +192,24 @@ describe("ObservableHashSet<T>", () => {
 
 describe("HashSet<T>", () => {
   it("should not throw on creation", () => {
-    expect(() => new HashSet<{ a: number }>([], item => item.a.toString())).not.toThrowError();
+    expect(() => new HashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrowError();
   });
 
   it("should be initialized", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
   });
 
   it("has should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     expect(res.has({ a: 5 })).toBe(false);
   });
 
   it("forEach should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     let a = 1;
 
@@ -302,12 +219,7 @@ describe("HashSet<T>", () => {
   });
 
   it("delete should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     expect(res.delete({ a: 1 })).toBe(true);
@@ -319,12 +231,7 @@ describe("HashSet<T>", () => {
   });
 
   it("toggle should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     res.toggle({ a: 1 });
@@ -336,12 +243,7 @@ describe("HashSet<T>", () => {
   });
 
   it("add should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 6 })).toBe(false);
     res.add({ a: 6 });
@@ -349,12 +251,7 @@ describe("HashSet<T>", () => {
   });
 
   it("add should treat the hash to be the same as equality", () => {
-    const res = new HashSet([
-      { a: 1, foobar: "hello" },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1, foobar: "hello" }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.has({ a: 1 })).toBe(true);
     res.add({ a: 1, foobar: "goodbye" });
@@ -362,12 +259,7 @@ describe("HashSet<T>", () => {
   });
 
   it("clear should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
     res.clear();
@@ -375,12 +267,7 @@ describe("HashSet<T>", () => {
   });
 
   it("replace should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
     expect(res.size).toBe(4);
     res.replace([{ a: 13 }]);
@@ -390,28 +277,13 @@ describe("HashSet<T>", () => {
   });
 
   it("toJSON should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
 
-    expect(res.toJSON()).toStrictEqual([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ]);
+    expect(res.toJSON()).toStrictEqual([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }]);
   });
 
   it("values should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.values();
 
     expect(iter.next()).toStrictEqual({
@@ -441,12 +313,7 @@ describe("HashSet<T>", () => {
   });
 
   it("keys should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.keys();
 
     expect(iter.next()).toStrictEqual({
@@ -476,12 +343,7 @@ describe("HashSet<T>", () => {
   });
 
   it("entries should work as expected", () => {
-    const res = new HashSet([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-      { a: 4 },
-    ], item => item.a.toString());
+    const res = new HashSet([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }], (item) => item.a.toString());
     const iter = res.entries();
 
     expect(iter.next()).toStrictEqual({

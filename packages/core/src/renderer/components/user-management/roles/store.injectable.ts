@@ -1,14 +1,14 @@
+import assert from "assert";
+import { roleApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import { loggerInjectionToken } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
-import { roleApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { kubeObjectStoreInjectionToken } from "../../../../common/k8s-api/api-manager/kube-object-store-token";
-import { RoleStore } from "./store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../cluster-frame-context/for-namespaced-resources.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import { RoleStore } from "./store";
 
 const roleStoreInjectable = getInjectable({
   id: "role-store",
@@ -17,10 +17,13 @@ const roleStoreInjectable = getInjectable({
 
     const api = di.inject(roleApiInjectable);
 
-    return new RoleStore({
-      context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
-      logger: di.inject(loggerInjectionToken),
-    }, api);
+    return new RoleStore(
+      {
+        context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+        logger: di.inject(loggerInjectionToken),
+      },
+      api,
+    );
   },
   injectionToken: kubeObjectStoreInjectionToken,
 });

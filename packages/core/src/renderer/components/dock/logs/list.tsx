@@ -5,26 +5,26 @@
 
 import "./list.scss";
 
-import type { ForwardedRef } from "react";
-import React from "react";
+import { Spinner } from "@freelensapp/spinner";
+import { array, cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import AnsiUp from "ansi_up";
+import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import debounce from "lodash/debounce";
-import { action, computed, observable, makeObservable, reaction } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import moment from "moment-timezone";
+import type { ForwardedRef } from "react";
+import React from "react";
 import type { Align, ListOnScrollProps } from "react-window";
-import { SearchStore } from "../../../search-store/search-store";
-import { array, cssNames } from "@freelensapp/utilities";
-import type { VirtualListRef } from "../../virtual-list";
-import { VirtualList } from "../../virtual-list";
-import { ToBottom } from "./to-bottom";
-import type { LogTabViewModel } from "../logs/logs-view-model";
-import { Spinner } from "@freelensapp/spinner";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import autoBindReact from "auto-bind/react";
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
+import { SearchStore } from "../../../search-store/search-store";
+import type { VirtualListRef } from "../../virtual-list";
+import { VirtualList } from "../../virtual-list";
+import type { LogTabViewModel } from "../logs/logs-view-model";
+import { ToBottom } from "./to-bottom";
 
 export interface LogListProps {
   model: LogTabViewModel;
@@ -41,7 +41,9 @@ interface Dependencies {
 }
 
 @observer
-class NonForwardedLogList extends React.Component<Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }> {
+class NonForwardedLogList extends React.Component<
+  Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
+> {
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
 
@@ -57,11 +59,14 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
 
   componentDidMount() {
     disposeOnUnmount(this, [
-      reaction(() => this.props.model.logs.get(), (logs, prevLogs) => {
-        this.onLogsInitialLoad(logs, prevLogs);
-        this.onLogsUpdate();
-        this.onUserScrolledUp(logs, prevLogs);
-      }),
+      reaction(
+        () => this.props.model.logs.get(),
+        (logs, prevLogs) => {
+          this.onLogsInitialLoad(logs, prevLogs);
+          this.onLogsUpdate();
+          this.onUserScrolledUp(logs, prevLogs);
+        },
+      ),
     ]);
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
@@ -96,7 +101,7 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
     if (this.isLastLineVisible) {
       setTimeout(() => {
         this.scrollToBottom();
-      }, 500);  // Giving some time to VirtualList to prepare its outerRef (this.virtualListDiv) element
+      }, 500); // Giving some time to VirtualList to prepare its outerRef (this.virtualListDiv) element
     }
   }
 
@@ -129,7 +134,10 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
 
     return this.props.model.timestampSplitLogs
       .get()
-      .map(([logTimestamp, log]) => (`${logTimestamp && moment.tz(logTimestamp, this.props.state.localeTimezone).format()}${log}`));
+      .map(
+        ([logTimestamp, log]) =>
+          `${logTimestamp && moment.tz(logTimestamp, this.props.state.localeTimezone).format()}${log}`,
+      );
   }
 
   /**
@@ -150,9 +158,11 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
    * Checks if last log line considered visible to user, setting its observable
    * @param props Scrolling props from virtual list core
    */
-  setLastLineVisibility = action(({ scrollOffset }: ListOnScrollProps, { scrollHeight, clientHeight }: HTMLDivElement) => {
-    this.isLastLineVisible = (clientHeight + scrollOffset) === scrollHeight;
-  });
+  setLastLineVisibility = action(
+    ({ scrollOffset }: ListOnScrollProps, { scrollHeight, clientHeight }: HTMLDivElement) => {
+      this.isLastLineVisible = clientHeight + scrollOffset === scrollHeight;
+    },
+  );
 
   /**
    * Check if user scrolled to top and new logs should be loaded
@@ -201,26 +211,25 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
     const contents: React.ReactElement[] = [];
     const ansiToHtml = (ansi: string) => DOMPurify.sanitize(colorConverter.ansi_to_html(ansi));
 
-    if (searchQuery) { // If search is enabled, replace keyword with backgrounded <span>
+    if (searchQuery) {
+      // If search is enabled, replace keyword with backgrounded <span>
       // Case-insensitive search (lowercasing query and keywords in line)
       const regex = new RegExp(SearchStore.escapeRegex(searchQuery), "gi");
       const matches = item.matchAll(regex);
-      const modified = item.replace(regex, match => match.toLowerCase());
+      const modified = item.replace(regex, (match) => match.toLowerCase());
       // Splitting text line by keyword
       const pieces = modified.split(searchQuery.toLowerCase());
 
       pieces.forEach((piece, index) => {
         const active = isActiveOverlay(rowIndex, index);
         const lastItem = index === pieces.length - 1;
-        const overlayValueString = matches.next().value?.[0] ??  "";
-        const overlay = !lastItem
-          ? (
-            <span
-              className={cssNames("overlay", { active })}
-              dangerouslySetInnerHTML={{ __html: ansiToHtml(overlayValueString) }}
-            />
-          )
-          : null;
+        const overlayValueString = matches.next().value?.[0] ?? "";
+        const overlay = !lastItem ? (
+          <span
+            className={cssNames("overlay", { active })}
+            dangerouslySetInnerHTML={{ __html: ansiToHtml(overlayValueString) }}
+          />
+        ) : null;
 
         contents.push(
           <React.Fragment key={piece + index}>
@@ -233,9 +242,7 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
 
     return (
       <div className={cssNames("LogRow")}>
-        {contents.length > 1 ? contents : (
-          <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />
-        )}
+        {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
         {/* For preserving copy-paste experience and keeping line breaks */}
         <br />
       </div>
@@ -254,15 +261,13 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
     if (!this.logs.length) {
       return (
         <div className="LogList flex box grow align-center justify-center">
-          There are no logs available for container
-          {" "}
-          {this.props.model.logTabData.get()?.selectedContainer}
+          There are no logs available for container {this.props.model.logTabData.get()?.selectedContainer}
         </div>
       );
     }
 
     return (
-      <div className={cssNames("LogList flex" )}>
+      <div className={cssNames("LogList flex")}>
         <VirtualList
           items={this.logs}
           rowHeights={array.filled(this.logs.length, this.lineHeight)}
@@ -272,15 +277,16 @@ class NonForwardedLogList extends React.Component<Dependencies & LogListProps & 
           ref={this.virtualListRef}
           className="box grow"
         />
-        {this.isJumpButtonVisible && (
-          <ToBottom onClick={this.scrollToBottom} />
-        )}
+        {this.isJumpButtonVisible && <ToBottom onClick={this.scrollToBottom} />}
       </div>
     );
   }
 }
 
-const InjectedNonForwardedLogList = withInjectables<Dependencies, LogListProps & { innerRef: ForwardedRef<LogListRef> }>(NonForwardedLogList, {
+const InjectedNonForwardedLogList = withInjectables<
+  Dependencies,
+  LogListProps & { innerRef: ForwardedRef<LogListRef> }
+>(NonForwardedLogList, {
   getProps: (di, props) => ({
     ...props,
     state: di.inject(userPreferencesStateInjectable),

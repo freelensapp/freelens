@@ -6,10 +6,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { OsActionMenuItem } from "./application-menu-item-injection-token";
 import applicationMenuItemInjectionToken from "./application-menu-item-injection-token";
 
-const getApplicationMenuOperationSystemActionInjectable = ({
-  id,
-  ...rest
-}: Omit<OsActionMenuItem, "kind" >) =>
+const getApplicationMenuOperationSystemActionInjectable = ({ id, ...rest }: Omit<OsActionMenuItem, "kind">) =>
   getInjectable({
     id: `application-menu-operation-system-action/${id}`,
 

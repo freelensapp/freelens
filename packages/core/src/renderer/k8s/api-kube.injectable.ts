@@ -1,17 +1,17 @@
+import assert from "assert";
+import { apiKubeInjectionToken } from "@freelensapp/kube-api";
+import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
-import { apiKubePrefix } from "../../common/vars";
-import { apiKubeInjectionToken } from "@freelensapp/kube-api";
-import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
-import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
-import isDevelopmentInjectable from "../../common/vars/is-development.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import { apiBaseServerAddressInjectionToken } from "../../common/k8s-api/api-base-configs";
+import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
+import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
+import { apiKubePrefix } from "../../common/vars";
+import isDevelopmentInjectable from "../../common/vars/is-development.injectable";
 
 const apiKubeInjectable = getInjectable({
   id: "api-kube",
@@ -23,15 +23,18 @@ const apiKubeInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const { host } = di.inject(windowLocationInjectable);
 
-    const apiKube = createKubeJsonApi({
-      serverAddress: apiBaseServerAddress,
-      apiBase: apiKubePrefix,
-      debug: isDevelopment,
-    }, {
-      headers: {
-        "Host": host,
+    const apiKube = createKubeJsonApi(
+      {
+        serverAddress: apiBaseServerAddress,
+        apiBase: apiKubePrefix,
+        debug: isDevelopment,
       },
-    });
+      {
+        headers: {
+          Host: host,
+        },
+      },
+    );
 
     apiKube.onError.addListener((error, res) => {
       switch (res.status) {

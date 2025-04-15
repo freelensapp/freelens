@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { Observer } from "mobx-react";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import broadcastThatRootFrameIsRenderedInjectable from "./broadcast-that-root-frame-is-rendered.injectable";
 import type { RootFrameChildComponent } from "@freelensapp/react-application";
 import { rootFrameChildComponentInjectionToken } from "@freelensapp/react-application";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { Observer } from "mobx-react";
+import React from "react";
+import broadcastThatRootFrameIsRenderedInjectable from "./broadcast-that-root-frame-is-rendered.injectable";
 
 interface Dependencies {
   broadcastThatRootFrameIsRendered: () => void;
@@ -25,12 +25,9 @@ class NonInjectedRootFrame extends React.Component<Dependencies> {
   render() {
     return (
       <>
-        {this.props.childComponents
-          .map((child) => (
-            <Observer key={child.id}>
-              {() => (child.shouldRender.get() ? <child.Component /> : null) }
-            </Observer>
-          ))}
+        {this.props.childComponents.map((child) => (
+          <Observer key={child.id}>{() => (child.shouldRender.get() ? <child.Component /> : null)}</Observer>
+        ))}
       </>
     );
   }

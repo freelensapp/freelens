@@ -3,31 +3,26 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useContext } from "react";
 import { observer } from "mobx-react";
+import React, { useContext } from "react";
+import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { ChartDataSets } from "../chart";
 import { BarChart } from "../chart";
-import { normalizeMetrics, isMetricsEmpty } from "../../../common/k8s-api/endpoints/metrics.api";
-import { NoMetrics } from "../resource-metrics/no-metrics";
-import { ResourceMetricsContext } from "../resource-metrics";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
+import { ResourceMetricsContext } from "../resource-metrics";
+import { NoMetrics } from "../resource-metrics/no-metrics";
 
 export const IngressCharts = observer(() => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
 
   if (!metrics || !object || !tab) return null;
-  if (isMetricsEmpty(metrics)) return <NoMetrics/>;
+  if (isMetricsEmpty(metrics)) return <NoMetrics />;
 
   const id = object.getId();
   const values = Object.values(metrics)
     .map(normalizeMetrics)
     .map(({ data }) => data.result[0].values);
-  const [
-    bytesSentSuccess,
-    bytesSentFailure,
-    requestDurationSeconds,
-    responseDurationSeconds,
-  ] = values;
+  const [bytesSentSuccess, bytesSentFailure, requestDurationSeconds, responseDurationSeconds] = values;
 
   const datasets: Partial<Record<MetricsTab, ChartDataSets[]>> = {
     Network: [

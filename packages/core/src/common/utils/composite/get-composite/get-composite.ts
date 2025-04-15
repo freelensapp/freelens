@@ -4,17 +4,7 @@
  */
 
 import { pipeline } from "@ogre-tools/fp";
-import {
-  countBy,
-  filter,
-  toPairs,
-  nth,
-  map,
-  uniq,
-  without,
-  compact,
-  identity,
-} from "lodash/fp";
+import { compact, countBy, filter, identity, map, nth, toPairs, uniq, without } from "lodash/fp";
 
 export interface Composite<T> {
   id: string;
@@ -31,22 +21,22 @@ interface Configuration<T> {
   handleMissingParentIds?: (parentIdsForHandling: ParentIdsForHandling) => void;
 }
 
-export const getCompositeFor = <T>({
-  rootId = undefined,
-  getId,
-  getParentId,
-  transformChildren = identity,
-  handleMissingParentIds = throwMissingParentIds,
-}: Configuration<T>) => (source: T[]) => {
+export const getCompositeFor =
+  <T>({
+    rootId = undefined,
+    getId,
+    getParentId,
+    transformChildren = identity,
+    handleMissingParentIds = throwMissingParentIds,
+  }: Configuration<T>) =>
+  (source: T[]) => {
     const undefinedIds = pipeline(
       source,
       filter((x) => getId(x) === undefined),
     );
 
     if (undefinedIds.length) {
-      throw new Error(
-        `Tried to get a composite but encountered ${undefinedIds.length} undefined ids`,
-      );
+      throw new Error(`Tried to get a composite but encountered ${undefinedIds.length} undefined ids`);
     }
 
     const selfReferencingIds = pipeline(
@@ -57,9 +47,7 @@ export const getCompositeFor = <T>({
 
     if (selfReferencingIds.length) {
       throw new Error(
-        `Tried to get a composite, but found items with self as parent: "${selfReferencingIds.join(
-          '", ',
-        )}"`,
+        `Tried to get a composite, but found items with self as parent: "${selfReferencingIds.join('", ')}"`,
       );
     }
 
@@ -73,9 +61,7 @@ export const getCompositeFor = <T>({
 
     if (duplicateIds.length) {
       throw new Error(
-        `Tried to get a composite but encountered non-unique ids: "${duplicateIds
-          .map((x) => String(x))
-          .join('", "')}"`,
+        `Tried to get a composite but encountered non-unique ids: "${duplicateIds.map((x) => String(x)).join('", "')}"`,
       );
     }
 
@@ -113,17 +99,13 @@ export const getCompositeFor = <T>({
       };
     };
 
-    const isRootId = rootId
-      ? (thing: T) => getId(thing) === rootId
-      : (thing: T) => getParentId(thing) === undefined;
+    const isRootId = rootId ? (thing: T) => getId(thing) === rootId : (thing: T) => getParentId(thing) === undefined;
 
     const roots = source.filter(isRootId);
 
     if (roots.length > 1) {
       throw new Error(
-        `Tried to get a composite, but multiple roots where encountered: "${roots
-          .map(getId)
-          .join('", "')}"`,
+        `Tried to get a composite, but multiple roots where encountered: "${roots.map(getId).join('", "')}"`,
       );
     }
 
@@ -135,10 +117,7 @@ interface ParentIdsForHandling {
   availableParentIds: string[];
 }
 
-const throwMissingParentIds = ({
-  missingParentIds,
-  availableParentIds,
-}: ParentIdsForHandling) => {
+const throwMissingParentIds = ({ missingParentIds, availableParentIds }: ParentIdsForHandling) => {
   throw new Error(
     `Tried to get a composite but encountered missing parent ids: "${missingParentIds.join(
       '", "',

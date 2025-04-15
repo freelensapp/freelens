@@ -1,11 +1,11 @@
+import EventEmitter from "events";
+import type { KubeApi } from "@freelensapp/kube-api";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import EventEmitter from "events";
 import type TypedEventEmitter from "typed-emitter";
-import type { KubeApi } from "@freelensapp/kube-api";
 
 export interface LegacyAutoRegistration {
   kubeApi: (api: KubeApi<any, any>) => void;

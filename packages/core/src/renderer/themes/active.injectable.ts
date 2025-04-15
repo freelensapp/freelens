@@ -1,9 +1,9 @@
+import assert from "assert";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import { computed } from "mobx";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
@@ -25,7 +25,7 @@ const activeThemeInjectable = getInjectable({
 
       if (pref.useSystemTheme) {
         const systemThemeType = systemThemeConfiguration.get();
-        const matchingTheme = themeDecls.find(theme => theme.type === systemThemeType);
+        const matchingTheme = themeDecls.find((theme) => theme.type === systemThemeType);
 
         assert(matchingTheme, `Missing theme declaration for system theme "${systemThemeType}"`);
 

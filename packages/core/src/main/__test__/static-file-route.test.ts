@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import type { LensApiRequest, Route } from "../router/route";
 import staticFileRouteInjectable from "../routes/files/static-file-route.injectable";
-import { getDiForUnitTesting } from "../getDiForUnitTesting";
 
 describe("static-file-route", () => {
   let handleStaticFileRoute: Route<Buffer, "/{path*}">;

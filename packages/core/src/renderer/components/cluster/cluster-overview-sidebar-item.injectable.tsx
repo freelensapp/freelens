@@ -1,14 +1,14 @@
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { Icon } from "@freelensapp/icon";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Icon } from "@freelensapp/icon";
 import React from "react";
-import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import clusterOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/overview/cluster-overview-route.injectable";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 
 const clusterOverviewSidebarItemInjectable = getInjectable({
   id: "sidebar-item-cluster-overview",

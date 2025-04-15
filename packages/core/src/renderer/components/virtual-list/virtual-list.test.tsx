@@ -8,11 +8,12 @@ import { render } from "@testing-library/react";
 import React from "react";
 import { VirtualList } from "./virtual-list";
 
-const generateListOfIdObjects = (count: number) => [...new Array(count)].map((v, index) => ({
-  getId() {
-    return `some-id-${index}`;
-  },
-}));
+const generateListOfIdObjects = (count: number) =>
+  [...new Array(count)].map((v, index) => ({
+    getId() {
+      return `some-id-${index}`;
+    },
+  }));
 const generateListOfRowHeights = (count: number, size: number) => [...new Array(count)].map(() => size);
 const renderList = (selectedId?: string) => (
   <VirtualList

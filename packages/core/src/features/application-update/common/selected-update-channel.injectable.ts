@@ -5,9 +5,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 import { action, computed, observable } from "mobx";
-import type { UpdateChannel, ReleaseChannel } from "./update-channels";
-import { updateChannels } from "./update-channels";
 import defaultUpdateChannelInjectable from "./default-update-channel.injectable";
+import type { ReleaseChannel, UpdateChannel } from "./update-channels";
+import { updateChannels } from "./update-channels";
 
 export interface SelectedUpdateChannel {
   value: IComputedValue<UpdateChannel>;
@@ -26,9 +26,7 @@ const selectedUpdateChannelInjectable = getInjectable({
 
       setValue: action((channelId) => {
         const targetUpdateChannel =
-          channelId && updateChannels[channelId]
-            ? updateChannels[channelId]
-            : defaultUpdateChannel;
+          channelId && updateChannels[channelId] ? updateChannels[channelId] : defaultUpdateChannel;
 
         state.set(targetUpdateChannel);
       }),

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { FSWatcher } from "chokidar";
 import path from "path";
+import { FSWatcher } from "chokidar";
 
 /**
  * Wait for `filePath` and all parent directories to exist.
@@ -45,10 +45,6 @@ export async function waitForPath(pathname: string): Promise<void> {
         .catch(() => reject(error));
     };
 
-    watcher
-      .on("add", onAddOrAddDir)
-      .on("addDir", onAddOrAddDir)
-      .on("error", onError)
-      .add(dirOfPath);
+    watcher.on("add", onAddOrAddDir).on("addDir", onAddOrAddDir).on("error", onError).add(dirOfPath);
   });
 }

@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import { getRequestChannel } from "@freelensapp/messaging";
 import type { Result } from "@freelensapp/utilities";
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 export interface GetHelmReleaseArgs {
   clusterId: string;
@@ -56,4 +56,6 @@ export interface ListHelmReleasesArgs {
 
 export type ListHelmReleasesResponse = Result<ListedHelmRelease[], string>;
 
-export const listHelmReleasesChannel = getRequestChannel<ListHelmReleasesArgs, ListHelmReleasesResponse>("list-helm-releases");
+export const listHelmReleasesChannel = getRequestChannel<ListHelmReleasesArgs, ListHelmReleasesResponse>(
+  "list-helm-releases",
+);

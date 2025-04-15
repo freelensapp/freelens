@@ -1,18 +1,18 @@
+import type { KubeApi } from "@freelensapp/kube-api";
+import { KubeObject } from "@freelensapp/kube-object";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { observable } from "mobx";
 import React from "react";
-import { KubeObject } from "@freelensapp/kube-object";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import type { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
-import type { KubeApi } from "@freelensapp/kube-api";
 import showDetailsInjectable from "../../../../renderer/components/kube-detail-params/show-details.injectable";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../../../renderer/components/test-utils/get-extension-fake";
-import { observable } from "mobx";
 
 describe("disable kube object detail items when cluster is not relevant", () => {
   let builder: ApplicationBuilder;
@@ -31,8 +31,7 @@ describe("disable kube object detail items when cluster is not relevant", () => 
       const store = {
         api,
         loadFromPath: async () => Promise.resolve(getKubeObjectStub("some-kind", "some-api-version")),
-        getByPath() {
-        },
+        getByPath() {},
       } as Partial<KubeObjectStore<KubeObject>> as KubeObjectStore<KubeObject>;
 
       apiManager.registerApi(api);
@@ -50,11 +49,7 @@ describe("disable kube object detail items when cluster is not relevant", () => 
             kind: "some-kind",
             apiVersions: ["some-api-version"],
             components: {
-              Details: () => (
-                <div data-testid="some-kube-object-detail-item">
-                  Some detail
-                </div>
-              ),
+              Details: () => <div data-testid="some-kube-object-detail-item">Some detail</div>,
             },
           },
         ],

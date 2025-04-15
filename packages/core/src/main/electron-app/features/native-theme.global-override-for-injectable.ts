@@ -7,11 +7,13 @@ import EventEmitter from "events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import nativeThemeInjectable from "./native-theme.injectable";
 
-export default getGlobalOverride(nativeThemeInjectable, () => Object.assign(new EventEmitter(), {
-  shouldUseDarkColors: true,
-  inForcedColorsMode: true,
-  shouldUseHighContrastColors: false,
-  shouldUseInvertedColorScheme: false,
-  prefersReducedTransparency: false,
-  themeSource: "dark" as const,
-}));
+export default getGlobalOverride(nativeThemeInjectable, () =>
+  Object.assign(new EventEmitter(), {
+    shouldUseDarkColors: true,
+    inForcedColorsMode: true,
+    shouldUseHighContrastColors: false,
+    shouldUseInvertedColorScheme: false,
+    prefersReducedTransparency: false,
+    themeSource: "dark" as const,
+  }),
+);

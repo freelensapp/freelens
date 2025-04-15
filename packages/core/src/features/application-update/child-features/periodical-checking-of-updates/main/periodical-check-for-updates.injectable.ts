@@ -1,11 +1,11 @@
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { getStartableStoppable } from "@freelensapp/startable-stoppable";
-import processCheckingForUpdatesInjectable from "../../../main/process-checking-for-updates.injectable";
 import withOrphanPromiseInjectable from "../../../../../common/utils/with-orphan-promise/with-orphan-promise.injectable";
+import processCheckingForUpdatesInjectable from "../../../main/process-checking-for-updates.injectable";
 
 const TWO_HOURS = 1000 * 60 * 60 * 2;
 

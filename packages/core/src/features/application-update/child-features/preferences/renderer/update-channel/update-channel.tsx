@@ -1,17 +1,17 @@
+import { pipeline } from "@ogre-tools/fp";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { map, toPairs } from "lodash/fp";
+import { observer } from "mobx-react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { Select } from "../../../../../../renderer/components/select";
-import { updateChannels } from "../../../../common/update-channels";
 import type { SelectedUpdateChannel } from "../../../../common/selected-update-channel.injectable";
 import selectedUpdateChannelInjectable from "../../../../common/selected-update-channel.injectable";
-import { pipeline } from "@ogre-tools/fp";
-import { map, toPairs } from "lodash/fp";
-import { observer } from "mobx-react";
+import { updateChannels } from "../../../../common/update-channels";
 
 interface Dependencies {
   selectedUpdateChannel: SelectedUpdateChannel;
@@ -25,7 +25,6 @@ const updateChannelOptions = pipeline(
     label: channel.label,
   })),
 );
-
 
 const NonInjectedUpdateChannel = observer(({ selectedUpdateChannel }: Dependencies) => (
   <section id="update-channel">

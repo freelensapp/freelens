@@ -14,20 +14,16 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
     return (
       <textarea
         data-testid={`monaco-editor-for-${id}`}
-
         onChange={(event) => {
           const newValue = event.target.value;
 
-          onChange?.(
-            newValue,
-            {} as editor.IModelContentChangedEvent,
-          );
+          onChange?.(newValue, {} as editor.IModelContentChangedEvent);
 
           const validator = monacoValidators[language];
 
           try {
             validator(newValue);
-          } catch(e) {
+          } catch (e) {
             onError?.(e);
           }
         }}
@@ -37,7 +33,6 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
   }
 }
 
-export const MonacoEditor = React.forwardRef<
-  MonacoEditorRef,
-  MonacoEditorProps
->((props, ref) => <FakeMonacoEditor innerRef={ref} {...props} />);
+export const MonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps>((props, ref) => (
+  <FakeMonacoEditor innerRef={ref} {...props} />
+));

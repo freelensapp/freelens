@@ -1,14 +1,14 @@
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import { getActiveHelmRepositoriesChannel } from "../../../../../common/helm/get-active-helm-repositories-channel";
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import helmRepositoriesErrorStateInjectable from "./helm-repositories-error-state.injectable";
 import { runInAction } from "mobx";
+import { getActiveHelmRepositoriesChannel } from "../../../../../common/helm/get-active-helm-repositories-channel";
+import helmRepositoriesErrorStateInjectable from "./helm-repositories-error-state.injectable";
 
 const activeHelmRepositoriesInjectable = getInjectable({
   id: "active-helm-repositories",
@@ -16,15 +16,11 @@ const activeHelmRepositoriesInjectable = getInjectable({
   instantiate: (di) => {
     const requestFromChannel = di.inject(requestFromChannelInjectionToken);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
-    const helmRepositoriesErrorState = di.inject(
-      helmRepositoriesErrorStateInjectable,
-    );
+    const helmRepositoriesErrorState = di.inject(helmRepositoriesErrorStateInjectable);
 
     return asyncComputed({
       getValueFromObservedPromise: async () => {
-        const result = await requestFromChannel(
-          getActiveHelmRepositoriesChannel,
-        );
+        const result = await requestFromChannel(getActiveHelmRepositoriesChannel);
 
         if (result.callWasSuccessful) {
           return result.response;

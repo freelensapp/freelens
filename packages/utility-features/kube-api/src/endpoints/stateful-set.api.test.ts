@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeJsonApi, StatefulSetApi } from "@freelensapp/kube-api";
-import { flushPromises } from "@freelensapp/test-utils";
 import asyncFn from "@async-fn/jest";
 import type { AsyncFnMock } from "@async-fn/jest";
+import { KubeJsonApi, StatefulSetApi } from "@freelensapp/kube-api";
+import { flushPromises } from "@freelensapp/test-utils";
 
 describe("StatefulSetApi", () => {
   let statefulSetApi: StatefulSetApi;

@@ -15,7 +15,10 @@ interface Dependencies {
   getClusterById: GetClusterById;
 }
 
-function NonInjectedTerminalKubernetesClusterSettings({ entity, getClusterById }: EntitySettingViewProps & Dependencies) {
+function NonInjectedTerminalKubernetesClusterSettings({
+  entity,
+  getClusterById,
+}: EntitySettingViewProps & Dependencies) {
   const cluster = getClusterById(entity.getId());
 
   if (!cluster) {
@@ -29,12 +32,15 @@ function NonInjectedTerminalKubernetesClusterSettings({ entity, getClusterById }
   );
 }
 
-const TerminalKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedTerminalKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const TerminalKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedTerminalKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const terminalKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "terminal-kubernetes-cluster-entity-settings",

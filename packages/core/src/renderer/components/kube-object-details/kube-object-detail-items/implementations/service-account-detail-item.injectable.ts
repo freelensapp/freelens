@@ -3,11 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-injection-token";
 import { computed } from "mobx";
 import { ServiceAccountsDetails } from "../../../user-management/service-accounts";
-import { kubeObjectMatchesToKindAndApiVersion } from "../kube-object-matches-to-kind-and-api-version";
 import currentKubeObjectInDetailsInjectable from "../../current-kube-object-in-details.injectable";
+import { kubeObjectDetailItemInjectionToken } from "../kube-object-detail-item-injection-token";
+import { kubeObjectMatchesToKindAndApiVersion } from "../kube-object-matches-to-kind-and-api-version";
 
 const serviceAccountDetailItemInjectable = getInjectable({
   id: "service-account-detail-item",
@@ -25,9 +25,6 @@ const serviceAccountDetailItemInjectable = getInjectable({
   injectionToken: kubeObjectDetailItemInjectionToken,
 });
 
-export const isServiceAccount = kubeObjectMatchesToKindAndApiVersion(
-  "ServiceAccount",
-  ["v1"],
-);
+export const isServiceAccount = kubeObjectMatchesToKindAndApiVersion("ServiceAccount", ["v1"]);
 
 export default serviceAccountDetailItemInjectable;

@@ -1,9 +1,9 @@
+import { render, screen } from "@testing-library/react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import { HelmChartIcon } from "../icon";
 
 const mainImageSrc = "https://example.com/main-picture.jpg";
@@ -41,7 +41,7 @@ describe("HelmChartIcon", () => {
 
     const imageContainer = screen.getByTestId("image-container");
     const mainImage = screen.getByRole<HTMLImageElement>("img");
-    
+
     mainImage.dispatchEvent(new Event("load"));
     expect(imageContainer.style.backgroundImage).toBe("url(https://example.com/main-picture.png)");
   });

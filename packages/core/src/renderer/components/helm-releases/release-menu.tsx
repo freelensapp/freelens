@@ -3,15 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
-import { cssNames } from "@freelensapp/utilities";
+import createUpgradeChartTabInjectable from "../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
+import { MenuItem } from "../menu";
 import type { MenuActionsProps } from "../menu/menu-actions";
 import { MenuActions } from "../menu/menu-actions";
-import { MenuItem } from "../menu";
-import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import createUpgradeChartTabInjectable from "../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import deleteReleaseInjectable from "./delete-release/delete-release.injectable";
 import type { OpenHelmReleaseRollbackDialog } from "./dialog/open.injectable";
 import openHelmReleaseRollbackDialogInjectable from "./dialog/open.injectable";
@@ -53,23 +53,12 @@ class NonInjectedHelmReleaseMenu extends React.Component<HelmReleaseMenuProps & 
       <>
         {hasRollback && (
           <MenuItem onClick={this.rollback}>
-            <Icon
-              material="history"
-              interactive={toolbar}
-              tooltip="Rollback"
-            />
+            <Icon material="history" interactive={toolbar} tooltip="Rollback" />
             <span className="title">Rollback</span>
           </MenuItem>
         )}
-        <MenuItem
-          onClick={this.upgrade}
-          data-testid={`upgrade-chart-menu-item-for-${release.getId()}`}
-        >
-          <Icon
-            material="refresh"
-            interactive={toolbar}
-            tooltip="Upgrade"
-          />
+        <MenuItem onClick={this.upgrade} data-testid={`upgrade-chart-menu-item-for-${release.getId()}`}>
+          <Icon material="refresh" interactive={toolbar} tooltip="Upgrade" />
           <span className="title">Upgrade</span>
         </MenuItem>
       </>
@@ -91,10 +80,7 @@ class NonInjectedHelmReleaseMenu extends React.Component<HelmReleaseMenuProps & 
         removeAction={this.remove}
         removeConfirmationMessage={() => (
           <p>
-            Remove Helm Release
-            {" "}
-            <b>{release.name}</b>
-            ?
+            Remove Helm Release <b>{release.name}</b>?
           </p>
         )}
       >

@@ -13,13 +13,14 @@ const confirmInjectable = getInjectable({
   instantiate: (di): Confirm => {
     const open = di.inject(openConfirmDialogInjectable);
 
-    return (params) => new Promise(resolve => {
-      open({
-        ok: () => resolve(true),
-        cancel: () => resolve(false),
-        ...params,
+    return (params) =>
+      new Promise((resolve) => {
+        open({
+          ok: () => resolve(true),
+          cancel: () => resolve(false),
+          ...params,
+        });
       });
-    });
   },
 });
 

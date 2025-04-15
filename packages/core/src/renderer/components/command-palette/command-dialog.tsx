@@ -3,23 +3,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
-import { Select } from "../select";
+import { iter } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import commandOverlayInjectable from "./command-overlay.injectable";
+import type { SingleValue } from "react-select";
 import type { CatalogEntity } from "../../../common/catalog";
 import { broadcastMessage } from "../../../common/ipc";
 import { IpcRendererNavigationEvents } from "../../../common/ipc/navigation-events";
-import type { RegisteredCommand } from "./registered-commands/commands";
-import { iter } from "@freelensapp/utilities";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import registeredCommandsInjectable from "./registered-commands/registered-commands.injectable";
-import type { SingleValue } from "react-select";
+import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
-import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
+import { Select } from "../select";
+import commandOverlayInjectable from "./command-overlay.injectable";
+import type { RegisteredCommand } from "./registered-commands/commands";
+import registeredCommandsInjectable from "./registered-commands/registered-commands.injectable";
 
 interface Dependencies {
   commands: IComputedValue<Map<string, RegisteredCommand>>;
@@ -28,12 +27,7 @@ interface Dependencies {
   navigate: Navigate;
 }
 
-const NonInjectedCommandDialog = observer(({
-  commands,
-  activeEntity,
-  closeCommandOverlay,
-  navigate,
-}: Dependencies) => {
+const NonInjectedCommandDialog = observer(({ commands, activeEntity, closeCommandOverlay, navigate }: Dependencies) => {
   const [searchValue, setSearchValue] = useState("");
   const entity = activeEntity.get();
 
@@ -43,7 +37,7 @@ const NonInjectedCommandDialog = observer(({
 
   const context = { entity };
 
-  const executeAction = (option: SingleValue<typeof activeCommands[number]>) => {
+  const executeAction = (option: SingleValue<(typeof activeCommands)[number]>) => {
     if (!option) {
       return;
     }
@@ -67,21 +61,23 @@ const NonInjectedCommandDialog = observer(({
     }
   };
 
-  const activeCommands = iter.chain(commands.get().values())
-    .filter(command => {
+  const activeCommands = iter
+    .chain(commands.get().values())
+    .filter((command) => {
       try {
         return command.isActive(context);
       } catch (error) {
-        return void console.error(`[COMMAND-DIALOG]: isActive for ${command.id} threw an error, defaulting to false`, error);
+        return void console.error(
+          `[COMMAND-DIALOG]: isActive for ${command.id} threw an error, defaulting to false`,
+          error,
+        );
       }
     })
-    .map(command => ({
+    .map((command) => ({
       value: command,
-      label: typeof command.title === "string"
-        ? command.title
-        : command.title(context),
+      label: typeof command.title === "string" ? command.title : command.title(context),
     }))
-    .collect(items => Array.from(items));
+    .collect((items) => Array.from(items));
 
   return (
     <Select
@@ -109,7 +105,7 @@ const NonInjectedCommandDialog = observer(({
 });
 
 export const CommandDialog = withInjectables<Dependencies>(NonInjectedCommandDialog, {
-  getProps: di => ({
+  getProps: (di) => ({
     commands: di.inject(registeredCommandsInjectable),
     activeEntity: di.inject(activeEntityInjectable),
     closeCommandOverlay: di.inject(commandOverlayInjectable).close,

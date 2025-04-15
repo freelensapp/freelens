@@ -1,16 +1,16 @@
+import assert from "assert";
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
+import { iter } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import releaseSecretsInjectable from "./release-secrets.injectable";
 import requestListHelmReleasesInjectable from "../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
+import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
-import assert from "assert";
-import { iter } from "@freelensapp/utilities";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
+import releaseSecretsInjectable from "./release-secrets.injectable";
 import { toHelmRelease } from "./to-helm-release";
 
 const releasesInjectable = getInjectable({
@@ -29,13 +29,16 @@ const releasesInjectable = getInjectable({
       getValueFromObservedPromise: async () => {
         void releaseSecrets.get();
 
-        const releaseResults = await (
-          clusterContext.hasSelectedAll
-            ? requestListHelmReleases({ clusterId: hostedClusterId })
-            : Promise.all(clusterContext.contextNamespaces.map((namespace) => requestListHelmReleases({ clusterId: hostedClusterId, namespace })))
-        );
+        const releaseResults = await (clusterContext.hasSelectedAll
+          ? requestListHelmReleases({ clusterId: hostedClusterId })
+          : Promise.all(
+              clusterContext.contextNamespaces.map((namespace) =>
+                requestListHelmReleases({ clusterId: hostedClusterId, namespace }),
+              ),
+            ));
 
-        return iter.chain([releaseResults].flat().values())
+        return iter
+          .chain([releaseResults].flat().values())
           .filterMap((result) => {
             if (result.callWasSuccessful) {
               return result.response;
@@ -53,6 +56,5 @@ const releasesInjectable = getInjectable({
     });
   },
 });
-
 
 export default releasesInjectable;

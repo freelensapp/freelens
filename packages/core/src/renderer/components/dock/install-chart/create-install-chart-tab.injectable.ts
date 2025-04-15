@@ -3,12 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import installChartTabStoreInjectable from "./store.injectable";
 import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
+import createDockTabInjectable from "../dock/create-dock-tab.injectable";
 import type { DockTab, DockTabCreateSpecific } from "../dock/store";
 import { TabKind } from "../dock/store";
-import createDockTabInjectable from "../dock/create-dock-tab.injectable";
 import getRandomInstallChartTabIdInjectable from "./get-random-install-chart-tab-id.injectable";
+import installChartTabStoreInjectable from "./store.injectable";
 
 export type CreateInstallChartTab = (chart: HelmChart, tabParams?: DockTabCreateSpecific) => DockTab;
 

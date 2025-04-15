@@ -9,17 +9,18 @@ import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 const customHelmRepoInjectable = getInjectable({
   id: "custom-helm-repo",
 
-  instantiate: () => observable.object<HelmRepo>({
-    name: "",
-    url: "",
-    username: "",
-    password: "",
-    insecureSkipTlsVerify: false,
-    caFile: "",
-    keyFile: "",
-    certFile: "",
-    cacheFilePath: "",
-  }),
+  instantiate: () =>
+    observable.object<HelmRepo>({
+      name: "",
+      url: "",
+      username: "",
+      password: "",
+      insecureSkipTlsVerify: false,
+      caFile: "",
+      keyFile: "",
+      certFile: "",
+      cacheFilePath: "",
+    }),
 
   lifecycle: lifecycleEnum.transient,
 });

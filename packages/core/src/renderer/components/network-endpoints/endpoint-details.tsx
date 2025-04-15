@@ -5,18 +5,17 @@
 
 import "./endpoint-details.scss";
 
-import React from "react";
+import { Endpoints } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import { DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Endpoints } from "@freelensapp/kube-object";
 import { EndpointSubsetList } from "./endpoint-subset-list";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-export interface EndpointsDetailsProps extends KubeObjectDetailsProps<Endpoints> {
-}
+export interface EndpointsDetailsProps extends KubeObjectDetailsProps<Endpoints> {}
 
 interface Dependencies {
   logger: Logger;
@@ -40,15 +39,9 @@ class NonInjectedEndpointsDetails extends React.Component<EndpointsDetailsProps 
     return (
       <div className="EndpointDetails">
         <DrawerTitle>Subsets</DrawerTitle>
-        {
-          endpoint.getEndpointSubsets().map((subset) => (
-            <EndpointSubsetList
-              key={subset.toString()}
-              subset={subset}
-              endpoint={endpoint}
-            />
-          ))
-        }
+        {endpoint.getEndpointSubsets().map((subset) => (
+          <EndpointSubsetList key={subset.toString()} subset={subset} endpoint={endpoint} />
+        ))}
       </div>
     );
   }

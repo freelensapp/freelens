@@ -1,11 +1,11 @@
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import { clusterVisibilityChannel } from "../../../common/cluster/visibility-channel";
 import type { ClusterId } from "../../../common/cluster-types";
+import { clusterVisibilityChannel } from "../../../common/cluster/visibility-channel";
 
 const emitClusterVisibilityInjectable = getInjectable({
   id: "emit-cluster-visibility",

@@ -13,10 +13,7 @@ const ingressMetricsInjectable = getInjectable({
   instantiate: (di) => {
     const getMetricsKubeObjectDetailItem = di.inject(getMetricsKubeObjectDetailItemInjectable);
 
-    return getMetricsKubeObjectDetailItem(
-      ingressDetailsMetricsInjectionToken,
-      ClusterMetricsResourceType.Ingress,
-    );
+    return getMetricsKubeObjectDetailItem(ingressDetailsMetricsInjectionToken, ClusterMetricsResourceType.Ingress);
   },
   injectionToken: kubeObjectDetailItemInjectionToken,
 });

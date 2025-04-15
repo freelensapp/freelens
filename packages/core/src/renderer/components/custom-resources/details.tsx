@@ -5,19 +5,19 @@
 
 import "./details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames, safeJSONPathValue } from "@freelensapp/utilities";
-import { Badge } from "../badge";
-import { DrawerItem } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { Input } from "../input";
 import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, safeJSONPathValue } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import { Input } from "../input";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface CustomResourceDetailsProps extends KubeObjectDetailsProps<KubeObject> {
   crd?: CustomResourceDefinition;
@@ -28,31 +28,17 @@ function convertSpecValue(value: unknown): StrictReactNode {
     return (
       <ul>
         {value.map((value, index) => (
-          <li key={index}>
-            {convertSpecValue(value)}
-          </li>
+          <li key={index}>{convertSpecValue(value)}</li>
         ))}
       </ul>
     );
   }
 
   if (typeof value === "object") {
-    return (
-      <Input
-        readOnly
-        multiLine
-        theme="round-black"
-        className="box grow"
-        value={JSON.stringify(value, null, 2)}
-      />
-    );
+    return <Input readOnly multiLine theme="round-black" className="box grow" value={JSON.stringify(value, null, 2)} />;
   }
 
-  if (
-    typeof value === "boolean"
-    || typeof value === "string"
-    || typeof value === "number"
-  ) {
+  if (typeof value === "boolean" || typeof value === "string" || typeof value === "number") {
     return value.toString();
   }
 
@@ -75,7 +61,8 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
 
   renderStatus(cr: KubeObject, columns: AdditionalPrinterColumnsV1[]) {
     const customResource = cr as KubeObject<KubeObjectMetadata, KubeObjectStatus, unknown>;
-    const showStatus = !columns.find(column => column.name == "Status") && Array.isArray(customResource.status?.conditions);
+    const showStatus =
+      !columns.find((column) => column.name == "Status") && Array.isArray(customResource.status?.conditions);
 
     if (!showStatus) {
       return null;
@@ -99,18 +86,16 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       ));
 
     return (
-      <DrawerItem
-        name="Status"
-        className="status"
-        labelsOnly
-      >
+      <DrawerItem name="Status" className="status" labelsOnly>
         {conditions}
       </DrawerItem>
     );
   }
 
   render() {
-    const { props: { object, crd, logger }} = this;
+    const {
+      props: { object, crd, logger },
+    } = this;
 
     if (!object || !crd) {
       return null;
@@ -139,9 +124,12 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
   }
 }
 
-export const CustomResourceDetails = withInjectables<Dependencies, CustomResourceDetailsProps>(NonInjectedCustomResourceDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const CustomResourceDetails = withInjectables<Dependencies, CustomResourceDetailsProps>(
+  NonInjectedCustomResourceDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

@@ -42,7 +42,7 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
   if (pathExpression.match(slashDashSearch)) {
     const [first, ...rest] = pathExpression.split(pathByBareDots);
 
-    pathExpression = `${convertToIndexNotation(first, true)}${rest.map(value => convertToIndexNotation(value)).join("")}`;
+    pathExpression = `${convertToIndexNotation(first, true)}${rest.map((value) => convertToIndexNotation(value)).join("")}`;
   }
 
   pathExpression = pathExpression.replace(trailingDotDot, "");
@@ -58,10 +58,12 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
 
 function convertToIndexNotation(key: string, firstItem = false) {
   if (key.match(slashDashSearch)) {
-    if (key.includes("[")) { // handle cases where key contains [...]
+    if (key.includes("[")) {
+      // handle cases where key contains [...]
       const keyToConvert = key.match(textBeforeFirstSquare); // get the text from the key before '['
 
-      if (keyToConvert && keyToConvert[0].match(slashDashSearch)) { // check if that part contains illegal characters
+      if (keyToConvert && keyToConvert[0].match(slashDashSearch)) {
+        // check if that part contains illegal characters
         return key.replace(keyToConvert[0], `['${keyToConvert[0]}']`); // surround key with '[' and ']'
       } else {
         return `.${key}`; // otherwise return as is with leading '.'
@@ -69,7 +71,8 @@ function convertToIndexNotation(key: string, firstItem = false) {
     }
 
     return `['${key}']`;
-  } else { // no illegal characters found, do not touch
+  } else {
+    // no illegal characters found, do not touch
     const prefix = firstItem ? "" : ".";
 
     return `${prefix}${key}`;
@@ -98,7 +101,9 @@ export function formatJSONValue(value: unknown): string {
 export function safeJSONPathValue(obj: object, path: string): unknown {
   try {
     const parsedPath = JSONPath.parse(convertKubectlJsonPathToNodeJsonPath(path));
-    const isSlice = parsedPath.some((exp: any) => exp.expression.type === "slice" || exp.expression.type === "wildcard");
+    const isSlice = parsedPath.some(
+      (exp: any) => exp.expression.type === "slice" || exp.expression.type === "wildcard",
+    );
     const value = JSONPath.query(obj, JSONPath.stringify(parsedPath), isSlice ? Infinity : 1);
 
     if (isSlice) {

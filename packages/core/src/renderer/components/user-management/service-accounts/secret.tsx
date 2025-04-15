@@ -8,10 +8,10 @@ import "./secret.scss";
 import moment from "moment";
 import React from "react";
 
+import { Icon } from "@freelensapp/icon";
 import type { Secret } from "@freelensapp/kube-object";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { prevDefault } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
 
 export interface ServiceAccountsSecretProps {
   secret: Secret | string;
@@ -47,9 +47,7 @@ export class ServiceAccountsSecret extends React.Component<ServiceAccountsSecret
             />
           </>
         )}
-        {showToken && (
-          <span className="raw-value">{secret.getToken()}</span>
-        )}
+        {showToken && <span className="raw-value">{secret.getToken()}</span>}
       </>
     );
   }
@@ -70,35 +68,22 @@ export class ServiceAccountsSecret extends React.Component<ServiceAccountsSecret
       <div className="ServiceAccountsSecret box grow-fixed">
         {this.renderRow({
           name: "Name: ",
-          value: (
-            typeof secret === "string"
-              ? secret
-              : secret.getName()
-          ),
+          value: typeof secret === "string" ? secret : secret.getName(),
         })}
         {this.renderRow({
           name: "Value: ",
-          value: (
-            typeof secret === "string"
-              ? "<unknown>"
-              : this.renderSecretValue(secret)
-          ),
+          value: typeof secret === "string" ? "<unknown>" : this.renderSecretValue(secret),
         })}
         {this.renderRow({
           name: "Created at: ",
-          value: (
+          value:
             typeof secret === "string" || !secret.metadata.creationTimestamp
               ? "<unknown>"
-              : moment(secret.metadata.creationTimestamp).format("LLL")
-          ),
+              : moment(secret.metadata.creationTimestamp).format("LLL"),
         })}
         {this.renderRow({
           name: "Type: ",
-          value: (
-            typeof secret === "string"
-              ? "<unknown>"
-              : secret.type
-          ),
+          value: typeof secret === "string" ? "<unknown>" : secret.type,
         })}
       </div>
     );

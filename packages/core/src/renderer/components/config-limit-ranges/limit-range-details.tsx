@@ -5,29 +5,27 @@
 
 import "./limit-range-details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { LimitRangeItem } from "@freelensapp/kube-object";
 import { LimitPart, LimitRange, Resource } from "@freelensapp/kube-object";
-import { DrawerItem } from "../drawer/drawer-item";
-import { Badge } from "../badge";
 import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer/drawer-item";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
-export interface LimitRangeDetailsProps extends KubeObjectDetailsProps<LimitRange> {
-}
+export interface LimitRangeDetailsProps extends KubeObjectDetailsProps<LimitRange> {}
 
 function renderLimit(limit: LimitRangeItem, part: LimitPart, resource: Resource) {
-
   const resourceLimit = limit[part]?.[resource];
 
   if (!resourceLimit) {
     return null;
   }
 
-  return <Badge label={`${part}:${resourceLimit}`}/>;
+  return <Badge label={`${part}:${resourceLimit}`} />;
 }
 
 function renderResourceLimits(limit: LimitRangeItem, resource: Resource) {
@@ -43,12 +41,9 @@ function renderResourceLimits(limit: LimitRangeItem, resource: Resource) {
 }
 
 function renderLimitDetails(limits: LimitRangeItem[], resources: Resource[]) {
-
-  return resources.map(resource => (
+  return resources.map((resource) => (
     <DrawerItem key={resource} name={resource}>
-      {
-        limits.map(limit => renderResourceLimits(limit, resource))
-      }
+      {limits.map((limit) => renderResourceLimits(limit, resource))}
     </DrawerItem>
   ));
 }
@@ -80,23 +75,17 @@ class NonInjectedLimitRangeDetails extends React.Component<LimitRangeDetailsProp
       <div className="LimitRangeDetails">
         {containerLimits.length > 0 && (
           <DrawerItem name="Container Limits" labelsOnly>
-            {
-              renderLimitDetails(containerLimits, [Resource.CPU, Resource.MEMORY, Resource.EPHEMERAL_STORAGE])
-            }
+            {renderLimitDetails(containerLimits, [Resource.CPU, Resource.MEMORY, Resource.EPHEMERAL_STORAGE])}
           </DrawerItem>
         )}
         {podLimits.length > 0 && (
           <DrawerItem name="Pod Limits" labelsOnly>
-            {
-              renderLimitDetails(podLimits, [Resource.CPU, Resource.MEMORY, Resource.EPHEMERAL_STORAGE])
-            }
+            {renderLimitDetails(podLimits, [Resource.CPU, Resource.MEMORY, Resource.EPHEMERAL_STORAGE])}
           </DrawerItem>
         )}
         {pvcLimits.length > 0 && (
           <DrawerItem name="Persistent Volume Claim Limits" labelsOnly>
-            {
-              renderLimitDetails(pvcLimits, [Resource.STORAGE])
-            }
+            {renderLimitDetails(pvcLimits, [Resource.STORAGE])}
           </DrawerItem>
         )}
       </div>

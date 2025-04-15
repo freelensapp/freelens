@@ -1,30 +1,22 @@
+import { Icon } from "@freelensapp/icon";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
-import { Icon } from "@freelensapp/icon";
-import topBarPrevEnabledInjectable from "./prev-enabled.injectable";
 import goBackInjectable from "./go-back/go-back.injectable";
-import { observer } from "mobx-react";
+import topBarPrevEnabledInjectable from "./prev-enabled.injectable";
 
 interface Dependencies {
   prevEnabled: IComputedValue<boolean>;
   goBack: () => void;
 }
 
-const NonInjectedNavigationToBack = observer(({
-  prevEnabled,
-  goBack,
-}: Dependencies) => (
-  <Icon
-    data-testid="history-back"
-    material="arrow_back"
-    onClick={goBack}
-    disabled={!prevEnabled.get()}
-  />
+const NonInjectedNavigationToBack = observer(({ prevEnabled, goBack }: Dependencies) => (
+  <Icon data-testid="history-back" material="arrow_back" onClick={goBack} disabled={!prevEnabled.get()} />
 ));
 
 export const NavigationToBack = withInjectables<Dependencies>(

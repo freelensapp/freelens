@@ -33,9 +33,7 @@ export class GeneralCategory extends CatalogCategory {
   };
   public spec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", GeneralEntity),
-    ],
+    versions: [categoryVersion("v1alpha1", GeneralEntity)],
     names: {
       kind: "General",
     },

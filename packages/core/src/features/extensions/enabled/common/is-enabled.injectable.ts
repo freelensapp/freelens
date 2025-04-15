@@ -12,7 +12,7 @@ const isExtensionEnabledInjectable = getInjectable({
   instantiate: (di): IsExtensionEnabled => {
     const state = di.inject(enabledExtensionsStateInjectable);
 
-    return (id) => (state.get(id)?.enabled ?? false);
+    return (id) => state.get(id)?.enabled ?? false;
   },
 });
 

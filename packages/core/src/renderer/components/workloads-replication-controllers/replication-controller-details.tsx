@@ -3,23 +3,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./replication-controller-details.module.scss";
-import React from "react";
-import { action, makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Badge } from "../badge";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { ReplicationController } from "@freelensapp/kube-object";
+import type { ReplicationControllerApi } from "@freelensapp/kube-api";
 import { replicationControllerApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { ReplicationController } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { ShowNotification } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Slider } from "../slider";
-import type { ReplicationControllerApi } from "@freelensapp/kube-api";
+import styles from "./replication-controller-details.module.scss";
 
-export interface ReplicationControllerDetailsProps extends KubeObjectDetailsProps<ReplicationController> {
-}
+export interface ReplicationControllerDetailsProps extends KubeObjectDetailsProps<ReplicationController> {}
 
 interface Dependencies {
   api: ReplicationControllerApi;
@@ -27,7 +26,9 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedReplicationControllerDetails<Props extends ReplicationControllerDetailsProps & Dependencies> extends React.Component<Props> {
+class NonInjectedReplicationControllerDetails<
+  Props extends ReplicationControllerDetailsProps & Dependencies,
+> extends React.Component<Props> {
   @observable sliderReplicasValue = this.props.object.getDesiredReplicas();
   @observable sliderReplicasDisabled = false;
 
@@ -41,10 +42,13 @@ class NonInjectedReplicationControllerDetails<Props extends ReplicationControlle
     const { object: resource, api, showNotificationError } = this.props;
 
     try {
-      await api.scale({
-        name: resource.getName(),
-        namespace: resource.getNs(),
-      }, replicas);
+      await api.scale(
+        {
+          name: resource.getName(),
+          namespace: resource.getNs(),
+        },
+        replicas,
+      );
     } catch (error) {
       this.sliderReplicasValue = resource.getDesiredReplicas(); // rollback to last valid value
       showNotificationError(error as Error);
@@ -63,9 +67,7 @@ class NonInjectedReplicationControllerDetails<Props extends ReplicationControlle
 
     return (
       <div className={styles.ReplicationControllerDetails}>
-        <DrawerTitle>
-          Spec
-        </DrawerTitle>
+        <DrawerTitle>Spec</DrawerTitle>
         <DrawerItem name="Replicas">
           <div className={styles.replicas}>
             <div>{resource.getDesiredReplicas()}</div>
@@ -76,44 +78,35 @@ class NonInjectedReplicationControllerDetails<Props extends ReplicationControlle
               valueLabelDisplay="auto"
               disabled={this.sliderReplicasDisabled}
               value={this.sliderReplicasValue}
-              onChange={(evt, value) => this.sliderReplicasValue = value}
+              onChange={(evt, value) => (this.sliderReplicasValue = value)}
               onChangeCommitted={(event, value) => this.onScaleSliderChangeCommitted(event, value as number)}
             />
           </div>
         </DrawerItem>
         <DrawerItem name="Selectors" labelsOnly>
-          {
-            resource.getSelectorLabels().map(label => (<Badge key={label} label={label} />))
-          }
+          {resource.getSelectorLabels().map((label) => (
+            <Badge key={label} label={label} />
+          ))}
         </DrawerItem>
 
-        <DrawerTitle>
-          Status
-        </DrawerTitle>
-        <DrawerItem name="Replicas">
-          {resource.getReplicas()}
-        </DrawerItem>
-        <DrawerItem name="Available Replicas">
-          {resource.getAvailableReplicas()}
-        </DrawerItem>
-        <DrawerItem name="Labeled Replicas">
-          {resource.getLabeledReplicas()}
-        </DrawerItem>
-        <DrawerItem name="Controller Generation">
-          {resource.getGeneration()}
-        </DrawerItem>
-        <DrawerItem name="Minimum Pod Readiness">
-          {`${resource.getMinReadySeconds()} seconds`}
-        </DrawerItem>
+        <DrawerTitle>Status</DrawerTitle>
+        <DrawerItem name="Replicas">{resource.getReplicas()}</DrawerItem>
+        <DrawerItem name="Available Replicas">{resource.getAvailableReplicas()}</DrawerItem>
+        <DrawerItem name="Labeled Replicas">{resource.getLabeledReplicas()}</DrawerItem>
+        <DrawerItem name="Controller Generation">{resource.getGeneration()}</DrawerItem>
+        <DrawerItem name="Minimum Pod Readiness">{`${resource.getMinReadySeconds()} seconds`}</DrawerItem>
       </div>
     );
   }
 }
 
-export const ReplicationControllerDetails = withInjectables<Dependencies, ReplicationControllerDetailsProps>(NonInjectedReplicationControllerDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    api: di.inject(replicationControllerApiInjectable),
-    showNotificationError: di.inject(showErrorNotificationInjectable),
-  }),
-});
+export const ReplicationControllerDetails = withInjectables<Dependencies, ReplicationControllerDetailsProps>(
+  NonInjectedReplicationControllerDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      api: di.inject(replicationControllerApiInjectable),
+      showNotificationError: di.inject(showErrorNotificationInjectable),
+    }),
+  },
+);

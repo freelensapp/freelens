@@ -32,129 +32,78 @@ export interface RawHelmChart {
 }
 
 const helmChartMaintainerValidator = Joi.object<HelmChartMaintainer>({
-  name: Joi
-    .string()
-    .required(),
-  email: Joi
-    .string()
-    .required(),
-  url: Joi
-    .string()
-    .optional(),
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  url: Joi.string().optional(),
 });
 
 const helmChartDependencyValidator = Joi.object<HelmChartDependency, true, RawHelmChartDependency>({
-  name: Joi
-    .string()
-    .required(),
-  repository: Joi
-    .string()
-    .required(),
-  condition: Joi
-    .string()
-    .optional(),
-  version: Joi
-    .string()
-    .required(),
-  tags: Joi
-    .array()
+  name: Joi.string().required(),
+  repository: Joi.string().required(),
+  condition: Joi.string().optional(),
+  version: Joi.string().required(),
+  tags: Joi.array()
     .items(Joi.string())
-    .default(() => ([])),
+    .default(() => []),
 });
 
 const helmChartValidator = Joi.object<HelmChart, true, RawHelmChart>({
-  apiVersion: Joi
-    .string()
-    .required(),
-  name: Joi
-    .string()
-    .required(),
-  version: Joi
-    .string()
-    .required(),
-  repo: Joi
-    .string()
-    .required(),
-  created: Joi
-    .string()
-    .required(),
-  digest: Joi
-    .string()
-    .optional(),
-  kubeVersion: Joi
-    .string()
-    .optional(),
-  description: Joi
-    .string()
-    .default(""),
-  home: Joi
-    .string()
-    .optional(),
-  engine: Joi
-    .string()
-    .optional(),
-  icon: Joi
-    .string()
-    .optional(),
-  appVersion: Joi
-    .string()
-    .optional(),
-  tillerVersion: Joi
-    .string()
-    .optional(),
-  type: Joi
-    .string()
-    .optional(),
-  deprecated: Joi
-    .boolean()
-    .default(false),
-  keywords: Joi
-    .array()
+  apiVersion: Joi.string().required(),
+  name: Joi.string().required(),
+  version: Joi.string().required(),
+  repo: Joi.string().required(),
+  created: Joi.string().required(),
+  digest: Joi.string().optional(),
+  kubeVersion: Joi.string().optional(),
+  description: Joi.string().default(""),
+  home: Joi.string().optional(),
+  engine: Joi.string().optional(),
+  icon: Joi.string().optional(),
+  appVersion: Joi.string().optional(),
+  tillerVersion: Joi.string().optional(),
+  type: Joi.string().optional(),
+  deprecated: Joi.boolean().default(false),
+  keywords: Joi.array()
     .items(Joi.string())
     .options({
       stripUnknown: {
         arrays: true,
       },
     })
-    .default(() => ([])),
-  sources: Joi
-    .array()
+    .default(() => []),
+  sources: Joi.array()
     .items(Joi.string())
     .options({
       stripUnknown: {
         arrays: true,
       },
     })
-    .default(() => ([])),
-  urls: Joi
-    .array()
+    .default(() => []),
+  urls: Joi.array()
     .items(Joi.string())
     .options({
       stripUnknown: {
         arrays: true,
       },
     })
-    .default(() => ([])),
-  maintainers: Joi
-    .array()
+    .default(() => []),
+  maintainers: Joi.array()
     .items(helmChartMaintainerValidator)
     .options({
       stripUnknown: {
         arrays: true,
       },
     })
-    .default(() => ([])),
-  dependencies: Joi
-    .array()
+    .default(() => []),
+  dependencies: Joi.array()
     .items(helmChartDependencyValidator)
     .options({
       stripUnknown: {
         arrays: true,
       },
     })
-    .default(() => ([])),
-  annotations: Joi
-    .object({})
+    .default(() => []),
+  annotations: Joi.object({})
     .pattern(/.*/, Joi.string())
     .default(() => ({})),
 });
@@ -177,8 +126,8 @@ export interface RawHelmChartDependency {
   tags?: string[];
 }
 
-export type HelmChartDependency = Required<Omit<RawHelmChartDependency, "condition">>
-  & Pick<RawHelmChartDependency, "condition">;
+export type HelmChartDependency = Required<Omit<RawHelmChartDependency, "condition">> &
+  Pick<RawHelmChartDependency, "condition">;
 
 export interface HelmChartData {
   apiVersion: string;
@@ -264,17 +213,27 @@ export class HelmChart implements HelmChartData {
       return new HelmChart(result.value);
     }
 
-    const [actualErrors, unknownDetails] = array.bifurcate(result.error.details, ({ type }) => type === "object.unknown");
+    const [actualErrors, unknownDetails] = array.bifurcate(
+      result.error.details,
+      ({ type }) => type === "object.unknown",
+    );
 
     if (unknownDetails.length > 0) {
-      console.warn("HelmChart data has unexpected fields", { original: data, unknownFields: unknownDetails.flatMap(d => d.path) });
+      console.warn("HelmChart data has unexpected fields", {
+        original: data,
+        unknownFields: unknownDetails.flatMap((d) => d.path),
+      });
     }
 
     if (actualErrors.length === 0) {
       return new HelmChart(result.value as unknown as HelmChartData);
     }
 
-    const validationError = new Joi.ValidationError(actualErrors.map(er => er.message).join(". "), actualErrors, result.error._original);
+    const validationError = new Joi.ValidationError(
+      actualErrors.map((er) => er.message).join(". "),
+      actualErrors,
+      result.error._original,
+    );
 
     if (onError === "throw") {
       throw validationError;
@@ -286,9 +245,7 @@ export class HelmChart implements HelmChartData {
   }
 
   getId(): string {
-    const digestPart = this.digest
-      ? `+${this.digest}`
-      : "";
+    const digestPart = this.digest ? `+${this.digest}` : "";
 
     return `${this.repo}:${this.apiVersion}/${this.name}@${this.getAppVersion()}${digestPart}`;
   }

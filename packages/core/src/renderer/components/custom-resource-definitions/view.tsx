@@ -5,20 +5,20 @@
 
 import "./view.scss";
 
-import React from "react";
+import { Icon } from "@freelensapp/icon";
+import { iter, stopPropagation } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { iter, stopPropagation } from "@freelensapp/utilities";
+import type { PageParam } from "../../navigation/page-param";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { Select } from "../select";
-import { Icon } from "@freelensapp/icon";
 import { KubeObjectAge } from "../kube-object/age";
 import { TabLayout } from "../layout/tab-layout-2";
-import type { PageParam } from "../../navigation/page-param";
-import type { CustomResourceDefinitionStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { Select } from "../select";
 import selectedCustomResourceDefinitionGroupsUrlParamInjectable from "./selected-groups-url-param.injectable";
+import type { CustomResourceDefinitionStore } from "./store";
 import customResourceDefinitionStoreInjectable from "./store.injectable";
 
 enum columnId {
@@ -45,7 +45,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
     const selectedGroups = this.props.selectedGroups.get();
 
     if (selectedGroups.size) {
-      return this.props.customResourceDefinitionStore.items.filter(item => selectedGroups.has(item.getGroup()));
+      return this.props.customResourceDefinitionStore.items.filter((item) => selectedGroups.has(item.getGroup()));
     }
 
     return this.props.customResourceDefinitionStore.items; // show all by default
@@ -54,28 +54,25 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
   @computed get groupSelectOptions() {
     const selectedGroups = this.props.selectedGroups.get();
 
-    return Object.keys(this.props.customResourceDefinitionStore.groups)
-      .map(group => ({
-        value: group,
-        label: group,
-        isSelected: selectedGroups.has(group),
-      }));
+    return Object.keys(this.props.customResourceDefinitionStore.groups).map((group) => ({
+      value: group,
+      label: group,
+      isSelected: selectedGroups.has(group),
+    }));
   }
 
-  toggleSelection = (options: readonly ({ value: string })[]) => {
+  toggleSelection = (options: readonly { value: string }[]) => {
     this.props.selectedGroups.setRaw(options.map(({ value }) => value));
   };
 
   private getPlaceholder() {
     const selectedGroups = this.props.selectedGroups.get();
 
-    if (selectedGroups.size === 0)  {
+    if (selectedGroups.size === 0) {
       return "All groups";
     }
 
-    const prefix = selectedGroups.size === 1
-      ? "Group"
-      : "Groups";
+    const prefix = selectedGroups.size === 1 ? "Group" : "Groups";
 
     return `${prefix}: ${iter.join(selectedGroups.values(), ", ")}`;
   }
@@ -92,18 +89,18 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
           subscribeStores={false}
           items={this.items}
           sortingCallbacks={{
-            [columnId.kind]: crd => crd.getResourceKind(),
-            [columnId.group]: crd => crd.getGroup(),
-            [columnId.version]: crd => crd.getVersion(),
-            [columnId.scope]: crd => crd.getScope(),
-            [columnId.age]: crd => -crd.getCreationTimestamp(),
+            [columnId.kind]: (crd) => crd.getResourceKind(),
+            [columnId.group]: (crd) => crd.getGroup(),
+            [columnId.version]: (crd) => crd.getVersion(),
+            [columnId.scope]: (crd) => crd.getScope(),
+            [columnId.age]: (crd) => -crd.getCreationTimestamp(),
           }}
           searchFilters={[
-            crd => crd.getResourceKind(),
-            crd => crd.getGroup(),
-            crd => crd.getVersion(),
-            crd => crd.getScope(),
-            crd => -crd.getCreationTimestamp(),
+            (crd) => crd.getResourceKind(),
+            (crd) => crd.getGroup(),
+            (crd) => crd.getVersion(),
+            (crd) => crd.getScope(),
+            (crd) => -crd.getCreationTimestamp(),
           ]}
           renderHeaderTitle="Custom Resources"
           customizeHeader={({ filters, ...headerPlaceholders }) => ({
@@ -124,13 +121,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
                     <div className="flex gaps align-center">
                       <Icon small material="folder" />
                       <span>{value}</span>
-                      {isSelected && (
-                        <Icon
-                          small
-                          material="check"
-                          className="box right"
-                        />
-                      )}
+                      {isSelected && <Icon small material="check" className="box right" />}
                     </div>
                   )}
                 />
@@ -145,12 +136,8 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             { title: "Scope", className: "scope", sortBy: columnId.scope, id: columnId.scope },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={crd => [
-            <Link
-              key="link"
-              to={crd.getResourceUrl()}
-              onClick={stopPropagation}
-            >
+          renderTableContents={(crd) => [
+            <Link key="link" to={crd.getResourceUrl()} onClick={stopPropagation}>
               {crd.getResourceKind()}
             </Link>,
             crd.getGroup(),

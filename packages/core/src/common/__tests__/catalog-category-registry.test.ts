@@ -6,7 +6,7 @@
 import type { CatalogCategorySpec } from "../catalog";
 import { CatalogCategory, CatalogCategoryRegistry } from "../catalog";
 
-class TestCatalogCategoryRegistry extends CatalogCategoryRegistry { }
+class TestCatalogCategoryRegistry extends CatalogCategoryRegistry {}
 
 class TestCatalogCategory extends CatalogCategory {
   public readonly apiVersion = "catalog.k8slens.dev/v1alpha1";
@@ -67,12 +67,12 @@ describe("CatalogCategoryRegistry", () => {
     expect(registry.items.length).toBe(2);
     expect(registry.filteredItems.length).toBe(2);
 
-    const disposer = registry.addCatalogCategoryFilter(category => category.metadata.name === "Test Category");
+    const disposer = registry.addCatalogCategoryFilter((category) => category.metadata.name === "Test Category");
 
     expect(registry.items.length).toBe(2);
     expect(registry.filteredItems.length).toBe(1);
 
-    const disposer2 = registry.addCatalogCategoryFilter(category => category.metadata.name === "foo");
+    const disposer2 = registry.addCatalogCategoryFilter((category) => category.metadata.name === "foo");
 
     expect(registry.items.length).toBe(2);
     expect(registry.filteredItems.length).toBe(0);

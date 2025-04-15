@@ -10,8 +10,7 @@ import type { LensMainExtension } from "./lens-main-extension";
 const mainExtensionsInjectable = getInjectable({
   id: "main-extensions",
 
-  instantiate: (di) =>
-    di.inject(extensionsInjectable) as IComputedValue<LensMainExtension[]>,
+  instantiate: (di) => di.inject(extensionsInjectable) as IComputedValue<LensMainExtension[]>,
 });
 
 export default mainExtensionsInjectable;

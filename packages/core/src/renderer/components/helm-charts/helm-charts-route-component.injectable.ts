@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { HelmCharts } from "./helm-charts";
 import helmChartsRouteInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/helm-charts-route.injectable";
 import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
+import { HelmCharts } from "./helm-charts";
 
 const helmChartsRouteComponentInjectable = getInjectable({
   id: "helm-charts-route-component",

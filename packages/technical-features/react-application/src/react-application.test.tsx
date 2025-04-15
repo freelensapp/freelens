@@ -1,20 +1,20 @@
+import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
+import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { reactApplicationFeature } from "./feature";
-import { runInAction, computed, observable, IObservableValue } from "mobx";
-import { startApplicationInjectionToken } from "@freelensapp/application";
 import type { RenderResult } from "@testing-library/react";
-import { render, act } from "@testing-library/react";
-import renderInjectable from "./render-application/render.injectable";
-import { reactApplicationChildrenInjectionToken } from "./react-application/react-application-children-injection-token";
+import { act, render } from "@testing-library/react";
+import { IObservableValue, computed, observable, runInAction } from "mobx";
 import React from "react";
-import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { reactApplicationFeature } from "./feature";
+import { reactApplicationChildrenInjectionToken } from "./react-application/react-application-children-injection-token";
 import {
   ReactApplicationHigherOrderComponent,
   reactApplicationHigherOrderComponentInjectionToken,
 } from "./react-application/react-application-higher-order-component-injection-token";
+import renderInjectable from "./render-application/render.injectable";
 
 import { clusterFrameChildComponentInjectionToken } from "./cluster-frame/cluster-frame-child-component-injection-token";
 import { rootFrameChildComponentInjectionToken } from "./root-frame/root-frame-child-component-injection-token";

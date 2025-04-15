@@ -4,34 +4,34 @@
  */
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { flushPromises } from "@freelensapp/test-utils";
+import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import userEvent from "@testing-library/user-event";
+import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
+import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
+import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
-import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
+import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
+import requestHelmChartReadmeInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
+import type { RequestHelmChartValues } from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
+import requestHelmChartValuesInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
+import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+import requestHelmChartVersionsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import type { RequestCreateHelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
 import requestCreateHelmReleaseInjectable from "../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
-import currentPathInjectable from "../../../renderer/routes/current-path.injectable";
-import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
-import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
-import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
-import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
-import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
-import type { RequestHelmChartValues } from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
-import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import requestHelmChartVersionsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
-import requestHelmChartReadmeInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
-import requestHelmChartValuesInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
-import type { RequestDetailedHelmRelease } from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
-import requestDetailedHelmReleaseInjectable from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
-import { flushPromises } from "@freelensapp/test-utils";
 import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import listClusterHelmReleasesInjectable from "../../../main/helm/helm-service/list-helm-releases.injectable";
-import userEvent from "@testing-library/user-event";
+import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
+import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
+import type { RequestDetailedHelmRelease } from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
+import requestDetailedHelmReleaseInjectable from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import currentPathInjectable from "../../../renderer/routes/current-path.injectable";
 
 describe("installing helm chart from new tab", () => {
   let builder: ApplicationBuilder;
@@ -44,7 +44,7 @@ describe("installing helm chart from new tab", () => {
   let listClusterHelmReleasesMock: AsyncFnMock<ListClusterHelmReleases>;
 
   beforeEach(() => {
-    builder = getApplicationBuilder(userEvent.setup({delay: null}));
+    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
 
     builder.setEnvironmentToClusterFrame();
 
@@ -92,16 +92,13 @@ describe("installing helm chart from new tab", () => {
 
       const writeJsonFile = windowDi.inject(writeJsonFileInjectable);
 
-      await writeJsonFile(
-        "/some-directory-for-lens-local-storage/some-cluster-id.json",
-        {
-          dock: {
-            height: 300,
-            tabs: [],
-            isOpen: false,
-          },
+      await writeJsonFile("/some-directory-for-lens-local-storage/some-cluster-id.json", {
+        dock: {
+          height: 300,
+          tabs: [],
+          isOpen: false,
         },
-      );
+      });
 
       const dockStore = windowDi.inject(dockStoreInjectable);
 
@@ -202,9 +199,7 @@ describe("installing helm chart from new tab", () => {
         beforeEach(() => {
           requestHelmChartVersionsMock.mockClear();
 
-          const installButton = rendered.getByTestId(
-            "install-chart-for-some-repository-some-name",
-          );
+          const installButton = rendered.getByTestId("install-chart-for-some-repository-some-name");
 
           fireEvent.click(installButton);
         });
@@ -214,38 +209,25 @@ describe("installing helm chart from new tab", () => {
         });
 
         it("shows dock tab for installing the chart", () => {
-          expect(
-            rendered.getByTestId("dock-tab-content-for-some-first-tab-id"),
-          ).toBeInTheDocument();
+          expect(rendered.getByTestId("dock-tab-content-for-some-first-tab-id")).toBeInTheDocument();
         });
 
         it("calls for default configuration of the chart", () => {
-          expect(requestHelmChartValuesMock).toHaveBeenCalledWith(
-            "some-repository",
-            "some-name",
-            "some-version",
-          );
+          expect(requestHelmChartValuesMock).toHaveBeenCalledWith("some-repository", "some-name", "some-version");
         });
 
         it("calls for available versions", () => {
-          expect(requestHelmChartVersionsMock).toHaveBeenCalledWith(
-            "some-repository",
-            "some-name",
-          );
+          expect(requestHelmChartVersionsMock).toHaveBeenCalledWith("some-repository", "some-name");
         });
 
         it("shows spinner in dock tab", () => {
-          expect(
-            rendered.getByTestId("install-chart-tab-spinner"),
-          ).toBeInTheDocument();
+          expect(rendered.getByTestId("install-chart-tab-spinner")).toBeInTheDocument();
         });
 
         it("given versions resolve but default configuration has not resolved yet, still shows the spinner", async () => {
           await requestHelmChartVersionsMock.resolve([]);
 
-          expect(
-            rendered.getByTestId("install-chart-tab-spinner"),
-          ).toBeInTheDocument();
+          expect(rendered.getByTestId("install-chart-tab-spinner")).toBeInTheDocument();
         });
 
         describe("when default configuration and versions resolve", () => {
@@ -295,16 +277,12 @@ describe("installing helm chart from new tab", () => {
           });
 
           it("does not show spinner anymore", () => {
-            expect(
-              rendered.queryByTestId("install-chart-tab-spinner"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("install-chart-tab-spinner")).not.toBeInTheDocument();
           });
 
           describe("when cancelled", () => {
             beforeEach(() => {
-              const cancelButton = rendered.getByTestId(
-                "cancel-install-chart-from-tab-for-some-first-tab-id",
-              );
+              const cancelButton = rendered.getByTestId("cancel-install-chart-from-tab-for-some-first-tab-id");
 
               fireEvent.click(cancelButton);
             });
@@ -314,9 +292,7 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("closes the tab", () => {
-              expect(
-                rendered.queryByTestId("dock-tab-for-some-first-tab-id"),
-              ).not.toBeInTheDocument();
+              expect(rendered.queryByTestId("dock-tab-for-some-first-tab-id")).not.toBeInTheDocument();
             });
           });
 
@@ -324,9 +300,7 @@ describe("installing helm chart from new tab", () => {
             let installButton: HTMLButtonElement;
 
             beforeEach(() => {
-              installButton = rendered.getByTestId(
-                "install-chart-from-tab-for-some-first-tab-id",
-              ) as HTMLButtonElement;
+              installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id") as HTMLButtonElement;
 
               fireEvent.click(installButton);
             });
@@ -336,11 +310,7 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("shows spinner in dock tab", () => {
-              expect(
-                rendered.getByTestId(
-                  "installing-chart-from-tab-some-first-tab-id",
-                ),
-              ).toBeInTheDocument();
+              expect(rendered.getByTestId("installing-chart-from-tab-some-first-tab-id")).toBeInTheDocument();
             });
 
             it("install button is disabled", () => {
@@ -387,18 +357,12 @@ describe("installing helm chart from new tab", () => {
               });
 
               it("does not show spinner anymore", () => {
-                expect(
-                  rendered.queryByTestId(
-                    "installing-chart-from-tab-some-first-tab-id",
-                  ),
-                ).not.toBeInTheDocument();
+                expect(rendered.queryByTestId("installing-chart-from-tab-some-first-tab-id")).not.toBeInTheDocument();
               });
 
               describe("when selected to see the installed release", () => {
                 beforeEach(async () => {
-                  const releaseButton = rendered.getByTestId(
-                    "show-release-some-release-for-some-first-tab-id",
-                  );
+                  const releaseButton = rendered.getByTestId("show-release-some-release-for-some-first-tab-id");
 
                   fireEvent.click(releaseButton);
 
@@ -414,21 +378,13 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 it("shows the details of installed release", () => {
-                  const currentPath = windowDi
-                    .inject(currentPathInjectable)
-                    .get();
+                  const currentPath = windowDi.inject(currentPathInjectable).get();
 
-                  expect(currentPath).toBe(
-                    "/helm/releases/default/some-release",
-                  );
+                  expect(currentPath).toBe("/helm/releases/default/some-release");
                 });
 
                 it("closes the dock tab", () => {
-                  expect(
-                    rendered.queryByTestId(
-                      "dock-tab-for-some-first-tab-id",
-                    ),
-                  ).not.toBeInTheDocument();
+                  expect(rendered.queryByTestId("dock-tab-for-some-first-tab-id")).not.toBeInTheDocument();
                 });
               });
 
@@ -446,17 +402,13 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 it("shows the execution output", () => {
-                  expect(
-                    rendered.getByTestId(
-                      "logs-dialog-for-helm-chart-install",
-                    ),
-                  ).toHaveTextContent("some-execution-output");
+                  expect(rendered.getByTestId("logs-dialog-for-helm-chart-install")).toHaveTextContent(
+                    "some-execution-output",
+                  );
                 });
 
                 it("does not close the dock tab", () => {
-                  expect(
-                    rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                  ).toBeInTheDocument();
+                  expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
                 });
               });
             });
@@ -467,9 +419,7 @@ describe("installing helm chart from new tab", () => {
               requestHelmChartReadmeMock.mockClear();
               requestHelmChartVersionsMock.mockClear();
 
-              const row = rendered.getByTestId(
-                "helm-chart-row-for-some-repository-some-other-name",
-              );
+              const row = rendered.getByTestId("helm-chart-row-for-some-repository-some-other-name");
 
               fireEvent.click(row);
 
@@ -505,9 +455,7 @@ describe("installing helm chart from new tab", () => {
               beforeEach(() => {
                 requestHelmChartVersionsMock.mockClear();
 
-                const installButton = rendered.getByTestId(
-                  "install-chart-for-some-repository-some-other-name",
-                );
+                const installButton = rendered.getByTestId("install-chart-for-some-repository-some-other-name");
 
                 fireEvent.click(installButton);
               });
@@ -517,17 +465,11 @@ describe("installing helm chart from new tab", () => {
               });
 
               it("shows dock tab for installing second chart", () => {
-                expect(
-                  rendered.getByTestId(
-                    "dock-tab-content-for-some-second-tab-id",
-                  ),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("dock-tab-content-for-some-second-tab-id")).toBeInTheDocument();
               });
 
               it("still has the dock tab for installing first chart", () => {
-                expect(
-                  rendered.getByTestId("dock-tab-for-some-first-tab-id"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("dock-tab-for-some-first-tab-id")).toBeInTheDocument();
               });
 
               it("calls for default configuration of the second chart", () => {
@@ -539,16 +481,11 @@ describe("installing helm chart from new tab", () => {
               });
 
               it("calls for available versions for the second chart", () => {
-                expect(requestHelmChartVersionsMock).toHaveBeenCalledWith(
-                  "some-repository",
-                  "some-other-name",
-                );
+                expect(requestHelmChartVersionsMock).toHaveBeenCalledWith("some-repository", "some-other-name");
               });
 
               it("shows spinner in dock tab", () => {
-                expect(
-                  rendered.getByTestId("install-chart-tab-spinner"),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("install-chart-tab-spinner")).toBeInTheDocument();
               });
 
               describe("when configuration and versions resolve", () => {
@@ -566,21 +503,15 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 it("does not show spinner anymore", () => {
-                  expect(
-                    rendered.queryByTestId("install-chart-tab-spinner"),
-                  ).not.toBeInTheDocument();
+                  expect(rendered.queryByTestId("install-chart-tab-spinner")).not.toBeInTheDocument();
                 });
 
                 it("when installing the second chart, calls for installation of second chart", () => {
-                  const installButton = rendered.getByTestId(
-                    "install-chart-from-tab-for-some-second-tab-id",
-                  );
+                  const installButton = rendered.getByTestId("install-chart-from-tab-for-some-second-tab-id");
 
                   fireEvent.click(installButton);
 
-                  expect(
-                    requestCreateHelmReleaseMock,
-                  ).toHaveBeenCalledWith({
+                  expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-other-name",
                     name: undefined,
                     namespace: "default",
@@ -595,9 +526,7 @@ describe("installing helm chart from new tab", () => {
                     requestHelmChartValuesMock.mockClear();
                     requestHelmChartVersionsMock.mockClear();
 
-                    const tab = rendered.getByTestId(
-                      "dock-tab-for-some-first-tab-id",
-                    );
+                    const tab = rendered.getByTestId("dock-tab-for-some-first-tab-id");
 
                     fireEvent.click(tab);
                   });
@@ -607,33 +536,23 @@ describe("installing helm chart from new tab", () => {
                   });
 
                   it("does not call for default configuration", () => {
-                    expect(
-                      requestHelmChartValuesMock,
-                    ).not.toHaveBeenCalled();
+                    expect(requestHelmChartValuesMock).not.toHaveBeenCalled();
                   });
 
                   it("does not call for available versions", () => {
-                    expect(
-                      requestHelmChartVersionsMock,
-                    ).not.toHaveBeenCalled();
+                    expect(requestHelmChartVersionsMock).not.toHaveBeenCalled();
                   });
 
                   it("does not show spinner", () => {
-                    expect(
-                      rendered.queryByTestId("install-chart-tab-spinner"),
-                    ).not.toBeInTheDocument();
+                    expect(rendered.queryByTestId("install-chart-tab-spinner")).not.toBeInTheDocument();
                   });
 
                   it("when installing the first chart, calls for installation of first chart", () => {
-                    const installButton = rendered.getByTestId(
-                      "install-chart-from-tab-for-some-first-tab-id",
-                    );
+                    const installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id");
 
                     fireEvent.click(installButton);
 
-                    expect(
-                      requestCreateHelmReleaseMock,
-                    ).toHaveBeenCalledWith({
+                    expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                       chart: "some-name",
                       name: undefined,
                       namespace: "default",
@@ -654,8 +573,7 @@ describe("installing helm chart from new tab", () => {
               requestHelmChartVersionsMock.mockClear();
               requestHelmChartValuesMock.mockClear();
 
-              const menuId =
-                "install-chart-version-select-for-some-first-tab-id";
+              const menuId = "install-chart-version-select-for-some-first-tab-id";
 
               menu = builder.select.openMenu(menuId);
             });
@@ -688,17 +606,11 @@ describe("installing helm chart from new tab", () => {
               });
 
               it("shows spinner", () => {
-                expect(
-                  rendered.getByTestId(
-                    "install-chart-configuration-spinner",
-                  ),
-                ).toBeInTheDocument();
+                expect(rendered.getByTestId("install-chart-configuration-spinner")).toBeInTheDocument();
               });
 
               it("does not call for versions again", () => {
-                expect(
-                  requestHelmChartVersionsMock,
-                ).not.toHaveBeenCalled();
+                expect(requestHelmChartVersionsMock).not.toHaveBeenCalled();
               });
 
               it("install button is disabled", () => {
@@ -708,9 +620,9 @@ describe("installing helm chart from new tab", () => {
               it("stores the selected version", async () => {
                 const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
-                const actual = await readJsonFile(
+                const actual = (await readJsonFile(
                   "/some-directory-for-lens-local-storage/some-cluster-id.json",
-                ) as any;
+                )) as any;
 
                 const version = actual.install_charts["some-first-tab-id"].version;
 
@@ -730,11 +642,7 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 it("does not show spinner", () => {
-                  expect(
-                    rendered.queryByTestId(
-                      "install-chart-configuration-spinner",
-                    ),
-                  ).not.toBeInTheDocument();
+                  expect(rendered.queryByTestId("install-chart-configuration-spinner")).not.toBeInTheDocument();
                 });
 
                 it("install button is enabled", () => {
@@ -744,15 +652,12 @@ describe("installing helm chart from new tab", () => {
                 it("when installing the chart, calls for installation with changed version and default configuration", () => {
                   fireEvent.click(installButton);
 
-                  expect(
-                    requestCreateHelmReleaseMock,
-                  ).toHaveBeenCalledWith({
+                  expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-name",
                     name: undefined,
                     namespace: "default",
                     repo: "some-repository",
-                    values:
-                      "some-default-configuration-for-other-version",
+                    values: "some-default-configuration-for-other-version",
                     version: "some-other-version",
                   });
                 });
@@ -764,8 +669,7 @@ describe("installing helm chart from new tab", () => {
             let menu: { selectOption: (labelText: string) => Promise<void> };
 
             beforeEach(() => {
-              const menuId =
-                "install-chart-namespace-select-for-some-first-tab-id";
+              const menuId = "install-chart-namespace-select-for-some-first-tab-id";
 
               menu = builder.select.openMenu(menuId);
             });
@@ -786,9 +690,9 @@ describe("installing helm chart from new tab", () => {
               it("stores the selected namespace", async () => {
                 const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
-                const actual = await readJsonFile(
+                const actual = (await readJsonFile(
                   "/some-directory-for-lens-local-storage/some-cluster-id.json",
-                ) as any;
+                )) as any;
 
                 const namespace = actual.install_charts["some-first-tab-id"].namespace;
 
@@ -796,22 +700,18 @@ describe("installing helm chart from new tab", () => {
               });
 
               it("when installing the chart, calls for installation with changed namespace", () => {
-                const installButton = rendered.getByTestId(
-                  "install-chart-from-tab-for-some-first-tab-id",
-                );
+                const installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id");
 
                 fireEvent.click(installButton);
 
-                expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith(
-                  {
-                    chart: "some-name",
-                    name: undefined,
-                    namespace: "some-other-namespace",
-                    repo: "some-repository",
-                    values: "some-default-configuration",
-                    version: "some-version",
-                  },
-                );
+                expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
+                  chart: "some-name",
+                  name: undefined,
+                  namespace: "some-other-namespace",
+                  repo: "some-repository",
+                  values: "some-default-configuration",
+                  version: "some-version",
+                });
               });
             });
           });
@@ -821,13 +721,9 @@ describe("installing helm chart from new tab", () => {
             let input: HTMLInputElement;
 
             beforeEach(() => {
-              installButton = rendered.getByTestId(
-                "install-chart-from-tab-for-some-first-tab-id",
-              ) as HTMLButtonElement;
+              installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id") as HTMLButtonElement;
 
-              input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              ) as HTMLInputElement;
+              input = rendered.getByTestId("monaco-editor-for-some-first-tab-id") as HTMLInputElement;
 
               fireEvent.change(input, {
                 target: { value: "@some-invalid-configuration@" },
@@ -839,9 +735,7 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("updates the editor with the changed value", () => {
-              const input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              );
+              const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id");
 
               expect(input).toHaveValue("@some-invalid-configuration@");
             });
@@ -860,9 +754,7 @@ describe("installing helm chart from new tab", () => {
 
             it("given change in version, when default configuration resolves, install button is enabled", async () => {
               await builder.select
-                .openMenu(
-                  "install-chart-version-select-for-some-first-tab-id",
-                )
+                .openMenu("install-chart-version-select-for-some-first-tab-id")
                 .selectOption("some-other-version");
 
               await requestHelmChartValuesMock.resolve({
@@ -876,9 +768,7 @@ describe("installing helm chart from new tab", () => {
 
           describe("given valid change in configuration", () => {
             beforeEach(() => {
-              const input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              );
+              const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id");
 
               fireEvent.change(input, {
                 target: { value: "some-valid-configuration" },
@@ -886,9 +776,7 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("updates the editor with the changed value", () => {
-              const input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              );
+              const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id");
 
               expect(input).toHaveValue("some-valid-configuration");
             });
@@ -900,9 +788,7 @@ describe("installing helm chart from new tab", () => {
             it("stores the changed configuration", async () => {
               const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
-              const actual = await readJsonFile(
-                "/some-directory-for-lens-local-storage/some-cluster-id.json",
-              ) as any;
+              const actual = (await readJsonFile("/some-directory-for-lens-local-storage/some-cluster-id.json")) as any;
 
               const configuration = actual.install_charts["some-first-tab-id"].values;
 
@@ -910,15 +796,11 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("does not show spinner", () => {
-              expect(
-                rendered.queryByTestId("install-chart-tab-spinner"),
-              ).not.toBeInTheDocument();
+              expect(rendered.queryByTestId("install-chart-tab-spinner")).not.toBeInTheDocument();
             });
 
             it("when installing the chart, calls for installation with changed configuration", () => {
-              const installButton = rendered.getByTestId(
-                "install-chart-from-tab-for-some-first-tab-id",
-              );
+              const installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id");
 
               fireEvent.click(installButton);
 
@@ -934,9 +816,7 @@ describe("installing helm chart from new tab", () => {
 
             it("given version is changed, when default configuration resolves, defaults back to default configuration", async () => {
               await builder.select
-                .openMenu(
-                  "install-chart-version-select-for-some-first-tab-id",
-                )
+                .openMenu("install-chart-version-select-for-some-first-tab-id")
                 .selectOption("some-other-version");
 
               await requestHelmChartValuesMock.resolve({
@@ -944,34 +824,25 @@ describe("installing helm chart from new tab", () => {
                 response: "some-default-configuration-for-other-version",
               });
 
-              const input = rendered.getByTestId(
-                "monaco-editor-for-some-first-tab-id",
-              );
+              const input = rendered.getByTestId("monaco-editor-for-some-first-tab-id");
 
-              expect(input).toHaveValue(
-                "some-default-configuration-for-other-version",
-              );
+              expect(input).toHaveValue("some-default-configuration-for-other-version");
             });
           });
 
           describe("given custom name is inputted", () => {
             beforeEach(() => {
-              const input = rendered.getByTestId(
-                "install-chart-custom-name-input-for-some-first-tab-id",
-              );
+              const input = rendered.getByTestId("install-chart-custom-name-input-for-some-first-tab-id");
 
               fireEvent.change(input, {
                 target: { value: "some-custom-name" },
               });
-
             });
 
             it("stores the changed custom name", async () => {
               const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
-              const actual = await readJsonFile(
-                "/some-directory-for-lens-local-storage/some-cluster-id.json",
-              ) as any;
+              const actual = (await readJsonFile("/some-directory-for-lens-local-storage/some-cluster-id.json")) as any;
 
               const customName = actual.install_charts["some-first-tab-id"].releaseName;
 
@@ -983,9 +854,7 @@ describe("installing helm chart from new tab", () => {
             });
 
             it("when installed, calls for installation with custom name", () => {
-              const installButton = rendered.getByTestId(
-                "install-chart-from-tab-for-some-first-tab-id",
-              );
+              const installButton = rendered.getByTestId("install-chart-from-tab-for-some-first-tab-id");
 
               fireEvent.click(installButton);
 

@@ -1,8 +1,8 @@
-import { registerFeature } from "./register-feature";
-import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
+import { DiContainer, Injectable, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { deregisterFeature } from "./deregister-feature";
 import type { Feature } from "./feature";
 import { getFeature } from "./feature";
-import { deregisterFeature } from "./deregister-feature";
+import { registerFeature } from "./register-feature";
 
 describe("register-feature", () => {
   describe("given di-container and a Features with injectables, and given Features are registered", () => {
@@ -100,7 +100,6 @@ describe("register-feature", () => {
   it("given di-container and registered Features with injectables forming a cycle, when an injectable is injected, throws with namespaced error about cycle", () => {
     const someInjectable: Injectable<any> = getInjectable({
       id: "some-injectable-1",
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       instantiate: (di) => di.inject(someInjectable2),
     });
 
@@ -135,7 +134,6 @@ describe("register-feature", () => {
       di.inject(someInjectable);
     }).toThrow(
       "Maximum call stack size exceeded",
-      // eslint-disable-next-line max-len
       // 'Cycle of injectables encountered: "some-feature-1:some-injectable-1" -> "some-feature-2:some-injectable-2" -> "some-feature-1:some-injectable-1"',
     );
   });

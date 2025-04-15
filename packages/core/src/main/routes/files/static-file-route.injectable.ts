@@ -1,12 +1,12 @@
+import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
+import { route } from "../../router/route";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getRouteInjectable } from "../../router/router.injectable";
-import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
-import { route } from "../../router/route";
-import prodStaticFileRouteHandlerInjectable from "./production.injectable";
 import devStaticFileRouteHandlerInjectable from "./development.injectable";
+import prodStaticFileRouteHandlerInjectable from "./production.injectable";
 
 const staticFileRouteInjectable = getRouteInjectable({
   id: "static-file-route",
@@ -18,9 +18,7 @@ const staticFileRouteInjectable = getRouteInjectable({
       method: "get",
       path: `/{path*}`,
     })(
-      isDevelopment
-        ? di.inject(devStaticFileRouteHandlerInjectable)
-        : di.inject(prodStaticFileRouteHandlerInjectable),
+      isDevelopment ? di.inject(devStaticFileRouteHandlerInjectable) : di.inject(prodStaticFileRouteHandlerInjectable),
     );
   },
 });

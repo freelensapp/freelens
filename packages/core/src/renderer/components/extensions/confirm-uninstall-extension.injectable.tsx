@@ -2,7 +2,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { LensExtensionId, InstalledExtension } from "@freelensapp/legacy-extensions";
+import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { extensionDisplayName } from "../../../extensions/lens-extension";
@@ -17,21 +17,15 @@ interface Dependencies {
 
 export type ConfirmUninstallExtension = (ext: InstalledExtension) => Promise<void>;
 
-const confirmUninstallExtension = ({
-  uninstallExtension,
-  confirm,
-}: Dependencies): ConfirmUninstallExtension => (
+const confirmUninstallExtension =
+  ({ uninstallExtension, confirm }: Dependencies): ConfirmUninstallExtension =>
   async (extension) => {
-    const displayName = extensionDisplayName(
-      extension.manifest.name,
-      extension.manifest.version,
-    );
+    const displayName = extensionDisplayName(extension.manifest.name, extension.manifest.version);
     const confirmed = await confirm({
       message: (
         <p>
           {"Are you sure you want to uninstall extension "}
-          <b>{displayName}</b>
-          ?
+          <b>{displayName}</b>?
         </p>
       ),
       labelOk: "Yes",
@@ -41,15 +35,15 @@ const confirmUninstallExtension = ({
     if (confirmed) {
       await uninstallExtension(extension.id);
     }
-  }
-);
+  };
 
 const confirmUninstallExtensionInjectable = getInjectable({
   id: "confirm-uninstall-extension",
-  instantiate: (di) => confirmUninstallExtension({
-    uninstallExtension: di.inject(uninstallExtensionInjectable),
-    confirm: di.inject(confirmInjectable),
-  }),
+  instantiate: (di) =>
+    confirmUninstallExtension({
+      uninstallExtension: di.inject(uninstallExtensionInjectable),
+      confirm: di.inject(confirmInjectable),
+    }),
 });
 
 export default confirmUninstallExtensionInjectable;

@@ -1,11 +1,11 @@
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { ForwardedPort } from "./port-forward-item";
 import { portForwardAddress } from "./port-forward-utils";
 
@@ -21,16 +21,15 @@ const openPortForwardInjectable = getInjectable({
     return (portForward) => {
       const browseTo = portForwardAddress(portForward);
 
-      openLinkInBrowser(browseTo)
-        .catch(error => {
-          logger.error(`failed to open in browser: ${error}`, {
-            port: portForward.port,
-            kind: portForward.kind,
-            namespace: portForward.namespace,
-            name: portForward.name,
-          });
-          showErrorNotification(`Failed to open ${browseTo} in browser`);
+      openLinkInBrowser(browseTo).catch((error) => {
+        logger.error(`failed to open in browser: ${error}`, {
+          port: portForward.port,
+          kind: portForward.kind,
+          namespace: portForward.namespace,
+          name: portForward.name,
         });
+        showErrorNotification(`Failed to open ${browseTo} in browser`);
+      });
     };
   },
 });

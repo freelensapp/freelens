@@ -1,3 +1,4 @@
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,7 +6,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import disableHardwareAccelerationInjectable from "../../electron-app/features/disable-hardware-acceleration.injectable";
 import hardwareAccelerationShouldBeDisabledInjectable from "../../vars/hardware-acceleration-should-be-disabled.injectable";
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 
 const setupHardwareAccelerationInjectable = getInjectable({
   id: "setup-hardware-acceleration",

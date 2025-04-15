@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
-import apiBaseInjectable from "../../../common/k8s-api/api-base.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { urlBuilderFor } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import apiBaseInjectable from "../../../common/k8s-api/api-base.injectable";
 import type { ForwardedPort } from "../port-forward-item";
 
 export type RequestActivePortForward = (portForward: ForwardedPort) => Promise<ForwardedPort | undefined>;
@@ -21,7 +21,9 @@ const requestActivePortForwardInjectable = getInjectable({
 
     return async ({ port, forwardPort, namespace, kind, name, ...rest }) => {
       try {
-        const response: { port: number } = await apiBase.get(requestActiveEndpoint.compile({ namespace, kind, name }), { query: { port, forwardPort }});
+        const response: { port: number } = await apiBase.get(requestActiveEndpoint.compile({ namespace, kind, name }), {
+          query: { port, forwardPort },
+        });
 
         return {
           status: response.port ? "Active" : "Disabled",

@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import currentClusterFrameClusterIdStateInjectable from "./current-cluster-frame-cluster-id-state.injectable";
 import clusterFramesInjectable from "../../../../common/cluster-frames.injectable";
+import currentClusterFrameClusterIdStateInjectable from "./current-cluster-frame-cluster-id-state.injectable";
 
 const currentClusterFrameInjectable = getInjectable({
   id: "current-cluster-frame",

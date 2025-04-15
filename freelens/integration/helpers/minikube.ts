@@ -23,10 +23,9 @@ export function minikubeReady(testNamespace: string): boolean {
     if (status === 0) {
       console.warn(`Removing existing ${testNamespace} namespace`);
 
-      const { status, stdout, stderr } = spawnSync(
-        `minikube kubectl -- delete namespace ${testNamespace}`,
-        { shell: true },
-      );
+      const { status, stdout, stderr } = spawnSync(`minikube kubectl -- delete namespace ${testNamespace}`, {
+        shell: true,
+      });
 
       if (status !== 0) {
         console.warn(`Error removing ${testNamespace} namespace: ${stderr.toString()}`);

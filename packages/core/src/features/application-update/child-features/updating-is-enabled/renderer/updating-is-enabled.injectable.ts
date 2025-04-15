@@ -8,10 +8,7 @@ import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectablesForInitializable } from "../../../../../common/initializable-state/create";
 import { updatingIsEnabledChannel, updatingIsEnabledInitializable } from "../common/token";
 
-export const {
-  stateInjectable,
-  initializationInjectable,
-} = getInjectablesForInitializable({
+export const { stateInjectable, initializationInjectable } = getInjectablesForInitializable({
   token: updatingIsEnabledInitializable,
   init: async (di) => {
     const requestFromChannel = di.inject(requestFromChannelInjectionToken);

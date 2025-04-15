@@ -21,7 +21,7 @@ describe("update-entity-spec", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
     di.override(appPathsStateInjectable, () => ({
-      get: () => ({} as AppPaths),
+      get: () => ({}) as AppPaths,
       set: () => {},
     }));
 
@@ -69,7 +69,7 @@ describe("update-entity-spec", () => {
 
   it("given cluster icon is null, deletes icon from both", () => {
     cluster.preferences.icon = null;
-    entity.spec.icon = { src : "some-icon" };
+    entity.spec.icon = { src: "some-icon" };
 
     updateEntitySpec(entity, cluster);
     expect(entity.spec.icon).toBeUndefined();
@@ -158,5 +158,4 @@ describe("update-entity-spec", () => {
 
     expect(entity.spec.metrics?.prometheus?.type).toEqual("some-prometheus-provider-type");
   });
-
 });

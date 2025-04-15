@@ -1,22 +1,22 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { noop } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { waitFor, type RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { type RenderResult, waitFor } from "@testing-library/react";
+import execFileInjectable, { type ExecFile } from "../../common/fs/exec-file.injectable";
 import type { ReadYamlFile } from "../../common/fs/read-yaml-file.injectable";
 import readYamlFileInjectable from "../../common/fs/read-yaml-file.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import execFileInjectable, { type ExecFile } from "../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
+import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import { noop } from "@freelensapp/utilities";
 
 describe("listing active helm repositories in preferences", () => {
   let builder: ApplicationBuilder;
@@ -62,37 +62,29 @@ describe("listing active helm repositories in preferences", () => {
       builder.preferences.navigation.click("kubernetes");
     });
 
-    it("renders", async() => {
-      await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+    it("renders", async () => {
+      await waitFor(() => {
+        expect(rendered.baseElement).toBeTruthy();
+      });
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
     it("shows loader for repositories", () => {
-      expect(
-        rendered.getByTestId("helm-repositories-are-loading"),
-      ).toBeInTheDocument();
+      expect(rendered.getByTestId("helm-repositories-are-loading")).toBeInTheDocument();
     });
 
     it("calls for helm configuration", () => {
-      expect(execFileMock).toHaveBeenCalledWith(
-        "some-helm-binary-path",
-        ["env"],
-        {
-          maxBuffer: 34359738368,
-          env: {},
-        },
-      );
+      expect(execFileMock).toHaveBeenCalledWith("some-helm-binary-path", ["env"], {
+        maxBuffer: 34359738368,
+        env: {},
+      });
     });
 
     it("does not call for updating of repositories yet", () => {
-      expect(execFileMock).not.toHaveBeenCalledWith(
-        "some-helm-binary-path",
-        ["repo", "update"],
-        {
-          maxBuffer: 34359738368,
-          env: {},
-        },
-      );
+      expect(execFileMock).not.toHaveBeenCalledWith("some-helm-binary-path", ["repo", "update"], {
+        maxBuffer: 34359738368,
+        env: {},
+      });
     });
 
     describe("when getting configuration rejects", () => {
@@ -106,25 +98,21 @@ describe("listing active helm repositories in preferences", () => {
       });
 
       it("shows error notification", () => {
-        expect(showErrorNotificationMock).toHaveBeenCalledWith(
-          "Error getting Helm configuration: some-error",
-        );
+        expect(showErrorNotificationMock).toHaveBeenCalledWith("Error getting Helm configuration: some-error");
       });
 
       it("removes all helm controls", () => {
-        expect(
-          rendered.queryByTestId("helm-controls"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-controls")).not.toBeInTheDocument();
       });
 
       it("does not show loader for repositories anymore", () => {
-        expect(
-          rendered.queryByTestId("helm-repositories-are-loading"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
       });
 
       it("renders", async () => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -133,13 +121,10 @@ describe("listing active helm repositories in preferences", () => {
       beforeEach(async () => {
         execFileMock.mockClear();
 
-        await execFileMock.resolveSpecific(
-          ["some-helm-binary-path", ["env"]],
-          {
-            callWasSuccessful: true,
-            response: "HELM_REPOSITORY_CACHE=some-helm-repository-cache-path",
-          },
-        );
+        await execFileMock.resolveSpecific(["some-helm-binary-path", ["env"]], {
+          callWasSuccessful: true,
+          response: "HELM_REPOSITORY_CACHE=some-helm-repository-cache-path",
+        });
       });
 
       it("logs error", () => {
@@ -155,19 +140,17 @@ describe("listing active helm repositories in preferences", () => {
       });
 
       it("removes all helm controls", () => {
-        expect(
-          rendered.queryByTestId("helm-controls"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-controls")).not.toBeInTheDocument();
       });
 
       it("does not show loader for repositories anymore", () => {
-        expect(
-          rendered.queryByTestId("helm-repositories-are-loading"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
       });
 
-      it("renders", async() => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      it("renders", async () => {
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -176,13 +159,10 @@ describe("listing active helm repositories in preferences", () => {
       beforeEach(async () => {
         execFileMock.mockClear();
 
-        await execFileMock.resolveSpecific(
-          ["some-helm-binary-path", ["env"]],
-          {
-            callWasSuccessful: true,
-            response: "HELM_REPOSITORY_CONFIG=some-helm-repository-config-file.yaml",
-          },
-        );
+        await execFileMock.resolveSpecific(["some-helm-binary-path", ["env"]], {
+          callWasSuccessful: true,
+          response: "HELM_REPOSITORY_CONFIG=some-helm-repository-config-file.yaml",
+        });
       });
 
       it("logs error", () => {
@@ -198,19 +178,17 @@ describe("listing active helm repositories in preferences", () => {
       });
 
       it("removes all helm controls", () => {
-        expect(
-          rendered.queryByTestId("helm-controls"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-controls")).not.toBeInTheDocument();
       });
 
       it("does not show loader for repositories anymore", () => {
-        expect(
-          rendered.queryByTestId("helm-repositories-are-loading"),
-        ).not.toBeInTheDocument();
+        expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
       });
 
-      it("renders", async() => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      it("renders", async () => {
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
     });
@@ -219,32 +197,27 @@ describe("listing active helm repositories in preferences", () => {
       beforeEach(async () => {
         execFileMock.mockClear();
 
-        await execFileMock.resolveSpecific(
-          ["some-helm-binary-path", ["env"]],
-          {
-            callWasSuccessful: true,
-            response: [
-              "HELM_REPOSITORY_CONFIG=some-helm-repository-config-file.yaml",
-              "HELM_REPOSITORY_CACHE=some-helm-repository-cache-path",
-            ].join("\n"),
-          },
-        );
+        await execFileMock.resolveSpecific(["some-helm-binary-path", ["env"]], {
+          callWasSuccessful: true,
+          response: [
+            "HELM_REPOSITORY_CONFIG=some-helm-repository-config-file.yaml",
+            "HELM_REPOSITORY_CACHE=some-helm-repository-cache-path",
+          ].join("\n"),
+        });
       });
 
-      it("renders", async() => {
-        await waitFor(() => { expect(rendered.baseElement).toBeTruthy(); });
+      it("renders", async () => {
+        await waitFor(() => {
+          expect(rendered.baseElement).toBeTruthy();
+        });
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
       it("calls for update of repositories", () => {
-        expect(execFileMock).toHaveBeenCalledWith(
-          "some-helm-binary-path",
-          ["repo", "update"],
-          {
-            maxBuffer: 34359738368,
-            env: {},
-          },
-        );
+        expect(execFileMock).toHaveBeenCalledWith("some-helm-binary-path", ["repo", "update"], {
+          maxBuffer: 34359738368,
+          env: {},
+        });
       });
 
       it("does not call for repositories yet", () => {
@@ -262,21 +235,15 @@ describe("listing active helm repositories in preferences", () => {
         });
 
         it("shows error notification", () => {
-          expect(showErrorNotificationMock).toHaveBeenCalledWith(
-            "Error updating Helm repositories: Some error",
-          );
+          expect(showErrorNotificationMock).toHaveBeenCalledWith("Error updating Helm repositories: Some error");
         });
 
         it("removes all helm controls", () => {
-          expect(
-            rendered.queryByTestId("helm-controls"),
-          ).not.toBeInTheDocument();
+          expect(rendered.queryByTestId("helm-controls")).not.toBeInTheDocument();
         });
 
         it("does not show loader for repositories anymore", () => {
-          expect(
-            rendered.queryByTestId("helm-repositories-are-loading"),
-          ).not.toBeInTheDocument();
+          expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
         });
 
         it("renders", () => {
@@ -301,9 +268,7 @@ describe("listing active helm repositories in preferences", () => {
         });
 
         it("still shows the loader for repositories", () => {
-          expect(
-            rendered.queryByTestId("helm-repositories-are-loading"),
-          ).toBeInTheDocument();
+          expect(rendered.queryByTestId("helm-repositories-are-loading")).toBeInTheDocument();
         });
 
         it('adds "bitnami" as default repository', () => {
@@ -334,15 +299,11 @@ describe("listing active helm repositories in preferences", () => {
           });
 
           it("removes all helm controls", () => {
-            expect(
-              rendered.queryByTestId("helm-controls"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("helm-controls")).not.toBeInTheDocument();
           });
 
           it("does not show loader for repositories anymore", () => {
-            expect(
-              rendered.queryByTestId("helm-repositories-are-loading"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
           });
 
           it("renders", () => {
@@ -355,15 +316,7 @@ describe("listing active helm repositories in preferences", () => {
             readYamlFileMock.mockClear();
 
             await execFileMock.resolveSpecific(
-              [
-                "some-helm-binary-path",
-                [
-                  "repo",
-                  "add",
-                  "bitnami",
-                  "https://charts.bitnami.com/bitnami",
-                ],
-              ],
+              ["some-helm-binary-path", ["repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"]],
               {
                 callWasSuccessful: true,
                 response: "",
@@ -376,15 +329,11 @@ describe("listing active helm repositories in preferences", () => {
           });
 
           it("still shows the loader for repositories", () => {
-            expect(
-              rendered.queryByTestId("helm-repositories-are-loading"),
-            ).toBeInTheDocument();
+            expect(rendered.queryByTestId("helm-repositories-are-loading")).toBeInTheDocument();
           });
 
           it("calls for repositories again", () => {
-            expect(readYamlFileMock).toHaveBeenCalledWith(
-              "some-helm-repository-config-file.yaml",
-            );
+            expect(readYamlFileMock).toHaveBeenCalledWith("some-helm-repository-config-file.yaml");
           });
 
           describe("when another call for repositories resolve", () => {
@@ -411,9 +360,7 @@ describe("listing active helm repositories in preferences", () => {
             });
 
             it("does not show loader for repositories anymore", () => {
-              expect(
-                rendered.queryByTestId("helm-repositories-are-loading"),
-              ).not.toBeInTheDocument();
+              expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
             });
 
             it("shows the added repository", () => {
@@ -429,29 +376,21 @@ describe("listing active helm repositories in preferences", () => {
         beforeEach(async () => {
           execFileMock.mockClear();
 
-          await execFileMock.resolveSpecific(
-            ["some-helm-binary-path", ["repo", "update"]],
-            {
-              callWasSuccessful: true,
-              response: "",
-            },
-          );
+          await execFileMock.resolveSpecific(["some-helm-binary-path", ["repo", "update"]], {
+            callWasSuccessful: true,
+            response: "",
+          });
         });
 
         it("loads repositories from file system", () => {
-          expect(readYamlFileMock).toHaveBeenCalledWith(
-            "some-helm-repository-config-file.yaml",
-          );
+          expect(readYamlFileMock).toHaveBeenCalledWith("some-helm-repository-config-file.yaml");
         });
 
         describe("when repositories resolves", () => {
           beforeEach(async () => {
             execFileMock.mockClear();
 
-            await readYamlFileMock.resolveSpecific(
-              ["some-helm-repository-config-file.yaml"],
-              repositoryConfigStub,
-            );
+            await readYamlFileMock.resolveSpecific(["some-helm-repository-config-file.yaml"], repositoryConfigStub);
           });
 
           it("does not add default repository", () => {
@@ -470,15 +409,11 @@ describe("listing active helm repositories in preferences", () => {
           });
 
           it("does not show loader for repositories anymore", () => {
-            expect(
-              rendered.queryByTestId("helm-repositories-are-loading"),
-            ).not.toBeInTheDocument();
+            expect(rendered.queryByTestId("helm-repositories-are-loading")).not.toBeInTheDocument();
           });
 
           it("shows repositories in use", () => {
-            const actual = rendered.getAllByTestId(
-              /^helm-repository-(some-repository|some-other-repository)$/,
-            );
+            const actual = rendered.getAllByTestId(/^helm-repository-(some-repository|some-other-repository)$/);
 
             expect(actual).toHaveLength(2);
           });

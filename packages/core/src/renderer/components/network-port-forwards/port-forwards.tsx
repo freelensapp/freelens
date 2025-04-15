@@ -5,21 +5,21 @@
 
 import "./port-forwards.scss";
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { ItemListLayout } from "../item-object-list/list-layout";
-import type { PortForwardItem, PortForwardStore } from "../../port-forward";
-import { PortForwardMenu } from "./port-forward-menu";
-import { PortForwardDetails } from "./port-forward-details";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
-import portForwardsRouteParametersInjectable from "./port-forwards-route-parameters.injectable";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { NavigateToPortForwards } from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
+import type { PortForwardItem, PortForwardStore } from "../../port-forward";
+import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import { ItemListLayout } from "../item-object-list/list-layout";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { PortForwardDetails } from "./port-forward-details";
+import { PortForwardMenu } from "./port-forward-menu";
+import portForwardsRouteParametersInjectable from "./port-forwards-route-parameters.injectable";
 
 enum columnId {
   name = "name",
@@ -46,10 +46,7 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
   }
 
   componentDidMount() {
-
-    disposeOnUnmount(this, [
-      this.props.portForwardStore.watch(),
-    ]);
+    disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
   }
 
   @computed
@@ -82,19 +79,17 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
   };
 
   renderRemoveDialogMessage(selectedItems: PortForwardItem[]) {
-    const forwardPorts = selectedItems.map(item => item.getForwardPort()).join(", ");
+    const forwardPorts = selectedItems.map((item) => item.getForwardPort()).join(", ");
 
     return (
       <div>
         <>
           {"Stop forwarding from "}
-          <b>{forwardPorts}</b>
-          ?
+          <b>{forwardPorts}</b>?
         </>
       </div>
     );
   }
-
 
   render() {
     return (
@@ -106,17 +101,15 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
           store={this.props.portForwardStore}
           getItems={() => this.props.portForwardStore.items}
           sortingCallbacks={{
-            [columnId.name]: item => item.getName(),
-            [columnId.namespace]: item => item.getNs(),
-            [columnId.kind]: item => item.getKind(),
-            [columnId.port]: item => item.getPort(),
-            [columnId.forwardPort]: item => item.getForwardPort(),
-            [columnId.protocol]: item => item.getProtocol(),
-            [columnId.status]: item => item.getStatus(),
+            [columnId.name]: (item) => item.getName(),
+            [columnId.namespace]: (item) => item.getNs(),
+            [columnId.kind]: (item) => item.getKind(),
+            [columnId.port]: (item) => item.getPort(),
+            [columnId.forwardPort]: (item) => item.getForwardPort(),
+            [columnId.protocol]: (item) => item.getProtocol(),
+            [columnId.status]: (item) => item.getStatus(),
           }}
-          searchFilters={[
-            item => item.getSearchFields(),
-          ]}
+          searchFilters={[(item) => item.getSearchFields()]}
           renderHeaderTitle="Port Forwarding"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -127,35 +120,26 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
             { title: "Protocol", className: "protocol", sortBy: columnId.protocol, id: columnId.protocol },
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
-          renderTableContents={item => [
+          renderTableContents={(item) => [
             item.getName(),
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={item.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
             item.getKind(),
             item.getPort(),
             item.getForwardPort(),
             item.getProtocol(),
             { title: item.getStatus(), className: item.getStatus().toLowerCase() },
           ]}
-          renderItemMenu={pf => (
-            <PortForwardMenu
-              portForward={pf}
-              removeConfirmationMessage={this.renderRemoveDialogMessage([pf])}
-            />
+          renderItemMenu={(pf) => (
+            <PortForwardMenu portForward={pf} removeConfirmationMessage={this.renderRemoveDialogMessage([pf])} />
           )}
-          customizeRemoveDialog={selectedItems => ({
+          customizeRemoveDialog={(selectedItems) => ({
             message: this.renderRemoveDialogMessage(selectedItems),
           })}
           detailsItem={this.selectedPortForward}
           onDetails={this.onDetails}
         />
         {this.selectedPortForward && (
-          <PortForwardDetails
-            portForward={this.selectedPortForward}
-            hideDetails={this.hideDetails}
-          />
+          <PortForwardDetails portForward={this.selectedPortForward} hideDetails={this.hideDetails} />
         )}
       </SiblingsInTabLayout>
     );
@@ -169,4 +153,3 @@ export const PortForwards = withInjectables<Dependencies>(NonInjectedPortForward
     navigateToPortForwards: di.inject(navigateToPortForwardsInjectable),
   }),
 });
-

@@ -1,3 +1,4 @@
+import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -5,7 +6,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { DeploymentScaleDialog } from "./dialog";
-import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 
 const deploymentScaleDialogClusterFrameChildComponentInjectable = getInjectable({
   id: "deployment-scale-dialog-cluster-frame-child-component",

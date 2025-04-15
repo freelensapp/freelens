@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
 import customResourceDefinitionsRouteInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/custom-resource-definitions.injectable";
+import { routeSpecificComponentInjectionToken } from "../../routes/route-specific-component-injection-token";
 import { CustomResourceDefinitions } from "./view";
 
 const customResourceDefinitionsRouteComponentInjectable = getInjectable({

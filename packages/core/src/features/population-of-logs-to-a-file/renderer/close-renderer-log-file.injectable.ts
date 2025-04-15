@@ -1,13 +1,13 @@
+import { winstonLoggerInjectable } from "@freelensapp/logger";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { closeIpcFileLoggerChannel } from "../common/ipc-file-logger-channel";
-import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
+import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 
 const closeRendererLogFileInjectable = getInjectable({
   id: "close-renderer-log-file",
@@ -16,7 +16,6 @@ const closeRendererLogFileInjectable = getInjectable({
     const ipcLogTransport = di.inject(ipcLogTransportInjectable);
     const messageToChannel = di.inject(sendMessageToChannelInjectionToken);
     const fileId = di.inject(rendererLogFileIdInjectable);
-
 
     return () => {
       messageToChannel(closeIpcFileLoggerChannel, fileId);

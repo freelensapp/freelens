@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import navigateToExtensionsInjectable from "../../../../../../common/front-end-routing/routes/extensions/navigate-to-extensions.injectable";
 import isMacInjectable from "../../../../../../common/vars/is-mac.injectable";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const navigateToExtensionsMenuItem = getInjectable({
   id: "navigate-to-extensions-menu-item",

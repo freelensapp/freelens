@@ -5,11 +5,11 @@
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import type { KubernetesCluster } from "../../../common/catalog-entities";
 import React from "react";
 import { act } from "react-dom/test-utils";
+import type { KubernetesCluster } from "../../../common/catalog-entities";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("disable sidebar items when cluster is not relevant", () => {
   let builder: ApplicationBuilder;
@@ -30,11 +30,13 @@ describe("disable sidebar items when cluster is not relevant", () => {
       rendererOptions: {
         isEnabledForCluster: isEnabledForClusterMock,
 
-        clusterPages: [{
-          components: {
-            Page: () => <div data-testid="some-test-page">Some page</div>,
+        clusterPages: [
+          {
+            components: {
+              Page: () => <div data-testid="some-test-page">Some page</div>,
+            },
           },
-        }],
+        ],
 
         clusterPageMenus: [
           {

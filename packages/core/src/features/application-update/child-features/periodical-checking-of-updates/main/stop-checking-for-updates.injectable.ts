@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import periodicalCheckForUpdatesInjectable from "./periodical-check-for-updates.injectable";
 import { onQuitOfBackEndInjectionToken } from "../../../../../main/start-main-application/runnable-tokens/phases";
+import periodicalCheckForUpdatesInjectable from "./periodical-check-for-updates.injectable";
 
 const stopCheckingForUpdatesInjectable = getInjectable({
   id: "stop-checking-for-updates",

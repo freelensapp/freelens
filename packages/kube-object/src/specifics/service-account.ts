@@ -8,8 +8,8 @@ import type {
   KubeObjectMetadata,
   KubeObjectScope,
   LocalObjectReference,
-  ObjectReference,
   NamespaceScopedMetadata,
+  ObjectReference,
 } from "../api-types";
 import { KubeObject } from "../kube-object";
 

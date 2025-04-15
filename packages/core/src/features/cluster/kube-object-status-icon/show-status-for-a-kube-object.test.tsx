@@ -1,24 +1,24 @@
+import { KubeObject } from "@freelensapp/kube-object";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { getInjectable } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+import { act } from "@testing-library/react";
+import type { IAtom } from "mobx";
+import { computed, createAtom, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import { frontEndRouteInjectionToken } from "../../../common/front-end-routing/front-end-route-injection-token";
+import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { KubeObjectStatusLevel } from "../../../common/k8s-api/kube-object-status";
-import { KubeObject } from "@freelensapp/kube-object";
-import React from "react";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { getInjectable } from "@ogre-tools/injectable";
-import type { IAtom } from "mobx";
-import { runInAction, createAtom, computed } from "mobx";
-import { frontEndRouteInjectionToken } from "../../../common/front-end-routing/front-end-route-injection-token";
-import { routeSpecificComponentInjectionToken } from "../../../renderer/routes/route-specific-component-injection-token";
+import { KubeObjectStatusIcon } from "../../../renderer/components/kube-object-status-icon";
+import { kubeObjectStatusTextInjectionToken } from "../../../renderer/components/kube-object-status-icon/kube-object-status-text-injection-token";
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
-import type { RenderResult } from "@testing-library/react";
-import { act } from "@testing-library/react";
-import { observer } from "mobx-react";
-import { kubeObjectStatusTextInjectionToken } from "../../../renderer/components/kube-object-status-icon/kube-object-status-text-injection-token";
-import { KubeObjectStatusIcon } from "../../../renderer/components/kube-object-status-icon";
+import { routeSpecificComponentInjectionToken } from "../../../renderer/routes/route-specific-component-injection-token";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 
 describe("show status for a kube object", () => {
@@ -43,11 +43,14 @@ describe("show status for a kube object", () => {
         kind: "some-kind",
         enabled: computed(() => true),
 
-        resolve: (resource) => infoStatusIsShown ? ({
-          level: KubeObjectStatusLevel.INFO,
-          text: `Some info status for ${resource.getName()}`,
-          timestamp: "2015-10-19T07:28:00Z",
-        }) : null,
+        resolve: (resource) =>
+          infoStatusIsShown
+            ? {
+                level: KubeObjectStatusLevel.INFO,
+                text: `Some info status for ${resource.getName()}`,
+                timestamp: "2015-10-19T07:28:00Z",
+              }
+            : null,
       }),
     });
 
@@ -62,11 +65,14 @@ describe("show status for a kube object", () => {
         kind: "some-kind",
         enabled: computed(() => true),
 
-        resolve: (resource) => warningStatusIsShown ? ({
-          level: KubeObjectStatusLevel.WARNING,
-          text: `Some warning status for ${resource.getName()}`,
-          timestamp: "2015-10-19T07:28:00Z",
-        }) : null,
+        resolve: (resource) =>
+          warningStatusIsShown
+            ? {
+                level: KubeObjectStatusLevel.WARNING,
+                text: `Some warning status for ${resource.getName()}`,
+                timestamp: "2015-10-19T07:28:00Z",
+              }
+            : null,
       }),
     });
 
@@ -84,10 +90,10 @@ describe("show status for a kube object", () => {
         resolve: (resource) => {
           return criticalStatusIsShown
             ? {
-              level: KubeObjectStatusLevel.CRITICAL,
-              text: `Some critical status for ${resource.getName()}`,
-              timestamp: "2015-10-19T07:28:00Z",
-            }
+                level: KubeObjectStatusLevel.CRITICAL,
+                text: `Some critical status for ${resource.getName()}`,
+                timestamp: "2015-10-19T07:28:00Z",
+              }
             : null;
         },
       }),
@@ -103,7 +109,6 @@ describe("show status for a kube object", () => {
           criticalStatusInjectable,
           someAtomInjectable,
         );
-
       });
     });
 
@@ -135,9 +140,7 @@ describe("show status for a kube object", () => {
     });
 
     it("does not show any statuses yet", () => {
-      const status = rendered.queryByTestId(
-        "kube-object-status-icon-for-some-uid",
-      );
+      const status = rendered.queryByTestId("kube-object-status-icon-for-some-uid");
 
       expect(status).not.toBeInTheDocument();
     });
@@ -156,9 +159,7 @@ describe("show status for a kube object", () => {
       });
 
       it("does not show any statuses", () => {
-        const status = rendered.queryByTestId(
-          "kube-object-status-icon-for-some-uid",
-        );
+        const status = rendered.queryByTestId("kube-object-status-icon-for-some-uid");
 
         expect(status).not.toBeInTheDocument();
       });
@@ -178,9 +179,7 @@ describe("show status for a kube object", () => {
       });
 
       it("does not show any statuses", () => {
-        const status = rendered.queryByTestId(
-          "kube-object-status-icon-for-some-uid",
-        );
+        const status = rendered.queryByTestId("kube-object-status-icon-for-some-uid");
 
         expect(status).not.toBeInTheDocument();
       });
@@ -198,21 +197,15 @@ describe("show status for a kube object", () => {
       });
 
       it("shows status", () => {
-        const status = rendered.getByTestId(
-          "kube-object-status-icon-for-some-uid",
-        );
+        const status = rendered.getByTestId("kube-object-status-icon-for-some-uid");
 
         expect(status).toBeInTheDocument();
       });
 
       it("show info status", () => {
-        const tooltipContent = rendered.getByTestId(
-          "tooltip-content-for-kube-object-status-icon-for-some-uid",
-        );
+        const tooltipContent = rendered.getByTestId("tooltip-content-for-kube-object-status-icon-for-some-uid");
 
-        expect(tooltipContent).toHaveTextContent(
-          "Some info status for some-name",
-        );
+        expect(tooltipContent).toHaveTextContent("Some info status for some-name");
       });
     });
 
@@ -228,13 +221,9 @@ describe("show status for a kube object", () => {
       });
 
       it("show warning status", () => {
-        const tooltipContent = rendered.getByTestId(
-          "tooltip-content-for-kube-object-status-icon-for-some-uid",
-        );
+        const tooltipContent = rendered.getByTestId("tooltip-content-for-kube-object-status-icon-for-some-uid");
 
-        expect(tooltipContent).toHaveTextContent(
-          "Some warning status for some-name",
-        );
+        expect(tooltipContent).toHaveTextContent("Some warning status for some-name");
       });
     });
 
@@ -250,13 +239,9 @@ describe("show status for a kube object", () => {
       });
 
       it("show critical status", () => {
-        const tooltipContent = rendered.getByTestId(
-          "tooltip-content-for-kube-object-status-icon-for-some-uid",
-        );
+        const tooltipContent = rendered.getByTestId("tooltip-content-for-kube-object-status-icon-for-some-uid");
 
-        expect(tooltipContent).toHaveTextContent(
-          "Some critical status for some-name",
-        );
+        expect(tooltipContent).toHaveTextContent("Some critical status for some-name");
       });
     });
   });
@@ -283,11 +268,7 @@ const rerenderParentFor = (atom: IAtom) => () => {
 const TestComponent = observer(({ someAtom }: { someAtom: IAtom }) => {
   void someAtom.reportObserved();
 
-  return (
-    <KubeObjectStatusIcon
-      object={getKubeObjectStub("some-kind", "some-api-version")}
-    />
-  );
+  return <KubeObjectStatusIcon object={getKubeObjectStub("some-kind", "some-api-version")} />;
 });
 
 const testRouteComponentInjectable = getInjectable({

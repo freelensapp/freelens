@@ -5,13 +5,13 @@
 
 import "./tab-layout.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
+import { observer } from "mobx-react";
+import React from "react";
 import { Tab, Tabs } from "../tabs";
-import { ErrorBoundary } from "@freelensapp/error-boundary";
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 
 export interface TabLayoutProps {
   tabs?: SidebarItemDeclaration[];
@@ -19,42 +19,30 @@ export interface TabLayoutProps {
   scrollable?: boolean;
 }
 
-export const TabLayout = observer(
-  ({
-    tabs = [],
-    scrollable,
-    children,
-  }: TabLayoutProps) => {
-    const hasTabs = tabs.length > 0;
+export const TabLayout = observer(({ tabs = [], scrollable, children }: TabLayoutProps) => {
+  const hasTabs = tabs.length > 0;
 
-    return (
-      <div
-        className={cssNames("TabLayout")}
-        data-testid="tab-layout"
-      >
+  return (
+    <div className={cssNames("TabLayout")} data-testid="tab-layout">
+      {hasTabs && (
+        <Tabs center>
+          {tabs.map(({ onClick, id, title, isActive }) => (
+            <Tab
+              onClick={onClick}
+              key={id}
+              label={title}
+              active={isActive.get()}
+              data-is-active-test={isActive.get()}
+              data-testid={`tab-link-for-${id}`}
+              value={undefined}
+            />
+          ))}
+        </Tabs>
+      )}
 
-        {hasTabs && (
-          <Tabs center>
-            {tabs.map(({ onClick, id, title, isActive }) => (
-              <Tab
-                onClick={onClick}
-                key={id}
-                label={title}
-                active={isActive.get()}
-                data-is-active-test={isActive.get()}
-                data-testid={`tab-link-for-${id}`}
-                value={undefined}
-              />
-            ))}
-          </Tabs>
-        )}
-
-        <main className={cssNames({ scrollable })}>
-          <ErrorBoundary>
-            {children}
-          </ErrorBoundary>
-        </main>
-      </div>
-    );
-  },
-);
+      <main className={cssNames({ scrollable })}>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </main>
+    </div>
+  );
+});

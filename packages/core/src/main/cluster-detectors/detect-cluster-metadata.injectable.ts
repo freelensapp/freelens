@@ -1,3 +1,4 @@
+import { hasDefinedTupleValue, isDefined, object } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -8,17 +9,13 @@ import { groupBy, reduce } from "lodash";
 import { filter, map } from "lodash/fp";
 import type { ClusterMetadata } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
-import { hasDefinedTupleValue, isDefined, object } from "@freelensapp/utilities";
 import type { ClusterDetectionResult, ClusterMetadataDetector } from "./token";
 import { clusterMetadataDetectorInjectionToken } from "./token";
 
 export type DetectClusterMetadata = (cluster: Cluster) => Promise<ClusterMetadata>;
 
-const pickHighestAccuracy = (prev: ClusterDetectionResult, curr: ClusterDetectionResult) => (
-  prev.accuracy > curr.accuracy
-    ? prev
-    : curr
-);
+const pickHighestAccuracy = (prev: ClusterDetectionResult, curr: ClusterDetectionResult) =>
+  prev.accuracy > curr.accuracy ? prev : curr;
 
 const detectMetadataWithFor = (cluster: Cluster) => async (clusterMetadataDetector: ClusterMetadataDetector) => {
   try {
@@ -42,7 +39,7 @@ const detectClusterMetadataInjectable = getInjectable({
         filter(isDefined),
         (arg) => groupBy(arg, "key"),
         (arg) => object.entries(arg),
-        map(([ key, detectionResults ]) => {
+        map(([key, detectionResults]) => {
           const results = detectionResults.map(({ result }) => result as ClusterDetectionResult);
           const highestAccuracyResult = reduce(results, pickHighestAccuracy)?.value;
 

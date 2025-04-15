@@ -5,9 +5,9 @@
 
 import "./no-items.scss";
 
-import React from "react";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export interface NoItemsProps {
   className?: IClassName;
@@ -19,9 +19,7 @@ export function NoItems(props: NoItemsProps) {
 
   return (
     <div className={cssNames("NoItems flex box grow", className)}>
-      <div className="box center">
-        {children || "Item list is empty"}
-      </div>
+      <div className="box center">{children || "Item list is empty"}</div>
     </div>
   );
 }

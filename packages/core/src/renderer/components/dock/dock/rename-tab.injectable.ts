@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import dockStoreInjectable from "./store.injectable";
 import type { TabId } from "./store";
+import dockStoreInjectable from "./store.injectable";
 
 const renameTabInjectable = getInjectable({
   id: "rename-tab",

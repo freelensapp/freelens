@@ -4,19 +4,19 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { type WriteStream, constants } from "fs";
-import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
+import { constants, type WriteStream } from "fs";
 import path from "path";
+import { Transform, Writable, pipeline as _pipeline } from "stream";
 import { promisify } from "util";
-import { pipeline as _pipeline, Transform, Writable } from "stream";
+import arg from "arg";
 import type { SingleBar } from "cli-progress";
 import { MultiBar } from "cli-progress";
-import { extract } from "tar-stream";
+import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
 import gunzip from "gunzip-maybe";
-import fetch from "node-fetch"
-import z from "zod";
-import arg from "arg";
+import fetch from "node-fetch";
 import { arch } from "process";
+import { extract } from "tar-stream";
+import z from "zod";
 
 const options = arg({
   "--package": String,
@@ -34,7 +34,7 @@ function assertOption<Key extends keyof Options>(key: Key): NonNullable<Options[
   }
 
   return raw;
-};
+}
 
 function joinWithInitCwd(relativePath: string): string {
   const { INIT_CWD } = process.env;
@@ -44,7 +44,7 @@ function joinWithInitCwd(relativePath: string): string {
   }
 
   return path.join(INIT_CWD, relativePath);
-};
+}
 
 const pathToPackage = joinWithInitCwd(assertOption("--package"));
 const pathToBaseDir = joinWithInitCwd(assertOption("--base-dir"));
@@ -57,7 +57,7 @@ function setTimeoutFor(controller: AbortController, timeout: number): void {
 
 const pipeline = promisify(_pipeline);
 
-function getBinaryExtension({ forPlatform }: { forPlatform : string }): string {
+function getBinaryExtension({ forPlatform }: { forPlatform: string }): string {
   if (forPlatform === "windows") {
     return ".exe";
   }
@@ -84,7 +84,10 @@ abstract class BinaryDownloader {
     return [file];
   }
 
-  constructor(public readonly args: BinaryDownloaderArgs, multiBar: MultiBar) {
+  constructor(
+    public readonly args: BinaryDownloaderArgs,
+    multiBar: MultiBar,
+  ) {
     this.bar = multiBar.create(1, 0, args);
     this.target = path.join(args.baseDir, args.platform, args.fileArch, args.binaryName);
   }
@@ -126,7 +129,7 @@ abstract class BinaryDownloader {
        * This is necessary because for some reason `createWriteStream({ flags: "wx" })`
        * was throwing someplace else and not here
        */
-      const handle = fileHandle = await open(this.target, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL);
+      const handle = (fileHandle = await open(this.target, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL));
 
       if (!stream.body) {
         throw new Error("no body on stream");
@@ -141,13 +144,16 @@ abstract class BinaryDownloader {
             callback();
           },
         }),
-        ...this.getTransformStreams(new Writable({
-          write(chunk, encoding, cb) {
-            handle.write(chunk)
-              .then(() => cb())
-              .catch(cb);
-          },
-        })),
+        ...this.getTransformStreams(
+          new Writable({
+            write(chunk, encoding, cb) {
+              handle
+                .write(chunk)
+                .then(() => cb())
+                .catch(cb);
+            },
+          }),
+        ),
       );
       await fileHandle.chmod(0o755);
       await fileHandle.close();
@@ -229,8 +235,8 @@ const PackageInfo = z.object({
     k8sProxyVersion: z.string().min(1),
     bundledKubectlVersion: z.string().min(1),
     bundledHelmVersion: z.string().min(1),
-  })
-})
+  }),
+});
 
 const packageInfoRaw = await readFile(pathToPackage, "utf-8");
 const packageInfo = PackageInfo.parse(JSON.parse(packageInfoRaw));
@@ -260,53 +266,71 @@ const downloaders: BinaryDownloader[] = [];
 
 const downloadX64Binaries = () => {
   downloaders.push(
-    new FreeLensK8sProxyDownloader({
-      version: packageInfo.config.k8sProxyVersion,
-      platform: normalizedPlatform,
-      downloadArch: "amd64",
-      fileArch: "x64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
-    new KubectlDownloader({
-      version: packageInfo.config.bundledKubectlVersion,
-      platform: normalizedPlatform,
-      downloadArch: "amd64",
-      fileArch: "x64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
-    new HelmDownloader({
-      version: packageInfo.config.bundledHelmVersion,
-      platform: normalizedPlatform,
-      downloadArch: "amd64",
-      fileArch: "x64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
+    new FreeLensK8sProxyDownloader(
+      {
+        version: packageInfo.config.k8sProxyVersion,
+        platform: normalizedPlatform,
+        downloadArch: "amd64",
+        fileArch: "x64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
+    new KubectlDownloader(
+      {
+        version: packageInfo.config.bundledKubectlVersion,
+        platform: normalizedPlatform,
+        downloadArch: "amd64",
+        fileArch: "x64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
+    new HelmDownloader(
+      {
+        version: packageInfo.config.bundledHelmVersion,
+        platform: normalizedPlatform,
+        downloadArch: "amd64",
+        fileArch: "x64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
   );
-}
+};
 
 function downloadArm64Binaries() {
   downloaders.push(
-    new FreeLensK8sProxyDownloader({
-      version: packageInfo.config.k8sProxyVersion,
-      platform: normalizedPlatform,
-      downloadArch: "arm64",
-      fileArch: "arm64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
-    new KubectlDownloader({
-      version: packageInfo.config.bundledKubectlVersion,
-      platform: normalizedPlatform,
-      downloadArch: "arm64",
-      fileArch: "arm64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
-    new HelmDownloader({
-      version: packageInfo.config.bundledHelmVersion,
-      platform: normalizedPlatform,
-      downloadArch: "arm64",
-      fileArch: "arm64",
-      baseDir: pathToBaseDir,
-    }, multiBar),
+    new FreeLensK8sProxyDownloader(
+      {
+        version: packageInfo.config.k8sProxyVersion,
+        platform: normalizedPlatform,
+        downloadArch: "arm64",
+        fileArch: "arm64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
+    new KubectlDownloader(
+      {
+        version: packageInfo.config.bundledKubectlVersion,
+        platform: normalizedPlatform,
+        downloadArch: "arm64",
+        fileArch: "arm64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
+    new HelmDownloader(
+      {
+        version: packageInfo.config.bundledHelmVersion,
+        platform: normalizedPlatform,
+        downloadArch: "arm64",
+        fileArch: "arm64",
+        baseDir: pathToBaseDir,
+      },
+      multiBar,
+    ),
   );
 }
 
@@ -319,15 +343,18 @@ if (process.env.DOWNLOAD_ALL_ARCHITECTURES === "true") {
   downloadArm64Binaries();
 }
 
-const settledResults = await Promise.allSettled(downloaders.map(downloader => (
-  downloader.ensureBinary()
-    .catch(error => {
-      throw new Error(`Failed to download ${downloader.args.binaryName} for ${downloader.args.platform}/${downloader.args.downloadArch}: ${error}`);
-    })
-)));
+const settledResults = await Promise.allSettled(
+  downloaders.map((downloader) =>
+    downloader.ensureBinary().catch((error) => {
+      throw new Error(
+        `Failed to download ${downloader.args.binaryName} for ${downloader.args.platform}/${downloader.args.downloadArch}: ${error}`,
+      );
+    }),
+  ),
+);
 
 multiBar.stop();
-const errorResult = settledResults.find(res => res.status === "rejected") as PromiseRejectedResult | undefined;
+const errorResult = settledResults.find((res) => res.status === "rejected") as PromiseRejectedResult | undefined;
 
 if (errorResult) {
   console.error("234", String(errorResult.reason));

@@ -1,11 +1,11 @@
+import type { ServerResponse } from "http";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { object } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ServerResponse } from "http";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { object } from "@freelensapp/utilities";
 import type { LensApiRequest, Route } from "./route";
 import { contentTypes } from "./router-content-types";
 
@@ -20,26 +20,24 @@ interface LensServerResponse {
   };
 }
 
-const writeServerResponseFor = (serverResponse: ServerResponse) => ({
-  statusCode,
-  content,
-  headers,
-}: LensServerResponse) => {
-  serverResponse.statusCode = statusCode;
+const writeServerResponseFor =
+  (serverResponse: ServerResponse) =>
+  ({ statusCode, content, headers }: LensServerResponse) => {
+    serverResponse.statusCode = statusCode;
 
-  for (const [name, value] of object.entries(headers)) {
-    serverResponse.setHeader(name, value);
-  }
+    for (const [name, value] of object.entries(headers)) {
+      serverResponse.setHeader(name, value);
+    }
 
-  if (content instanceof Buffer) {
-    serverResponse.write(content);
-    serverResponse.end();
-  } else if (content) {
-    serverResponse.end(content);
-  } else {
-    serverResponse.end();
-  }
-};
+    if (content instanceof Buffer) {
+      serverResponse.write(content);
+      serverResponse.end();
+    } else if (content) {
+      serverResponse.end(content);
+    } else {
+      serverResponse.end();
+    }
+  };
 
 const createHandlerForRouteInjectable = getInjectable({
   id: "create-handler-for-route",
@@ -64,7 +62,7 @@ const createHandlerForRouteInjectable = getInjectable({
 
           writeServerResponse(contentType.resultMapper(result));
         }
-      } catch(error) {
+      } catch (error) {
         const mappedResult = contentTypes.txt.resultMapper({
           statusCode: 500,
           error: error ? String(error) : "unknown error",

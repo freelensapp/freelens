@@ -9,10 +9,11 @@ import requestPublicHelmRepositoriesInjectable from "./request-public-helm-repos
 const publicHelmRepositoriesInjectable = getInjectable({
   id: "public-helm-repositories",
 
-  instantiate: (di) => asyncComputed({
-    getValueFromObservedPromise: di.inject(requestPublicHelmRepositoriesInjectable),
-    valueWhenPending: [],
-  }),
+  instantiate: (di) =>
+    asyncComputed({
+      getValueFromObservedPromise: di.inject(requestPublicHelmRepositoriesInjectable),
+      valueWhenPending: [],
+    }),
 });
 
 export default publicHelmRepositoriesInjectable;

@@ -3,17 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { DaemonSet, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import type { DaemonSetStore } from "../workloads-daemonsets/store";
 import daemonSetStoreInjectable from "../workloads-daemonsets/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { DaemonSet, Pod } from "@freelensapp/kube-object";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import { Cluster } from "../../../common/cluster/cluster";
 
 const runningDaemonSet = new DaemonSet({
   apiVersion: "foo",
@@ -58,12 +58,14 @@ const runningPod = new Pod({
     name: "foobar",
     resourceVersion: "foobar",
     uid: "foobar",
-    ownerReferences: [{
-      uid: "runningDaemonSet",
-      apiVersion: "apps/v1",
-      kind: "DaemonSet",
-      name: "running",
-    }],
+    ownerReferences: [
+      {
+        uid: "runningDaemonSet",
+        apiVersion: "apps/v1",
+        kind: "DaemonSet",
+        name: "running",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar",
   },
@@ -98,12 +100,14 @@ const pendingPod = new Pod({
     name: "foobar-pending",
     resourceVersion: "foobar",
     uid: "foobar-pending",
-    ownerReferences: [{
-      uid: "pendingDaemonSet",
-      apiVersion: "apps/v1",
-      kind: "DaemonSet",
-      name: "pending",
-    }],
+    ownerReferences: [
+      {
+        uid: "pendingDaemonSet",
+        apiVersion: "apps/v1",
+        kind: "DaemonSet",
+        name: "pending",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-pending",
   },
@@ -116,12 +120,14 @@ const failedPod = new Pod({
     name: "foobar-failed",
     resourceVersion: "foobar",
     uid: "foobar-failed",
-    ownerReferences: [{
-      uid: "failedDaemonSet",
-      apiVersion: "apps/v1",
-      kind: "DaemonSet",
-      name: "failed",
-    }],
+    ownerReferences: [
+      {
+        uid: "failedDaemonSet",
+        apiVersion: "apps/v1",
+        kind: "DaemonSet",
+        name: "failed",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-failed",
   },
@@ -144,28 +150,24 @@ describe("DaemonSet Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     const podStore = di.inject(podStoreInjectable);
 
     daemonSetStore = di.inject(daemonSetStoreInjectable);
-    podStore.items = observable.array([
-      runningPod,
-      failedPod,
-      pendingPod,
-    ]);
+    podStore.items = observable.array([runningPod, failedPod, pendingPod]);
   });
 
   it("gets DaemonSet statuses in proper sorting order", () => {
-    const statuses = Object.entries(daemonSetStore.getStatuses([
-      failedDaemonSet,
-      runningDaemonSet,
-      pendingDaemonSet,
-    ]));
+    const statuses = Object.entries(daemonSetStore.getStatuses([failedDaemonSet, runningDaemonSet, pendingDaemonSet]));
 
     expect(statuses).toEqual([
       ["running", 1],

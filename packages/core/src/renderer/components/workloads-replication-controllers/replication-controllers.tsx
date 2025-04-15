@@ -3,16 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./replication-controllers.module.scss";
-import React from "react";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { ReplicationControllerStore } from "./replication-controller-store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import replicationControllerStoreInjectable from "./replication-controller-store.injectable";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import { Badge } from "../badge";
+import type { ReplicationControllerStore } from "./replication-controller-store";
+import replicationControllerStoreInjectable from "./replication-controller-store.injectable";
+import styles from "./replication-controllers.module.scss";
 
 enum columnId {
   name = "name",
@@ -34,16 +34,13 @@ const NonInjectedReplicationControllers = observer((props: Dependencies) => (
       className={styles.ReplicationControllers}
       store={props.store}
       sortingCallbacks={{
-        [columnId.name]: item => item.getName(),
-        [columnId.namespace]: item => item.getNs(),
-        [columnId.selector]: item => item.getSelectorLabels(),
-        [columnId.replicas]: item => item.getReplicas(),
-        [columnId.replicasDesired]: item => item.getDesiredReplicas(),
+        [columnId.name]: (item) => item.getName(),
+        [columnId.namespace]: (item) => item.getNs(),
+        [columnId.selector]: (item) => item.getSelectorLabels(),
+        [columnId.replicas]: (item) => item.getReplicas(),
+        [columnId.replicasDesired]: (item) => item.getDesiredReplicas(),
       }}
-      searchFilters={[
-        item => item.getSearchFields(),
-        item => item.getSelectorLabels(),
-      ]}
+      searchFilters={[(item) => item.getSearchFields(), (item) => item.getSelectorLabels()]}
       renderHeaderTitle="Replication Controllers"
       renderTableHeader={[
         { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -65,13 +62,14 @@ const NonInjectedReplicationControllers = observer((props: Dependencies) => (
           id: columnId.selector,
         },
       ]}
-      renderTableContents={item => [
+      renderTableContents={(item) => [
         item.getName(),
         <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
         item.getReplicas(),
         item.getDesiredReplicas(),
-        item.getSelectorLabels().map(label => (<Badge key={label} label={label} />)),
-      ]} />
+        item.getSelectorLabels().map((label) => <Badge key={label} label={label} />),
+      ]}
+    />
   </SiblingsInTabLayout>
 ));
 

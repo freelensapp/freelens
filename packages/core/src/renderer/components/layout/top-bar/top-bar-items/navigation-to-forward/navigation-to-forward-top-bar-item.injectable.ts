@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { NavigationToForward } from "./navigation-to-forward";
 import { topBarItemOnLeftSideInjectionToken } from "../top-bar-item-injection-token";
+import { NavigationToForward } from "./navigation-to-forward";
 
 const navigationToForwardTopBarItemInjectable = getInjectable({
   id: "navigation-to-forward-top-bar-item",

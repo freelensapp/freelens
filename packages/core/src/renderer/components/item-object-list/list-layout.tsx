@@ -5,32 +5,32 @@
 
 import "./item-list-layout.scss";
 
-import React from "react";
+import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
+import type { IClassName, SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import groupBy from "lodash/groupBy";
 import type { IComputedValue } from "mobx";
 import { computed, makeObservable, untracked } from "mobx";
-import type { ConfirmDialogParams } from "../confirm-dialog";
-import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
-import type { IClassName, StrictReactNode, SingleOrMany } from "@freelensapp/utilities";
-import { cssNames, noop } from "@freelensapp/utilities";
+import { observer } from "mobx-react";
+import React from "react";
+import type { Primitive } from "type-fest";
+import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
+import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
+import type { StorageLayer } from "../../utils/storage-helper";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
-import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
+import type { ConfirmDialogParams } from "../confirm-dialog";
 import type { SearchInputUrlProps } from "../input";
+import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
+import { ItemListLayoutContent } from "./content";
+import { ItemListLayoutFilters } from "./filters";
+import { ItemListLayoutHeader } from "./header";
+import { PageFiltersList } from "./page-filters/list";
 import type { PageFiltersStore } from "./page-filters/store";
 import { FilterType } from "./page-filters/store";
-import { PageFiltersList } from "./page-filters/list";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import itemListLayoutStorageInjectable from "./storage.injectable";
-import { ItemListLayoutContent } from "./content";
-import { ItemListLayoutHeader } from "./header";
-import groupBy from "lodash/groupBy";
-import { ItemListLayoutFilters } from "./filters";
-import { observer } from "mobx-react";
-import type { Primitive } from "type-fest";
-import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
-import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
 import pageFiltersStoreInjectable from "./page-filters/store.injectable";
-import type { StorageLayer } from "../../utils/storage-helper";
-import autoBindReact from "auto-bind/react";
+import itemListLayoutStorageInjectable from "./storage.injectable";
 
 export type SearchFilter<I extends ItemObject> = (item: I) => SingleOrMany<string | number | undefined | null>;
 export type SearchFilters<I extends ItemObject> = Record<string, SearchFilter<I>>;
@@ -57,28 +57,29 @@ export type ItemListStore<I extends ItemObject, PreLoadStores extends boolean> =
   isSelectedAll: (items: I[]) => boolean;
   toggleSelectionAll: (enabledItems: I[]) => void;
   pickOnlySelected: (items: I[]) => I[];
-} & ({
-  removeItems: (selectedItems: I[]) => Promise<void>;
-  readonly selectedItems: I[];
-  removeSelectedItems?: unknown;
-} | {
-  removeSelectedItems: () => Promise<void>;
-  selectedItems?: unknown;
-  removeItems?: unknown;
-}) & (
-  PreLoadStores extends true
+} & (
+  | {
+      removeItems: (selectedItems: I[]) => Promise<void>;
+      readonly selectedItems: I[];
+      removeSelectedItems?: unknown;
+    }
+  | {
+      removeSelectedItems: () => Promise<void>;
+      selectedItems?: unknown;
+      removeItems?: unknown;
+    }
+) &
+  (PreLoadStores extends true
     ? {
-      loadAll: (selectedNamespaces: readonly string[]) => Promise<void>;
-    }
+        loadAll: (selectedNamespaces: readonly string[]) => Promise<void>;
+      }
     : {
-      loadAll?: unknown;
-    }
-);
+        loadAll?: unknown;
+      });
 
-export type RenderHeaderTitle<
-  Item extends ItemObject,
-  PreLoadStores extends boolean,
-> = StrictReactNode | ((parent: NonInjectedItemListLayout<Item, PreLoadStores>) => StrictReactNode);
+export type RenderHeaderTitle<Item extends ItemObject, PreLoadStores extends boolean> =
+  | StrictReactNode
+  | ((parent: NonInjectedItemListLayout<Item, PreLoadStores>) => StrictReactNode);
 
 export type HeaderCustomizer = (placeholders: HeaderPlaceholders) => HeaderPlaceholders;
 export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends boolean = boolean> = {
@@ -133,15 +134,13 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
 
   filterCallbacks?: ItemsFilters<Item>;
   "data-testid"?: string;
-} & (
-  PreLoadStores extends true
-    ? {
+} & (PreLoadStores extends true
+  ? {
       preloadStores?: true;
     }
-    : {
+  : {
       preloadStores: false;
-    }
-);
+    });
 
 const defaultProps: Partial<ItemListLayoutProps<ItemObject, true>> = {
   showHeader: true,
@@ -171,7 +170,9 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<ItemListLayoutProps<I, PreLoadStores> & Dependencies> {
+class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
+  ItemListLayoutProps<I, PreLoadStores> & Dependencies
+> {
   static defaultProps = defaultProps as object;
 
   constructor(props: ItemListLayoutProps<I, PreLoadStores> & Dependencies) {
@@ -191,7 +192,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
       const { store, dependentStores = [] } = this.props;
       const stores = Array.from(new Set([store, ...dependentStores])) as ItemListStore<I, true>[];
 
-      stores.forEach(store => store.loadAll(this.props.selectedFilterNamespaces.get()));
+      stores.forEach((store) => store.loadAll(this.props.selectedFilterNamespaces.get()));
     }
   }
 
@@ -234,21 +235,21 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   }
 
   private filterCallbacks: ItemsFilters<I> = {
-    [FilterType.SEARCH]: items => {
+    [FilterType.SEARCH]: (items) => {
       const { searchFilters = [] } = this.props;
       const search = this.props.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
       if (search && searchFilters.length) {
         const searchTexts = [search].map(normalizeText);
 
-        return items.filter(item => (
-          searchFilters.some(getTexts => (
+        return items.filter((item) =>
+          searchFilters.some((getTexts) =>
             [getTexts(item)]
               .flat()
               .map(normalizeText)
-              .some(source => searchTexts.some(search => source.includes(search)))
-          ))
-        ));
+              .some((source) => searchTexts.some((search) => source.includes(search))),
+          ),
+        );
       }
 
       return items;
@@ -276,10 +277,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     const { renderHeaderTitle, "data-testid": dataTestId } = this.props;
 
     return untracked(() => (
-      <div
-        className={cssNames("ItemListLayout flex column", this.props.className)}
-        data-testid={dataTestId}
-      >
+      <div className={cssNames("ItemListLayout flex column", this.props.className)} data-testid={dataTestId}>
         <ItemListLayoutHeader
           getItems={() => this.items}
           getFilters={() => this.filters}
@@ -288,11 +286,9 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
           searchFilters={this.props.searchFilters}
           showHeader={this.props.showHeader}
           headerClassName={this.props.headerClassName}
-          renderHeaderTitle={(
-            typeof renderHeaderTitle === "function"
-              ? () => renderHeaderTitle(this)
-              : renderHeaderTitle
-          )}
+          renderHeaderTitle={
+            typeof renderHeaderTitle === "function" ? () => renderHeaderTitle(this) : renderHeaderTitle
+          }
           customizeHeader={this.props.customizeHeader}
         />
 
@@ -335,14 +331,19 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   }
 }
 
-export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<ItemObject, boolean>>(NonInjectedItemListLayout, {
-  getProps: (di, props) => ({
-    ...props,
-    selectedFilterNamespaces: di.inject(selectedFilterNamespacesInjectable),
-    itemListLayoutStorage: di.inject(itemListLayoutStorageInjectable),
-    pageFiltersStore: di.inject(pageFiltersStoreInjectable),
-  }),
-}) as <I extends ItemObject, PreLoadStores extends boolean = true>(props: ItemListLayoutProps<I, PreLoadStores>) => React.ReactElement;
+export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<ItemObject, boolean>>(
+  NonInjectedItemListLayout,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      selectedFilterNamespaces: di.inject(selectedFilterNamespacesInjectable),
+      itemListLayoutStorage: di.inject(itemListLayoutStorageInjectable),
+      pageFiltersStore: di.inject(pageFiltersStoreInjectable),
+    }),
+  },
+) as <I extends ItemObject, PreLoadStores extends boolean = true>(
+  props: ItemListLayoutProps<I, PreLoadStores>,
+) => React.ReactElement;
 
 function applyFilters<I extends ItemObject>(filters: ItemsFilter<I>[], items: I[]): I[] {
   if (!filters || !filters.length) {

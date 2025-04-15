@@ -7,9 +7,9 @@
 // Based on cover DIV element with repeating-linear-gradient style
 
 import type ChartJS from "chart.js";
+import type { PluginServiceRegistrationOptions } from "chart.js";
 import type { Moment } from "moment";
 import moment from "moment";
-import type { PluginServiceRegistrationOptions } from "chart.js";
 
 const defaultOptions = {
   stripeColor: "#ffffff08",

@@ -5,7 +5,10 @@
 
 import type { RenderResult } from "@testing-library/react";
 import navigateToWorkloadsOverviewInjectable from "../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
-import { type ApplicationBuilder, getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import {
+  type ApplicationBuilder,
+  getApplicationBuilder,
+} from "../../renderer/components/test-utils/get-application-builder";
 
 describe("workload overview", () => {
   let rendered: RenderResult;

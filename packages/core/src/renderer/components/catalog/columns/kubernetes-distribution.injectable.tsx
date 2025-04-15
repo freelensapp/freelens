@@ -15,14 +15,10 @@ const kubernetesDistributionColumnInjectable = getInjectable({
     registration: {
       id: "distro",
       priority: 30,
-      renderCell: entity => {
+      renderCell: (entity) => {
         const k8sDistro = (entity as KubernetesCluster).metadata.distro;
 
-        return (
-          <span key="distro">
-            {k8sDistro === "unknown" ? "" : k8sDistro}
-          </span>
-        );
+        return <span key="distro">{k8sDistro === "unknown" ? "" : k8sDistro}</span>;
       },
       titleProps: {
         title: "Distro",
@@ -33,4 +29,3 @@ const kubernetesDistributionColumnInjectable = getInjectable({
 });
 
 export default kubernetesDistributionColumnInjectable;
-

@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
-import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material";
 
 export const defaultMuiBaseTheme = createTheme({
   components: {
@@ -18,18 +18,18 @@ export const defaultMuiBaseTheme = createTheme({
             color: "var(--iconActiveColor)",
             backgroundColor: "var(--iconActiveBackground)",
           },
-        }
-      }
+        },
+      },
     },
     MuiSvgIcon: {
       defaultProps: {
         fontSize: "inherit",
-      }
+      },
     },
     MuiTooltip: {
       defaultProps: {
         placement: "top",
-      }
+      },
     },
   },
 });
@@ -37,7 +37,7 @@ export const defaultMuiBaseTheme = createTheme({
 export function DefaultProps(App: React.ComponentType | React.FunctionComponent) {
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme= { defaultMuiBaseTheme } >
+      <ThemeProvider theme={defaultMuiBaseTheme}>
         <App />
       </ThemeProvider>
     </StyledEngineProvider>

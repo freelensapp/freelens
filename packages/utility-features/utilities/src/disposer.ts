@@ -18,20 +18,23 @@ export interface ExtendableDisposer extends Disposer {
 }
 
 export function disposer(...items: SingleOrMany<Disposer | Disposable | undefined | null>[]): ExtendableDisposer {
-  return Object.assign(() => {
-    for (const item of items.flat()) {
-      if (!item) {
-        continue;
-      }
+  return Object.assign(
+    () => {
+      for (const item of items.flat()) {
+        if (!item) {
+          continue;
+        }
 
-      if (typeof item === "function") {
-        item();
-      } else {
-        item.dispose();
+        if (typeof item === "function") {
+          item();
+        } else {
+          item.dispose();
+        }
       }
-    }
-    items.length = 0;
-  }, {
-    push: (...newItems) => items.push(...newItems),
-  } as Pick<ExtendableDisposer, "push">);
+      items.length = 0;
+    },
+    {
+      push: (...newItems) => items.push(...newItems),
+    } as Pick<ExtendableDisposer, "push">,
+  );
 }

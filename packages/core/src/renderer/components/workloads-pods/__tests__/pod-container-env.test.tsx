@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { Container } from "@freelensapp/kube-object";
+import { ConfigMap, Pod, Secret, SecretType } from "@freelensapp/kube-object";
 import React from "react";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { ConfigMapStore } from "../../config-maps/store";
 import configMapStoreInjectable from "../../config-maps/store.injectable";
 import type { SecretStore } from "../../config-secrets/store";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
-import type { Container } from "@freelensapp/kube-object";
-import { Secret, ConfigMap, Pod, SecretType } from "@freelensapp/kube-object";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { ContainerEnvironment } from "../pod-container-env";
@@ -23,18 +23,18 @@ describe("<ContainerEnv />", () => {
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    secretStore = ({
+    secretStore = {
       load: jest.fn().mockImplementation(async () => {
         return {} as Secret;
       }),
       getByName: jest.fn(),
-    });
-    configMapStore = ({
+    };
+    configMapStore = {
       load: jest.fn().mockImplementation(async () => {
         return {} as ConfigMap;
       }),
       getByName: jest.fn(),
-    });
+    };
 
     di.override(secretStoreInjectable, () => secretStore as jest.Mocked<SecretStore>);
     di.override(configMapStoreInjectable, () => configMapStore as jest.Mocked<ConfigMapStore>);
@@ -46,10 +46,12 @@ describe("<ContainerEnv />", () => {
     const container: Container = {
       image: "my-image",
       name: "my-first-container",
-      env: [{
-        name: "foobar",
-        value: "https://localhost:12345",
-      }],
+      env: [
+        {
+          name: "foobar",
+          value: "https://localhost:12345",
+        },
+      ],
     };
     const pod = new Pod({
       apiVersion: "v1",
@@ -94,11 +96,13 @@ describe("<ContainerEnv />", () => {
     const container: Container = {
       image: "my-image",
       name: "my-first-container",
-      envFrom: [{
-        configMapRef: {
-          name: "my-config-map",
+      envFrom: [
+        {
+          configMapRef: {
+            name: "my-config-map",
+          },
         },
-      }],
+      ],
     };
     const pod = new Pod({
       apiVersion: "v1",
@@ -144,11 +148,13 @@ describe("<ContainerEnv />", () => {
     const container: Container = {
       image: "my-image",
       name: "my-first-container",
-      envFrom: [{
-        secretRef: {
-          name: "my-secret",
+      envFrom: [
+        {
+          secretRef: {
+            name: "my-secret",
+          },
         },
-      }],
+      ],
     };
     const pod = new Pod({
       apiVersion: "v1",
@@ -173,10 +179,12 @@ describe("<ContainerEnv />", () => {
     const container: Container = {
       image: "my-image",
       name: "my-first-container",
-      env: [{
-        name: "foobar",
-        value: "https://localhost:12345",
-      }],
+      env: [
+        {
+          name: "foobar",
+          value: "https://localhost:12345",
+        },
+      ],
     };
     const pod = new Pod({
       apiVersion: "v1",
@@ -221,15 +229,19 @@ describe("<ContainerEnv />", () => {
     const container: Container = {
       image: "my-image",
       name: "my-first-container",
-      envFrom: [{
-        configMapRef: {
-          name: "my-config-map",
+      envFrom: [
+        {
+          configMapRef: {
+            name: "my-config-map",
+          },
         },
-      }],
-      env: [{
-        name: "foobar",
-        value: "https://localhost:12345",
-      }],
+      ],
+      env: [
+        {
+          name: "foobar",
+          value: "https://localhost:12345",
+        },
+      ],
     };
     const pod = new Pod({
       apiVersion: "v1",

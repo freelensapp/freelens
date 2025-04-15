@@ -5,11 +5,11 @@
 
 import "./add-remove-buttons.scss";
 
-import React from "react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames } from "@freelensapp/utilities";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export interface AddRemoveButtonsProps extends React.HTMLAttributes<any> {
   onAdd?: () => void;
@@ -36,25 +36,15 @@ export class AddRemoveButtons extends React.PureComponent<AddRemoveButtonsProps>
         tooltip: addTooltip,
       },
     ]
-      .filter(button => button.onClick)
+      .filter((button) => button.onClick)
       .map(({ icon, ...props }) => (
-        <Button
-          key={icon}
-          big
-          round
-          primary
-          {...props}
-        >
+        <Button key={icon} big round primary {...props}>
           <Icon material={icon} />
         </Button>
       ));
   }
 
   render() {
-    return (
-      <div className={cssNames("AddRemoveButtons flex gaps", this.props.className)}>
-        {this.renderButtons()}
-      </div>
-    );
+    return <div className={cssNames("AddRemoveButtons flex gaps", this.props.className)}>{this.renderButtons()}</div>;
   }
 }

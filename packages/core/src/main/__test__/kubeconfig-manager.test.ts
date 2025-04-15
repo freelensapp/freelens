@@ -1,33 +1,33 @@
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
+import type { DiContainer } from "@ogre-tools/injectable";
+import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../common/cluster/cluster";
+import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
+import type { PathExists } from "../../common/fs/path-exists.injectable";
+import pathExistsInjectable from "../../common/fs/path-exists.injectable";
+import type { ReadFile } from "../../common/fs/read-file.injectable";
+import readFileInjectable from "../../common/fs/read-file.injectable";
+import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
+import type { RemovePath } from "../../common/fs/remove.injectable";
+import removePathInjectable from "../../common/fs/remove.injectable";
+import type { WriteFile } from "../../common/fs/write-file.injectable";
+import writeFileInjectable from "../../common/fs/write-file.injectable";
+import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
+import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
+import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
-import { Cluster } from "../../common/cluster/cluster";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
-import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
-import type { ReadFile } from "../../common/fs/read-file.injectable";
-import readFileInjectable from "../../common/fs/read-file.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import type { WriteFile } from "../../common/fs/write-file.injectable";
-import writeFileInjectable from "../../common/fs/write-file.injectable";
-import type { PathExists } from "../../common/fs/path-exists.injectable";
-import pathExistsInjectable from "../../common/fs/path-exists.injectable";
-import type { RemovePath } from "../../common/fs/remove.injectable";
-import removePathInjectable from "../../common/fs/remove.injectable";
-import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
-import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
-import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 
 const clusterServerUrl = "https://192.168.64.3:8443";
@@ -51,9 +51,15 @@ describe("kubeconfig manager tests", () => {
     di.override(kubectlBinaryNameInjectable, () => "kubectl");
     di.override(kubectlDownloadingNormalizedArchInjectable, () => "amd64");
     di.override(normalizedPlatformInjectable, () => "darwin");
-    di.override(pathExistsSyncInjectable, () => () => { throw new Error("tried call pathExistsSync without override"); });
-    di.override(readJsonSyncInjectable, () => () => { throw new Error("tried call readJsonSync without override"); });
-    di.override(writeJsonSyncInjectable, () => () => { throw new Error("tried call writeJsonSync without override"); });
+    di.override(pathExistsSyncInjectable, () => () => {
+      throw new Error("tried call pathExistsSync without override");
+    });
+    di.override(readJsonSyncInjectable, () => () => {
+      throw new Error("tried call readJsonSync without override");
+    });
+    di.override(writeJsonSyncInjectable, () => () => {
+      throw new Error("tried call writeJsonSync without override");
+    });
     di.inject(lensProxyPortInjectable).set(9191);
 
     readFileMock = asyncFn();
@@ -135,22 +141,28 @@ describe("kubeconfig manager tests", () => {
             ["/minikube-config.yml"],
             JSON.stringify({
               apiVersion: "v1",
-              clusters: [{
-                name: "minikube",
-                cluster: {
-                  server: clusterServerUrl,
+              clusters: [
+                {
+                  name: "minikube",
+                  cluster: {
+                    server: clusterServerUrl,
+                  },
                 },
-              }],
-              contexts: [{
-                context: {
-                  cluster: "minikube",
-                  user: "minikube",
+              ],
+              contexts: [
+                {
+                  context: {
+                    cluster: "minikube",
+                    user: "minikube",
+                  },
+                  name: "minikube",
                 },
-                name: "minikube",
-              }],
-              users: [{
-                name: "minikube",
-              }],
+              ],
+              users: [
+                {
+                  name: "minikube",
+                },
+              ],
               kind: "Config",
               preferences: {},
             }),
@@ -159,12 +171,10 @@ describe("kubeconfig manager tests", () => {
 
         describe("when writing out new proxy kubeconfig resolves", () => {
           beforeEach(async () => {
-            await writeFileMock.resolveSpecific(
-              [
-                "/some-directory-for-temp/kubeconfig-foo",
-                "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
-              ],
-            );
+            await writeFileMock.resolveSpecific([
+              "/some-directory-for-temp/kubeconfig-foo",
+              "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
+            ]);
           });
 
           it("should allow getPath to resolve with the path to the kubeconfig", async () => {
@@ -184,9 +194,7 @@ describe("kubeconfig manager tests", () => {
 
             describe("when deleteFile resolves", () => {
               beforeEach(async () => {
-                await deleteFileMock.resolveSpecific(
-                  ["/some-directory-for-temp/kubeconfig-foo"],
-                );
+                await deleteFileMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"]);
               });
 
               it("should allow clear to resolve", async () => {
@@ -198,9 +206,11 @@ describe("kubeconfig manager tests", () => {
               beforeEach(async () => {
                 await deleteFileMock.resolveSpecific(
                   ["/some-directory-for-temp/kubeconfig-foo"],
-                  Promise.reject(Object.assign(new Error("file not found"), {
-                    code: "ENOENT",
-                  })),
+                  Promise.reject(
+                    Object.assign(new Error("file not found"), {
+                      code: "ENOENT",
+                    }),
+                  ),
                 );
               });
 
@@ -230,10 +240,7 @@ describe("kubeconfig manager tests", () => {
 
             describe("when pathExists resoves to true", () => {
               beforeEach(async () => {
-                await pathExistsMock.resolveSpecific(
-                  ["/some-directory-for-temp/kubeconfig-foo"],
-                  true,
-                );
+                await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], true);
               });
 
               it("always getPath to resolve with path", async () => {
@@ -243,10 +250,7 @@ describe("kubeconfig manager tests", () => {
 
             describe("when pathExists resoves to false", () => {
               beforeEach(async () => {
-                await pathExistsMock.resolveSpecific(
-                  ["/some-directory-for-temp/kubeconfig-foo"],
-                  false,
-                );
+                await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], false);
               });
 
               it("should call ensureServer on the cluster context", () => {
@@ -264,22 +268,28 @@ describe("kubeconfig manager tests", () => {
                       ["/minikube-config.yml"],
                       JSON.stringify({
                         apiVersion: "v1",
-                        clusters: [{
-                          name: "minikube",
-                          cluster: {
-                            server: clusterServerUrl,
+                        clusters: [
+                          {
+                            name: "minikube",
+                            cluster: {
+                              server: clusterServerUrl,
+                            },
                           },
-                        }],
-                        contexts: [{
-                          context: {
-                            cluster: "minikube",
-                            user: "minikube",
+                        ],
+                        contexts: [
+                          {
+                            context: {
+                              cluster: "minikube",
+                              user: "minikube",
+                            },
+                            name: "minikube",
                           },
-                          name: "minikube",
-                        }],
-                        users: [{
-                          name: "minikube",
-                        }],
+                        ],
+                        users: [
+                          {
+                            name: "minikube",
+                          },
+                        ],
                         kind: "Config",
                         preferences: {},
                       }),
@@ -288,12 +298,10 @@ describe("kubeconfig manager tests", () => {
 
                   describe("when writing out new proxy kubeconfig resolves", () => {
                     beforeEach(async () => {
-                      await writeFileMock.resolveSpecific(
-                        [
-                          "/some-directory-for-temp/kubeconfig-foo",
-                          "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
-                        ],
-                      );
+                      await writeFileMock.resolveSpecific([
+                        "/some-directory-for-temp/kubeconfig-foo",
+                        "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
+                      ]);
                     });
 
                     it("should allow getPath to resolve with the path to the kubeconfig", async () => {

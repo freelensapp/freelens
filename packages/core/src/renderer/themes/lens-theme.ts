@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MonacoTheme } from "../components/monaco-editor";
 import type { ITheme } from "@xterm/xterm";
+import type { MonacoTheme } from "../components/monaco-editor";
 
 export type ThemeId = string;
 export type LensThemeType = "dark" | "light";

@@ -4,7 +4,7 @@
  */
 
 import type { IInterceptable, IInterceptor, IListenable, ISetWillChange, ObservableMap } from "mobx";
-import { observable, ObservableSet, runInAction } from "mobx";
+import { ObservableSet, observable, runInAction } from "mobx";
 
 export function makeIterableIterator<T>(iterator: Iterator<T>): IterableIterator<T> {
   (iterator as IterableIterator<T>)[Symbol.iterator] = () => iterator as IterableIterator<T>;
@@ -15,8 +15,11 @@ export function makeIterableIterator<T>(iterator: Iterator<T>): IterableIterator
 export class HashSet<T> implements Set<T> {
   #hashmap: Map<string, T>;
 
-  constructor(initialValues: Iterable<T>, protected hasher: (item: T) => string) {
-    this.#hashmap = new Map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]));
+  constructor(
+    initialValues: Iterable<T>,
+    protected hasher: (item: T) => string,
+  ) {
+    this.#hashmap = new Map<string, T>(Array.from(initialValues, (value) => [this.hasher(value), value]));
   }
 
   union<U>(other: ReadonlySetLike<U>): Set<T | U> {
@@ -52,7 +55,14 @@ export class HashSet<T> implements Set<T> {
       return this;
     }
 
-    if (!(Array.isArray(other) || other instanceof Set || other instanceof ObservableHashSet || other instanceof ObservableSet)) {
+    if (
+      !(
+        Array.isArray(other) ||
+        other instanceof Set ||
+        other instanceof ObservableHashSet ||
+        other instanceof ObservableSet
+      )
+    ) {
       throw new Error(`ObservableHashSet: Cannot initialize set from ${other}`);
     }
 
@@ -90,7 +100,7 @@ export class HashSet<T> implements Set<T> {
   }
 
   forEach(callbackfn: (value: T, key: T, set: Set<T>) => void, thisArg?: any): void {
-    this.#hashmap.forEach(value => callbackfn(value, value, thisArg ?? this));
+    this.#hashmap.forEach((value) => callbackfn(value, value, thisArg ?? this));
   }
 
   has(value: T): boolean {
@@ -162,8 +172,14 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
     return [];
   }
 
-  constructor(initialValues: Iterable<T>, protected hasher: (item: T) => string) {
-    this.#hashmap = observable.map<string, T>(Array.from(initialValues, value => [this.hasher(value), value]), undefined);
+  constructor(
+    initialValues: Iterable<T>,
+    protected hasher: (item: T) => string,
+  ) {
+    this.#hashmap = observable.map<string, T>(
+      Array.from(initialValues, (value) => [this.hasher(value), value]),
+      undefined,
+    );
   }
 
   union<U>(other: ReadonlySetLike<U>): Set<T | U> {
@@ -200,7 +216,14 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
         return this;
       }
 
-      if (!(Array.isArray(other) || other instanceof Set || other instanceof ObservableHashSet || other instanceof ObservableSet)) {
+      if (
+        !(
+          Array.isArray(other) ||
+          other instanceof Set ||
+          other instanceof ObservableHashSet ||
+          other instanceof ObservableSet
+        )
+      ) {
         throw new Error(`ObservableHashSet: Cannot initialize set from ${other}`);
       }
 
@@ -241,7 +264,7 @@ export class ObservableHashSet<T> implements Set<T>, IInterceptable<ISetWillChan
   }
 
   forEach(callbackfn: (value: T, key: T, set: Set<T>) => void, thisArg?: any): void {
-    this.#hashmap.forEach(value => callbackfn(value, value, thisArg ?? this));
+    this.#hashmap.forEach((value) => callbackfn(value, value, thisArg ?? this));
   }
 
   has(value: T): boolean {

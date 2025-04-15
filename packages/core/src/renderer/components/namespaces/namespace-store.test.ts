@@ -3,19 +3,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Namespace } from "@freelensapp/kube-object";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
-import { Namespace } from "@freelensapp/kube-object";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
 
-function createNamespace(name: string, labels?: Record<string, string>, annotations?: Record<string, string>): Namespace {
+function createNamespace(
+  name: string,
+  labels?: Record<string, string>,
+  annotations?: Record<string, string>,
+): Namespace {
   return new Namespace({
     apiVersion: "v1",
     kind: "Namespace",
@@ -67,14 +71,18 @@ const teamC = createNamespace("team-c", {
   "team-c.tree.hnc.x-k8s.io/depth": "0",
 });
 
-const service1 = createNamespace("service-1", {
-  "hnc.x-k8s.io/included-namespace": "true",
-  "org-a.tree.hnc.x-k8s.io/depth": "1",
-  "kubernetes.io/metadata.name": "team-c",
-  "service-1.tree.hnc.x-k8s.io/depth": "0",
-}, {
-  "hnc.x-k8s.io/subnamespace-of": "org-a",
-});
+const service1 = createNamespace(
+  "service-1",
+  {
+    "hnc.x-k8s.io/included-namespace": "true",
+    "org-a.tree.hnc.x-k8s.io/depth": "1",
+    "kubernetes.io/metadata.name": "team-c",
+    "service-1.tree.hnc.x-k8s.io/depth": "0",
+  },
+  {
+    "hnc.x-k8s.io/subnamespace-of": "org-a",
+  },
+);
 
 const levelsDeep = createNamespace("levels-deep", {
   "hnc.x-k8s.io/included-namespace": "true",
@@ -99,7 +107,6 @@ const levelDeepSubChildA = createNamespace("level-deep-subchild-a", {
   "level-deep-subchild-a.tree.hnc.x-k8s.io/depth": "0",
 });
 
-
 describe("NamespaceStore", () => {
   let di: DiContainer;
   let namespaceStore: NamespaceStore;
@@ -111,11 +118,15 @@ describe("NamespaceStore", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     namespaceStore = di.inject(namespaceStoreInjectable);
 
@@ -189,11 +200,13 @@ describe("NamespaceStore", () => {
         {
           id: "level-deep-child-b",
           namespace: levelDeepChildB,
-          children: [{
-            id: "level-deep-subchild-a",
-            namespace: levelDeepSubChildA,
-            children: [],
-          }],
+          children: [
+            {
+              id: "level-deep-subchild-a",
+              namespace: levelDeepSubChildA,
+              children: [],
+            },
+          ],
         },
       ],
     });

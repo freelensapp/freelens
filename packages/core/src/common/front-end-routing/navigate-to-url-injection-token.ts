@@ -11,6 +11,4 @@ export interface NavigateToUrlOptions {
 
 export type NavigateToUrl = (url: string, options?: NavigateToUrlOptions) => void;
 
-export const navigateToUrlInjectionToken = getInjectionToken<NavigateToUrl>(
-  { id: "navigate-to-url-injection-token" },
-);
+export const navigateToUrlInjectionToken = getInjectionToken<NavigateToUrl>({ id: "navigate-to-url-injection-token" });

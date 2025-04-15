@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Button } from "@freelensapp/button";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { FileFilter, OpenDialogOptions } from "electron";
 import { observer } from "mobx-react";
 import React from "react";
 import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
-import { cssNames } from "@freelensapp/utilities";
-import { Button } from "@freelensapp/button";
 
 export interface PathPickOpts {
   message: string;
@@ -33,12 +33,7 @@ interface Dependencies {
 }
 
 const NonInjectedPathPicker = observer((props: PathPickerProps & Dependencies) => {
-  const {
-    className,
-    disabled,
-    openPathPickingDialog,
-    ...pickOpts
-  } = props;
+  const { className, disabled, openPathPickingDialog, ...pickOpts } = props;
 
   return (
     <Button

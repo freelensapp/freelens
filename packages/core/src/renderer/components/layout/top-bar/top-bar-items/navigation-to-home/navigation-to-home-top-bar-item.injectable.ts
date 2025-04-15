@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { NavigationToHome } from "./navigation-to-home";
 import { topBarItemOnLeftSideInjectionToken } from "../top-bar-item-injection-token";
+import { NavigationToHome } from "./navigation-to-home";
 
 const navigationToHomeTopBarItemInjectable = getInjectable({
   id: "navigation-to-home-top-bar-item",

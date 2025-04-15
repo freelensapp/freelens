@@ -13,9 +13,7 @@ export type AsyncResult<Response, Error = string> = Promise<Result<Response, Err
  * normal execution
  */
 export type Result<Response, Error = string> =
-  | (
-    Response extends void
-    ? { callWasSuccessful: true; response?: undefined }
-    : { callWasSuccessful: true; response: Response }
-  )
+  | (Response extends void
+      ? { callWasSuccessful: true; response?: undefined }
+      : { callWasSuccessful: true; response: Response })
   | { callWasSuccessful: false; error: Error };

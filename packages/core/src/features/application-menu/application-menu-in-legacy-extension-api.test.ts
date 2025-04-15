@@ -5,11 +5,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import { runInAction } from "mobx";
+import logErrorInjectable from "../../common/log-error.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 import applicationMenuItemInjectionToken from "./main/menu-items/application-menu-item-injection-token";
-import logErrorInjectable from "../../common/log-error.injectable";
 
 describe("application-menu-in-legacy-extension-api", () => {
   let builder: ApplicationBuilder;
@@ -20,10 +20,7 @@ describe("application-menu-in-legacy-extension-api", () => {
 
     builder.beforeApplicationStart(({ mainDi }) => {
       runInAction(() => {
-        mainDi.register(
-          someTopMenuItemInjectable,
-          someNonExtensionBasedMenuItemInjectable,
-        );
+        mainDi.register(someTopMenuItemInjectable, someNonExtensionBasedMenuItemInjectable);
       });
 
       logErrorMock = jest.fn();
@@ -76,9 +73,7 @@ describe("application-menu-in-legacy-extension-api", () => {
               id: "some-submenu-with-explicit-children",
               parentId: "some-top-menu-item",
 
-              submenu: [
-                { id: "some-explicit-child", label: "Some explicit child", click: noop },
-              ],
+              submenu: [{ id: "some-explicit-child", label: "Some explicit child", click: noop }],
             },
           ],
         },
@@ -88,9 +83,8 @@ describe("application-menu-in-legacy-extension-api", () => {
     });
 
     it("related menu items exist", () => {
-      const menuItemPathsForExtension = builder.applicationMenu.items.filter(
-        (x) =>
-          x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
+      const menuItemPathsForExtension = builder.applicationMenu.items.filter((x) =>
+        x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
       );
 
       expect(menuItemPathsForExtension).toEqual([
@@ -99,14 +93,17 @@ describe("application-menu-in-legacy-extension-api", () => {
         ["root", "some-top-menu-item", "some-extension-name/2-separator"],
         ["root", "some-top-menu-item", "some-extension-name/some-os-action-menu-item-id"],
         ["root", "some-top-menu-item", "some-extension-name/some-submenu-with-explicit-children"],
-        ["root", "some-top-menu-item", "some-extension-name/some-submenu-with-explicit-children", "some-extension-name/some-submenu-with-explicit-children/some-explicit-child"],
+        [
+          "root",
+          "some-top-menu-item",
+          "some-extension-name/some-submenu-with-explicit-children",
+          "some-extension-name/some-submenu-with-explicit-children/some-explicit-child",
+        ],
       ]);
     });
 
     it("when the extension-based clickable menu item is clicked, does so", () => {
-      builder.applicationMenu.click(
-        "root", "some-top-menu-item", "some-extension-name/some-clickable-item",
-      );
+      builder.applicationMenu.click("root", "some-top-menu-item", "some-extension-name/some-clickable-item");
 
       expect(onClickMock).toHaveBeenCalled();
     });
@@ -117,9 +114,8 @@ describe("application-menu-in-legacy-extension-api", () => {
       });
 
       it("when related menu items no longer exist", () => {
-        const menuItemPathsForExtension = builder.applicationMenu.items.filter(
-          (x) =>
-            x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
+        const menuItemPathsForExtension = builder.applicationMenu.items.filter((x) =>
+          x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
         );
 
         expect(menuItemPathsForExtension).toEqual([]);
@@ -128,9 +124,8 @@ describe("application-menu-in-legacy-extension-api", () => {
       it("when the extension is enabled again, also related menu items exist again", () => {
         builder.extensions.enable(testExtensionOptions);
 
-        const menuItemPathsForExtension = builder.applicationMenu.items.filter(
-          (x) =>
-            x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
+        const menuItemPathsForExtension = builder.applicationMenu.items.filter((x) =>
+          x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
         );
 
         expect(menuItemPathsForExtension).toEqual([
@@ -138,14 +133,18 @@ describe("application-menu-in-legacy-extension-api", () => {
           ["root", "some-top-menu-item", "some-extension-name/2-separator"],
           ["root", "some-top-menu-item", "some-extension-name/some-os-action-menu-item-id"],
           ["root", "some-top-menu-item", "some-extension-name/some-submenu-with-explicit-children"],
-          ["root", "some-top-menu-item", "some-extension-name/some-submenu-with-explicit-children", "some-extension-name/some-submenu-with-explicit-children/some-explicit-child"],
+          [
+            "root",
+            "some-top-menu-item",
+            "some-extension-name/some-submenu-with-explicit-children",
+            "some-extension-name/some-submenu-with-explicit-children/some-explicit-child",
+          ],
         ]);
       });
     });
   });
 
   describe("when extension with unrecognizable application menu items is enabled", () => {
-
     beforeEach(() => {
       const testExtensionOptions: FakeExtensionOptions = {
         id: "some-test-extension",
@@ -176,9 +175,8 @@ describe("application-menu-in-legacy-extension-api", () => {
     });
 
     it("only recognizable menu items from extension exist", () => {
-      const menuItemPathsForExtension = builder.applicationMenu.items.filter(
-        (x) =>
-          x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
+      const menuItemPathsForExtension = builder.applicationMenu.items.filter((x) =>
+        x.join(".").startsWith("root.some-top-menu-item.some-extension-name"),
       );
 
       expect(menuItemPathsForExtension).toEqual([

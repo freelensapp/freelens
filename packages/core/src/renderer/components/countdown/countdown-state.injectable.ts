@@ -3,21 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import {
-  computed,
-  observable,
-  onBecomeObserved,
-  onBecomeUnobserved,
-  runInAction,
-} from "mobx";
+import { computed, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from "mobx";
 
 const countdownStateInjectable = getInjectable({
   id: "countdown-state",
 
-  instantiate: (
-    di,
-    { startFrom, onZero }: { startFrom: number; onZero: () => void },
-  ) => {
+  instantiate: (di, { startFrom, onZero }: { startFrom: number; onZero: () => void }) => {
     const state = observable.box(startFrom);
 
     let intervalId: number | undefined;

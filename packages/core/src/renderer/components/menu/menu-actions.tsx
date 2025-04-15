@@ -5,22 +5,22 @@
 
 import "./menu-actions.scss";
 
-import React, { isValidElement } from "react";
-import { observable, makeObservable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames } from "@freelensapp/utilities";
 import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import isString from "lodash/isString";
+import { makeObservable, observable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React, { isValidElement } from "react";
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import type { MenuProps } from "./menu";
 import { Menu, MenuItem } from "./menu";
-import isString from "lodash/isString";
-import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
-import autoBindReact from "auto-bind/react";
 
 export interface MenuActionsProps extends Partial<MenuProps> {
   className?: string;
@@ -68,13 +68,17 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
 
   componentDidMount(): void {
     disposeOnUnmount(this, [
-      reaction(() => this.isOpen, (isOpen) => {
-        if (isOpen) {
-          this.props.onOpen?.();
-        }
-      }, {
-        fireImmediately: true,
-      }),
+      reaction(
+        () => this.isOpen,
+        (isOpen) => {
+          if (isOpen) {
+            this.props.onOpen?.();
+          }
+        },
+        {
+          fireImmediately: true,
+        },
+      ),
     ]);
   }
 
@@ -93,11 +97,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   }
 
   renderTriggerIcon() {
-    const {
-      triggerIcon = "more_vert",
-      toolbar,
-      "data-testid": dataTestId,
-    } = this.props;
+    const { triggerIcon = "more_vert", toolbar, "data-testid": dataTestId } = this.props;
 
     if (toolbar) {
       return null;
@@ -125,14 +125,19 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       delete iconProps.tooltip; // don't show tooltip for icon when menu is open
     }
 
-    return (
-      <Icon {...iconProps}/>
-    );
+    return <Icon {...iconProps} />;
   }
 
   render() {
     const {
-      className, toolbar, autoCloseOnSelect, children, updateAction, removeAction, triggerIcon, removeConfirmationMessage,
+      className,
+      toolbar,
+      autoCloseOnSelect,
+      children,
+      updateAction,
+      removeAction,
+      triggerIcon,
+      removeConfirmationMessage,
       ...menuProps
     } = this.props;
     const autoClose = !toolbar;
@@ -160,21 +165,13 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           {children}
           {updateAction && (
             <MenuItem onClick={updateAction}>
-              <Icon
-                material="edit"
-                interactive={toolbar}
-                tooltip="Edit"
-              />
+              <Icon material="edit" interactive={toolbar} tooltip="Edit" />
               <span className="title">Edit</span>
             </MenuItem>
           )}
           {removeAction && (
             <MenuItem onClick={this.remove} data-testid="menu-action-remove">
-              <Icon
-                material="delete"
-                interactive={toolbar}
-                tooltip="Delete"
-              />
+              <Icon material="delete" interactive={toolbar} tooltip="Delete" />
               <span className="title">Delete</span>
             </MenuItem>
           )}

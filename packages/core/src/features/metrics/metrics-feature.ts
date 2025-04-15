@@ -3,11 +3,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getFeature } from "@freelensapp/feature-core";
-import { clusterOverviewUIBlockInjectionToken, daemonSetDetailsMetricsInjectionToken, deploymentDetailsMetricsInjectionToken, jobDetailsMetricsInjectionToken, namespaceDetailsMetricsInjectionToken, ingressDetailsMetricsInjectionToken, nodeDetailsMetricsInjectionToken, persistentVolumeClaimDetailsMetricsInjectionToken, podDetailsContainerMetricsInjectionToken, podDetailsMetricsInjectionToken, replicaSetDetailsMetricsInjectionToken, statefulSetDetailsMetricsInjectionToken } from "@freelensapp/metrics";
+import {
+  clusterOverviewUIBlockInjectionToken,
+  daemonSetDetailsMetricsInjectionToken,
+  deploymentDetailsMetricsInjectionToken,
+  ingressDetailsMetricsInjectionToken,
+  jobDetailsMetricsInjectionToken,
+  namespaceDetailsMetricsInjectionToken,
+  nodeDetailsMetricsInjectionToken,
+  persistentVolumeClaimDetailsMetricsInjectionToken,
+  podDetailsContainerMetricsInjectionToken,
+  podDetailsMetricsInjectionToken,
+  replicaSetDetailsMetricsInjectionToken,
+  statefulSetDetailsMetricsInjectionToken,
+} from "@freelensapp/metrics";
 import { getInjectable } from "@ogre-tools/injectable";
 import { ClusterMetrics } from "../../renderer/components/cluster/cluster-metrics";
 import { ClusterPieCharts } from "../../renderer/components/cluster/cluster-pie-charts";
 import { NamespaceMetricsDetailsComponent } from "../../renderer/components/namespaces/metrics-details-component";
+import { IngressMetricsDetailsComponent } from "../../renderer/components/network-ingresses/metrics-details-component";
 import { NodeMetricsDetailsComponent } from "../../renderer/components/nodes/metrics-details-component";
 import { PersistentVolumeClaimMetricsDetailsComponent } from "../../renderer/components/storage-volume-claims/metrics-details-component";
 import { DaemonSetMetricsDetailsComponent } from "../../renderer/components/workloads-daemonsets/metrics-details-component";
@@ -17,7 +31,6 @@ import { PodDetailsContainerMetrics } from "../../renderer/components/workloads-
 import PodMetricsDetailsComponent from "../../renderer/components/workloads-pods/pod-metrics-details-component";
 import { ReplicaSetMetricsDetailsComponent } from "../../renderer/components/workloads-replicasets/metrics-details-component";
 import { StatefulSetMetricsDetailsComponent } from "../../renderer/components/workloads-statefulsets/metrics-details-component";
-import { IngressMetricsDetailsComponent } from "../../renderer/components/network-ingresses/metrics-details-component";
 
 const clusterPieChartsClusterOverviewInjectable = getInjectable({
   id: "cluster-pie-charts-cluster-overview",

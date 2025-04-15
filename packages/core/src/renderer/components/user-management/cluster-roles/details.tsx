@@ -8,12 +8,11 @@ import "./details.scss";
 import { observer } from "mobx-react";
 import React from "react";
 
+import type { ClusterRole } from "@freelensapp/kube-object";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
-import type { ClusterRole } from "@freelensapp/kube-object";
 
-export interface ClusterRoleDetailsProps extends KubeObjectDetailsProps<ClusterRole> {
-}
+export interface ClusterRoleDetailsProps extends KubeObjectDetailsProps<ClusterRole> {}
 
 @observer
 export class ClusterRoleDetails extends React.Component<ClusterRoleDetailsProps> {
@@ -45,10 +44,7 @@ export class ClusterRoleDetails extends React.Component<ClusterRoleDetailsProps>
                 <>
                   <div className="name">Api Groups</div>
                   <div className="value">
-                    {apiGroups
-                      .map(apiGroup => apiGroup === "" ? `'${apiGroup}'` : apiGroup)
-                      .join(", ")
-                    }
+                    {apiGroups.map((apiGroup) => (apiGroup === "" ? `'${apiGroup}'` : apiGroup)).join(", ")}
                   </div>
                 </>
               )}

@@ -5,38 +5,38 @@
 
 // Base class for building all kubernetes apis
 
-import { merge } from "lodash";
+import assert from "assert";
 import { stringify } from "querystring";
-import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 import type {
-  KubeObjectConstructor,
-  KubeJsonApiDataFor,
-  KubeObjectMetadata,
   KubeJsonApiData,
+  KubeJsonApiDataFor,
   KubeObject,
+  KubeObjectConstructor,
+  KubeObjectMetadata,
   KubeObjectScope,
   Scale,
 } from "@freelensapp/kube-object";
 import {
+  KubeStatus,
   isJsonApiData,
   isJsonApiDataList,
-  isPartialJsonApiData,
-  KubeStatus,
   isKubeStatusData,
+  isPartialJsonApiData,
 } from "@freelensapp/kube-object";
-import byline from "byline";
-import type { IKubeWatchEvent } from "./kube-watch-event";
-import type { KubeJsonApi } from "./kube-json-api";
-import type { Disposer } from "@freelensapp/utilities";
-import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
-import type { Patch } from "rfc6902";
-import assert from "assert";
-import type { PartialDeep } from "type-fest";
+import type { ScaleCreateOptions } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
+import type { Disposer } from "@freelensapp/utilities";
+import { WrappedAbortController, isDefined, noop } from "@freelensapp/utilities";
+import byline from "byline";
+import { merge } from "lodash";
 import { matches } from "lodash/fp";
 import { makeObservable, observable } from "mobx";
-import type { ScaleCreateOptions } from "@freelensapp/kube-object";
+import type { Patch } from "rfc6902";
+import type { PartialDeep } from "type-fest";
+import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
+import type { KubeJsonApi } from "./kube-json-api";
+import type { IKubeWatchEvent } from "./kube-watch-event";
 
 /**
  * The options used for creating a `KubeApi`
@@ -428,7 +428,6 @@ export class KubeApi<
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/default-param-last
   setResourceVersion(namespace = "", newVersion: string) {
     this.resourceVersions.set(namespace, newVersion);
   }
@@ -548,7 +547,7 @@ export class KubeApi<
     // custom apis might return array for list response, e.g. users, groups, etc.
     return data
       .filter(isJsonApiData)
-      .map((data) => (this.ensureMetadataSelfLink(data.metadata), data)) // eslint-disable-line no-sequences
+      .map((data) => (this.ensureMetadataSelfLink(data.metadata), data))
       .map((data) => new KubeObjectConstructor(data as Data));
   }
 
@@ -827,7 +826,6 @@ export class KubeApi<
         }
 
         for (const eventName of ["end", "close", "error"]) {
-          // eslint-disable-next-line @typescript-eslint/no-loop-func
           response.body.on(eventName, () => {
             // We only retry if we haven't retried, haven't aborted and haven't received k8s error
             // kubernetes errors (=errorReceived set) should be handled in a callback

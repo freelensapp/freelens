@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { applicationInformationToken } from "@freelensapp/application";
-import { getInjectable } from "@ogre-tools/injectable";
 import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
 import { object } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import semanticBuildVersionInjectable from "../../../../../vars/common/semantic-build-version.injectable";
 
 const specificVersionsInjectable = getInjectable({
@@ -19,16 +19,13 @@ const specificVersionsInjectable = getInjectable({
       return [];
     }
 
-    const corePackageVersions = object.entries(applicationInformation.dependencies)
+    const corePackageVersions = object
+      .entries(applicationInformation.dependencies)
       .filter(([name]) => name.startsWith("@freelensapp/"))
       .map(([name, version]) => `${name}: ${version}`);
-    const bundledExtensionVersions = bundledExtensions
-      .map(ext => `${ext.manifest.name}: ${ext.manifest.version}`);
+    const bundledExtensionVersions = bundledExtensions.map((ext) => `${ext.manifest.name}: ${ext.manifest.version}`);
 
-    return [
-      ...corePackageVersions,
-      ...bundledExtensionVersions,
-    ];
+    return [...corePackageVersions, ...bundledExtensionVersions];
   },
 });
 

@@ -5,31 +5,30 @@
 
 import "./view.scss";
 
-import React from "react";
-import type { IComputedValue } from "mobx";
-import { computed, observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import type { DialogProps } from "../../dialog";
-import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
-import { Input } from "../../input";
-import { systemName } from "../../input/input_validators";
-import type { ResourceQuotaValues } from "@freelensapp/kube-object";
-import type { ResourceQuotaApi } from "@freelensapp/kube-api";
-import { Select } from "../../select";
-import { Icon } from "@freelensapp/icon";
 import { Button } from "@freelensapp/button";
-import { NamespaceSelect } from "../../namespaces/namespace-select";
-import { SubTitle } from "../../layout/sub-title";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import closeAddQuotaDialogInjectable from "./close.injectable";
-import isAddQuotaDialogOpenInjectable from "./is-open.injectable";
+import { Icon } from "@freelensapp/icon";
+import type { ResourceQuotaApi } from "@freelensapp/kube-api";
 import { resourceQuotaApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { ResourceQuotaValues } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { DialogProps } from "../../dialog";
+import { Dialog } from "../../dialog";
+import { Input } from "../../input";
+import { systemName } from "../../input/input_validators";
+import { SubTitle } from "../../layout/sub-title";
+import { NamespaceSelect } from "../../namespaces/namespace-select";
+import { Select } from "../../select";
+import { Wizard, WizardStep } from "../../wizard";
+import closeAddQuotaDialogInjectable from "./close.injectable";
+import isAddQuotaDialogOpenInjectable from "./is-open.injectable";
 
-export interface AddQuotaDialogProps extends DialogProps {
-}
+export interface AddQuotaDialogProps extends DialogProps {}
 
 interface Dependencies {
   resourceQuotaApi: ResourceQuotaApi;
@@ -44,7 +43,7 @@ const getDefaultQuotas = (): ResourceQuotaValues => ({
   "requests.cpu": "",
   "requests.memory": "",
   "requests.storage": "",
-  "persistentvolumeclaims": "",
+  persistentvolumeclaims: "",
   "count/pods": "",
   "count/persistentvolumeclaims": "",
   "count/services": "",
@@ -61,7 +60,6 @@ const getDefaultQuotas = (): ResourceQuotaValues => ({
 
 @observer
 class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & Dependencies> {
-
   public defaultNamespace = "default";
 
   @observable quotaName = "";
@@ -76,8 +74,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
   }
 
   @computed get quotaEntries() {
-    return Object.entries(this.quotas.get())
-      .filter(([, value]) => !!value?.trim());
+    return Object.entries(this.quotas.get()).filter(([, value]) => !!value?.trim());
   }
 
   private getQuotaOptionLabelIconMaterial(quota: string) {
@@ -124,11 +121,14 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
     try {
       const quotas = Object.fromEntries(this.quotaEntries);
 
-      await this.props.resourceQuotaApi.create({ namespace, name: quotaName }, {
-        spec: {
-          hard: quotas,
+      await this.props.resourceQuotaApi.create(
+        { namespace, name: quotaName },
+        {
+          spec: {
+            hard: quotas,
+          },
         },
-      });
+      );
       this.close();
     } catch (err) {
       this.props.showCheckedErrorNotification(err, "Unknown error occurred while creating ResourceQuota");
@@ -152,12 +152,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
     void resourceQuotaApi;
 
     return (
-      <Dialog
-        {...dialogProps}
-        className="AddQuotaDialog"
-        isOpen={isAddQuotaDialogOpen.get()}
-        close={this.close}
-      >
+      <Dialog {...dialogProps} className="AddQuotaDialog" isOpen={isAddQuotaDialogOpen.get()} close={this.close}>
         <Wizard header={header} done={this.close}>
           <WizardStep
             contentClass="flex gaps column"
@@ -173,7 +168,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 trim
                 validators={systemName}
                 value={this.quotaName}
-                onChange={v => this.quotaName = v.toLowerCase()}
+                onChange={(v) => (this.quotaName = v.toLowerCase())}
                 className="box grow"
               />
             </div>
@@ -185,7 +180,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
               placeholder="Namespace"
               themeName="light"
               className="box grow"
-              onChange={option => this.namespace = option?.value ?? null}
+              onChange={(option) => (this.namespace = option?.value ?? null)}
             />
 
             <SubTitle title="Values" />
@@ -195,39 +190,33 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 className="quota-select"
                 themeName="light"
                 placeholder="Select a quota.."
-                options={Object.keys(this.quotas).map(quota => ({
+                options={Object.keys(this.quotas).map((quota) => ({
                   value: quota,
                   label: quota,
                 }))}
                 value={this.quotaSelectValue}
-                onChange={option => this.quotaSelectValue = option?.value ?? null}
+                onChange={(option) => (this.quotaSelectValue = option?.value ?? null)}
                 formatOptionLabel={({ value }) => {
                   const iconMaterial = this.getQuotaOptionLabelIconMaterial(value);
 
-                  return iconMaterial
-                    ? (
-                      <span className="nobr">
-                        <Icon material={iconMaterial} />
-                        {" "}
-                        {value}
-                      </span>
-                    )
-                    : value;
+                  return iconMaterial ? (
+                    <span className="nobr">
+                      <Icon material={iconMaterial} /> {value}
+                    </span>
+                  ) : (
+                    value
+                  );
                 }}
               />
               <Input
                 maxLength={10}
                 placeholder="Value"
                 value={this.quotaInputValue}
-                onChange={v => this.quotaInputValue = v}
+                onChange={(v) => (this.quotaInputValue = v)}
                 onKeyDown={this.onInputQuota}
                 className="box grow"
               />
-              <Button
-                round
-                primary
-                onClick={this.setQuota}
-              >
+              <Button round primary onClick={this.setQuota}>
                 <Icon
                   material={this.quotaSelectValue && this.quotas.get()[this.quotaSelectValue] ? "edit" : "add"}
                   tooltip="Set quota"
@@ -239,7 +228,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 <div key={quota} className="quota gaps inline align-center">
                   <div className="name">{quota}</div>
                   <div className="value">{value}</div>
-                  <Icon material="clear" onClick={() => this.quotas.get()[quota] = ""} />
+                  <Icon material="clear" onClick={() => (this.quotas.get()[quota] = "")} />
                 </div>
               ))}
             </div>

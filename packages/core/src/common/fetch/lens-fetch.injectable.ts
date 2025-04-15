@@ -1,13 +1,13 @@
+import { Agent } from "https";
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
+import fetch from "@freelensapp/node-fetch";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { Agent } from "https";
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injectable";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import fetch from "@freelensapp/node-fetch";
 
 export type LensRequestInit = Omit<RequestInit, "agent">;
 

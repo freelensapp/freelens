@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectable } from "@ogre-tools/injectable";
 import type { PrometheusProvider } from "./provider";
 import {
   bytesSent,
@@ -10,7 +11,6 @@ import {
   findFirstNamespacedService,
   prometheusProviderInjectionToken,
 } from "./provider";
-import { getInjectable } from "@ogre-tools/injectable";
 
 export const getStacklightLikeQueryFor =
   ({ rateAccuracy }: { rateAccuracy: string }): PrometheusProvider["getQuery"] =>

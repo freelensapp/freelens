@@ -1,26 +1,26 @@
+import assert from "assert";
+import { waitUntilDefined } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import installChartTabStoreInjectable from "./store.injectable";
-import { waitUntilDefined } from "@freelensapp/utilities";
-import type { IChartInstallData, InstallChartTabStore } from "./store";
-import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
-import React from "react";
 import { action, computed, observable, runInAction } from "mobx";
-import assert from "assert";
-import type { RequestCreateHelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
-import requestCreateHelmReleaseInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
-import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
-import dockStoreInjectable from "../dock/store.injectable";
+import React from "react";
+import type { SingleValue } from "react-select";
 import type { NavigateToHelmReleases } from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
-import type { SingleValue } from "react-select";
+import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
 import type { RequestHelmChartValues } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import requestHelmChartValuesInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import type { RequestHelmChartVersions } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import requestHelmChartVersionsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
+import type { RequestCreateHelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
+import requestCreateHelmReleaseInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
+import dockStoreInjectable from "../dock/store.injectable";
+import type { IChartInstallData, InstallChartTabStore } from "./store";
+import installChartTabStoreInjectable from "./store.injectable";
 
 const installChartModelInjectable = getInjectable({
   id: "install-chart-model",
@@ -76,15 +76,13 @@ export class InstallChartModel {
   readonly namespace = {
     value: computed(() => this.chart?.namespace || "default"),
 
-    onChange: action(
-      (option: SingleValue<{ label: string; value: string }>) => {
-        if (option) {
-          const namespace = option.value;
+    onChange: action((option: SingleValue<{ label: string; value: string }>) => {
+      if (option) {
+        const namespace = option.value;
 
-          this.save({ namespace });
-        }
-      },
-    ),
+        this.save({ namespace });
+      }
+    }),
   };
 
   readonly customName = {
@@ -192,22 +190,17 @@ export class InstallChartModel {
     await this.dependencies.waitForChart();
 
     const [defaultConfigurationRequest, versions] = await Promise.all([
-      this.dependencies.requestHelmChartValues(
-        this.chart.repo,
-        this.chart.name,
-        this.chart.version,
-      ),
+      this.dependencies.requestHelmChartValues(this.chart.repo, this.chart.name, this.chart.version),
 
-      this.dependencies.requestHelmChartVersions(
-        this.chart.repo,
-        this.chart.name,
-      ),
+      this.dependencies.requestHelmChartVersions(this.chart.repo, this.chart.name),
     ]);
 
     runInAction(() => {
       // TODO: Make "default" not hard-coded
       const namespace = this.chart.namespace || "default";
-      const values = this.chart.values || (defaultConfigurationRequest.callWasSuccessful ? defaultConfigurationRequest.response : "");
+      const values =
+        this.chart.values ||
+        (defaultConfigurationRequest.callWasSuccessful ? defaultConfigurationRequest.response : "");
 
       this.versions.replace(versions);
 

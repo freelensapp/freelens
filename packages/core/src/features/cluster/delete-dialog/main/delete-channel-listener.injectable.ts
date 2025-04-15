@@ -1,3 +1,5 @@
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
+import { noop } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -8,10 +10,8 @@ import directoryForLensLocalStorageInjectable from "../../../../common/directory
 import removePathInjectable from "../../../../common/fs/remove.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import clusterConnectionInjectable from "../../../../main/cluster/cluster-connection.injectable";
-import { noop } from "@freelensapp/utilities";
-import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
-import { deleteClusterChannel } from "../common/delete-channel";
 import clustersStateInjectable from "../../storage/common/state.injectable";
+import { deleteClusterChannel } from "../common/delete-channel";
 
 const deleteClusterChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "delete-cluster-channel-listener",

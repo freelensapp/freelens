@@ -1,3 +1,4 @@
+import { sortBySemverVersion } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -6,7 +7,6 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartVersionsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
-import { sortBySemverVersion } from "@freelensapp/utilities";
 import type { HelmChartVersion } from "./versions";
 
 /**
@@ -21,12 +21,12 @@ const requestVersionsOfHelmChartInjectable = getInjectable({
     const requestHelmChartVersions = di.inject(requestHelmChartVersionsInjectable);
 
     return async (release, charts) => {
-      const rawVersions = await Promise.all((
+      const rawVersions = await Promise.all(
         charts
-          .filter(chart => chart.getName() === release.getChart())
-          .map(chart => chart.getRepository())
-          .map(repo => requestHelmChartVersions(repo, release.getChart()))
-      ));
+          .filter((chart) => chart.getName() === release.getChart())
+          .map((chart) => chart.getRepository())
+          .map((repo) => requestHelmChartVersions(repo, release.getChart())),
+      );
 
       return sortBySemverVersion(rawVersions.flat());
     };

@@ -16,15 +16,13 @@ const setupWeblinkContextMenuOpenInjectable = getInjectable({
       const catalogCategoryRegistry = di.inject(catalogCategoryRegistryInjectable);
       const commandOverlay = di.inject(commandOverlayInjectable);
 
-      catalogCategoryRegistry
-        .getForGroupKind("entity.k8slens.dev", "WebLink")
-        ?.on("catalogAddMenu", ctx => {
-          ctx.menuItems.push({
-            title: "Add web link",
-            icon: "public",
-            onClick: () => commandOverlay.open(<WeblinkAddCommand />),
-          });
+      catalogCategoryRegistry.getForGroupKind("entity.k8slens.dev", "WebLink")?.on("catalogAddMenu", (ctx) => {
+        ctx.menuItems.push({
+          title: "Add web link",
+          icon: "public",
+          onClick: () => commandOverlay.open(<WeblinkAddCommand />),
         });
+      });
     },
   }),
   injectionToken: beforeFrameStartsSecondInjectionToken,

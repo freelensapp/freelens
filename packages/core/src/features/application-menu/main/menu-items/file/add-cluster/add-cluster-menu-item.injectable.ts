@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import navigateToAddClusterInjectable from "../../../../../../common/front-end-routing/routes/add-cluster/navigate-to-add-cluster.injectable";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const addClusterMenuItemInjectable = getInjectable({
   id: "add-cluster-application-menu-item",

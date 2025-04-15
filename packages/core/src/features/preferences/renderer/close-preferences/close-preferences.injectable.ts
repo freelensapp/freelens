@@ -1,9 +1,9 @@
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import navigateToFrontPageInjectable from "../../../../common/front-end-routing/navigate-to-front-page.injectable";
 
 const closePreferencesInjectable = getInjectable({

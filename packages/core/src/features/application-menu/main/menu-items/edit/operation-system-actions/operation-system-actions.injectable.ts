@@ -66,4 +66,3 @@ export const actionForSelectAll = getApplicationMenuOperationSystemActionInjecta
   orderNumber: 90,
   actionName: "selectAll",
 });
-

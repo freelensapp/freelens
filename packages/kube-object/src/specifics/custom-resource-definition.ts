@@ -157,7 +157,6 @@ export class CustomResourceDefinition extends KubeObject<
         const additionalPrinterColumns = apc?.map(({ JSONPath, ...apc }) => ({ ...apc, jsonPath: JSONPath }));
 
         return {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           name: this.spec.version!,
           served: true,
           storage: true,

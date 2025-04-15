@@ -1,12 +1,12 @@
+import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
+import { buildVersionInitializationInjectable } from "../../vars/build-version/main/init.injectable";
 import userPreferencesPersistentStorageInjectable from "../common/storage.injectable";
 import userPreferencesStorageFileNameMigrationInjectable from "./file-name-migration.injectable";
-import { buildVersionInitializationInjectable } from "../../vars/build-version/main/init.injectable";
 
 const loadUserPreferencesStorageInjectable = getInjectable({
   id: "load-user-preferences-storage",

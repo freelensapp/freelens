@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useEffect, useState } from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
-import type { RequestIdleCallback } from "./request-idle-callback.injectable";
-import type { CancelIdleCallback } from "./cancel-idle-callback.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import React, { useEffect, useState } from "react";
+import type { CancelIdleCallback } from "./cancel-idle-callback.injectable";
 import cancelIdleCallbackInjectable from "./cancel-idle-callback.injectable";
-import requestIdleCallbackInjectable from "./request-idle-callback.injectable";
 import idleCallbackTimeoutInjectable from "./idle-callback-timeout.injectable";
+import type { RequestIdleCallback } from "./request-idle-callback.injectable";
+import requestIdleCallbackInjectable from "./request-idle-callback.injectable";
 
 export interface RenderDelayProps {
   placeholder?: StrictReactNode;
@@ -24,13 +24,7 @@ interface Dependencies {
 }
 
 const NonInjectedRenderDelay = (props: RenderDelayProps & Dependencies) => {
-  const {
-    cancelIdleCallback,
-    requestIdleCallback,
-    children,
-    placeholder,
-    idleCallbackTimeout,
-  } = props;
+  const { cancelIdleCallback, requestIdleCallback, children, placeholder, idleCallbackTimeout } = props;
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -39,15 +33,7 @@ const NonInjectedRenderDelay = (props: RenderDelayProps & Dependencies) => {
     return () => cancelIdleCallback(handle);
   }, []);
 
-  return (
-    <>
-      {
-        isVisible
-          ? children
-          : placeholder
-      }
-    </>
-  );
+  return <>{isVisible ? children : placeholder}</>;
 };
 
 export const RenderDelay = withInjectables<Dependencies, RenderDelayProps>(NonInjectedRenderDelay, {

@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import leasesRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/leases/leases-route.injectable";
-import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import leasesRouteInjectable from "../../../common/front-end-routing/routes/cluster/config/leases/leases-route.injectable";
 import navigateToLeasesInjectable from "../../../common/front-end-routing/routes/cluster/config/leases/navigate-to-leases.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import configSidebarItemInjectable from "../config/config-sidebar-item.injectable";
 
 const leasesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-leases",

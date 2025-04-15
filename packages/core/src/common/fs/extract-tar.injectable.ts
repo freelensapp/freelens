@@ -14,11 +14,12 @@ const extractTarInjectable = getInjectable({
   instantiate: (di): ExtractTar => {
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
 
-    return (filePath, opts = {}) => extract({
-      file: filePath,
-      cwd: getDirnameOfPath(filePath),
-      ...opts,
-    });
+    return (filePath, opts = {}) =>
+      extract({
+        file: filePath,
+        cwd: getDirnameOfPath(filePath),
+        ...opts,
+      });
   },
   causesSideEffects: true,
 });

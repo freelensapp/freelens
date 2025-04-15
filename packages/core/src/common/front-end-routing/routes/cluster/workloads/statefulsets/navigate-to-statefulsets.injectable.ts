@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import statefulsetsRouteInjectable from "./statefulsets-route.injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
+import statefulsetsRouteInjectable from "./statefulsets-route.injectable";
 
 const navigateToStatefulsetsInjectable = getInjectable({
   id: "navigate-to-statefulsets",

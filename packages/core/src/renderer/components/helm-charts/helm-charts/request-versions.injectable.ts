@@ -25,4 +25,3 @@ const requestVersionsOfHelmChartForInjectable = getInjectable({
 });
 
 export default requestVersionsOfHelmChartForInjectable;
-

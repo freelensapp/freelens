@@ -3,17 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { noop } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { CatalogCategoryMetadata, CatalogCategorySpec } from "../../../../common/catalog";
 import { CatalogEntity, categoryVersion } from "../../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../../common/catalog/category-registry.injectable";
 import { CatalogCategory } from "../../../api/catalog-entity";
+import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { CatalogEntityStore } from "../catalog-entity-store.injectable";
 import catalogEntityStoreInjectable from "../catalog-entity-store.injectable";
-import { noop } from "@freelensapp/utilities";
-import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 
 class TestEntityOne extends CatalogEntity {
   public static readonly apiVersion: string = "entity.k8slens.dev/v1alpha1";
@@ -40,9 +40,7 @@ class TestCategoryOne extends CatalogCategory {
   };
   spec: CatalogCategorySpec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", TestEntityOne),
-    ],
+    versions: [categoryVersion("v1alpha1", TestEntityOne)],
     names: {
       kind: "KubernetesCluster",
     },
@@ -58,9 +56,7 @@ class TestCategoryTwo extends CatalogCategory {
   };
   spec: CatalogCategorySpec = {
     group: "entity.k8slens.dev",
-    versions: [
-      categoryVersion("v1alpha1", TestEntityTwo),
-    ],
+    versions: [categoryVersion("v1alpha1", TestEntityTwo)],
     names: {
       kind: "KubernetesCluster",
     },
@@ -142,18 +138,21 @@ describe("CatalogEntityStore", () => {
       testCategoryTwo = new TestCategoryTwo();
 
       di.override(catalogCategoryRegistryInjectable, () => ({
-        items: [
-          testCategoryOne,
-          testCategoryTwo,
-        ],
+        items: [testCategoryOne, testCategoryTwo],
       }));
-      di.override(catalogEntityRegistryInjectable, () => ({
-        onRun: noop,
-        filteredItems: entityItems,
-        getItemsForCategory: <T extends CatalogEntity>(category: CatalogCategory): T[] => {
-          return entityItems.filter(item => category.spec.versions.some(version => item instanceof version.entityClass)) as T[];
-        },
-      } as CatalogEntityRegistry));
+      di.override(
+        catalogEntityRegistryInjectable,
+        () =>
+          ({
+            onRun: noop,
+            filteredItems: entityItems,
+            getItemsForCategory: <T extends CatalogEntity>(category: CatalogCategory): T[] => {
+              return entityItems.filter((item) =>
+                category.spec.versions.some((version) => item instanceof version.entityClass),
+              ) as T[];
+            },
+          }) as CatalogEntityRegistry,
+      );
 
       store = di.inject(catalogEntityStoreInjectable);
     });

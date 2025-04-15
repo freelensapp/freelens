@@ -5,8 +5,8 @@
 import os from "os";
 import path from "path";
 import { getInjectable } from "@ogre-tools/injectable";
-import appPathsInjectable from "../app-paths.injectable";
 import appNameInjectable from "../../../common/vars/app-name.injectable";
+import appPathsInjectable from "../app-paths.injectable";
 
 const directoryForUserDataInjectable = getInjectable({
   id: "directory-for-user-data",
@@ -18,7 +18,7 @@ const directoryForUserDataInjectable = getInjectable({
     }
 
     return di.inject(appPathsInjectable).userData;
-  }
+  },
 });
 
 export default directoryForUserDataInjectable;

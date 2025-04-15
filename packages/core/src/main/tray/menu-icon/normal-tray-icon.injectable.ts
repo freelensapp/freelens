@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { trayIconInjectionToken } from "./tray-icon-injection-token";
 import getTrayIconPathInjectable from "./get-tray-icon-path.injectable";
+import { trayIconInjectionToken } from "./tray-icon-injection-token";
 
 const normalTrayIconInjectable = getInjectable({
   id: "normal-icon",

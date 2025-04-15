@@ -25,10 +25,7 @@ const currentRouteComponentInjectable = getInjectable({
 
       return routeComponents
         .get()
-        .find(({ route }) => (
-          route.path === currentRoute.path
-          && route.clusterFrame === currentRoute.clusterFrame
-        ))
+        .find(({ route }) => route.path === currentRoute.path && route.clusterFrame === currentRoute.clusterFrame)
         ?.Component;
     });
   },

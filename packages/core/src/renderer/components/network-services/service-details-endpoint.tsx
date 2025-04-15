@@ -3,16 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Endpoints } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Table, TableHead, TableCell, TableRow } from "../table";
-import { prevDefault } from "@freelensapp/utilities";
-import type { Logger } from "@freelensapp/logger";
-import { Endpoints } from "@freelensapp/kube-object";
 import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
 export interface ServiceDetailsEndpointProps {
   endpoints: Endpoints;
@@ -40,14 +40,9 @@ class NonInjectedServiceDetailsEndpoint extends React.Component<ServiceDetailsEn
 
     return (
       <div className="EndpointList flex column">
-        <Table
-          selectable
-          virtual={false}
-          scrollable={false}
-          className="box grow"
-        >
+        <Table selectable virtual={false} scrollable={false} className="box grow">
           <TableHead flat>
-            <TableCell className="name" >Name</TableCell>
+            <TableCell className="name">Name</TableCell>
             <TableCell className="endpoints">Endpoints</TableCell>
           </TableHead>
           <TableRow
@@ -56,7 +51,7 @@ class NonInjectedServiceDetailsEndpoint extends React.Component<ServiceDetailsEn
             onClick={prevDefault(() => this.props.showDetails(endpoints.selfLink, false))}
           >
             <TableCell className="name">{endpoints.getName()}</TableCell>
-            <TableCell className="endpoints">{ endpoints.toString()}</TableCell>
+            <TableCell className="endpoints">{endpoints.toString()}</TableCell>
           </TableRow>
         </Table>
       </div>
@@ -64,10 +59,13 @@ class NonInjectedServiceDetailsEndpoint extends React.Component<ServiceDetailsEn
   }
 }
 
-export const ServiceDetailsEndpoint = withInjectables<Dependencies, ServiceDetailsEndpointProps>(NonInjectedServiceDetailsEndpoint, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-    showDetails: di.inject(showDetailsInjectable),
-  }),
-});
+export const ServiceDetailsEndpoint = withInjectables<Dependencies, ServiceDetailsEndpointProps>(
+  NonInjectedServiceDetailsEndpoint,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+      showDetails: di.inject(showDetailsInjectable),
+    }),
+  },
+);

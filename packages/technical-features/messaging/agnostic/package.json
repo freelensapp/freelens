@@ -27,13 +27,10 @@
     "clean": "pnpm dlx rimraf@6.0.1 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build",
-    "test:unit": "jest --coverage --runInBand",
-    "lint:fix": "lens-lint --fix",
-    "lint": "lens-lint"
+    "test:unit": "jest --coverage --runInBand"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
-    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/startable-stoppable": "workspace:^",

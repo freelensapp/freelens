@@ -1,5 +1,3 @@
-import type { act } from "@testing-library/react";
-import type { DiContainer } from "@ogre-tools/injectable";
 import type {
   MessageChannel,
   MessageChannelHandler,
@@ -8,6 +6,8 @@ import type {
   RequestChannelHandler,
   RequestFromChannel,
 } from "@freelensapp/messaging";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { act } from "@testing-library/react";
 
 import {
   enlistMessageChannelListenerInjectionToken,
@@ -16,9 +16,9 @@ import {
   sendMessageToChannelInjectionToken,
 } from "@freelensapp/messaging";
 
+import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
 import { pipeline } from "@ogre-tools/fp";
 import { filter, map } from "lodash/fp";
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
 
 export type MessageBridgeFake = {
   involve: (...dis: DiContainer[]) => void;
@@ -130,7 +130,6 @@ const overrideRequesting = ({
 
             const listeners = channelSpecificListeners[0];
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const [handler] = listeners!;
 
             return handler;

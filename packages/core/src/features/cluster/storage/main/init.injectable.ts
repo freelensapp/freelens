@@ -1,11 +1,11 @@
+import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
-import clustersPersistentStorageInjectable from "../common/storage.injectable";
 import loadUserPreferencesStorageInjectable from "../../../user-preferences/main/load-storage.injectable";
+import clustersPersistentStorageInjectable from "../common/storage.injectable";
 
 const initClusterStoreInjectable = getInjectable({
   id: "init-cluster-store",

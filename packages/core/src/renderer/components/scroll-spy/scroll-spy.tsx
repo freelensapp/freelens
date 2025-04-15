@@ -31,7 +31,9 @@ export const ScrollSpy = observer(({ render, htmlFor, rootMargin = "0px 0px -100
     sections.current = parent.current?.querySelectorAll("section");
 
     if (!sections.current?.length) {
-      throw new Error("No <section/> tag founded! Content should be placed inside <section></section> elements to activate navigation.");
+      throw new Error(
+        "No <section/> tag founded! Content should be placed inside <section></section> elements to activate navigation.",
+      );
     }
 
     return sections.current;
@@ -53,7 +55,7 @@ export const ScrollSpy = observer(({ render, htmlFor, rootMargin = "0px 0px -100
     const sections = element.querySelectorAll(":scope > section"); // Searching only direct children of an element. Impossible without :scope
     const children: NavigationTree[] = [];
 
-    sections.forEach(section => {
+    sections.forEach((section) => {
       const id = section.getAttribute("id");
       const parentId = section.parentElement?.id;
       const name = section.querySelector("h1, h2, h3, h4, h5, h6")?.textContent;

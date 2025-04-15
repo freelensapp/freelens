@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { loggerInjectionToken } from "@freelensapp/logger";
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
+import { loggerInjectionToken } from "@freelensapp/logger";
 
 // APIs
 export { App } from "./app";

@@ -61,9 +61,7 @@ describe("DockStore", () => {
   });
 
   it("closes last tab and selects none", () => {
-    dockStore.tabs = [
-      { id: "create", kind: TabKind.CREATE_RESOURCE, title: "Create resource", pinned: false },
-    ];
+    dockStore.tabs = [{ id: "create", kind: TabKind.CREATE_RESOURCE, title: "Create resource", pinned: false }];
     dockStore.closeTab("create");
 
     expect(dockStore.selectedTabId).toBeUndefined();

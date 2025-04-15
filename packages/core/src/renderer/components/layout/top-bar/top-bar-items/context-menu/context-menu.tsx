@@ -14,12 +14,7 @@ interface Dependencies {
 const NonInjectedContextMenu = ({ openAppContextMenu }: Dependencies) => (
   <div className={styles.winMenu}>
     <div onClick={openAppContextMenu} data-testid="window-menu">
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 12 12"
-        shapeRendering="crispEdges"
-      >
+      <svg width="12" height="12" viewBox="0 0 12 12" shapeRendering="crispEdges">
         <path fill="currentColor" d="M0,8.5h12v1H0V8.5z" />
         <path fill="currentColor" d="M0,5.5h12v1H0V5.5z" />
         <path fill="currentColor" d="M0,2.5h12v1H0V2.5z" />

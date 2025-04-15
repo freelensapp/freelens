@@ -4,11 +4,11 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 
-import helmReleasesRouteInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/helm-releases-route.injectable";
-import helmSidebarItemInjectable from "../helm/sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import helmReleasesRouteInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/helm-releases-route.injectable";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import helmSidebarItemInjectable from "../helm/sidebar-item.injectable";
 
 const helmReleasesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-helm-releases",

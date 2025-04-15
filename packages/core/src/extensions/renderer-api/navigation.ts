@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import hideEntityDetailsInjectable from "../../renderer/components/catalog/entity-details/hide.injectable";
 import showEntityDetailsInjectable from "../../renderer/components/catalog/entity-details/show.injectable";
 import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
@@ -11,7 +12,6 @@ import showDetailsInjectable from "../../renderer/components/kube-detail-params/
 import createPageParamInjectable from "../../renderer/navigation/create-page-param.injectable";
 import isActiveRouteInjectable from "../../renderer/navigation/is-route-active.injectable";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 
 export type { PageParamInit, PageParam } from "../../renderer/navigation/page-param";
 export type { URLParams } from "@freelensapp/utilities";

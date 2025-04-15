@@ -10,20 +10,19 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import type { Secret, ServiceAccount } from "@freelensapp/kube-object";
-import { DrawerItem, DrawerTitle } from "../../drawer";
 import { Icon } from "@freelensapp/icon";
-import type { KubeObjectDetailsProps } from "../../kube-object-details";
+import type { Secret, ServiceAccount } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
-import { ServiceAccountsSecret } from "./secret";
-import type { SecretStore } from "../../config-secrets/store";
-import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
+import type { SecretStore } from "../../config-secrets/store";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
+import { DrawerItem, DrawerTitle } from "../../drawer";
+import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
+import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../../kube-object-details";
+import { ServiceAccountsSecret } from "./secret";
 
-export interface ServiceAccountsDetailsProps extends KubeObjectDetailsProps<ServiceAccount> {
-}
+export interface ServiceAccountsDetailsProps extends KubeObjectDetailsProps<ServiceAccount> {}
 
 interface Dependencies {
   secretStore: SecretStore;
@@ -35,12 +34,10 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
   readonly secrets = observable.array<Secret | string>();
   readonly imagePullSecrets = observable.array<Secret | string>();
 
-  private defensiveLoadSecretIn = (namespace: string) => (
-    ({ name }: { name: string }) => (
-      this.props.secretStore.load({ name, namespace })
-        .catch(() => name)
-    )
-  );
+  private defensiveLoadSecretIn =
+    (namespace: string) =>
+    ({ name }: { name: string }) =>
+      this.props.secretStore.load({ name, namespace }).catch(() => name);
 
   componentDidMount(): void {
     disposeOnUnmount(this, [
@@ -61,10 +58,7 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
 
         const secretLoaders = Promise.all(serviceAccount.getSecrets().map(defensiveLoadSecret));
         const imagePullSecretLoaders = Promise.all(serviceAccount.getImagePullSecrets().map(defensiveLoadSecret));
-        const [secrets, imagePullSecrets] = await Promise.all([
-          secretLoaders,
-          imagePullSecretLoaders,
-        ]);
+        const [secrets, imagePullSecrets] = await Promise.all([secretLoaders, imagePullSecretLoaders]);
 
         runInAction(() => {
           this.secrets.replace(secrets);
@@ -78,14 +72,11 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
     const { secrets } = this;
 
     if (!secrets) {
-      return <Spinner center/>;
+      return <Spinner center />;
     }
 
-    return secrets.map(secret => (
-      <ServiceAccountsSecret
-        key={typeof secret === "string" ? secret : secret.getName()}
-        secret={secret}
-      />
+    return secrets.map((secret) => (
+      <ServiceAccountsSecret key={typeof secret === "string" ? secret : secret.getName()} secret={secret} />
     ));
   }
 
@@ -93,7 +84,7 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
     const { imagePullSecrets } = this;
 
     if (!imagePullSecrets) {
-      return <Spinner center/>;
+      return <Spinner center />;
     }
 
     return this.renderSecretLinks(imagePullSecrets);
@@ -105,11 +96,7 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
         return (
           <div key={secret}>
             {secret}
-            <Icon
-              small
-              material="warning"
-              tooltip="Secret is not found"
-            />
+            <Icon small material="warning" tooltip="Secret is not found" />
           </div>
         );
       }
@@ -128,9 +115,12 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
     if (!serviceAccount) {
       return null;
     }
-    const tokens = secretStore.items.filter(secret =>
-      secret.getNs() == serviceAccount.getNs() &&
-      secret.getAnnotations().some(annot => annot == `kubernetes.io/service-account.name: ${serviceAccount.getName()}`),
+    const tokens = secretStore.items.filter(
+      (secret) =>
+        secret.getNs() == serviceAccount.getNs() &&
+        secret
+          .getAnnotations()
+          .some((annot) => annot == `kubernetes.io/service-account.name: ${serviceAccount.getName()}`),
     );
     const imagePullSecrets = serviceAccount.getImagePullSecrets();
 
@@ -148,18 +138,19 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
         )}
 
         <DrawerTitle>Mountable secrets</DrawerTitle>
-        <div className="secrets">
-          {this.renderSecrets()}
-        </div>
+        <div className="secrets">{this.renderSecrets()}</div>
       </div>
     );
   }
 }
 
-export const ServiceAccountsDetails = withInjectables<Dependencies, ServiceAccountsDetailsProps>(NonInjectedServiceAccountsDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    getDetailsUrl: di.inject(getDetailsUrlInjectable),
-    secretStore: di.inject(secretStoreInjectable),
-  }),
-});
+export const ServiceAccountsDetails = withInjectables<Dependencies, ServiceAccountsDetailsProps>(
+  NonInjectedServiceAccountsDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getDetailsUrl: di.inject(getDetailsUrlInjectable),
+      secretStore: di.inject(secretStoreInjectable),
+    }),
+  },
+);

@@ -4,16 +4,16 @@
  */
 
 import type { StatefulSetApi } from "@freelensapp/kube-api";
-import { StatefulSet } from "@freelensapp/kube-object";
-import { StatefulSetScaleDialog } from "./dialog";
-import { waitFor, fireEvent } from "@testing-library/react";
-import React from "react";
-import type { OpenStatefulSetScaleDialog } from "./open-dialog.injectable";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
+import { StatefulSet } from "@freelensapp/kube-object";
+import { fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
-import openStatefulSetScaleDialogInjectable from "./open-dialog.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import { StatefulSetScaleDialog } from "./dialog";
+import type { OpenStatefulSetScaleDialog } from "./open-dialog.injectable";
+import openStatefulSetScaleDialogInjectable from "./open-dialog.injectable";
 
 const dummyStatefulSet = new StatefulSet({
   apiVersion: "v1",
@@ -30,7 +30,7 @@ const dummyStatefulSet = new StatefulSet({
     serviceName: "dummy",
     replicas: 1,
     selector: {
-      matchLabels: { "label": "label" },
+      matchLabels: { label: "label" },
     },
     template: {
       metadata: {
@@ -39,39 +39,49 @@ const dummyStatefulSet = new StatefulSet({
         },
       },
       spec: {
-        containers: [{
-          name: "dummy",
-          image: "dummy",
-          ports: [{
-            containerPort: 1234,
+        containers: [
+          {
             name: "dummy",
-          }],
-          volumeMounts: [{
-            name: "dummy",
-            mountPath: "dummy",
-          }],
-        }],
-        tolerations: [{
-          key: "dummy",
-          operator: "dummy",
-          effect: "dummy",
-          tolerationSeconds: 1,
-        }],
+            image: "dummy",
+            ports: [
+              {
+                containerPort: 1234,
+                name: "dummy",
+              },
+            ],
+            volumeMounts: [
+              {
+                name: "dummy",
+                mountPath: "dummy",
+              },
+            ],
+          },
+        ],
+        tolerations: [
+          {
+            key: "dummy",
+            operator: "dummy",
+            effect: "dummy",
+            tolerationSeconds: 1,
+          },
+        ],
       },
     },
-    volumeClaimTemplates: [{
-      metadata: {
-        name: "dummy",
-      },
-      spec: {
-        accessModes: ["dummy"],
-        resources: {
-          requests: {
-            storage: "dummy",
+    volumeClaimTemplates: [
+      {
+        metadata: {
+          name: "dummy",
+        },
+        spec: {
+          accessModes: ["dummy"],
+          resources: {
+            requests: {
+              storage: "dummy",
+            },
           },
         },
       },
-    }],
+    ],
   },
   status: {
     observedGeneration: 1,
@@ -137,7 +147,7 @@ describe("<StatefulSetScaleDialog />", () => {
     await waitFor(async () => {
       expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas}`);
       expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-      expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas}`);
+      expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas}`);
     });
 
     const up = await component.findByTestId("desired-replicas-up");
@@ -146,12 +156,12 @@ describe("<StatefulSetScaleDialog />", () => {
     fireEvent.click(up);
     expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas + 1}`);
     expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-    expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas + 1}`);
+    expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas + 1}`);
 
     fireEvent.click(down);
     expect(await component.findByTestId("desired-scale")).toHaveTextContent(`${initReplicas}`);
     expect(await component.findByTestId("current-scale")).toHaveTextContent(`${initReplicas}`);
-    expect((component.baseElement.querySelector("input")?.value)).toBe(`${initReplicas}`);
+    expect(component.baseElement.querySelector("input")?.value).toBe(`${initReplicas}`);
 
     // edge case, desiredScale must >= 0
     let times = 10;
@@ -160,7 +170,7 @@ describe("<StatefulSetScaleDialog />", () => {
       fireEvent.click(down);
     }
     expect(await component.findByTestId("desired-scale")).toHaveTextContent("0");
-    expect((component.baseElement.querySelector("input")?.value)).toBe("0");
+    expect(component.baseElement.querySelector("input")?.value).toBe("0");
 
     // edge case, desiredScale must <= scaleMax (100)
     times = 120;
@@ -169,8 +179,9 @@ describe("<StatefulSetScaleDialog />", () => {
       fireEvent.click(up);
     }
     expect(await component.findByTestId("desired-scale")).toHaveTextContent("100");
-    expect((component.baseElement.querySelector("input")?.value)).toBe("100");
-    expect(await component.findByTestId("warning"))
-      .toHaveTextContent("High number of replicas may cause cluster performance issues");
+    expect(component.baseElement.querySelector("input")?.value).toBe("100");
+    expect(await component.findByTestId("warning")).toHaveTextContent(
+      "High number of replicas may cause cluster performance issues",
+    );
   });
 });

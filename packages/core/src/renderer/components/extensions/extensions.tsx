@@ -3,17 +3,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./extensions.module.scss";
-import React from "react";
-import { DropFileInput } from "../input";
-import { ExtensionInstall } from "./install";
-import { InstalledExtensions } from "./installed-extensions";
-import { Notice } from "./notice";
-import { SettingLayout } from "../layout/setting-layout";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
+import Gutter from "../gutter/gutter";
+import { DropFileInput } from "../input";
+import { SettingLayout } from "../layout/setting-layout";
+import styles from "./extensions.module.scss";
+import { ExtensionInstall } from "./install";
 import type { InstallOnDrop } from "./install-on-drop.injectable";
 import installOnDropInjectable from "./install-on-drop.injectable";
-import Gutter from "../gutter/gutter";
+import { InstalledExtensions } from "./installed-extensions";
+import { Notice } from "./notice";
 
 const ExtensionsNotice = () => (
   <Notice className={styles.notice}>
@@ -27,11 +27,7 @@ interface Dependencies {
 
 const NonInjectedExtensions = ({ installOnDrop }: Dependencies) => (
   <DropFileInput onDropFiles={installOnDrop}>
-    <SettingLayout
-      className="Extensions"
-      contentGaps={false}
-      data-testid="extensions-page"
-    >
+    <SettingLayout className="Extensions" contentGaps={false} data-testid="extensions-page">
       <section>
         <h1>Extensions</h1>
         <ExtensionsNotice />

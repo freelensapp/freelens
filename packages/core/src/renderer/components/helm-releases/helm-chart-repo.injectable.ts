@@ -19,9 +19,7 @@ const helmChartRepoInjectable = getInjectable({
 
         const version = release.getVersion();
 
-        return chartVersions.value
-          .get()
-          .find((chartVersion) => chartVersion.version === version)?.repo;
+        return chartVersions.value.get().find((chartVersion) => chartVersion.version === version)?.repo;
       },
     });
   },

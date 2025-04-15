@@ -5,26 +5,25 @@
 
 import "./secret-details.scss";
 
-import React from "react";
-import { autorun, observable, makeObservable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Input } from "../input";
 import { Button } from "@freelensapp/button";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { base64, toggle } from "@freelensapp/utilities";
 import { Icon } from "@freelensapp/icon";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Secret } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import type { SecretStore } from "./store";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { base64, toggle } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { autorun, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import { Input } from "../input";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { SecretStore } from "./store";
 import secretStoreInjectable from "./store.injectable";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
-export interface SecretDetailsProps extends KubeObjectDetailsProps<Secret> {
-}
+export interface SecretDetailsProps extends KubeObjectDetailsProps<Secret> {}
 
 interface Dependencies {
   secretStore: SecretStore;
@@ -97,11 +96,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     }
 
     return (
-      <div
-        key={name}
-        className="data"
-        data-testid={`${name}-secret-entry`}
-      >
+      <div key={name} className="data" data-testid={`${name}-secret-entry`}>
         <div className="name">{name}</div>
         <div className="flex gaps align-center">
           <Input
@@ -109,7 +104,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
             theme="round-black"
             className="box grow"
             value={value || ""}
-            onChange={value => this.editData(name, value, !revealSecret)}
+            onChange={(value) => this.editData(name, value, !revealSecret)}
           />
           {typeof decodedVal === "string" && (
             <Icon
@@ -134,13 +129,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
       <>
         <DrawerTitle>Data</DrawerTitle>
         {secrets.map(this.renderSecret)}
-        <Button
-          primary
-          label="Save"
-          waiting={this.isSaving}
-          className="save-btn"
-          onClick={this.saveSecret}
-        />
+        <Button primary label="Save" waiting={this.isSaving} className="save-btn" onClick={this.saveSecret} />
       </>
     );
   }
@@ -160,9 +149,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
 
     return (
       <div className="SecretDetails">
-        <DrawerItem name="Type">
-          {secret.type}
-        </DrawerItem>
+        <DrawerItem name="Type">{secret.type}</DrawerItem>
         {this.renderData()}
       </div>
     );

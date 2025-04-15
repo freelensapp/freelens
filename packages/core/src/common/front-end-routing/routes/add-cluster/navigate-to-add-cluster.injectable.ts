@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable } from "@ogre-tools/injectable";
-import addClusterRouteInjectable from "./add-cluster-route.injectable";
 import { navigateToRouteInjectionToken } from "../../navigate-to-route-injection-token";
+import addClusterRouteInjectable from "./add-cluster-route.injectable";
 
 const navigateToAddClusterInjectable = getInjectable({
   id: "navigate-to-add-cluster",

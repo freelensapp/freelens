@@ -1,10 +1,10 @@
+import { cssNames } from "@freelensapp/utilities";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import React from "react";
 import styles from "./horizontal-line.module.scss";
-import { cssNames } from "@freelensapp/utilities";
 
 interface HorizontalLineProps {
   size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";

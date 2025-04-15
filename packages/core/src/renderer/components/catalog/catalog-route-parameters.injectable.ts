@@ -4,8 +4,8 @@
  */
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import catalogRouteInjectable from "../../../common/front-end-routing/routes/catalog/catalog-route.injectable";
+import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 
 const catalogRouteParametersInjectable = getInjectable({
   id: "catalog-route-parameters",

@@ -5,16 +5,16 @@
 
 import styles from "./ingress-classes.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IngressClassStore } from "./ingress-class-store";
-import ingressClassStoreInjectable from "./ingress-class-store.injectable";
+import { Icon } from "@freelensapp/icon";
 import type { IngressClass } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import type { IngressClassStore } from "./ingress-class-store";
+import ingressClassStoreInjectable from "./ingress-class-store.injectable";
 
 enum columnId {
   name = "name",
@@ -30,9 +30,7 @@ interface Dependencies {
 }
 
 const NonInjectedIngressClasses = observer((props: Dependencies) => {
-  const {
-    store,
-  } = props;
+  const { store } = props;
 
   return (
     <SiblingsInTabLayout>
@@ -82,8 +80,7 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
         ]}
         renderTableContents={(ingressClass: IngressClass) => [
           <div key={ingressClass.getId()} className={cssNames(styles.name)}>
-            {ingressClass.getName()}
-            {" "}
+            {ingressClass.getName()}{" "}
             {ingressClass.isDefault && (
               <Icon
                 small

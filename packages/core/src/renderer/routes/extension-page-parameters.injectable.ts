@@ -1,14 +1,14 @@
+import { object } from "@freelensapp/utilities";
+import { pipeline } from "@ogre-tools/fp";
 /**
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { pipeline } from "@ogre-tools/fp";
-import type { PageParamInit } from "../navigation/page-param";
-import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import { map } from "lodash/fp";
+import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import createPageParamInjectable from "../navigation/create-page-param.injectable";
-import { object } from "@freelensapp/utilities";
+import type { PageParamInit } from "../navigation/page-param";
 import type { PageRegistration } from "./page-registration";
 
 export interface ExtensionPageParametersInstantiationParam {
@@ -37,27 +37,19 @@ const extensionPageParametersInjectable = getInjectable({
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (
-      di,
-      { extension, registration }: ExtensionPageParametersInstantiationParam,
-    ) => `${extension.sanitizedExtensionId}-${registration?.id}`,
+    getInstanceKey: (di, { extension, registration }: ExtensionPageParametersInstantiationParam) =>
+      `${extension.sanitizedExtensionId}-${registration?.id}`,
   }),
 });
 
-const convertPartialPageParamInitToFull = <V>(
-  key: string,
-  value: PageParamInit<V>,
-): PageParamInit<V> => ({
-    name: key,
-    defaultValue: value.defaultValue,
-    stringify: value.stringify,
-    parse: value.parse,
-  });
+const convertPartialPageParamInitToFull = <V>(key: string, value: PageParamInit<V>): PageParamInit<V> => ({
+  name: key,
+  defaultValue: value.defaultValue,
+  stringify: value.stringify,
+  parse: value.parse,
+});
 
-const convertStringToPageParamInit = (
-  key: string,
-  value: string,
-): PageParamInit<string> => ({
+const convertStringToPageParamInit = (key: string, value: string): PageParamInit<string> => ({
   name: key,
   defaultValue: value,
 });
