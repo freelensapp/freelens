@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
