@@ -40,7 +40,7 @@
     "eslint-plugin-no-unsanitized": ">= 4.0.2",
     "eslint-plugin-prettier": ">= 4",
     "eslint-plugin-react-hooks": ">= 4.6.2",
-    "eslint-plugin-simple-import-sort": ">= 7",
+    "eslint-plugin-simple-import-sort": ">= 12.1.1",
     "eslint-plugin-unused-imports": ">= 4",
     "eslint-plugin-xss": ">= 0.1.12",
     "prettier": ">= 3"
