@@ -1,8 +1,10 @@
-import { pipeline } from "@ogre-tools/fp";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import withErrorLoggingInjectable from "../with-error-logging/with-error-logging.injectable";
 import { withErrorSuppression } from "../with-error-suppression/with-error-suppression";

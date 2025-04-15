@@ -1,8 +1,10 @@
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { HelmRepo } from "../../../../../common/helm/helm-repo";
 import { removeHelmRepositoryChannel } from "../../../../../common/helm/remove-helm-repository-channel";

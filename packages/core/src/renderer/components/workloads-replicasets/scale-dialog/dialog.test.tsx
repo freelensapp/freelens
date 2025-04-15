@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { ReplicaSetApi } from "@freelensapp/kube-api";
 import { replicaSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { ReplicaSet } from "@freelensapp/kube-object";
@@ -6,10 +12,6 @@ import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { ReplicaSetScaleDialog } from "./dialog";
 import type { OpenReplicaSetScaleDialog } from "./open.injectable";
 import openReplicaSetScaleDialogInjectable from "./open.injectable";

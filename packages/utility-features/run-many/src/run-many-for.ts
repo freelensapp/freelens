@@ -1,9 +1,11 @@
-import EventEmitter from "events";
-import { getOrInsert } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import EventEmitter from "events";
+import { getOrInsert } from "@freelensapp/utilities";
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import type { Asyncify } from "type-fest";
 import type TypedEventEmitter from "typed-emitter";

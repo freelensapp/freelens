@@ -1,9 +1,11 @@
-import crypto from "crypto";
-import { promisify } from "util";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import crypto from "crypto";
+import { promisify } from "util";
 import { getOrInsertMap } from "@freelensapp/utilities";
 import type { ClusterId } from "../../../../common/cluster-types";
 import { ipcMainHandle } from "../../../../common/ipc";

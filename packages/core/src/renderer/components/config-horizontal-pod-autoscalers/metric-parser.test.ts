@@ -1,8 +1,10 @@
-import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";

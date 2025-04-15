@@ -1,10 +1,12 @@
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import type { Disposer } from "@freelensapp/utilities";
-import { disposer } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction, when } from "mobx";
 import type { GeneralEntity } from "../../../common/catalog-entities";

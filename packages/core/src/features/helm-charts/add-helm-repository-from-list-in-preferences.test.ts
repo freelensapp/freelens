@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import type { AsyncResult } from "@freelensapp/utilities";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { type RenderResult, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";

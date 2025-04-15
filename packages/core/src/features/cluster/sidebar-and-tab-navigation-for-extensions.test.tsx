@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import assert from "assert";
 import { flushPromises } from "@freelensapp/test-utils";
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -6,10 +12,6 @@ import { fireEvent } from "@testing-library/react";
 import { matches } from "lodash/fp";
 import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import React from "react";
 import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";

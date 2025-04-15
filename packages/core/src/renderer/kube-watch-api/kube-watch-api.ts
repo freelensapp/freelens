@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
 import { WrappedAbortController, disposer, getOrInsert, noop } from "@freelensapp/utilities";
 import { once } from "lodash";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { comparer, reaction } from "mobx";
 import type {
   KubeObjectStoreLoadAllParams,

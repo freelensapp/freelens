@@ -1,9 +1,11 @@
-import { Button } from "@freelensapp/button";
-import { notificationsStoreInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { Button } from "@freelensapp/button";
+import { notificationsStoreInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { IpcRendererEvent } from "electron";
 import React from "react";

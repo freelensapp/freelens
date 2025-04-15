@@ -1,9 +1,11 @@
-import { pipeline } from "@ogre-tools/fp";
-import { type DiContainerForInjection, getInjectable, getInjectionToken, lifecycleEnum } from "@ogre-tools/injectable";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { pipeline } from "@ogre-tools/fp";
+import { type DiContainerForInjection, getInjectable, getInjectionToken, lifecycleEnum } from "@ogre-tools/injectable";
 import { kebabCase, toUpper } from "lodash/fp";
 import { winstonLoggerInjectable } from "./winston-logger.injectable";
 

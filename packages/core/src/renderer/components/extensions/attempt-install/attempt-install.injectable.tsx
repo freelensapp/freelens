@@ -1,13 +1,15 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { Button } from "@freelensapp/button";
 import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
 import type { Disposer } from "@freelensapp/utilities";
 import { disposer } from "@freelensapp/utilities";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
 import { remove as removeDir } from "fs-extra";

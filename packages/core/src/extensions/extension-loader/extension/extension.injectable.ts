@@ -1,9 +1,11 @@
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
-import { disposer } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
+import { disposer } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";

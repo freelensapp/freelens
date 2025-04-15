@@ -1,10 +1,12 @@
-import type { ContainerPort } from "./container-port";
-import type { EnvFromSource } from "./env-from-source";
-import type { EnvVar } from "./env-var";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { ContainerPort } from "./container-port";
+import type { EnvFromSource } from "./env-from-source";
+import type { EnvVar } from "./env-var";
 import type { Lifecycle } from "./lifecycle";
 import type { Probe } from "./probe";
 import type { ResourceRequirements } from "./resource-requirements";

@@ -1,10 +1,12 @@
-import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";

@@ -1,8 +1,10 @@
-import type { KubeApi } from "@freelensapp/kube-api";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { KubeApi } from "@freelensapp/kube-api";
 import { getInjectable } from "@ogre-tools/injectable";
 import autoRegistrationEmitterInjectable from "../../../common/k8s-api/api-manager/auto-registration-emitter.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";

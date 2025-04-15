@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { winstonLoggerInjectable } from "@freelensapp/logger";
 import type { SendMessageToChannel } from "@freelensapp/messaging";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import type { DiContainer } from "@ogre-tools/injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import type winston from "winston";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import closeRendererLogFileInjectable from "./close-renderer-log-file.injectable";

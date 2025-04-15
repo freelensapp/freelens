@@ -1,10 +1,12 @@
-import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { Icon } from "@freelensapp/icon";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import type { InputValidator } from "../../../../../../../renderer/components/input";
 import { Input } from "../../../../../../../renderer/components/input";
 import isPathInjectable from "../../../../../../../renderer/components/input/validators/is-path.injectable";

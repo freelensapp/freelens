@@ -1,8 +1,9 @@
-#!/usr/bin/env node
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+#!/usr/bin/env node
 
 import assert from "assert";
 import path from "path";

@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { Logger } from "@freelensapp/logger";
 import type { ShowNotification } from "@freelensapp/notifications";
 import { when } from "mobx";
 import type { EmitAppEvent } from "../../../../common/app-event-bus/emit-event.injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import type { Cluster } from "../../../../common/cluster/cluster";
 import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 import { requestSetClusterFrameId } from "../../../ipc";

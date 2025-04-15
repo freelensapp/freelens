@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { loggerInjectionToken } from "@freelensapp/logger";
@@ -6,10 +12,6 @@ import { noop } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { AppUpdater } from "electron-updater";
 import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
 import type { DownloadPlatformUpdate } from "./download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "./download-platform-update.injectable";

@@ -1,8 +1,10 @@
-import type { MaybeOrderable, Orderable } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { MaybeOrderable, Orderable } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
 import type React from "react";
 import type { GetSeparator } from "../../../../common/utils/add-separator/add-separator";

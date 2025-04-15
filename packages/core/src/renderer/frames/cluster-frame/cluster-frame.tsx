@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import type { ClusterFrameChildComponent } from "@freelensapp/react-application";
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
@@ -6,10 +12,6 @@ import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-f
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { Observer, observer } from "mobx-react";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import React, { useEffect } from "react";
 import type { NamespaceStore } from "../../components/namespaces/store";
 import namespaceStoreInjectable from "../../components/namespaces/store.injectable";

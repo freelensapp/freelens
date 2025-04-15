@@ -4,6 +4,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { constants, type WriteStream } from "fs";
 import path from "path";
 import { Transform, Writable, pipeline as _pipeline } from "stream";

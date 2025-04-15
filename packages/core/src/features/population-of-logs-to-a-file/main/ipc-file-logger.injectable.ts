@@ -1,8 +1,10 @@
-import { getOrInsertWith } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getOrInsertWith } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { LogEntry, transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";

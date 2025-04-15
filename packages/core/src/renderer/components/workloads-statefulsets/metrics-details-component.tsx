@@ -1,8 +1,10 @@
-import type { StatefulSet } from "@freelensapp/kube-object";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { StatefulSet } from "@freelensapp/kube-object";
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import type { StatefulSetPodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-stateful-sets.injectable";

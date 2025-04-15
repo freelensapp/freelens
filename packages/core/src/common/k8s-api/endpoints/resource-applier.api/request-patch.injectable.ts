@@ -1,9 +1,11 @@
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
-import type { AsyncResult, Result } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { AsyncResult, Result } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Patch } from "rfc6902";
 import apiBaseInjectable from "../../api-base.injectable";

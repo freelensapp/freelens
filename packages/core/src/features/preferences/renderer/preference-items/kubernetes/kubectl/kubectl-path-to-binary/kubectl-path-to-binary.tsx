@@ -1,9 +1,11 @@
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { observer } from "mobx-react";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
 import React, { useState } from "react";
 import directoryForKubectlBinariesInjectable from "../../../../../../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
 import { Input, InputValidators } from "../../../../../../../renderer/components/input";

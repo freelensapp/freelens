@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { Icon } from "@freelensapp/icon";
 import type { EnvVarKeySelector } from "@freelensapp/kube-object";
 import { base64, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import React, { useState } from "react";
 import type { SetRequired } from "type-fest";
 import type { SecretStore } from "../config-secrets/store";

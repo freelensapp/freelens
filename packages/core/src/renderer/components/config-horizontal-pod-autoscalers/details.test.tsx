@@ -1,9 +1,11 @@
-import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import type { StrictReactNode } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";

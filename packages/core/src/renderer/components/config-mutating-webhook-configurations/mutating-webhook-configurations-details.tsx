@@ -1,9 +1,11 @@
-import type { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
-import { observer } from "mobx-react";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";

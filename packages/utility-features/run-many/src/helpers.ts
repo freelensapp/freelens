@@ -1,9 +1,11 @@
-import assert from "assert";
-import { getOrInsertSetFor, isDefined } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import assert from "assert";
+import { getOrInsertSetFor, isDefined } from "@freelensapp/utilities";
 import type { DiContainerForInjection, InjectionInstanceWithMeta } from "@ogre-tools/injectable";
 import * as uuid from "uuid";
 import type { Runnable, RunnableSync, RunnableSyncWithId, RunnableWithId } from "./types";

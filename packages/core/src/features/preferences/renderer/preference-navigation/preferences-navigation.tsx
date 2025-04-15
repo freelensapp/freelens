@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
@@ -7,10 +13,6 @@ import { checkThatAllDiscriminablesAreExhausted } from "../../../../common/utils
 import { compositeHasDescendant } from "../../../../common/utils/composite/composite-has-descendant/composite-has-descendant";
 import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import { Map } from "../../../../renderer/components/map/map";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { Tabs } from "../../../../renderer/components/tabs";
 import type { PreferenceItemTypes } from "../preference-items/preference-item-injection-token";
 import type { PreferenceTabsRoot } from "../preference-items/preference-tab-root";

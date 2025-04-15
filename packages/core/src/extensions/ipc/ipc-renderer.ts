@@ -1,8 +1,10 @@
-import type { Disposer } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Disposer } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import { Disposers } from "../lens-extension";

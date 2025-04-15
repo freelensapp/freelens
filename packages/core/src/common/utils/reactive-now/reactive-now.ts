@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { _isComputingDerivation } from "mobx";
 import type { IResource } from "mobx-utils";
 import { fromResource } from "mobx-utils";

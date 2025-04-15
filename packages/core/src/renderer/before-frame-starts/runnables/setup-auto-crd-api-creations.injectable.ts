@@ -1,12 +1,14 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { KubeApi } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
 import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";

@@ -1,9 +1,11 @@
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import { byOrderNumber } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import type { CatalogEntity } from "../../api/catalog-entity";

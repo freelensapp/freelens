@@ -1,9 +1,11 @@
-import { getRandomIdInjectionToken } from "@freelensapp/random";
-import { getInjectable } from "@ogre-tools/injectable";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { computed, runInAction } from "mobx";
 import React from "react";

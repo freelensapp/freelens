@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { apiPrefix } from "../../../common/vars";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import { clusterRoute } from "../../router/route";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getRouteInjectable } from "../../router/router.injectable";
 import createPortForwardInjectable from "./functionality/create-port-forward.injectable";
 import { PortForward } from "./functionality/port-forward";

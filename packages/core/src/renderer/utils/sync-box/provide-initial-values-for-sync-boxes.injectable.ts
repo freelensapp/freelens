@@ -1,9 +1,11 @@
-import assert from "assert";
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import assert from "assert";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { syncBoxInitialValueChannel } from "../../../common/utils/sync-box/channels";

@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { ExtendableDisposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import React from "react";
 import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
 import { withTimeout } from "../../../common/fetch/timeout-controller";

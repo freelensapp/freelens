@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import type { Logger } from "@freelensapp/logger";
 import type { AsyncResult } from "@freelensapp/utilities";
 import { hasTypedProperty, isObject } from "@freelensapp/utilities";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import hb from "handlebars";
 import yaml from "js-yaml";
 import type { KubernetesCluster } from "../catalog-entities";

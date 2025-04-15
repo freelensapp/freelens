@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
@@ -6,10 +12,6 @@ import showMessagePopupInjectable from "../../../../main/electron-app/features/s
 import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
 import type { LensWindow } from "../../../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
 import getCurrentApplicationWindowInjectable from "../../../../main/start-main-application/lens-window/application-window/get-current-application-window.injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";

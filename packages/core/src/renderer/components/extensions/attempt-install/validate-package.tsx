@@ -1,9 +1,11 @@
-import path from "path";
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import path from "path";
+import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
 import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
 

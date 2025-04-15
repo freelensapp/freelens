@@ -1,9 +1,11 @@
-import { beforeAnythingInjectionToken } from "@freelensapp/application-for-electron-main";
-import { pipeline } from "@ogre-tools/fp";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { beforeAnythingInjectionToken } from "@freelensapp/application-for-electron-main";
+import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { fromPairs, map } from "lodash/fp";
 import type { AppPaths } from "../../common/app-paths/app-path-injection-token";

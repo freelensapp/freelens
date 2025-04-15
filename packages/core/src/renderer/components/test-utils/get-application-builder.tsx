@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import assert from "assert";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import {
@@ -41,10 +47,6 @@ import { getCompositePaths } from "../../../common/utils/composite/get-composite
 import extensionInjectable from "../../../extensions/extension-loader/extension/extension.injectable";
 import type { LensExtension } from "../../../extensions/lens-extension";
 import type { LensMainExtension } from "../../../extensions/lens-main-extension";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import mainExtensionsInjectable from "../../../extensions/main-extensions.injectable";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";

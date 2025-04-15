@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import type { Disposer } from "@freelensapp/utilities";
 import { delay, disposer } from "@freelensapp/utilities";

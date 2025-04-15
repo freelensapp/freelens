@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { Icon } from "@freelensapp/icon";
 import { observableCrate } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 import { action, comparer, computed, observable } from "mobx";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import React from "react";
 import type { ActionMeta, MultiValue } from "react-select";
 import type { ClusterContext } from "../../../cluster-frame-context/cluster-frame-context";

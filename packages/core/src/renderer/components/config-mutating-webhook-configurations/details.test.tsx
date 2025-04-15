@@ -1,9 +1,11 @@
-import type { MutatingWebhookConfigurationData } from "@freelensapp/kube-object";
-import { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { MutatingWebhookConfigurationData } from "@freelensapp/kube-object";
+import { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

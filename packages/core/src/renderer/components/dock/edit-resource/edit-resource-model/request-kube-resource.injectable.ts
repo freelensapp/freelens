@@ -1,11 +1,13 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Writable } from "type-fest";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";

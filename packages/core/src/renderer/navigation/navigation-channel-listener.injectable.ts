@@ -1,9 +1,11 @@
-import type { MessageChannel, MessageChannelListener } from "@freelensapp/messaging";
-import { messageChannelListenerInjectionToken } from "@freelensapp/messaging";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { MessageChannel, MessageChannelListener } from "@freelensapp/messaging";
+import { messageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { appNavigationChannel } from "../../common/front-end-routing/app-navigation-channel";
 import { clusterFrameNavigationChannel } from "../../common/front-end-routing/cluster-frame-navigation-channel";

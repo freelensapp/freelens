@@ -1,9 +1,11 @@
-import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
-import { loggerInjectionToken } from "@freelensapp/logger";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";

@@ -1,9 +1,11 @@
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
-import { runManyFor } from "@freelensapp/run-many";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { runManyFor } from "@freelensapp/run-many";
 import { getInjectable } from "@ogre-tools/injectable";
 import { once } from "lodash";
 import { onQuitOfBackEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";

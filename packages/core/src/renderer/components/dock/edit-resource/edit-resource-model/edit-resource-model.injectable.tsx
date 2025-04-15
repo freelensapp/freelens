@@ -1,13 +1,15 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import assert from "assert";
 import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";

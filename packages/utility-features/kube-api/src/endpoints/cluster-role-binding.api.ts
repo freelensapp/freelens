@@ -1,9 +1,11 @@
-import type { ClusterRoleBindingData } from "@freelensapp/kube-object";
-import { ClusterRoleBinding } from "@freelensapp/kube-object";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { ClusterRoleBindingData } from "@freelensapp/kube-object";
+import { ClusterRoleBinding } from "@freelensapp/kube-object";
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
 

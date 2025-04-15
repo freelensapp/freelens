@@ -1,8 +1,10 @@
-import type { RenderResult } from "@testing-library/react";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";

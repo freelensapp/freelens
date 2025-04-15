@@ -1,8 +1,10 @@
-import { array } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { array } from "@freelensapp/utilities";
 import welcomeCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/welcome-catalog-entity.injectable";
 import { getDiForUnitTesting } from "../../../../main/getDiForUnitTesting";
 import type { MigrationDeclaration, MigrationStore } from "../../../persistent-storage/common/migrations.injectable";

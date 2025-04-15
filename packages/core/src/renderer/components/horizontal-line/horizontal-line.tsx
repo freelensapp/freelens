@@ -1,8 +1,10 @@
-import { cssNames } from "@freelensapp/utilities";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { cssNames } from "@freelensapp/utilities";
 import React from "react";
 import styles from "./horizontal-line.module.scss";
 

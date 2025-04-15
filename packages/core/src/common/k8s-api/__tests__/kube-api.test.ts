@@ -1,9 +1,11 @@
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
 import { KubeApi, PodApi } from "@freelensapp/kube-api";
 import { podApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";

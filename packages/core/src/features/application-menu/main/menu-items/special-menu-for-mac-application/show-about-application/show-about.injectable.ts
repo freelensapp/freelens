@@ -3,6 +3,7 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";

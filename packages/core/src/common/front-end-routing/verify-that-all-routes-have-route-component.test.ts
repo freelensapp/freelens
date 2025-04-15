@@ -1,9 +1,11 @@
-import { pipeline } from "@ogre-tools/fp";
-import { filter, map } from "lodash/fp";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { pipeline } from "@ogre-tools/fp";
+import { filter, map } from "lodash/fp";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
 import { frontEndRouteInjectionToken } from "./front-end-route-injection-token";

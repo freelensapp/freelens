@@ -1,8 +1,10 @@
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import kubeDetailsUrlParamInjectable from "./kube-details-url.injectable";
 import kubeSelectedUrlParamInjectable from "./kube-selected-url.injectable";

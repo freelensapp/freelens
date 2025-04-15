@@ -1,13 +1,15 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import type { CatalogEntity } from "../../api/catalog-entity";
 import { Badge } from "../badge";
 import searchUrlPageParamInjectable from "../input/search-url-page-param.injectable";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import styles from "./catalog.module.scss";
 
 export type GetLabelBadges = (

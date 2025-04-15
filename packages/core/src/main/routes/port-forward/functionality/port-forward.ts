@@ -1,12 +1,14 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 import type { ChildProcessWithoutNullStreams } from "child_process";
 import { spawn } from "child_process";
 import type { Logger } from "@freelensapp/logger";
 import * as tcpPortUsed from "tcp-port-used";
 import { TypedRegEx } from "typed-regex";
-/**
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
 const internalPortMatcher = "^forwarding from (?<address>.+) ->";
