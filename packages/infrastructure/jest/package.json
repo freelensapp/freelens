@@ -33,6 +33,6 @@
     "jest-watch-select-projects": "^2.0.0",
     "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
-    "ts-jest": "^29.3.1"
+    "ts-jest": "^29.3.2"
   }
 }
