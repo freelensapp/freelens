@@ -193,7 +193,7 @@
     "electron-window-state": "^5.0.3",
     "esbuild": "^0.25.2",
     "esbuild-loader": "^4.3.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.24.0",
     "eslint-import-resolver-typescript": "^4.3.1",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.31.0",
