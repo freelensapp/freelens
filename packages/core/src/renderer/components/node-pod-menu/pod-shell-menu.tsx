@@ -15,6 +15,10 @@ import os from "os";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";
 import { v4 as uuidv4 } from "uuid";
+//import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
+//import type { IComputedValue } from "mobx";
+
+// For this to work we always need exec to be the second element in the array
 
 export interface PodShellMenuProps {
   object: any;
@@ -25,6 +29,7 @@ interface Dependencies {
   createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
   sendCommand: SendCommand;
   hideDetails: HideDetails;
+  //userShellSetting: IComputedValue<string>;
 }
 
 const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = props => {
@@ -34,6 +39,7 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
     createTerminalTab,
     sendCommand,
     hideDetails,
+    //userShellSetting,
   } = props;
 
   if (!object) return null;
@@ -49,13 +55,15 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
 
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
+  // TODO: scaffolding for refactoring per SHELL_LOGIC.md
+  //let currentShell = getBasenameOfPath(shellPath);
 
-  const execShell = async (container: Container) =>  {
+  let execShell = async (container: Container) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
-    const commandParts = [
+    let commandParts = [
       kubectlPath,
-      "exec",
+      //"exec", // This is duplicated in the os.platform command below, and believe it's behavior is functionally null on the unshift
       "-i",
       "-t",
       "-n",
@@ -63,9 +71,21 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
       pod.getName(),
     ];
 
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
+    // Debugging: Log the initial value of commandParts
+    console.debug("Initial commandParts:", commandParts);
+
+    // get user's preferred shell from state
+    //const userShell = userShellSetting.get() || "";
+
+    // This adds the exec command for non-windows platforms as the first element in the array
+    // we'd like this to also check if the shell is powershell as an && != check
+    if (
+      os.platform() !== "win32"
+    ) {
+      console.debug("Powershell not detected, adding exec to commandParts");
+      //commandParts.unshift("exec");
+      commandParts.splice(1, 0, "exec");
+    } 
 
     if (containerName) {
       commandParts.push("-c", containerName);
@@ -114,6 +134,7 @@ export const PodShellMenu = withInjectables<Dependencies, PodShellMenuProps>(
       createTerminalTab: di.inject(createTerminalTabInjectable),
       sendCommand: di.inject(sendCommandInjectable),
       hideDetails: di.inject(hideDetailsInjectable),
+      //userShellSetting: di.inject(userShellSettingInjectable),
     }),
   },
 );
