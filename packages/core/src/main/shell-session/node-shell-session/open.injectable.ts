@@ -72,17 +72,37 @@ const openNodeShellSessionInjectable = getInjectable({
         const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
         const directoryContainingKubectl = await kubectl.binDir();
 
-      const session = new NodeShellSession(
+        dependencies.logger.info(
+          `[open-node-shell-session] initializing session for node ${args.nodeName}`
+        );
+        const session = new NodeShellSession(
         {
-          ...dependencies,
-          loadProxyKubeconfig,
-          proxyKubeconfigPath,
-          directoryContainingKubectl,
-        },
+            ...dependencies,
+            loadProxyKubeconfig,
+            proxyKubeconfigPath,
+            directoryContainingKubectl,
+          },
         { kubectl, ...args },
       );
 
-      return session.open();
+        try {
+          const result = await session.open();
+          dependencies.logger.info(`[open-node-shell-session] session opened successfully`);
+          return result;
+        } catch (error: any) {
+          dependencies.logger.error(
+            `[open-node-shell-session] failed to open session: ${String(error)}`,
+            { error }
+          );
+          throw error;
+        }
+      } catch (error: any) {
+        dependencies.logger.error(
+          `[open-node-shell-session] error during session setup: ${String(error)}`,
+          { error }
+        );
+        throw error;
+      }
     };
   },
 });
