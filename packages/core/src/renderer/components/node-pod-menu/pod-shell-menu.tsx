@@ -50,10 +50,14 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
     const commandParts = [kubectlPath, "exec", "-i", "-t", "-n", pod.getNs(), pod.getName()];
 
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
+    // Debugging: Log the initial value of commandParts
+    console.debug("Initial commandParts:", commandParts);
 
+    // removed Windows check, as the issues were related to commandParts being,
+    // a constant and unrelated to the shell type
+    // Powershell on Mac and presumably Linux will work,
+    // but Powershell on Windows will not work with exec due to upstream kubectl issues
+    // More reading can be found here: https://discord.com/channels/1344433118924374148/1344832026884313149/1362927839543820438
     if (containerName) {
       commandParts.push("-c", containerName);
     }

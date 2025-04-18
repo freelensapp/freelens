@@ -63,11 +63,14 @@ const openNodeShellSessionInjectable = getInjectable({
     };
 
     return async (args) => {
-      const kubectl = createKubectl(args.cluster.version.get());
-      const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
-      const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
-      const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
-      const directoryContainingKubectl = await kubectl.binDir();
+      // Added try logic to help with debugging shell session issues
+      // and to ensure the session is closed if an error occurs, as it can hang forever
+      try {
+        const kubectl = createKubectl(args.cluster.version.get());
+        const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
+        const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
+        const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
+        const directoryContainingKubectl = await kubectl.binDir();
 
       const session = new NodeShellSession(
         {

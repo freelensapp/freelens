@@ -1,21 +1,24 @@
 /**
- * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
-import { Pod } from "@freelensapp/kube-object";
-import type { Container } from "@freelensapp/kube-object";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
-import { App } from "../../../extensions/common-api";
 import type { DockTabCreateSpecific } from "../dock/dock/store";
-import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
+import { App } from "../../../extensions/common-api";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
+import { Pod } from "@freelensapp/kube-object";
 import PodMenuItem from "./pod-menu-item";
+import type { Container } from "@freelensapp/kube-object";
+import { v4 as uuidv4 } from "uuid";
+
+// For this to work we never need exec to be in the command, 
+// and we should find a good way to wrap this function from where it's being called, 
+// and advise the user that attach may not work on all pods, if the process doesn't support it
+// See this note: https://stackoverflow.com/a/42013285
 
 export interface PodAttachMenuProps {
   object: any;
@@ -28,8 +31,14 @@ interface Dependencies {
   hideDetails: HideDetails;
 }
 
-const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (props) => {
-  const { object, toolbar, createTerminalTab, sendCommand, hideDetails } = props;
+const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = props => {
+  const {
+    object,
+    toolbar,
+    createTerminalTab,
+    sendCommand,
+    hideDetails,
+  } = props;
 
   if (!object) return null;
   let pod: Pod;
@@ -48,11 +57,15 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
   const attachToPod = async (container: Container) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
-    const commandParts = [kubectlPath, "attach", "-i", "-t", "-n", pod.getNs(), pod.getName()];
-
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
+    const commandParts = [
+      kubectlPath,
+      "attach",
+      "-i",
+      "-t",
+      "-n",
+      pod.getNs(),
+      pod.getName(),
+    ];
 
     if (containerName) {
       commandParts.push("-c", containerName);
@@ -68,7 +81,8 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
     sendCommand(commandParts.join(" "), {
       enter: true,
       tabId: shellId,
-    }).then(hideDetails);
+    })
+      .then(hideDetails);
   };
 
   return (
@@ -84,11 +98,14 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
   );
 };
 
-export const PodAttachMenu = withInjectables<Dependencies, PodAttachMenuProps>(NonInjectedPodAttachMenu, {
-  getProps: (di, props) => ({
-    ...props,
-    createTerminalTab: di.inject(createTerminalTabInjectable),
-    sendCommand: di.inject(sendCommandInjectable),
-    hideDetails: di.inject(hideDetailsInjectable),
-  }),
-});
+export const PodAttachMenu = withInjectables<Dependencies, PodAttachMenuProps>(
+  NonInjectedPodAttachMenu,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      createTerminalTab: di.inject(createTerminalTabInjectable),
+      sendCommand: di.inject(sendCommandInjectable),
+      hideDetails: di.inject(hideDetailsInjectable),
+    }),
+  },
+);
