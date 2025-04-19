@@ -11,10 +11,22 @@ import { App } from "../../../extensions/common-api";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import { Pod } from "@freelensapp/kube-object";
-import os from "os";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";
 import { v4 as uuidv4 } from "uuid";
+//import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
+//import type { IComputedValue } from "mobx";
+
+// For this to work we never need exec to be in the command, 
+// and we should find a good way to wrap this function from where it's being called, 
+// and advise the user that attach may not work on all pods, if the process doesn't support it
+// See this note: https://stackoverflow.com/a/42013285
+
+
+// For this to work we never need exec to be in the command, 
+// and we should find a good way to wrap this function from where it's being called, 
+// and advise the user that attach may not work on all pods, if the process doesn't support it
+// See this note: https://stackoverflow.com/a/42013285
 
 export interface PodAttachMenuProps {
   object: any;
@@ -25,6 +37,7 @@ interface Dependencies {
   createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
   sendCommand: SendCommand;
   hideDetails: HideDetails;
+  //userShellSetting: IComputedValue<string>;
 }
 
 const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = props => {
@@ -34,6 +47,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
     createTerminalTab,
     sendCommand,
     hideDetails,
+    //userShellSetting,
   } = props;
 
   if (!object) return null;
@@ -62,10 +76,6 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
       pod.getNs(),
       pod.getName(),
     ];
-
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
 
     if (containerName) {
       commandParts.push("-c", containerName);
@@ -106,6 +116,7 @@ export const PodAttachMenu = withInjectables<Dependencies, PodAttachMenuProps>(
       createTerminalTab: di.inject(createTerminalTabInjectable),
       sendCommand: di.inject(sendCommandInjectable),
       hideDetails: di.inject(hideDetailsInjectable),
+      //userShellSetting: di.inject(userShellSettingInjectable),
     }),
   },
 );
