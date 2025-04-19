@@ -55,12 +55,11 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = pr
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
   // TODO: scaffolding for refactoring per SHELL_LOGIC.md
-  //let currentShell = getBasenameOfPath(shellPath);
 
-  let execShell = async (container: Container) => {
+  const execShell = async (container: Container) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
-    let commandParts = [
+    const commandParts = [
       kubectlPath,
       "exec", 
       "-i",
