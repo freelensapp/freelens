@@ -60,7 +60,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
 
-  let attachToPod = async (container: Container) => {
+  const attachToPod = async (container: Container) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
     const commandParts = [

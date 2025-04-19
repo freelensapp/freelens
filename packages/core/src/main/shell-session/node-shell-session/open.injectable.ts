@@ -63,6 +63,7 @@ const openNodeShellSessionInjectable = getInjectable({
     };
 
     return async (args) => {
+
       // Added try logic to help with debugging shell session issues
       // and to ensure the session is closed if an error occurs, as it can hang forever
       try {
@@ -87,7 +88,9 @@ const openNodeShellSessionInjectable = getInjectable({
 
         try {
           const result = await session.open();
+          
           dependencies.logger.info(`[open-node-shell-session] session opened successfully`);
+          
           return result;
         } catch (error: any) {
           dependencies.logger.error(
@@ -96,6 +99,7 @@ const openNodeShellSessionInjectable = getInjectable({
           );
           throw error;
         }
+
       } catch (error: any) {
         dependencies.logger.error(
           `[open-node-shell-session] error during session setup: ${String(error)}`,

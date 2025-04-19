@@ -46,7 +46,6 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
   // TODO: scaffolding for refactoring per SHELL_LOGIC.md
-  //let currentShell = getBasenameOfPath(shellPath);
 
   const execShell = async (container: Container) => {
     const containerName = container.name;
