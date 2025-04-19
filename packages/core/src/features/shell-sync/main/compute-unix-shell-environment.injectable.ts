@@ -69,13 +69,13 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
         // Older versions of PowerShell removes double quotes sometimes so we use "double single quotes" which is how
         // you escape single quotes inside of a single quoted string.
         return {
-          command: `Command '${processExecPath}' -p '\\"${mark}\\" + JSON.stringify(process.env) + \\"${mark}\\"'`,
+          command: `Command '${processExecPath}' -e 'process.stdout.write(\\"${mark}\\" + JSON.stringify(process.env) + \\"${mark}\\")'`,
           shellArgs: ["-Login"],
           regex,
         };
       }
 
-      let command = `'${processExecPath}' -p '"${mark}" + JSON.stringify(process.env) + "${mark}"'`;
+      let command = `'${processExecPath}' -e 'process.stdout.write("${mark}" + JSON.stringify(process.env) + "${mark}")'`;
       const shellArgs = ["-l"];
 
       if (fishLikeShellName.test(shellName)) {
@@ -97,7 +97,9 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
       const { resetEnvPairs, env } = getResetProcessEnv(processEnv, {
         ELECTRON_RUN_AS_NODE: "1",
         ELECTRON_NO_ATTACH_CONSOLE: "1",
+        ITERM_SHELL_INTEGRATION_INSTALLED: "1", // ITerm2 shell integration breaks output
         TERM: "screen-256color-bce", // required for fish
+        VSCODE_SHELL_INTEGRATION: "1" // VS Code shell integration breaks output
       });
       const shellName = getBasenameOfPath(shellPath);
       const { command, shellArgs, regex } = getShellSpecifics(shellName);

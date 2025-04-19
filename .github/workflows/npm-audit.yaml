@@ -29,8 +29,8 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' ||
-      (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body, '/rerun'))
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body,
+      '/rerun'))
 
     steps:
       - name: Checkout
@@ -60,12 +60,13 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 20
-          max_attempts: 3
-          retry_on: any
-          command: pnpm --color=always install --prefer-offline --frozen-lockfile
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Run npm audit
         run: |

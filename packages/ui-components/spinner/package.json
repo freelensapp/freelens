@@ -29,18 +29,17 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@freelensapp/utilities": "workspace:^",
-    "react": "^17.0.2"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.85"
+    "@types/react": "^17.0.85",
+    "react": "^17.0.2"
   }
 }

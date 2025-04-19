@@ -496,7 +496,7 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -507,9 +507,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -520,7 +520,7 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -556,7 +556,7 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -567,9 +567,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -580,7 +580,7 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -1321,7 +1321,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -1332,9 +1332,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -1345,7 +1345,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -1381,7 +1381,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -1392,9 +1392,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -1405,7 +1405,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -2178,7 +2178,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -2189,9 +2189,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -2202,7 +2202,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -2238,7 +2238,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -2249,9 +2249,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -2262,7 +2262,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -3035,7 +3035,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -3046,9 +3046,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -3059,7 +3059,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -3095,7 +3095,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -3106,9 +3106,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -3119,7 +3119,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -4143,7 +4143,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -4154,9 +4154,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -4167,7 +4167,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -4203,7 +4203,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -4214,9 +4214,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -4227,7 +4227,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -4988,7 +4988,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -4999,9 +4999,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -5012,7 +5012,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -5048,7 +5048,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -5059,9 +5059,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -5072,7 +5072,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -5833,7 +5833,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -5844,9 +5844,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -5857,7 +5857,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -5893,7 +5893,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -5904,9 +5904,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -5917,7 +5917,7 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>

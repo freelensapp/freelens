@@ -7,12 +7,12 @@ spec:
     storage: 5Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   persistentVolumeReclaimPolicy: Recycle
   storageClassName: slow
   mountOptions:
-    - hard
-    - nfsvers=4.1
+  - hard
+  - nfsvers=4.1
   nfs:
     path: /tmp
     server: 172.17.0.2

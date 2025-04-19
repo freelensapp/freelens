@@ -6,9 +6,9 @@ metadata:
     role: myrole
 spec:
   containers:
+  - name: web
+    image: nginx
+    ports:
     - name: web
-      image: nginx
-      ports:
-        - name: web
-          containerPort: 80
-          protocol: TCP
+      containerPort: 80
+      protocol: TCP

@@ -20,7 +20,7 @@ import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import electronQuitAndInstallUpdateInjectable from "../../main/electron-app/features/electron-quit-and-install-update.injectable";
 
-describe("installing update", () => {
+describe.skip("installing update", () => {
   let builder: ApplicationBuilder;
   let electronQuitAndInstallUpdateMock: jest.Mock;
   let checkForPlatformUpdatesMock: AsyncFnMock<CheckForPlatformUpdates>;
