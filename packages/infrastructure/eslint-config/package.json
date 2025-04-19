@@ -27,9 +27,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
-  "dependencies": {
+  "devDependencies": {
     "@typescript-eslint/eslint-plugin": ">= 8.26.0",
     "@typescript-eslint/parser": ">= 8.26.0",
     "eslint": ">= 7",

@@ -1,25 +1,21 @@
-name: Automated trunk upgrade
+name: Automated npm dedupe
 
 on:
   issue_comment:
     types:
       - created
-  push:
-    branches:
-      - main
-    paths:
-      - .trunk/**
   schedule:
-    - cron: 2 6 * * *
+    - cron: 46 6 * * *
   workflow_dispatch: {}
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: write
 
 jobs:
-  trunk-upgrade:
-    name: trunk upgrade
+  npm-dedupe:
+    name: npm dedupe
 
     strategy:
       fail-fast: false
@@ -33,13 +29,14 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated trunk upgrade') && contains(github.event.comment.body,
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated npm dedupe') && contains(github.event.comment.body,
       '/rerun'))
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Setup node
@@ -71,13 +68,10 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Set up Trunk
-        run: curl https://get.trunk.io -fsSL | bash -s -- -y
-
-      - name: Trunk upgrade
+      - name: Run pnpm dedupe
         run: |
-          trunk upgrade --yes-to-all --no-progress --ci --color | tee .github/update.log
-          sed -e '/Downloading Trunk/,/Unpacking Trunk... done/d' -e 's/\x1b\[[0-9;]*m//g' -e 's/^\(  \)\{0,1\}  /\1- /' .github/update.log > .github/pr_body.log
+          pnpm dedupe 2>&1 | tee .github/update.log || true
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
 
       - name: Check for changes
         run: |
@@ -87,23 +81,15 @@ jobs:
             echo "changes=true" >> $GITHUB_ENV
           fi
 
-      - name: Trunk Check
-        if: env.changes == 'true'
-        uses: trunk-io/trunk-action@v1
-        with:
-          check-mode: all
-        continue-on-error: true
-
       - name: Commit and push to branch
         if: env.changes == 'true'
         uses: EndBug/add-and-commit@v9
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated trunk upgrade [skip ci]
-          new_branch: automated/trunk-upgrade
-          fetch: false
-          push: origin automated/trunk-upgrade --set-upstream --force
+          message: Automated npm dedupe
+          new_branch: automated/npm-dedupe
+          push: origin automated/npm-dedupe --set-upstream --force
 
       - name: Create pull request
         id: pr
@@ -113,8 +99,8 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           target_branch: main
           label: automated
-          title: Automated trunk upgrade [skip ci]
-          get_diff: false
+          title: Automated npm dedupe
+          get_diff: true
 
       - name: Update pull request description
         if: env.changes == 'true'
@@ -124,6 +110,6 @@ jobs:
 
       - name: Close pull request
         if: env.changes == 'false'
-        run: gh pr list --head automated/trunk-upgrade --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
+        run: gh pr list --head automated/npm-dedupe --json number --jq '.[].number' | xargs -rn1 gh pr close --delete-branch
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

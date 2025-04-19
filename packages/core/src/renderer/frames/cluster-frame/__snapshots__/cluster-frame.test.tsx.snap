@@ -6,48 +6,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
-    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-  >
-    <div
-      class="drawer-wrapper flex column"
-    >
-      <div
-        class="drawer-title flex align-center"
-      >
-        <div
-          class="drawer-title-text flex gaps align-center"
-        >
-          
-        </div>
-        <i
-          class="Icon material interactive focusable"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="close"
-          >
-            close
-          </span>
-        </i>
-        <div>
-          Close
-        </div>
-      </div>
-      <div
-        class="drawer-content flex column box grow"
-      >
-        <div
-          class="Spinner singleColor center"
-        />
-      </div>
-    </div>
-    <div
-      class="ResizingAnchor horizontal leading"
-    />
-  </div>
-  <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
   >
@@ -104,44 +62,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
               </i>
               <span>
                 Cluster
-              </span>
-            </a>
-          </div>
-          <div
-            class="SidebarItem"
-            data-is-active-test="false"
-            data-testid="sidebar-item-nodes"
-          >
-            <a
-              class="navItem"
-              data-testid="link-for-sidebar-item-nodes"
-              href="/"
-            >
-              <i
-                class="Icon svg focusable"
-              >
-                <span
-                  class="icon"
-                >
-                  <svg
-                    enable-background="new 0 0 24 24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="m8.7 4v16h6.7v-16zm3.3 13.3c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.3.6-.6.6zm2-6.8h-4v-1.2h4zm0-2.4h-4v-1.2h4z"
-                    />
-                    <path
-                      d="m16.6 5.1v13.8h6.2v-13.8zm2.9 11.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.1.6-.6.6zm1.7-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
-                    />
-                    <path
-                      d="m1.2 5.1v13.8h6.2v-13.8zm3.3 11.2c-.3 0-.6-.3-.6-.6s.3-.7.6-.7.6.3.6.6-.3.7-.6.7zm1.5-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
-                    />
-                  </svg>
-                </span>
-              </i>
-              <span>
-                Nodes
               </span>
             </a>
           </div>
@@ -213,6 +133,44 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
                   keyboard_arrow_down
                 </span>
               </i>
+            </a>
+          </div>
+          <div
+            class="SidebarItem"
+            data-is-active-test="false"
+            data-testid="sidebar-item-nodes"
+          >
+            <a
+              class="navItem"
+              data-testid="link-for-sidebar-item-nodes"
+              href="/"
+            >
+              <i
+                class="Icon svg focusable"
+              >
+                <span
+                  class="icon"
+                >
+                  <svg
+                    enable-background="new 0 0 24 24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m8.7 4v16h6.7v-16zm3.3 13.3c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.3.6-.6.6zm2-6.8h-4v-1.2h4zm0-2.4h-4v-1.2h4z"
+                    />
+                    <path
+                      d="m16.6 5.1v13.8h6.2v-13.8zm2.9 11.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.1.6-.6.6zm1.7-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
+                    />
+                    <path
+                      d="m1.2 5.1v13.8h6.2v-13.8zm3.3 11.2c-.3 0-.6-.3-.6-.6s.3-.7.6-.7.6.3.6.6-.3.7-.6.7zm1.5-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
+                    />
+                  </svg>
+                </span>
+              </i>
+              <span>
+                Nodes
+              </span>
             </a>
           </div>
           <div
@@ -494,14 +452,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       </div>
     </div>
   </div>
-</div>
-`;
-
-exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissions renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -544,6 +494,14 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       class="ResizingAnchor horizontal leading"
     />
   </div>
+</div>
+`;
+
+exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissions renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -601,44 +559,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
               </i>
               <span>
                 Cluster
-              </span>
-            </a>
-          </div>
-          <div
-            class="SidebarItem"
-            data-is-active-test="false"
-            data-testid="sidebar-item-nodes"
-          >
-            <a
-              class="navItem"
-              data-testid="link-for-sidebar-item-nodes"
-              href="/"
-            >
-              <i
-                class="Icon svg focusable"
-              >
-                <span
-                  class="icon"
-                >
-                  <svg
-                    enable-background="new 0 0 24 24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="m8.7 4v16h6.7v-16zm3.3 13.3c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.3.6-.6.6zm2-6.8h-4v-1.2h4zm0-2.4h-4v-1.2h4z"
-                    />
-                    <path
-                      d="m16.6 5.1v13.8h6.2v-13.8zm2.9 11.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.1.6-.6.6zm1.7-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
-                    />
-                    <path
-                      d="m1.2 5.1v13.8h6.2v-13.8zm3.3 11.2c-.3 0-.6-.3-.6-.6s.3-.7.6-.7.6.3.6.6-.3.7-.6.7zm1.5-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
-                    />
-                  </svg>
-                </span>
-              </i>
-              <span>
-                Nodes
               </span>
             </a>
           </div>
@@ -710,6 +630,44 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
                   keyboard_arrow_down
                 </span>
               </i>
+            </a>
+          </div>
+          <div
+            class="SidebarItem"
+            data-is-active-test="false"
+            data-testid="sidebar-item-nodes"
+          >
+            <a
+              class="navItem"
+              data-testid="link-for-sidebar-item-nodes"
+              href="/"
+            >
+              <i
+                class="Icon svg focusable"
+              >
+                <span
+                  class="icon"
+                >
+                  <svg
+                    enable-background="new 0 0 24 24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m8.7 4v16h6.7v-16zm3.3 13.3c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.3.6-.6.6zm2-6.8h-4v-1.2h4zm0-2.4h-4v-1.2h4z"
+                    />
+                    <path
+                      d="m16.6 5.1v13.8h6.2v-13.8zm2.9 11.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6.6.3.6.6-.1.6-.6.6zm1.7-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
+                    />
+                    <path
+                      d="m1.2 5.1v13.8h6.2v-13.8zm3.3 11.2c-.3 0-.6-.3-.6-.6s.3-.7.6-.7.6.3.6.6-.3.7-.6.7zm1.5-4.9h-3.2v-1.3h3.2zm0-2.4h-3.2v-1.3h3.2z"
+                    />
+                  </svg>
+                </span>
+              </i>
+              <span>
+                Nodes
+              </span>
             </a>
           </div>
           <div
@@ -998,14 +956,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       </div>
     </div>
   </div>
-</div>
-`;
-
-exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces permissions renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1048,6 +998,14 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
       class="ResizingAnchor horizontal leading"
     />
   </div>
+</div>
+`;
+
+exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces permissions renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -1541,6 +1499,48 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex column"
+    >
+      <div
+        class="drawer-title flex align-center"
+      >
+        <div
+          class="drawer-title-text flex gaps align-center"
+        >
+          
+        </div>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex column box grow"
+      >
+        <div
+          class="Spinner singleColor center"
+        />
+      </div>
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
   </div>
 </div>
 `;

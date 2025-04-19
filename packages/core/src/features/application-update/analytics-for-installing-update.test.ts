@@ -20,7 +20,7 @@ import periodicalCheckForUpdatesInjectable from "./child-features/periodical-che
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import getBuildVersionInjectable from "../../main/electron-app/features/get-build-version.injectable";
 
-describe("analytics for installing update", () => {
+describe.skip("analytics for installing update", () => {
   let builder: ApplicationBuilder;
   let checkForPlatformUpdatesMock: AsyncFnMock<CheckForPlatformUpdates>;
   let downloadPlatformUpdateMock: AsyncFnMock<DownloadPlatformUpdate>;

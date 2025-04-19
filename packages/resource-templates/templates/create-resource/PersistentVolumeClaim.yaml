@@ -4,7 +4,7 @@ metadata:
   name: myclaim
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
@@ -14,4 +14,4 @@ spec:
     matchLabels:
       release: stable
     matchExpressions:
-      - {key: environment, operator: In, values: [dev]}
+    - {key: environment, operator: In, values: [dev]}

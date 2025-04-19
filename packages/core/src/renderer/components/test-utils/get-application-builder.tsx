@@ -60,8 +60,7 @@ import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { findComposite } from "../../../common/utils/composite/find-composite/find-composite";
 import shouldStartHiddenInjectable from "../../../main/electron-app/features/should-start-hidden.injectable";
 import fsInjectable from "../../../common/fs/fs.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import homeDirectoryPathInjectable from "../../../common/os/home-directory-path.injectable";
+import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import selectedNamespacesStorageInjectable from "../../../features/namespace-filtering/renderer/storage.injectable";
 import { registerFeature } from "@freelensapp/feature-core";
 import { applicationFeatureForElectronMain, testUtils as applicationForElectronTestUtils } from "@freelensapp/application-for-electron-main";
@@ -213,10 +212,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
   // Set up ~/.kube as existing as a folder
   {
     const { ensureDirSync } = mainDi.inject(fsInjectable);
-    const joinPaths = mainDi.inject(joinPathsInjectable);
-    const homeDirectoryPath = mainDi.inject(homeDirectoryPathInjectable);
+    const kubeDirectoryPath = mainDi.inject(kubeDirectoryPathInjectable);
 
-    ensureDirSync(joinPaths(homeDirectoryPath, ".kube"));
+    ensureDirSync(kubeDirectoryPath);
   }
 
   let environment = environments.application;

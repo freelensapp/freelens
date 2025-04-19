@@ -29,22 +29,21 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "lint": "lens-lint",
     "lint:fix": "lens-lint --fix"
   },
-  "dependencies": {
-    "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.2.0",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.2.0",
-    "@ogre-tools/injectable-react": "^17.2.0",
-    "react": "^17.0.2"
-  },
   "devDependencies": {
     "@freelensapp/eslint-config": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.85"
+    "@ogre-tools/injectable": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
+    "@ogre-tools/injectable-react": "^17.11.1",
+    "@types/react": "^17.0.85",
+    "react": "^17.0.2"
   }
 }
