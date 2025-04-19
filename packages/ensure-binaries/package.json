@@ -30,7 +30,7 @@
     "node-fetch": "^3.3.2",
     "tar-stream": "^3.1.7",
     "typescript": "^5.8.3",
-    "zod": "^3.24.2"
+    "zod": "^3.24.3"
   },
   "bin": {
     "ensure-binaries": "bin/ensure-binaries.js"
