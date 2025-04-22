@@ -1,33 +1,34 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "@testing-library/jest-dom";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
-import React from "react";
-import type { ExtensionDiscovery } from "../../../../extensions/extension-discovery/extension-discovery";
-import type { ExtensionLoader } from "../../../../extensions/extension-loader";
-import { ConfirmDialog } from "../../confirm-dialog";
-import { Extensions } from "../extensions";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import type { DiRender } from "../../test-utils/renderFor";
-import { renderFor } from "../../test-utils/renderFor";
-import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
-import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import assert from "assert";
-import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
-import installExtensionFromInputInjectable from "../install-extension-from-input.injectable";
-import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
-import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { observable, when } from "mobx";
-import type { RemovePath } from "../../../../common/fs/remove.injectable";
-import removePathInjectable from "../../../../common/fs/remove.injectable";
+import React from "react";
+import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
+import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import type { DownloadBinary } from "../../../../common/fetch/download-binary.injectable";
 import downloadBinaryInjectable from "../../../../common/fetch/download-binary.injectable";
+import type { RemovePath } from "../../../../common/fs/remove.injectable";
+import removePathInjectable from "../../../../common/fs/remove.injectable";
+import type { ExtensionDiscovery } from "../../../../extensions/extension-discovery/extension-discovery";
+import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
+import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
+import { ConfirmDialog } from "../../confirm-dialog";
+import type { DiRender } from "../../test-utils/renderFor";
+import { renderFor } from "../../test-utils/renderFor";
+import { Extensions } from "../extensions";
+import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
+import installExtensionFromInputInjectable from "../install-extension-from-input.injectable";
 
 describe("Extensions", () => {
   let extensionLoader: ExtensionLoader;
@@ -54,7 +55,9 @@ describe("Extensions", () => {
       deleteFileMock = jest.fn();
       di.override(removePathInjectable, () => deleteFileMock);
 
-      downloadBinary = jest.fn().mockImplementation((url) => { throw new Error(`Unexpected call to downloadJson for url=${url}`); });
+      downloadBinary = jest.fn().mockImplementation((url) => {
+        throw new Error(`Unexpected call to downloadJson for url=${url}`);
+      });
       di.override(downloadBinaryInjectable, () => downloadBinary);
 
       extensionLoader = di.inject(extensionLoaderInjectable);
@@ -85,12 +88,12 @@ describe("Extensions", () => {
   it("disables uninstall and disable buttons while uninstalling", async () => {
     extensionDiscovery.isLoaded = true;
 
-    render((
+    render(
       <>
         <Extensions />
         <ConfirmDialog />
-      </>
-    ));
+      </>,
+    );
 
     const table = await screen.findByTestId("extensions-table");
     const menuTrigger = table.querySelector(".table div[role='rowgroup'] .actions .Icon");
@@ -106,14 +109,17 @@ describe("Extensions", () => {
     // Approve confirm dialog
     fireEvent.click(await screen.findByText("Yes"));
 
-    await waitFor(async () => {
-      expect(extensionDiscovery.uninstallExtension).toHaveBeenCalled();
-      fireEvent.click(menuTrigger);
-      expect(screen.getByText("Disable")).toHaveAttribute("aria-disabled", "true");
-      expect(screen.getByText("Uninstall")).toHaveAttribute("aria-disabled", "true");
-    }, {
-      timeout: 30000,
-    });
+    await waitFor(
+      async () => {
+        expect(extensionDiscovery.uninstallExtension).toHaveBeenCalled();
+        fireEvent.click(menuTrigger);
+        expect(screen.getByText("Disable")).toHaveAttribute("aria-disabled", "true");
+        expect(screen.getByText("Uninstall")).toHaveAttribute("aria-disabled", "true");
+      },
+      {
+        timeout: 30000,
+      },
+    );
   });
 
   it("disables install button while installing", async () => {
@@ -132,13 +138,16 @@ describe("Extensions", () => {
       clear();
     });
 
-    fireEvent.change(await screen.findByPlaceholderText("File path or URL", {
-      exact: false,
-    }), {
-      target: {
-        value: url,
+    fireEvent.change(
+      await screen.findByPlaceholderText("File path or URL", {
+        exact: false,
+      }),
+      {
+        target: {
+          value: url,
+        },
       },
-    });
+    );
 
     const doResolve = observable.box(false);
 

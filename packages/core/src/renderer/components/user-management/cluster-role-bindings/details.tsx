@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -11,22 +12,21 @@ import React from "react";
 
 import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
 import { AddRemoveButtons } from "../../add-remove-buttons";
+import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
+import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
 import { hashSubject } from "../hashers";
-import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
-import type { ClusterRoleBindingStore } from "./store";
 import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
 import openClusterRoleBindingDialogInjectable from "./dialog/open.injectable";
+import type { ClusterRoleBindingStore } from "./store";
 import clusterRoleBindingStoreInjectable from "./store.injectable";
-import autoBindReact from "auto-bind/react";
 
-export interface ClusterRoleBindingDetailsProps extends KubeObjectDetailsProps<ClusterRoleBinding> {
-}
+export interface ClusterRoleBindingDetailsProps extends KubeObjectDetailsProps<ClusterRoleBinding> {}
 
 interface Dependencies {
   openConfirmDialog: OpenConfirmDialog;
@@ -45,9 +45,12 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
 
   async componentDidMount() {
     disposeOnUnmount(this, [
-      reaction(() => this.props.object, () => {
-        this.selectedSubjects.clear();
-      }),
+      reaction(
+        () => this.props.object,
+        () => {
+          this.selectedSubjects.clear();
+        },
+      ),
     ]);
   }
 
@@ -61,8 +64,7 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
       message: (
         <p>
           Remove selected bindings for
-          <b>{clusterRoleBinding.getName()}</b>
-          ?
+          <b>{clusterRoleBinding.getName()}</b>?
         </p>
       ),
     });
@@ -103,25 +105,23 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
               <TableCell className="binding">Name</TableCell>
               <TableCell className="ns">Namespace</TableCell>
             </TableHead>
-            {
-              subjects.map((subject, i) => {
-                const { kind, name, namespace } = subject;
-                const isSelected = selectedSubjects.has(subject);
+            {subjects.map((subject, i) => {
+              const { kind, name, namespace } = subject;
+              const isSelected = selectedSubjects.has(subject);
 
-                return (
-                  <TableRow
-                    key={i}
-                    selected={isSelected}
-                    onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
-                  >
-                    <TableCell checkbox isChecked={isSelected} />
-                    <TableCell className="type">{kind}</TableCell>
-                    <TableCell className="binding">{name}</TableCell>
-                    <TableCell className="ns">{namespace || "-"}</TableCell>
-                  </TableRow>
-                );
-              })
-            }
+              return (
+                <TableRow
+                  key={i}
+                  selected={isSelected}
+                  onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
+                >
+                  <TableCell checkbox isChecked={isSelected} />
+                  <TableCell className="type">{kind}</TableCell>
+                  <TableCell className="binding">{name}</TableCell>
+                  <TableCell className="ns">{namespace || "-"}</TableCell>
+                </TableRow>
+              );
+            })}
           </Table>
         )}
 
@@ -136,11 +136,14 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
   }
 }
 
-export const ClusterRoleBindingDetails = withInjectables<Dependencies, ClusterRoleBindingDetailsProps>(NonInjectedClusterRoleBindingDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    openConfirmDialog: di.inject(openConfirmDialogInjectable),
-    openClusterRoleBindingDialog: di.inject(openClusterRoleBindingDialogInjectable),
-    clusterRoleBindingStore: di.inject(clusterRoleBindingStoreInjectable),
-  }),
-});
+export const ClusterRoleBindingDetails = withInjectables<Dependencies, ClusterRoleBindingDetailsProps>(
+  NonInjectedClusterRoleBindingDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      openConfirmDialog: di.inject(openConfirmDialogInjectable),
+      openClusterRoleBindingDialog: di.inject(openClusterRoleBindingDialogInjectable),
+      clusterRoleBindingStore: di.inject(clusterRoleBindingStoreInjectable),
+    }),
+  },
+);

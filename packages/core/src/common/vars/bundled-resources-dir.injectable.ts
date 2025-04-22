@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
-import isProductionInjectable from "./is-production.injectable";
-import normalizedPlatformInjectable from "./normalized-platform.injectable";
-import lensResourcesDirInjectable from "./lens-resources-dir.injectable";
 import joinPathsInjectable from "../path/join-paths.injectable";
+import isProductionInjectable from "./is-production.injectable";
+import lensResourcesDirInjectable from "./lens-resources-dir.injectable";
+import normalizedPlatformInjectable from "./normalized-platform.injectable";
 
 const bundledResourcesDirectoryInjectable = getInjectable({
   id: "bundled-resources-directory",
@@ -16,9 +18,7 @@ const bundledResourcesDirectoryInjectable = getInjectable({
     const joinPaths = di.inject(joinPathsInjectable);
     const lensResourcesDir = di.inject(lensResourcesDirInjectable);
 
-    return isProduction
-      ? lensResourcesDir
-      : joinPaths(lensResourcesDir, "binaries", "client", normalizedPlatform);
+    return isProduction ? lensResourcesDir : joinPaths(lensResourcesDir, "binaries", "client", normalizedPlatform);
   },
 });
 

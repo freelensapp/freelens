@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -10,7 +11,7 @@ export interface CatalogEntityDetailsProps<T extends CatalogEntity> {
   entity: T;
 }
 
-export type CatalogEntityDetailsComponent<T  extends CatalogEntity> = React.ComponentType<CatalogEntityDetailsProps<T>>;
+export type CatalogEntityDetailsComponent<T extends CatalogEntity> = React.ComponentType<CatalogEntityDetailsProps<T>>;
 
 export interface CatalogEntityDetailComponents<T extends CatalogEntity> {
   Details: CatalogEntityDetailsComponent<T>;

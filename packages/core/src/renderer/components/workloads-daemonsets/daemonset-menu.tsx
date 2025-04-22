@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
-import type { DaemonSet } from "@freelensapp/kube-object";
-import { MenuItem } from "../menu";
+
 import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { DaemonSetApi } from "@freelensapp/kube-api";
 import { daemonSetApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
-import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import type { DaemonSet } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { DaemonSetApi } from "@freelensapp/kube-api";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import { MenuItem } from "../menu";
 
 export interface DaemonSetMenuProps extends KubeObjectMenuProps<DaemonSet> {}
 
@@ -32,33 +34,29 @@ const NonInjectedDaemonSetMenu = ({
 }: Dependencies & DaemonSetMenuProps) => (
   <>
     <MenuItem
-      onClick={() => openConfirmDialog({
-        ok: async () =>
-        {
-          try {
-            await daemonSetApi.restart({
-              namespace: object.getNs(),
-              name: object.getName(),
-            });
-          } catch (err) {
-            showCheckedErrorNotification(err, "Unknown error occurred while restarting DaemonSet");
-          }
-        },
-        labelOk: "Restart",
-        message: (
-          <p>
-            {"Are you sure you want to restart DaemonSet "}
-            <b>{object.getName()}</b>
-            ?
-          </p>
-        ),
-      })}
+      onClick={() =>
+        openConfirmDialog({
+          ok: async () => {
+            try {
+              await daemonSetApi.restart({
+                namespace: object.getNs(),
+                name: object.getName(),
+              });
+            } catch (err) {
+              showCheckedErrorNotification(err, "Unknown error occurred while restarting DaemonSet");
+            }
+          },
+          labelOk: "Restart",
+          message: (
+            <p>
+              {"Are you sure you want to restart DaemonSet "}
+              <b>{object.getName()}</b>?
+            </p>
+          ),
+        })
+      }
     >
-      <Icon
-        material="autorenew"
-        tooltip="Restart"
-        interactive={toolbar}
-      />
+      <Icon material="autorenew" tooltip="Restart" interactive={toolbar} />
       <span className="title">Restart</span>
     </MenuItem>
   </>

@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
+import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
@@ -33,33 +34,35 @@ describe("<CustomResourceDetails />", () => {
           uid: "1",
         },
         spec: {
-          versions: [{
-            name: "v1",
-            served: true,
-            storage: true,
-            schema: {
-              openAPIV3Schema: {
-                type: "object",
-                properties: {
-                  spec: {
-                    type: "object",
-                    properties: {
-                      "my-field": {
-                        type: "boolean",
+          versions: [
+            {
+              name: "v1",
+              served: true,
+              storage: true,
+              schema: {
+                openAPIV3Schema: {
+                  type: "object",
+                  properties: {
+                    spec: {
+                      type: "object",
+                      properties: {
+                        "my-field": {
+                          type: "boolean",
+                        },
                       },
                     },
                   },
                 },
               },
+              additionalPrinterColumns: [
+                {
+                  name: "MyField",
+                  jsonPath: ".spec.my-field",
+                  type: "boolean",
+                },
+              ],
             },
-            additionalPrinterColumns: [
-              {
-                name: "MyField",
-                jsonPath: ".spec.my-field",
-                type: "boolean",
-              },
-            ],
-          }],
+          ],
           group: "stable.lens.dev",
           names: {
             kind: "MyCrd",
@@ -125,33 +128,35 @@ describe("<CustomResourceDetails />", () => {
           uid: "1",
         },
         spec: {
-          versions: [{
-            name: "v1",
-            served: true,
-            storage: true,
-            schema: {
-              openAPIV3Schema: {
-                type: "object",
-                properties: {
-                  spec: {
-                    type: "object",
-                    properties: {
-                      "my-field": {
-                        type: "number",
+          versions: [
+            {
+              name: "v1",
+              served: true,
+              storage: true,
+              schema: {
+                openAPIV3Schema: {
+                  type: "object",
+                  properties: {
+                    spec: {
+                      type: "object",
+                      properties: {
+                        "my-field": {
+                          type: "number",
+                        },
                       },
                     },
                   },
                 },
               },
+              additionalPrinterColumns: [
+                {
+                  name: "MyField",
+                  jsonPath: ".spec.my-field",
+                  type: "number",
+                },
+              ],
             },
-            additionalPrinterColumns: [
-              {
-                name: "MyField",
-                jsonPath: ".spec.my-field",
-                type: "number",
-              },
-            ],
-          }],
+          ],
           group: "stable.lens.dev",
           names: {
             kind: "MyCrd",

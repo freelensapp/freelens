@@ -1,36 +1,38 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
+
 import type { RenderResult } from "@testing-library/react";
 import { screen, waitFor } from "@testing-library/react";
+import React from "react";
 import "@testing-library/jest-dom";
-import { KubeObject } from "@freelensapp/kube-object";
-import type { UserEvent } from "@testing-library/user-event";
-import userEvent from "@testing-library/user-event";
-import { getInjectable } from "@ogre-tools/injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { ConfirmDialog } from "../confirm-dialog";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import { KubeObject } from "@freelensapp/kube-object";
+import { getInjectable } from "@ogre-tools/injectable";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { UserEvent } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
-import type { DiRender } from "../test-utils/renderFor";
-import { renderFor } from "../test-utils/renderFor";
+import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { KubeObjectMenu } from "./index";
-import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
-import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
-import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
-import activeEntityInternalClusterInjectable from "../../api/catalog/entity/get-active-cluster-entity.injectable";
-import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import clustersStateInjectable from "../../../features/cluster/storage/common/state.injectable";
 import activeEntityIdInjectable from "../../api/catalog/entity/active-entity-id.injectable";
+import activeEntityInternalClusterInjectable from "../../api/catalog/entity/get-active-cluster-entity.injectable";
+import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import { ConfirmDialog } from "../confirm-dialog";
+import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
+import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
+import type { DiRender } from "../test-utils/renderFor";
+import { renderFor } from "../test-utils/renderFor";
+import { KubeObjectMenu } from "./index";
+import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
 // TODO: make `animated={false}` not required to make tests deterministic
 describe("kube-object-menu", () => {
@@ -45,19 +47,18 @@ describe("kube-object-menu", () => {
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(directoryForTempInjectable, () => "/some-directory-for-temp");
 
-    di.inject(clustersStateInjectable).set("some-cluster-id", new Cluster({
-      id: "some-cluster-id",
-      contextName: "some-context-name",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.inject(clustersStateInjectable).set(
+      "some-cluster-id",
+      new Cluster({
+        id: "some-cluster-id",
+        contextName: "some-context-name",
+        kubeConfigPath: "/some-path-to-a-kubeconfig",
+      }),
+    );
     di.override(activeEntityIdInjectable, () => computed(() => "some-cluster-id"));
 
     runInAction(() => {
-      di.register(
-        someMenuItemInjectable,
-        someOtherMenuItemInjectable,
-        someAnotherMenuItemInjectable,
-      );
+      di.register(someMenuItemInjectable, someOtherMenuItemInjectable, someAnotherMenuItemInjectable);
     });
 
     render = renderFor(di);
@@ -67,7 +68,7 @@ describe("kube-object-menu", () => {
       () =>
         ({
           getStore: (api: any) => void api,
-        } as ApiManager),
+        }) as ApiManager,
     );
 
     di.override(hideDetailsInjectable, () => () => {});
@@ -78,11 +79,7 @@ describe("kube-object-menu", () => {
   });
 
   it("given no cluster, does not crash", () => {
-
-    di.override(
-      activeEntityInternalClusterInjectable,
-      () => computed(() => undefined),
-    );
+    di.override(activeEntityInternalClusterInjectable, () => computed(() => undefined));
 
     expect(() => {
       render(<KubeObjectMenu object={null as never} toolbar={true} />);
@@ -90,9 +87,7 @@ describe("kube-object-menu", () => {
   });
 
   it("given no kube object, renders", () => {
-    const { baseElement } = render(
-      <KubeObjectMenu object={null as never} toolbar={true} />,
-    );
+    const { baseElement } = render(<KubeObjectMenu object={null as never} toolbar={true} />);
 
     expect(baseElement).toMatchSnapshot();
   });
@@ -115,17 +110,13 @@ describe("kube-object-menu", () => {
       });
 
       removeActionMock = asyncFn();
-      result = render((
+      result = render(
         <div>
           <ConfirmDialog animated={false} />
 
-          <KubeObjectMenu
-            object={objectStub}
-            toolbar={true}
-            removeAction={removeActionMock}
-          />
-        </div>
-      ));
+          <KubeObjectMenu object={objectStub} toolbar={true} removeAction={removeActionMock} />
+        </div>,
+      );
     });
 
     it("renders", () => {
@@ -154,11 +145,7 @@ describe("kube-object-menu", () => {
           <div>
             <ConfirmDialog animated={false} />
 
-            <KubeObjectMenu
-              object={newObjectStub}
-              toolbar={true}
-              removeAction={removeActionMock}
-            />
+            <KubeObjectMenu object={newObjectStub} toolbar={true} removeAction={removeActionMock} />
           </div>,
         );
       });
@@ -169,7 +156,11 @@ describe("kube-object-menu", () => {
 
       describe("when removing new kube object", () => {
         beforeEach(async () => {
-          await user.click(await screen.findByTestId("menu-action-delete-for-/some-other-api-version/some-other-kind/some-other-namespace/some-other-name"));
+          await user.click(
+            await screen.findByTestId(
+              "menu-action-delete-for-/some-other-api-version/some-other-kind/some-other-namespace/some-other-name",
+            ),
+          );
         });
 
         it("renders", async () => {
@@ -234,11 +225,7 @@ describe("kube-object-menu", () => {
         <div>
           <ConfirmDialog animated={false} />
 
-          <KubeObjectMenu
-            object={objectStub}
-            toolbar={true}
-            removeAction={() => {}}
-          />
+          <KubeObjectMenu object={objectStub} toolbar={true} removeAction={() => {}} />
         </div>,
       ));
     });
@@ -272,11 +259,7 @@ describe("kube-object-menu", () => {
         <div>
           <ConfirmDialog animated={false} />
 
-          <KubeObjectMenu
-            object={objectStub}
-            toolbar={true}
-            removeAction={() => {}}
-          />
+          <KubeObjectMenu object={objectStub} toolbar={true} removeAction={() => {}} />
         </div>,
       ));
     });

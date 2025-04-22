@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { setAndGet } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
 import type { ClusterModel } from "../../../../common/cluster-types";
 import { Cluster } from "../../../../common/cluster/cluster";
 import clustersStateInjectable from "./state.injectable";
-import { setAndGet } from "@freelensapp/utilities";
 
 export type AddCluster = (clusterModel: ClusterModel) => Cluster;
 

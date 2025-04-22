@@ -1,24 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
+import type { MessageChannel } from "@freelensapp/messaging";
 import { disposer, isPromiseLike } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Options } from "conf/dist/source";
 import { isEqual, kebabCase } from "lodash";
 import type { IEqualsComparer } from "mobx";
 import { reaction } from "mobx";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import type { MessageChannel } from "@freelensapp/messaging";
-import { persistentStorageIpcChannelPrefixesInjectionToken } from "./channel-prefix";
-import { shouldPersistentStorageDisableSyncInIpcListenerInjectionToken } from "./disable-sync";
-import { persistStateToConfigInjectionToken } from "./save-to-file";
-import type { Migrations } from "./migrations.injectable";
 import { nextTick } from "process";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import getConfigurationFileModelInjectable from "../../../common/get-configuration-file-model/get-configuration-file-model.injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
+import { persistentStorageIpcChannelPrefixesInjectionToken } from "./channel-prefix";
+import { shouldPersistentStorageDisableSyncInIpcListenerInjectionToken } from "./disable-sync";
+import type { Migrations } from "./migrations.injectable";
+import { persistStateToConfigInjectionToken } from "./save-to-file";
 
 export interface PersistentStorage {
   /**
@@ -72,14 +74,7 @@ const createPersistentStorageInjectable = getInjectable({
     const sendMessageToChannel = di.inject(sendMessageToChannelInjectionToken);
 
     return <T extends object>(rawParams: PersistentStorageParams<T>) => {
-      const {
-        fromStore,
-        toJSON,
-        syncOptions,
-        migrations,
-        cwd = directoryForUserData,
-        ...params
-      } = rawParams;
+      const { fromStore, toJSON, syncOptions, migrations, cwd = directoryForUserData, ...params } = rawParams;
       const displayName = kebabCase(params.configName).toUpperCase();
 
       const loadAndStartSyncing = () => {
@@ -95,7 +90,9 @@ const createPersistentStorageInjectable = getInjectable({
         const res = fromStore(config.store);
 
         if (isPromiseLike(res)) {
-          logger.error(`${displayName} extends BaseStore<T>'s fromStore method returns a Promise or promise-like object. This is an error and must be fixed.`);
+          logger.error(
+            `${displayName} extends BaseStore<T>'s fromStore method returns a Promise or promise-like object. This is an error and must be fixed.`,
+          );
         }
 
         logger.info(`[${displayName}]: LOADED from ${config.path}`);
@@ -114,7 +111,7 @@ const createPersistentStorageInjectable = getInjectable({
           syncDisposers.push(
             reaction(
               () => toJSON(),
-              model => {
+              (model) => {
                 persistStateToConfig(config, model);
                 sendMessageToChannel(sendChannel, model);
               },

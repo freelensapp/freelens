@@ -1,47 +1,47 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./view.scss";
 
+import { Icon } from "@freelensapp/icon";
+import type { RoleApi } from "@freelensapp/kube-api";
+import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
+import type { ClusterRole, Role, ServiceAccount, Subject } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { ObservableHashSet, iter } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IObservableValue } from "mobx";
-import { computed, observable, makeObservable, action } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { NamespaceSelect } from "../../../namespaces/namespace-select";
-import type { ClusterRole, Role, ServiceAccount, Subject } from "@freelensapp/kube-object";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { EditableList } from "../../../editable-list";
-import { Icon } from "@freelensapp/icon";
-import { SubTitle } from "../../../layout/sub-title";
-import type { SelectOption } from "../../../select";
-import { onMultiSelectFor, Select } from "../../../select";
-import { Wizard, WizardStep } from "../../../wizard";
 import { Input } from "../../../input";
-import { ObservableHashSet, iter } from "@freelensapp/utilities";
-import type { RoleBindingDialogState } from "./state.injectable";
-import type { RoleBindingStore } from "../store";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import roleBindingStoreInjectable from "../store.injectable";
-import roleBindingDialogStateInjectable from "./state.injectable";
-import closeRoleBindingDialogInjectable from "./close.injectable";
 import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
-import type { RoleStore } from "../../roles/store";
-import type { ClusterRoleStore } from "../../cluster-roles/store";
-import type { ServiceAccountStore } from "../../service-accounts/store";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
+import { SubTitle } from "../../../layout/sub-title";
+import { NamespaceSelect } from "../../../namespaces/namespace-select";
+import type { SelectOption } from "../../../select";
+import { Select, onMultiSelectFor } from "../../../select";
+import { Wizard, WizardStep } from "../../../wizard";
+import type { ClusterRoleStore } from "../../cluster-roles/store";
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";
+import type { RoleStore } from "../../roles/store";
 import roleStoreInjectable from "../../roles/store.injectable";
+import type { ServiceAccountStore } from "../../service-accounts/store";
 import serviceAccountStoreInjectable from "../../service-accounts/store.injectable";
-import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { RoleApi } from "@freelensapp/kube-api";
+import type { RoleBindingStore } from "../store";
+import roleBindingStoreInjectable from "../store.injectable";
+import closeRoleBindingDialogInjectable from "./close.injectable";
+import type { RoleBindingDialogState } from "./state.injectable";
+import roleBindingDialogStateInjectable from "./state.injectable";
 
-export interface RoleBindingDialogProps extends Partial<DialogProps> {
-}
+export interface RoleBindingDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   state: IObservableValue<RoleBindingDialogState>;
@@ -73,52 +73,41 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
   @observable.ref selectedRoleRef: Role | ClusterRole | null | undefined = null;
   @observable bindingName = "";
   @observable bindingNamespace: string | null = null;
-  selectedAccounts = new ObservableHashSet<ServiceAccount>([], sa => sa.getId());
+  selectedAccounts = new ObservableHashSet<ServiceAccount>([], (sa) => sa.getId());
   selectedUsers = observable.set<string>([]);
   selectedGroups = observable.set<string>([]);
 
   @computed get selectedBindings(): Subject[] {
-    const serviceAccounts: Subject[] = Array.from(this.selectedAccounts, sa => ({
+    const serviceAccounts: Subject[] = Array.from(this.selectedAccounts, (sa) => ({
       name: sa.getName(),
       kind: "ServiceAccount",
       namespace: sa.getNs(),
     }));
-    const users: Subject[] = Array.from(this.selectedUsers, user => ({
+    const users: Subject[] = Array.from(this.selectedUsers, (user) => ({
       name: user,
       kind: "User",
     }));
-    const groups: Subject[] = Array.from(this.selectedGroups, group => ({
+    const groups: Subject[] = Array.from(this.selectedGroups, (group) => ({
       name: group,
       kind: "Group",
     }));
 
-    return [
-      ...serviceAccounts,
-      ...users,
-      ...groups,
-    ];
+    return [...serviceAccounts, ...users, ...groups];
   }
 
   @computed get roleRefOptions(): SelectOption<Role | ClusterRole>[] {
-    const {
-      roleStore,
-      clusterRoleStore,
-    } = this.props;
-    const roles = roleStore.items
-      .filter(role => role.getNs() === this.bindingNamespace);
+    const { roleStore, clusterRoleStore } = this.props;
+    const roles = roleStore.items.filter((role) => role.getNs() === this.bindingNamespace);
     const clusterRoles = clusterRoleStore.items;
 
-    return [
-      ...roles,
-      ...clusterRoles,
-    ].map(r => ({
+    return [...roles, ...clusterRoles].map((r) => ({
       value: r,
       label: r.getName(),
     }));
   }
 
   @computed get serviceAccountOptions(): SelectOption<ServiceAccount>[] {
-    return this.props.serviceAccountStore.items.map(serviceAccount => ({
+    return this.props.serviceAccountStore.items.map((serviceAccount) => ({
       value: serviceAccount,
       label: `${serviceAccount.getName()} (${serviceAccount.getNs()})`,
       isSelected: this.selectedAccounts.has(serviceAccount),
@@ -126,36 +115,31 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
   }
 
   onOpen = action(() => {
-    const {
-      roleStore,
-      clusterRoleStore,
-      serviceAccountStore,
-      roleApi,
-    } = this.props;
+    const { roleStore, clusterRoleStore, serviceAccountStore, roleApi } = this.props;
     const binding = this.roleBinding;
 
     if (!binding) {
       return this.reset();
     }
 
-    this.selectedRoleRef = (
+    this.selectedRoleRef =
       binding.roleRef.kind === roleApi.kind
-        ? roleStore.items.find(item => item.getName() === binding.roleRef.name)
-        : clusterRoleStore.items.find(item => item.getName() === binding.roleRef.name)
-    );
+        ? roleStore.items.find((item) => item.getName() === binding.roleRef.name)
+        : clusterRoleStore.items.find((item) => item.getName() === binding.roleRef.name);
 
     this.bindingName = binding.getName();
     this.bindingNamespace = binding.getNs();
 
-    const [saSubjects, uSubjects, gSubjects] = iter.nFircate(binding.getSubjects(), "kind", ["ServiceAccount", "User", "Group"]);
-    const accountNames = new Set(saSubjects.map(acc => acc.name));
+    const [saSubjects, uSubjects, gSubjects] = iter.nFircate(binding.getSubjects(), "kind", [
+      "ServiceAccount",
+      "User",
+      "Group",
+    ]);
+    const accountNames = new Set(saSubjects.map((acc) => acc.name));
 
-    this.selectedAccounts.replace(
-      serviceAccountStore.items
-        .filter(sa => accountNames.has(sa.getName())),
-    );
-    this.selectedUsers.replace(uSubjects.map(user => user.name));
-    this.selectedGroups.replace(gSubjects.map(group => group.name));
+    this.selectedAccounts.replace(serviceAccountStore.items.filter((sa) => accountNames.has(sa.getName())));
+    this.selectedUsers.replace(uSubjects.map((user) => user.name));
+    this.selectedGroups.replace(gSubjects.map((group) => group.name));
   });
 
   reset = action(() => {
@@ -168,11 +152,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
   });
 
   createBindings = async () => {
-    const {
-      roleBindingStore,
-      showDetails,
-      showCheckedErrorNotification,
-    } = this.props;
+    const { roleBindingStore, showDetails, showCheckedErrorNotification } = this.props;
     const { selectedRoleRef, bindingNamespace, selectedBindings, roleBinding, bindingName } = this;
 
     if (!selectedRoleRef || !roleBinding || !bindingNamespace || !bindingName) {
@@ -182,21 +162,27 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     try {
       const newRoleBinding = this.isEditing
         ? await roleBindingStore.updateSubjects(roleBinding, selectedBindings)
-        : await roleBindingStore.create({
-          name: bindingName,
-          namespace: bindingNamespace,
-        }, {
-          subjects: selectedBindings,
-          roleRef: {
-            name: selectedRoleRef.getName(),
-            kind: selectedRoleRef.kind,
-          },
-        });
+        : await roleBindingStore.create(
+            {
+              name: bindingName,
+              namespace: bindingNamespace,
+            },
+            {
+              subjects: selectedBindings,
+              roleRef: {
+                name: selectedRoleRef.getName(),
+                kind: selectedRoleRef.kind,
+              },
+            },
+          );
 
       showDetails(newRoleBinding.selfLink);
       this.props.closeRoleBindingDialog();
     } catch (err) {
-      showCheckedErrorNotification(err, `Unknown error occurred while ${this.isEditing ? "editing" : "creating"} role bindings.`);
+      showCheckedErrorNotification(
+        err,
+        `Unknown error occurred while ${this.isEditing ? "editing" : "creating"} role bindings.`,
+      );
     }
   };
 
@@ -210,7 +196,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
           isDisabled={this.isEditing}
           value={this.bindingNamespace}
           autoFocus={!this.isEditing}
-          onChange={opt => this.bindingNamespace = opt?.value ?? null}
+          onChange={(opt) => (this.bindingNamespace = opt?.value ?? null)}
         />
 
         <SubTitle title="Role Reference" />
@@ -221,7 +207,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
           isDisabled={this.isEditing}
           options={this.roleRefOptions}
           value={this.selectedRoleRef}
-          onChange={option => {
+          onChange={(option) => {
             this.selectedRoleRef = option?.value;
 
             if (!this.selectedRoleRef || this.bindingName === this.selectedRoleRef.getName()) {
@@ -231,11 +217,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
         />
 
         <SubTitle title="Binding Name" />
-        <Input
-          disabled={this.isEditing}
-          value={this.bindingName}
-          onChange={value => this.bindingName = value}
-        />
+        <Input disabled={this.isEditing} value={this.bindingName} onChange={(value) => (this.bindingName = value)} />
 
         <SubTitle title="Binding targets" />
 
@@ -262,11 +244,9 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
           themeName="light"
           placeholder="Select service accounts ..."
           options={this.serviceAccountOptions}
-          formatOptionLabel={option => (
+          formatOptionLabel={(option) => (
             <>
-              <Icon small material="account_box" />
-              {" "}
-              {option.label}
+              <Icon small material="account_box" /> {option.label}
             </>
           )}
           onChange={onMultiSelectFor(this.selectedAccounts)}
@@ -279,7 +259,8 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
   render() {
     const { closeRoleBindingDialog, roleBindingStore, state, ...dialogProps } = this.props;
     const [action, nextLabel] = this.isEditing ? ["Edit", "Update"] : ["Add", "Create"];
-    const disableNext = !this.selectedRoleRef || !this.selectedBindings.length || !this.bindingNamespace || !this.bindingName;
+    const disableNext =
+      !this.selectedRoleRef || !this.selectedBindings.length || !this.bindingNamespace || !this.bindingName;
 
     void roleBindingStore;
 
@@ -292,19 +273,8 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
         onClose={this.reset}
         onOpen={this.onOpen}
       >
-        <Wizard
-          header={(
-            <h5>
-              {`${action} RoleBinding`}
-            </h5>
-          )}
-          done={closeRoleBindingDialog}
-        >
-          <WizardStep
-            nextLabel={nextLabel}
-            next={this.createBindings}
-            disabledNext={disableNext}
-          >
+        <Wizard header={<h5>{`${action} RoleBinding`}</h5>} done={closeRoleBindingDialog}>
+          <WizardStep nextLabel={nextLabel} next={this.createBindings} disabledNext={disableNext}>
             {this.renderContents()}
           </WizardStep>
         </Wizard>

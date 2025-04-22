@@ -1,21 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import type { RenderResult } from "@testing-library/react";
+import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
 import showMessagePopupInjectable from "../../../../main/electron-app/features/show-message-popup.injectable";
 import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
-import electronUpdaterIsActiveInjectable
-  from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
-import publishIsConfiguredInjectable
-  from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
+import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
+import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
+import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 
 describe("installing update using application menu", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -28,18 +27,12 @@ describe("installing update using application menu", () => {
       checkForPlatformUpdatesMock = asyncFn();
       showMessagePopupMock = asyncFn();
 
-      mainDi.override(
-        checkForPlatformUpdatesInjectable,
-        () => checkForPlatformUpdatesMock,
-      );
+      mainDi.override(checkForPlatformUpdatesInjectable, () => checkForPlatformUpdatesMock);
 
       mainDi.override(electronUpdaterIsActiveInjectable, () => true);
       mainDi.override(publishIsConfiguredInjectable, () => true);
 
-      mainDi.override(
-        showMessagePopupInjectable,
-        () => showMessagePopupMock,
-      );
+      mainDi.override(showMessagePopupInjectable, () => showMessagePopupMock);
     });
   });
 
@@ -56,11 +49,7 @@ describe("installing update using application menu", () => {
 
     describe("when user checks for updates using application menu", () => {
       beforeEach(() => {
-        applicationBuilder.applicationMenu.click(
-          "root",
-          "mac",
-          "check-for-updates",
-        );
+        applicationBuilder.applicationMenu.click("root", "mac", "check-for-updates");
       });
       describe("when no new update is discovered", () => {
         beforeEach(async () => {
@@ -74,7 +63,7 @@ describe("installing update using application menu", () => {
             "No Updates Available",
             "You're all good",
             "You've got the latest version of Lens,\nthanks for staying on the ball.",
-            { "textWidth": 300 },
+            { textWidth: 300 },
           );
         });
       });

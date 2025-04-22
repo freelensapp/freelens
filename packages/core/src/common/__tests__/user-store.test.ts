@@ -1,22 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { DiContainer } from "@ogre-tools/injectable";
-import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import { defaultThemeId } from "../vars";
-import writeFileInjectable from "../fs/write-file.injectable";
-import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
-import storeMigrationVersionInjectable from "../vars/store-migration-version.injectable";
-import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
-import writeFileSyncInjectable from "../fs/write-file-sync.injectable";
+import type { ClusterStoreModel } from "../../features/cluster/storage/common/storage.injectable";
+import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
+import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
 import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";
-import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
-import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
-import type { ClusterStoreModel } from "../../features/cluster/storage/common/storage.injectable";
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
+import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
+import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import writeFileSyncInjectable from "../fs/write-file-sync.injectable";
+import writeFileInjectable from "../fs/write-file.injectable";
+import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
+import { defaultThemeId } from "../vars";
+import storeMigrationVersionInjectable from "../vars/store-migration-version.injectable";
 
 describe("user store tests", () => {
   let state: UserPreferencesState;

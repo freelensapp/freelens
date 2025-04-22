@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Pod } from "@freelensapp/kube-object";
+import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { Tooltip } from "@freelensapp/tooltip";
 import { getConvertedParts } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import type { Pod } from "@freelensapp/kube-object";
-import { Tooltip } from "@freelensapp/tooltip";
-import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 
 const columnId = "name";
 
@@ -23,9 +25,7 @@ export const podsNameColumnInjectable = getInjectable({
         <span id={`list-pod-name-${pod.getId()}`} data-testid={`list-pod-name-${pod.getId()}`}>
           {pod.getName()}
         </span>
-        <Tooltip targetId={`list-pod-name-${pod.getId()}`}>
-          {pod.getName()}
-        </Tooltip>
+        <Tooltip targetId={`list-pod-name-${pod.getId()}`}>{pod.getName()}</Tooltip>
       </>
     ),
     header: { title: "Name", className: "name", sortBy: columnId, id: columnId },

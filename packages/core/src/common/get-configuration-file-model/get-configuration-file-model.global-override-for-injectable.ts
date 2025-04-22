@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -6,12 +7,12 @@
 import assert from "assert";
 import path from "path";
 import { getGlobalOverride } from "@freelensapp/test-utils";
-import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
 import type Config from "conf";
-import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
-import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import { get, has, set } from "lodash";
 import semver from "semver";
+import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
+import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
+import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
 
 const MIGRATION_KEY = `__internal__.migrations.version`;
 
@@ -19,7 +20,11 @@ const _isVersionInRangeFormat = (version: string) => {
   return semver.clean(version) === null;
 };
 
-const _shouldPerformMigration = (candidateVersion: string, previousMigratedVersion: string, versionToMigrate: string) => {
+const _shouldPerformMigration = (
+  candidateVersion: string,
+  previousMigratedVersion: string,
+  versionToMigrate: string,
+) => {
   if (_isVersionInRangeFormat(candidateVersion)) {
     if (previousMigratedVersion !== "0.0.0" && semver.satisfies(previousMigratedVersion, candidateVersion)) {
       return false;
@@ -104,8 +109,9 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
       const migrations = options.migrations ?? [];
       const versionToMigrate = options.projectVersion;
       let previousMigratedVersion = get(store, MIGRATION_KEY) || "0.0.0";
-      const newerVersions = Object.entries(migrations)
-        .filter(([candidateVersion]) => _shouldPerformMigration(candidateVersion, previousMigratedVersion, versionToMigrate));
+      const newerVersions = Object.entries(migrations).filter(([candidateVersion]) =>
+        _shouldPerformMigration(candidateVersion, previousMigratedVersion, versionToMigrate),
+      );
 
       let storeBackup = { ...store };
 
@@ -115,10 +121,11 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
           set(store, MIGRATION_KEY, version);
           previousMigratedVersion = version;
           storeBackup = { ...store };
-        }
-        catch (error) {
+        } catch (error) {
           store = storeBackup;
-          throw new Error(`Something went wrong during the migration! Changes applied to the store until this failed migration will be restored. ${error}`);
+          throw new Error(
+            `Something went wrong during the migration! Changes applied to the store until this failed migration will be restored. ${error}`,
+          );
         }
       }
 

@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { ipcRenderer } from "electron";
-import * as proto from "../../../common/protocol-handler";
-import Url from "url-parse";
-import type { LensProtocolRouterDependencies } from "../../../common/protocol-handler";
-import { foldAttemptResults, ProtocolHandlerInvalid, RouteAttempt } from "../../../common/protocol-handler";
 import type { ShowNotification } from "@freelensapp/notifications";
+import { ipcRenderer } from "electron";
+import React from "react";
+import Url from "url-parse";
+import * as proto from "../../../common/protocol-handler";
+import type { LensProtocolRouterDependencies } from "../../../common/protocol-handler";
+import { ProtocolHandlerInvalid, RouteAttempt, foldAttemptResults } from "../../../common/protocol-handler";
 
 interface Dependencies extends LensProtocolRouterDependencies {
   showShortInfoNotification: ShowNotification;
@@ -29,13 +30,13 @@ export class LensProtocolRouterRenderer extends proto.LensProtocolRouter {
       const rendererAttempt = this._routeToInternal(new Url(rawUrl, true));
 
       if (foldAttemptResults(mainAttemptResult, rendererAttempt) === RouteAttempt.MISSING) {
-        this.dependencies.showShortInfoNotification((
+        this.dependencies.showShortInfoNotification(
           <p>
             {"Unknown action "}
             <code>{rawUrl}</code>
             {". Are you on the latest version?"}
-          </p>
-        ));
+          </p>,
+        );
       }
     });
     ipcRenderer.on(proto.ProtocolHandlerExtension, async (event, rawUrl: string, mainAttemptResult: RouteAttempt) => {
@@ -43,40 +44,37 @@ export class LensProtocolRouterRenderer extends proto.LensProtocolRouter {
 
       switch (foldAttemptResults(mainAttemptResult, rendererAttempt)) {
         case RouteAttempt.MISSING:
-          this.dependencies.showShortInfoNotification((
+          this.dependencies.showShortInfoNotification(
             <p>
               {"Unknown action "}
               <code>{rawUrl}</code>
               {". Are you on the latest version of the extension?"}
-            </p>
-          ));
+            </p>,
+          );
           break;
         case RouteAttempt.MISSING_EXTENSION:
-          this.dependencies.showShortInfoNotification((
+          this.dependencies.showShortInfoNotification(
             <p>
               {"Missing extension for action "}
               <code>{rawUrl}</code>
               {". Not able to find extension in our known list. Try installing it manually."}
-            </p>
-          ));
+            </p>,
+          );
           break;
       }
     });
     ipcRenderer.on(ProtocolHandlerInvalid, (event, error: string, rawUrl: string) => {
-      this.dependencies.showErrorNotification((
+      this.dependencies.showErrorNotification(
         <>
           <p>
             {"Failed to route "}
-            <code>{rawUrl}</code>
-            .
+            <code>{rawUrl}</code>.
           </p>
           <p>
-            <b>Error:</b>
-            {" "}
-            {error}
+            <b>Error:</b> {error}
           </p>
-        </>
-      ));
+        </>,
+      );
     });
   }
 }

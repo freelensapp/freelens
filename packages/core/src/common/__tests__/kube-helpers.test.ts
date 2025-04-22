@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { KubeConfig } from "@freelensapp/kubernetes-client-node";
-import { validateKubeConfig, loadConfigFromString } from "../kube-helpers";
+import { loadConfigFromString, validateKubeConfig } from "../kube-helpers";
 
 const kubeconfig = `
 apiVersion: v1
@@ -45,22 +46,28 @@ users:
 
 interface Kubeconfig {
   apiVersion: string;
-  clusters: [{
-    name: string;
-    cluster: {
-      server: string;
-    };
-  }];
-  contexts: [{
-    context: {
-      cluster: string;
-      user: string;
-    };
-    name: string;
-  }];
-  users: [{
-    name: string;
-  }];
+  clusters: [
+    {
+      name: string;
+      cluster: {
+        server: string;
+      };
+    },
+  ];
+  contexts: [
+    {
+      context: {
+        cluster: string;
+        user: string;
+      };
+      name: string;
+    },
+  ];
+  users: [
+    {
+      name: string;
+    },
+  ];
   kind: string;
   "current-context": string;
   preferences: {};
@@ -129,22 +136,28 @@ describe("kube helpers", () => {
       beforeEach(() => {
         mockKubeConfig = {
           apiVersion: "v1",
-          clusters: [{
-            name: "minikube",
-            cluster: {
-              server: "https://192.168.64.3:8443",
+          clusters: [
+            {
+              name: "minikube",
+              cluster: {
+                server: "https://192.168.64.3:8443",
+              },
             },
-          }],
-          contexts: [{
-            context: {
-              cluster: "minikube",
-              user: "minikube",
+          ],
+          contexts: [
+            {
+              context: {
+                cluster: "minikube",
+                user: "minikube",
+              },
+              name: "minikube",
             },
-            name: "minikube",
-          }],
-          users: [{
-            name: "minikube",
-          }],
+          ],
+          users: [
+            {
+              name: "minikube",
+            },
+          ],
           kind: "Config",
           "current-context": "minikube",
           preferences: {},
@@ -170,22 +183,28 @@ describe("kube helpers", () => {
       beforeEach(() => {
         mockKubeConfig = {
           apiVersion: "v1",
-          clusters: [{
-            name: "minikube",
-            cluster: {
-              server: "https://192.168.64.3:8443",
+          clusters: [
+            {
+              name: "minikube",
+              cluster: {
+                server: "https://192.168.64.3:8443",
+              },
             },
-          }],
-          contexts: [{
-            context: {
-              cluster: "minikube",
-              user: "minikube",
+          ],
+          contexts: [
+            {
+              context: {
+                cluster: "minikube",
+                user: "minikube",
+              },
+              name: "minikube",
             },
-            name: "minikube",
-          }],
-          users: [{
-            name: "minikube",
-          }],
+          ],
+          users: [
+            {
+              name: "minikube",
+            },
+          ],
           kind: "Config",
           "current-context": "minikube",
           preferences: {},

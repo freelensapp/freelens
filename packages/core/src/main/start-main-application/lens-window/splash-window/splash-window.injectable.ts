@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
-import createLensWindowInjectable from "../application-window/create-lens-window.injectable";
-import staticFilesDirectoryInjectable from "../../../../common/vars/static-files-directory.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
+import staticFilesDirectoryInjectable from "../../../../common/vars/static-files-directory.injectable";
+import createLensWindowInjectable from "../application-window/create-lens-window.injectable";
 
 const splashWindowInjectable = getInjectable({
   id: "splash-window",

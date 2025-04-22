@@ -1,20 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import path from "path";
+import { inspect } from "util";
+import type { Disposer } from "@freelensapp/utilities";
+import { getOrInsertWith, iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import GlobToRegExp from "glob-to-regexp";
 import type { IComputedValue, ObservableMap } from "mobx";
 import { computed, observable } from "mobx";
-import path from "path";
-import { inspect } from "util";
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
 import statInjectable from "../../../common/fs/stat.injectable";
 import type { Watcher } from "../../../common/fs/watch/watch.injectable";
 import watchInjectable from "../../../common/fs/watch/watch.injectable";
-import type { Disposer } from "@freelensapp/utilities";
-import { getOrInsertWith, iter } from "@freelensapp/utilities";
 import diffChangedKubeconfigInjectable from "./diff-changed-kubeconfig.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 
@@ -38,7 +40,7 @@ const ignoreGlobs = [
   "kubectx", // kubectx cache
   "kubens", // kubens cache
   "Thumbs.db", // windows specific
-].map(rawGlob => ({
+].map((rawGlob) => ({
   rawGlob,
   matcher: GlobToRegExp(rawGlob, { extended: true }),
 }));
@@ -62,7 +64,9 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
 
     return (filePath) => {
       const rootSource = observable.map<string, ObservableMap<string, [Cluster, CatalogEntity]>>();
-      const derivedSource = computed(() => Array.from(iter.flatMap(rootSource.values(), from => iter.map(from.values(), child => child[1]))));
+      const derivedSource = computed(() =>
+        Array.from(iter.flatMap(rootSource.values(), (from) => iter.map(from.values(), (child) => child[1]))),
+      );
 
       let watcher: Watcher<true>;
 
@@ -94,16 +98,21 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
 
               if (!cleanup) {
                 // file was previously ignored, do nothing
-                return void logger.debug(`${inspect(childFilePath)} that should have been previously ignored has changed. Doing nothing`);
+                return void logger.debug(
+                  `${inspect(childFilePath)} that should have been previously ignored has changed. Doing nothing`,
+                );
               }
 
               cleanup();
-              cleanupFns.set(childFilePath, diffChangedKubeconfig({
-                filePath: childFilePath,
-                source: getOrInsertWith(rootSource, childFilePath, observable.map),
-                stats,
-                maxAllowedFileReadSize,
-              }));
+              cleanupFns.set(
+                childFilePath,
+                diffChangedKubeconfig({
+                  filePath: childFilePath,
+                  source: getOrInsertWith(rootSource, childFilePath, observable.map),
+                  stats,
+                  maxAllowedFileReadSize,
+                }),
+              );
             })
             .on("add", (childFilePath, stats): void => {
               if (isFolderSync) {
@@ -111,32 +120,40 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
 
                 for (const ignoreGlob of ignoreGlobs) {
                   if (ignoreGlob.matcher.test(fileName)) {
-                    return void logger.info(`ignoring ${inspect(childFilePath)} due to ignore glob: ${ignoreGlob.rawGlob}`);
+                    return void logger.info(
+                      `ignoring ${inspect(childFilePath)} due to ignore glob: ${ignoreGlob.rawGlob}`,
+                    );
                   }
                 }
               }
 
-              cleanupFns.set(childFilePath, diffChangedKubeconfig({
-                filePath: childFilePath,
-                source: getOrInsertWith(rootSource, childFilePath, observable.map),
-                stats,
-                maxAllowedFileReadSize,
-              }));
+              cleanupFns.set(
+                childFilePath,
+                diffChangedKubeconfig({
+                  filePath: childFilePath,
+                  source: getOrInsertWith(rootSource, childFilePath, observable.map),
+                  stats,
+                  maxAllowedFileReadSize,
+                }),
+              );
             })
             .on("unlink", (childFilePath) => {
               cleanupFns.get(childFilePath)?.();
               cleanupFns.delete(childFilePath);
               rootSource.delete(childFilePath);
             })
-            .on("error", error => logger.error(`watching file/folder failed: ${error}`, { filePath }));
+            .on("error", (error) => logger.error(`watching file/folder failed: ${error}`, { filePath }));
         } catch (error) {
           logger.warn(`failed to start watching changes: ${error}`);
         }
       })();
 
-      return [derivedSource, () => {
-        watcher?.close();
-      }];
+      return [
+        derivedSource,
+        () => {
+          watcher?.close();
+        },
+      ];
     };
   },
 });

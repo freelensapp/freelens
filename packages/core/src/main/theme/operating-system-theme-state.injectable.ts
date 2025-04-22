@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 import getElectronThemeInjectable from "../electron-app/features/get-electron-theme.injectable";
@@ -15,9 +17,7 @@ const operatingSystemThemeStateInjectable = getInjectable({
     const getElectronTheme = di.inject(getElectronThemeInjectable);
     const defaultTheme = getElectronTheme();
 
-    return observable.box<Theme>(
-      defaultTheme,
-    );
+    return observable.box<Theme>(defaultTheme);
   },
 });
 

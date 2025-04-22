@@ -1,24 +1,29 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import * as uuid from "uuid";
 
-import { ProtocolHandlerExtension, ProtocolHandlerInternal, ProtocolHandlerInvalid } from "../../../common/protocol-handler";
+import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { noop } from "@freelensapp/utilities";
-import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-protocol-router-main.injectable";
 import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
-import extensionInstancesInjectable from "../../../extensions/extension-loader/extension-instances.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import broadcastMessageInjectable from "../../../common/ipc/broadcast-message.injectable";
+import {
+  ProtocolHandlerExtension,
+  ProtocolHandlerInternal,
+  ProtocolHandlerInvalid,
+} from "../../../common/protocol-handler";
+import extensionInstancesInjectable from "../../../extensions/extension-loader/extension-instances.injectable";
+import { LensMainExtension } from "../../../extensions/lens-main-extension";
 import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
 import enabledExtensionsStateInjectable from "../../../features/extensions/enabled/common/state.injectable";
-import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
-import { LensMainExtension } from "../../../extensions/lens-main-extension";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
+import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-protocol-router-main.injectable";
 
 function throwIfDefined(val: any): void {
   if (val != null) {
@@ -111,13 +116,19 @@ describe("protocol router tests", () => {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
-    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerExtension, "freelens://extension/@mirantis/minikube", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(
+      ProtocolHandlerExtension,
+      "freelens://extension/@mirantis/minikube",
+      "matched",
+    );
   });
 
   it("should call handler if matches", async () => {
     let called = false;
 
-    lpr.addInternalHandler("/page", () => { called = true; });
+    lpr.addInternalHandler("/page", () => {
+      called = true;
+    });
 
     try {
       expect(await lpr.route("freelens://app/page")).toBeUndefined();
@@ -132,8 +143,12 @@ describe("protocol router tests", () => {
   it("should call most exact handler", async () => {
     let called: any = 0;
 
-    lpr.addInternalHandler("/page", () => { called = 1; });
-    lpr.addInternalHandler("/page/:id", params => { called = params.pathname.id; });
+    lpr.addInternalHandler("/page", () => {
+      called = 1;
+    });
+    lpr.addInternalHandler("/page/:id", (params) => {
+      called = params.pathname.id;
+    });
 
     try {
       expect(await lpr.route("freelens://app/page/foo")).toBeUndefined();
@@ -163,14 +178,20 @@ describe("protocol router tests", () => {
       absolutePath: "/foo/bar",
     });
 
-    ext.protocolHandlers
-      .push({
+    ext.protocolHandlers.push(
+      {
         pathSchema: "/page",
-        handler: () => { called = 1; },
-      }, {
+        handler: () => {
+          called = 1;
+        },
+      },
+      {
         pathSchema: "/page/:id",
-        handler: params => { called = params.pathname.id; },
-      });
+        handler: (params) => {
+          called = params.pathname.id;
+        },
+      },
+    );
 
     extensionInstances.set(extId, ext);
     enabledExtensions.set(extId, { name: "@foobar/icecream", enabled: true });
@@ -182,7 +203,11 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe("foob");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "freelens://extension/@foobar/icecream/page/foob", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(
+      ProtocolHandlerExtension,
+      "freelens://extension/@foobar/icecream/page/foob",
+      "matched",
+    );
   });
 
   it("should work with non-org extensions", async () => {
@@ -204,11 +229,12 @@ describe("protocol router tests", () => {
         absolutePath: "/foo/bar",
       });
 
-      ext.protocolHandlers
-        .push({
-          pathSchema: "/page/:id",
-          handler: params => { called = params.pathname.id; },
-        });
+      ext.protocolHandlers.push({
+        pathSchema: "/page/:id",
+        handler: (params) => {
+          called = params.pathname.id;
+        },
+      });
 
       extensionInstances.set(extId, ext);
       enabledExtensions.set(extId, { name: "@foobar/icecream", enabled: true });
@@ -230,11 +256,12 @@ describe("protocol router tests", () => {
         absolutePath: "/foo/bar",
       });
 
-      ext.protocolHandlers
-        .push({
-          pathSchema: "/page",
-          handler: () => { called = 1; },
-        });
+      ext.protocolHandlers.push({
+        pathSchema: "/page",
+        handler: () => {
+          called = 1;
+        },
+      });
 
       extensionInstances.set(extId, ext);
       enabledExtensions.set(extId, { name: "icecream", enabled: true });
@@ -246,9 +273,12 @@ describe("protocol router tests", () => {
       expect(throwIfDefined(error)).not.toThrow();
     }
 
-
     expect(called).toBe(1);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerExtension, "freelens://extension/icecream/page", "matched");
+    expect(broadcastMessageMock).toBeCalledWith(
+      ProtocolHandlerExtension,
+      "freelens://extension/icecream/page",
+      "matched",
+    );
   });
 
   it("should throw if urlSchema is invalid", () => {
@@ -258,10 +288,18 @@ describe("protocol router tests", () => {
   it("should call most exact handler with 3 found handlers", async () => {
     let called: any = 0;
 
-    lpr.addInternalHandler("/", () => { called = 2; });
-    lpr.addInternalHandler("/page", () => { called = 1; });
-    lpr.addInternalHandler("/page/foo", () => { called = 3; });
-    lpr.addInternalHandler("/page/bar", () => { called = 4; });
+    lpr.addInternalHandler("/", () => {
+      called = 2;
+    });
+    lpr.addInternalHandler("/page", () => {
+      called = 1;
+    });
+    lpr.addInternalHandler("/page/foo", () => {
+      called = 3;
+    });
+    lpr.addInternalHandler("/page/bar", () => {
+      called = 4;
+    });
 
     try {
       expect(await lpr.route("freelens://app/page/foo/bar/bat")).toBeUndefined();
@@ -276,9 +314,15 @@ describe("protocol router tests", () => {
   it("should call most exact handler with 2 found handlers", async () => {
     let called: any = 0;
 
-    lpr.addInternalHandler("/", () => { called = 2; });
-    lpr.addInternalHandler("/page", () => { called = 1; });
-    lpr.addInternalHandler("/page/bar", () => { called = 4; });
+    lpr.addInternalHandler("/", () => {
+      called = 2;
+    });
+    lpr.addInternalHandler("/page", () => {
+      called = 1;
+    });
+    lpr.addInternalHandler("/page/bar", () => {
+      called = 4;
+    });
 
     try {
       expect(await lpr.route("freelens://app/page/foo/bar/bat")).toBeUndefined();

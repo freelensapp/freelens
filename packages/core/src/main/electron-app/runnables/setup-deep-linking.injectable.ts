@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import electronAppInjectable from "../electron-app.injectable";
-import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-main/open-deep-link-for-url/open-deep-link.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
-import { startsWith, toLower } from "lodash/fp";
+
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
+import { startsWith, toLower } from "lodash/fp";
+import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-main/open-deep-link-for-url/open-deep-link.injectable";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
+import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
+import electronAppInjectable from "../electron-app.injectable";
 
 const setupDeepLinkingInjectable = getInjectable({
   id: "setup-deep-linking",
@@ -42,18 +44,15 @@ const setupDeepLinkingInjectable = getInjectable({
         await openDeepLinkForUrl(url);
       });
 
-      app.on(
-        "second-instance",
-        async (_, secondInstanceCommandLineArguments) => {
-          const url = getDeepLinkUrl(secondInstanceCommandLineArguments);
+      app.on("second-instance", async (_, secondInstanceCommandLineArguments) => {
+        const url = getDeepLinkUrl(secondInstanceCommandLineArguments);
 
-          await showApplicationWindow();
+        await showApplicationWindow();
 
-          if (url) {
-            await openDeepLinkForUrl(url);
-          }
-        },
-      );
+        if (url) {
+          await openDeepLinkForUrl(url);
+        }
+      });
     },
   }),
 
@@ -62,8 +61,5 @@ const setupDeepLinkingInjectable = getInjectable({
 
 export default setupDeepLinkingInjectable;
 
-const getDeepLinkUrl = (commandLineArguments: string[]) => (
-  commandLineArguments
-    .map(toLower)
-    .find(startsWith("freelens://"))
-);
+const getDeepLinkUrl = (commandLineArguments: string[]) =>
+  commandLineArguments.map(toLower).find(startsWith("freelens://"));

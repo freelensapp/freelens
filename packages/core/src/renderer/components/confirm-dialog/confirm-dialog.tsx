@@ -1,28 +1,28 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./confirm-dialog.scss";
 
-import React from "react";
-import type { IObservableValue } from "mobx";
-import { observable, makeObservable, computed } from "mobx";
-import { observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames, noop, prevDefault } from "@freelensapp/utilities";
 import type { ButtonProps } from "@freelensapp/button";
 import { Button } from "@freelensapp/button";
-import type { DialogProps } from "../dialog";
-import { Dialog } from "../dialog";
 import { Icon } from "@freelensapp/icon";
 import type { ShowNotification } from "@freelensapp/notifications";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import confirmDialogStateInjectable from "./state.injectable";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IObservableValue } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { DialogProps } from "../dialog";
+import { Dialog } from "../dialog";
+import confirmDialogStateInjectable from "./state.injectable";
 
-export interface ConfirmDialogProps extends Partial<DialogProps> {
-}
+export interface ConfirmDialogProps extends Partial<DialogProps> {}
 
 export interface ConfirmDialogParams extends ConfirmDialogBooleanParams {
   ok?: () => any | Promise<any>;
@@ -48,7 +48,7 @@ const defaultParams = {
   cancel: noop,
   labelOk: "Ok",
   labelCancel: "Cancel",
-  icon: <Icon big material="warning"/>,
+  icon: <Icon big material="warning" />,
 };
 
 @observer
@@ -62,7 +62,7 @@ class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Depe
 
   @computed
   get params() {
-    return Object.assign({}, defaultParams, this.props.state.get() ?? {} as ConfirmDialogParams);
+    return Object.assign({}, defaultParams, this.props.state.get() ?? ({} as ConfirmDialogParams));
   }
 
   ok = async () => {
@@ -74,13 +74,11 @@ class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Depe
         <>
           <p>Confirmation action failed:</p>
           <p>
-            {(
-              error instanceof Error
-                ? error.message
-                : typeof error === "string"
-                  ? error
-                  : "Unknown error occurred while ok-ing"
-            )}
+            {error instanceof Error
+              ? error.message
+              : typeof error === "string"
+                ? error
+                : "Unknown error occurred while ok-ing"}
           </p>
         </>,
       );
@@ -102,13 +100,11 @@ class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Depe
         <>
           <p>Cancelling action failed:</p>
           <p>
-            {(
-              error instanceof Error
-                ? error.message
-                : typeof error === "string"
-                  ? error
-                  : "Unknown error occurred while cancelling"
-            )}
+            {error instanceof Error
+              ? error.message
+              : typeof error === "string"
+                ? error
+                : "Unknown error occurred while cancelling"}
           </p>
         </>,
       );
@@ -121,11 +117,7 @@ class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Depe
   render() {
     const { state, className, ...dialogProps } = this.props;
     const isOpen = Boolean(state.get());
-    const {
-      icon, labelOk, labelCancel, message,
-      okButtonProps = {},
-      cancelButtonProps = {},
-    } = this.params;
+    const { icon, labelOk, labelCancel, message, okButtonProps = {}, cancelButtonProps = {} } = this.params;
 
     return (
       <Dialog
@@ -137,9 +129,7 @@ class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Depe
         {...(isOpen ? { "data-testid": "confirmation-dialog" } : {})}
       >
         <div className="confirm-content">
-          {icon}
-          {" "}
-          {message}
+          {icon} {message}
         </div>
         <div className="confirm-buttons">
           <Button

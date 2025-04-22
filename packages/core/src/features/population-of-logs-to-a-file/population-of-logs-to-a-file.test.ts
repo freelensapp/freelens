@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { DiContainer } from "@ogre-tools/injectable";
+
 import { winstonLoggerInjectable } from "@freelensapp/logger";
+import { noop } from "@freelensapp/utilities";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { runInAction } from "mobx";
+import { MESSAGE } from "triple-beam";
+import type winston from "winston";
+import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type winston from "winston";
-import { MESSAGE } from "triple-beam";
-import { noop } from "@freelensapp/utilities";
-import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
-import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
-import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-transport.injectable";
 import browserLoggerTransportInjectable from "../../renderer/logger/browser-transport.injectable";
-import { runInAction } from "mobx";
+import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-transport.injectable";
+import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
 
 describe("Population of logs to a file", () => {
   let builder: ApplicationBuilder;
@@ -43,11 +45,9 @@ describe("Population of logs to a file", () => {
         createIpcFileLoggerTransportInjectable,
         () => (fileId: string) =>
           ({
-            log:
-              fileId === testFileId ? frameSpecificWinstonLogInMainMock : noop,
-            close:
-              fileId === testFileId ? frameSpecificCloseLogInMainMock : noop,
-          } as unknown as winston.transport),
+            log: fileId === testFileId ? frameSpecificWinstonLogInMainMock : noop,
+            close: fileId === testFileId ? frameSpecificCloseLogInMainMock : noop,
+          }) as unknown as winston.transport,
       );
     });
 
@@ -95,9 +95,7 @@ describe("Population of logs to a file", () => {
     });
 
     it("when closing the renderer frame, closes specific log transport in main", () => {
-      const closeRendererLogFile = windowDi.inject(
-        closeRendererLogFileInjectable,
-      );
+      const closeRendererLogFile = windowDi.inject(closeRendererLogFileInjectable);
 
       // Log something to create the transport to be closed
       logWarningInRenderer("irrelevant");

@@ -1,21 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { apiPrefix } from "../../../../common/vars";
-import { getRouteInjectable } from "../../../router/router.injectable";
+
 import Joi from "joi";
-import { payloadValidatedClusterRoute } from "../../../router/route";
+import { apiPrefix } from "../../../../common/vars";
 import rollbackClusterHelmReleaseInjectable from "../../../helm/helm-service/rollback-helm-release.injectable";
+import { payloadValidatedClusterRoute } from "../../../router/route";
+import { getRouteInjectable } from "../../../router/router.injectable";
 
 interface RollbackReleasePayload {
   revision: number;
 }
 
 const rollbackReleasePayloadValidator = Joi.object<RollbackReleasePayload, true, RollbackReleasePayload>({
-  revision: Joi
-    .number()
-    .required(),
+  revision: Joi.number().required(),
 });
 
 const rollbackReleaseRouteInjectable = getRouteInjectable({

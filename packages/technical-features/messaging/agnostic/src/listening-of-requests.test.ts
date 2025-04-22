@@ -1,4 +1,4 @@
-import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
+import { type DiContainer, type Injectable, createContainer } from "@ogre-tools/injectable";
 
 import { registerFeature } from "@freelensapp/feature-core";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
@@ -12,15 +12,15 @@ import {
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 import {
-  getRequestChannelListenerInjectable,
   type RequestChannel,
   type RequestChannelListener,
+  getRequestChannelListenerInjectable,
 } from "./features/actual/request/request-channel-listener-injection-token";
 
-import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
-import { noop } from "lodash/fp";
-import { getRequestChannel } from "./features/actual/request/get-request-channel";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
+import { noop } from "lodash/fp";
+import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
+import { getRequestChannel } from "./features/actual/request/get-request-channel";
 
 describe("listening-of-requests", () => {
   let di: DiContainer;

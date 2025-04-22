@@ -1,9 +1,10 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isObject, hasTypedProperty, hasOptionalTypedProperty, isString, isNumber } from "@freelensapp/utilities";
+import { hasOptionalTypedProperty, hasTypedProperty, isNumber, isObject, isString } from "@freelensapp/utilities";
 import type { KubeStatusData } from "./api-types";
 
 /**

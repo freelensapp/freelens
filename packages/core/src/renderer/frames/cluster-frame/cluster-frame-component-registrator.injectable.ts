@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { map } from "lodash/fp";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { ExtensionRegistrator } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
-import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 
 const clusterFrameComponentRegistratorInjectable = getInjectable({
   id: "cluster-frame-component-registrator",

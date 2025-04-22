@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
@@ -29,12 +31,15 @@ function NonInjectedProxyKubernetesClusterSettings({ entity, getClusterById }: E
   );
 }
 
-const ProxyKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(NonInjectedProxyKubernetesClusterSettings, {
-  getProps: (di, props) => ({
-    ...props,
-    getClusterById: di.inject(getClusterByIdInjectable),
-  }),
-});
+const ProxyKubernetesClusterSettings = withInjectables<Dependencies, EntitySettingViewProps>(
+  NonInjectedProxyKubernetesClusterSettings,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      getClusterById: di.inject(getClusterByIdInjectable),
+    }),
+  },
+);
 
 const proxyKubernetesClusterEntitySettingsInjectable = getInjectable({
   id: "proxy-kubernetes-cluster-entity-settings",

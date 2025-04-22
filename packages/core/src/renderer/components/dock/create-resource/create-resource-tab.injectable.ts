@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
-import dockStoreInjectable from "../dock/store.injectable";
 import type { DockTabCreateSpecific } from "../dock/store";
 import { TabKind } from "../dock/store";
+import dockStoreInjectable from "../dock/store.injectable";
 
 const createResourceTabInjectable = getInjectable({
   id: "create-resource-tab",

@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { editor } from "monaco-editor";
 import React from "react";
 import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
@@ -14,20 +16,16 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
     return (
       <textarea
         data-testid={`monaco-editor-for-${id}`}
-
         onChange={(event) => {
           const newValue = event.target.value;
 
-          onChange?.(
-            newValue,
-            {} as editor.IModelContentChangedEvent,
-          );
+          onChange?.(newValue, {} as editor.IModelContentChangedEvent);
 
           const validator = monacoValidators[language];
 
           try {
             validator(newValue);
-          } catch(e) {
+          } catch (e) {
             onError?.(e);
           }
         }}
@@ -37,7 +35,6 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
   }
 }
 
-export const MonacoEditor = React.forwardRef<
-  MonacoEditorRef,
-  MonacoEditorProps
->((props, ref) => <FakeMonacoEditor innerRef={ref} {...props} />);
+export const MonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps>((props, ref) => (
+  <FakeMonacoEditor innerRef={ref} {...props} />
+));

@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
+
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 import styles from "./gutter.module.scss";
 
 interface GutterProps {
@@ -15,6 +17,5 @@ const Gutter = ({ size = "md" }: GutterProps) => {
 
   return <div className={classNames} />;
 };
-
 
 export default Gutter;

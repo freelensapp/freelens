@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
 
@@ -18,13 +20,10 @@ const clusterOverviewStorageInjectable = getInjectable({
   instantiate: (di) => {
     const createStorage = di.inject(createStorageInjectable);
 
-    return createStorage<ClusterOverviewStorageState>(
-      "cluster_overview",
-      {
-        metricType: "cpu", // setup defaults
-        metricNodeRole: "worker",
-      },
-    );
+    return createStorage<ClusterOverviewStorageState>("cluster_overview", {
+      metricType: "cpu", // setup defaults
+      metricNodeRole: "worker",
+    });
   },
 });
 

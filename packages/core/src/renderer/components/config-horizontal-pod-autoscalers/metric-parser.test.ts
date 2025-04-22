@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { DiContainer } from "@ogre-tools/injectable";
-import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
 
 const hpaV2 = {
   apiVersion: "autoscaling/v2",
@@ -165,438 +167,414 @@ describe("getHorizontalPodAutoscalerMetrics", () => {
     });
 
     it("should return correct container resource metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  container: "nginx",
-                  target: {
-                    type: "Utilization",
-                    averageUtilization: 60,
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                container: "nginx",
+                target: {
+                  type: "Utilization",
+                  averageUtilization: 60,
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 60%");
     });
 
     it("should return correct container resource metrics with current utilization value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  container: "nginx",
-                  target: {
-                    type: "Utilization",
-                    averageUtilization: 60,
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                container: "nginx",
+                target: {
+                  type: "Utilization",
+                  averageUtilization: 60,
                 },
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  current: {
-                    averageUtilization: 10,
-                  },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                current: {
+                  averageUtilization: 10,
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10% / 60%");
     });
 
     it("should return correct pod metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metric: {
-                    name: "packets-per-second",
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "1k",
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "Pods",
+              pods: {
+                metric: {
+                  name: "packets-per-second",
+                },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "1k",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 1k");
     });
 
     it("should return correct pod metrics with current values", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metric: {
-                    name: "packets-per-second",
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "1k",
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "Pods",
+              pods: {
+                metric: {
+                  name: "packets-per-second",
+                },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "1k",
                 },
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metric: {
-                    name: "packets-per-second",
-                  },
-                  current: {
-                    averageValue: "10",
-                  },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "Pods",
+              pods: {
+                metric: {
+                  name: "packets-per-second",
+                },
+                current: {
+                  averageValue: "10",
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 / 1k");
     });
 
     it("should return correct object metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metric: {
-                    name: "requests-per-second",
-                  },
-                  target: {
-                    type: "Value",
-                    value: "10k",
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metric: {
+                  name: "requests-per-second",
+                },
+                target: {
+                  type: "Value",
+                  value: "10k",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 10k");
     });
 
     it("should return correct object metrics with average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metric: {
-                    name: "requests-per-second",
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "5k",
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metric: {
+                  name: "requests-per-second",
+                },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "5k",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 5k");
     });
 
     it("should return correct object metrics with current value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metric: {
-                    name: "requests-per-second",
-                  },
-                  target: {
-                    type: "Value",
-                    value: "5k",
-                  },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metric: {
+                  name: "requests-per-second",
+                },
+                target: {
+                  type: "Value",
+                  value: "5k",
                 },
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "Object",
-                object: {
-                  metric: {
-                    name: "requests-per-second",
-                  },
-                  current: {
-                    value: "10k",
-                  },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "Object",
+              object: {
+                metric: {
+                  name: "requests-per-second",
+                },
+                current: {
+                  value: "10k",
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10k / 5k");
     });
 
     it("should return correct external metrics with average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                    selector: {
-                      matchLabels: { queue: "worker_tasks" },
-                    },
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "30",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                  selector: {
+                    matchLabels: { queue: "worker_tasks" },
                   },
                 },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "30",
+                },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 30 (avg)");
     });
 
     it("should return correct external metrics with value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                    selector: {
-                      matchLabels: { queue: "worker_tasks" },
-                    },
-                  },
-                  target: {
-                    type: "Value",
-                    value: "30",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                  selector: {
+                    matchLabels: { queue: "worker_tasks" },
                   },
                 },
+                target: {
+                  type: "Value",
+                  value: "30",
+                },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 30");
     });
 
     it("should return correct external metrics with current value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                    selector: {
-                      matchLabels: { queue: "worker_tasks" },
-                    },
-                  },
-                  target: {
-                    type: "Value",
-                    value: "30",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                  selector: {
+                    matchLabels: { queue: "worker_tasks" },
                   },
                 },
-              },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                  },
-                  current: {
-                    value: "10",
-                  },
+                target: {
+                  type: "Value",
+                  value: "30",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                },
+                current: {
+                  value: "10",
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 / 30");
     });
 
     it("should return correct external metrics with current average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                    selector: {
-                      matchLabels: { queue: "worker_tasks" },
-                    },
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "30",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                  selector: {
+                    matchLabels: { queue: "worker_tasks" },
                   },
                 },
-              },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                  },
-                  current: {
-                    averageValue: "10",
-                  },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "30",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                },
+                current: {
+                  averageValue: "10",
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 (avg) / 30 (avg)");
     });
 
     it("should return unknown current metrics if names are different", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2,
-          spec: {
-            ...hpaV2.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_ready",
-                    selector: {
-                      matchLabels: { queue: "worker_tasks" },
-                    },
-                  },
-                  target: {
-                    type: "AverageValue",
-                    averageValue: "30",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2,
+        spec: {
+          ...hpaV2.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_ready",
+                  selector: {
+                    matchLabels: { queue: "worker_tasks" },
                   },
                 },
-              },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "External",
-                external: {
-                  metric: {
-                    name: "queue_messages_NOT_ready",
-                  },
-                  current: {
-                    averageValue: "10",
-                  },
+                target: {
+                  type: "AverageValue",
+                  averageValue: "30",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "External",
+              external: {
+                metric: {
+                  name: "queue_messages_NOT_ready",
+                },
+                current: {
+                  averageValue: "10",
+                },
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 30 (avg)");
     });
@@ -696,315 +674,293 @@ describe("getHorizontalPodAutoscalerMetrics", () => {
     });
 
     it("should return correct container resource metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  container: "nginx",
-                  targetAverageUtilization: 60,
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                container: "nginx",
+                targetAverageUtilization: 60,
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 60%");
     });
 
     it("should return correct container resource metrics with current utilization value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  container: "nginx",
-                  targetAverageUtilization: 60,
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                container: "nginx",
+                targetAverageUtilization: 60,
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "ContainerResource",
-                containerResource: {
-                  name: "cpu",
-                  currentAverageUtilization: 10,
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "ContainerResource",
+              containerResource: {
+                name: "cpu",
+                currentAverageUtilization: 10,
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10% / 60%");
     });
 
     it("should return correct pod metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metricName: "packets-per-second",
-                  targetAverageValue: "1k",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "Pods",
+              pods: {
+                metricName: "packets-per-second",
+                targetAverageValue: "1k",
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 1k");
     });
 
     it("should return correct pod metrics with current values", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metricName: "packets-per-second",
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "Pods",
+              pods: {
+                metricName: "packets-per-second",
 
-                  targetAverageValue: "1k",
-                },
+                targetAverageValue: "1k",
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "Pods",
-                pods: {
-                  metricName: "packets-per-second",
-                  currentAverageValue: "10",
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "Pods",
+              pods: {
+                metricName: "packets-per-second",
+                currentAverageValue: "10",
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 / 1k");
     });
 
     it("should return correct object metrics", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metricName: "packets-per-second",
-                  targetValue: "10k",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metricName: "packets-per-second",
+                targetValue: "10k",
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 10k");
     });
 
     it("should return correct object metrics with average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metricName: "packets-per-second",
-                  averageValue: "5k",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metricName: "packets-per-second",
+                averageValue: "5k",
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 5k");
     });
 
     it("should return correct object metrics with current value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "Object",
-                object: {
-                  metricName: "packets-per-second",
-                  targetValue: "5k",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "Object",
+              object: {
+                metricName: "packets-per-second",
+                targetValue: "5k",
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "Object",
-                object: {
-                  metricName: "packets-per-second",
-                  currentValue: "10k",
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "Object",
+              object: {
+                metricName: "packets-per-second",
+                currentValue: "10k",
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10k / 5k");
     });
 
     it("should return correct external metrics with average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  metricSelector: { matchLabels: { queue: "worker_tasks" }},
-                  targetAverageValue: "30",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                metricSelector: { matchLabels: { queue: "worker_tasks" } },
+                targetAverageValue: "30",
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 30");
     });
 
     it("should return correct external metrics with value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  metricSelector: { matchLabels: { queue: "worker_tasks" }},
-                  targetValue: "30",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                metricSelector: { matchLabels: { queue: "worker_tasks" } },
+                targetValue: "30",
               },
-            ],
-          },
+            },
+          ],
         },
-      );
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("unknown / 30");
     });
 
     it("should return correct external metrics with current value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  metricSelector: { matchLabels: { queue: "worker_tasks" }},
-                  targetValue: "30",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                metricSelector: { matchLabels: { queue: "worker_tasks" } },
+                targetValue: "30",
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  currentValue: "10",
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                currentValue: "10",
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 / 30");
     });
 
     it("should return correct external metrics with current average value", () => {
-      const hpa = new HorizontalPodAutoscaler(
-        {
-          ...hpaV2Beta1,
-          spec: {
-            ...hpaV2Beta1.spec,
-            metrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  metricSelector: { matchLabels: { queue: "worker_tasks" }},
-                  targetAverageValue: "30",
-                },
+      const hpa = new HorizontalPodAutoscaler({
+        ...hpaV2Beta1,
+        spec: {
+          ...hpaV2Beta1.spec,
+          metrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                metricSelector: { matchLabels: { queue: "worker_tasks" } },
+                targetAverageValue: "30",
               },
-            ],
-          },
-          status: {
-            currentReplicas: 1,
-            desiredReplicas: 10,
-            currentMetrics: [
-              {
-                type: "External",
-                external: {
-                  metricName: "queue_messages_ready",
-                  currentAverageValue: "10",
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-      );
+        status: {
+          currentReplicas: 1,
+          desiredReplicas: 10,
+          currentMetrics: [
+            {
+              type: "External",
+              external: {
+                metricName: "queue_messages_ready",
+                currentAverageValue: "10",
+              },
+            },
+          ],
+        },
+      });
 
       expect(getMetrics(hpa)[0]).toEqual("10 / 30");
     });

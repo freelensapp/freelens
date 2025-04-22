@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -12,11 +13,11 @@ import moment from "moment";
 export function formatDuration(timeValue: number, compact = true) {
   const duration = moment.duration(timeValue, "milliseconds");
   const seconds = Math.floor(duration.asSeconds());
-  const separator = compact ? "": " ";
+  const separator = compact ? "" : " ";
 
   if (seconds < 0) {
     return "0s";
-  } else if (seconds < 60*2 ) {
+  } else if (seconds < 60 * 2) {
     return `${seconds}s`;
   }
 
@@ -36,7 +37,7 @@ export function formatDuration(timeValue: number, compact = true) {
 
   const hours = Math.floor(duration.asHours());
 
-  if(hours < 8) {
+  if (hours < 8) {
     const minutes = duration.minutes();
 
     return getMeaningfulValues([hours, minutes], ["h", "m"], separator);

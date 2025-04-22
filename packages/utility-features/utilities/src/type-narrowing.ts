@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -11,7 +12,10 @@ import type { IncomingMessage } from "http";
  * @param val The object to be tested
  * @param key The key to test if it is present on the object (must be a literal for tsc to do any meaningful typing)
  */
-export function hasOwnProperty<S extends object, K extends PropertyKey>(val: S, key: K): val is (S & { [key in K]: unknown }) {
+export function hasOwnProperty<S extends object, K extends PropertyKey>(
+  val: S,
+  key: K,
+): val is S & { [key in K]: unknown } {
   // this call syntax is for when `val` was created by `Object.create(null)`
   return Object.prototype.hasOwnProperty.call(val, key);
 }
@@ -21,8 +25,11 @@ export function hasOwnProperty<S extends object, K extends PropertyKey>(val: S, 
  * @param val the value that we are trying to type narrow
  * @param keys the key names (must be literals for tsc to do any meaningful typing)
  */
-export function hasOwnProperties<S extends object, K extends PropertyKey>(val: S, ...keys: K[]): val is (S & { [key in K]: unknown }) {
-  return keys.every(key => hasOwnProperty(val, key));
+export function hasOwnProperties<S extends object, K extends PropertyKey>(
+  val: S,
+  ...keys: K[]
+): val is S & { [key in K]: unknown } {
+  return keys.every((key) => hasOwnProperty(val, key));
 }
 
 /**
@@ -31,7 +38,11 @@ export function hasOwnProperties<S extends object, K extends PropertyKey>(val: S
  * @param key The key to test if it is present on the object (must be a literal for tsc to do any meaningful typing)
  * @param isValid a function to check if the field is valid
  */
-export function hasTypedProperty<S extends object, K extends PropertyKey, V>(val: S, key: K, isValid: (value: unknown) => value is V): val is (S & { [key in K]: V }) {
+export function hasTypedProperty<S extends object, K extends PropertyKey, V>(
+  val: S,
+  key: K,
+  isValid: (value: unknown) => value is V,
+): val is S & { [key in K]: V } {
   return hasOwnProperty(val, key) && isValid(val[key]);
 }
 
@@ -40,7 +51,10 @@ export function hasTypedProperty<S extends object, K extends PropertyKey, V>(val
  * @param val the value that we are trying to type narrow
  * @param key The key to test if it is present on the object (must be a literal for tsc to do any meaningful typing)
  */
-export function hasStringProperty<S extends object, K extends PropertyKey>(val: S, key: K): val is (S & { [key in K]: string }) {
+export function hasStringProperty<S extends object, K extends PropertyKey>(
+  val: S,
+  key: K,
+): val is S & { [key in K]: string } {
   return hasOwnProperty(val, key) && isString(val[key]);
 }
 
@@ -50,7 +64,11 @@ export function hasStringProperty<S extends object, K extends PropertyKey>(val: 
  * @param key The key to test if it is present on the object (must be a literal for tsc to do any meaningful typing)
  * @param isValid a function to check if the field (when present) is valid
  */
-export function hasOptionalTypedProperty<S extends object, K extends PropertyKey, V>(val: S, key: K, isValid: (value: unknown) => value is V): val is (S & { [key in K]?: V }) {
+export function hasOptionalTypedProperty<S extends object, K extends PropertyKey, V>(
+  val: S,
+  key: K,
+  isValid: (value: unknown) => value is V,
+): val is S & { [key in K]?: V } {
   if (hasOwnProperty(val, key)) {
     return typeof val[key] === "undefined" || isValid(val[key]);
   }
@@ -64,7 +82,11 @@ export function hasOptionalTypedProperty<S extends object, K extends PropertyKey
  * @param isKey a function for checking if the key is of the correct type
  * @param isValue a function for checking if a value is of the correct type
  */
-export function isRecord<T extends PropertyKey, V>(val: unknown, isKey: (key: unknown) => key is T, isValue: (value: unknown) => value is V): val is Record<T, V> {
+export function isRecord<T extends PropertyKey, V>(
+  val: unknown,
+  isKey: (key: unknown) => key is T,
+  isValue: (value: unknown) => value is V,
+): val is Record<T, V> {
   return isObject(val) && Object.entries(val).every(([key, value]) => isKey(key) && isValue(value));
 }
 
@@ -88,7 +110,7 @@ export function isString(val: unknown): val is string {
 /**
  * checks if val is of type Buffer
  * @param val the value to be checked
- */export function isBuffer(val: unknown): val is Buffer {
+ */ export function isBuffer(val: unknown): val is Buffer {
   return val instanceof Buffer;
 }
 
@@ -142,21 +164,27 @@ export function hasDefinedTupleValue<K, V>(pair: readonly [K, V | undefined | nu
  * @param fn A typescript user predicate function to be bound
  * @param boundArgs the set of arguments to be passed to `fn` in the new function
  */
-export function bindPredicate<FnArgs extends any[], T>(fn: (arg1: unknown, ...args: FnArgs) => arg1 is T, ...boundArgs: FnArgs): (arg1: unknown) => arg1 is T {
+export function bindPredicate<FnArgs extends any[], T>(
+  fn: (arg1: unknown, ...args: FnArgs) => arg1 is T,
+  ...boundArgs: FnArgs
+): (arg1: unknown) => arg1 is T {
   return (arg1: unknown): arg1 is T => fn(arg1, ...boundArgs);
 }
 
-export function hasDefiniteField<Field extends keyof T, T>(field: Field): (val: T) => val is T & { [f in Field]-?: NonNullable<T[Field]> } {
+export function hasDefiniteField<Field extends keyof T, T>(
+  field: Field,
+): (val: T) => val is T & { [f in Field]-?: NonNullable<T[Field]> } {
   return (val): val is T & { [f in Field]-?: NonNullable<T[Field]> } => val[field] != null;
 }
 
-export function isPromiseLike(res: unknown): res is (Promise<unknown> | { then: (fn: (val: unknown) => any) => Promise<unknown> }) {
+export function isPromiseLike(
+  res: unknown,
+): res is Promise<unknown> | { then: (fn: (val: unknown) => any) => Promise<unknown> } {
   if (res instanceof Promise) {
     return true;
   }
 
-  return isObject(res)
-    && hasTypedProperty(res, "then", isFunction);
+  return isObject(res) && hasTypedProperty(res, "then", isFunction);
 }
 
 export function isPromiseSettledRejected<T>(result: PromiseSettledResult<T>): result is PromiseRejectedResult {
@@ -168,21 +196,25 @@ export function isPromiseSettledFulfilled<T>(result: PromiseSettledResult<T>): r
 }
 
 export function isErrnoException(error: unknown): error is NodeJS.ErrnoException {
-  return isObject(error)
-    && hasOptionalTypedProperty(error, "code", isString)
-    && hasOptionalTypedProperty(error, "path", isString)
-    && hasOptionalTypedProperty(error, "syscall", isString)
-    && hasOptionalTypedProperty(error, "errno", isNumber)
-    && error instanceof Error;
+  return (
+    isObject(error) &&
+    hasOptionalTypedProperty(error, "code", isString) &&
+    hasOptionalTypedProperty(error, "path", isString) &&
+    hasOptionalTypedProperty(error, "syscall", isString) &&
+    hasOptionalTypedProperty(error, "errno", isNumber) &&
+    error instanceof Error
+  );
 }
 
 export function isExecException(error: unknown): error is ExecException {
-  return isObject(error)
-    && hasOptionalTypedProperty(error, "cmd", isString)
-    && hasOptionalTypedProperty(error, "killed", isBoolean)
-    && hasOptionalTypedProperty(error, "signal", isString)
-    && hasOptionalTypedProperty(error, "code", isNumber)
-    && error instanceof Error;
+  return (
+    isObject(error) &&
+    hasOptionalTypedProperty(error, "cmd", isString) &&
+    hasOptionalTypedProperty(error, "killed", isBoolean) &&
+    hasOptionalTypedProperty(error, "signal", isString) &&
+    hasOptionalTypedProperty(error, "code", isNumber) &&
+    error instanceof Error
+  );
 }
 
 export function isExecFileException(error: unknown): error is ExecFileException {
@@ -203,20 +235,20 @@ export interface ChildProcessException<Format> extends ExecFileException {
 
 const isStringOrBuffer = (val: unknown): val is string | Buffer => isString(val) || isBuffer(val);
 
-export function isChildProcessError(error: unknown, format?: OutputFormat): error is ChildProcessException<typeof format> {
+export function isChildProcessError(
+  error: unknown,
+  format?: OutputFormat,
+): error is ChildProcessException<typeof format> {
   if (!isExecFileException(error)) {
     return false;
   }
 
   if (format === "string") {
-    return hasTypedProperty(error, "stderr", isString)
-      && hasTypedProperty(error, "stdout", isString);
+    return hasTypedProperty(error, "stderr", isString) && hasTypedProperty(error, "stdout", isString);
   } else if (format === "buffer") {
-    return hasTypedProperty(error, "stderr", isBuffer)
-      && hasTypedProperty(error, "stdout", isBuffer);
+    return hasTypedProperty(error, "stderr", isBuffer) && hasTypedProperty(error, "stdout", isBuffer);
   } else {
-    return hasTypedProperty(error, "stderr", isStringOrBuffer)
-      && hasTypedProperty(error, "stdout", isStringOrBuffer);
+    return hasTypedProperty(error, "stderr", isStringOrBuffer) && hasTypedProperty(error, "stdout", isStringOrBuffer);
   }
 }
 
@@ -232,11 +264,13 @@ export interface RequestLikeError extends Error {
  * A type guard for checking if the error is similar in shape to a request package error
  */
 export function isRequestError(error: unknown): error is RequestLikeError {
-  return isObject(error)
-    && hasOptionalTypedProperty(error, "statusCode", isNumber)
-    && hasOptionalTypedProperty(error, "failed", isBoolean)
-    && hasOptionalTypedProperty(error, "timedOut", isBoolean)
-    && hasOptionalTypedProperty(error, "error", isString)
-    && hasOptionalTypedProperty(error, "response", isObject)
-    && error instanceof Error;
+  return (
+    isObject(error) &&
+    hasOptionalTypedProperty(error, "statusCode", isNumber) &&
+    hasOptionalTypedProperty(error, "failed", isBoolean) &&
+    hasOptionalTypedProperty(error, "timedOut", isBoolean) &&
+    hasOptionalTypedProperty(error, "error", isString) &&
+    hasOptionalTypedProperty(error, "response", isObject) &&
+    error instanceof Error
+  );
 }

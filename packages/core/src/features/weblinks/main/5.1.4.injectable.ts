@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { docsUrl, forumsUrl } from "../../../common/vars";
 import { getInjectable } from "@ogre-tools/injectable";
+import { docsUrl, forumsUrl } from "../../../common/vars";
 import { weblinkStoreMigrationInjectionToken } from "../common/migration-token";
-import * as links from "./links";
 import type { WeblinkData } from "../common/storage.injectable";
+import * as links from "./links";
 
 const v514WeblinkStoreMigrationInjectable = getInjectable({
   id: "v5.1.4-weblink-store-migration",
@@ -23,7 +24,11 @@ const v514WeblinkStoreMigrationInjectable = getInjectable({
         { id: forumsUrl, name: links.lensForumsWeblinkName, url: forumsUrl },
         { id: "https://twitter.com/k8slens", name: links.lensTwitterWeblinkName, url: "https://twitter.com/k8slens" },
         { id: "https://medium.com/k8slens", name: links.lensBlogWeblinkName, url: "https://medium.com/k8slens" },
-        { id: "https://kubernetes.io/docs/home/", name: links.kubernetesDocumentationWeblinkName, url: "https://kubernetes.io/docs/home/" },
+        {
+          id: "https://kubernetes.io/docs/home/",
+          name: links.kubernetesDocumentationWeblinkName,
+          url: "https://kubernetes.io/docs/home/",
+        },
       );
 
       store.set("weblinks", weblinks);

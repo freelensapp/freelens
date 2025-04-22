@@ -1,27 +1,28 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./cluster-metrics.module.scss";
 
-import React, { useState } from "react";
-import { observer } from "mobx-react";
-import type { ChartOptions, ChartPoint } from "chart.js";
-import { BarChart } from "../chart";
-import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { Spinner } from "@freelensapp/spinner";
-import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";
-import { ClusterNoMetrics } from "./cluster-no-metrics";
-import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
-import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
+import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { ChartOptions, ChartPoint } from "chart.js";
+import { observer } from "mobx-react";
+import React, { useState } from "react";
+import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
-import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
-import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
+import { BarChart } from "../chart";
+import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";
+import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
+import { ClusterNoMetrics } from "./cluster-no-metrics";
+import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
+import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
 interface Dependencies {
@@ -31,11 +32,7 @@ interface Dependencies {
 }
 
 const NonInjectedClusterMetrics = observer((props: Dependencies) => {
-  const {
-    clusterOverviewMetrics,
-    selectedMetricsType,
-    selectedNodeRoleForMetrics,
-  } = props;
+  const { clusterOverviewMetrics, selectedMetricsType, selectedNodeRoleForMetrics } = props;
 
   const metrics = clusterOverviewMetrics.value.get();
   const [plugins] = useState([new ZebraStripesPlugin()]);
@@ -44,25 +41,29 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   const metricType = selectedMetricsType.value.get();
   const metricNodeRole = selectedNodeRoleForMetrics.value.get();
   const colors = { cpu: "#00a7a0", memory: "#C93DCE" };
-  const data = metricValues.map(value => ({
+  const data = metricValues.map((value) => ({
     x: value[0],
     y: parseFloat(value[1]).toFixed(3),
   }));
 
-  const datasets = [{
-    id: metricType + metricNodeRole,
-    label: `${metricType.toUpperCase()} usage`,
-    borderColor: colors[metricType],
-    data,
-  }];
+  const datasets = [
+    {
+      id: metricType + metricNodeRole,
+      label: `${metricType.toUpperCase()} usage`,
+      borderColor: colors[metricType],
+      data,
+    },
+  ];
   const cpuOptions: ChartOptions = {
     scales: {
-      yAxes: [{
-        ticks: {
-          suggestedMax: cpuCapacity,
-          callback: (value) => value,
+      yAxes: [
+        {
+          ticks: {
+            suggestedMax: cpuCapacity,
+            callback: (value) => value,
+          },
         },
-      }],
+      ],
     },
     tooltips: {
       callbacks: {
@@ -80,12 +81,14 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   };
   const memoryOptions: ChartOptions = {
     scales: {
-      yAxes: [{
-        ticks: {
-          suggestedMax: memoryCapacity,
-          callback: (value: string) => !value ? 0 : bytesToUnits(parseInt(value)),
+      yAxes: [
+        {
+          ticks: {
+            suggestedMax: memoryCapacity,
+            callback: (value: string) => (!value ? 0 : bytesToUnits(parseInt(value))),
+          },
         },
-      }],
+      ],
     },
     tooltips: {
       callbacks: {
@@ -105,11 +108,11 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 
   const renderMetrics = () => {
     if (!metricValues.length && !metrics) {
-      return <Spinner center/>;
+      return <Spinner center />;
     }
 
     if (!memoryCapacity || !cpuCapacity) {
-      return <ClusterNoMetrics className={styles.empty}/>;
+      return <ClusterNoMetrics className={styles.empty} />;
     }
 
     return (
@@ -127,7 +130,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 
   return (
     <div className={cssNames(styles.ClusterMetrics, "flex column")}>
-      <ClusterMetricSwitchers/>
+      <ClusterMetricSwitchers />
       {renderMetrics()}
     </div>
   );

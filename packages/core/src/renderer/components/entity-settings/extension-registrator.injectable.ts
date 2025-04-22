@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
@@ -50,26 +52,29 @@ const entitySettingExtensionRegistratorInjectable = getInjectable({
 
 export default entitySettingExtensionRegistratorInjectable;
 
-const getInjectableForEntitySettingRegistrationFor = (extension: LensRendererExtension) => ({
-  apiVersions,
-  components,
-  kind,
-  title,
-  group = "Extensions",
-  id = btoa(title),
-  priority,
-  source,
-}: EntitySettingRegistration) => getInjectable({
-  id: `${extension.manifest.name}:${group}/${kind}:${id}`,
-  instantiate: () => ({
-    apiVersions: new Set(apiVersions),
+const getInjectableForEntitySettingRegistrationFor =
+  (extension: LensRendererExtension) =>
+  ({
+    apiVersions,
     components,
-    id,
     kind,
-    orderNumber: priority ?? 50,
     title,
-    group,
+    group = "Extensions",
+    id = btoa(title),
+    priority,
     source,
-  }),
-  injectionToken: entitySettingInjectionToken,
-});
+  }: EntitySettingRegistration) =>
+    getInjectable({
+      id: `${extension.manifest.name}:${group}/${kind}:${id}`,
+      instantiate: () => ({
+        apiVersions: new Set(apiVersions),
+        components,
+        id,
+        kind,
+        orderNumber: priority ?? 50,
+        title,
+        group,
+        source,
+      }),
+      injectionToken: entitySettingInjectionToken,
+    });

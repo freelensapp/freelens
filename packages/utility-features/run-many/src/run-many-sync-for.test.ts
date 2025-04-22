@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { runManySyncFor } from "./run-many-sync-for";
 import type { RunnableSync } from "./types";
@@ -43,10 +45,7 @@ describe("runManySyncFor", () => {
     });
 
     it("runs all runnables at the same time", () => {
-      expect(runMock.mock.calls).toEqual([
-        ["some-call"],
-        ["some-other-call"],
-      ]);
+      expect(runMock.mock.calls).toEqual([["some-call"], ["some-other-call"]]);
     });
   });
 
@@ -132,9 +131,7 @@ describe("runManySyncFor", () => {
 
     rootDi.register(someInjectable, someOtherInjectable);
 
-    const runMany = runManySyncFor(rootDi)(
-      someInjectionToken,
-    );
+    const runMany = runManySyncFor(rootDi)(someInjectionToken);
 
     return expect(() => runMany()).toThrow(
       /Runnable "some-runnable-1" is unreachable for injection token "some-injection-token": run afters "some-runnable-2" are a part of different injection tokens./,
@@ -149,9 +146,7 @@ describe("runManySyncFor", () => {
 
       runMock = jest.fn();
 
-      const someInjectionTokenForRunnablesWithParameter = getInjectionToken<
-        RunnableSync<string>
-      >({
+      const someInjectionTokenForRunnablesWithParameter = getInjectionToken<RunnableSync<string>>({
         id: "some-injection-token",
       });
 
@@ -173,9 +168,7 @@ describe("runManySyncFor", () => {
 
       rootDi.register(someInjectable, someOtherInjectable);
 
-      const runMany = runManySyncFor(rootDi)(
-        someInjectionTokenForRunnablesWithParameter,
-      );
+      const runMany = runManySyncFor(rootDi)(someInjectionTokenForRunnablesWithParameter);
 
       runMany("some-parameter");
     });
@@ -188,4 +181,3 @@ describe("runManySyncFor", () => {
     });
   });
 });
-

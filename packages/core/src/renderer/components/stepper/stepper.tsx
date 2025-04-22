@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./stepper.scss";
-import React from "react";
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export interface StepperProps extends React.HTMLProps<any> {
   step: number;
@@ -36,7 +37,7 @@ export class Stepper extends React.Component<StepperProps, {}> {
 
           return (
             <div key={i} className={cssNames("box step", stepClass)}>
-              {!isLast ? <span className="line"/> : null}
+              {!isLast ? <span className="line" /> : null}
               <div className="point">{stepNumber}</div>
               <span className="step-title">{title}</span>
             </div>

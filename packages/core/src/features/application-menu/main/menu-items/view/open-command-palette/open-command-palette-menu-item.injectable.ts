@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
-import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 import broadcastMessageInjectable from "../../../../../../common/ipc/broadcast-message.injectable";
+import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
 const openCommandPaletteMenuItemInjectable = getInjectable({
   id: "open-command-palette-menu-item",

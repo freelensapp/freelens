@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { RenderResult } from "@testing-library/react";
-import type { IObservableValue } from "mobx";
-import { runInAction, computed, observable } from "mobx";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+import { computed, observable, runInAction } from "mobx";
 import React from "react";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("preferences: extension adding preference tabs", () => {
   let builder: ApplicationBuilder;
@@ -101,9 +103,7 @@ describe("preferences: extension adding preference tabs", () => {
     it("shows tabs in order", () => {
       const actual = discover
         .queryAllElements("preference-tab-link")
-        .attributeValues.filter((value) =>
-          value?.startsWith("extension-some-extension"),
-        );
+        .attributeValues.filter((value) => value?.startsWith("extension-some-extension"));
 
       expect(actual).toEqual([
         "extension-some-extension-some-other-preference-tab-id",

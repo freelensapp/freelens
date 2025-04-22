@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getCompositeNormalization } from "./get-composite-normalization";
-import { getCompositeFor } from "../get-composite/get-composite";
 
+import { getCompositeFor } from "../get-composite/get-composite";
+import { getCompositeNormalization } from "./get-composite-normalization";
 
 describe("get-composite-normalization", () => {
   it("given a composite, flattens it to paths and composites", () => {
@@ -44,10 +45,7 @@ describe("get-composite-normalization", () => {
 
       [["some-root-id", "some-id"], expect.objectContaining({ value: someItem })],
 
-      [
-        ["some-root-id", "some-id", "some-child-id"],
-        expect.objectContaining({ value: someNestedItem }),
-      ],
+      [["some-root-id", "some-id", "some-child-id"], expect.objectContaining({ value: someNestedItem })],
     ]);
   });
 });

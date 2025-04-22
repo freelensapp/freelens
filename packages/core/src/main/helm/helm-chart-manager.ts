@@ -1,17 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as yaml from "js-yaml";
-import { iter, put, sortBySemverVersion } from "@freelensapp/utilities";
-import type { HelmRepo } from "../../common/helm/helm-repo";
-import type { HelmChartManagerCache } from "./helm-chart-manager-cache.injectable";
 import type { Logger } from "@freelensapp/logger";
-import type { RepoHelmChartList } from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import type { ExecHelm } from "./exec-helm/exec-helm.injectable";
+import { iter, put, sortBySemverVersion } from "@freelensapp/utilities";
+import * as yaml from "js-yaml";
 import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { Stat } from "../../common/fs/stat.injectable";
+import type { HelmRepo } from "../../common/helm/helm-repo";
+import type { RepoHelmChartList } from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import type { ExecHelm } from "./exec-helm/exec-helm.injectable";
+import type { HelmChartManagerCache } from "./helm-chart-manager-cache.injectable";
 
 export interface HelmCacheFile {
   apiVersion: string;
@@ -41,7 +42,7 @@ export class HelmChartManager {
   public async charts(): Promise<RepoHelmChartList> {
     try {
       return await this.cachedYaml();
-    } catch(error) {
+    } catch (error) {
       this.dependencies.logger.error("HELM-CHART-MANAGER]: failed to list charts", { error });
 
       return {};
@@ -72,19 +73,18 @@ export class HelmChartManager {
     const data = yaml.load(cacheFile) as string | number | HelmCacheFile;
 
     if (!data || typeof data !== "object" || typeof data.entries !== "object") {
-      throw Object.assign(new TypeError("Helm Cache file does not parse correctly"), { file: this.repo.cacheFilePath, data });
+      throw Object.assign(new TypeError("Helm Cache file does not parse correctly"), {
+        file: this.repo.cacheFilePath,
+        data,
+      });
     }
 
     const normalized = normalizeHelmCharts(this.repo.name, data.entries);
 
-    return put(
-      this.dependencies.cache,
-      this.repo.name,
-      {
-        data: JSON.stringify(normalized),
-        mtimeMs: cacheFileStats.mtimeMs,
-      },
-    );
+    return put(this.dependencies.cache, this.repo.name, {
+      data: JSON.stringify(normalized),
+      mtimeMs: cacheFileStats.mtimeMs,
+    });
   }
 
   protected async cachedYaml(): Promise<RepoHelmChartList> {
@@ -115,18 +115,19 @@ function normalizeHelmCharts(repoName: string, entries: RepoHelmChartList): Repo
     iter.filter(
       iter.map(
         Object.entries(entries),
-        ([name, charts]) => [
-          name,
-          sortBySemverVersion(
-            charts.map(chart => ({
-              ...chart,
-              created: Date.parse(chart.created).toString(),
-              repo: repoName,
-            })),
-          ),
-        ] as const,
+        ([name, charts]) =>
+          [
+            name,
+            sortBySemverVersion(
+              charts.map((chart) => ({
+                ...chart,
+                created: Date.parse(chart.created).toString(),
+                repo: repoName,
+              })),
+            ),
+          ] as const,
       ),
-      ([, charts]) => !charts.every(chart => chart.deprecated),
+      ([, charts]) => !charts.every((chart) => chart.deprecated),
     ),
   );
 }

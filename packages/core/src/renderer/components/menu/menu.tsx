@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./menu.scss";
 
+import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
+import type { RequestAnimationFrame } from "@freelensapp/animate";
+import type { IconProps } from "@freelensapp/icon";
+import { Icon } from "@freelensapp/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import isEqual from "lodash/isEqual";
 import type { ReactElement } from "react";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames, noop } from "@freelensapp/utilities";
-import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
-import type { IconProps } from "@freelensapp/icon";
-import { Icon } from "@freelensapp/icon";
-import isEqual from "lodash/isEqual";
-import type { RequestAnimationFrame } from "@freelensapp/animate";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import autoBindReact from "auto-bind/react";
 
 export const MenuContext = React.createContext<MenuContextValue | null>(null);
 export interface MenuContextValue {
@@ -44,10 +45,10 @@ export interface MenuProps {
   htmlFor?: string;
   autoFocus?: boolean;
   usePortal?: boolean | HTMLElement;
-  closeOnClickItem?: boolean;       // close menu on item click
-  closeOnClickOutside?: boolean;    // use false value for sub-menus
-  closeOnScroll?: boolean;          // applicable when usePortal={true}
-  position?: MenuPosition;          // applicable when usePortal={false}
+  closeOnClickItem?: boolean; // close menu on item click
+  closeOnClickOutside?: boolean; // use false value for sub-menus
+  closeOnScroll?: boolean; // applicable when usePortal={true}
+  position?: MenuPosition; // applicable when usePortal={false}
   children?: StrictReactNode;
   animated?: boolean;
   toggleEvent?: "click" | "contextmenu";
@@ -95,11 +96,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   componentDidMount() {
-    const {
-      usePortal,
-      htmlFor,
-      toggleEvent,
-    } = this.props;
+    const { usePortal, htmlFor, toggleEvent } = this.props;
 
     if (!usePortal) {
       if (this.elem?.parentElement) {
@@ -118,7 +115,6 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
 
     if (this.opener) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.opener.addEventListener(toggleEvent!, this.toggle);
       this.opener.addEventListener("keydown", this.onKeyDown);
     }
@@ -131,7 +127,6 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
 
   componentWillUnmount() {
     if (this.opener) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.opener.removeEventListener(this.props.toggleEvent!, this.toggle);
       this.opener.removeEventListener("keydown", this.onKeyDown);
     }
@@ -149,16 +144,16 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   protected get focusableItems() {
-    return Object.values(this.items).filter(item => item.isFocusable);
+    return Object.values(this.items).filter((item) => item.isFocusable);
   }
 
   protected get focusedItem() {
-    return this.focusableItems.find(item => item.elem === document.activeElement);
+    return this.focusableItems.find((item) => item.elem === document.activeElement);
   }
 
   protected focusNextItem(reverse = false) {
     const items = this.focusableItems;
-    const activeIndex = items.findIndex(item => item === this.focusedItem);
+    const activeIndex = items.findIndex((item) => item === this.focusedItem);
 
     if (!items.length) {
       return;
@@ -174,50 +169,56 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
   }
 
-  refreshPosition = () => requestAnimationFrame(() => {
-    if (!this.props.usePortal || !this.opener || !this.elem) {
-      return;
-    }
+  refreshPosition = () =>
+    requestAnimationFrame(() => {
+      if (!this.props.usePortal || !this.opener || !this.elem) {
+        return;
+      }
 
-    const openerClientRect = this.opener.getBoundingClientRect();
-    let { left: openerLeft, top: openerTop, bottom: openerBottom, right: openerRight } = this.opener.getBoundingClientRect();
-    const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
+      const openerClientRect = this.opener.getBoundingClientRect();
+      let {
+        left: openerLeft,
+        top: openerTop,
+        bottom: openerBottom,
+        right: openerRight,
+      } = this.opener.getBoundingClientRect();
+      const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
 
-    // window global scroll corrections
-    if (withScroll) {
-      openerLeft += window.pageXOffset;
-      openerTop += window.pageYOffset;
-      openerRight = openerLeft + openerClientRect.width;
-      openerBottom = openerTop + openerClientRect.height;
-    }
+      // window global scroll corrections
+      if (withScroll) {
+        openerLeft += window.pageXOffset;
+        openerTop += window.pageYOffset;
+        openerRight = openerLeft + openerClientRect.width;
+        openerBottom = openerTop + openerClientRect.height;
+      }
 
-    const extraMargin = this.props.usePortal ? 8 : 0;
+      const extraMargin = this.props.usePortal ? 8 : 0;
 
-    const { width: menuWidth, height: menuHeight } = this.elem.getBoundingClientRect();
+      const { width: menuWidth, height: menuHeight } = this.elem.getBoundingClientRect();
 
-    const rightSideOfMenu = openerLeft + menuWidth;
-    const renderMenuLeft = rightSideOfMenu > window.innerWidth;
-    const menuOnLeftSidePosition = `${openerRight - this.elem.offsetWidth}px`;
-    const menuOnRightSidePosition = `${openerLeft}px`;
+      const rightSideOfMenu = openerLeft + menuWidth;
+      const renderMenuLeft = rightSideOfMenu > window.innerWidth;
+      const menuOnLeftSidePosition = `${openerRight - this.elem.offsetWidth}px`;
+      const menuOnRightSidePosition = `${openerLeft}px`;
 
-    const bottomOfMenu = openerBottom + extraMargin + menuHeight;
-    const renderMenuOnTop = bottomOfMenu > window.innerHeight;
-    const menuOnTopPosition = `${openerTop - this.elem.offsetHeight - extraMargin}px`;
-    const menuOnBottomPosition = `${openerBottom + extraMargin}px`;
+      const bottomOfMenu = openerBottom + extraMargin + menuHeight;
+      const renderMenuOnTop = bottomOfMenu > window.innerHeight;
+      const menuOnTopPosition = `${openerTop - this.elem.offsetHeight - extraMargin}px`;
+      const menuOnBottomPosition = `${openerBottom + extraMargin}px`;
 
-    this.setState({
-      position: {
-        top: renderMenuOnTop,
-        bottom: !renderMenuOnTop,
-        left: renderMenuLeft,
-        right: !renderMenuLeft,
-      },
-      menuStyle: {
-        top: renderMenuOnTop ? menuOnTopPosition : menuOnBottomPosition,
-        left: renderMenuLeft ? menuOnLeftSidePosition : menuOnRightSidePosition,
-      },
+      this.setState({
+        position: {
+          top: renderMenuOnTop,
+          bottom: !renderMenuOnTop,
+          left: renderMenuLeft,
+          right: !renderMenuLeft,
+        },
+        menuStyle: {
+          top: renderMenuOnTop ? menuOnTopPosition : menuOnBottomPosition,
+          left: renderMenuLeft ? menuOnLeftSidePosition : menuOnRightSidePosition,
+        },
+      });
     });
-  });
 
   open() {
     if (this.isOpen) {
@@ -257,7 +258,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
         break;
 
       case "Space":
-        // fallthrough
+      // fallthrough
 
       case "Enter": {
         const focusedItem = this.focusedItem;
@@ -311,7 +312,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   onBlur() {
-    if (!this.isOpen) return;  // Prevents triggering document.activeElement for each <Menu/> instance
+    if (!this.isOpen) return; // Prevents triggering document.activeElement for each <Menu/> instance
 
     if (document.activeElement?.tagName == "IFRAME") {
       this.close();
@@ -364,18 +365,10 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     );
 
     if (animated) {
-      menu = (
-        <Animate enter={this.isOpen}>
-          {menu}
-        </Animate>
-      );
+      menu = <Animate enter={this.isOpen}>{menu}</Animate>;
     }
 
-    menu = (
-      <MenuContext.Provider value={this}>
-        {menu}
-      </MenuContext.Provider>
-    );
+    menu = <MenuContext.Provider value={this}>{menu}</MenuContext.Provider>;
 
     if (!usePortal) {
       return menu;
@@ -450,7 +443,6 @@ export class MenuItem extends React.Component<MenuItemProps> {
     const { spacer, onClick } = this.props;
 
     if (spacer) return;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     onClick!(evt);
 
     if (menu.props.closeOnClickItem && !evt.defaultPrevented) {
@@ -481,18 +473,18 @@ export class MenuItem extends React.Component<MenuItemProps> {
       onClick: this.onClick,
       children: icon ? (
         <>
-          <Icon {...iconProps}/>
-          {" "}
-          {children}
+          <Icon {...iconProps} /> {children}
         </>
-      ) : children,
+      ) : (
+        children
+      ),
       ref: this.bindRef,
     };
 
     if (this.isLink) {
-      return <a {...elemProps}/>;
+      return <a {...elemProps} />;
     }
 
-    return <li {...elemProps}/>;
+    return <li {...elemProps} />;
   }
 }

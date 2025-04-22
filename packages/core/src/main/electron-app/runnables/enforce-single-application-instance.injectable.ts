@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
-import requestSingleInstanceLockInjectable from "../features/request-single-instance-lock.injectable";
+import { getInjectable } from "@ogre-tools/injectable";
 import forceAppExitInjectable from "../features/force-app-exit.injectable";
+import requestSingleInstanceLockInjectable from "../features/request-single-instance-lock.injectable";
 
 const enforceSingleApplicationInstanceInjectable = getInjectable({
   id: "enforce-single-application-instance",

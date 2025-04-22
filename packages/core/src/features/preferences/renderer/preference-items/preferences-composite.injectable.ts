@@ -1,18 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
+import logErrorInjectable from "../../../../common/log-error.injectable";
+import { isShown } from "../../../../common/utils/composable-responsibilities/showable/showable";
+import { getCompositeFor } from "../../../../common/utils/composite/get-composite/get-composite";
 import type { PreferenceItemTypes } from "./preference-item-injection-token";
 import { preferenceItemInjectionToken } from "./preference-item-injection-token";
 import type { PreferenceTabsRoot } from "./preference-tab-root";
 import { preferenceTabsRoot } from "./preference-tab-root";
-import logErrorInjectable from "../../../../common/log-error.injectable";
-import { isShown } from "../../../../common/utils/composable-responsibilities/showable/showable";
-import { getCompositeFor } from "../../../../common/utils/composite/get-composite/get-composite";
-import { byOrderNumber } from "@freelensapp/utilities";
 
 const preferencesCompositeInjectable = getInjectable({
   id: "preferences-composite",
@@ -30,18 +32,16 @@ const preferencesCompositeInjectable = getInjectable({
         const missingIds = missingParentIds.join('", "');
         const availableIds = availableParentIds.join("\n");
 
-        logError([
-          `Tried to create preferences, but encountered references to unknown ids: "${missingIds}".`,
-          "Available ids are:",
-          availableIds,
-        ].join("\n\n"));
+        logError(
+          [
+            `Tried to create preferences, but encountered references to unknown ids: "${missingIds}".`,
+            "Available ids are:",
+            availableIds,
+          ].join("\n\n"),
+        );
       },
 
-      transformChildren: (children) => (
-        children
-          .filter(isShown)
-          .sort(byOrderNumber)
-      ),
+      transformChildren: (children) => children.filter(isShown).sort(byOrderNumber),
     });
 
     return computed(() => getComposite([preferenceTabsRoot, ...preferenceItems.get()]));

@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
+import { runInAction } from "mobx";
 import React from "react";
 import navigateToKubernetesPreferencesInjectable from "../../features/preferences/common/navigate-to-kubernetes-preferences.injectable";
-import { runInAction } from "mobx";
-import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
 const addSyncEntriesInjectable = getInjectable({
@@ -24,17 +26,19 @@ const addSyncEntriesInjectable = getInjectable({
         }
       });
 
-      showSuccessNotification((
+      showSuccessNotification(
         <div>
           <p>Selected items has been added to Kubeconfig Sync.</p>
-          <br/>
+          <br />
           <p>
             {"Check the "}
-            <a style={{ textDecoration: "underline" }} onClick={navigateToKubernetesPreferences}>Preferences</a>
+            <a style={{ textDecoration: "underline" }} onClick={navigateToKubernetesPreferences}>
+              Preferences
+            </a>
             {" to see full list."}
           </p>
-        </div>
-      ));
+        </div>,
+      );
     };
   },
 });

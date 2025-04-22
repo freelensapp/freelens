@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { PathPickOpts } from "../../../renderer/components/path-picker";
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { openPathPickingDialogChannel } from "../common/channel";
 
 export type OpenPathPickingDialog = (options: PathPickOpts) => Promise<void>;

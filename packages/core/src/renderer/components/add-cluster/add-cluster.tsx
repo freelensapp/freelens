@@ -1,33 +1,34 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./add-cluster.module.scss";
 
+import { Button } from "@freelensapp/button";
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { isDefined, iter } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import fse from "fs-extra";
 import { debounce } from "lodash";
 import { action, computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import * as uuid from "uuid";
-import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
-import { docsUrl } from "../../../common/vars";
-import { isDefined, iter } from "@freelensapp/utilities";
-import { Button } from "@freelensapp/button";
-import type { ShowNotification } from "@freelensapp/notifications";
-import { SettingLayout } from "../layout/setting-layout";
-import { MonacoEditor } from "../monaco-editor";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
+import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import getCustomKubeConfigFilePathInjectable from "../../../common/app-paths/get-custom-kube-config-directory/get-custom-kube-config-directory.injectable";
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
-import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
+import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { docsUrl } from "../../../common/vars";
+import { SettingLayout } from "../layout/setting-layout";
+import { MonacoEditor } from "../monaco-editor";
 
 interface Option {
   config: KubeConfig;
@@ -45,11 +46,13 @@ interface Dependencies {
 
 function getContexts(config: KubeConfig): Map<string, Option> {
   return new Map(
-    splitConfig(config)
-      .map(({ config, validationResult }) => [config.currentContext, {
+    splitConfig(config).map(({ config, validationResult }) => [
+      config.currentContext,
+      {
         config,
         error: validationResult.error?.toString(),
-      }]),
+      },
+    ]),
   );
 }
 
@@ -70,25 +73,25 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
   }
 
   @computed get allErrors(): string[] {
-    return [
-      ...this.errors,
-      ...iter.map(this.kubeContexts.values(), ({ error }) => error),
-    ].filter(isDefined);
+    return [...this.errors, ...iter.map(this.kubeContexts.values(), ({ error }) => error)].filter(isDefined);
   }
 
-  readonly refreshContexts = debounce(action(() => {
-    const { config, error } = loadConfigFromString(this.customConfig.trim() || "{}");
+  readonly refreshContexts = debounce(
+    action(() => {
+      const { config, error } = loadConfigFromString(this.customConfig.trim() || "{}");
 
-    this.kubeContexts.replace(getContexts(config));
+      this.kubeContexts.replace(getContexts(config));
 
-    if (error) {
-      this.errors.push(error.toString());
-    }
+      if (error) {
+        this.errors.push(error.toString());
+      }
 
-    if (config.contexts.length === 0) {
-      this.errors.push('No contexts defined, either missing the "contexts" field, or it is empty.');
-    }
-  }), 500);
+      if (config.contexts.length === 0) {
+        this.errors.push('No contexts defined, either missing the "contexts" field, or it is empty.');
+      }
+    }),
+    500,
+  );
 
   addClusters = action(async () => {
     this.isWaiting = true;
@@ -118,11 +121,7 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
           {" merged into the "}
           <code>~/.kube/config</code>
           {" file. "}
-          <a
-            href={`${docsUrl}/getting-started/add-cluster/`}
-            rel="noreferrer"
-            target="_blank"
-          >
+          <a href={`${docsUrl}/getting-started/add-cluster/`} rel="noreferrer" target="_blank">
             Read more about adding clusters.
           </a>
         </p>
@@ -131,7 +130,7 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
             autoFocus
             className={styles.editor}
             value={this.customConfig}
-            onChange={value => {
+            onChange={(value) => {
               this.customConfig = value;
               this.errors.length = 0;
               this.refreshContexts();
@@ -141,7 +140,11 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
         {this.allErrors.length > 0 && (
           <>
             <h3>KubeConfig Yaml Validation Errors:</h3>
-            {this.allErrors.map(error => <div key={error} className="error">{error}</div>)}
+            {this.allErrors.map((error) => (
+              <div key={error} className="error">
+                {error}
+              </div>
+            ))}
           </>
         )}
         <div className="actions-panel">

@@ -1,24 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./namespaces.scss";
 
+import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { AddNamespaceDialog } from "./add-dialog/dialog";
-import { TabLayout } from "../layout/tab-layout-2";
 import { Badge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import type { NamespaceStore } from "./store";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import namespaceStoreInjectable from "./store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
+import { TabLayout } from "../layout/tab-layout-2";
+import { AddNamespaceDialog } from "./add-dialog/dialog";
 import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
-import { SubnamespaceBadge } from "./subnamespace-badge";
 import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
+import type { NamespaceStore } from "./store";
+import namespaceStoreInjectable from "./store.injectable";
+import { SubnamespaceBadge } from "./subnamespace-badge";
 
 enum columnId {
   name = "name",
@@ -66,19 +67,20 @@ const NonInjectedNamespacesRoute = ({
         toggleSelection: (...params) => namespaceStore.toggleSelection(...params),
         toggleSelectionAll: (...params) => namespaceStore.toggleSelectionAll(...params),
         pickOnlySelected: (...params) => namespaceStore.pickOnlySelected(...params),
-        removeItems: async (items) => { await Promise.all(items.map(requestDeleteNamespace)); },
-        removeSelectedItems: async () => { await Promise.all(namespaceStore.selectedItems.map(requestDeleteNamespace)); },
+        removeItems: async (items) => {
+          await Promise.all(items.map(requestDeleteNamespace));
+        },
+        removeSelectedItems: async () => {
+          await Promise.all(namespaceStore.selectedItems.map(requestDeleteNamespace));
+        },
       }}
       sortingCallbacks={{
-        [columnId.name]: namespace => namespace.getName(),
-        [columnId.labels]: namespace => namespace.getLabels(),
-        [columnId.age]: namespace => -namespace.getCreationTimestamp(),
-        [columnId.status]: namespace => namespace.getStatus(),
+        [columnId.name]: (namespace) => namespace.getName(),
+        [columnId.labels]: (namespace) => namespace.getLabels(),
+        [columnId.age]: (namespace) => -namespace.getCreationTimestamp(),
+        [columnId.status]: (namespace) => namespace.getStatus(),
       }}
-      searchFilters={[
-        namespace => namespace.getSearchFields(),
-        namespace => namespace.getStatus(),
-      ]}
+      searchFilters={[(namespace) => namespace.getSearchFields(), (namespace) => namespace.getStatus()]}
       renderHeaderTitle="Namespaces"
       renderTableHeader={[
         { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -87,7 +89,7 @@ const NonInjectedNamespacesRoute = ({
         { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
       ]}
-      renderTableContents={namespace => [
+      renderTableContents={(namespace) => [
         <>
           {namespace.getName()}
           {namespace.isSubnamespace() && (
@@ -95,13 +97,7 @@ const NonInjectedNamespacesRoute = ({
           )}
         </>,
         <KubeObjectStatusIcon key="icon" object={namespace} />,
-        namespace.getLabels().map(label => (
-          <Badge
-            scrollable
-            key={label}
-            label={label}
-          />
-        )),
+        namespace.getLabels().map((label) => <Badge scrollable key={label} label={label} />),
         <KubeObjectAge key="age" object={namespace} />,
         { title: namespace.getStatus(), className: namespace.getStatus().toLowerCase() },
       ]}
@@ -110,10 +106,9 @@ const NonInjectedNamespacesRoute = ({
         onAdd: openAddNamespaceDialog,
       }}
     />
-    <AddNamespaceDialog/>
+    <AddNamespaceDialog />
   </TabLayout>
 );
-
 
 export const NamespacesRoute = withInjectables<Dependencies>(NonInjectedNamespacesRoute, {
   getProps: (di) => ({

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -194,7 +195,11 @@ function find<T>(src: Iterable<T>, match: (i: T) => any): T | undefined {
  * @param reducer A function for producing the next item from an accumulation and the current item
  * @param initial The initial value for the iteration
  */
-function reduce<T, R extends Iterable<any>>(src: Iterable<T> | ArrayIterator<T>, reducer: (acc: R, cur: T) => R, initial: R): R;
+function reduce<T, R extends Iterable<any>>(
+  src: Iterable<T> | ArrayIterator<T>,
+  reducer: (acc: R, cur: T) => R,
+  initial: R,
+): R;
 
 function reduce<T, R = T>(src: Iterable<T>, reducer: (acc: R, cur: T) => R, initial: R): R {
   let acc = initial;
@@ -231,7 +236,7 @@ function join(src: IterableIterator<unknown>, connector = ","): string {
 function nth<T>(src: Iterable<T>, n: number): T | undefined {
   const iterator = src[Symbol.iterator]();
 
-  while (n --> 0) {
+  while (n-- > 0) {
     iterator.next();
   }
 
@@ -280,7 +285,11 @@ function* concat<T>(...sources: IterableIterator<T>[]): IterableIterator<T> {
 function nFircate<T>(from: Iterable<T>, field: keyof T, parts: []): [];
 function nFircate<T>(from: Iterable<T>, field: keyof T, parts: [T[typeof field]]): [T[]];
 function nFircate<T>(from: Iterable<T>, field: keyof T, parts: [T[typeof field], T[typeof field]]): [T[], T[]];
-function nFircate<T>(from: Iterable<T>, field: keyof T, parts: [T[typeof field], T[typeof field], T[typeof field]]): [T[], T[], T[]];
+function nFircate<T>(
+  from: Iterable<T>,
+  field: keyof T,
+  parts: [T[typeof field], T[typeof field], T[typeof field]],
+): [T[], T[], T[]];
 function nFircate<T>(from: Iterable<T>, field: keyof T, parts: T[typeof field][]): T[][] {
   if (new Set(parts).size !== parts.length) {
     throw new TypeError("Duplicate parts entries");

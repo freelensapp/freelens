@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./services.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { Badge } from "../badge";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { ServiceStore } from "./store";
 import type { Service } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import serviceStoreInjectable from "./store.injectable";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { ServiceStore } from "./store";
+import serviceStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -59,19 +60,19 @@ class NonInjectedServices extends React.Component<Dependencies> {
           className="Services"
           store={this.props.serviceStore}
           sortingCallbacks={{
-            [columnId.name]: service => service.getName(),
-            [columnId.namespace]: service => service.getNs(),
-            [columnId.selector]: service => service.getSelector(),
-            [columnId.ports]: service => (service.spec.ports || []).map(({ port }) => port)[0],
-            [columnId.clusterIp]: service => service.getClusterIp(),
-            [columnId.type]: service => service.getType(),
-            [columnId.age]: service => -service.getCreationTimestamp(),
-            [columnId.status]: service => service.getStatus(),
+            [columnId.name]: (service) => service.getName(),
+            [columnId.namespace]: (service) => service.getNs(),
+            [columnId.selector]: (service) => service.getSelector(),
+            [columnId.ports]: (service) => (service.spec.ports || []).map(({ port }) => port)[0],
+            [columnId.clusterIp]: (service) => service.getClusterIp(),
+            [columnId.type]: (service) => service.getType(),
+            [columnId.age]: (service) => -service.getCreationTimestamp(),
+            [columnId.status]: (service) => service.getStatus(),
           }}
           searchFilters={[
-            service => service.getSearchFields(),
-            service => service.getSelector().join(" "),
-            service => service.getPorts().join(" "),
+            (service) => service.getSearchFields(),
+            (service) => service.getSelector().join(" "),
+            (service) => service.getPorts().join(" "),
           ]}
           renderHeaderTitle="Services"
           renderTableHeader={[
@@ -86,19 +87,16 @@ class NonInjectedServices extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
-          renderTableContents={service => [
+          renderTableContents={(service) => [
             service.getName(),
-            <KubeObjectStatusIcon key="icon" object={ service } />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={service.getNs()}
-            />,
+            <KubeObjectStatusIcon key="icon" object={service} />,
+            <NamespaceSelectBadge key="namespace" namespace={service.getNs()} />,
             service.getType(),
             service.getClusterIp(),
             service.getPorts().join(", "),
             formatExternalIps(service),
-            service.getSelector().map(label => <Badge key={ label } label={ label } />),
-            <KubeObjectAge key="age" object={ service } />,
+            service.getSelector().map((label) => <Badge key={label} label={label} />),
+            <KubeObjectAge key="age" object={service} />,
             { title: service.getStatus(), className: service.getStatus().toLowerCase() },
           ]}
         />

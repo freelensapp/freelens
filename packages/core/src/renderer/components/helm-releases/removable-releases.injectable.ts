@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import releasesInjectable from "./releases.injectable";
 import deleteReleaseInjectable from "./delete-release/delete-release.injectable";
+import releasesInjectable from "./releases.injectable";
 import { removableReleases } from "./removable-releases";
 
 const removableReleasesInjectable = getInjectable({

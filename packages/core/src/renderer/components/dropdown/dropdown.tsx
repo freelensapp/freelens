@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -23,16 +24,8 @@ export function Dropdown(props: DropdownProps) {
 
   return (
     <div {...rest}>
-      <div id={id}>
-        {contentForToggle}
-      </div>
-      <Menu
-        usePortal
-        htmlFor={id}
-        isOpen={opened}
-        close={toggle}
-        open={toggle}
-      >
+      <div id={id}>{contentForToggle}</div>
+      <Menu usePortal htmlFor={id} isOpen={opened} close={toggle} open={toggle}>
         {children}
       </Menu>
     </div>

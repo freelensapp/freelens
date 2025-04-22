@@ -1,30 +1,30 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./dialog.scss";
 
-import React, { Component } from "react";
-import type { IObservableValue } from "mobx";
-import { computed, observable, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import type { DialogProps } from "../../dialog";
-import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
-import type { Deployment } from "@freelensapp/kube-object";
 import { Icon } from "@freelensapp/icon";
-import { Slider } from "../../slider";
-import { cssNames } from "@freelensapp/utilities";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import type { DeploymentApi } from "@freelensapp/kube-api";
 import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
-import deploymentScaleDialogStateInjectable from "./dialog-state.injectable";
+import type { Deployment } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { DeploymentApi } from "@freelensapp/kube-api";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IObservableValue } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React, { Component } from "react";
+import type { DialogProps } from "../../dialog";
+import { Dialog } from "../../dialog";
+import { Slider } from "../../slider";
+import { Wizard, WizardStep } from "../../wizard";
+import deploymentScaleDialogStateInjectable from "./dialog-state.injectable";
 
-export interface DeploymentScaleDialogProps extends Partial<DialogProps> {
-}
+export interface DeploymentScaleDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   deploymentApi: DeploymentApi;
@@ -51,9 +51,7 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
     const { currentReplicas } = this;
     const defaultMax = 50;
 
-    return currentReplicas <= defaultMax
-      ? defaultMax * 2
-      : currentReplicas * 2;
+    return currentReplicas <= defaultMax ? defaultMax * 2 : currentReplicas * 2;
   }
 
   onOpen = async (deployment: Deployment) => {
@@ -78,10 +76,13 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
 
     try {
       if (currentReplicas !== desiredReplicas) {
-        await this.props.deploymentApi.scale({
-          name: deployment.getName(),
-          namespace: deployment.getNs(),
-        }, desiredReplicas);
+        await this.props.deploymentApi.scale(
+          {
+            name: deployment.getName(),
+            namespace: deployment.getNs(),
+          },
+          desiredReplicas,
+        );
       }
       close();
     } catch (err) {
@@ -105,12 +106,12 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
 
     return (
       <Wizard
-        header={(
+        header={
           <h5>
             {"Scale Deployment "}
             <span>{deployment.getName()}</span>
           </h5>
-        )}
+        }
         done={this.close}
       >
         <WizardStep
@@ -120,22 +121,14 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
           disabledNext={!this.ready}
         >
           <div className="current-scale" data-testid="current-scale">
-            Current replica scale:
-            {" "}
-            {currentReplicas}
+            Current replica scale: {currentReplicas}
           </div>
           <div className="flex gaps align-center">
             <div className="desired-scale" data-testid="desired-scale">
-              Desired number of replicas:
-              {" "}
-              {desiredReplicas}
+              Desired number of replicas: {desiredReplicas}
             </div>
             <div className="slider-container flex align-center">
-              <Slider
-                value={desiredReplicas}
-                max={scaleMax}
-                onChange={onChange}
-              />
+              <Slider value={desiredReplicas} max={scaleMax} onChange={onChange} />
             </div>
             <div className="plus-minus-container flex gaps">
               <Icon
@@ -143,16 +136,12 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
                 onClick={this.desiredReplicasDown}
                 data-testid="desired-replicas-down"
               />
-              <Icon
-                material="add_circle_outline"
-                onClick={this.desiredReplicasUp}
-                data-testid="desired-replicas-up"
-              />
+              <Icon material="add_circle_outline" onClick={this.desiredReplicasUp} data-testid="desired-replicas-up" />
             </div>
           </div>
           {warning && (
             <div className="warning" data-testid="warning">
-              <Icon material="warning"/>
+              <Icon material="warning" />
               High number of replicas may cause cluster performance issues
             </div>
           )}
@@ -180,11 +169,14 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
   }
 }
 
-export const DeploymentScaleDialog = withInjectables<Dependencies, DeploymentScaleDialogProps>(NonInjectedDeploymentScaleDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    deploymentApi: di.inject(deploymentApiInjectable),
-    state: di.inject(deploymentScaleDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-  }),
-});
+export const DeploymentScaleDialog = withInjectables<Dependencies, DeploymentScaleDialogProps>(
+  NonInjectedDeploymentScaleDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      deploymentApi: di.inject(deploymentApiInjectable),
+      state: di.inject(deploymentScaleDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    }),
+  },
+);

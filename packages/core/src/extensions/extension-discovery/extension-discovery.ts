@@ -1,36 +1,42 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { ipcRenderer } from "electron";
 import { EventEmitter } from "events";
-import { makeObservable, observable, reaction, when } from "mobx";
-import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
-import { toJS } from "../../common/utils";
-import { isErrnoException } from "@freelensapp/utilities";
-import type { ExtensionLoader } from "../extension-loader";
-import type { InstalledExtension, LensExtensionId, LensExtensionManifest, ExternalInstalledExtension } from "@freelensapp/legacy-extensions";
-import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
-import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
-import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
-import type { ReadJson } from "../../common/fs/read-json-file.injectable";
-import type { Logger } from "@freelensapp/logger";
-import type { PathExists } from "../../common/fs/path-exists.injectable";
-import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
 import type { Stats } from "fs";
-import type { LStat } from "../../common/fs/lstat.injectable";
-import type { ReadDirectory } from "../../common/fs/read-directory.injectable";
-import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
+import type {
+  ExternalInstalledExtension,
+  InstalledExtension,
+  LensExtensionId,
+  LensExtensionManifest,
+} from "@freelensapp/legacy-extensions";
+import type { Logger } from "@freelensapp/logger";
+import { isErrnoException } from "@freelensapp/utilities";
+import { ipcRenderer } from "electron";
+import { makeObservable, observable, reaction, when } from "mobx";
+import type TypedEventEmitter from "typed-emitter";
 import type { AccessPath } from "../../common/fs/access-path.injectable";
 import type { Copy } from "../../common/fs/copy.injectable";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
+import type { LStat } from "../../common/fs/lstat.injectable";
+import type { PathExists } from "../../common/fs/path-exists.injectable";
+import type { ReadDirectory } from "../../common/fs/read-directory.injectable";
+import type { ReadJson } from "../../common/fs/read-json-file.injectable";
+import type { RemovePath } from "../../common/fs/remove.injectable";
+import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
+import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
+import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { GetRelativePath } from "../../common/path/get-relative-path.injectable";
-import type { RemovePath } from "../../common/fs/remove.injectable";
-import type TypedEventEmitter from "typed-emitter";
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import { toJS } from "../../common/utils";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
+import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
+import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
+import type { ExtensionLoader } from "../extension-loader";
 
 interface Dependencies {
   readonly extensionLoader: ExtensionLoader;
@@ -144,12 +150,15 @@ export class ExtensionDiscovery {
   async initMain(): Promise<void> {
     ipcMainHandle(extensionDiscoveryStateChannel, () => this.toJSON());
 
-    reaction(() => this.toJSON(), () => {
-      this.broadcast();
-    });
+    reaction(
+      () => this.toJSON(),
+      () => {
+        this.broadcast();
+      },
+    );
   }
 
-  private _watch: Watcher<false>|undefined;
+  private _watch: Watcher<false> | undefined;
 
   /**
    * Watches for added/removed local extensions.
@@ -161,18 +170,19 @@ export class ExtensionDiscovery {
     // Wait until .load() has been called and has been resolved
     await this.whenLoaded;
 
-    this._watch = this.dependencies.watch(this.localFolderPath, {
-      // For adding and removing symlinks to work, the depth has to be 1.
-      depth: 1,
-      ignoreInitial: true,
-      // Try to wait until the file has been completely copied.
-      // The OS might emit an event for added file even it's not completely written to the file-system.
-      awaitWriteFinish: {
-        // Wait 300ms until the file size doesn't change to consider the file written.
-        // For a small file like package.json this should be plenty of time.
-        stabilityThreshold: 300,
-      },
-    })
+    this._watch = this.dependencies
+      .watch(this.localFolderPath, {
+        // For adding and removing symlinks to work, the depth has to be 1.
+        depth: 1,
+        ignoreInitial: true,
+        // Try to wait until the file has been completely copied.
+        // The OS might emit an event for added file even it's not completely written to the file-system.
+        awaitWriteFinish: {
+          // Wait 300ms until the file size doesn't change to consider the file written.
+          // For a small file like package.json this should be plenty of time.
+          stabilityThreshold: 300,
+        },
+      })
       // Extension add is detected by watching "<extensionDir>/package.json" add
       .on("add", this.handleWatchFileAdd)
       // Extension remove is detected by watching "<extensionDir>" unlink
@@ -275,10 +285,13 @@ export class ExtensionDiscovery {
    * @param extensionId The ID of the extension to uninstall.
    */
   async uninstallExtension(extensionId: LensExtensionId): Promise<void> {
-    const extension = this.extensions.get(extensionId) ?? this.dependencies.extensionLoader.getExtensionById(extensionId);
+    const extension =
+      this.extensions.get(extensionId) ?? this.dependencies.extensionLoader.getExtensionById(extensionId);
 
     if (!extension) {
-      return void this.dependencies.logger.warn(`${logModule} could not uninstall extension, not found`, { id: extensionId });
+      return void this.dependencies.logger.warn(`${logModule} could not uninstall extension, not found`, {
+        id: extensionId,
+      });
     }
 
     const { manifest, absolutePath } = extension;
@@ -303,7 +316,9 @@ export class ExtensionDiscovery {
       `${logModule} loading extensions from ${this.dependencies.extensionPackageRootDirectory}`,
     );
 
-    await this.dependencies.removePath(this.dependencies.joinPaths(this.dependencies.extensionPackageRootDirectory, "package-lock.json"));
+    await this.dependencies.removePath(
+      this.dependencies.joinPaths(this.dependencies.extensionPackageRootDirectory, "package-lock.json"),
+    );
     await this.dependencies.ensureDirectory(this.nodeModulesPath);
     await this.dependencies.ensureDirectory(this.localFolderPath);
 
@@ -338,14 +353,13 @@ export class ExtensionDiscovery {
     const manifestPath = this.dependencies.joinPaths(folderPath, manifestFilename);
 
     try {
-      const manifest = await this.dependencies.readJsonFile(manifestPath) as unknown as LensExtensionManifest;
+      const manifest = (await this.dependencies.readJsonFile(manifestPath)) as unknown as LensExtensionManifest;
       const id = this.getInstalledManifestPath(manifest.name);
       const isEnabled = this.dependencies.isExtensionEnabled(id);
       const extensionDir = this.dependencies.getDirnameOfPath(manifestPath);
       const npmPackage = this.dependencies.joinPaths(extensionDir, `${manifest.name}-${manifest.version}.tgz`);
-      const absolutePath = this.dependencies.isProduction && await this.dependencies.pathExists(npmPackage)
-        ? npmPackage
-        : extensionDir;
+      const absolutePath =
+        this.dependencies.isProduction && (await this.dependencies.pathExists(npmPackage)) ? npmPackage : extensionDir;
       const isCompatible = this.dependencies.isCompatibleExtension(manifest);
 
       return {
@@ -360,7 +374,9 @@ export class ExtensionDiscovery {
     } catch (error) {
       if (isErrnoException(error) && error.code === "ENOTDIR") {
         // ignore this error, probably from .DS_Store file
-        this.dependencies.logger.debug(`${logModule}: failed to load extension manifest through a not-dir-like at ${manifestPath}`);
+        this.dependencies.logger.debug(
+          `${logModule}: failed to load extension manifest through a not-dir-like at ${manifestPath}`,
+        );
       } else {
         this.dependencies.logger.error(`${logModule}: can't load extension manifest at ${manifestPath}: ${error}`);
       }
@@ -372,7 +388,7 @@ export class ExtensionDiscovery {
   async ensureExtensions(): Promise<Map<LensExtensionId, ExternalInstalledExtension>> {
     const userExtensions = await this.loadFromFolder(this.localFolderPath);
 
-    return this.extensions = new Map(userExtensions.map(extension => [extension.id, extension]));
+    return (this.extensions = new Map(userExtensions.map((extension) => [extension.id, extension])));
   }
 
   async loadFromFolder(folderPath: string): Promise<ExternalInstalledExtension[]> {

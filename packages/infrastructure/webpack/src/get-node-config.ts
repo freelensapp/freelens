@@ -1,18 +1,15 @@
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import type { Configuration } from "webpack";
+import nodeExternals from "webpack-node-externals";
 import { MakePeerDependenciesExternalPlugin } from "./plugins/make-peer-dependencies-external";
 import { ProtectFromImportingNonDependencies } from "./plugins/protect-from-importing-non-dependencies";
-import nodeExternals from "webpack-node-externals";
 
 export type Paths = {
   entrypointFilePath: string;
   outputDirectory: string;
 };
 
-export const getNodeConfig = ({
-  entrypointFilePath,
-  outputDirectory,
-}: Paths): Configuration => ({
+export const getNodeConfig = ({ entrypointFilePath, outputDirectory }: Paths): Configuration => ({
   name: entrypointFilePath,
   entry: { index: entrypointFilePath },
   target: "node",
@@ -50,10 +47,7 @@ export const getNodeConfig = ({
   output: {
     path: outputDirectory,
 
-    filename: (pathData) =>
-      pathData.chunk?.name === "index"
-        ? "index.js"
-        : `${pathData.chunk?.name}/index.js`,
+    filename: (pathData) => (pathData.chunk?.name === "index" ? "index.js" : `${pathData.chunk?.name}/index.js`),
 
     library: {
       type: "commonjs2",
@@ -66,9 +60,7 @@ export const getNodeConfig = ({
 
   externalsPresets: { node: true },
 
-  externals: [
-    nodeExternals({ modulesFromFile: true }),
-  ],
+  externals: [nodeExternals({ modulesFromFile: true })],
 
   node: {
     __dirname: true,

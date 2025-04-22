@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import semver from "semver";
 
@@ -9,7 +11,9 @@ interface Dependencies {
   extensionApiVersion: string;
 }
 
-export const isCompatibleExtension = ({ extensionApiVersion }: Dependencies): ((manifest: LensExtensionManifest) => boolean) => {
+export const isCompatibleExtension = ({
+  extensionApiVersion,
+}: Dependencies): ((manifest: LensExtensionManifest) => boolean) => {
   return (manifest: LensExtensionManifest): boolean => {
     const manifestLensEngine = manifest.engines.freelens;
     const validVersion = manifestLensEngine.match(/^[\^0-9]\d*\.\d+\b/); // must start from ^ or number

@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React, { useState } from "react";
-import type { EnvVarKeySelector } from "@freelensapp/kube-object";
+
 import { Icon } from "@freelensapp/icon";
+import type { EnvVarKeySelector } from "@freelensapp/kube-object";
 import { base64, cssNames, isObject } from "@freelensapp/utilities";
-import type { SecretStore } from "../config-secrets/store";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import secretStoreInjectable from "../config-secrets/store.injectable";
+import React, { useState } from "react";
 import type { SetRequired } from "type-fest";
+import type { SecretStore } from "../config-secrets/store";
+import secretStoreInjectable from "../config-secrets/store.injectable";
 
 export interface SecretKeyProps {
   reference: SetRequired<EnvVarKeySelector, "name">;
@@ -22,7 +24,9 @@ interface Dependencies {
 
 const NonInjectedSecretKey = (props: SecretKeyProps & Dependencies) => {
   const {
-    reference: { name, key }, namespace, secretStore,
+    reference: { name, key },
+    namespace,
+    secretStore,
   } = props;
 
   const [loading, setLoading] = useState(false);

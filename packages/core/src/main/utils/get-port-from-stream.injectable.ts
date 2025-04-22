@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { Readable } from "stream";
-import URLParse from "url-parse";
-import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
+import URLParse from "url-parse";
 
 export interface GetPortFromStreamArgs {
   /**
@@ -15,11 +16,11 @@ export interface GetPortFromStreamArgs {
    */
   lineRegex: {
     match: (line: string) => {
-        matched: boolean;
-        groups?: {
-          address?: string;
-        };
-        raw?: RegExpExecArray;
+      matched: boolean;
+      groups?: {
+        address?: string;
+      };
+      raw?: RegExpExecArray;
     };
     rawMatcher: string;
   };

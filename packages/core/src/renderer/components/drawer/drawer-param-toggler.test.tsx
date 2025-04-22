@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -17,13 +18,11 @@ describe("<DrawerParamToggler />", () => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
-    result = render((
-      <DrawerParamToggler
-        label="Foo"
-      >
+    result = render(
+      <DrawerParamToggler label="Foo">
         <div data-testid="drawer-child"></div>
-      </DrawerParamToggler>
-    ));
+      </DrawerParamToggler>,
+    );
   });
 
   it("renders", () => {

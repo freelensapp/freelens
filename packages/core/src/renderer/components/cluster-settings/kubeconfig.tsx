@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { shell } from "electron";
+import { observer } from "mobx-react";
 import React from "react";
 import type { Cluster } from "../../../common/cluster/cluster";
-import { observer } from "mobx-react";
-import { SubTitle } from "../layout/sub-title";
-import { shell } from "electron";
 import { Notice } from "../extensions/notice";
+import { SubTitle } from "../layout/sub-title";
 
 export interface ClusterKubeconfigProps {
   cluster: Cluster;

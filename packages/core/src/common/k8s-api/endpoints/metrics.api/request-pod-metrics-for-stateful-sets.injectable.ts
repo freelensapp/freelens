@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { StatefulSet } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
-import type { StatefulSet } from "@freelensapp/kube-object";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 export interface StatefulSetPodMetricData {
@@ -17,7 +19,11 @@ export interface StatefulSetPodMetricData {
   networkTransmit: MetricData;
 }
 
-export type RequestPodMetricsForStatefulSets = (statefulSets: StatefulSet[], namespace: string, selector?: string) => Promise<StatefulSetPodMetricData>;
+export type RequestPodMetricsForStatefulSets = (
+  statefulSets: StatefulSet[],
+  namespace: string,
+  selector?: string,
+) => Promise<StatefulSetPodMetricData>;
 
 const requestPodMetricsForStatefulSetsInjectable = getInjectable({
   id: "request-pod-metrics-for-stateful-sets",
@@ -25,20 +31,23 @@ const requestPodMetricsForStatefulSetsInjectable = getInjectable({
     const requestMetrics = di.inject(requestMetricsInjectable);
 
     return (statefulSets, namespace, selector = "") => {
-      const podSelector = statefulSets.map(statefulset => `${statefulset.getName()}-[[:digit:]]+`).join("|");
+      const podSelector = statefulSets.map((statefulset) => `${statefulset.getName()}-[[:digit:]]+`).join("|");
       const opts = { category: "pods", pods: podSelector, namespace, selector };
 
-      return requestMetrics({
-        cpuUsage: opts,
-        memoryUsage: opts,
-        fsUsage: opts,
-        fsWrites: opts,
-        fsReads: opts,
-        networkReceive: opts,
-        networkTransmit: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          cpuUsage: opts,
+          memoryUsage: opts,
+          fsUsage: opts,
+          fsWrites: opts,
+          fsReads: opts,
+          networkReceive: opts,
+          networkTransmit: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

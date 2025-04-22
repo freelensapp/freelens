@@ -1,69 +1,41 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import yaml from "js-yaml";
 import type { Cluster, Context, User } from "@freelensapp/kubernetes-client-node";
-import { newClusters, newContexts, newUsers, KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { KubeConfig, newClusters, newContexts, newUsers } from "@freelensapp/kubernetes-client-node";
 import { isDefined } from "@freelensapp/utilities";
 import Joi from "joi";
+import yaml from "js-yaml";
 import type { PartialDeep } from "type-fest";
 
 const clusterSchema = Joi.object({
-  name: Joi
-    .string()
-    .min(1)
-    .required(),
-  cluster: Joi
-    .object({
-      server: Joi
-        .string()
-        .min(1)
-        .required(),
-    })
-    .required(),
+  name: Joi.string().min(1).required(),
+  cluster: Joi.object({
+    server: Joi.string().min(1).required(),
+  }).required(),
 });
 
 const userSchema = Joi.object({
-  name: Joi.string()
-    .min(1)
-    .required(),
+  name: Joi.string().min(1).required(),
 });
 
 const contextSchema = Joi.object({
-  name: Joi.string()
-    .min(1)
-    .required(),
+  name: Joi.string().min(1).required(),
   context: Joi.object({
-    cluster: Joi.string()
-      .min(1)
-      .required(),
-    user: Joi.string()
-      .min(1)
-      .required(),
+    cluster: Joi.string().min(1).required(),
+    user: Joi.string().min(1).required(),
   }),
 });
 
 const kubeConfigSchema = Joi.object({
-  users: Joi
-    .array()
-    .items(userSchema)
-    .optional(),
-  clusters: Joi
-    .array()
-    .items(clusterSchema)
-    .optional(),
-  contexts: Joi
-    .array()
-    .items(contextSchema)
-    .optional(),
-  "current-context": Joi
-    .string()
-    .min(1)
-    .failover("default"),
-})
-  .required();
+  users: Joi.array().items(userSchema).optional(),
+  clusters: Joi.array().items(clusterSchema).optional(),
+  contexts: Joi.array().items(contextSchema).optional(),
+  "current-context": Joi.string().min(1).failover("default"),
+}).required();
 
 interface KubeConfigOptions {
   clusters: Cluster[];
@@ -148,7 +120,7 @@ export interface SplitConfigEntry {
  * Breaks kube config into several configs. Each context as it own KubeConfig object
  */
 export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
-  return kubeConfig.getContexts().map(ctx => {
+  return kubeConfig.getContexts().map((ctx) => {
     const config = new KubeConfig();
     const cluster = kubeConfig.getCluster(ctx.cluster);
     const user = kubeConfig.getUser(ctx.user);
@@ -181,43 +153,37 @@ export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
  * @returns The yaml representation of the kubeconfig object
  */
 export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
-  const clusters = kubeConfig.clusters
-    ?.filter(isDefined)
-    .map(cluster => ({
-      name: cluster.name,
-      cluster: {
-        "certificate-authority-data": cluster.caData,
-        "certificate-authority": cluster.caFile,
-        server: cluster.server,
-        "insecure-skip-tls-verify": cluster.skipTLSVerify,
-      },
-    }));
-  const contexts = kubeConfig.contexts
-    ?.filter(isDefined)
-    .map(context => ({
-      name: context.name,
-      context: {
-        cluster: context.cluster,
-        user: context.user,
-        namespace: context.namespace,
-      },
-    }));
-  const users = kubeConfig.users
-    ?.filter(isDefined)
-    .map(user => ({
-      name: user.name,
-      user: {
-        "client-certificate-data": user.certData,
-        "client-certificate": user.certFile,
-        "client-key-data": user.keyData,
-        "client-key": user.keyFile,
-        "auth-provider": user.authProvider,
-        exec: user.exec,
-        token: user.token,
-        username: user.username,
-        password: user.password,
-      },
-    }));
+  const clusters = kubeConfig.clusters?.filter(isDefined).map((cluster) => ({
+    name: cluster.name,
+    cluster: {
+      "certificate-authority-data": cluster.caData,
+      "certificate-authority": cluster.caFile,
+      server: cluster.server,
+      "insecure-skip-tls-verify": cluster.skipTLSVerify,
+    },
+  }));
+  const contexts = kubeConfig.contexts?.filter(isDefined).map((context) => ({
+    name: context.name,
+    context: {
+      cluster: context.cluster,
+      user: context.user,
+      namespace: context.namespace,
+    },
+  }));
+  const users = kubeConfig.users?.filter(isDefined).map((user) => ({
+    name: user.name,
+    user: {
+      "client-certificate-data": user.certData,
+      "client-certificate": user.certFile,
+      "client-key-data": user.keyData,
+      "client-key": user.keyFile,
+      "auth-provider": user.authProvider,
+      exec: user.exec,
+      token: user.token,
+      username: user.username,
+      password: user.password,
+    },
+  }));
   const config = {
     apiVersion: "v1",
     kind: "Config",
@@ -232,14 +198,16 @@ export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
   return yaml.dump(config, { skipInvalid: true });
 }
 
-export type ValidateKubeConfigResult = {
-  error: Error;
-} | {
-  error?: undefined;
-  context: Context;
-  cluster: Cluster;
-  user: User;
-};
+export type ValidateKubeConfigResult =
+  | {
+      error: Error;
+    }
+  | {
+      error?: undefined;
+      context: Context;
+      cluster: Cluster;
+      user: User;
+    };
 
 /**
  * Checks if `config` has valid `Context`, `User`, `Cluster`, and `exec` fields (if present when required)

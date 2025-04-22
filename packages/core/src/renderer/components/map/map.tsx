@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { pipeline } from "@ogre-tools/fp";
 import { identity, map } from "lodash/fp";
 import React from "react";
@@ -19,9 +21,7 @@ interface MapProps<Item extends RequiredPropertiesForItem> {
   getSeparator?: GetSeparator<Item, React.ReactElement>;
 }
 
-export const Map = <Item extends RequiredPropertiesForItem>(
-  props: MapProps<Item>,
-) => {
+export const Map = <Item extends RequiredPropertiesForItem>(props: MapProps<Item>) => {
   const { items, getPlaceholder, getSeparator, children } = props;
 
   if (items.length === 0) {
@@ -37,22 +37,20 @@ export const Map = <Item extends RequiredPropertiesForItem>(
 
         getSeparator
           ? (items) =>
-            addSeparator(
-              (left, right) => ({
-                item: {
-                  id: `separator-between-${left.item.id}-and-${right.item.id}`,
-                },
+              addSeparator(
+                (left, right) => ({
+                  item: {
+                    id: `separator-between-${left.item.id}-and-${right.item.id}`,
+                  },
 
-                render: () => getSeparator(left.item, right.item),
-              }),
+                  render: () => getSeparator(left.item, right.item),
+                }),
 
-              items,
-            )
+                items,
+              )
           : identity,
 
-        map(({ render, item }) => (
-          <React.Fragment key={item.id}>{render()}</React.Fragment>
-        )),
+        map(({ render, item }) => <React.Fragment key={item.id}>{render()}</React.Fragment>),
       )}
     </>
   );

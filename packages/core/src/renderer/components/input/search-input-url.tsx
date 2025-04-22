@@ -1,16 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import debounce from "lodash/debounce";
-import { autorun, observable, makeObservable } from "mobx";
+import { autorun, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import type { PageParam } from "../../navigation/page-param";
 import type { InputProps } from "./input";
 import { SearchInput } from "./search-input";
-import type { PageParam } from "../../navigation/page-param";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
 
 export interface SearchInputUrlProps extends InputProps {
@@ -28,9 +29,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
 
   componentDidMount(): void {
-    disposeOnUnmount(this, [
-      autorun(() => this.inputVal = this.props.searchUrlParam.get()),
-    ]);
+    disposeOnUnmount(this, [autorun(() => (this.inputVal = this.props.searchUrlParam.get()))]);
   }
 
   setValue = (value: string) => {

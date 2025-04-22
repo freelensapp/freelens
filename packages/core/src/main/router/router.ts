@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import Call from "@hapi/call";
 import type http from "http";
+import Call from "@hapi/call";
 import type { Cluster } from "../../common/cluster/cluster";
-import type { LensApiRequest, Route } from "./route";
 import type { ServerIncomingMessage } from "../lens-proxy/lens-proxy";
-import type { ParseRequest } from "./parse-request.injectable";
 import type { CreateHandlerForRoute, RouteHandler } from "./create-handler-for-route.injectable";
+import type { ParseRequest } from "./parse-request.injectable";
+import type { LensApiRequest, Route } from "./route";
 
 export interface RouterRequestOpts {
   req: http.IncomingMessage;
@@ -34,7 +35,11 @@ export class Router {
     }
   }
 
-  public async route(cluster: Cluster | undefined, req: ServerIncomingMessage, res: http.ServerResponse): Promise<boolean> {
+  public async route(
+    cluster: Cluster | undefined,
+    req: ServerIncomingMessage,
+    res: http.ServerResponse,
+  ): Promise<boolean> {
     const url = new URL(req.url, "http://localhost");
     const path = url.pathname;
     const method = req.method.toLowerCase();
@@ -62,7 +67,8 @@ export class Router {
       cluster,
       path: url.pathname,
       raw: {
-        req, res,
+        req,
+        res,
       },
       query: url.searchParams,
       payload,

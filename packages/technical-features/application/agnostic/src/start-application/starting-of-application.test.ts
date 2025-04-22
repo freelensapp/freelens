@@ -1,10 +1,10 @@
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
+import asyncFn, { AsyncFnMock } from "@async-fn/jest";
 import { registerFeature } from "@freelensapp/feature-core";
+import { getPromiseStatus } from "@freelensapp/test-utils";
+import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
 import { applicationFeature } from "../feature";
 import { startApplicationInjectionToken } from "./start-application.injectable";
 import * as timeSlots from "./time-slots";
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
-import { getPromiseStatus } from "@freelensapp/test-utils";
 
 describe("starting-of-application", () => {
   let di: DiContainer;

@@ -1,16 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { autorun, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
+import type { KubernetesCluster } from "../../../common/catalog-entities";
 import type { Cluster } from "../../../common/cluster/cluster";
 import { Input } from "../input";
-import { observable, autorun, makeObservable } from "mobx";
-import { observer, disposeOnUnmount } from "mobx-react";
-import { SubTitle } from "../layout/sub-title";
 import { isRequired } from "../input/input_validators";
-import type { KubernetesCluster } from "../../../common/catalog-entities";
+import { SubTitle } from "../layout/sub-title";
 
 export interface ClusterNameSettingProps {
   cluster: Cluster;
@@ -27,7 +28,8 @@ export class ClusterNameSetting extends React.Component<ClusterNameSettingProps>
   }
 
   componentDidMount() {
-    disposeOnUnmount(this,
+    disposeOnUnmount(
+      this,
       autorun(() => {
         this.name = this.props.cluster.preferences.clusterName || this.props.entity.getName();
       }),

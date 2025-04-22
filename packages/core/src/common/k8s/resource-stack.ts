@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import hb from "handlebars";
-import type { KubernetesCluster } from "../catalog-entities";
-import yaml from "js-yaml";
+
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import productNameInjectable from "../vars/product-name.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
 import type { Logger } from "@freelensapp/logger";
-import type { KubectlApplyAll, KubectlDeleteAll } from "../kube-helpers/channels";
-import type { ReadDirectory } from "../fs/read-directory.injectable";
-import type { JoinPaths } from "../path/join-paths.injectable";
-import type { ReadFile } from "../fs/read-file.injectable";
+import type { AsyncResult } from "@freelensapp/utilities";
 import { hasTypedProperty, isObject } from "@freelensapp/utilities";
+import hb from "handlebars";
+import yaml from "js-yaml";
+import type { KubernetesCluster } from "../catalog-entities";
+import type { ReadDirectory } from "../fs/read-directory.injectable";
+import type { ReadFile } from "../fs/read-file.injectable";
+import type { KubectlApplyAll, KubectlDeleteAll } from "../kube-helpers/channels";
+import type { JoinPaths } from "../path/join-paths.injectable";
+import productNameInjectable from "../vars/product-name.injectable";
 
 export interface ResourceApplyingStack {
   kubectlApplyFolder(folderPath: string, templateContext?: any, extraArgs?: string[]): Promise<string>;
@@ -111,11 +113,7 @@ export class ResourceStack {
     for (const filename of files) {
       const file = this.dependencies.joinPaths(folderPath, filename);
       const raw = await this.dependencies.readFile(file);
-      const data = (
-        filename.endsWith(".hb")
-          ? hb.compile(raw)(templateContext)
-          : raw
-      ).trim();
+      const data = (filename.endsWith(".hb") ? hb.compile(raw)(templateContext) : raw).trim();
 
       if (!data) {
         continue;

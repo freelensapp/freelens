@@ -1,10 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "./global-di";
 import type { Inject } from "@ogre-tools/injectable";
+import { getLegacyGlobalDiForExtensionApi } from "./global-di";
 
 export const asLegacyGlobalFunctionForExtensionApi = ((injectableKey, instantiationParameter) =>
   (...args: unknown[]) => {

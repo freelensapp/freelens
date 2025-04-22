@@ -1,33 +1,36 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ChartOptions, ChartPoint } from "chart.js";
 import { bytesToUnits, isDefined } from "@freelensapp/utilities";
+import type { ChartOptions, ChartPoint } from "chart.js";
 
 export type MetricsTab = "CPU" | "Memory" | "Disk" | "Pods" | "Network" | "Filesystem" | "Duration";
 
 const memoryLikeOptions: ChartOptions = {
   scales: {
-    yAxes: [{
-      ticks: {
-        callback: (value: number | string): string => {
-          if (typeof value == "string") {
-            const float = parseFloat(value);
+    yAxes: [
+      {
+        ticks: {
+          callback: (value: number | string): string => {
+            if (typeof value == "string") {
+              const float = parseFloat(value);
 
-            if (float < 1) {
-              return float.toFixed(3);
+              if (float < 1) {
+                return float.toFixed(3);
+              }
+
+              return bytesToUnits(parseInt(value));
             }
 
-            return bytesToUnits(parseInt(value));
-          }
-
-          return bytesToUnits(value);
+            return bytesToUnits(value);
+          },
+          stepSize: 1,
         },
-        stepSize: 1,
       },
-    }],
+    ],
   },
   tooltips: {
     callbacks: {
@@ -57,19 +60,21 @@ export const metricTabOptions: Record<MetricsTab, ChartOptions> = {
   Filesystem: memoryLikeOptions,
   CPU: {
     scales: {
-      yAxes: [{
-        ticks: {
-          callback: (value: number | string): string => {
-            const float = parseFloat(`${value}`);
+      yAxes: [
+        {
+          ticks: {
+            callback: (value: number | string): string => {
+              const float = parseFloat(`${value}`);
 
-            if (float == 0) return "0";
-            if (float < 10) return float.toFixed(3);
-            if (float < 100) return float.toFixed(2);
+              if (float == 0) return "0";
+              if (float < 10) return float.toFixed(3);
+              if (float < 100) return float.toFixed(2);
 
-            return float.toFixed(1);
+              return float.toFixed(1);
+            },
           },
         },
-      }],
+      ],
     },
     tooltips: {
       callbacks: {
@@ -93,11 +98,13 @@ export const metricTabOptions: Record<MetricsTab, ChartOptions> = {
   },
   Pods: {
     scales: {
-      yAxes: [{
-        ticks: {
-          callback: value => value,
+      yAxes: [
+        {
+          ticks: {
+            callback: (value) => value,
+          },
         },
-      }],
+      ],
     },
     tooltips: {
       callbacks: {
@@ -121,11 +128,13 @@ export const metricTabOptions: Record<MetricsTab, ChartOptions> = {
   },
   Duration: {
     scales: {
-      yAxes: [{
-        ticks: {
-          callback: value => value,
+      yAxes: [
+        {
+          ticks: {
+            callback: (value) => value,
+          },
         },
-      }],
+      ],
     },
     tooltips: {
       callbacks: {

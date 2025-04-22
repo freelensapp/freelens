@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { PortForwardArgs, PortForwardDependencies } from "./port-forward";
-import { PortForward } from "./port-forward";
 import bundledKubectlInjectable from "../../../kubectl/bundled-kubectl.injectable";
 import getPortFromStreamInjectable from "../../../utils/get-port-from-stream.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import type { PortForwardArgs, PortForwardDependencies } from "./port-forward";
+import { PortForward } from "./port-forward";
 
 export type CreatePortForward = (pathToKubeConfig: string, args: PortForwardArgs) => PortForward;
 

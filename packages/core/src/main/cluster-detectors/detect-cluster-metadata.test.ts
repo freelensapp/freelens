@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -28,7 +30,9 @@ describe("detect-cluster-metadata", () => {
     const lastSeenDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-time-stamp", accuracy: 100 }));
     const nodeCountDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: 42, accuracy: 100 }));
     const clusterIdDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-cluster-id", accuracy: 100 }));
-    const distributionDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-distribution", accuracy: 100 }));
+    const distributionDetectMock = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({ value: "some-distribution", accuracy: 100 }));
 
     di.override(clusterLastSeenDetectorInjectable, () => {
       return {
@@ -57,7 +61,7 @@ describe("detect-cluster-metadata", () => {
     di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(appPathsStateInjectable, () => ({
-      get: () => ({} as AppPaths),
+      get: () => ({}) as AppPaths,
       set: () => {},
     }));
 

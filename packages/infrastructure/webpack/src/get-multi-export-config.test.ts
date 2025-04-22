@@ -1,9 +1,9 @@
-import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
-import { getMultiExportConfig } from "./get-multi-export-config";
 import path from "path";
 import { inspect } from "util";
-import { getReactConfigFor } from "./get-react-config-for";
+import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import type { Configuration } from "webpack";
+import { getMultiExportConfig } from "./get-multi-export-config";
+import { getReactConfigFor } from "./get-react-config-for";
 
 const resolvePathFake = path.posix.resolve;
 
@@ -68,12 +68,14 @@ describe("get-multi-export-config", () => {
     });
 
     it("works", () => {
-      expect(inspect(configs, {
-        colors: false,
-        depth: Infinity,
-        maxArrayLength: Infinity,
-        maxStringLength: Infinity,
-      })).toMatchSnapshot();
+      expect(
+        inspect(configs, {
+          colors: false,
+          depth: Infinity,
+          maxArrayLength: Infinity,
+          maxStringLength: Infinity,
+        }),
+      ).toMatchSnapshot();
     });
 
     [
@@ -105,20 +107,13 @@ describe("get-multi-export-config", () => {
         });
 
         it("has correct output directory", () => {
-          expect(config).toHaveProperty(
-            "output.path",
-            scenario.outputDirectory
-          );
+          expect(config).toHaveProperty("output.path", scenario.outputDirectory);
         });
 
         it("has correct declaration directory", () => {
-          expect(
-            config.plugins!.find(
-              (fn: any) => fn?.constructor === ForkTsCheckerPlugin
-            )
-          ).toHaveProperty(
+          expect(config.plugins!.find((fn: any) => fn?.constructor === ForkTsCheckerPlugin)).toHaveProperty(
             "options.typescript.configOverwrite.compilerOptions.declarationDir",
-            scenario.outputDirectory
+            scenario.outputDirectory,
           );
         });
       });
@@ -132,9 +127,7 @@ describe("get-multi-export-config", () => {
       getMultiExportConfig(maximalPackageJson, {
         getReactConfig: () => reactConfigStub,
       });
-    }).toThrow(
-      'Tried to get multi export config but exports of package.json for "some-name" did not match exactly:'
-    );
+    }).toThrow('Tried to get multi export config but exports of package.json for "some-name" did not match exactly:');
   });
 
   it("given maximal package.json but exports do not match lens multi export config, when creating configuration, throws", () => {
@@ -144,9 +137,7 @@ describe("get-multi-export-config", () => {
       getMultiExportConfig(maximalPackageJson, {
         getReactConfig: () => reactConfigStub,
       });
-    }).toThrow(
-      'Tried to get multi export config but exports of package.json for "some-name" did not match exactly:'
-    );
+    }).toThrow('Tried to get multi export config but exports of package.json for "some-name" did not match exactly:');
   });
 
   it("given maximal package.json but exports are missing, when creating configuration, throws", () => {
@@ -156,9 +147,7 @@ describe("get-multi-export-config", () => {
       getMultiExportConfig(maximalPackageJson, {
         getReactConfig: () => reactConfigStub,
       });
-    }).toThrow(
-      'Tried to get multi export config but exports of package.json for "some-name" did not match exactly:'
-    );
+    }).toThrow('Tried to get multi export config but exports of package.json for "some-name" did not match exactly:');
   });
 
   it("given maximal package.json but lens multi export config is missing, when creating configuration, throws", () => {
@@ -168,9 +157,7 @@ describe("get-multi-export-config", () => {
       getMultiExportConfig(maximalPackageJson, {
         getReactConfig: () => reactConfigStub,
       });
-    }).toThrow(
-      'Tried to get multi export config for package "some-name" but configuration is missing.'
-    );
+    }).toThrow('Tried to get multi export config for package "some-name" but configuration is missing.');
   });
 
   it("given maximal package.json but a build type is incorrect, when creating configuration, throws", () => {
@@ -181,20 +168,19 @@ describe("get-multi-export-config", () => {
         getReactConfig: () => reactConfigStub,
       });
     }).toThrow(
-      'Tried to get multi export config for package "some-name" but build types "some-invalid" were not any of "node", "react".'
+      'Tried to get multi export config for package "some-name" but build types "some-invalid" were not any of "node", "react".',
     );
   });
 
   it("given maximal package.json but entrypoint is missing, when creating configuration, throws", () => {
-    delete maximalPackageJson.lensMultiExportConfig["./some-entrypoint"]
-      .entrypoint;
+    delete maximalPackageJson.lensMultiExportConfig["./some-entrypoint"].entrypoint;
 
     expect(() => {
       getMultiExportConfig(maximalPackageJson, {
         getReactConfig: () => reactConfigStub,
       });
     }).toThrow(
-      'Tried to get multi export config for package "some-name" but entrypoint was missing for "./some-entrypoint".'
+      'Tried to get multi export config for package "some-name" but entrypoint was missing for "./some-entrypoint".',
     );
   });
 });

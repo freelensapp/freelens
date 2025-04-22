@@ -1,20 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, comparer } from "mobx";
 import catalogCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
-import { hotbarStoreMigrationInjectionToken } from "./migrations-token";
-import { defaultHotbarCells } from "./types";
+import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../../persistent-storage/common/migrations.injectable";
-import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import activeHotbarIdInjectable from "./active-id.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
 import type { Hotbar, HotbarData } from "./hotbar";
+import { hotbarStoreMigrationInjectionToken } from "./migrations-token";
 import hotbarsStateInjectable from "./state.injectable";
+import { defaultHotbarCells } from "./types";
 
 export interface HotbarStoreModel {
   hotbars: HotbarData[];
@@ -44,11 +46,7 @@ const hotbarsPersistentStorageInjectable = getInjectable({
             name: "Default",
           });
           const {
-            metadata: {
-              uid,
-              name,
-              source,
-            },
+            metadata: { uid, name, source },
           } = catalogCatalogEntity;
 
           hotbar.items[0] = {
@@ -75,13 +73,14 @@ const hotbarsPersistentStorageInjectable = getInjectable({
 
         if (!activeHotbarId.get()) {
           activeHotbarId.set(firstHotbarId);
-        } else if (!iter.find(state.values(), hotbar => hotbar.id === activeHotbarId.get())) {
+        } else if (!iter.find(state.values(), (hotbar) => hotbar.id === activeHotbarId.get())) {
           activeHotbarId.set(firstHotbarId);
         }
       }),
       toJSON: () => ({
-        hotbars: iter.chain(state.values())
-          .map(hotbar => hotbar.toJSON())
+        hotbars: iter
+          .chain(state.values())
+          .map((hotbar) => hotbar.toJSON())
           .toArray(),
         activeHotbarId: activeHotbarId.get(),
       }),

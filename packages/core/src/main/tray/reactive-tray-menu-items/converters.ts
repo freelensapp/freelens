@@ -1,11 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { MinimalTrayMenuItem } from "../electron-tray/electron-tray.injectable";
 
-export function convertToElectronMenuTemplate(trayMenuItems: MinimalTrayMenuItem[]): Electron.MenuItemConstructorOptions[] {
-  const toTrayMenuOptions = (parentId: string | null) => (
+export function convertToElectronMenuTemplate(
+  trayMenuItems: MinimalTrayMenuItem[],
+): Electron.MenuItemConstructorOptions[] {
+  const toTrayMenuOptions = (parentId: string | null) =>
     trayMenuItems
       .filter((item) => item.parentId === parentId)
       .map((trayMenuItem): Electron.MenuItemConstructorOptions => {
@@ -23,18 +27,16 @@ export function convertToElectronMenuTemplate(trayMenuItems: MinimalTrayMenuItem
 
           ...(childItems.length === 0
             ? {
-              type: "normal",
-              submenu: toTrayMenuOptions(trayMenuItem.id),
-              click: trayMenuItem.click,
-            }
+                type: "normal",
+                submenu: toTrayMenuOptions(trayMenuItem.id),
+                click: trayMenuItem.click,
+              }
             : {
-              type: "submenu",
-              submenu: toTrayMenuOptions(trayMenuItem.id),
-            }),
-
+                type: "submenu",
+                submenu: toTrayMenuOptions(trayMenuItem.id),
+              }),
         };
-      })
-  );
+      });
 
   return toTrayMenuOptions(null);
 }

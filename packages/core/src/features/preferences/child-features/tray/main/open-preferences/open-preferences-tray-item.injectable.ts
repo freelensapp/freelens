@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
+import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
+import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
 import { trayMenuItemInjectionToken } from "../../../../../../main/tray/tray-menu-item/tray-menu-item-injection-token";
 import navigateToPreferencesInjectable from "../../../../common/navigate-to-preferences.injectable";
-import { computed } from "mobx";
-import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
-import { pipeline } from "@ogre-tools/fp";
-import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
 
 const openPreferencesTrayItemInjectable = getInjectable({
   id: "open-preferences-tray-item",

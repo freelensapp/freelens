@@ -1,31 +1,32 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./table.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import assert from "assert";
+import type { ItemObject } from "@freelensapp/list-layout";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isDefined } from "@freelensapp/utilities";
-import type { TableRowElem, TableRowProps } from "./table-row";
-import { TableRow } from "./table-row";
-import type { TableHeadElem } from "./table-head";
-import { TableHead } from "./table-head";
-import type { TableCellElem } from "./table-cell";
-import { VirtualList } from "../virtual-list";
-import type { PageParam } from "../../navigation/page-param";
-import { computed, makeObservable } from "mobx";
-import { getSorted } from "./sorting";
-import type { TableModel } from "./table-model/table-model";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import tableModelInjectable from "./table-model/table-model.injectable";
-import type { ItemObject } from "@freelensapp/list-layout";
-import assert from "assert";
+import autoBindReact from "auto-bind/react";
+import { computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import type { PageParam } from "../../navigation/page-param";
+import { VirtualList } from "../virtual-list";
 import orderByUrlParamInjectable from "./order-by-url-param.injectable";
 import sortByUrlParamInjectable from "./sort-by-url-param.injectable";
-import autoBindReact from "auto-bind/react";
+import { getSorted } from "./sorting";
+import type { TableCellElem } from "./table-cell";
+import type { TableHeadElem } from "./table-head";
+import { TableHead } from "./table-head";
+import type { TableModel } from "./table-model/table-model";
+import tableModelInjectable from "./table-model/table-model.injectable";
+import type { TableRowElem, TableRowProps } from "./table-row";
+import { TableRow } from "./table-row";
 
 export type TableSortBy = string;
 export type TableOrderBy = "asc" | "desc";
@@ -155,9 +156,7 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
   }
 
   @computed get sortParams() {
-    const modelParams = this.props.tableId
-      ? this.props.model.getSortParams(this.props.tableId)
-      : {};
+    const modelParams = this.props.tableId ? this.props.model.getSortParams(this.props.tableId) : {};
 
     return Object.assign({}, this.props.sortByDefault, modelParams);
   }
@@ -165,7 +164,7 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
   renderHead() {
     const { children } = this.props;
     const content = React.Children.toArray(children) as (TableRowElem<Item> | TableHeadElem)[];
-    const headElem = content.find(elem => elem.type === TableHead);
+    const headElem = content.find((elem) => elem.type === TableHead);
 
     if (!headElem) {
       return null;
@@ -175,15 +174,15 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
       const columns = React.Children.toArray(headElem.props.children) as TableCellElem[];
 
       return React.cloneElement(headElem, {
-        children: columns.map(elem => {
+        children: columns.map((elem) => {
           if (elem.props.checkbox) {
             return elem;
           }
-          const title = elem.props.title || (
+          const title =
+            elem.props.title ||
             // copy cell content to title if it's a string
             // usable if part of TableCell's content is hidden when there is not enough space
-            typeof elem.props.children === "string" ? elem.props.children : undefined
-          );
+            (typeof elem.props.children === "string" ? elem.props.children : undefined);
 
           return React.cloneElement(elem, {
             title,
@@ -225,7 +224,7 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
     const { sortBy, orderBy } = this.sortParams;
     const sameColumn = sortBy == colName;
     const newSortBy: TableSortBy = colName;
-    const newOrderBy: TableOrderBy = (!orderBy || !sameColumn || orderBy === "desc") ? "asc" : "desc";
+    const newOrderBy: TableOrderBy = !orderBy || !sameColumn || orderBy === "desc" ? "asc" : "desc";
 
     this.onSort({
       sortBy: String(newSortBy),
@@ -246,24 +245,26 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
 
   renderRows() {
     const {
-      noItems, virtual, customRowHeights, rowLineHeight, rowPadding, items = [],
-      getTableRow, selectedItemId, className, virtualHeight,
+      noItems,
+      virtual,
+      customRowHeights,
+      rowLineHeight,
+      rowPadding,
+      items = [],
+      getTableRow,
+      selectedItemId,
+      className,
+      virtualHeight,
     } = this.props;
     const content = this.getContent();
-    let rows: React.ReactElement<TableRowProps<Item>>[] = content.filter(elem => elem.type === TableRow);
-    let sortedItems = (
-      rows.length
-        ? rows.map(row => row.props.sortItem)
-        : items
-    ).filter(isDefined);
+    let rows: React.ReactElement<TableRowProps<Item>>[] = content.filter((elem) => elem.type === TableRow);
+    let sortedItems = (rows.length ? rows.map((row) => row.props.sortItem) : items).filter(isDefined);
 
     if (this.isSortable) {
       sortedItems = this.getSorted(sortedItems);
 
       if (rows.length) {
-        rows = sortedItems
-          .map(item => rows.find(row => item == row.props.sortItem))
-          .filter(isDefined);
+        rows = sortedItems.map((item) => rows.find((row) => item == row.props.sortItem)).filter(isDefined);
       }
     }
 
@@ -273,7 +274,7 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
 
     if (virtual) {
       assert(customRowHeights && rowLineHeight && rowPadding);
-      const rowHeights = sortedItems.map(item => customRowHeights(item, rowLineHeight, rowPadding * 2));
+      const rowHeights = sortedItems.map((item) => customRowHeights(item, rowLineHeight, rowPadding * 2));
 
       return (
         <VirtualList
@@ -293,7 +294,11 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
   render() {
     const { selectable, scrollable, autoSize, virtual, className } = this.props;
     const classNames = cssNames("Table flex column", className, {
-      selectable, scrollable, sortable: this.isSortable, autoSize, virtual,
+      selectable,
+      scrollable,
+      sortable: this.isSortable,
+      autoSize,
+      virtual,
     });
 
     return (

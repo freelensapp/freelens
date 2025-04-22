@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./replicasets.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { ReplicaSetStore } from "./store";
-import type { EventStore } from "../events/store";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
-import replicaSetStoreInjectable from "./store.injectable";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { ReplicaSetStore } from "./store";
+import replicaSetStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -33,10 +34,7 @@ interface Dependencies {
 }
 
 const NonInjectedReplicaSets = observer((props: Dependencies) => {
-  const {
-    eventStore,
-    replicaSetStore,
-  } = props;
+  const { eventStore, replicaSetStore } = props;
 
   return (
     <SiblingsInTabLayout>
@@ -47,16 +45,14 @@ const NonInjectedReplicaSets = observer((props: Dependencies) => {
         store={replicaSetStore}
         dependentStores={[eventStore]} // status icon component uses event store
         sortingCallbacks={{
-          [columnId.name]: replicaSet => replicaSet.getName(),
-          [columnId.namespace]: replicaSet => replicaSet.getNs(),
-          [columnId.desired]: replicaSet => replicaSet.getDesired(),
-          [columnId.current]: replicaSet => replicaSet.getCurrent(),
-          [columnId.ready]: replicaSet => replicaSet.getReady(),
-          [columnId.age]: replicaSet => -replicaSet.getCreationTimestamp(),
+          [columnId.name]: (replicaSet) => replicaSet.getName(),
+          [columnId.namespace]: (replicaSet) => replicaSet.getNs(),
+          [columnId.desired]: (replicaSet) => replicaSet.getDesired(),
+          [columnId.current]: (replicaSet) => replicaSet.getCurrent(),
+          [columnId.ready]: (replicaSet) => replicaSet.getReady(),
+          [columnId.age]: (replicaSet) => -replicaSet.getCreationTimestamp(),
         }}
-        searchFilters={[
-          replicaSet => replicaSet.getSearchFields(),
-        ]}
+        searchFilters={[(replicaSet) => replicaSet.getSearchFields()]}
         renderHeaderTitle="Replica Sets"
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -82,13 +78,10 @@ const NonInjectedReplicaSets = observer((props: Dependencies) => {
           { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
-        renderTableContents={replicaSet => [
+        renderTableContents={(replicaSet) => [
           replicaSet.getName(),
           <KubeObjectStatusIcon key="icon" object={replicaSet} />,
-          <NamespaceSelectBadge
-            key="namespace"
-            namespace={replicaSet.getNs()}
-          />,
+          <NamespaceSelectBadge key="namespace" namespace={replicaSet.getNs()} />,
           replicaSet.getDesired(),
           replicaSet.getCurrent(),
           replicaSet.getReady(),

@@ -1,38 +1,38 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./view.scss";
 
-import React from "react";
+import { Icon } from "@freelensapp/icon";
+import type { SecretApi } from "@freelensapp/kube-api";
+import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
+import { SecretType, reverseSecretTypeMap } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { base64, iter, object } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import upperFirst from "lodash/upperFirst";
 import type { IComputedValue } from "mobx";
-import { observable, makeObservable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
-import { Wizard, WizardStep } from "../../wizard";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
-import type { SecretApi } from "@freelensapp/kube-api";
-import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
+import type { ShowDetails } from "../../kube-detail-params/show-details.injectable";
+import showDetailsInjectable from "../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../layout/sub-title";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
 import { Select } from "../../select";
-import { Icon } from "@freelensapp/icon";
-import { base64, iter, object } from "@freelensapp/utilities";
-import upperFirst from "lodash/upperFirst";
-import type { ShowDetails } from "../../kube-detail-params/show-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { Wizard, WizardStep } from "../../wizard";
 import closeAddSecretDialogInjectable from "./close.injectable";
-import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
-import showDetailsInjectable from "../../kube-detail-params/show-details.injectable";
 import isAddSecretDialogOpenInjectable from "./is-open.injectable";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
-export interface AddSecretDialogProps extends Partial<DialogProps> {
-}
+export interface AddSecretDialogProps extends Partial<DialogProps> {}
 
 interface SecretTemplateField {
   key: string;
@@ -88,13 +88,13 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
     this.props.closeAddSecretDialog();
   };
 
-  private getDataFromFields = (fields: SecretTemplateField[] = [], processValue: (val: string) => string = (val => val)) => {
-    return iter.chain(fields.values())
-      .filterMap(({ key, value }) => (
-        value
-          ? [key, processValue(value)] as const
-          : undefined
-      ))
+  private getDataFromFields = (
+    fields: SecretTemplateField[] = [],
+    processValue: (val: string) => string = (val) => val,
+  ) => {
+    return iter
+      .chain(fields.values())
+      .filterMap(({ key, value }) => (value ? ([key, processValue(value)] as const) : undefined))
       .collect(object.fromEntries);
   };
 
@@ -103,16 +103,19 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
     const { data = [], labels = [], annotations = [] } = this.secret[type] ?? {};
 
     try {
-      const newSecret = await this.props.secretApi.create({ namespace, name }, {
-        type,
-        data: this.getDataFromFields(data, val => val ? base64.encode(val) : ""),
-        metadata: {
-          name,
-          namespace,
-          annotations: this.getDataFromFields(annotations),
-          labels: this.getDataFromFields(labels),
+      const newSecret = await this.props.secretApi.create(
+        { namespace, name },
+        {
+          type,
+          data: this.getDataFromFields(data, (val) => (val ? base64.encode(val) : "")),
+          metadata: {
+            name,
+            namespace,
+            annotations: this.getDataFromFields(annotations),
+            labels: this.getDataFromFields(labels),
+          },
         },
-      });
+      );
 
       this.props.showDetails(newSecret?.selfLink);
       this.close();
@@ -122,7 +125,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
   };
 
   private getFields(field: ISecretField) {
-    return (this.secret[this.type] ??= {})[field] ??= [];
+    return ((this.secret[this.type] ??= {})[field] ??= []);
   }
 
   addField = (field: ISecretField) => {
@@ -136,50 +139,40 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
   renderFields(field: ISecretField) {
     return (
       <>
-        <SubTitle
-          compact
-          className="fields-title"
-          title={upperFirst(field.toString())}
-        >
-          <Icon
-            small
-            tooltip="Add field"
-            material="add_circle_outline"
-            onClick={() => this.addField(field)}
-          />
+        <SubTitle compact className="fields-title" title={upperFirst(field.toString())}>
+          <Icon small tooltip="Add field" material="add_circle_outline" onClick={() => this.addField(field)} />
         </SubTitle>
         <div className="secret-fields">
-          {this.getFields(field)
-            .map((item, index) => (
-              <div key={index} className="secret-field flex gaps auto align-center">
-                <Input
-                  className="key"
-                  placeholder="Name"
-                  title={item.key}
-                  tabIndex={item.required ? -1 : 0}
-                  readOnly={item.required}
-                  value={item.key}
-                  onChange={v => item.key = v}
-                />
-                <Input
-                  multiLine
-                  maxRows={5}
-                  required={item.required}
-                  className="value"
-                  placeholder="Value"
-                  value={item.value}
-                  onChange={v => item.value = v}
-                />
-                <Icon
-                  small
-                  disabled={item.required}
-                  tooltip={item.required ? "Required field" : "Remove field"}
-                  className="remove-icon"
-                  material="remove_circle_outline"
-                  onClick={() => this.removeField(field, index)}
-                />
-              </div>
-            ))}
+          {this.getFields(field).map((item, index) => (
+            <div key={index} className="secret-field flex gaps auto align-center">
+              <Input
+                className="key"
+                placeholder="Name"
+                title={item.key}
+                tabIndex={item.required ? -1 : 0}
+                readOnly={item.required}
+                value={item.key}
+                onChange={(v) => (item.key = v)}
+              />
+              <Input
+                multiLine
+                maxRows={5}
+                required={item.required}
+                className="value"
+                placeholder="Value"
+                value={item.value}
+                onChange={(v) => (item.value = v)}
+              />
+              <Icon
+                small
+                disabled={item.required}
+                tooltip={item.required ? "Required field" : "Remove field"}
+                className="remove-icon"
+                material="remove_circle_outline"
+                onClick={() => this.removeField(field, index)}
+              />
+            </div>
+          ))}
         </div>
       </>
     );
@@ -203,11 +196,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
         close={this.close}
       >
         <Wizard header={header} done={this.close}>
-          <WizardStep
-            contentClass="flow column"
-            nextLabel="Create"
-            next={this.createSecret}
-          >
+          <WizardStep contentClass="flow column" nextLabel="Create" next={this.createSecret}>
             <div className="secret-name">
               <SubTitle title="Secret name" />
               <Input
@@ -217,7 +206,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 trim
                 validators={systemName}
                 value={name}
-                onChange={v => this.name = v}
+                onChange={(v) => (this.name = v)}
               />
             </div>
             <div className="flex auto gaps">
@@ -227,7 +216,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                   id="secret-namespace-input"
                   themeName="light"
                   value={namespace}
-                  onChange={option => this.namespace = option?.value ?? "default"}
+                  onChange={(option) => (this.namespace = option?.value ?? "default")}
                 />
               </div>
               <div className="secret-type">
@@ -237,8 +226,8 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                   themeName="light"
                   options={Object.keys(this.secretTemplate) as SecretType[]}
                   value={type}
-                  onChange={option => this.type = option?.value ?? SecretType.Opaque}
-                  getOptionLabel={option => reverseSecretTypeMap[option.value]}
+                  onChange={(option) => (this.type = option?.value ?? SecretType.Opaque)}
+                  getOptionLabel={(option) => reverseSecretTypeMap[option.value]}
                 />
               </div>
             </div>

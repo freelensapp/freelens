@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import routeIsActiveInjectable from "../../../../../renderer/routes/route-is-active.injectable";
@@ -16,10 +18,7 @@ const preferenceTabIsActiveInjectable = getInjectable({
     const routeIsActive = di.inject(routeIsActiveInjectable, route);
     const currentTabId = di.inject(currentPreferenceTabIdInjectable);
 
-    return computed(
-      () =>
-        routeIsActive.get() && currentTabId.get() === tabId,
-    );
+    return computed(() => routeIsActive.get() && currentTabId.get() === tabId);
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({

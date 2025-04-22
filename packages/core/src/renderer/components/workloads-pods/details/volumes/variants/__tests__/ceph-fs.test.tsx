@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 import type { CephfsSource } from "@freelensapp/kube-object";
 import { Pod } from "@freelensapp/kube-object";
+import React from "react";
 import { getDiForUnitTesting } from "../../../../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../../../../stores-apis-can-be-created.injectable";
 import type { DiRender } from "../../../../../test-utils/renderFor";
@@ -39,19 +40,15 @@ describe("<CephFs />", () => {
         selfLink: "/api/v1/pod/default/my-pod",
       },
       spec: {
-        volumes: [{
-          name: cephfsName,
-          cephfs: cephfsVolume,
-        }],
+        volumes: [
+          {
+            name: cephfsName,
+            cephfs: cephfsVolume,
+          },
+        ],
       },
     });
-    const result = render((
-      <CephFs
-        pod={pod}
-        variant={cephfsVolume}
-        volumeName={cephfsName}
-      />
-    ));
+    const result = render(<CephFs pod={pod} variant={cephfsVolume} volumeName={cephfsName} />);
 
     expect(result.container).toMatchSnapshot();
     expect(result.getByTestId("cephfs-readonly")).toHaveTextContent("false");
@@ -74,19 +71,15 @@ describe("<CephFs />", () => {
         selfLink: "/api/v1/pod/default/my-pod",
       },
       spec: {
-        volumes: [{
-          name: cephfsName,
-          cephfs: cephfsVolume,
-        }],
+        volumes: [
+          {
+            name: cephfsName,
+            cephfs: cephfsVolume,
+          },
+        ],
       },
     });
-    const result = render((
-      <CephFs
-        pod={pod}
-        variant={cephfsVolume}
-        volumeName={cephfsName}
-      />
-    ));
+    const result = render(<CephFs pod={pod} variant={cephfsVolume} volumeName={cephfsName} />);
 
     expect(result.container).toMatchSnapshot();
     expect(result.getByTestId("cephfs-readonly")).toHaveTextContent("false");
@@ -109,19 +102,15 @@ describe("<CephFs />", () => {
         selfLink: "/api/v1/pod/default/my-pod",
       },
       spec: {
-        volumes: [{
-          name: cephfsName,
-          cephfs: cephfsVolume,
-        }],
+        volumes: [
+          {
+            name: cephfsName,
+            cephfs: cephfsVolume,
+          },
+        ],
       },
     });
-    const result = render((
-      <CephFs
-        pod={pod}
-        variant={cephfsVolume}
-        volumeName={cephfsName}
-      />
-    ));
+    const result = render(<CephFs pod={pod} variant={cephfsVolume} volumeName={cephfsName} />);
 
     expect(result.container).toMatchSnapshot();
     expect(result.getByTestId("cephfs-readonly")).toHaveTextContent("true");

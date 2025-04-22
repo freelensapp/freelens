@@ -42,8 +42,7 @@ run the application from source files.
 ### Code Style
 
 - Follow the existing coding style.
-- Use [ESLint](https://eslint.org/) to lint your code.
-- Use [Prettier](https://prettier.io/) for code formatting.
+- Use [Biome](https://biomejs.dev/) to lint and format your code.
 - Verify your changes with [Trunk Check](https://docs.trunk.io/cli).
 
 ### Commit Messages

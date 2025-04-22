@@ -1,8 +1,8 @@
-import { getInjectable, instantiationDecoratorToken, createInstantiationTargetDecorator } from "@ogre-tools/injectable";
 import { startApplicationInjectionToken } from "@freelensapp/application";
-import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
-import { beforeAnythingInjectionToken, beforeElectronIsReadyInjectionToken } from "./time-slots";
 import { runManySyncFor } from "@freelensapp/run-many";
+import { createInstantiationTargetDecorator, getInjectable, instantiationDecoratorToken } from "@ogre-tools/injectable";
+import { beforeAnythingInjectionToken, beforeElectronIsReadyInjectionToken } from "./time-slots";
+import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
 
 const startElectronApplicationInjectable = getInjectable({
   id: "start-electron-application",

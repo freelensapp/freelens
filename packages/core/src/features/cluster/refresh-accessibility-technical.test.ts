@@ -1,30 +1,39 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, CoreV1Api, V1APIGroupList, V1APIVersions, V1NamespaceList, V1SelfSubjectAccessReview, V1SelfSubjectRulesReview } from "@freelensapp/kubernetes-client-node";
+import type {
+  AuthorizationV1Api,
+  CoreV1Api,
+  V1APIGroupList,
+  V1APIVersions,
+  V1NamespaceList,
+  V1SelfSubjectAccessReview,
+  V1SelfSubjectRulesReview,
+} from "@freelensapp/kubernetes-client-node";
+import { flushPromises } from "@freelensapp/test-utils";
+import { anyObject } from "jest-mock-extended";
+import type { PartialDeep } from "type-fest";
 import type { Cluster } from "../../common/cluster/cluster";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
-import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import type { PartialDeep } from "type-fest";
-import { anyObject } from "jest-mock-extended";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
-import type { K8sRequest } from "../../main/k8s-request.injectable";
-import k8sRequestInjectable from "../../main/k8s-request.injectable";
+import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";
 import clusterConnectionInjectable from "../../main/cluster/cluster-connection.injectable";
+import type { K8sRequest } from "../../main/k8s-request.injectable";
+import k8sRequestInjectable from "../../main/k8s-request.injectable";
 import type { KubeAuthProxy } from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { Mocked } from "../../test-utils/mock-interface";
-import { flushPromises } from "@freelensapp/test-utils";
 import addClusterInjectable from "./storage/common/add.injectable";
 
 describe("Refresh Cluster Accessibility Technical Tests", () => {
@@ -59,15 +68,23 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
 
     createSelfSubjectRulesReviewMock = asyncFn();
     createSelfSubjectAccessReviewMock = asyncFn();
-    mainDi.override(createAuthorizationApiInjectable, () => () => ({
-      createSelfSubjectRulesReview: createSelfSubjectRulesReviewMock,
-      createSelfSubjectAccessReview: createSelfSubjectAccessReviewMock,
-    } as any));
+    mainDi.override(
+      createAuthorizationApiInjectable,
+      () => () =>
+        ({
+          createSelfSubjectRulesReview: createSelfSubjectRulesReviewMock,
+          createSelfSubjectAccessReview: createSelfSubjectAccessReviewMock,
+        }) as any,
+    );
 
     listNamespaceMock = asyncFn();
-    mainDi.override(createCoreApiInjectable, () => () => ({
-      listNamespace: listNamespaceMock,
-    } as any));
+    mainDi.override(
+      createCoreApiInjectable,
+      () => () =>
+        ({
+          listNamespace: listNamespaceMock,
+        }) as any,
+    );
 
     await builder.render();
   });
@@ -85,22 +102,28 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       await writeJsonFile("/some-kube-config-path", {
         apiVersion: "v1",
         kind: "Config",
-        clusters: [{
-          name: "some-cluster-name",
-          cluster: {
-            server: "https://localhost:8989",
+        clusters: [
+          {
+            name: "some-cluster-name",
+            cluster: {
+              server: "https://localhost:8989",
+            },
           },
-        }],
-        users: [{
-          name: "some-user-name",
-        }],
-        contexts: [{
-          name: "some-cluster-context",
-          context: {
-            user: "some-user-name",
-            cluster: "some-cluster-name",
+        ],
+        users: [
+          {
+            name: "some-user-name",
           },
-        }],
+        ],
+        contexts: [
+          {
+            name: "some-cluster-context",
+            context: {
+              user: "some-user-name",
+              cluster: "some-cluster-name",
+            },
+          },
+        ],
       });
 
       cluster = addCluster({
@@ -116,7 +139,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       expect(kubeAuthProxyMock.run).toBeCalled();
     });
 
-    // TODO: Flaky test: sometimes works, sometimes doesn't 
+    // TODO: Flaky test: sometimes works, sometimes doesn't
     describe.skip("when kubeAuthProxy has started running and its port is found", () => {
       beforeEach(async () => {
         kubeAuthProxyMock.port = 1235;
@@ -125,17 +148,19 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       });
 
       it("requests if cluster has admin permissions", async () => {
-        expect(createSelfSubjectAccessReviewMock).toBeCalledWith(anyObject({
-          spec: {
-            namespace: "kube-system",
-            resource: "*",
-            verb: "create",
-          },
-        }));
+        expect(createSelfSubjectAccessReviewMock).toBeCalledWith(
+          anyObject({
+            spec: {
+              namespace: "kube-system",
+              resource: "*",
+              verb: "create",
+            },
+          }),
+        );
       });
 
       // TODO: fails with `Tried to resolve an asyncFn call that has not been made yet.`
-      xdescribe.each([ true, false ])("when cluster admin request resolves to %p", (isAdmin) => {
+      xdescribe.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
         beforeEach(async () => {
           await createSelfSubjectAccessReviewMock.resolve({
             body: {
@@ -147,15 +172,17 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
         });
 
         it("requests if cluster has global watch permissions", () => {
-          expect(createSelfSubjectAccessReviewMock).toBeCalledWith(anyObject({
-            spec: {
-              verb: "watch",
-              resource: "*",
-            },
-          }));
+          expect(createSelfSubjectAccessReviewMock).toBeCalledWith(
+            anyObject({
+              spec: {
+                verb: "watch",
+                resource: "*",
+              },
+            }),
+          );
         });
 
-        describe.each([ true, false ])("when cluster global watch request resolves with %p", (globalWatch) => {
+        describe.each([true, false])("when cluster global watch request resolves with %p", (globalWatch) => {
           beforeEach(async () => {
             await createSelfSubjectAccessReviewMock.resolve({
               body: {
@@ -176,27 +203,19 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
             });
 
             it("requests core api versions", () => {
-              expect(k8sRequestMock).toBeCalledWith(
-                anyObject({ id: "some-cluster-id" }),
-                "/api",
-              );
+              expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/api");
             });
 
             describe("when core api versions request resolves", () => {
               beforeEach(async () => {
                 await k8sRequestMock.resolve({
                   serverAddressByClientCIDRs: [],
-                  versions: [
-                    "v1",
-                  ],
+                  versions: ["v1"],
                 } as V1APIVersions);
               });
 
               it("requests non-core api resource kinds", () => {
-                expect(k8sRequestMock).toBeCalledWith(
-                  anyObject({ id: "some-cluster-id" }),
-                  "/apis",
-                );
+                expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/apis");
               });
 
               describe("when non-core api resource kinds request resolves", () => {
@@ -205,10 +224,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                 });
 
                 it("requests specific resource kinds in core", () => {
-                  expect(k8sRequestMock).toBeCalledWith(
-                    anyObject({ id: "some-cluster-id" }),
-                    "/api/v1",
-                  );
+                  expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/api/v1");
                 });
 
                 describe("when core specific resource kinds request resolves", () => {
@@ -217,10 +233,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                   });
 
                   it("requests specific resources kinds from the first non-core response", () => {
-                    expect(k8sRequestMock).toBeCalledWith(
-                      anyObject({ id: "some-cluster-id" }),
-                      "/apis/node.k8s.io/v1",
-                    );
+                    expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/apis/node.k8s.io/v1");
                   });
 
                   describe("when first specific resource kinds request resolves", () => {
@@ -241,11 +254,13 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                       });
 
                       it("requests namespace list permissions for 'default' namespace", () => {
-                        expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-                          spec: {
-                            namespace: "default",
-                          },
-                        }));
+                        expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                          anyObject({
+                            spec: {
+                              namespace: "default",
+                            },
+                          }),
+                        );
                       });
 
                       describe("when the permissions are incomplete", () => {
@@ -254,11 +269,13 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-                            spec: {
-                              namespace: "my-namespace",
-                            },
-                          }));
+                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                            anyObject({
+                              spec: {
+                                namespace: "my-namespace",
+                              },
+                            }),
+                          );
                         });
 
                         describe("when the permissions request for 'my-namespace' resolves as empty", () => {
@@ -300,11 +317,13 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-                            spec: {
-                              namespace: "my-namespace",
-                            },
-                          }));
+                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                            anyObject({
+                              spec: {
+                                namespace: "my-namespace",
+                              },
+                            }),
+                          );
                         });
 
                         describe("when the permissions request for 'my-namespace' resolves as empty", () => {
@@ -346,11 +365,13 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-                            spec: {
-                              namespace: "my-namespace",
-                            },
-                          }));
+                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                            anyObject({
+                              spec: {
+                                namespace: "my-namespace",
+                              },
+                            }),
+                          );
                         });
 
                         describe("when the permissions request for 'my-namespace' resolves as empty", () => {
@@ -392,11 +413,13 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(anyObject({
-                            spec: {
-                              namespace: "my-namespace",
-                            },
-                          }));
+                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                            anyObject({
+                              spec: {
+                                namespace: "my-namespace",
+                              },
+                            }),
+                          );
                         });
 
                         describe("when the permissions request for 'my-namespace' resolves as empty", () => {
@@ -513,16 +536,7 @@ const coreApiKindsResponse = {
       singularName: "",
       namespaced: true,
       kind: "Pod",
-      verbs: [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ],
+      verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"],
       shortNames: ["po"],
       categories: ["all"],
       storageVersionHash: "xPOwRZ+Yhw8=",
@@ -547,16 +561,7 @@ const nodeK8sIoKindsResponse = {
       singularName: "",
       namespaced: false,
       kind: "RuntimeClass",
-      verbs: [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ],
+      verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"],
       storageVersionHash: "WQTu1GL3T2Q=",
     },
   ],
@@ -572,16 +577,7 @@ const discoveryK8sIoKindsResponse = {
       singularName: "",
       namespaced: true,
       kind: "EndpointSlice",
-      verbs: [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ],
+      verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"],
       storageVersionHash: "Nx3SIv6I0mE=",
     },
   ],
@@ -608,11 +604,13 @@ const emptyPermissions = {
 const defaultSingleListPermissions = {
   body: {
     status: {
-      resourceRules: [{
-        apiGroups: [""],
-        resources: ["pods"],
-        verbs: ["list"],
-      }],
+      resourceRules: [
+        {
+          apiGroups: [""],
+          resources: ["pods"],
+          verbs: ["list"],
+        },
+      ],
     },
   } as PartialDeep<V1SelfSubjectRulesReview>,
 } as CreateSelfSubjectRulesReviewRes;

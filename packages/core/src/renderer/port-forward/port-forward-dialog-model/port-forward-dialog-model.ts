@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { noop } from "lodash/fp";
 import { action, observable } from "mobx";
 import type { ForwardedPort } from "../port-forward-item";

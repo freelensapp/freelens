@@ -1,23 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { observer } from "mobx-react";
-import { Input } from "../input";
-import { isUrl } from "../input/input_validators";
-import { computed, makeObservable, observable } from "mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
+import { computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { AddWeblink } from "../../../features/weblinks/common/add.injectable";
 import addWeblinkInjectable from "../../../features/weblinks/common/add.injectable";
+import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
+import { Input } from "../input";
+import { isUrl } from "../input/input_validators";
 
 interface Dependencies {
   closeCommandOverlay: () => void;
   addWeblink: AddWeblink;
 }
-
 
 @observer
 class NonInjectedWeblinkAddCommand extends React.Component<Dependencies> {
@@ -68,12 +68,12 @@ class NonInjectedWeblinkAddCommand extends React.Component<Dependencies> {
           onSubmit={(v) => this.onSubmitUrl(v)}
           showValidationLine={true}
         />
-        { this.nameHidden && (
+        {this.nameHidden && (
           <small className="hint">
             Please provide a web link URL (Press &quot;Enter&quot; to continue or &quot;Escape&quot; to cancel)
           </small>
         )}
-        { !this.nameHidden && (
+        {!this.nameHidden && (
           <>
             <Input
               placeholder="Name (optional)"
@@ -84,7 +84,8 @@ class NonInjectedWeblinkAddCommand extends React.Component<Dependencies> {
               dirty={true}
             />
             <small className="hint">
-              Please provide a name for the web link (Press &quot;Enter&quot; to confirm or &quot;Escape&quot; to cancel)
+              Please provide a name for the web link (Press &quot;Enter&quot; to confirm or &quot;Escape&quot; to
+              cancel)
             </small>
           </>
         )}

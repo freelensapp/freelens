@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./table-head.scss";
 
-import React from "react";
 import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 
 export type TableHeadElem = React.ReactElement<TableHeadProps>;
 
@@ -26,7 +27,8 @@ export class TableHead extends React.Component<TableHeadProps> {
   render() {
     const { className, sticky, nowrap, showTopLine, flat, children, ...headProps } = this.props;
     const classNames = cssNames("TableHead", className, {
-      sticky, nowrap,
+      sticky,
+      nowrap,
       topLine: showTopLine,
       flat,
     });

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -30,12 +31,14 @@ export const dockerPod = new Pod({
   },
   status: {
     phase: "Running",
-    conditions: [{
-      type: "Running",
-      status: "Running",
-      lastProbeTime: 1,
-      lastTransitionTime: "Some time",
-    }],
+    conditions: [
+      {
+        type: "Running",
+        status: "Running",
+        lastProbeTime: 1,
+        lastTransitionTime: "Some time",
+      },
+    ],
     hostIP: "dummy",
     podIP: "dummy",
     startTime: "dummy",
@@ -52,14 +55,16 @@ export const deploymentPod1 = new Pod({
     resourceVersion: "dummy",
     namespace: "default",
     selfLink: "/v1/pod/default/deploymentPod1",
-    ownerReferences: [{
-      apiVersion: "v1",
-      kind: "Deployment",
-      name: "super-deployment",
-      uid: "uuid",
-      controller: true,
-      blockOwnerDeletion: true,
-    }],
+    ownerReferences: [
+      {
+        apiVersion: "v1",
+        kind: "Deployment",
+        name: "super-deployment",
+        uid: "uuid",
+        controller: true,
+        blockOwnerDeletion: true,
+      },
+    ],
   },
   spec: {
     initContainers: [
@@ -91,12 +96,14 @@ export const deploymentPod1 = new Pod({
   },
   status: {
     phase: "Running",
-    conditions: [{
-      type: "Running",
-      status: "Running",
-      lastProbeTime: 1,
-      lastTransitionTime: "Some time",
-    }],
+    conditions: [
+      {
+        type: "Running",
+        status: "Running",
+        lastProbeTime: 1,
+        lastTransitionTime: "Some time",
+      },
+    ],
     hostIP: "dummy",
     podIP: "dummy",
     startTime: "dummy",
@@ -113,14 +120,16 @@ export const deploymentPod2 = new Pod({
     resourceVersion: "dummy",
     namespace: "default",
     selfLink: "/v1/pod/default/deploymentPod2",
-    ownerReferences: [{
-      apiVersion: "v1",
-      kind: "Deployment",
-      name: "super-deployment",
-      uid: "uuid",
-      controller: true,
-      blockOwnerDeletion: true,
-    }],
+    ownerReferences: [
+      {
+        apiVersion: "v1",
+        kind: "Deployment",
+        name: "super-deployment",
+        uid: "uuid",
+        controller: true,
+        blockOwnerDeletion: true,
+      },
+    ],
   },
   spec: {
     initContainers: [
@@ -152,12 +161,14 @@ export const deploymentPod2 = new Pod({
   },
   status: {
     phase: "Running",
-    conditions: [{
-      type: "Running",
-      status: "Running",
-      lastProbeTime: 1,
-      lastTransitionTime: "Some time",
-    }],
+    conditions: [
+      {
+        type: "Running",
+        status: "Running",
+        lastProbeTime: 1,
+        lastTransitionTime: "Some time",
+      },
+    ],
     hostIP: "dummy",
     podIP: "dummy",
     startTime: "dummy",
@@ -174,14 +185,16 @@ export const deploymentPod3 = new Pod({
     resourceVersion: "dummy",
     namespace: "default",
     selfLink: "/v1/pod/default/deploymentPod3",
-    ownerReferences: [{
-      apiVersion: "v1",
-      kind: "Deployment",
-      name: "super-deployment",
-      uid: "uuid",
-      controller: true,
-      blockOwnerDeletion: true,
-    }],
+    ownerReferences: [
+      {
+        apiVersion: "v1",
+        kind: "Deployment",
+        name: "super-deployment",
+        uid: "uuid",
+        controller: true,
+        blockOwnerDeletion: true,
+      },
+    ],
   },
   spec: {
     containers: [
@@ -201,12 +214,14 @@ export const deploymentPod3 = new Pod({
   },
   status: {
     phase: "Running",
-    conditions: [{
-      type: "Running",
-      status: "Running",
-      lastProbeTime: 1,
-      lastTransitionTime: "Some time",
-    }],
+    conditions: [
+      {
+        type: "Running",
+        status: "Running",
+        lastProbeTime: 1,
+        lastTransitionTime: "Some time",
+      },
+    ],
     hostIP: "dummy",
     podIP: "dummy",
     startTime: "dummy",

@@ -1,33 +1,33 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./deployment-details.scss";
 
-import React from "react";
+import { Deployment } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem } from "../drawer";
-import { Badge } from "../badge";
-import { Deployment } from "@freelensapp/kube-object";
-import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
-import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { DeploymentStore } from "./store";
-import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import type { ReplicaSetStore } from "../workloads-replicasets/store";
-import { DeploymentReplicaSets } from "./deployment-replicasets";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
+import { PodDetailsList } from "../workloads-pods/pod-details-list";
+import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
+import type { ReplicaSetStore } from "../workloads-replicasets/store";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
+import { DeploymentReplicaSets } from "./deployment-replicasets";
+import type { DeploymentStore } from "./store";
 import deploymentStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
-export interface DeploymentDetailsProps extends KubeObjectDetailsProps<Deployment> {
-}
+export interface DeploymentDetailsProps extends KubeObjectDetailsProps<Deployment> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -39,11 +39,7 @@ interface Dependencies {
 @observer
 class NonInjectedDeploymentDetails extends React.Component<DeploymentDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.replicaSetStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.replicaSetStore])]);
   }
 
   render() {
@@ -74,51 +70,39 @@ class NonInjectedDeploymentDetails extends React.Component<DeploymentDetailsProp
         </DrawerItem>
         {selectors.length > 0 && (
           <DrawerItem name="Selector" labelsOnly>
-            {
-              selectors.map(label => <Badge key={label} label={label}/>)
-            }
+            {selectors.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
           </DrawerItem>
         )}
         {nodeSelector.length > 0 && (
           <DrawerItem name="Node Selector">
-            {
-              nodeSelector.map(label => (
-                <Badge key={label} label={label}/>
-              ))
-            }
+            {nodeSelector.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
           </DrawerItem>
         )}
-        <DrawerItem name="Strategy Type">
-          {spec.strategy.type}
+        <DrawerItem name="Strategy Type">{spec.strategy.type}</DrawerItem>
+        <DrawerItem name="Conditions" className="conditions" labelsOnly>
+          {deployment.getConditions().map(({ type, message, lastTransitionTime, status }) => (
+            <Badge
+              key={type}
+              label={type}
+              disabled={status === "False"}
+              className={kebabCase(type)}
+              tooltip={
+                <>
+                  <p>{message}</p>
+                  <p>{`Last transition time: ${lastTransitionTime}`}</p>
+                </>
+              }
+            />
+          ))}
         </DrawerItem>
-        <DrawerItem
-          name="Conditions"
-          className="conditions"
-          labelsOnly
-        >
-          {
-            deployment.getConditions()
-              .map(({ type, message, lastTransitionTime, status }) => (
-                <Badge
-                  key={type}
-                  label={type}
-                  disabled={status === "False"}
-                  className={kebabCase(type)}
-                  tooltip={(
-                    <>
-                      <p>{message}</p>
-                      <p>
-                        {`Last transition time: ${lastTransitionTime}`}
-                      </p>
-                    </>
-                  )} />
-              ))
-          }
-        </DrawerItem>
-        <PodDetailsTolerations workload={deployment}/>
-        <PodDetailsAffinities workload={deployment}/>
-        <DeploymentReplicaSets replicaSets={replicaSets}/>
-        <PodDetailsList pods={childPods} owner={deployment}/>
+        <PodDetailsTolerations workload={deployment} />
+        <PodDetailsAffinities workload={deployment} />
+        <DeploymentReplicaSets replicaSets={replicaSets} />
+        <PodDetailsList pods={childPods} owner={deployment} />
       </div>
     );
   }

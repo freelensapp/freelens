@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*",
-      ]
+      "*": ["node_modules/*"]
     },
     "plugins": [
       {
@@ -13,15 +11,6 @@
       }
     ]
   },
-  "include": [
-    "src/**/*",
-    "../packages/core/types/*.d.ts"
-  ],
-  "exclude": [
-    "out",
-    "dist",
-    "coverage",
-    "binaries",
-    "static"
-  ]
+  "include": ["src/**/*", "../packages/core/types/*.d.ts"],
+  "exclude": ["out", "dist", "coverage", "binaries", "static"]
 }

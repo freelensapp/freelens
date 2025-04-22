@@ -1,20 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./resource-metrics.scss";
 
-import React, { createContext, useState } from "react";
-import { Radio, RadioGroup } from "../radio";
 import type { KubeObject } from "@freelensapp/kube-object";
-import { cssNames } from "@freelensapp/utilities";
 import { Spinner } from "@freelensapp/spinner";
-import type { MetricsTab } from "../chart/options";
-import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import { cssNames } from "@freelensapp/utilities";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { isComputed } from "mobx";
 import { observer } from "mobx-react-lite";
+import React, { createContext, useState } from "react";
+import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import type { MetricsTab } from "../chart/options";
+import { Radio, RadioGroup } from "../radio";
 
 export type AtLeastOneMetricTab = [MetricsTab, ...MetricsTab[]];
 
@@ -26,7 +27,9 @@ export interface ResourceMetricsProps<Keys extends string> {
   children: React.ReactChild | React.ReactChild[];
 }
 
-function isAsyncComputedMetrics<Keys extends string>(metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>): metrics is IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> {
+function isAsyncComputedMetrics<Keys extends string>(
+  metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>,
+): metrics is IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> {
   return isComputed((metrics as IAsyncComputed<unknown>).value);
 }
 
@@ -38,49 +41,32 @@ export interface ResourceMetricsValue {
 
 export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>(null);
 
-export const ResourceMetrics = observer(<Keys extends string>({
-  object,
-  tabs,
-  children,
-  className,
-  metrics,
-}: ResourceMetricsProps<Keys>) => {
-  const [tab, setTab] = useState<MetricsTab>(tabs[0]);
+export const ResourceMetrics = observer(
+  <Keys extends string>({ object, tabs, children, className, metrics }: ResourceMetricsProps<Keys>) => {
+    const [tab, setTab] = useState<MetricsTab>(tabs[0]);
 
-  return (
-    <div className={cssNames("ResourceMetrics flex column", className)}>
-      <div className="switchers">
-        <RadioGroup
-          asButtons
-          className="flex box grow gaps"
-          value={tab}
-          onChange={setTab}
-        >
-          {tabs.map((tab, index) => (
-            <Radio
-              key={index}
-              className="box grow"
-              label={tab}
-              value={tab} />
-          ))}
-        </RadioGroup>
-      </div>
-      <ResourceMetricsContext.Provider
-        value={{
-          object,
-          tab,
-          metrics: isAsyncComputedMetrics(metrics)
-            ? metrics.value.get()
-            : metrics,
-        }}
-      >
-        <div className="graph">
-          {children}
+    return (
+      <div className={cssNames("ResourceMetrics flex column", className)}>
+        <div className="switchers">
+          <RadioGroup asButtons className="flex box grow gaps" value={tab} onChange={setTab}>
+            {tabs.map((tab, index) => (
+              <Radio key={index} className="box grow" label={tab} value={tab} />
+            ))}
+          </RadioGroup>
         </div>
-      </ResourceMetricsContext.Provider>
-      <div className="loader">
-        <Spinner />
+        <ResourceMetricsContext.Provider
+          value={{
+            object,
+            tab,
+            metrics: isAsyncComputedMetrics(metrics) ? metrics.value.get() : metrics,
+          }}
+        >
+          <div className="graph">{children}</div>
+        </ResourceMetricsContext.Provider>
+        <div className="loader">
+          <Spinner />
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);

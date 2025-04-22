@@ -1,17 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import path from "path";
-import type webpack from "webpack";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import type webpack from "webpack";
 import type { WebpackPluginInstance } from "webpack";
-import { optimize, DefinePlugin } from "webpack";
+import { DefinePlugin, optimize } from "webpack";
 import nodeExternals from "webpack-node-externals";
-import { isDevelopment, buildDir } from "./vars";
+import { buildDir, isDevelopment } from "./vars";
 
 export function webpackLensRenderer(): webpack.Configuration {
   return {
@@ -39,14 +40,9 @@ export function webpackLensRenderer(): webpack.Configuration {
       /\[ReactRefreshPlugin] .*?HMR.*? is not enabled/, // enabled in webpack.dev-server
     ],
     resolve: {
-      extensions: [
-        ".js", ".jsx", ".json",
-        ".ts", ".tsx",
-      ],
+      extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
     },
-    externals: [
-      nodeExternals({ modulesFromFile: true }),
-    ],
+    externals: [nodeExternals({ modulesFromFile: true })],
     optimization: {
       minimize: false,
     },
@@ -62,10 +58,9 @@ export function webpackLensRenderer(): webpack.Configuration {
           use: "node-loader",
         },
         {
-          test: (modulePath) => (
-            (modulePath.endsWith(".ts") && !modulePath.endsWith(".test.ts"))
-            || (modulePath.endsWith(".tsx") && !modulePath.endsWith(".test.tsx"))
-          ),
+          test: (modulePath) =>
+            (modulePath.endsWith(".ts") && !modulePath.endsWith(".test.ts")) ||
+            (modulePath.endsWith(".tsx") && !modulePath.endsWith(".test.tsx")),
           exclude: /node_modules/,
           use: {
             loader: "ts-loader",
@@ -177,9 +172,7 @@ export function cssModulesWebpackRule({ styleLoader }: CssModulesWebpackRuleOpti
         options: {
           sourceMap: isDevelopment,
           postcssOptions: {
-            plugins: [
-              "tailwindcss",
-            ],
+            plugins: ["tailwindcss"],
           },
         },
       },

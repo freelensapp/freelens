@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getGlobalOverride } from "@freelensapp/test-utils";
 import EventEmitter from "events";
+import { getGlobalOverride } from "@freelensapp/test-utils";
 import autoUpdaterInjectable from "./auto-updater.injectable";
 
 export default getGlobalOverride(autoUpdaterInjectable, () => {
-  return new class extends EventEmitter implements Electron.AutoUpdater {
+  return new (class extends EventEmitter implements Electron.AutoUpdater {
     checkForUpdates(): void {
       throw new Error("Method not implemented.");
     }
@@ -22,5 +23,5 @@ export default getGlobalOverride(autoUpdaterInjectable, () => {
       void options;
       throw new Error("Method not implemented.");
     }
-  };
+  })();
 });

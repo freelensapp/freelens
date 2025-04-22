@@ -1,23 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./info-panel.scss";
 
-import React, { Component } from "react";
-import { computed, observable, reaction, makeObservable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames } from "@freelensapp/utilities";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
-import type { DockStore, TabId } from "./dock/store";
-import type { ShowNotification, ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { computed, makeObservable, observable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React, { Component } from "react";
+import type { DockStore, TabId } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
-import { showSuccessNotificationInjectable, showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
 export interface InfoPanelProps extends OptionalProps {
   tabId: TabId;
@@ -70,9 +71,12 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
 
   componentDidMount() {
     disposeOnUnmount(this, [
-      reaction(() => this.props.tabId, () => {
-        this.waiting = false;
-      }),
+      reaction(
+        () => this.props.tabId,
+        () => {
+          this.waiting = false;
+        },
+      ),
     ]);
   }
 
@@ -123,44 +127,47 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
 
     return (
       <div className="error">
-        <Icon material="error_outline" tooltip={this.errorInfo}/>
+        <Icon material="error_outline" tooltip={this.errorInfo} />
       </div>
     );
   }
 
   render() {
-    const { className, controls, submitLabel, disableSubmit, error, submittingMessage, showButtons, showSubmitClose, showStatusPanel } = this.props;
+    const {
+      className,
+      controls,
+      submitLabel,
+      disableSubmit,
+      error,
+      submittingMessage,
+      showButtons,
+      showSubmitClose,
+      showStatusPanel,
+    } = this.props;
     const { submit, close, submitAndClose, waiting } = this;
     const isDisabled = !!(disableSubmit || waiting || error);
 
     return (
       <div className={cssNames("InfoPanel flex gaps align-center", className)}>
-        <div className="controls">
-          {controls}
-        </div>
+        <div className="controls">{controls}</div>
         {showStatusPanel && (
           <div className="flex gaps align-center">
             {waiting ? (
               <>
-                <Spinner data-testid={this.props.submittingTestId} />
-                {" "}
-                {submittingMessage}
+                <Spinner data-testid={this.props.submittingTestId} /> {submittingMessage}
               </>
-            ) : this.renderErrorIcon()}
+            ) : (
+              this.renderErrorIcon()
+            )}
           </div>
         )}
         {showButtons && (
           <>
-            <Button
-              plain
-              label="Cancel"
-              onClick={close}
-              data-testid={this.props.cancelTestId}
-            />
+            <Button plain label="Cancel" onClick={close} data-testid={this.props.cancelTestId} />
             <Button
               active
               outlined={showSubmitClose}
-              primary={!showSubmitClose}// one button always should be primary (blue)
+              primary={!showSubmitClose} // one button always should be primary (blue)
               label={submitLabel}
               onClick={submit}
               disabled={isDisabled}

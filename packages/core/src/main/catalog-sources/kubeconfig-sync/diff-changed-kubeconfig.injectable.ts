@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import type { Stats } from "fs";
 import { constants } from "fs";
-import type { ObservableMap } from "mobx";
 import type { Readable } from "stream";
+import type { Disposer } from "@freelensapp/utilities";
+import { bytesToUnits, noop } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import type { ObservableMap } from "mobx";
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
-import type { Disposer } from "@freelensapp/utilities";
-import { bytesToUnits, noop } from "@freelensapp/utilities";
 import computeKubeconfigDiffInjectable from "./compute-diff.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 
@@ -34,7 +36,9 @@ const diffChangedKubeconfigInjectable = getInjectable({
       logger.debug(`file changed`, { filePath });
 
       if (stats.size >= maxAllowedFileReadSize) {
-        logger.warn(`skipping ${filePath}: size=${bytesToUnits(stats.size)} is larger than maxSize=${bytesToUnits(maxAllowedFileReadSize)}`);
+        logger.warn(
+          `skipping ${filePath}: size=${bytesToUnits(stats.size)} is larger than maxSize=${bytesToUnits(maxAllowedFileReadSize)}`,
+        );
         source.clear();
 
         return noop;
@@ -72,7 +76,7 @@ const diffChangedKubeconfigInjectable = getInjectable({
           }
         })
         .on("close", () => cleanup())
-        .on("error", error => {
+        .on("error", (error) => {
           cleanup();
           logger.warn(`failed to read file: ${error}`, { filePath });
         })

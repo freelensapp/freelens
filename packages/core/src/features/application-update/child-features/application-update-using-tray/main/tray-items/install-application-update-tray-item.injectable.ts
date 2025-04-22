@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
+import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
+import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
 import { trayMenuItemInjectionToken } from "../../../../../../main/tray/tray-menu-item/tray-menu-item-injection-token";
 import discoveredUpdateVersionInjectable from "../../../../common/discovered-update-version.injectable";
-import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
-import { pipeline } from "@ogre-tools/fp";
-import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
 import quitAndInstallUpdateInjectable from "../../../../main/quit-and-install-update.injectable";
 import updateIsReadyToBeInstalledInjectable from "../update-is-ready-to-be-installed.injectable";
 

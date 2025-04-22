@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -11,12 +12,12 @@ export const json = {
       return {
         callWasSuccessful: true,
         response: JSON.parse(input) as unknown,
-      }
+      };
     } catch (error) {
       return {
         callWasSuccessful: false,
         error: error as Error,
-      }
+      };
     }
   },
 };

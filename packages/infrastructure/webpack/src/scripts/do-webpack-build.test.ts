@@ -1,8 +1,8 @@
-import { getDi } from "./get-di";
-import { execInjectable } from "./exec.injectable";
 import asyncFn, { AsyncFnMock } from "@async-fn/jest";
-import { DoWebpackBuild, doWebpackBuildInjectable } from "./do-webpack-build";
 import { getPromiseStatus } from "@ogre-tools/test-utils";
+import { DoWebpackBuild, doWebpackBuildInjectable } from "./do-webpack-build";
+import { execInjectable } from "./exec.injectable";
+import { getDi } from "./get-di";
 import { LogSuccess, logSuccessInjectable } from "./log-success.injectable";
 import { LogWarning, logWarningInjectable } from "./log-warning.injectable";
 
@@ -31,14 +31,14 @@ describe("do-webpack-build", () => {
     doWebpackBuild = di.inject(doWebpackBuildInjectable);
   });
 
-  it('given watching, when called, calls webpack with watch', () => {
-    doWebpackBuild({ watch: true});
+  it("given watching, when called, calls webpack with watch", () => {
+    doWebpackBuild({ watch: true });
 
     expect(execMock).toHaveBeenCalledWith("webpack --watch");
   });
 
-  it('given not watching, when called, calls webpack without watch', () => {
-    doWebpackBuild({ watch: false});
+  it("given not watching, when called, calls webpack without watch", () => {
+    doWebpackBuild({ watch: false });
 
     expect(execMock).toHaveBeenCalledWith("webpack");
   });
@@ -47,7 +47,7 @@ describe("do-webpack-build", () => {
     let actualPromise: Promise<void>;
 
     beforeEach(() => {
-      actualPromise = doWebpackBuild({ watch: true});
+      actualPromise = doWebpackBuild({ watch: true });
     });
 
     it("calls webpack", () => {

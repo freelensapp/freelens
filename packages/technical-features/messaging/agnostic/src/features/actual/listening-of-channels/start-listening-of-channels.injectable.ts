@@ -1,5 +1,5 @@
-import { getInjectable } from "@ogre-tools/injectable";
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
+import { getInjectable } from "@ogre-tools/injectable";
 import { listeningOfChannelsInjectionToken } from "./listening-of-channels.injectable";
 
 const startListeningOfChannelsInjectable = getInjectable({

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -6,7 +7,6 @@
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import kubernetesClusterCategoryInjectable from "../../catalog/categories/kubernetes-cluster.injectable";
 import type { KubernetesClusterCategory } from "../kubernetes-cluster";
-
 
 describe("kubernetesClusterCategory", () => {
   let kubernetesClusterCategory: KubernetesClusterCategory;
@@ -36,11 +36,11 @@ describe("kubernetesClusterCategory", () => {
     it("returns filtered items", () => {
       expect(kubernetesClusterCategory.filteredItems([item1, item2])).toEqual([item1, item2]);
 
-      const disposer1 = kubernetesClusterCategory.addMenuFilter(item => item.icon === "Icon");
+      const disposer1 = kubernetesClusterCategory.addMenuFilter((item) => item.icon === "Icon");
 
       expect(kubernetesClusterCategory.filteredItems([item1, item2])).toEqual([item1]);
 
-      const disposer2 = kubernetesClusterCategory.addMenuFilter(item => item.title === "Title 2");
+      const disposer2 = kubernetesClusterCategory.addMenuFilter((item) => item.title === "Title 2");
 
       expect(kubernetesClusterCategory.filteredItems([item1, item2])).toEqual([]);
 

@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
+import type { Logger } from "@freelensapp/logger";
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
+import React from "react";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import type { StatusBarItem } from "./status-bar-item-injection-token";
 import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
 import type { StatusBarRegistration } from "./status-bar-registration";
-import React from "react";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
 
 const statusBarItemRegistratorInjectable = getInjectable({
   id: "status-bar-item-registrator",
@@ -23,9 +25,7 @@ const statusBarItemRegistratorInjectable = getInjectable({
     const getRandomId = di.inject(getRandomIdInjectionToken);
     const logger = di.inject(loggerInjectionToken);
 
-    return rendererExtension.statusBarItems.flatMap(
-      toItemInjectableFor(rendererExtension, getRandomId, logger),
-    );
+    return rendererExtension.statusBarItems.flatMap(toItemInjectableFor(rendererExtension, getRandomId, logger));
   },
 
   injectionToken: extensionRegistratorInjectionToken,
@@ -43,16 +43,7 @@ const toItemInjectableFor = (extension: LensRendererExtension, getRandomId: () =
       const { item } = registration;
 
       position = "right";
-      component =
-        () => (
-          <>
-            {
-              typeof item === "function"
-                ? item()
-                : item
-            }
-          </>
-        );
+      component = () => <>{typeof item === "function" ? item() : item}</>;
     } else if (registration?.components) {
       const { position: pos = "right", Item } = registration.components;
 
@@ -68,17 +59,19 @@ const toItemInjectableFor = (extension: LensRendererExtension, getRandomId: () =
       return [];
     }
 
-    return [getInjectable({
-      id,
+    return [
+      getInjectable({
+        id,
 
-      instantiate: () => ({
-        origin: extension.sanitizedExtensionId,
-        component,
-        position,
-        visible: registration?.visible ?? computed(() => true),
+        instantiate: () => ({
+          origin: extension.sanitizedExtensionId,
+          component,
+          position,
+          visible: registration?.visible ?? computed(() => true),
+        }),
+
+        injectionToken: statusBarItemInjectionToken,
       }),
-
-      injectionToken: statusBarItemInjectionToken,
-    })];
+    ];
   };
 };

@@ -1,10 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 // See: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
-export interface Discriminable<T extends string> { readonly kind: T }
+export interface Discriminable<T extends string> {
+  readonly kind: T;
+}
 
 // Note: this will fail at transpilation time, if all kinds are not instructed in switch/case.
 // See: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking

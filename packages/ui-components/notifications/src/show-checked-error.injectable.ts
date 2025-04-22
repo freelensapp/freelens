@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { CreateNotificationOptions } from "./notifications.store";
 import { showErrorNotificationInjectable } from "./show-error-notification.injectable";
 

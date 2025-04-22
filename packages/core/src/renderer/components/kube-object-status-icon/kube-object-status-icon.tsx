@@ -1,21 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./kube-object-status-icon.scss";
 
-import React from "react";
 import { Icon } from "@freelensapp/icon";
+import type { KubeObject } from "@freelensapp/kube-object";
 import { cssNames, formatDuration, getOrInsert, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kubeObjectStatusTextsForObjectInjectable from "./kube-object-status-texts-for-object.injectable";
-import type { KubeObject } from "@freelensapp/kube-object";
-import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
-import { KubeObjectStatusLevel } from "../../../common/k8s-api/kube-object-status";
 import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
+import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
+import { KubeObjectStatusLevel } from "../../../common/k8s-api/kube-object-status";
 import type { KubeObjectStatusText } from "./kube-object-status-text-injection-token";
+import kubeObjectStatusTextsForObjectInjectable from "./kube-object-status-texts-for-object.injectable";
 
 function statusClassName(level: KubeObjectStatusLevel): string {
   switch (level) {
@@ -40,9 +41,7 @@ function statusTitle(level: KubeObjectStatusLevel): string {
 }
 
 function getAge(timestamp: string | undefined) {
-  return timestamp
-    ? formatDuration(Date.now() - new Date(timestamp).getTime(), true)
-    : "";
+  return timestamp ? formatDuration(Date.now() - new Date(timestamp).getTime(), true) : "";
 }
 
 interface SplitStatusesByLevel {
@@ -87,13 +86,11 @@ class NonInjectedKubeObjectStatusIcon extends React.Component<KubeObjectStatusIc
   renderStatuses(statuses: KubeObjectStatus[], level: number) {
     const filteredStatuses = statuses.filter((item) => item.level == level);
 
-    return filteredStatuses.length > 0 && (
-      <div className={cssNames("level", statusClassName(level))}>
-        <span className="title">
-          {statusTitle(level)}
-        </span>
-        {
-          filteredStatuses.map((status, index) => (
+    return (
+      filteredStatuses.length > 0 && (
+        <div className={cssNames("level", statusClassName(level))}>
+          <span className="title">{statusTitle(level)}</span>
+          {filteredStatuses.map((status, index) => (
             <div key={`kube-resource-status-${level}-${index}`} className={cssNames("status", "msg")}>
               {`- ${status.text} `}
               <span className="age">
@@ -101,18 +98,16 @@ class NonInjectedKubeObjectStatusIcon extends React.Component<KubeObjectStatusIc
                 {getAge(status.timestamp)}
               </span>
             </div>
-          ))
-        }
-      </div>
+          ))}
+        </div>
+      )
     );
   }
 
   render() {
     const statusTexts = this.props.statuses.get();
 
-    const statuses = statusTexts
-      .map((statusText) => statusText.resolve(this.props.object))
-      .filter(isDefined);
+    const statuses = statusTexts.map((statusText) => statusText.resolve(this.props.object)).filter(isDefined);
 
     if (statuses.length === 0) {
       return null;

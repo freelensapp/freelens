@@ -1,17 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IComputedValue, IReactionDisposer } from "mobx";
-import { action, comparer, computed, makeObservable, reaction } from "mobx";
-import type { StorageLayer } from "../../utils/storage-helper";
-import { noop, toggle } from "@freelensapp/utilities";
-import type { KubeObjectStoreDependencies, KubeObjectStoreLoadingParams } from "../../../common/k8s-api/kube-object.store";
-import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { NamespaceApi } from "@freelensapp/kube-api";
 import { Namespace } from "@freelensapp/kube-object";
+import { noop, toggle } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
+import type { IComputedValue, IReactionDisposer } from "mobx";
+import { action, comparer, computed, makeObservable, reaction } from "mobx";
+import type {
+  KubeObjectStoreDependencies,
+  KubeObjectStoreLoadingParams,
+} from "../../../common/k8s-api/kube-object.store";
+import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+import type { StorageLayer } from "../../utils/storage-helper";
 
 export interface NamespaceTree {
   id: string;
@@ -25,13 +29,19 @@ interface Dependencies extends KubeObjectStoreDependencies {
 }
 
 export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
-  constructor(protected readonly dependencies: Dependencies, api: NamespaceApi) {
+  constructor(
+    protected readonly dependencies: Dependencies,
+    api: NamespaceApi,
+  ) {
     super(dependencies, api);
     makeObservable(this);
     autoBind(this);
   }
 
-  public onContextChange(callback: (namespaces: string[]) => void, opts: { fireImmediately?: boolean } = {}): IReactionDisposer {
+  public onContextChange(
+    callback: (namespaces: string[]) => void,
+    opts: { fireImmediately?: boolean } = {},
+  ): IReactionDisposer {
     return reaction(() => Array.from(this.contextNamespaces), callback, {
       fireImmediately: opts.fireImmediately,
       equals: comparer.shallow,
@@ -50,7 +60,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
    * @deprecated This doesn't contain the namespaces from cluster settings or from cluster context
    */
   @computed get allowedNamespaces(): string[] {
-    return this.items.map(item => item.getName());
+    return this.items.map((item) => item.getName());
   }
 
   /**
@@ -117,7 +127,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   clearSelected(namespaces?: string | string[]) {
     if (namespaces) {
       const resettingNamespaces = [namespaces].flat();
-      const newNamespaces = this.dependencies.storage.get()?.filter(ns => !resettingNamespaces.includes(ns));
+      const newNamespaces = this.dependencies.storage.get()?.filter((ns) => !resettingNamespaces.includes(ns));
 
       this.dependencies.storage.set(newNamespaces);
     } else {
@@ -131,9 +141,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
    * @returns `true` if all the provided names are selected
    */
   hasContext(namespaces: string | string[]): boolean {
-    return [namespaces]
-      .flat()
-      .every(namespace => this.selectedNames.has(namespace));
+    return [namespaces].flat().every((namespace) => this.selectedNames.has(namespace));
   }
 
   /**
@@ -200,7 +208,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   }
 
   getNamespaceTree(root: Namespace): NamespaceTree {
-    const children = this.items.filter(namespace => namespace.isChildOf(root.getName()));
+    const children = this.items.filter((namespace) => namespace.isChildOf(root.getName()));
 
     return {
       id: root.getId(),

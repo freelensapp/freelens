@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, makeObservable, observable, when } from "mobx";
-import type { ClusterId } from "../../../common/cluster-types";
-import type { Disposer } from "@freelensapp/utilities";
-import { onceDefined } from "@freelensapp/utilities";
 import assert from "assert";
 import type { Logger } from "@freelensapp/logger";
+import type { Disposer } from "@freelensapp/utilities";
+import { onceDefined } from "@freelensapp/utilities";
+import { action, makeObservable, observable, when } from "mobx";
+import type { ClusterId } from "../../../common/cluster-types";
 import { getClusterFrameUrl } from "../../../common/utils";
 import type { GetClusterById } from "../../../features/cluster/storage/common/get-by-id.injectable";
 
@@ -59,13 +60,17 @@ export class ClusterFrameHandler {
     iframe.name = cluster.contextName.get();
     iframe.setAttribute("src", getClusterFrameUrl(clusterId));
     iframe.setAttribute("allow", "clipboard-read; clipboard-write");
-    iframe.addEventListener("load", action(() => {
-      this.dependencies.logger.info(`[LENS-VIEW]: frame for clusterId=${clusterId} has loaded`);
-      const view = this.views.get(clusterId);
+    iframe.addEventListener(
+      "load",
+      action(() => {
+        this.dependencies.logger.info(`[LENS-VIEW]: frame for clusterId=${clusterId} has loaded`);
+        const view = this.views.get(clusterId);
 
-      assert(view, `view for ${clusterId} MUST still exist here`);
-      view.isLoaded = true;
-    }), { once: true });
+        assert(view, `view for ${clusterId} MUST still exist here`);
+        view.isLoaded = true;
+      }),
+      { once: true },
+    );
     this.views.set(clusterId, { frame: iframe, isLoaded: false });
     parentElem.appendChild(iframe);
 
@@ -118,9 +123,7 @@ export class ClusterFrameHandler {
       view.classList.add("hidden");
     }
 
-    const cluster = clusterId
-      ? this.dependencies.getClusterById(clusterId)
-      : undefined;
+    const cluster = clusterId ? this.dependencies.getClusterById(clusterId) : undefined;
 
     if (cluster && clusterId) {
       this.prevVisibleClusterChange = onceDefined(

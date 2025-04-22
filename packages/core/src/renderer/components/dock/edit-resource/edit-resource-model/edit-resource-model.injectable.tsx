@@ -1,24 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import assert from "assert";
+import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
+import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
+import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import yaml from "js-yaml";
+import { action, computed, observable, runInAction } from "mobx";
+import React from "react";
+import { createPatch } from "rfc6902";
+import type { EditResourceTabStore, EditingResource } from "../store";
+import editResourceTabStoreInjectable from "../store.injectable";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
-import { waitUntilDefined } from "@freelensapp/utilities";
-import editResourceTabStoreInjectable from "../store.injectable";
-import type { EditingResource, EditResourceTabStore } from "../store";
-import { action, computed, observable, runInAction } from "mobx";
-import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
-import yaml from "js-yaml";
-import assert from "assert";
 import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
-import { createPatch } from "rfc6902";
-import type { ShowNotification } from "@freelensapp/notifications";
-import { showSuccessNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
-import React from "react";
-import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 
 const editResourceModelInjectable = getInjectable({
   id: "edit-resource-model",
@@ -88,9 +90,7 @@ export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
 
   readonly configuration = {
-    value: computed(
-      () => this.editingResource.draft || this.editingResource.firstDraft || "",
-    ),
+    value: computed(() => this.editingResource.draft || this.editingResource.firstDraft || ""),
 
     onChange: action((value: string) => {
       this.editingResource.draft = value;
@@ -195,11 +195,9 @@ export class EditResourceModel {
     const selfLink = getEditSelfLinkFor(currentVersion);
 
     if (!selfLink) {
-      this.dependencies.showErrorNotification((
-        <p>
-          {`Cannot save resource, unknown selfLink: "${currentVersion.metadata.selfLink}"`}
-        </p>
-      ));
+      this.dependencies.showErrorNotification(
+        <p>{`Cannot save resource, unknown selfLink: "${currentVersion.metadata.selfLink}"`}</p>,
+      );
 
       return null;
     }
@@ -207,13 +205,7 @@ export class EditResourceModel {
     const result = await this.dependencies.requestPatchKubeResource(selfLink, patches);
 
     if (!result.callWasSuccessful) {
-      this.dependencies.showErrorNotification((
-        <p>
-          Failed to save resource:
-          {" "}
-          {result.error}
-        </p>
-      ));
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {result.error}</p>);
 
       return null;
     }
@@ -222,9 +214,7 @@ export class EditResourceModel {
 
     this.dependencies.showSuccessNotification(
       <p>
-        {kind}
-        {" "}
-        <b>{name}</b>
+        {kind} <b>{name}</b>
         {" updated."}
       </p>,
     );

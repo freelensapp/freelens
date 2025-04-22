@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { GetHelmReleaseResources } from "./get-helm-release-resources.injectable";
-import getHelmReleaseResourcesInjectable from "./get-helm-release-resources.injectable";
-import type { ExecHelm } from "../../exec-helm/exec-helm.injectable";
-import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { AsyncResult } from "@freelensapp/utilities";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
+import type { ExecHelm } from "../../exec-helm/exec-helm.injectable";
+import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import type { ExecFileWithInput } from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
 import execFileWithInputInjectable from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
-import type { AsyncResult } from "@freelensapp/utilities";
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { GetHelmReleaseResources } from "./get-helm-release-resources.injectable";
+import getHelmReleaseResourcesInjectable from "./get-helm-release-resources.injectable";
 
 describe("get helm release resources", () => {
   let getHelmReleaseResources: GetHelmReleaseResources;
@@ -28,10 +29,7 @@ describe("get helm release resources", () => {
 
     di.override(execHelmInjectable, () => execHelmMock);
 
-    di.override(
-      execFileWithInputInjectable,
-      () => execFileWithStreamInputMock,
-    );
+    di.override(execFileWithInputInjectable, () => execFileWithStreamInputMock);
 
     getHelmReleaseResources = di.inject(getHelmReleaseResourcesInjectable);
   });
@@ -40,16 +38,18 @@ describe("get helm release resources", () => {
     let actualPromise: AsyncResult<KubeJsonApiData[], string>;
 
     beforeEach(() => {
-      actualPromise = getHelmReleaseResources(
-        "some-release",
-        "some-namespace",
-        "/some-kubeconfig-path",
-      );
+      actualPromise = getHelmReleaseResources("some-release", "some-namespace", "/some-kubeconfig-path");
     });
 
     it("calls for release manifest", () => {
       expect(execHelmMock).toHaveBeenCalledWith([
-        "get", "manifest", "some-release", "--namespace", "some-namespace", "--kubeconfig", "/some-kubeconfig-path",
+        "get",
+        "manifest",
+        "some-release",
+        "--namespace",
+        "some-namespace",
+        "--kubeconfig",
+        "/some-kubeconfig-path",
       ]);
     });
 

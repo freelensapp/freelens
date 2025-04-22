@@ -1,12 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { TableOrderBy, TableSortCallback } from "./table";
 import { Ordering, rectifyOrdering, sortCompare, tuple } from "@freelensapp/utilities";
+import type { TableOrderBy, TableSortCallback } from "./table";
 
-export function getSorted<T>(rawItems: T[], sortingCallback: TableSortCallback<T> | undefined, orderBy: TableOrderBy = "asc"): T[] {
+export function getSorted<T>(
+  rawItems: T[],
+  sortingCallback: TableSortCallback<T> | undefined,
+  orderBy: TableOrderBy = "asc",
+): T[] {
   if (typeof sortingCallback !== "function") {
     return rawItems;
   }

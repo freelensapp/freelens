@@ -1,16 +1,18 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
+import { KubeApi } from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
 import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
 import { apiKubePrefix } from "../vars";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
 import apiBaseInjectable from "./api-base.injectable";
 import type { KubeApiConstructor } from "./create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
-import { KubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
 
 export interface CreateKubeApiForLocalClusterConfig {
   metadata: {
@@ -51,11 +53,13 @@ const createKubeApiForClusterInjectable = getInjectable({
           serverAddress: apiBase.config.serverAddress,
           apiBase: apiKubePrefix,
           debug: isDevelopment,
-        }, {
+        },
+        {
           headers: {
-            "Host": `${cluster.metadata.uid}.renderer.freelens.app:${new URL(apiBase.config.serverAddress).port}`,
+            Host: `${cluster.metadata.uid}.renderer.freelens.app:${new URL(apiBase.config.serverAddress).port}`,
           },
-        });
+        },
+      );
 
       if (apiClass) {
         return new apiClass({

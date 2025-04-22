@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Container, Pod } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
-import type { Pod, Container } from "@freelensapp/kube-object";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 export interface PodMetricData {
@@ -21,7 +23,12 @@ export interface PodMetricData {
   memoryLimits: MetricData;
 }
 
-export type RequestPodMetrics = (pods: Pod[], namespace: string, container?: Container, selector?: string) => Promise<PodMetricData>;
+export type RequestPodMetrics = (
+  pods: Pod[],
+  namespace: string,
+  container?: Container,
+  selector?: string,
+) => Promise<PodMetricData>;
 
 const requestPodMetricsInjectable = getInjectable({
   id: "request-pod-metrics",
@@ -29,24 +36,27 @@ const requestPodMetricsInjectable = getInjectable({
     const requestMetrics = di.inject(requestMetricsInjectable);
 
     return (pods, namespace, container, selector = "pod, namespace") => {
-      const podSelector = pods.map(pod => pod.getName()).join("|");
+      const podSelector = pods.map((pod) => pod.getName()).join("|");
       const opts = { category: "pods", pods: podSelector, container: container?.name, namespace, selector };
 
-      return requestMetrics({
-        cpuUsage: opts,
-        cpuRequests: opts,
-        cpuLimits: opts,
-        memoryUsage: opts,
-        memoryRequests: opts,
-        memoryLimits: opts,
-        fsUsage: opts,
-        fsWrites: opts,
-        fsReads: opts,
-        networkReceive: opts,
-        networkTransmit: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          cpuUsage: opts,
+          cpuRequests: opts,
+          cpuLimits: opts,
+          memoryUsage: opts,
+          memoryRequests: opts,
+          memoryLimits: opts,
+          fsUsage: opts,
+          fsWrites: opts,
+          fsReads: opts,
+          networkReceive: opts,
+          networkTransmit: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

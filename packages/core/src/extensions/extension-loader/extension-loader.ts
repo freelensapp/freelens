@@ -1,25 +1,37 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "assert";
+import { EventEmitter } from "@freelensapp/event-emitter";
+import type {
+  BundledExtension,
+  BundledInstalledExtension,
+  ExternalInstalledExtension,
+  InstalledExtension,
+  LegacyLensExtension,
+  LensExtensionConstructor,
+  LensExtensionId,
+} from "@freelensapp/legacy-extensions";
+import type { Logger } from "@freelensapp/logger";
+import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcMain, ipcRenderer } from "electron";
 import { isEqual } from "lodash";
 import type { ObservableMap } from "mobx";
-import { runInAction, action, computed, toJS, observable, reaction, when } from "mobx";
-import { broadcastMessage, ipcMainOn, ipcRendererOn, ipcMainHandle } from "../../common/ipc";
-import { isDefined, iter } from "@freelensapp/utilities";
-import type { ExternalInstalledExtension, InstalledExtension, LensExtensionConstructor, LensExtensionId, BundledExtension, BundledInstalledExtension, LegacyLensExtension } from "@freelensapp/legacy-extensions";
-import type { LensExtension } from "../lens-extension";
-import { extensionLoaderFromMainChannel, extensionLoaderFromRendererChannel } from "../../common/ipc/extension-handling";
-import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
-import assert from "assert";
-import { EventEmitter } from "@freelensapp/event-emitter";
-import type { Extension } from "./extension/extension.injectable";
-import type { Logger } from "@freelensapp/logger";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
+import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
+import {
+  extensionLoaderFromMainChannel,
+  extensionLoaderFromRendererChannel,
+} from "../../common/ipc/extension-handling";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
+import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
+import type { LensExtension } from "../lens-extension";
+import type { Extension } from "./extension/extension.injectable";
 
 const logModule = "[EXTENSIONS-LOADER]";
 
@@ -58,10 +70,12 @@ export class ExtensionLoader {
    */
   protected readonly nonInstancesByName = observable.set<string>();
 
-  protected readonly instancesByName = computed(() => new Map((
-    iter.chain(this.dependencies.extensionInstances.entries())
-      .map(([, instance]) => [instance.name, instance])
-  )));
+  protected readonly instancesByName = computed(
+    () =>
+      new Map(
+        iter.chain(this.dependencies.extensionInstances.entries()).map(([, instance]) => [instance.name, instance]),
+      ),
+  );
 
   private readonly onRemoveExtensionId = new EventEmitter<[string]>();
 
@@ -69,10 +83,9 @@ export class ExtensionLoader {
 
   constructor(protected readonly dependencies: Dependencies) {}
 
-  readonly userExtensions = computed(() => new Map((
-    this.extensions.toJSON()
-      .filter(([, extension]) => !extension.isBundled)
-  )));
+  readonly userExtensions = computed(
+    () => new Map(this.extensions.toJSON().filter(([, extension]) => !extension.isBundled)),
+  );
 
   /**
    * Get the extension instance by its manifest name
@@ -92,13 +105,19 @@ export class ExtensionLoader {
   }
 
   // Transform userExtensions to a state object for storing into ExtensionsStore
-  readonly storeState = computed(() => Array.from(
-    this.userExtensions.get(),
-    ([extId, extension]) => [extId, {
-      enabled: extension.isEnabled,
-      name: extension.manifest.name,
-    }] as const,
-  ));
+  readonly storeState = computed(() =>
+    Array.from(
+      this.userExtensions.get(),
+      ([extId, extension]) =>
+        [
+          extId,
+          {
+            enabled: extension.isEnabled,
+            name: extension.manifest.name,
+          },
+        ] as const,
+    ),
+  );
 
   async init() {
     if (ipcMain) {
@@ -110,9 +129,13 @@ export class ExtensionLoader {
     await when(() => this.isLoaded.get());
 
     // broadcasting extensions between main/renderer processes
-    reaction(() => this.toJSON(), () => this.broadcastExtensions(), {
-      fireImmediately: true,
-    });
+    reaction(
+      () => this.toJSON(),
+      () => this.broadcastExtensions(),
+      {
+        fireImmediately: true,
+      },
+    );
 
     reaction(
       () => this.storeState.get(),
@@ -209,9 +232,7 @@ export class ExtensionLoader {
   }
 
   broadcastExtensions() {
-    const channel = ipcRenderer
-      ? extensionLoaderFromRendererChannel
-      : extensionLoaderFromMainChannel;
+    const channel = ipcRenderer ? extensionLoaderFromRendererChannel : extensionLoaderFromMainChannel;
 
     broadcastMessage(channel, Array.from(this.extensions));
   }
@@ -225,8 +246,8 @@ export class ExtensionLoader {
   }
 
   protected async loadBundledExtensions() {
-    const bundledExtensions = await Promise.all((this.dependencies.bundledExtensions
-      .map(async extension => {
+    const bundledExtensions = await Promise.all(
+      this.dependencies.bundledExtensions.map(async (extension) => {
         try {
           const LensExtensionClass = await extension[this.dependencies.extensionEntryPointName]();
 
@@ -257,8 +278,8 @@ export class ExtensionLoader {
 
           return null;
         }
-      })
-    ));
+      }),
+    );
 
     return bundledExtensions.filter(isDefined);
   }
@@ -267,10 +288,13 @@ export class ExtensionLoader {
     // We first need to wait until each extension's `onActivate` is resolved or rejected,
     // as this might register new catalog categories. Afterwards we can safely .enable the extension.
     await Promise.all(
-      extensions.map(extension =>
+      extensions.map((extension) =>
         // If extension activation fails, log error
         extension.activated.catch((error) => {
-          this.dependencies.logger.error(`${logModule}: activation extension error`, { ext: extension.installedExtension, error });
+          this.dependencies.logger.error(`${logModule}: activation extension error`, {
+            ext: extension.installedExtension,
+            error,
+          });
         }),
       ),
     );
@@ -281,7 +305,7 @@ export class ExtensionLoader {
       extension.register();
     });
 
-    return extensions.map(extension => {
+    return extensions.map((extension) => {
       const loaded = extension.instance.enable().catch((err) => {
         this.dependencies.logger.error(`${logModule}: failed to enable`, { ext: extension, err });
       });
@@ -303,7 +327,9 @@ export class ExtensionLoader {
     return [...installedExtensions.entries()]
       .filter((entry): entry is [string, ExternalInstalledExtension] => !entry[1].isBundled)
       .map(([extId, installedExtension]) => {
-        const alreadyInit = this.dependencies.extensionInstances.has(extId) || this.nonInstancesByName.has(installedExtension.manifest.name);
+        const alreadyInit =
+          this.dependencies.extensionInstances.has(extId) ||
+          this.nonInstancesByName.has(installedExtension.manifest.name);
 
         if (installedExtension.isCompatible && installedExtension.isEnabled && !alreadyInit) {
           try {
@@ -341,19 +367,19 @@ export class ExtensionLoader {
 
     const bundledExtensions = await this.loadBundledExtensions();
     const userExtensions = await this.loadUserExtensions(this.toJSON());
-    const loadedExtensions = await this.loadExtensions([
-      ...bundledExtensions,
-      ...userExtensions,
-    ]);
+    const loadedExtensions = await this.loadExtensions([...bundledExtensions, ...userExtensions]);
 
     // Setup reaction to load extensions on JSON changes
-    reaction(() => this.toJSON(), installedExtensions => {
-      void (async () => {
-        const userExtensions = await this.loadUserExtensions(installedExtensions);
+    reaction(
+      () => this.toJSON(),
+      (installedExtensions) => {
+        void (async () => {
+          const userExtensions = await this.loadUserExtensions(installedExtensions);
 
-        await this.loadExtensions(userExtensions);
-      })();
-    });
+          await this.loadExtensions(userExtensions);
+        })();
+      },
+    );
 
     return loadedExtensions;
   }
@@ -365,14 +391,20 @@ export class ExtensionLoader {
       return null;
     }
 
-    const extAbsolutePath = this.dependencies.joinPaths(this.dependencies.getDirnameOfPath(extension.manifestPath), extRelativePath);
+    const extAbsolutePath = this.dependencies.joinPaths(
+      this.dependencies.getDirnameOfPath(extension.manifestPath),
+      extRelativePath,
+    );
 
     try {
       return require(/* webpackIgnore: true */ extAbsolutePath).default;
     } catch (error) {
       const message = (error instanceof Error ? error.stack : undefined) || error;
 
-      this.dependencies.logger.error(`${logModule}: can't load ${this.dependencies.extensionEntryPointName} for "${extension.manifest.name}": ${message}`, { extension });
+      this.dependencies.logger.error(
+        `${logModule}: can't load ${this.dependencies.extensionEntryPointName} for "${extension.manifest.name}": ${message}`,
+        { extension },
+      );
     }
 
     return null;

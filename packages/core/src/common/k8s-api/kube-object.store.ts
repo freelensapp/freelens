@@ -1,23 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, makeObservable, observable, reaction } from "mobx";
-import type { Disposer } from "@freelensapp/utilities";
-import { waitUntilDefined, includes, rejectPromiseBy, object } from "@freelensapp/utilities";
+import assert from "assert";
+import type { IKubeWatchEvent, KubeApi, KubeApiQueryParams, KubeApiWatchCallback } from "@freelensapp/kube-api";
+import { parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import { KubeStatus } from "@freelensapp/kube-object";
-import type { IKubeWatchEvent, KubeApiQueryParams, KubeApi, KubeApiWatchCallback } from "@freelensapp/kube-api";
-import { ItemStore } from "../item.store";
-import { parseKubeApi } from "@freelensapp/kube-api";
-import type { RequestInit } from "@freelensapp/node-fetch";
-import type { Patch } from "rfc6902";
 import type { Logger } from "@freelensapp/logger";
-import assert from "assert";
+import type { RequestInit } from "@freelensapp/node-fetch";
+import type { Disposer } from "@freelensapp/utilities";
+import { includes, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import autoBind from "auto-bind";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
+import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
-import autoBind from "auto-bind";
+import { ItemStore } from "../item.store";
 
 export type OnLoadFailure = (error: unknown) => void;
 
@@ -115,7 +116,7 @@ export class KubeObjectStore<
   @computed get contextItems(): K[] {
     const namespaces = this.dependencies.context.contextNamespaces;
 
-    return this.items.filter(item => {
+    return this.items.filter((item) => {
       const itemNamespace = item.getNs();
 
       return !itemNamespace /* cluster-wide */ || namespaces.includes(itemNamespace);
@@ -140,7 +141,7 @@ export class KubeObjectStore<
     const namespaces = [namespace].flat();
 
     if (namespaces.length) {
-      return this.items.filter(item => includes(namespaces, item.getNs()));
+      return this.items.filter((item) => includes(namespaces, item.getNs()));
     }
 
     if (!strict) {
@@ -151,19 +152,17 @@ export class KubeObjectStore<
   }
 
   getById(id: string): K | undefined {
-    return this.items.find(item => item.getId() === id);
+    return this.items.find((item) => item.getId() === id);
   }
 
   getByName(name: string, namespace?: string): K | undefined {
-    return this.items.find(item => {
-      return item.getName() === name && (
-        namespace ? item.getNs() === namespace : true
-      );
+    return this.items.find((item) => {
+      return item.getName() === name && (namespace ? item.getNs() === namespace : true);
     });
   }
 
   getByPath(path: string): K | undefined {
-    return this.items.find(item => item.selfLink === path);
+    return this.items.find((item) => item.selfLink === path);
   }
 
   getByLabel(labels: string[] | Partial<Record<string, string>>): K[] {
@@ -171,14 +170,13 @@ export class KubeObjectStore<
       return this.items.filter((item: K) => {
         const itemLabels = item.getLabels();
 
-        return labels.every(label => itemLabels.includes(label));
+        return labels.every((label) => itemLabels.includes(label));
       });
     } else {
       return this.items.filter((item: K) => {
         const itemLabels = item.metadata.labels || {};
 
-        return object.entries(labels)
-          .every(([key, value]) => itemLabels[key] === value);
+        return object.entries(labels).every(([key, value]) => itemLabels[key] === value);
       });
     }
   }
@@ -195,7 +193,7 @@ export class KubeObjectStore<
 
       if (onLoadFailure) {
         try {
-          return await res ?? [];
+          return (await res) ?? [];
         } catch (error) {
           onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: error }));
 
@@ -207,20 +205,20 @@ export class KubeObjectStore<
         }
       }
 
-      return await res ?? [];
+      return (await res) ?? [];
     }
 
     this.loadedNamespaces.set(namespaces);
 
     const results = await Promise.allSettled(
-      namespaces.map(namespace => this.api.list({ namespace, reqInit }, this.query)),
+      namespaces.map((namespace) => this.api.list({ namespace, reqInit }, this.query)),
     );
     const res: K[] = [];
 
     for (const result of results) {
       switch (result.status) {
         case "fulfilled":
-          res.push(...result.value ?? []);
+          res.push(...(result.value ?? []));
           break;
 
         case "rejected":
@@ -241,7 +239,12 @@ export class KubeObjectStore<
   }
 
   @action
-  async loadAll({ namespaces, merge = true, reqInit, onLoadFailure }: KubeObjectStoreLoadAllParams = {}): Promise<undefined | K[]> {
+  async loadAll({
+    namespaces,
+    merge = true,
+    reqInit,
+    onLoadFailure,
+  }: KubeObjectStoreLoadAllParams = {}): Promise<undefined | K[]> {
     namespaces ??= this.dependencies.context.contextNamespaces;
     this.isLoading = true;
 
@@ -277,17 +280,17 @@ export class KubeObjectStore<
   }
 
   @action
-  protected mergeItems(partialItems: K[], { merge = true, updateStore = true, sort = true, filter = true, namespaces }: MergeItemsOptions): K[] {
+  protected mergeItems(
+    partialItems: K[],
+    { merge = true, updateStore = true, sort = true, filter = true, namespaces }: MergeItemsOptions,
+  ): K[] {
     let items = partialItems;
 
     // update existing items
     if (merge && this.api.isNamespaced) {
       const ns = new Set(namespaces);
 
-      items = [
-        ...this.items.filter(item => !ns.has(item.getNs() as string)),
-        ...partialItems,
-      ];
+      items = [...this.items.filter((item) => !ns.has(item.getNs() as string)), ...partialItems];
     }
 
     if (filter) items = this.filterItemsOnLoad(items);
@@ -350,7 +353,7 @@ export class KubeObjectStore<
   }
 
   private postUpdate(newItem: K): K {
-    const index = this.items.findIndex(item => item.getId() === newItem.getId());
+    const index = this.items.findIndex((item) => item.getId() === newItem.getId());
 
     if (index < 0) {
       this.items.push(newItem);
@@ -364,7 +367,8 @@ export class KubeObjectStore<
   async patch(item: K, patch: JsonPatch): Promise<K> {
     const rawItem = await this.api.patch(
       {
-        name: item.getName(), namespace: item.getNs(),
+        name: item.getName(),
+        namespace: item.getNs(),
       },
       patch,
       "json",
@@ -397,20 +401,24 @@ export class KubeObjectStore<
   }
 
   async removeSelectedItems() {
-    await Promise.all(this.selectedItems.map(item => this.remove(item)));
+    await Promise.all(this.selectedItems.map((item) => this.remove(item)));
   }
 
   async removeItems(items: K[]) {
-    await Promise.all(items.map(item => this.remove(item)));
+    await Promise.all(items.map((item) => this.remove(item)));
   }
 
   // collect items from watch-api events to avoid UI blowing up with huge streams of data
   protected readonly eventsBuffer = observable.array<IKubeWatchEvent<D>>([], { deep: false });
 
   protected bindWatchEventsUpdater(delay = 1000) {
-    reaction(() => [...this.eventsBuffer], () => this.updateFromEventsBuffer(), {
-      delay,
-    });
+    reaction(
+      () => [...this.eventsBuffer],
+      () => this.updateFromEventsBuffer(),
+      {
+        delay,
+      },
+    );
   }
 
   subscribe({ onLoadFailure, abortController = new AbortController() }: KubeObjectStoreSubscribeParams = {}): Disposer {
@@ -446,11 +454,12 @@ export class KubeObjectStore<
     }
 
     let timedRetry: NodeJS.Timeout;
-    const startNewWatch = () => this.api.watch({
-      namespace,
-      abortController,
-      callback,
-    });
+    const startNewWatch = () =>
+      this.api.watch({
+        namespace,
+        abortController,
+        callback,
+      });
 
     const signal = abortController.signal;
 
@@ -476,7 +485,8 @@ export class KubeObjectStore<
               : this.loadAll({ merge: false, reqInit: { signal }, ...opts })
           ).then(startNewWatch);
         }, 1000);
-      } else if (error) { // not sure what to do, best to retry
+      } else if (error) {
+        // not sure what to do, best to retry
         clearTimeout(timedRetry);
         timedRetry = setTimeout(startNewWatch, 5000);
       }
@@ -503,18 +513,20 @@ export class KubeObjectStore<
         const { type, object } = event;
 
         if (!object.metadata?.uid) {
-          this.dependencies.logger.warn("[KUBE-STORE]: watch event did not have defined .metadata.uid, skipping", { event });
+          this.dependencies.logger.warn("[KUBE-STORE]: watch event did not have defined .metadata.uid, skipping", {
+            event,
+          });
           // Other parts of the code will break if this happens
           continue;
         }
 
-        const index = items.findIndex(item => item.getId() === object.metadata.uid);
+        const index = items.findIndex((item) => item.getId() === object.metadata.uid);
         const item = items[index];
 
         switch (type) {
           case "ADDED":
 
-            // fallthrough
+          // fallthrough
           case "MODIFIED": {
             const newItem = new this.api.objectConstructor(object);
 

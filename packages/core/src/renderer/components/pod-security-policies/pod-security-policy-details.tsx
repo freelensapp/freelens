@@ -1,24 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./pod-security-policy-details.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { PodSecurityPolicy } from "@freelensapp/kube-object";
-import { Badge } from "../badge";
-import { Table, TableCell, TableHead, TableRow } from "../table";
 import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { StrictReactNode } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
-export interface PodSecurityPolicyDetailsProps extends KubeObjectDetailsProps<PodSecurityPolicy> {
-}
+export interface PodSecurityPolicyDetailsProps extends KubeObjectDetailsProps<PodSecurityPolicy> {}
 
 interface RuleGroup {
   rule: string;
@@ -41,16 +41,11 @@ class NonInjectedPodSecurityPolicyDetails extends React.Component<PodSecurityPol
     return (
       <>
         <DrawerTitle>{title}</DrawerTitle>
-        <DrawerItem name="Rule">
-          {rule}
-        </DrawerItem>
+        <DrawerItem name="Rule">{rule}</DrawerItem>
         {ranges && (
           <DrawerItem name="Ranges (Min-Max)" labelsOnly>
             {ranges.map(({ min, max }, index) => (
-              <Badge
-                key={index}
-                label={`${min} - ${max}`}
-              />
+              <Badge key={index} label={`${min} - ${max}`} />
             ))}
           </DrawerItem>
         )}
@@ -66,36 +61,48 @@ class NonInjectedPodSecurityPolicyDetails extends React.Component<PodSecurityPol
     }
 
     if (!(psp instanceof PodSecurityPolicy)) {
-      this.props.logger.error("[PodSecurityPolicyDetails]: passed object that is not an instanceof PodSecurityPolicy", psp);
+      this.props.logger.error(
+        "[PodSecurityPolicyDetails]: passed object that is not an instanceof PodSecurityPolicy",
+        psp,
+      );
 
       return null;
     }
 
     const {
-      allowedHostPaths, allowedCapabilities, allowedCSIDrivers, allowedFlexVolumes, allowedProcMountTypes,
-      allowedUnsafeSysctls, allowPrivilegeEscalation, defaultAddCapabilities, forbiddenSysctls, fsGroup,
-      hostIPC, hostNetwork, hostPID, hostPorts, privileged, readOnlyRootFilesystem, requiredDropCapabilities,
-      runAsGroup, runAsUser, runtimeClass, seLinux, supplementalGroups, volumes,
+      allowedHostPaths,
+      allowedCapabilities,
+      allowedCSIDrivers,
+      allowedFlexVolumes,
+      allowedProcMountTypes,
+      allowedUnsafeSysctls,
+      allowPrivilegeEscalation,
+      defaultAddCapabilities,
+      forbiddenSysctls,
+      fsGroup,
+      hostIPC,
+      hostNetwork,
+      hostPID,
+      hostPorts,
+      privileged,
+      readOnlyRootFilesystem,
+      requiredDropCapabilities,
+      runAsGroup,
+      runAsUser,
+      runtimeClass,
+      seLinux,
+      supplementalGroups,
+      volumes,
     } = psp.spec;
 
     return (
       <div className="PodSecurityPolicyDetails">
-        {allowedCapabilities && (
-          <DrawerItem name="Allowed Capabilities">
-            {allowedCapabilities.join(", ")}
-          </DrawerItem>
-        )}
+        {allowedCapabilities && <DrawerItem name="Allowed Capabilities">{allowedCapabilities.join(", ")}</DrawerItem>}
 
-        {volumes && (
-          <DrawerItem name="Volumes">
-            {volumes.join(", ")}
-          </DrawerItem>
-        )}
+        {volumes && <DrawerItem name="Volumes">{volumes.join(", ")}</DrawerItem>}
 
         {allowedCSIDrivers && (
-          <DrawerItem name="Allowed CSI Drivers">
-            {allowedCSIDrivers.map(({ name }) => name).join(", ")}
-          </DrawerItem>
+          <DrawerItem name="Allowed CSI Drivers">{allowedCSIDrivers.map(({ name }) => name).join(", ")}</DrawerItem>
         )}
 
         {allowedFlexVolumes && (
@@ -105,63 +112,39 @@ class NonInjectedPodSecurityPolicyDetails extends React.Component<PodSecurityPol
         )}
 
         {allowedProcMountTypes && (
-          <DrawerItem name="Allowed Proc Mount Types">
-            {allowedProcMountTypes.join(", ")}
-          </DrawerItem>
+          <DrawerItem name="Allowed Proc Mount Types">{allowedProcMountTypes.join(", ")}</DrawerItem>
         )}
 
         {allowedUnsafeSysctls && (
-          <DrawerItem name="Allowed Unsafe Sysctls">
-            {allowedUnsafeSysctls.join(", ")}
-          </DrawerItem>
+          <DrawerItem name="Allowed Unsafe Sysctls">{allowedUnsafeSysctls.join(", ")}</DrawerItem>
         )}
 
-        {forbiddenSysctls && (
-          <DrawerItem name="Forbidden Sysctls">
-            {forbiddenSysctls.join(", ")}
-          </DrawerItem>
-        )}
+        {forbiddenSysctls && <DrawerItem name="Forbidden Sysctls">{forbiddenSysctls.join(", ")}</DrawerItem>}
 
-        <DrawerItem name="Allow Privilege Escalation">
-          {allowPrivilegeEscalation ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Allow Privilege Escalation">{allowPrivilegeEscalation ? "Yes" : "No"}</DrawerItem>
 
-        <DrawerItem name="Privileged">
-          {privileged ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Privileged">{privileged ? "Yes" : "No"}</DrawerItem>
 
-        <DrawerItem name="Read-only Root Filesystem">
-          {readOnlyRootFilesystem ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Read-only Root Filesystem">{readOnlyRootFilesystem ? "Yes" : "No"}</DrawerItem>
 
         {defaultAddCapabilities && (
-          <DrawerItem name="Default Add Capabilities">
-            {defaultAddCapabilities.join(", ")}
-          </DrawerItem>
+          <DrawerItem name="Default Add Capabilities">{defaultAddCapabilities.join(", ")}</DrawerItem>
         )}
 
         {requiredDropCapabilities && (
-          <DrawerItem name="Required Drop Capabilities">
-            {requiredDropCapabilities.join(", ")}
-          </DrawerItem>
+          <DrawerItem name="Required Drop Capabilities">{requiredDropCapabilities.join(", ")}</DrawerItem>
         )}
 
-        <DrawerItem name="Host IPC">
-          {hostIPC ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Host IPC">{hostIPC ? "Yes" : "No"}</DrawerItem>
 
-        <DrawerItem name="Host Network">
-          {hostNetwork ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Host Network">{hostNetwork ? "Yes" : "No"}</DrawerItem>
 
-        <DrawerItem name="Host PID">
-          {hostPID ? "Yes" : "No"}
-        </DrawerItem>
+        <DrawerItem name="Host PID">{hostPID ? "Yes" : "No"}</DrawerItem>
 
         {hostPorts && (
           <DrawerItem name="Host Ports (Min-Max)" labelsOnly>
             {hostPorts.map(({ min, max }, index) => {
-              return <Badge key={index} label={`${min} - ${max}`}/>;
+              return <Badge key={index} label={`${min} - ${max}`} />;
             })}
           </DrawerItem>
         )}
@@ -174,14 +157,12 @@ class NonInjectedPodSecurityPolicyDetails extends React.Component<PodSecurityPol
                 <TableCell>Path Prefix</TableCell>
                 <TableCell>Read-only</TableCell>
               </TableHead>
-              {
-                allowedHostPaths.map(({ pathPrefix, readOnly }, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{pathPrefix}</TableCell>
-                    <TableCell>{readOnly ? "Yes" : "No"}</TableCell>
-                  </TableRow>
-                ))
-              }
+              {allowedHostPaths.map(({ pathPrefix, readOnly }, index) => (
+                <TableRow key={index}>
+                  <TableCell>{pathPrefix}</TableCell>
+                  <TableCell>{readOnly ? "Yes" : "No"}</TableCell>
+                </TableRow>
+              ))}
             </Table>
           </>
         )}
@@ -197,45 +178,35 @@ class NonInjectedPodSecurityPolicyDetails extends React.Component<PodSecurityPol
             <DrawerItem name="Allowed Runtime Class Names">
               {runtimeClass.allowedRuntimeClassNames?.join(", ") || "-"}
             </DrawerItem>
-            <DrawerItem name="Default Runtime Class Name">
-              {runtimeClass.defaultRuntimeClassName || "-"}
-            </DrawerItem>
+            <DrawerItem name="Default Runtime Class Name">{runtimeClass.defaultRuntimeClassName || "-"}</DrawerItem>
           </>
         )}
 
         {seLinux && (
           <>
             <DrawerTitle>Se Linux</DrawerTitle>
-            <DrawerItem name="Rule">
-              {seLinux.rule}
-            </DrawerItem>
+            <DrawerItem name="Rule">{seLinux.rule}</DrawerItem>
             {seLinux.seLinuxOptions && (
               <>
-                <DrawerItem name="Level">
-                  {seLinux.seLinuxOptions.level}
-                </DrawerItem>
-                <DrawerItem name="Role">
-                  {seLinux.seLinuxOptions.role}
-                </DrawerItem>
-                <DrawerItem name="Type">
-                  {seLinux.seLinuxOptions.type}
-                </DrawerItem>
-                <DrawerItem name="User">
-                  {seLinux.seLinuxOptions.user}
-                </DrawerItem>
+                <DrawerItem name="Level">{seLinux.seLinuxOptions.level}</DrawerItem>
+                <DrawerItem name="Role">{seLinux.seLinuxOptions.role}</DrawerItem>
+                <DrawerItem name="Type">{seLinux.seLinuxOptions.type}</DrawerItem>
+                <DrawerItem name="User">{seLinux.seLinuxOptions.user}</DrawerItem>
               </>
             )}
           </>
         )}
-
       </div>
     );
   }
 }
 
-export const PodSecurityPolicyDetails = withInjectables<Dependencies, PodSecurityPolicyDetailsProps>(NonInjectedPodSecurityPolicyDetails, {
-  getProps: (di, props) => ({
-    ...props,
-    logger: di.inject(loggerInjectionToken),
-  }),
-});
+export const PodSecurityPolicyDetails = withInjectables<Dependencies, PodSecurityPolicyDetailsProps>(
+  NonInjectedPodSecurityPolicyDetails,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      logger: di.inject(loggerInjectionToken),
+    }),
+  },
+);

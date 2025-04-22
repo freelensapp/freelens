@@ -1,5 +1,5 @@
-import { configForNode } from "./src/node-config";
 import nodeExternals from "webpack-node-externals";
+import { configForNode } from "./src/node-config";
 
 export default {
   ...configForNode,

@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import navigateToProxyPreferencesInjectable from "./common/navigate-to-proxy-preferences.injectable";
+
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
+import type { RenderResult } from "@testing-library/react";
+import React from "react";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
+import navigateToProxyPreferencesInjectable from "./common/navigate-to-proxy-preferences.injectable";
 
 describe("preferences - navigation to application preferences", () => {
   let builder: ApplicationBuilder;
@@ -37,19 +39,14 @@ describe("preferences - navigation to application preferences", () => {
     });
 
     it("shows application preferences", () => {
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "application-page",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "application-page");
 
       expect(discovered).not.toBeNull();
     });
 
     describe("when extension with application preference items gets enabled", () => {
       beforeEach(() => {
-        builder.extensions.enable(
-          extensionStubWithApplicationPreferenceItems,
-        );
+        builder.extensions.enable(extensionStubWithApplicationPreferenceItems);
       });
 
       it("renders", () => {
@@ -57,10 +54,11 @@ describe("preferences - navigation to application preferences", () => {
       });
 
       it("shows preference items of the extension as last", () => {
-        const { attributeValues } =
-            discover.queryAllElements("preference-item");
+        const { attributeValues } = discover.queryAllElements("preference-item");
 
-        expect(attributeValues.at(-1)).toBe("preference-item-for-extension-some-test-extension-name-item-some-application-preference-item-id");
+        expect(attributeValues.at(-1)).toBe(
+          "preference-item-for-extension-some-test-extension-name-item-some-application-preference-item-id",
+        );
       });
     });
   });
@@ -86,10 +84,7 @@ describe("preferences - navigation to application preferences", () => {
     });
 
     it("does not show application preferences yet", () => {
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "application-page",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "application-page");
 
       expect(discovered).toBeNull();
     });
@@ -104,10 +99,7 @@ describe("preferences - navigation to application preferences", () => {
       });
 
       it("shows application preferences", () => {
-        const { discovered } = discover.getSingleElement(
-          "preference-page",
-          "application-page",
-        );
+        const { discovered } = discover.getSingleElement("preference-page", "application-page");
 
         expect(discovered).not.toBeNull();
       });
@@ -123,10 +115,7 @@ describe("preferences - navigation to application preferences", () => {
       });
 
       it("shows tab for application preferences for it being the default", () => {
-        const { discovered } = discover.getSingleElement(
-          "preference-page",
-          "application-page",
-        );
+        const { discovered } = discover.getSingleElement("preference-page", "application-page");
 
         expect(discovered).not.toBeNull();
       });

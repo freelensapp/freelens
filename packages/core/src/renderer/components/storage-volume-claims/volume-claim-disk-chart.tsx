@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useContext } from "react";
-import { observer } from "mobx-react";
-import type { ChartDataSets } from "../chart";
-import { BarChart, memoryOptions } from "../chart";
-import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
-import { NoMetrics } from "../resource-metrics/no-metrics";
-import { ResourceMetricsContext } from "../resource-metrics";
-import type { LensTheme } from "../../themes/lens-theme";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
+import React, { useContext } from "react";
+import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { ChartDataSets } from "../chart";
+import { BarChart, memoryOptions } from "../chart";
+import { ResourceMetricsContext } from "../resource-metrics";
+import { NoMetrics } from "../resource-metrics/no-metrics";
 
 export interface VolumeClaimDiskChartProps {}
 
@@ -21,13 +22,11 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-const NonInjectedVolumeClaimDiskChart = observer(({
-  activeTheme,
-}: Dependencies & VolumeClaimDiskChartProps) => {
+const NonInjectedVolumeClaimDiskChart = observer(({ activeTheme }: Dependencies & VolumeClaimDiskChartProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
 
   if (!metrics || !object || !tab) return null;
-  if (isMetricsEmpty(metrics)) return <NoMetrics/>;
+  if (isMetricsEmpty(metrics)) return <NoMetrics />;
 
   const id = object.getId();
   const { chartCapacityColor } = activeTheme.get().colors;
@@ -63,9 +62,12 @@ const NonInjectedVolumeClaimDiskChart = observer(({
   );
 });
 
-export const VolumeClaimDiskChart = withInjectables<Dependencies, VolumeClaimDiskChartProps>(NonInjectedVolumeClaimDiskChart, {
-  getProps: (di, props) => ({
-    ...props,
-    activeTheme: di.inject(activeThemeInjectable),
-  }),
-});
+export const VolumeClaimDiskChart = withInjectables<Dependencies, VolumeClaimDiskChartProps>(
+  NonInjectedVolumeClaimDiskChart,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      activeTheme: di.inject(activeThemeInjectable),
+    }),
+  },
+);

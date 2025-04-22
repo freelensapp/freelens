@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import path from "path";
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import readFileBufferInjectable from "../../../common/fs/read-file-buffer.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import staticFilesDirectoryInjectable from "../../../common/vars/static-files-directory.injectable";
 import type { LensApiRequest } from "../../router/route";
-import path from "path";
 import { contentTypes } from "../../router/router-content-types";
-import { prefixedLoggerInjectable } from "@freelensapp/logger";
 
 const prodStaticFileRouteHandlerInjectable = getInjectable({
   id: "prod-static-file-route-handler",
@@ -20,11 +22,12 @@ const prodStaticFileRouteHandlerInjectable = getInjectable({
     const logger = di.inject(prefixedLoggerInjectable, "FILE-ROUTE");
 
     return async ({ params }: LensApiRequest<"/{path*}">) => {
-      const filePath = (!params.path || params.path === "/")
-        ? "/build/index.html"
-        : path.posix.extname(params.path)
-          ? params.path
-          : "/build/index.html";
+      const filePath =
+        !params.path || params.path === "/"
+          ? "/build/index.html"
+          : path.posix.extname(params.path)
+            ? params.path
+            : "/build/index.html";
 
       const assetFilePath = joinPaths(staticFilesDirectory, filePath);
 

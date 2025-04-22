@@ -27,12 +27,9 @@
     "build": "lens-webpack-build",
     "clean": "pnpm dlx rimraf@6.0.1 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "dev": "webpack --mode=development --watch",
-    "lint": "lens-lint",
-    "lint:fix": "lens-lint --fix"
+    "dev": "webpack --mode=development --watch"
   },
   "devDependencies": {
-    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",

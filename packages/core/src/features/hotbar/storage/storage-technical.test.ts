@@ -1,32 +1,33 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { anyObject } from "jest-mock-extended";
-import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
-import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
-import type { DiContainer } from "@ogre-tools/injectable";
-import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
-import type { IComputedValue } from "mobx";
-import { computed } from "mobx";
-import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
-import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { anyObject } from "jest-mock-extended";
+import type { IComputedValue } from "mobx";
+import { computed } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
+import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
+import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
+import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
+import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
+import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
+import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
+import activeHotbarInjectable from "./common/active.injectable";
+import type { AddHotbar } from "./common/add.injectable";
+import addHotbarInjectable from "./common/add.injectable";
+import type { GetHotbarById } from "./common/get-by-id.injectable";
+import getHotbarByIdInjectable from "./common/get-by-id.injectable";
+import type { Hotbar } from "./common/hotbar";
+import hotbarsInjectable from "./common/hotbars.injectable";
 import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
 import setAsActiveHotbarInjectable from "./common/set-as-active.injectable";
 import hotbarsPersistentStorageInjectable from "./common/storage.injectable";
-import type { Hotbar } from "./common/hotbar";
-import hotbarsInjectable from "./common/hotbars.injectable";
-import activeHotbarInjectable from "./common/active.injectable";
-import type { AddHotbar } from "./common/add.injectable";
-import type { GetHotbarById } from "./common/get-by-id.injectable";
-import getHotbarByIdInjectable from "./common/get-by-id.injectable";
-import addHotbarInjectable from "./common/add.injectable";
 import { defaultHotbarCells } from "./common/types";
 
 function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKindData): CatalogEntity {
@@ -116,12 +117,10 @@ describe("Hotbars technical tests", () => {
     const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
     const catalogCatalogEntity = di.inject(catalogCatalogEntityInjectable);
 
-    catalogEntityRegistry.addComputedSource("some-id", computed(() => [
-      testCluster,
-      minikubeCluster,
-      awsCluster,
-      catalogCatalogEntity,
-    ]));
+    catalogEntityRegistry.addComputedSource(
+      "some-id",
+      computed(() => [testCluster, minikubeCluster, awsCluster, catalogCatalogEntity]),
+    );
 
     setAsActiveHotbar = di.inject(setAsActiveHotbarInjectable);
     hotbars = di.inject(hotbarsInjectable);
@@ -210,9 +209,15 @@ describe("Hotbars technical tests", () => {
         // aws -> catalog
         activeHotbar.get()?.restack(4, 0);
 
-        const items = activeHotbar.get()?.items.map(item => item?.entity.uid || null);
+        const items = activeHotbar.get()?.items.map((item) => item?.entity.uid || null);
 
-        expect(items?.slice(0, 5)).toEqual(["some-aws-id", "welcome-page-entity", "catalog-entity", "some-test-id", "some-minikube-id"]);
+        expect(items?.slice(0, 5)).toEqual([
+          "some-aws-id",
+          "welcome-page-entity",
+          "catalog-entity",
+          "some-test-id",
+          "some-minikube-id",
+        ]);
       });
 
       it("moves items up", () => {
@@ -223,9 +228,15 @@ describe("Hotbars technical tests", () => {
         // test -> aws
         activeHotbar.get()?.restack(2, 4);
 
-        const items = activeHotbar.get()?.items.map(item => item?.entity.uid || null);
+        const items = activeHotbar.get()?.items.map((item) => item?.entity.uid || null);
 
-        expect(items?.slice(0, 5)).toEqual(["welcome-page-entity", "catalog-entity", "some-minikube-id", "some-aws-id", "some-test-id"]);
+        expect(items?.slice(0, 5)).toEqual([
+          "welcome-page-entity",
+          "catalog-entity",
+          "some-minikube-id",
+          "some-aws-id",
+          "some-test-id",
+        ]);
       });
 
       it("logs an error if cellIndex is out of bounds", () => {
@@ -233,13 +244,22 @@ describe("Hotbars technical tests", () => {
         setAsActiveHotbar("hottest");
 
         activeHotbar.get()?.addEntity(testCluster, -1);
-        expect(loggerMock.error).toBeCalledWith("[HOTBAR]: cannot pin entity to hotbar outside of index range", anyObject());
+        expect(loggerMock.error).toBeCalledWith(
+          "[HOTBAR]: cannot pin entity to hotbar outside of index range",
+          anyObject(),
+        );
 
         activeHotbar.get()?.addEntity(testCluster, 12);
-        expect(loggerMock.error).toBeCalledWith("[HOTBAR]: cannot pin entity to hotbar outside of index range", anyObject());
+        expect(loggerMock.error).toBeCalledWith(
+          "[HOTBAR]: cannot pin entity to hotbar outside of index range",
+          anyObject(),
+        );
 
         activeHotbar.get()?.addEntity(testCluster, 13);
-        expect(loggerMock.error).toBeCalledWith("[HOTBAR]: cannot pin entity to hotbar outside of index range", anyObject());
+        expect(loggerMock.error).toBeCalledWith(
+          "[HOTBAR]: cannot pin entity to hotbar outside of index range",
+          anyObject(),
+        );
       });
 
       it("throws an error if getId is invalid or returns not a string", () => {
@@ -249,7 +269,9 @@ describe("Hotbars technical tests", () => {
 
       it("throws an error if getName is invalid or returns not a string", () => {
         expect(() => activeHotbar.get()?.addEntity({ getId: () => "" } as any)).toThrowError(TypeError);
-        expect(() => activeHotbar.get()?.addEntity({ getId: () => "", getName: () => 4 } as any)).toThrowError(TypeError);
+        expect(() => activeHotbar.get()?.addEntity({ getId: () => "", getName: () => 4 } as any)).toThrowError(
+          TypeError,
+        );
       });
 
       it("does nothing when item moved to same cell", () => {

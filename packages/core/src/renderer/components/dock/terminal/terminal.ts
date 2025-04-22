@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "assert";
+import type { Logger } from "@freelensapp/logger";
+import { disposer } from "@freelensapp/utilities";
+import { FitAddon } from "@xterm/addon-fit";
+import { WebLinksAddon } from "@xterm/addon-web-links";
+import { Terminal as XTerm } from "@xterm/xterm";
+import { clipboard } from "electron";
+import { once } from "lodash";
 import debounce from "lodash/debounce";
 import type { IComputedValue } from "mobx";
 import { reaction } from "mobx";
-import { Terminal as XTerm } from "@xterm/xterm";
-import { FitAddon } from "@xterm/addon-fit";
-import { WebLinksAddon } from "@xterm/addon-web-links";
-import type { TabId } from "../dock/store";
-import type { TerminalApi } from "../../../api/terminal-api";
-import { disposer } from "@freelensapp/utilities";
-import { once } from "lodash";
-import { clipboard } from "electron";
-import type { Logger } from "@freelensapp/logger";
-import assert from "assert";
 import { TerminalChannels } from "../../../../common/terminal/channels";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
-import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
 import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
+import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
+import type { TerminalApi } from "../../../api/terminal-api";
+import type { TabId } from "../dock/store";
 
 export interface TerminalDependencies {
   readonly spawningPool: HTMLElement;
@@ -47,12 +48,10 @@ export class Terminal {
   protected readonly api: TerminalApi;
 
   private get elem() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.xterm.element!;
   }
 
   private get viewport() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.elem.querySelector(".xterm-viewport")!;
   }
 
@@ -72,7 +71,7 @@ export class Terminal {
 
   get fontFamily() {
     const nameFromConfig = this.dependencies.terminalConfig.get().fontFamily;
-    const nameFromAlias = this.dependencies.terminalFonts.find(font => font.alias === nameFromConfig)?.name;
+    const nameFromAlias = this.dependencies.terminalFonts.find((font) => font.alias === nameFromConfig)?.name;
 
     return nameFromAlias || nameFromConfig;
   }
@@ -81,10 +80,10 @@ export class Terminal {
     return this.dependencies.terminalConfig.get().fontSize;
   }
 
-  constructor(protected readonly dependencies: TerminalDependencies, {
-    tabId,
-    api,
-  }: TerminalArguments) {
+  constructor(
+    protected readonly dependencies: TerminalDependencies,
+    { tabId, api }: TerminalArguments,
+  ) {
     this.tabId = tabId;
     this.api = api;
 
@@ -114,8 +113,9 @@ export class Terminal {
     window.addEventListener("resize", this.onResize);
 
     this.disposer.push(
-      reaction(() => this.dependencies.xtermColorTheme.get(),
-        colors => this.xterm.options.theme = colors,
+      reaction(
+        () => this.dependencies.xtermColorTheme.get(),
+        (colors) => (this.xterm.options.theme = colors),
         {
           fireImmediately: true,
         },
@@ -180,10 +180,11 @@ export class Terminal {
   onContextMenu = () => {
     if (
       // don't paste if user hasn't turned on the feature
-      this.dependencies.terminalCopyOnSelect.get()
-
+      this.dependencies.terminalCopyOnSelect.get() &&
       // don't paste if the clipboard doesn't have text
-      && clipboard.availableFormats().includes("text/plain")
+      clipboard
+        .availableFormats()
+        .includes("text/plain")
     ) {
       this.xterm.paste(clipboard.readText());
     }

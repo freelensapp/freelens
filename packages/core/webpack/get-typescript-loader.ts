@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import esbuild from "esbuild";
-import type { Options as TSLoaderOptions } from "ts-loader";
 import { once } from "lodash";
+import type { Options as TSLoaderOptions } from "ts-loader";
 
 const getTsLoader = (options: Partial<TSLoaderOptions>, testRegExp: RegExp) => ({
   test: testRegExp,
@@ -20,19 +21,20 @@ const printUsingEsbuildLoader = once(() => {
   console.info(`\n🚀 using esbuild-loader for ts(x)`);
 });
 
-const getEsbuildLoader = (options: Partial<TSLoaderOptions>, testRegExp: RegExp) => (printUsingEsbuildLoader(), {
-  test: testRegExp,
-  loader: "esbuild-loader",
-  options: {
-    loader: "tsx",
-    target: "ES2022",
-    implementation: esbuild,
-  },
-});
+const getEsbuildLoader = (options: Partial<TSLoaderOptions>, testRegExp: RegExp) => (
+  printUsingEsbuildLoader(),
+  {
+    test: testRegExp,
+    loader: "esbuild-loader",
+    options: {
+      loader: "tsx",
+      target: "ES2022",
+      implementation: esbuild,
+    },
+  }
+);
 
-const getTypescriptLoaderImpl = process.env.LENS_DEV_USE_ESBUILD_LOADER === "true"
-  ? getEsbuildLoader
-  : getTsLoader;
+const getTypescriptLoaderImpl = process.env.LENS_DEV_USE_ESBUILD_LOADER === "true" ? getEsbuildLoader : getTsLoader;
 
 // by default covers react/jsx-stuff
 const defaultTestRegExp = /\.tsx?$/;

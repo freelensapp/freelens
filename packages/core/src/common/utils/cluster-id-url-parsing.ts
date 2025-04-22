@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -18,10 +19,7 @@ export function getClusterIdFromHost(host: string): ClusterId | undefined {
 
   if (subDomains[subDomains.length - 1] === "localhost") {
     subDomains.pop();
-  } else if (
-    subDomains.length >= 3 &&
-    subDomains.slice(-3).join(".") === "renderer.freelens.app"
-  ) {
+  } else if (subDomains.length >= 3 && subDomains.slice(-3).join(".") === "renderer.freelens.app") {
     subDomains.splice(-3);
   }
 

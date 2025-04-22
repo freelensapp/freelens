@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import ipcRendererInjectable from "../../utils/channel/ipc-renderer.injectable";
-import bindProtocolAddRouteHandlersInjectable from "../../protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.injectable";
-import lensProtocolRouterRendererInjectable from "../../protocol-handler/lens-protocol-router-renderer/lens-protocol-router-renderer.injectable";
-import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
-import registerIpcListenersInjectable from "../../ipc/register-ipc-listeners.injectable";
-import loadExtensionsInjectable from "../load-extensions.injectable";
+
 import { delay } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import { broadcastMessage } from "../../../common/ipc";
 import { bundledExtensionsLoaded } from "../../../common/ipc/extension-handling";
+import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import registerIpcListenersInjectable from "../../ipc/register-ipc-listeners.injectable";
+import bindProtocolAddRouteHandlersInjectable from "../../protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.injectable";
+import lensProtocolRouterRendererInjectable from "../../protocol-handler/lens-protocol-router-renderer/lens-protocol-router-renderer.injectable";
+import ipcRendererInjectable from "../../utils/channel/ipc-renderer.injectable";
+import loadExtensionsInjectable from "../load-extensions.injectable";
 
 const initRootFrameInjectable = getInjectable({
   id: "init-root-frame",
@@ -32,9 +34,7 @@ const initRootFrameInjectable = getInjectable({
 
         const loadingExtensions = await loadExtensions();
 
-        const loadingBundledExtensions = loadingExtensions
-          .filter((e) => e.isBundled)
-          .map((e) => e.loaded);
+        const loadingBundledExtensions = loadingExtensions.filter((e) => e.isBundled).map((e) => e.loaded);
 
         const bundledExtensionsFinished = Promise.all(loadingBundledExtensions);
 
@@ -47,9 +47,7 @@ const initRootFrameInjectable = getInjectable({
 
       bindProtocolAddRouteHandlers();
 
-      window.addEventListener("offline", () =>
-        broadcastMessage("network:offline"),
-      );
+      window.addEventListener("offline", () => broadcastMessage("network:offline"));
 
       window.addEventListener("online", () => broadcastMessage("network:online"));
 

@@ -1,20 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { waitFor, fireEvent } from "@testing-library/react";
-import { DeploymentScaleDialog } from "./dialog";
 import type { DeploymentApi } from "@freelensapp/kube-api";
-import { Deployment } from "@freelensapp/kube-object";
-import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { OpenDeploymentScaleDialog } from "./open.injectable";
-import openDeploymentScaleDialogInjectable from "./open.injectable";
+import { Deployment } from "@freelensapp/kube-object";
+import { fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
+import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
+import { DeploymentScaleDialog } from "./dialog";
+import type { OpenDeploymentScaleDialog } from "./open.injectable";
+import openDeploymentScaleDialogInjectable from "./open.injectable";
 
 const dummyDeployment = new Deployment({
   apiVersion: "v1",
@@ -29,25 +30,27 @@ const dummyDeployment = new Deployment({
   },
   spec: {
     replicas: 1,
-    selector: { matchLabels: { dummy: "label" }},
+    selector: { matchLabels: { dummy: "label" } },
     template: {
       metadata: {
         labels: { dummy: "label" },
       },
       spec: {
-        containers: [{
-          name: "dummy",
-          image: "dummy",
-          resources: {
-            requests: {
-              cpu: "1",
-              memory: "10Mi",
+        containers: [
+          {
+            name: "dummy",
+            image: "dummy",
+            resources: {
+              requests: {
+                cpu: "1",
+                memory: "10Mi",
+              },
             },
+            terminationMessagePath: "dummy",
+            terminationMessagePolicy: "File",
+            imagePullPolicy: "Always",
           },
-          terminationMessagePath: "dummy",
-          terminationMessagePolicy: "File",
-          imagePullPolicy: "Always",
-        }],
+        ],
         restartPolicy: "dummy",
         terminationGracePeriodSeconds: 10,
         dnsPolicy: "dummy",
@@ -70,13 +73,15 @@ const dummyDeployment = new Deployment({
     replicas: 1,
     updatedReplicas: 1,
     readyReplicas: 1,
-    conditions: [{
-      type: "dummy",
-      status: "True",
-      lastTransitionTime: "dummy",
-      reason: "dummy",
-      message: "dummy",
-    }],
+    conditions: [
+      {
+        type: "dummy",
+        status: "True",
+        lastTransitionTime: "dummy",
+        reason: "dummy",
+        message: "dummy",
+      },
+    ],
   },
 });
 
@@ -121,7 +126,6 @@ describe("<DeploymentScaleDialog />", () => {
       expect(currentScale).toHaveTextContent(`${initReplicas}`);
       expect(desiredScale).toHaveTextContent(`${initReplicas}`);
     });
-
   });
 
   it("changes the desired scale when clicking the icon buttons +/-", async () => {
@@ -166,7 +170,8 @@ describe("<DeploymentScaleDialog />", () => {
     }
     expect(await component.findByTestId("desired-scale")).toHaveTextContent("100");
     expect(component.baseElement.querySelector("input")?.value).toBe("100");
-    expect(await component.findByTestId("warning"))
-      .toHaveTextContent("High number of replicas may cause cluster performance issues");
+    expect(await component.findByTestId("warning")).toHaveTextContent(
+      "High number of replicas may cause cluster performance issues",
+    );
   });
 });

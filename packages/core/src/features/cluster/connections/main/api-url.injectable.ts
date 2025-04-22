@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+
 import { URL } from "url";
+import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { Cluster } from "../../../../common/cluster/cluster";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import loadValidatedClusterConfigInjectable from "../../../../common/kube-helpers/load-validated-config-from-file.injectable";
@@ -15,7 +17,7 @@ interface ClusterApiUrlState {
 
 const clusterApiUrlInjectable = getInjectable({
   id: "cluster-api-url",
-  instantiate: (di, cluster): () => Promise<URL> => {
+  instantiate: (di, cluster): (() => Promise<URL>) => {
     const loadValidatedClusterConfig = di.inject(loadValidatedClusterConfigInjectable);
     const stat = di.inject(statInjectable);
 

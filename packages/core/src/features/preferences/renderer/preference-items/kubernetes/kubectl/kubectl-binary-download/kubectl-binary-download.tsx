@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
+import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
 import { Switch } from "../../../../../../../renderer/components/switch";
 import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../../user-preferences/common/state.injectable";
@@ -19,7 +21,7 @@ const NonInjectedKubectlBinaryDownload = observer(({ state }: Dependencies) => (
     <SubTitle title="Kubectl binary download" />
     <Switch
       checked={state.downloadKubectlBinaries}
-      onChange={() => state.downloadKubectlBinaries = !state.downloadKubectlBinaries}
+      onChange={() => (state.downloadKubectlBinaries = !state.downloadKubectlBinaries)}
     >
       Download kubectl binaries matching the Kubernetes cluster version
     </Switch>
