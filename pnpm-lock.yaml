@@ -187,8 +187,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.8.1
-        version: 10.8.1
+        specifier: ^10.9.0
+        version: 10.9.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -341,8 +341,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.99.5)
       electron:
-        specifier: ^35.1.5
-        version: 35.1.5
+        specifier: ^35.2.0
+        version: 35.2.0
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
@@ -851,8 +851,8 @@ importers:
         specifier: ^3.2.5
         version: 3.2.5
       electron:
-        specifier: ^35.1.5
-        version: 35.1.5
+        specifier: ^35.2.0
+        version: 35.2.0
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
@@ -986,8 +986,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.8.1
-        version: 10.8.1
+        specifier: ^10.9.0
+        version: 10.9.0
       postcss-loader:
         specifier: ^8.1.1
         version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.5)
@@ -1756,8 +1756,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
       electron:
-        specifier: ^35.1.5
-        version: 35.1.5
+        specifier: ^35.2.0
+        version: 35.2.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
@@ -1918,8 +1918,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       electron:
-        specifier: ^35.1.5
-        version: 35.1.5
+        specifier: ^35.2.0
+        version: 35.2.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
@@ -1960,8 +1960,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       electron:
-        specifier: ^35.1.5
-        version: 35.1.5
+        specifier: ^35.2.0
+        version: 35.2.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3))
@@ -5479,8 +5479,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@35.1.5:
-    resolution: {integrity: sha512-LolvbKKQUSCGvEwbEQNt1cxD1t+YYClDNwBIjn4d28KM8FSqUn9zJuf6AbqNA7tVs9OFl/EQpmg/m4lZV1hH8g==}
+  electron@35.2.0:
+    resolution: {integrity: sha512-GHda7oCkN0pA23qzah735DEbRa06IPwlzP3uvjAmf9af8gxdj5i93JEHeQVGVmSVpd7sSb1pfecs9nz7B1q5ag==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -7164,6 +7164,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@3.3.2:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
@@ -7454,8 +7455,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.8.1:
-    resolution: {integrity: sha512-xQCIupmMZ7jKjJnfil4C/Sri4rKaryOP6qnhJCSNP0j5+22yQklJ/5Ac/7teDwzBrWrttgLNKUUHUdEcNQI2dw==}
+  pnpm@10.9.0:
+    resolution: {integrity: sha512-BIbjlGQNPB+zydQ9Sc+Sh5/3T4UWlZwjUwj1qPYuLhlSimXNwqMFj1h83nHro9W1YyfIwzqX5MQFHKSKEMotXw==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -11999,7 +12000,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@35.1.5:
+  electron@35.2.0:
     dependencies:
       '@electron/get': 2.0.2
       '@types/node': 22.14.1
@@ -14253,7 +14254,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.8.1: {}
+  pnpm@10.9.0: {}
 
   possible-typed-array-names@1.1.0: {}
 

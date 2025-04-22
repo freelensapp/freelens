@@ -14,6 +14,7 @@ export default getGlobalOverride(nativeThemeInjectable, () =>
     inForcedColorsMode: true,
     shouldUseHighContrastColors: false,
     shouldUseInvertedColorScheme: false,
+    shouldUseDarkColorsForSystemIntegratedUI: true,
     prefersReducedTransparency: false,
     themeSource: "dark" as const,
   }),
