@@ -1035,7 +1035,7 @@ importers:
         version: 5.1.2
       sass-loader:
         specifier: ^16.0.5
-        version: 16.0.5(sass@1.86.3)(webpack@5.99.6)
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.6)
       selfsigned:
         specifier: ^2.4.1
         version: 2.4.1
@@ -1331,11 +1331,11 @@ importers:
         specifier: ^2.9.2
         version: 2.9.2(webpack@5.99.6)
       sass:
-        specifier: ^1.86.3
-        version: 1.86.3
+        specifier: ^1.87.0
+        version: 1.87.0
       sass-loader:
         specifier: ^16.0.5
-        version: 16.0.5(sass@1.86.3)(webpack@5.99.6)
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.6)
       style-loader:
         specifier: ^4.0.0
         version: 4.0.0(webpack@5.99.6)
@@ -7963,8 +7963,8 @@ packages:
       webpack:
         optional: true
 
-  sass@1.86.3:
-    resolution: {integrity: sha512-iGtg8kus4GrsGLRDLRBRHY9dNVA78ZaS7xr01cWnS7PEMQyFtTqBiyCrfpTYTZXRWM94akzckYjh8oADfFNTzw==}
+  sass@1.87.0:
+    resolution: {integrity: sha512-d0NoFH4v6SjEK7BoX810Jsrhj7IQSYHAHLi/iSpgqKc7LaIDshFRlSg5LOymf9FqQhxEHs2W5ZQXlvy0KD45Uw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -14774,14 +14774,14 @@ snapshots:
     dependencies:
       truncate-utf8-bytes: 1.0.2
 
-  sass-loader@16.0.5(sass@1.86.3)(webpack@5.99.6):
+  sass-loader@16.0.5(sass@1.87.0)(webpack@5.99.6):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      sass: 1.86.3
+      sass: 1.87.0
       webpack: 5.99.6(esbuild@0.25.3)(webpack-cli@6.0.1)
 
-  sass@1.86.3:
+  sass@1.87.0:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.0.3
@@ -15546,7 +15546,7 @@ snapshots:
       postcss-modules-local-by-default: 4.2.0(postcss@8.5.3)
       postcss-modules-scope: 3.2.1(postcss@8.5.3)
       reserved-words: 0.1.2
-      sass: 1.86.3
+      sass: 1.87.0
       source-map-js: 1.2.1
       stylus: 0.62.0
       tsconfig-paths: 4.2.0
