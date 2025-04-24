@@ -182,7 +182,7 @@
     "pnpm": "^10.9.0",
     "proper-lockfile": "^4.1.2",
     "react": "^17.0.2",
-    "react-router": "^5.3.4",
+    "react-router": "^7.5.2",
     "request": "^2.88.2",
     "rfc4648": "^1.5.4",
     "selfsigned": "^2.4.1",

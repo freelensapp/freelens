@@ -43,7 +43,7 @@
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
-    "react-router": "^5.3.4",
+    "react-router": "^7.5.2",
     "semver": "^7.7.1",
     "tar": "^7.4.3",
     "type-fest": "^2.19.0",
