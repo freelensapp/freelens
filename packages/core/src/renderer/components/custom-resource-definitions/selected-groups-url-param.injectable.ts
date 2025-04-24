@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import createPageParamInjectable from "../../navigation/create-page-param.injectable";
+import { PageParamInit } from "../../navigation/page-param";
 
 const selectedCustomResourceDefinitionGroupsUrlParamInjectable = getInjectable({
   id: "crd-groups-url-param",
@@ -19,10 +20,10 @@ const selectedCustomResourceDefinitionGroupsUrlParamInjectable = getInjectable({
         if (value === undefined || value === null) {
           return new Set<string>();
         }
-        return new Set<string>([value].flat())
+        return new Set<string>([value].flat());
       },
       stringify: (value) => Array.from(value),
-    });
+    } as PageParamInit);
   },
 });
 
