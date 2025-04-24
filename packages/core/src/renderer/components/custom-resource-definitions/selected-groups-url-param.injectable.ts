@@ -15,7 +15,12 @@ const selectedCustomResourceDefinitionGroupsUrlParamInjectable = getInjectable({
     return createPageParam({
       name: "groups",
       defaultValue: new Set<string>(),
-      parse: (value: string[]) => new Set<string>(value),
+      parse: (value: string[] | string) => {
+        if (value === undefined || value === null) {
+          return new Set<string>();
+        }
+        return new Set<string>([value].flat())
+      },
       stringify: (value) => Array.from(value),
     });
   },
