@@ -92,7 +92,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.2",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^9.1.2",
     "copy-webpack-plugin": "^13.0.0",
