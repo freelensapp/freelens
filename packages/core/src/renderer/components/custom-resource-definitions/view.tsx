@@ -61,7 +61,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
       {
         value: this.ALL_GROUPS,
         label: this.ALL_GROUPS,
-        isSelected: selectedGroups.size === 0,
+        isSelected: selectedGroups.has(this.ALL_GROUPS),
       },
     ];
 
@@ -69,7 +69,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
       ...Object.keys(this.props.customResourceDefinitionStore.groups).map((group) => ({
         value: group,
         label: group,
-        isSelected: selectedGroups.has(group),
+        isSelected: selectedGroups.size === 0 || selectedGroups.has(group),
       })),
     );
 
@@ -138,7 +138,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
                   isMulti={true}
                   formatOptionLabel={({ value, isSelected }) => (
                     <div className="flex gaps align-center">
-                      <Icon small material="folder" />
+                      {value !== this.ALL_GROUPS && <Icon small material="folder" />}
                       <span>{value}</span>
                       {isSelected && <Icon small material="check" className="box right" />}
                     </div>
