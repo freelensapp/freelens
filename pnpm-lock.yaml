@@ -932,8 +932,8 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0
       marked:
-        specifier: ^15.0.10
-        version: 15.0.10
+        specifier: ^15.0.11
+        version: 15.0.11
       memfs:
         specifier: ^4.17.0
         version: 4.17.0
@@ -6871,8 +6871,8 @@ packages:
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
-  marked@15.0.10:
-    resolution: {integrity: sha512-BXzsfFiR2UqXFKRwpugWuCYi9mWd1aX/Yns/X52xWfvfen9lnGEDbJw9ZEjjvLZVqntqT2gX45eYvqb2dIokDw==}
+  marked@15.0.11:
+    resolution: {integrity: sha512-1BEXAU2euRCG3xwgLVT1y0xbJEld1XOrmRJpUwRCcy7rxhSCwMrmEu9LXoPhHSCJG41V7YcQ2mjKRr5BA3ITIA==}
     engines: {node: '>= 18'}
     hasBin: true
 
@@ -13732,7 +13732,7 @@ snapshots:
     dependencies:
       tmpl: 1.0.5
 
-  marked@15.0.10: {}
+  marked@15.0.11: {}
 
   matcher@3.0.0:
     dependencies:
