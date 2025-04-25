@@ -61,7 +61,7 @@
   },
   "config": {
     "k8sProxyVersion": "1.2.8",
-    "bundledKubectlVersion": "1.32.3",
+    "bundledKubectlVersion": "1.33.0",
     "bundledHelmVersion": "3.17.3",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
     "welcomeRoute": "/welcome"
@@ -181,12 +181,12 @@
     "crypto-js": "^4.2.0",
     "css-loader": "^6.11.0",
     "dompurify": "^3.2.5",
-    "electron": "^35.2.0",
+    "electron": "^35.2.1",
     "electron-builder": "^26.0.12",
     "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
-    "esbuild": "^0.25.2",
+    "esbuild": "^0.25.3",
     "esbuild-loader": "^4.3.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "fs-extra": "^11.3.0",
@@ -208,7 +208,7 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "logform": "^2.7.0",
-    "marked": "^15.0.9",
+    "marked": "^15.0.10",
     "memfs": "^4.17.0",
     "memorystream": "^0.3.1",
     "mini-css-extract-plugin": "^2.9.2",
@@ -224,7 +224,7 @@
     "monaco-editor-webpack-plugin": "^7.1.0",
     "node-loader": "^2.1.0",
     "node-pty": "1.1.0-beta34",
-    "nodemon": "^3.1.9",
+    "nodemon": "^3.1.10",
     "path-to-regexp": "^6.3.0",
     "pnpm": "^10.9.0",
     "postcss-loader": "^8.1.1",
@@ -270,6 +270,6 @@
     "winston-transport": "^4.9.0",
     "winston-transport-browserconsole": "^1.0.5",
     "ws": "^8.18.1",
-    "zod": "^3.24.2"
+    "zod": "^3.24.3"
   }
 }
