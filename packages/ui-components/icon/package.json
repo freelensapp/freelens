@@ -51,7 +51,7 @@
     "@testing-library/react": "^12.1.5",
     "@types/history": "^4.7.11",
     "@types/lodash": "^4.17.16",
-    "@types/react": "^17.0.85",
+    "@types/react": "^19.1.2",
     "@types/react-router-dom": "^5.3.3",
     "auto-bind": "^4.0.0",
     "dompurify": "^3.2.5",
@@ -60,8 +60,8 @@
     "mobx": "^6.13.7",
     "mobx-observable-history": "^2.0.3",
     "mobx-react": "^7.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-router-dom": "^5.3.4",
     "winston": "^3.17.0"
   }

@@ -181,7 +181,7 @@
     "path-to-regexp": "^6.3.0",
     "pnpm": "^10.9.0",
     "proper-lockfile": "^4.1.2",
-    "react": "^17.0.2",
+    "react": "^19.1.0",
     "react-router": "^5.3.4",
     "request": "^2.88.2",
     "rfc4648": "^1.5.4",
