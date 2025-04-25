@@ -761,8 +761,8 @@ importers:
         specifier: ^7.7.20
         version: 7.7.20
       '@types/react-virtualized-auto-sizer':
-        specifier: ^1.0.1
-        version: 1.0.1
+        specifier: ^1.0.8
+        version: 1.0.8(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/react-window':
         specifier: ^1.8.8
         version: 1.8.8
@@ -1025,8 +1025,8 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0(react@17.0.2)
       react-virtualized-auto-sizer:
-        specifier: ^1.0.7
-        version: 1.0.17(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        specifier: ^1.0.26
+        version: 1.0.26(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react-window:
         specifier: ^1.8.11
         version: 1.8.11(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -4295,8 +4295,9 @@ packages:
     peerDependencies:
       '@types/react': '*'
 
-  '@types/react-virtualized-auto-sizer@1.0.1':
-    resolution: {integrity: sha512-GH8sAnBEM5GV9LTeiz56r4ZhMOUSrP43tAQNSRVxNexDjcNKLCEtnxusAItg1owFUFE6k0NslV26gqVClVvong==}
+  '@types/react-virtualized-auto-sizer@1.0.8':
+    resolution: {integrity: sha512-keJpNyhiwfl2+N12G1ocCVA5ZDBArbPLe/S90X3kt7fam9naeHdaYYWbpe2sHczp70JWJ+2QLhBE8kLvLuVNjA==}
+    deprecated: This is a stub types definition. react-virtualized-auto-sizer provides its own type definitions, so you do not need this installed.
 
   '@types/react-window@1.8.8':
     resolution: {integrity: sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==}
@@ -7749,11 +7750,11 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
-  react-virtualized-auto-sizer@1.0.17:
-    resolution: {integrity: sha512-XtojyZHGo/iYmGkOEL8psTQsr5XI4fd+QxCD16ru00mnJhuvXFXcPLHXj5cKJh/xUttxPCglnpUI8d2u6gUgzw==}
+  react-virtualized-auto-sizer@1.0.26:
+    resolution: {integrity: sha512-CblNyiNVw2o+hsa5/49NH2ogGxZ+t+3aweRvNSq7TVjDIlwk7ir4lencEg5HxHeSzwNarSkNkiu0qJSOXtxm5A==}
     peerDependencies:
-      react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0-rc
-      react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0-rc
+      react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-window@1.8.11:
     resolution: {integrity: sha512-+SRbUVT2scadgFSWx+R1P754xHPEqvcfSfVX10QYg6POOz+WNgkN48pS+BtZNIMGiL1HYrSEiCkwsMS15QogEQ==}
@@ -10571,9 +10572,12 @@ snapshots:
     dependencies:
       '@types/react': 17.0.85
 
-  '@types/react-virtualized-auto-sizer@1.0.1':
+  '@types/react-virtualized-auto-sizer@1.0.8(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@types/react': 17.0.85
+      react-virtualized-auto-sizer: 1.0.26(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+    transitivePeerDependencies:
+      - react
+      - react-dom
 
   '@types/react-window@1.8.8':
     dependencies:
@@ -14563,7 +14567,7 @@ snapshots:
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
-  react-virtualized-auto-sizer@1.0.17(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
+  react-virtualized-auto-sizer@1.0.26(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
     dependencies:
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
