@@ -953,8 +953,8 @@ importers:
         specifier: ^7.6.0
         version: 7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       mobx-react-lite:
-        specifier: ^3.4.3
-        version: 3.4.3(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        specifier: ^4.1.0
+        version: 4.1.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       mobx-utils:
         specifier: ^6.1.0
         version: 6.1.0(mobx@6.13.7)
@@ -7064,6 +7064,19 @@ packages:
       react-native:
         optional: true
 
+  mobx-react-lite@4.1.0:
+    resolution: {integrity: sha512-QEP10dpHHBeQNv1pks3WnHRCem2Zp636lq54M2nKO2Sarr13pL4u6diQXf65yzXUn0mkk18SyIDCm9UOJYTi1w==}
+    peerDependencies:
+      mobx: ^6.9.0
+      react: ^16.8.0 || ^17 || ^18 || ^19
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+
   mobx-react@7.6.0:
     resolution: {integrity: sha512-+HQUNuh7AoQ9ZnU6c4rvbiVVl+wEkb9WqYsVDzGLng+Dqj1XntHu79PvEWKtSMoMj67vFp/ZPXcElosuJO8ckA==}
     peerDependencies:
@@ -8683,6 +8696,11 @@ packages:
     resolution: {integrity: sha512-g66/K7ZQGYrI6dy8GLpVcMsBp4s17xNkYJVSMvTEevGy3nDxHOfE6z8BVE22+5G5x7t3+bhzrlTDB7ObrEE0cQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  use-sync-external-store@1.5.0:
+    resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   utf8-byte-length@1.0.4:
     resolution: {integrity: sha512-4+wkEYLBbWxqTahEsWrhxepcoVOJ+1z5PGIjPZxRkytcdSUaNjIjBM7Xn8E+pdSuV7SzvWovBFA54FO0JSoqhA==}
@@ -13888,6 +13906,14 @@ snapshots:
     optionalDependencies:
       react-dom: 17.0.2(react@17.0.2)
 
+  mobx-react-lite@4.1.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
+    dependencies:
+      mobx: 6.13.7
+      react: 17.0.2
+      use-sync-external-store: 1.5.0(react@17.0.2)
+    optionalDependencies:
+      react-dom: 17.0.2(react@17.0.2)
+
   mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
     dependencies:
       mobx: 6.13.7
@@ -15618,6 +15644,10 @@ snapshots:
       '@types/react': 17.0.85
 
   use-memo-one@1.1.3(react@17.0.2):
+    dependencies:
+      react: 17.0.2
+
+  use-sync-external-store@1.5.0(react@17.0.2):
     dependencies:
       react: 17.0.2
 
