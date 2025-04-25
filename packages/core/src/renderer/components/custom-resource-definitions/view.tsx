@@ -37,6 +37,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies> {
+  ALL_GROUPS = "All groups";
+
   constructor(props: Dependencies) {
     super(props);
     makeObservable(this);
@@ -55,22 +57,38 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
   @computed get groupSelectOptions() {
     const selectedGroups = this.props.selectedGroups.get();
 
-    return Object.keys(this.props.customResourceDefinitionStore.groups).map((group) => ({
-      value: group,
-      label: group,
-      isSelected: selectedGroups.has(group),
-    }));
+    const groupList = [
+      {
+        value: this.ALL_GROUPS,
+        label: this.ALL_GROUPS,
+        isSelected: selectedGroups.has(this.ALL_GROUPS),
+      },
+    ];
+
+    groupList.push(
+      ...Object.keys(this.props.customResourceDefinitionStore.groups).map((group) => ({
+        value: group,
+        label: group,
+        isSelected: selectedGroups.size === 0 || selectedGroups.has(group),
+      })),
+    );
+
+    return groupList;
   }
 
   toggleSelection = (options: readonly { value: string }[]) => {
-    this.props.selectedGroups.setRaw(options.map(({ value }) => value));
+    if (options.length === 1 && this.ALL_GROUPS === options[0]?.value) {
+      this.props.selectedGroups.clear();
+    } else {
+      this.props.selectedGroups.setRaw(options.map(({ value }) => value));
+    }
   };
 
   private getPlaceholder() {
     const selectedGroups = this.props.selectedGroups.get();
 
     if (selectedGroups.size === 0) {
-      return "All groups";
+      return this.ALL_GROUPS;
     }
 
     const prefix = selectedGroups.size === 1 ? "Group" : "Groups";
@@ -120,7 +138,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
                   isMulti={true}
                   formatOptionLabel={({ value, isSelected }) => (
                     <div className="flex gaps align-center">
-                      <Icon small material="folder" />
+                      {value !== this.ALL_GROUPS && <Icon small material="folder" />}
                       <span>{value}</span>
                       {isSelected && <Icon small material="check" className="box right" />}
                     </div>
