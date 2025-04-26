@@ -412,7 +412,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                     class="Switch"
                     data-testid="switch"
                   >
-                    Automatically start Lens on login
+                    Automatically start Freelens on login
                     <input
                       role="switch"
                       type="checkbox"
@@ -1849,7 +1849,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                     class="Switch"
                     data-testid="switch"
                   >
-                    Automatically start Lens on login
+                    Automatically start Freelens on login
                     <input
                       role="switch"
                       type="checkbox"

@@ -745,7 +745,7 @@ exports[`show-about-using-tray when navigating using tray renders 1`] = `
                       class="Switch"
                       data-testid="switch"
                     >
-                      Automatically start Lens on login
+                      Automatically start Freelens on login
                       <input
                         role="switch"
                         type="checkbox"

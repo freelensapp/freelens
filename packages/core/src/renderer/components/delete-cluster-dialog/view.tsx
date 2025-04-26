@@ -129,7 +129,7 @@ class NonInjectedDeleteClusterDialog extends React.Component<Dependencies> {
         <div>
           {"Delete the "}
           <b>{cluster.getMeta().name}</b>
-          {" context from Lens's internal kubeconfig?"}
+          {" context from Freelens's internal kubeconfig?"}
         </div>
       );
     }

@@ -23,8 +23,8 @@ const NonInjectedAllowUntrustedCertificates = observer(({ state }: Dependencies)
       Allow untrusted Certificate Authorities
     </Switch>
     <small className="hint">
-      This will make Lens to trust ANY certificate authority without any validations. Needed with some corporate proxies
-      that do certificate re-writing. Does not affect cluster communications!
+      This will make Freelens to trust ANY certificate authority without any validations. Needed with some corporate
+      proxies that do certificate re-writing. Does not affect cluster communications!
     </small>
   </section>
 ));

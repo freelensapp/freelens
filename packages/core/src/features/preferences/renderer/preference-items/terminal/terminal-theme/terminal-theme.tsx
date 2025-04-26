@@ -23,7 +23,7 @@ const NonInjectedTerminalTheme = observer(({ state, themes }: Dependencies) => {
   const themeOptions = [
     {
       value: "", // TODO: replace with a sentinel value that isn't string (and serialize it differently)
-      label: "Match Lens Theme",
+      label: "Match Freelens Theme",
     },
     ...themes.map((theme) => ({
       value: theme.name,

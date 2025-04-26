@@ -34,17 +34,17 @@ const setupLensProxyInjectable = getInjectable({
       const fetch = di.inject(fetchInjectable);
 
       try {
-        logger.info("🔌 Starting LensProxy");
+        logger.info("🔌 Starting Freelens Proxy");
         await lensProxy.listen(); // lensProxy.port available
       } catch (error: any) {
-        showErrorPopup("Lens Error", `Could not start proxy: ${error?.message || "unknown error"}`);
+        showErrorPopup("Freelens Error", `Could not start proxy: ${error?.message || "unknown error"}`);
 
         return forceAppExit();
       }
 
       // test proxy connection
       try {
-        logger.info("🔎 Testing LensProxy connection ...");
+        logger.info("🔎 Testing Freelens Proxy connection ...");
         const versionResponse = await fetch(`https://127.0.0.1:${lensProxyPort.get()}/version`, {
           agent: new Agent({
             ca: lensProxyCertificate.get()?.cert,
@@ -59,19 +59,19 @@ const setupLensProxyInjectable = getInjectable({
           return forceAppExit();
         }
 
-        logger.info("⚡ LensProxy connection OK");
+        logger.info("⚡ Freelens Proxy connection OK");
       } catch (error) {
-        logger.error(`🛑 LensProxy: failed connection test: ${error}`);
+        logger.error(`🛑 Freelens Proxy: failed connection test: ${error}`);
 
         const hostsPath = isWindows ? "C:\\windows\\system32\\drivers\\etc\\hosts" : "/etc/hosts";
         const message = [
           `Failed connection test: ${error}`,
-          "Check to make sure that no other versions of Lens are running",
+          "Check to make sure that no other versions of Freelens are running",
           `Check ${hostsPath} to make sure that it is clean and that the localhost loopback is at the top and set to 127.0.0.1`,
           "If you have HTTP_PROXY or http_proxy set in your environment, make sure that the localhost and the ipv4 loopback address 127.0.0.1 are added to the NO_PROXY environment variable.",
         ];
 
-        showErrorPopup("Lens Proxy Error", message.join("\n\n"));
+        showErrorPopup("Freelens Proxy Error", message.join("\n\n"));
 
         return forceAppExit();
       }

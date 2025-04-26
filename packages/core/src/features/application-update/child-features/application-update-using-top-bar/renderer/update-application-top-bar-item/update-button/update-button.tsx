@@ -51,7 +51,7 @@ const NonInjectedUpdateButton = observer(({ warningLevel, update, id }: UpdateBu
       </button>
       <Menu usePortal htmlFor={buttonId} isOpen={opened} close={toggle} open={toggle}>
         <MenuItem icon={menuIconProps} onClick={update} data-testid="update-lens-menu-item">
-          Relaunch to Update Lens
+          Relaunch to Update Freelens
         </MenuItem>
       </Menu>
     </>

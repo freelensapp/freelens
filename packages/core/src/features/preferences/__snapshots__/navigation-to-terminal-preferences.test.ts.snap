@@ -400,7 +400,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                     class="Switch"
                     data-testid="switch"
                   >
-                    Automatically start Lens on login
+                    Automatically start Freelens on login
                     <input
                       role="switch"
                       type="checkbox"
@@ -933,7 +933,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                         <div
                           class="Select__single-value css-1dimb5e-singleValue"
                         >
-                          Match Lens Theme
+                          Match Freelens Theme
                         </div>
                         <div
                           class="Select__input-container css-19bb58m"
