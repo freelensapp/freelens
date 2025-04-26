@@ -14,11 +14,11 @@ const defaultLensThemeInjectable = getInjectable({
     const [defaultTheme, ...rest] = themes.filter((theme) => theme.isDefault);
 
     if (rest.length > 0) {
-      throw new Error("Multiple LensTheme's are declared as the default");
+      throw new Error("Multiple Freelens Theme's are declared as the default");
     }
 
     if (!defaultTheme) {
-      throw new Error("No LensTheme is declared as the default");
+      throw new Error("No Freelens Theme is declared as the default");
     }
 
     return defaultTheme;

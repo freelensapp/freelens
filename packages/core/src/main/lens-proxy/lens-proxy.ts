@@ -163,7 +163,7 @@ export class LensProxy {
          * through all the ports possible and we will not be able to get a safe
          * port.
          */
-        throw new Error("Failed to start LensProxy due to seeing too many unsafe ports. Please restart Lens.");
+        throw new Error("Failed to start Freelens Proxy due to seeing too many unsafe ports. Please restart Freelens.");
       } else {
         seenPorts.add(port);
       }

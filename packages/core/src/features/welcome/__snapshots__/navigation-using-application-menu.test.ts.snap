@@ -743,7 +743,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                       class="Switch"
                       data-testid="switch"
                     >
-                      Automatically start Lens on login
+                      Automatically start Freelens on login
                       <input
                         role="switch"
                         type="checkbox"

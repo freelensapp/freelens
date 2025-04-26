@@ -583,7 +583,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
           <b>
             some-context
           </b>
-           context from Lens's internal kubeconfig?
+           context from Freelens's internal kubeconfig?
         </div>
         <div
           class="warning"

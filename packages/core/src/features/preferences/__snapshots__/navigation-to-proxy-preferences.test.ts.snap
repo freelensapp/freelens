@@ -400,7 +400,7 @@ exports[`preferences - navigation to proxy preferences given in preferences, whe
                     class="Switch"
                     data-testid="switch"
                   >
-                    Automatically start Lens on login
+                    Automatically start Freelens on login
                     <input
                       role="switch"
                       type="checkbox"
@@ -900,7 +900,7 @@ exports[`preferences - navigation to proxy preferences given in preferences, whe
                   <small
                     class="hint"
                   >
-                    This will make Lens to trust ANY certificate authority without any validations. Needed with some corporate proxies that do certificate re-writing. Does not affect cluster communications!
+                    This will make Freelens to trust ANY certificate authority without any validations. Needed with some corporate proxies that do certificate re-writing. Does not affect cluster communications!
                   </small>
                 </section>
               </div>

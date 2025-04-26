@@ -22,7 +22,7 @@ export const isCompatibleExtension = ({
       const errorInfo = [
         `Invalid format for "manifest.engines.freelens"="${manifestLensEngine}"`,
         `Range versions can only be specified starting with '^'.`,
-        `Otherwise it's recommended to use plain %MAJOR.%MINOR to match with supported Lens version.`,
+        `Otherwise it's recommended to use plain %MAJOR.%MINOR to match with supported Freelens version.`,
       ].join("\n");
 
       throw new Error(errorInfo);
