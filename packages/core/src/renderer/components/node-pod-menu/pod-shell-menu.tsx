@@ -16,6 +16,10 @@ import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.in
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
+import type { Container } from "@freelensapp/kube-object";
+import { v4 as uuidv4 } from "uuid";
+
+// For this to work we always need exec to be the second element in the array
 
 export interface PodShellMenuProps {
   object: any;
@@ -26,7 +30,6 @@ interface Dependencies {
   createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
   sendCommand: SendCommand;
   hideDetails: HideDetails;
-  //userShellSetting: IComputedValue<string>;
 }
 
 const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (props) => {

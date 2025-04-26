@@ -15,14 +15,6 @@ import { Pod } from "@freelensapp/kube-object";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";
 import { v4 as uuidv4 } from "uuid";
-//import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
-//import type { IComputedValue } from "mobx";
-
-// For this to work we never need exec to be in the command, 
-// and we should find a good way to wrap this function from where it's being called, 
-// and advise the user that attach may not work on all pods, if the process doesn't support it
-// See this note: https://stackoverflow.com/a/42013285
-
 
 export interface PodAttachMenuProps {
   object: any;
