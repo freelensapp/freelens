@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Settings } from "electron";
 import electronAppInjectable from "../electron-app.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
 export type SetLoginItemSettings = (settings: Settings) => void;
 

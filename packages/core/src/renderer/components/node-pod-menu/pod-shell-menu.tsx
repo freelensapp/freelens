@@ -6,8 +6,10 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import type { Container } from "@freelensapp/kube-object";
+import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";
 import type { DockTabCreateSpecific } from "../dock/dock/store";
@@ -15,8 +17,6 @@ import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.in
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
-import type { Container } from "@freelensapp/kube-object";
-import { v4 as uuidv4 } from "uuid";
 
 // For this to work we always need exec to be the second element in the array
 

@@ -14,9 +14,9 @@ const userShellSettingInjectable = getInjectable({
   instantiate: (di) => {
     const state = di.inject(userPreferencesStateInjectable);
     const userInfo = di.inject(userInfoInjectable);
-    // changed to be an explicit string, to help with dynamic casting for determination of different shell types, 
+    // changed to be an explicit string, to help with dynamic casting for determination of different shell types,
     // and to ensure if nil/no response the var is always a string for comparison purposes
-    
+
     return computed<string>(() => state.shell ?? userInfo.shell ?? "");
   },
 });
