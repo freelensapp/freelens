@@ -11,7 +11,6 @@ import { App } from "../../../extensions/common-api";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import { Pod } from "@freelensapp/kube-object";
-//import os from "os";
 import PodMenuItem from "./pod-menu-item";
 import type { Container } from "@freelensapp/kube-object";
 import { v4 as uuidv4 } from "uuid";
@@ -25,7 +24,6 @@ interface Dependencies {
   createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
   sendCommand: SendCommand;
   hideDetails: HideDetails;
-  //userShellSetting: IComputedValue<string>;
 }
 
 const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = props => {
@@ -35,7 +33,6 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
     createTerminalTab,
     sendCommand,
     hideDetails,
-    //userShellSetting,
   } = props;
 
   if (!object) return null;
@@ -64,8 +61,6 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = pr
       pod.getNs(),
       pod.getName(),
     ];
-
-    //const userShell = userShellSetting.get() || "";
 
     if (containerName) {
       commandParts.push("-c", containerName);
@@ -106,7 +101,6 @@ export const PodAttachMenu = withInjectables<Dependencies, PodAttachMenuProps>(
       createTerminalTab: di.inject(createTerminalTabInjectable),
       sendCommand: di.inject(sendCommandInjectable),
       hideDetails: di.inject(hideDetailsInjectable),
-      //userShellSetting: di.inject(userShellSettingInjectable),
     }),
   },
 );

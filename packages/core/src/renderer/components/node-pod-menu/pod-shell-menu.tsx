@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
 import { Pod } from "@freelensapp/kube-object";
 import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -48,7 +47,6 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
 
   const containers = pod.getRunningContainers();
   const statuses = pod.getContainerStatuses();
-  // TODO: scaffolding for refactoring per SHELL_LOGIC.md
 
   const execShell = async (container: Container) => {
     const containerName = container.name;
