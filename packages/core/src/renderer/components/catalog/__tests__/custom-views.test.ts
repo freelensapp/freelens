@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -28,32 +29,37 @@ describe("Custom Category Views", () => {
     const component1 = (): StrictReactNode => null;
     const component2 = (): StrictReactNode => null;
 
-    di.override(rendererExtensionsInjectable, () => computed(() => [
-      {
-        customCategoryViews: [
-          {
-            components: {
-              View: component1,
+    di.override(rendererExtensionsInjectable, () =>
+      computed(
+        () =>
+          [
+            {
+              customCategoryViews: [
+                {
+                  components: {
+                    View: component1,
+                  },
+                  group: "foo",
+                  kind: "bar",
+                  priority: 100,
+                } as CustomCategoryViewRegistration,
+              ],
             },
-            group: "foo",
-            kind: "bar",
-            priority: 100,
-          } as CustomCategoryViewRegistration,
-        ],
-      },
-      {
-        customCategoryViews: [
-          {
-            components: {
-              View: component2,
+            {
+              customCategoryViews: [
+                {
+                  components: {
+                    View: component2,
+                  },
+                  group: "foo",
+                  kind: "bar",
+                  priority: 95,
+                } as CustomCategoryViewRegistration,
+              ],
             },
-            group: "foo",
-            kind: "bar",
-            priority: 95,
-          } as CustomCategoryViewRegistration,
-        ],
-      },
-    ] as LensRendererExtension[]));
+          ] as LensRendererExtension[],
+      ),
+    );
 
     const customCategoryViews = di.inject(customCategoryViewsInjectable);
     const { after = [] } = customCategoryViews.get().get("foo")?.get("bar") ?? {};
@@ -66,32 +72,37 @@ describe("Custom Category Views", () => {
     const component1 = (): StrictReactNode => null;
     const component2 = (): StrictReactNode => null;
 
-    di.override(rendererExtensionsInjectable, () => computed(() => [
-      {
-        customCategoryViews: [
-          {
-            components: {
-              View: component1,
+    di.override(rendererExtensionsInjectable, () =>
+      computed(
+        () =>
+          [
+            {
+              customCategoryViews: [
+                {
+                  components: {
+                    View: component1,
+                  },
+                  group: "foo",
+                  kind: "bar",
+                  priority: 40,
+                } as CustomCategoryViewRegistration,
+              ],
             },
-            group: "foo",
-            kind: "bar",
-            priority: 40,
-          } as CustomCategoryViewRegistration,
-        ],
-      },
-      {
-        customCategoryViews: [
-          {
-            components: {
-              View: component2,
+            {
+              customCategoryViews: [
+                {
+                  components: {
+                    View: component2,
+                  },
+                  group: "foo",
+                  kind: "bar",
+                  priority: 95,
+                } as CustomCategoryViewRegistration,
+              ],
             },
-            group: "foo",
-            kind: "bar",
-            priority: 95,
-          } as CustomCategoryViewRegistration,
-        ],
-      },
-    ] as LensRendererExtension[]));
+          ] as LensRendererExtension[],
+      ),
+    );
 
     const customCategoryViews = di.inject(customCategoryViewsInjectable);
     const { before = [] } = customCategoryViews.get().get("foo")?.get("bar") ?? {};

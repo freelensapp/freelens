@@ -54,13 +54,11 @@ exports[`ValidatingWebhookConfigsDetails renders 1`] = `
         >
           <div>
             <div>
-              Name:
-               
+              Name: 
               service-name
             </div>
             <div>
-              Namespace:
-               
+              Namespace: 
               service-namespace
             </div>
           </div>
@@ -171,23 +169,19 @@ exports[`ValidatingWebhookConfigsDetails renders 1`] = `
         >
           <div>
             <div>
-              API Groups:
-               
+              API Groups: 
               , apps, extensions
             </div>
             <div>
-              API Versions:
-               
+              API Versions: 
               v1, v1beta1
             </div>
             <div>
-              Operations:
-               
+              Operations: 
               CREATE, UPDATE
             </div>
             <div>
-              Resources:
-               
+              Resources: 
               pods, deployments
             </div>
           </div>

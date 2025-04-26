@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import { clusterIconSettingsMenuInjectionToken } from "@freelensapp/cluster-settings";
+import { getInjectable } from "@ogre-tools/injectable";
 
 const clusterIconSettingsMenuClearItem = getInjectable({
   id: "cluster-icon-settings-menu-clear-item",

@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React, { useState } from "react";
-import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import { Input, InputValidators } from "../../../../../../../renderer/components/input";
+import React, { useState } from "react";
 import directoryForKubectlBinariesInjectable from "../../../../../../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
+import { Input, InputValidators } from "../../../../../../../renderer/components/input";
+import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
 import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../../user-preferences/common/state.injectable";
 
@@ -16,10 +18,7 @@ interface Dependencies {
   defaultPathForKubectlBinaries: string;
 }
 
-const NonInjectedKubectlPathToBinary = observer(({
-  state,
-  defaultPathForKubectlBinaries,
-}: Dependencies) => {
+const NonInjectedKubectlPathToBinary = observer(({ state, defaultPathForKubectlBinaries }: Dependencies) => {
   const [binariesPath, setBinariesPath] = useState(state.kubectlBinariesPath || "");
   const pathValidator = binariesPath ? InputValidators.isPath : undefined;
 
@@ -41,8 +40,7 @@ const NonInjectedKubectlPathToBinary = observer(({
       />
     </section>
   );
-},
-);
+});
 
 export const KubectlPathToBinary = withInjectables<Dependencies>(NonInjectedKubectlPathToBinary, {
   getProps: (di) => ({

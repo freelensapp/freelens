@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -6,24 +7,24 @@
 import "../item-object-list/item-list-layout.scss";
 import "./releases.scss";
 
-import React, { Component } from "react";
-import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { ItemListStore } from "../item-object-list";
-import { ItemListLayout } from "../item-object-list";
-import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 import { kebabCase } from "lodash/fp";
-import { HelmReleaseMenu } from "./release-menu";
-import { ReleaseRollbackDialog } from "./dialog/dialog";
-import removableReleasesInjectable from "./removable-releases.injectable";
-import type { RemovableHelmRelease } from "./removable-releases";
 import type { IComputedValue } from "mobx";
-import releasesInjectable from "./releases.injectable";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import helmReleasesRouteParametersInjectable from "./helm-releases-route-parameters.injectable";
+import React, { Component } from "react";
 import type { NavigateToHelmReleases } from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
+import type { ItemListStore } from "../item-object-list";
+import { ItemListLayout } from "../item-object-list";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
+import { ReleaseRollbackDialog } from "./dialog/dialog";
+import helmReleasesRouteParametersInjectable from "./helm-releases-route-parameters.injectable";
+import { HelmReleaseMenu } from "./release-menu";
+import releasesInjectable from "./releases.injectable";
+import type { RemovableHelmRelease } from "./removable-releases";
+import removableReleasesInjectable from "./removable-releases.injectable";
 
 enum columnId {
   name = "name",
@@ -60,19 +61,14 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
   };
 
   renderRemoveDialogMessage(selectedItems: HelmRelease[]) {
-    const releaseNames = selectedItems.map(item => item.getName()).join(", ");
+    const releaseNames = selectedItems.map((item) => item.getName()).join(", ");
 
     return (
       <div>
         <>
-          Remove
-          {" "}
-          <b>{releaseNames}</b>
-          ?
+          Remove <b>{releaseNames}</b>?
         </>
-        <p className="warning">
-          Note: StatefulSet Volumes won&apos;t be deleted automatically
-        </p>
+        <p className="warning">Note: StatefulSet Volumes won&apos;t be deleted automatically</p>
       </div>
     );
   }
@@ -93,10 +89,7 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
 
       toggleSelection: (release) => release.toggle(),
 
-      isSelectedAll: (releases) => (
-        releases.length > 0
-        && releases.every((release) => release.isSelected)
-      ),
+      isSelectedAll: (releases) => releases.length > 0 && releases.every((release) => release.isSelected),
 
       toggleSelectionAll: (releases) => {
         let selected = false;
@@ -116,13 +109,14 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
 
       removeSelectedItems: async () => {
         await Promise.all(
-          releases.get()
+          releases
+            .get()
             .filter((release) => release.isSelected)
-            .map(release => release.delete()),
+            .map((release) => release.delete()),
         );
       },
 
-      pickOnlySelected: (releases) => releases.filter(release => release.isSelected),
+      pickOnlySelected: (releases) => releases.filter((release) => release.isSelected),
     };
 
     return (
@@ -136,19 +130,19 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
           className="HelmReleases"
           customizeTableRowProps={(item) => ({ testId: `helm-release-row-for-${item.getId()}` })}
           sortingCallbacks={{
-            [columnId.name]: release => release.getName(),
-            [columnId.namespace]: release => release.getNs(),
-            [columnId.revision]: release => release.getRevision(),
-            [columnId.chart]: release => release.getChart(),
-            [columnId.status]: release => release.getStatus(),
-            [columnId.updated]: release => release.getUpdated(false, false),
+            [columnId.name]: (release) => release.getName(),
+            [columnId.namespace]: (release) => release.getNs(),
+            [columnId.revision]: (release) => release.getRevision(),
+            [columnId.chart]: (release) => release.getChart(),
+            [columnId.status]: (release) => release.getStatus(),
+            [columnId.updated]: (release) => release.getUpdated(false, false),
           }}
           searchFilters={[
-            release => release.getName(),
-            release => release.getNs(),
-            release => release.getChart(),
-            release => release.getStatus(),
-            release => release.getVersion(),
+            (release) => release.getName(),
+            (release) => release.getNs(),
+            (release) => release.getChart(),
+            (release) => release.getStatus(),
+            (release) => release.getVersion(),
           ]}
           customizeHeader={({ filters, searchProps, ...headerPlaceholders }) => ({
             filters: (
@@ -174,12 +168,9 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
             { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
           ]}
-          renderTableContents={release => [
+          renderTableContents={(release) => [
             release.getName(),
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={release.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={release.getNs()} />,
             release.getChart(),
             release.getRevision(),
             release.getVersion(),
@@ -187,20 +178,17 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
             { title: release.getStatus(), className: kebabCase(release.getStatus()) },
             release.getUpdated(),
           ]}
-          renderItemMenu={release => (
-            <HelmReleaseMenu
-              release={release}
-              removeConfirmationMessage={this.renderRemoveDialogMessage([release])}
-            />
+          renderItemMenu={(release) => (
+            <HelmReleaseMenu release={release} removeConfirmationMessage={this.renderRemoveDialogMessage([release])} />
           )}
-          customizeRemoveDialog={selectedItems => ({
+          customizeRemoveDialog={(selectedItems) => ({
             message: this.renderRemoveDialogMessage(selectedItems),
           })}
           onDetails={this.onDetails}
           spinnerTestId="helm-releases-spinner"
         />
 
-        <ReleaseRollbackDialog/>
+        <ReleaseRollbackDialog />
       </SiblingsInTabLayout>
     );
   }

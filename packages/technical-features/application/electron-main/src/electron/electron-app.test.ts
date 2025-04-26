@@ -1,8 +1,8 @@
-import electronAppInjectable from "./electron-app.injectable";
-import { app } from "electron";
-import { createContainer } from "@ogre-tools/injectable";
-import { applicationFeatureForElectronMain } from "../feature";
 import { registerFeature } from "@freelensapp/feature-core";
+import { createContainer } from "@ogre-tools/injectable";
+import { app } from "electron";
+import { applicationFeatureForElectronMain } from "../feature";
+import electronAppInjectable from "./electron-app.injectable";
 
 describe("electron-app", () => {
   it("is electron app", () => {

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 
-import persistentVolumeClaimsRouteInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volume-claims/persistent-volume-claims-route.injectable";
-import storageSidebarItemInjectable from "../storage/storage-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToPersistentVolumeClaimsInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volume-claims/navigate-to-persistent-volume-claims.injectable";
+import persistentVolumeClaimsRouteInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volume-claims/persistent-volume-claims-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import storageSidebarItemInjectable from "../storage/storage-sidebar-item.injectable";
 
 const persistentVolumeClaimsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-persistent-volume-claims",

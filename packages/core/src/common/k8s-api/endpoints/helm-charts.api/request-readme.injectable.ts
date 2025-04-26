@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import type { AsyncResult } from "@freelensapp/utilities";
 import { urlBuilderFor } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
 
 const requestReadmeEndpoint = urlBuilderFor("/v2/charts/:repo/:name/readme");
@@ -16,9 +18,7 @@ const requestHelmChartReadmeInjectable = getInjectable({
   instantiate: (di): RequestHelmChartReadme => {
     const apiBase = di.inject(apiBaseInjectable);
 
-    return (repo, name, version) => (
-      apiBase.get(requestReadmeEndpoint.compile({ name, repo }, { version }))
-    );
+    return (repo, name, version) => apiBase.get(requestReadmeEndpoint.compile({ name, repo }, { version }));
   },
 });
 

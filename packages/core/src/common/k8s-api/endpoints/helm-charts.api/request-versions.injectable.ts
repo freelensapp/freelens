@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { isDefined, urlBuilderFor } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { urlBuilderFor, isDefined } from "@freelensapp/utilities";
+import apiBaseInjectable from "../../api-base.injectable";
 import { HelmChart } from "../helm-charts.api";
 import type { RawHelmChart } from "../helm-charts.api";
-import apiBaseInjectable from "../../api-base.injectable";
 
 const requestVersionsEndpoint = urlBuilderFor("/v2/charts/:repo/:name/versions");
 
@@ -18,11 +20,9 @@ const requestHelmChartVersionsInjectable = getInjectable({
     const apiBase = di.inject(apiBaseInjectable);
 
     return async (repo, name) => {
-      const rawVersions = await apiBase.get(requestVersionsEndpoint.compile({ name, repo })) as RawHelmChart[];
+      const rawVersions = (await apiBase.get(requestVersionsEndpoint.compile({ name, repo }))) as RawHelmChart[];
 
-      return rawVersions
-        .map(version => HelmChart.create(version, { onError: "log" }))
-        .filter(isDefined);
+      return rawVersions.map((version) => HelmChart.create(version, { onError: "log" })).filter(isDefined);
     };
   },
 });

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 
-import portForwardsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/port-forwards-route.injectable";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
+import portForwardsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/port-forwards-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
 
 const portForwardsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-port-forwards",

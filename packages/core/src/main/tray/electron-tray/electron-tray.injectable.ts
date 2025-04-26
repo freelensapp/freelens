@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Menu, Tray } from "electron";
-import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
-import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import { convertToElectronMenuTemplate } from "../reactive-tray-menu-items/converters";
-import trayIconInjectable from "../menu-icon/tray-icon.injectable";
 import applicationDescriptionInjectable from "../../../common/vars/application-description.injectable";
+import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
+import trayIconInjectable from "../menu-icon/tray-icon.injectable";
+import { convertToElectronMenuTemplate } from "../reactive-tray-menu-items/converters";
 
 const TRAY_LOG_PREFIX = "[TRAY]";
 
@@ -51,8 +53,9 @@ const electronTrayInjectable = getInjectable({
 
         if (isWindows) {
           tray.on("click", () => {
-            showApplicationWindow()
-              .catch(error => logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }));
+            showApplicationWindow().catch((error) =>
+              logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }),
+            );
           });
         }
       },

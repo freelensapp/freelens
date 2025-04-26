@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -13,7 +14,7 @@ describe("convertKubectlJsonPathToNodeJsonPath", () => {
   });
 
   it("should convert keys with escaped characters to use indexed notation", () => {
-    const res = convertKubectlJsonPathToNodeJsonPath(".metadata.labels.kubesphere\\\"io/alias-name");
+    const res = convertKubectlJsonPathToNodeJsonPath('.metadata.labels.kubesphere\\"io/alias-name');
 
     expect(res).toBe("$.metadata.labels['kubesphere\"io/alias-name']");
   });
@@ -68,7 +69,7 @@ describe("convertKubectlJsonPathToNodeJsonPath", () => {
 });
 
 describe("safeJSONPathValue", () => {
-  let oldWarn: typeof console["warn"];
+  let oldWarn: (typeof console)["warn"];
 
   beforeEach(() => {
     oldWarn = console.warn;
@@ -92,43 +93,52 @@ describe("safeJSONPathValue", () => {
   });
 
   it("should join sliced entries with commas only", () => {
-    const res = safeJSONPathValue({
-      bar: [
-        {
-          foo: 1,
-        },
-        {
-          foo: "hello",
-        },
-      ],
-    }, ".bar[].foo");
+    const res = safeJSONPathValue(
+      {
+        bar: [
+          {
+            foo: 1,
+          },
+          {
+            foo: "hello",
+          },
+        ],
+      },
+      ".bar[].foo",
+    );
 
     expect(res).toBe(1);
   });
 
   it("should join an array of values using JSON.stringify", () => {
-    const res = safeJSONPathValue({
-      bar: [
-        "world",
-        "hello",
-      ],
-    }, ".bar");
+    const res = safeJSONPathValue(
+      {
+        bar: ["world", "hello"],
+      },
+      ".bar",
+    );
 
     expect(res).toEqual(["world", "hello"]);
   });
 
   it("should stringify an object value", () => {
-    const res = safeJSONPathValue({
-      foo: { bar: "bat" },
-    }, ".foo");
+    const res = safeJSONPathValue(
+      {
+        foo: { bar: "bat" },
+      },
+      ".foo",
+    );
 
-    expect(res).toEqual({ "bar":"bat" });
+    expect(res).toEqual({ bar: "bat" });
   });
 
   it("should use convertKubectlJsonPathToNodeJsonPath", () => {
-    const res = safeJSONPathValue({
-      foo: { "hello.world": "bat" },
-    }, ".foo.hello\\.world");
+    const res = safeJSONPathValue(
+      {
+        foo: { "hello.world": "bat" },
+      },
+      ".foo.hello\\.world",
+    );
 
     expect(res).toBe("bat");
   });
@@ -159,19 +169,25 @@ describe("safeJSONPathValue", () => {
   });
 
   it("should not throw if path is invalid jsonpath", () => {
-    const res = safeJSONPathValue({
-      foo: { "hello.world": "bat" },
-    }, "asd[");
+    const res = safeJSONPathValue(
+      {
+        foo: { "hello.world": "bat" },
+      },
+      "asd[",
+    );
 
     expect(res).toBe(undefined);
   });
 
   it("should retrive value with '/' in jsonpath", () => {
-    const res = safeJSONPathValue({
-      foo: {
-        "hello/world": "bat",
+    const res = safeJSONPathValue(
+      {
+        foo: {
+          "hello/world": "bat",
+        },
       },
-    }, ".foo.hello/world");
+      ".foo.hello/world",
+    );
 
     expect(res).toBe("bat");
   });

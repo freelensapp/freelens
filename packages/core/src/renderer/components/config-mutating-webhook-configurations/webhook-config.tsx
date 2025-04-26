@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import styles from "./webhook-config.module.css";
+
 import type { Webhook } from "@freelensapp/kube-object";
-import { DrawerItem } from "../drawer";
+import React from "react";
 import { Badge } from "../badge";
+import { DrawerItem } from "../drawer";
+import styles from "./webhook-config.module.css";
 
 interface WebhookProps {
   webhook: Webhook;
@@ -21,60 +23,26 @@ export const WebhookConfig: React.FC<WebhookProps> = ({ webhook }) => {
       <DrawerItem name="Client Config">
         {webhook.clientConfig?.service?.name && (
           <div>
-            <div>
-              Name:
-              {" "}
-              {webhook.clientConfig.service.name}
-            </div>
-            <div>
-              Namespace:
-              {" "}
-              {webhook.clientConfig.service.namespace}
-            </div>
+            <div>Name: {webhook.clientConfig.service.name}</div>
+            <div>Namespace: {webhook.clientConfig.service.namespace}</div>
           </div>
         )}
       </DrawerItem>
-      <DrawerItem name="Match Policy">
-        {webhook.matchPolicy}
-      </DrawerItem>
-      <DrawerItem name="Failure Policy">
-        {webhook.failurePolicy}
-      </DrawerItem>
-      <DrawerItem name="Admission Review Versions">
-        {webhook.admissionReviewVersions?.join(", ")}
-      </DrawerItem>
-      { webhook.reinvocationPolicy && (
-        <DrawerItem name="Reinvocation Policy">
-          {webhook.reinvocationPolicy}
-        </DrawerItem>
-      )}
-      <DrawerItem name="Side Effects">
-        {webhook.sideEffects}
-      </DrawerItem>
-      <DrawerItem name="Timeout Seconds">
-        {webhook.timeoutSeconds}
-      </DrawerItem>
+      <DrawerItem name="Match Policy">{webhook.matchPolicy}</DrawerItem>
+      <DrawerItem name="Failure Policy">{webhook.failurePolicy}</DrawerItem>
+      <DrawerItem name="Admission Review Versions">{webhook.admissionReviewVersions?.join(", ")}</DrawerItem>
+      {webhook.reinvocationPolicy && <DrawerItem name="Reinvocation Policy">{webhook.reinvocationPolicy}</DrawerItem>}
+      <DrawerItem name="Side Effects">{webhook.sideEffects}</DrawerItem>
+      <DrawerItem name="Timeout Seconds">{webhook.timeoutSeconds}</DrawerItem>
       <DrawerItem name="Namespace Selector">
         {webhook.namespaceSelector && (
           <div>
             <div>Match Expressions:</div>
             {webhook.namespaceSelector.matchExpressions?.map((expression, index) => (
               <div key={index}>
-                <div>
-                  Key:
-                  {" "}
-                  {expression.key}
-                </div>
-                <div>
-                  Operator:
-                  {" "}
-                  {expression.operator}
-                </div>
-                <div>
-                  Values:
-                  {" "}
-                  {expression.values?.join(", ")}
-                </div>
+                <div>Key: {expression.key}</div>
+                <div>Operator: {expression.operator}</div>
+                <div>Values: {expression.values?.join(", ")}</div>
               </div>
             ))}
             {webhook.namespaceSelector.matchLabels && (
@@ -96,21 +64,9 @@ export const WebhookConfig: React.FC<WebhookProps> = ({ webhook }) => {
             <div>Match Expressions:</div>
             {webhook.objectSelector.matchExpressions?.map((expression, index) => (
               <div key={index}>
-                <div>
-                  Key:
-                  {" "}
-                  {expression.key}
-                </div>
-                <div>
-                  Operator:
-                  {" "}
-                  {expression.operator}
-                </div>
-                <div>
-                  Values:
-                  {" "}
-                  {expression.values?.join(", ")}
-                </div>
+                <div>Key: {expression.key}</div>
+                <div>Operator: {expression.operator}</div>
+                <div>Values: {expression.values?.join(", ")}</div>
               </div>
             ))}
             {webhook.objectSelector.matchLabels && (
@@ -129,35 +85,11 @@ export const WebhookConfig: React.FC<WebhookProps> = ({ webhook }) => {
       <DrawerItem name="Rules" className={styles.lastItem}>
         {webhook.rules?.map((rule, index) => (
           <div key={index}>
-            <div>
-              API Groups:
-              {" "}
-              {rule.apiGroups.join(", ")}
-            </div>
-            <div>
-              API Versions:
-              {" "}
-              {rule.apiVersions?.join(", ")}
-            </div>
-            <div>
-              Operations:
-              {" "}
-              {rule.operations.join(", ")}
-            </div>
-            {rule.resources && (
-              <div>
-                Resources:
-                {" "}
-                {rule.resources.join(", ")}
-              </div>
-            )}
-            {rule.scope && (
-              <div>
-                Scope:
-                {" "}
-                {rule.scope}
-              </div>
-            )}
+            <div>API Groups: {rule.apiGroups.join(", ")}</div>
+            <div>API Versions: {rule.apiVersions?.join(", ")}</div>
+            <div>Operations: {rule.operations.join(", ")}</div>
+            {rule.resources && <div>Resources: {rule.resources.join(", ")}</div>}
+            {rule.scope && <div>Scope: {rule.scope}</div>}
           </div>
         ))}
       </DrawerItem>

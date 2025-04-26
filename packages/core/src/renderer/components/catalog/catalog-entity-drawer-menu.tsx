@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { cssNames, hasDefiniteField } from "@freelensapp/utilities";
-import type { MenuActionsProps } from "../menu/menu-actions";
-import { MenuActions } from "../menu/menu-actions";
-import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
-import { observer } from "mobx-react";
-import { observable } from "mobx";
-import { MenuItem } from "../menu";
 import { Icon } from "@freelensapp/icon";
-import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
+import { cssNames, hasDefiniteField } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { Navigate } from "../../navigation/navigate.injectable";
-import navigateInjectable from "../../navigation/navigate.injectable";
+import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
 import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
+import type { Navigate } from "../../navigation/navigate.injectable";
+import navigateInjectable from "../../navigation/navigate.injectable";
+import { MenuItem } from "../menu";
+import type { MenuActionsProps } from "../menu/menu-actions";
+import { MenuActions } from "../menu/menu-actions";
+import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
 
 export interface CatalogEntityDrawerMenuProps<Entity extends CatalogEntity> extends MenuActionsProps {
   entity: Entity;
@@ -32,7 +33,9 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.Component<CatalogEntityDrawerMenuProps<T> & Dependencies> {
+class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.Component<
+  CatalogEntityDrawerMenuProps<T> & Dependencies
+> {
   private readonly menuItems = observable.array<CatalogEntityContextMenu>();
 
   componentDidMount() {
@@ -50,7 +53,7 @@ class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.
     const items = this.menuItems
       .map(this.props.normalizeMenuItem)
       .filter(hasDefiniteField("icon"))
-      .map(menuItem => (
+      .map((menuItem) => (
         <MenuItem key={menuItem.title} onClick={menuItem.onClick}>
           <Icon
             interactive
@@ -64,22 +67,8 @@ class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.
       <HotbarToggleMenuItem
         key="hotbar-toggle"
         entity={entity}
-        addContent={(
-          <Icon
-            material="push_pin"
-            interactive
-            small
-            tooltip="Add to Hotbar"
-          />
-        )}
-        removeContent={(
-          <Icon
-            svg="push_off"
-            interactive
-            small
-            tooltip="Remove from Hotbar"
-          />
-        )}
+        addContent={<Icon material="push_pin" interactive small tooltip="Add to Hotbar" />}
+        removeContent={<Icon svg="push_off" interactive small tooltip="Remove from Hotbar" />}
       />,
     );
 
@@ -106,11 +95,14 @@ class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.
   }
 }
 
-export const CatalogEntityDrawerMenu = withInjectables<Dependencies, CatalogEntityDrawerMenuProps<CatalogEntity>>(NonInjectedCatalogEntityDrawerMenu, {
-  getProps: (di, props) => ({
-    ...props,
-    visitEntityContextMenu: di.inject(visitEntityContextMenuInjectable),
-    normalizeMenuItem: di.inject(normalizeCatalogEntityContextMenuInjectable),
-    navigate: di.inject(navigateInjectable),
-  }),
-}) as <Entity extends CatalogEntity>(props: CatalogEntityDrawerMenuProps<Entity>) => JSX.Element;
+export const CatalogEntityDrawerMenu = withInjectables<Dependencies, CatalogEntityDrawerMenuProps<CatalogEntity>>(
+  NonInjectedCatalogEntityDrawerMenu,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      visitEntityContextMenu: di.inject(visitEntityContextMenuInjectable),
+      normalizeMenuItem: di.inject(normalizeCatalogEntityContextMenuInjectable),
+      navigate: di.inject(navigateInjectable),
+    }),
+  },
+) as <Entity extends CatalogEntity>(props: CatalogEntityDrawerMenuProps<Entity>) => JSX.Element;

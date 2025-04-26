@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -12,7 +13,7 @@ describe("observable-crate", () => {
   });
 
   it("has a definite type if the initial value is provided", () => {
-    expect (() => {
+    expect(() => {
       const res: ObservableCrate<number> = observableCrate(0);
 
       void res;

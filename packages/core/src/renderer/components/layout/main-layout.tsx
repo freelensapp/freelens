@@ -1,20 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./main-layout.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames } from "@freelensapp/utilities";
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelensapp/resizing-anchor";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import type { StorageLayer } from "../../utils/storage-helper";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 import sidebarStorageInjectable, { defaultSidebarWidth } from "./sidebar-storage/sidebar-storage.injectable";
-import type { StorageLayer } from "../../utils/storage-helper";
 
 export interface MainLayoutProps {
   sidebar: StrictReactNode;

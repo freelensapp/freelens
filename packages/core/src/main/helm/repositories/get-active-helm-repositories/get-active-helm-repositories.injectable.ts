@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmRepo } from "../../../../common/helm/helm-repo";
-import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
-import readYamlFileInjectable from "../../../../common/fs/read-yaml-file.injectable";
-import getHelmEnvInjectable from "../../get-helm-env/get-helm-env.injectable";
-import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
+
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { AsyncResult } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
+import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
+import readYamlFileInjectable from "../../../../common/fs/read-yaml-file.injectable";
+import type { HelmRepo } from "../../../../common/helm/helm-repo";
+import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
+import getHelmEnvInjectable from "../../get-helm-env/get-helm-env.injectable";
 
 interface HelmRepositoryFromYaml {
   name: string;
@@ -48,13 +50,12 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
         };
       }
 
-      const {
-        HELM_REPOSITORY_CONFIG: repositoryConfigFilePath,
-        HELM_REPOSITORY_CACHE: helmRepositoryCacheDirPath,
-      } = envResult.response;
+      const { HELM_REPOSITORY_CONFIG: repositoryConfigFilePath, HELM_REPOSITORY_CACHE: helmRepositoryCacheDirPath } =
+        envResult.response;
 
       if (!repositoryConfigFilePath) {
-        const errorMessage = "Tried to get Helm repositories, but HELM_REPOSITORY_CONFIG was not present in `$ helm env`.";
+        const errorMessage =
+          "Tried to get Helm repositories, but HELM_REPOSITORY_CONFIG was not present in `$ helm env`.";
 
         logger.error(errorMessage);
 
@@ -65,7 +66,8 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
       }
 
       if (!helmRepositoryCacheDirPath) {
-        const errorMessage = "Tried to get Helm repositories, but HELM_REPOSITORY_CACHE was not present in `$ helm env`.";
+        const errorMessage =
+          "Tried to get Helm repositories, but HELM_REPOSITORY_CACHE was not present in `$ helm env`.";
 
         logger.error(errorMessage);
 
@@ -84,7 +86,12 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
             error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
           };
         }
-        const resultOfAddingDefaultRepository = await execHelm(["repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"]);
+        const resultOfAddingDefaultRepository = await execHelm([
+          "repo",
+          "add",
+          "bitnami",
+          "https://charts.bitnami.com/bitnami",
+        ]);
 
         if (!resultOfAddingDefaultRepository.callWasSuccessful) {
           return {
@@ -97,10 +104,7 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
       return {
         callWasSuccessful: true,
 
-        response: await getRepositories(
-          repositoryConfigFilePath,
-          helmRepositoryCacheDirPath,
-        ),
+        response: await getRepositories(repositoryConfigFilePath, helmRepositoryCacheDirPath),
       };
     };
   },
@@ -110,22 +114,20 @@ export default getActiveHelmRepositoriesInjectable;
 
 const getRepositoriesFor =
   (readYamlFile: ReadYamlFile) =>
-    async (repositoryConfigFilePath: string, helmRepositoryCacheDirPath: string): Promise<HelmRepo[]> => {
-      const { repositories } = (await readYamlFile(
-        repositoryConfigFilePath,
-      )) as HelmRepositoriesFromYaml;
+  async (repositoryConfigFilePath: string, helmRepositoryCacheDirPath: string): Promise<HelmRepo[]> => {
+    const { repositories } = (await readYamlFile(repositoryConfigFilePath)) as HelmRepositoriesFromYaml;
 
-      return repositories.map((repository) => ({
-        name: repository.name,
-        url: repository.url,
-        caFile: repository.caFile,
-        certFile: repository.certFile,
-        insecureSkipTlsVerify: repository.insecure_skip_tls_verify,
-        keyFile: repository.keyFile,
-        username: repository.username,
-        password: repository.password,
-        cacheFilePath: `${helmRepositoryCacheDirPath}/${repository.name}-index.yaml`,
-      }));
-    };
+    return repositories.map((repository) => ({
+      name: repository.name,
+      url: repository.url,
+      caFile: repository.caFile,
+      certFile: repository.certFile,
+      insecureSkipTlsVerify: repository.insecure_skip_tls_verify,
+      keyFile: repository.keyFile,
+      username: repository.username,
+      password: repository.password,
+      cacheFilePath: `${helmRepositoryCacheDirPath}/${repository.name}-index.yaml`,
+    }));
+  };
 
 const internalHelmErrorForNoRepositoriesFound = "no repositories found. You must add one before updating";

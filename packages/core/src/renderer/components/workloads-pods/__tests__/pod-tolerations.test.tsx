@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import React from "react";
 import "@testing-library/jest-dom";
-import { fireEvent } from "@testing-library/react";
 import type { Toleration } from "@freelensapp/kube-object";
-import { PodTolerations } from "../pod-tolerations";
+import { fireEvent } from "@testing-library/react";
+import directoryForLensLocalStorageInjectable from "../../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
-import directoryForLensLocalStorageInjectable from "../../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
+import { PodTolerations } from "../pod-tolerations";
 
-const tolerations: Toleration[] =[
+const tolerations: Toleration[] = [
   {
     key: "CriticalAddonsOnly",
     operator: "Exist",
@@ -34,7 +35,7 @@ describe("<PodTolerations />", () => {
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    di.override(directoryForLensLocalStorageInjectable, () => "some-directory-for-lens-local-storage" );
+    di.override(directoryForLensLocalStorageInjectable, () => "some-directory-for-lens-local-storage");
 
     render = renderFor(di);
   });

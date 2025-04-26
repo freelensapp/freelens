@@ -1,18 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { Secret, SecretType } from "@freelensapp/kube-object";
 import { base64 } from "@freelensapp/utilities";
 import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
 import React from "react";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { SecretStore } from "../config-secrets/store";
 import secretStoreInjectable from "../config-secrets/store.injectable";
-import { Secret, SecretType } from "@freelensapp/kube-object";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { SecretKey } from "./secret-key";
 
@@ -25,19 +26,23 @@ describe("SecretKey technical tests", () => {
     const render = renderFor(di);
 
     loadSecretMock = asyncFn();
-    di.override(secretStoreInjectable, () => ({
-      load: loadSecretMock,
-    } as Partial<SecretStore> as SecretStore));
+    di.override(
+      secretStoreInjectable,
+      () =>
+        ({
+          load: loadSecretMock,
+        }) as Partial<SecretStore> as SecretStore,
+    );
 
-    result = render((
+    result = render(
       <SecretKey
         namespace="some-namespace"
         reference={{
           key: "some-key",
           name: "some-secret-name",
         }}
-      />
-    ));
+      />,
+    );
   });
 
   it("renders", () => {
@@ -54,9 +59,7 @@ describe("SecretKey technical tests", () => {
 
   describe("when the show secret button is clicked", () => {
     beforeEach(() => {
-      result
-        .getByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")
-        .click();
+      result.getByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key").click();
     });
 
     it("renders", () => {
@@ -71,27 +74,31 @@ describe("SecretKey technical tests", () => {
     });
 
     it("should mark icon as disabled", () => {
-      expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).toHaveClass("disabled");
+      expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).toHaveClass(
+        "disabled",
+      );
     });
 
     describe("when the secret loads with base64 encoded data", () => {
       beforeEach(async () => {
         await act(async () => {
-          await loadSecretMock.resolve(new Secret({
-            apiVersion: Secret.apiBase,
-            kind: Secret.kind,
-            metadata: {
-              name: "some-secret-name",
-              namespace: "some-namespace",
-              resourceVersion: "some-resource-version",
-              selfLink: "some-self-link",
-              uid: "some-uid",
-            },
-            type: SecretType.Opaque,
-            data: {
-              "some-key": base64.encode("some-data-for-some-key"),
-            },
-          }));
+          await loadSecretMock.resolve(
+            new Secret({
+              apiVersion: Secret.apiBase,
+              kind: Secret.kind,
+              metadata: {
+                name: "some-secret-name",
+                namespace: "some-namespace",
+                resourceVersion: "some-resource-version",
+                selfLink: "some-self-link",
+                uid: "some-uid",
+              },
+              type: SecretType.Opaque,
+              data: {
+                "some-key": base64.encode("some-data-for-some-key"),
+              },
+            }),
+          );
         });
       });
 
@@ -100,7 +107,9 @@ describe("SecretKey technical tests", () => {
       });
 
       it("should not show the 'show secret' button", () => {
-        expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key"),
+        ).not.toBeInTheDocument();
       });
 
       it("should show the decoded secret data", () => {
@@ -111,21 +120,23 @@ describe("SecretKey technical tests", () => {
     describe("when the secret loads with non base64 encoded data", () => {
       beforeEach(async () => {
         await act(async () => {
-          await loadSecretMock.resolve(new Secret({
-            apiVersion: Secret.apiBase,
-            kind: Secret.kind,
-            metadata: {
-              name: "some-secret-name",
-              namespace: "some-namespace",
-              resourceVersion: "some-resource-version",
-              selfLink: "some-self-link",
-              uid: "some-uid",
-            },
-            type: SecretType.Opaque,
-            data: {
-              "some-key": "some-data-for-some-key",
-            },
-          }));
+          await loadSecretMock.resolve(
+            new Secret({
+              apiVersion: Secret.apiBase,
+              kind: Secret.kind,
+              metadata: {
+                name: "some-secret-name",
+                namespace: "some-namespace",
+                resourceVersion: "some-resource-version",
+                selfLink: "some-self-link",
+                uid: "some-uid",
+              },
+              type: SecretType.Opaque,
+              data: {
+                "some-key": "some-data-for-some-key",
+              },
+            }),
+          );
         });
       });
 
@@ -134,7 +145,9 @@ describe("SecretKey technical tests", () => {
       });
 
       it("should not show the 'show secret' button", () => {
-        expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key"),
+        ).not.toBeInTheDocument();
       });
 
       it("should show the non decoded secret data", () => {
@@ -154,7 +167,9 @@ describe("SecretKey technical tests", () => {
       });
 
       it("should not show the 'show secret' button", () => {
-        expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key"),
+        ).not.toBeInTheDocument();
       });
 
       it("should show the loading error", () => {
@@ -174,7 +189,9 @@ describe("SecretKey technical tests", () => {
       });
 
       it("should not show the 'show secret' button", () => {
-        expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key"),
+        ).not.toBeInTheDocument();
       });
 
       it("should show the loading error as JSON", () => {
@@ -194,7 +211,9 @@ describe("SecretKey technical tests", () => {
       });
 
       it("should not show the 'show secret' button", () => {
-        expect(result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("show-secret-button-for-some-namespace/some-secret-name:some-key"),
+        ).not.toBeInTheDocument();
       });
 
       it("should show the loading error as JSON", () => {

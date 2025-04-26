@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 // Metrics api
 
-import moment from "moment";
 import { isDefined, object } from "@freelensapp/utilities";
+import moment from "moment";
 
 export interface MetricData {
   status: string;
@@ -34,10 +35,12 @@ export function normalizeMetrics(metrics: MetricData | undefined | null, frames 
     return {
       data: {
         resultType: "",
-        result: [{
-          metric: {},
-          values: [],
-        }],
+        result: [
+          {
+            metric: {},
+            values: [],
+          },
+        ],
       },
       status: "",
     };
@@ -48,7 +51,7 @@ export function normalizeMetrics(metrics: MetricData | undefined | null, frames 
   if (result.length) {
     if (frames > 0) {
       // fill the gaps
-      result.forEach(res => {
+      result.forEach((res) => {
         if (!res.values || !res.values.length) return;
 
         let now = moment().startOf("minute").subtract(1, "minute").unix();
@@ -72,8 +75,7 @@ export function normalizeMetrics(metrics: MetricData | undefined | null, frames 
         }
       });
     }
-  }
-  else {
+  } else {
     // always return at least empty values array
     result.push({
       metric: {},
@@ -85,10 +87,13 @@ export function normalizeMetrics(metrics: MetricData | undefined | null, frames 
 }
 
 export function isMetricsEmpty(metrics: Partial<Record<string, MetricData>>) {
-  return Object.values(metrics).every(metric => !metric?.data?.result?.length);
+  return Object.values(metrics).every((metric) => !metric?.data?.result?.length);
 }
 
-export function getItemMetrics<Keys extends string>(metrics: Partial<Record<Keys, MetricData>> | null | undefined, itemName: string): Partial<Record<Keys, MetricData>> | undefined {
+export function getItemMetrics<Keys extends string>(
+  metrics: Partial<Record<Keys, MetricData>> | null | undefined,
+  itemName: string,
+): Partial<Record<Keys, MetricData>> | undefined {
   if (!metrics) {
     return undefined;
   }
@@ -100,18 +105,20 @@ export function getItemMetrics<Keys extends string>(metrics: Partial<Record<Keys
       continue;
     }
     const results = metrics[metric]?.data.result;
-    const result = results?.find(res => Object.values(res.metric)[0] == itemName);
+    const result = results?.find((res) => Object.values(res.metric)[0] == itemName);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     itemMetrics[metric]!.data.result = result ? [result] : [];
   }
 
   return itemMetrics;
 }
 
-export function getMetricLastPoints<Keys extends string>(metrics: Partial<Record<Keys, MetricData>>): Partial<Record<Keys, number>> {
+export function getMetricLastPoints<Keys extends string>(
+  metrics: Partial<Record<Keys, MetricData>>,
+): Partial<Record<Keys, number>> {
   return object.fromEntries(
-    object.entries(metrics)
+    object
+      .entries(metrics)
       .map(([metricName, metric]) => {
         try {
           return [metricName, +metric.data.result[0].values.slice(-1)[0][1]] as const;

@@ -80,6 +80,12 @@ jobs:
       - name: Run test units
         run: pnpm --color=always --stream test:unit
 
+      - name: Run Knip (development)
+        run: pnpm --color=always --stream knip:development
+
+      - name: Run Knip (production)
+        run: pnpm --color=always --stream knip:production
+
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
 

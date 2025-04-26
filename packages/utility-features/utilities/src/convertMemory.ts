@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -35,8 +36,9 @@ export function unitsToBytes(value: string): number {
     return parsedValue;
   }
 
-  const magnitude = magnitudes.get(unitsMatch.groups.suffix as BinaryUnit)
-    ?? magnitudes.get(`${unitsMatch.groups.suffix}B` as BinaryUnit);
+  const magnitude =
+    magnitudes.get(unitsMatch.groups.suffix as BinaryUnit) ??
+    magnitudes.get(`${unitsMatch.groups.suffix}B` as BinaryUnit);
 
   assert(magnitude, "UnitRegex is wrong some how");
 

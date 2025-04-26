@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import rolesRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/roles/roles-route.injectable";
-import userManagementSidebarItemInjectable from "../user-management-sidebar-item.injectable";
+
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../../routes/route-is-active.injectable";
+import { getInjectable } from "@ogre-tools/injectable";
 import navigateToRolesInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/roles/navigate-to-roles.injectable";
+import rolesRouteInjectable from "../../../../common/front-end-routing/routes/cluster/user-management/roles/roles-route.injectable";
+import routeIsActiveInjectable from "../../../routes/route-is-active.injectable";
+import userManagementSidebarItemInjectable from "../user-management-sidebar-item.injectable";
 
 const rolesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-roles",

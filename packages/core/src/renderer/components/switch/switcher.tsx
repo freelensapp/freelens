@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -20,12 +21,7 @@ export interface SwitcherProps {
  */
 export function Switcher({ disabled, checked, onChange, name, children }: SwitcherProps) {
   return (
-    <Switch
-      disabled={disabled}
-      checked={checked}
-      name={name}
-      onChange={(checked, event) => onChange?.(event, checked)}
-    >
+    <Switch disabled={disabled} checked={checked} name={name} onChange={(checked, event) => onChange?.(event, checked)}>
       {children}
     </Switch>
   );

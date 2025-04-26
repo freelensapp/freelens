@@ -1,26 +1,27 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./volume-details-list.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
 import type { PersistentVolume } from "@freelensapp/kube-object";
-import { TableRow } from "../table/table-row";
-import { cssNames, prevDefault } from "@freelensapp/utilities";
-import { TableCell } from "../table/table-cell";
 import { Spinner } from "@freelensapp/spinner";
-import { DrawerTitle } from "../drawer/drawer-title";
-import { Table } from "../table/table";
-import { TableHead } from "../table/table-head";
-import kebabCase from "lodash/kebabCase";
-import type { PersistentVolumeStore } from "./store";
+import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import persistentVolumeStoreInjectable from "./store.injectable";
+import kebabCase from "lodash/kebabCase";
+import { observer } from "mobx-react";
+import React from "react";
+import { DrawerTitle } from "../drawer/drawer-title";
 import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
+import { Table } from "../table/table";
+import { TableCell } from "../table/table-cell";
+import { TableHead } from "../table/table-head";
+import { TableRow } from "../table/table-row";
+import type { PersistentVolumeStore } from "./store";
+import persistentVolumeStoreInjectable from "./store.injectable";
 
 export interface VolumeDetailsListProps {
   persistentVolumes: PersistentVolume[];
@@ -47,7 +48,7 @@ class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProp
 
   getTableRow = (uid: string) => {
     const { persistentVolumes, showDetails } = this.props;
-    const volume = persistentVolumes.find(volume => volume.getId() === uid);
+    const volume = persistentVolumes.find((volume) => volume.getId() === uid);
 
     if (!volume) {
       return undefined;
@@ -72,7 +73,7 @@ class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProp
     const virtual = persistentVolumes.length > 100;
 
     if (!persistentVolumes.length) {
-      return !persistentVolumeStore.isLoaded && <Spinner center/>;
+      return !persistentVolumeStore.isLoaded && <Spinner center />;
     }
 
     return (
@@ -90,13 +91,17 @@ class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProp
           className="box grow"
         >
           <TableHead>
-            <TableCell className="name" sortBy={sortBy.name}>Name</TableCell>
-            <TableCell className="capacity" sortBy={sortBy.capacity}>Capacity</TableCell>
-            <TableCell className="status" sortBy={sortBy.status}>Status</TableCell>
+            <TableCell className="name" sortBy={sortBy.name}>
+              Name
+            </TableCell>
+            <TableCell className="capacity" sortBy={sortBy.capacity}>
+              Capacity
+            </TableCell>
+            <TableCell className="status" sortBy={sortBy.status}>
+              Status
+            </TableCell>
           </TableHead>
-          {
-            !virtual && persistentVolumes.map(volume => this.getTableRow(volume.getId()))
-          }
+          {!virtual && persistentVolumes.map((volume) => this.getTableRow(volume.getId()))}
         </Table>
       </div>
     );

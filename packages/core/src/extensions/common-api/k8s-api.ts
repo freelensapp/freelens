@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,27 +8,48 @@
 //       It is here to consolidate the common parts which are exported to `Main`
 //       and to `Renderer`
 
+import type { JsonApiConfig } from "@freelensapp/json-api";
+import type {
+  DerivedKubeApiOptions,
+  KubeJsonApi as InternalKubeJsonApi,
+  KubeApiDependencies,
+  KubeApiOptions,
+} from "@freelensapp/kube-api";
+import {
+  DeploymentApi as InternalDeploymentApi,
+  IngressApi as InternalIngressApi,
+  KubeApi as InternalKubeApi,
+  NodeApi,
+  PersistentVolumeClaimApi,
+  PodApi,
+} from "@freelensapp/kube-api";
+import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import {
+  asLegacyGlobalForExtensionApi,
+  asLegacyGlobalFunctionForExtensionApi,
+  getLegacyGlobalDiForExtensionApi,
+} from "@freelensapp/legacy-global-di";
+import {
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+  loggerInjectionToken,
+} from "@freelensapp/logger";
+import type { RequestInit } from "@freelensapp/node-fetch";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import createKubeApiForClusterInjectable from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
-import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
-import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
-import { asLegacyGlobalFunctionForExtensionApi, asLegacyGlobalForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { KubernetesCluster } from "./catalog";
+import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
+import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
 import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies, KubeApiOptions, KubeJsonApi as InternalKubeJsonApi } from "@freelensapp/kube-api";
-import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
+import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
+import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
-import { logErrorInjectionToken, loggerInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
-import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
-import { DeploymentApi as InternalDeploymentApi, IngressApi as InternalIngressApi, NodeApi, PersistentVolumeClaimApi, PodApi, KubeApi as InternalKubeApi } from "@freelensapp/kube-api";
-import type { JsonApiConfig } from "@freelensapp/json-api";
-import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
-import type { RequestInit } from "@freelensapp/node-fetch";
-import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
+import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+import type { KubernetesCluster } from "./catalog";
 
 export const apiManager = asLegacyGlobalForExtensionApi(apiManagerInjectable);
 export const forCluster = asLegacyGlobalFunctionForExtensionApi(createKubeApiForClusterInjectable);
@@ -80,10 +102,12 @@ export type KubeApi<
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
 > = InternalKubeApi<Object, Data>;
 
-export const KubeApi = KubeApiCstr as unknown as new<
+export const KubeApi = KubeApiCstr as unknown as new <
   Object extends KubeObject = KubeObject,
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
->(opts: KubeApiOptions<Object, Data> & ExternalKubeApiOptions) => InternalKubeApi<Object, Data>;
+>(
+  opts: KubeApiOptions<Object, Data> & ExternalKubeApiOptions,
+) => InternalKubeApi<Object, Data>;
 
 /**
  * @deprecated Switch to using `Common.createResourceStack` instead
@@ -152,7 +176,10 @@ function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: RequestInit) {
 export type KubeJsonApi = InternalKubeJsonApi;
 
 export const KubeJsonApi = Object.assign(
-  KubeJsonApiCstr as unknown as new (config: JsonApiConfig, reqInit?: RequestInit) => InternalKubeJsonApi,
+  KubeJsonApiCstr as unknown as new (
+    config: JsonApiConfig,
+    reqInit?: RequestInit,
+  ) => InternalKubeJsonApi,
   {
     forCluster: asLegacyGlobalForExtensionApi(createKubeJsonApiForClusterInjectable),
   },
@@ -191,7 +218,6 @@ export abstract class KubeObjectStore<
         context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
         logger: di.inject(loggerInjectionToken),
       },
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       api!,
       opts,
     );
@@ -233,35 +259,45 @@ function PodsApiConstructor(opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions
 }
 
 export type PodsApi = PodApi;
-export const PodsApi = PodsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) => PodApi;
+export const PodsApi = PodsApiConstructor as unknown as new (
+  opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions,
+) => PodApi;
 
 function NodesApiConstructor(opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) {
   return new NodeApi(getKubeApiDeps(), opts);
 }
 
 export type NodesApi = NodeApi;
-export const NodesApi = NodesApiConstructor as unknown as new (opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) => NodeApi;
+export const NodesApi = NodesApiConstructor as unknown as new (
+  opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions,
+) => NodeApi;
 
 function DeploymentApiConstructor(opts?: DerivedKubeApiOptions) {
   return new InternalDeploymentApi(getKubeApiDeps(), opts);
 }
 
 export type DeploymentApi = InternalDeploymentApi;
-export const DeploymentApi = DeploymentApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => InternalDeploymentApi;
+export const DeploymentApi = DeploymentApiConstructor as unknown as new (
+  opts?: DerivedKubeApiOptions,
+) => InternalDeploymentApi;
 
 function IngressApiConstructor(opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) {
   return new InternalIngressApi(getKubeApiDeps(), opts);
 }
 
 export type IngressApi = InternalIngressApi;
-export const IngressApi = IngressApiConstructor as unknown as new (opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) => InternalIngressApi;
+export const IngressApi = IngressApiConstructor as unknown as new (
+  opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions,
+) => InternalIngressApi;
 
 function PersistentVolumeClaimsApiConstructor(opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) {
   return new PersistentVolumeClaimApi(getKubeApiDeps(), opts);
 }
 
 export type PersistentVolumeClaimsApi = PersistentVolumeClaimApi;
-export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions) => PersistentVolumeClaimApi;
+export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
+  opts?: DerivedKubeApiOptions & IgnoredKubeApiOptions,
+) => PersistentVolumeClaimApi;
 
 export {
   type Container as IPodContainer,

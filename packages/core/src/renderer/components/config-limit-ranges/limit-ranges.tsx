@@ -1,20 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./limit-ranges.scss";
 
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import React from "react";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { LimitRangeStore } from "./store";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import limitRangeStoreInjectable from "./store.injectable";
+import { observer } from "mobx-react";
+import React from "react";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import type { LimitRangeStore } from "./store";
+import limitRangeStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -37,14 +38,11 @@ class NonInjectedLimitRanges extends React.Component<Dependencies> {
           className="LimitRanges"
           store={this.props.limitRangeStore}
           sortingCallbacks={{
-            [columnId.name]: limitRange => limitRange.getName(),
-            [columnId.namespace]: limitRange => limitRange.getNs(),
-            [columnId.age]: limitRange => -limitRange.getCreationTimestamp(),
+            [columnId.name]: (limitRange) => limitRange.getName(),
+            [columnId.namespace]: (limitRange) => limitRange.getNs(),
+            [columnId.age]: (limitRange) => -limitRange.getCreationTimestamp(),
           }}
-          searchFilters={[
-            item => item.getName(),
-            item => item.getNs(),
-          ]}
+          searchFilters={[(item) => item.getName(), (item) => item.getNs()]}
           renderHeaderTitle="Limit Ranges"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
@@ -52,13 +50,10 @@ class NonInjectedLimitRanges extends React.Component<Dependencies> {
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={limitRange => [
+          renderTableContents={(limitRange) => [
             limitRange.getName(),
-            <KubeObjectStatusIcon key="icon" object={limitRange}/>,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={limitRange.getNs()}
-            />,
+            <KubeObjectStatusIcon key="icon" object={limitRange} />,
+            <NamespaceSelectBadge key="namespace" namespace={limitRange.getNs()} />,
             <KubeObjectAge key="age" object={limitRange} />,
           ]}
         />

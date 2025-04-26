@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { dump } from "js-yaml";
 import tempy from "tempy";
@@ -36,14 +38,7 @@ const installHelmChartInjectable = getInjectable({
     const removePath = di.inject(removePathInjectable);
     const execHelm = di.inject(execHelmInjectable);
 
-    return async ({
-      chart,
-      kubeconfigPath,
-      name,
-      namespace,
-      values,
-      version,
-    }) => {
+    return async ({ chart, kubeconfigPath, name, namespace, values, version }) => {
       const valuesFilePath = tempy.file({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, dump(values));
@@ -56,10 +51,14 @@ const installHelmChartInjectable = getInjectable({
 
       args.push(
         chart,
-        "--version", version,
-        "--values", valuesFilePath,
-        "--namespace", namespace,
-        "--kubeconfig", kubeconfigPath,
+        "--version",
+        version,
+        "--values",
+        valuesFilePath,
+        "--namespace",
+        namespace,
+        "--kubeconfig",
+        kubeconfigPath,
       );
 
       if (!name) {

@@ -1,16 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./icon.scss";
 
+import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { withTooltip } from "@freelensapp/tooltip";
+import { cssNames } from "@freelensapp/utilities";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { LocationDescriptor } from "history";
+import isNumber from "lodash/isNumber";
 import React, { createRef } from "react";
 import { NavLink } from "react-router-dom";
-import type { LocationDescriptor } from "history";
-import { cssNames } from "@freelensapp/utilities";
-import { withTooltip } from "@freelensapp/tooltip";
-import isNumber from "lodash/isNumber";
 import Configuration from "../assets/configuration.svg";
 import Crane from "../assets/crane.svg";
 import Group from "../assets/group.svg";
@@ -21,21 +26,17 @@ import License from "../assets/license.svg";
 import LogoLens from "../assets/logo-lens.svg";
 import Logout from "../assets/logout.svg";
 import Nodes from "../assets/nodes.svg";
+import Notice from "../assets/notice.svg";
 import PushOff from "../assets/push_off.svg";
 import PushPin from "../assets/push_pin.svg";
 import Spinner from "../assets/spinner.svg";
 import Ssh from "../assets/ssh.svg";
 import Storage from "../assets/storage.svg";
 import Terminal from "../assets/terminal.svg";
-import Notice from "../assets/notice.svg";
 import User from "../assets/user.svg";
 import Users from "../assets/users.svg";
 import Wheel from "../assets/wheel.svg";
 import Workloads from "../assets/workloads.svg";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { StrictReactNode } from "@freelensapp/utilities";
 
 const hrefValidation = /https?:\/\//;
 
@@ -163,7 +164,6 @@ export interface IconProps extends React.HTMLAttributes<any>, BaseIconProps {
 
 export function isSvg(content: string): boolean {
   // source code of the asset
-  // eslint-disable-next-line xss/no-mixed-html
   return String(content).includes("<svg");
 }
 
@@ -250,13 +250,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
   if (typeof svg === "string") {
     const svgIconText = isSvg(svg) ? svg : (localSvgIcons.get(svg) ?? "");
 
-    iconContent = (
-      <span
-        className="icon"
-        // eslint-disable-next-line xss/no-mixed-html
-        dangerouslySetInnerHTML={{ __html: svgIconText }}
-      />
-    );
+    iconContent = <span className="icon" dangerouslySetInnerHTML={{ __html: svgIconText }} />;
   }
 
   // render as material-icon

@@ -1,19 +1,19 @@
-import userEvent, { UserEvent } from "@testing-library/user-event";
-import type { RenderResult } from "@testing-library/react";
-import { render } from "@testing-library/react";
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
-import { registerFeature } from "@freelensapp/feature-core";
-import { keyboardShortcutsFeature } from "./feature";
-import React from "react";
-import { computed, runInAction } from "mobx";
-import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
-import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { startApplicationInjectionToken } from "@freelensapp/application";
+import { registerFeature } from "@freelensapp/feature-core";
 import { renderInjectionToken } from "@freelensapp/react-application";
 import { reactApplicationChildrenInjectionToken } from "@freelensapp/react-application";
+import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
+import { registerInjectableReact } from "@ogre-tools/injectable-react";
+import type { RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import userEvent, { UserEvent } from "@testing-library/user-event";
+import { computed, runInAction } from "mobx";
+import React from "react";
+import { keyboardShortcutsFeature } from "./feature";
+import { keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
+import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
 import platformInjectable from "./platform.injectable";
 
 describe("keyboard-shortcuts", () => {

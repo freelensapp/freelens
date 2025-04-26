@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { loggerInjectionToken } from "@freelensapp/logger";
+import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { noop, waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { when } from "mobx";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import { TerminalChannels } from "../../../../common/terminal/channels";
-import { waitUntilDefined, noop } from "@freelensapp/utilities";
-import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import selectDockTabInjectable from "../dock/select-dock-tab.injectable";
 import type { TabId } from "../dock/store";
 import createTerminalTabInjectable from "./create-terminal-tab.injectable";
@@ -51,20 +53,13 @@ const sendCommandInjectable = getInjectable({
         tabId = createTerminalTab().id;
       }
 
-      const terminalApi = await waitUntilDefined(() => (
-        tabId
-          ? getTerminalApi(tabId)
-          : undefined
-      ));
+      const terminalApi = await waitUntilDefined(() => (tabId ? getTerminalApi(tabId) : undefined));
       const shellIsReady = when(() => terminalApi.isReady);
       const notifyVeryLong = setTimeout(() => {
         shellIsReady.cancel();
-        showSuccessNotification(
-          "If terminal shell is not ready please check your shell init files, if applicable.",
-          {
-            timeout: 4_000,
-          },
-        );
+        showSuccessNotification("If terminal shell is not ready please check your shell init files, if applicable.", {
+          timeout: 4_000,
+        });
       }, 10_000);
 
       await shellIsReady.catch(noop);
@@ -80,10 +75,7 @@ const sendCommandInjectable = getInjectable({
           data: command,
         });
       } else {
-        logger.warn(
-          "The selected tab is does not have a connection. Cannot send command.",
-          { tabId, command },
-        );
+        logger.warn("The selected tab is does not have a connection. Cannot send command.", { tabId, command });
       }
     };
   },

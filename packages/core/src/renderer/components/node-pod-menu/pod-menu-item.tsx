@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { Icon } from "@freelensapp/icon";
+import type { Container, PodContainerStatus } from "@freelensapp/kube-object";
+import { cssNames, prevDefault } from "@freelensapp/utilities";
+import React from "react";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
-import type { Container, PodContainerStatus } from "@freelensapp/kube-object";
 
 export interface NodePodMenuItemProps {
   material?: string;
@@ -21,31 +22,15 @@ export interface NodePodMenuItemProps {
   onMenuItemClick: (container: Container) => any;
 }
 
-const PodMenuItem: React.FC<NodePodMenuItemProps> = props => {
-  const {
-    material,
-    svg,
-    title,
-    tooltip,
-    toolbar,
-    containers,
-    statuses,
-    onMenuItemClick,
-  } = props;
+const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
+  const { material, svg, title, tooltip, toolbar, containers, statuses, onMenuItemClick } = props;
 
   if (!containers || !containers.length) return null;
 
   return (
     <>
-      <MenuItem
-        onClick={prevDefault(() => onMenuItemClick(containers[0]))}
-      >
-        <Icon
-          material={material}
-          svg={svg}
-          interactive={toolbar}
-          tooltip={toolbar && tooltip}
-        />
+      <MenuItem onClick={prevDefault(() => onMenuItemClick(containers[0]))}>
+        <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
         {containers.length > 1 && (
           <>
@@ -61,7 +46,7 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = props => {
                     })}
                   />
                 ) : null;
-  
+
                 return (
                   <MenuItem
                     key={name}
@@ -76,7 +61,7 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = props => {
             </SubMenu>
           </>
         )}
-      </MenuItem>    
+      </MenuItem>
     </>
   );
 };

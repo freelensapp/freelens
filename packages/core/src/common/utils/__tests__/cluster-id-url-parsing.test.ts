@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -21,10 +22,20 @@ describe("getClusterIdFromHost", () => {
     expect(getClusterIdFromHost(`abc.def.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
     expect(getClusterIdFromHost(`abc.def.ghi.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
     expect(getClusterIdFromHost(`abc.def.ghi.jkl.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
-    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
-    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
-    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
-    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.vwx.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
-    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.vwx.yz.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(clusterFakeId);
+    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(
+      clusterFakeId,
+    );
+    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(
+      clusterFakeId,
+    );
+    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(
+      clusterFakeId,
+    );
+    expect(getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.vwx.${clusterFakeId}.renderer.freelens.app:59110`)).toBe(
+      clusterFakeId,
+    );
+    expect(
+      getClusterIdFromHost(`abc.def.ghi.jkl.mno.pqr.stu.vwx.yz.${clusterFakeId}.renderer.freelens.app:59110`),
+    ).toBe(clusterFakeId);
   });
 });

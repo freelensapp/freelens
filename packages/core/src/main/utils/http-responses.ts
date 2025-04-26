@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -12,9 +13,7 @@ import type http from "http";
  * @param status [200] The status code to respond with
  */
 export function respondJson(res: http.ServerResponse, content: object | string, status = 200) {
-  const normalizedContent = typeof content === "object"
-    ? JSON.stringify(content)
-    : content;
+  const normalizedContent = typeof content === "object" ? JSON.stringify(content) : content;
 
   respond(res, normalizedContent, "application/json", status);
 }

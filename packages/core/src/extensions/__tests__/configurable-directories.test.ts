@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { runInAction } from "mobx";
+import fsInjectable from "../../common/fs/fs.injectable";
+import getHashInjectable from "../../extensions/extension-loader/file-system-provisioner-store/get-hash.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
-import getHashInjectable from "../../extensions/extension-loader/file-system-provisioner-store/get-hash.injectable";
-import fsInjectable from "../../common/fs/fs.injectable";
 
 describe("configurable directories for extension files", () => {
   let builder: ApplicationBuilder;
@@ -17,7 +19,7 @@ describe("configurable directories for extension files", () => {
 
     builder.beforeApplicationStart(({ mainDi }) => {
       runInAction(() => {
-        mainDi.override(getHashInjectable, () => x => x);
+        mainDi.override(getHashInjectable, () => (x) => x);
       });
     });
 
@@ -26,14 +28,12 @@ describe("configurable directories for extension files", () => {
     const window = builder.applicationWindow.create("some-window-id");
 
     await window.start();
-
   });
 
   describe("when extension with a specific store name is enabled", () => {
     let testExtensionOptions: FakeExtensionOptions;
 
     beforeEach(() => {
-
       testExtensionOptions = {
         id: "some-extension",
         name: "some-extension-name",
@@ -58,7 +58,9 @@ describe("configurable directories for extension files", () => {
 
       await builder.extensions.get("some-extension").main.getExtensionFileFolder();
 
-      const nonHashedExtensionDirectories = await fs.readdir("/some-directory-for-app-data/some-product-name/extension_data");
+      const nonHashedExtensionDirectories = await fs.readdir(
+        "/some-directory-for-app-data/some-product-name/extension_data",
+      );
 
       expect(nonHashedExtensionDirectories).toContain("some-specific-store-name");
     });
@@ -68,7 +70,6 @@ describe("configurable directories for extension files", () => {
     let testExtensionOptions: FakeExtensionOptions;
 
     beforeEach(() => {
-
       testExtensionOptions = {
         id: "some-extension",
         name: "some-extension-name",
@@ -93,7 +94,9 @@ describe("configurable directories for extension files", () => {
 
       await builder.extensions.get("some-extension").main.getExtensionFileFolder();
 
-      const nonHashedExtensionDirectories = await fs.readdir("/some-directory-for-app-data/some-product-name/extension_data");
+      const nonHashedExtensionDirectories = await fs.readdir(
+        "/some-directory-for-app-data/some-product-name/extension_data",
+      );
 
       expect(nonHashedExtensionDirectories).toContain("some-package-name");
     });

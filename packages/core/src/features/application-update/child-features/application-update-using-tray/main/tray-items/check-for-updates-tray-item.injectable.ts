@@ -1,22 +1,24 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import assert from "assert";
+import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import updatingIsEnabledInjectable from "../../../updating-is-enabled/main/updating-is-enabled.injectable";
-import { trayMenuItemInjectionToken } from "../../../../../../main/tray/tray-menu-item/tray-menu-item-injection-token";
+import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
+import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
+import showMessagePopupInjectable from "../../../../../../main/electron-app/features/show-message-popup.injectable";
 import showApplicationWindowInjectable from "../../../../../../main/start-main-application/lens-window/show-application-window.injectable";
+import { trayMenuItemInjectionToken } from "../../../../../../main/tray/tray-menu-item/tray-menu-item-injection-token";
 import discoveredUpdateVersionInjectable from "../../../../common/discovered-update-version.injectable";
+import progressOfUpdateDownloadInjectable from "../../../../common/progress-of-update-download.injectable";
 import updateIsBeingDownloadedInjectable from "../../../../common/update-is-being-downloaded.injectable";
 import updatesAreBeingDiscoveredInjectable from "../../../../common/updates-are-being-discovered.injectable";
-import progressOfUpdateDownloadInjectable from "../../../../common/progress-of-update-download.injectable";
-import assert from "assert";
 import processCheckingForUpdatesInjectable from "../../../../main/process-checking-for-updates.injectable";
-import { withErrorSuppression } from "../../../../../../common/utils/with-error-suppression/with-error-suppression";
-import { pipeline } from "@ogre-tools/fp";
-import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
-import showMessagePopupInjectable from "../../../../../../main/electron-app/features/show-message-popup.injectable";
+import updatingIsEnabledInjectable from "../../../updating-is-enabled/main/updating-is-enabled.injectable";
 
 const checkForUpdatesTrayItemInjectable = getInjectable({
   id: "check-for-updates-tray-item",

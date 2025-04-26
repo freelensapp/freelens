@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { formatDuration } from "@freelensapp/utilities";
 import { capitalize } from "lodash";
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
 import { getMillisecondsFromUnixEpoch } from "../../../common/utils/date/get-current-date-time";
-import { formatDuration } from "@freelensapp/utilities";
 import type { ListedHelmRelease } from "../../../features/helm-releases/common/channels";
 
 export const toHelmRelease = (release: ListedHelmRelease): HelmRelease => ({

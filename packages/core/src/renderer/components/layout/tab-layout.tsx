@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./tab-layout.scss";
 
-import React from "react";
-import { matchPath, Redirect, Route, Switch } from "react-router";
-import { observer } from "mobx-react";
+import { ErrorBoundary } from "@freelensapp/error-boundary";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { Tab, Tabs } from "../tabs";
-import { ErrorBoundary } from "@freelensapp/error-boundary";
-import type { ObservableHistory } from "mobx-observable-history";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import type { ObservableHistory } from "mobx-observable-history";
+import { observer } from "mobx-react";
+import React from "react";
+import { Redirect, Route, Switch, matchPath } from "react-router";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
+import { Tab, Tabs } from "../tabs";
 
 export interface TabLayoutProps {
   className?: IClassName;
@@ -41,18 +42,10 @@ interface Dependencies {
 }
 
 const NonInjectedTabLayout = observer((props: TabLayoutProps & Dependencies) => {
-  const {
-    className,
-    contentClass,
-    tabs = [],
-    scrollable,
-    children,
-    observableHistory,
-    navigate,
-  } = props;
+  const { className, contentClass, tabs = [], scrollable, children, observableHistory, navigate } = props;
   const currentLocation = observableHistory.location.pathname;
   const hasTabs = tabs.length > 0;
-  const startTabUrl = hasTabs ? (tabs.find(tab => tab.default) || tabs[0])?.url : null;
+  const startTabUrl = hasTabs ? (tabs.find((tab) => tab.default) || tabs[0])?.url : null;
 
   return (
     <div className={cssNames("TabLayout", className)}>
@@ -73,14 +66,9 @@ const NonInjectedTabLayout = observer((props: TabLayoutProps & Dependencies) => 
           {hasTabs && (
             <Switch>
               {tabs.map(({ routePath, exact, component }) => (
-                <Route
-                  key={routePath}
-                  exact={exact}
-                  path={routePath}
-                  component={component}
-                />
+                <Route key={routePath} exact={exact} path={routePath} component={component} />
               ))}
-              {startTabUrl && <Redirect to={startTabUrl}/>}
+              {startTabUrl && <Redirect to={startTabUrl} />}
             </Switch>
           )}
           {children}

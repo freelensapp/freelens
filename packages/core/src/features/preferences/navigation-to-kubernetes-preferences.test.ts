@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import type { RenderResult } from "@testing-library/react";
+import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import requestPublicHelmRepositoriesInjectable from "../helm-charts/child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
-import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
-import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("preferences - navigation to kubernetes preferences", () => {
   let builder: ApplicationBuilder;
@@ -23,10 +25,10 @@ describe("preferences - navigation to kubernetes preferences", () => {
 
     beforeEach(async () => {
       builder.beforeApplicationStart(({ mainDi }) => {
-        mainDi.override(
-          getActiveHelmRepositoriesInjectable,
-          () => async () => ({ callWasSuccessful: true, response: [] }),
-        );
+        mainDi.override(getActiveHelmRepositoriesInjectable, () => async () => ({
+          callWasSuccessful: true,
+          response: [],
+        }));
       });
 
       builder.beforeWindowStart(({ windowDi }) => {
@@ -47,10 +49,7 @@ describe("preferences - navigation to kubernetes preferences", () => {
     });
 
     it("does not show kubernetes preferences yet", () => {
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "kubernetes-page",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "kubernetes-page");
 
       expect(discovered).toBeNull();
     });
@@ -65,10 +64,7 @@ describe("preferences - navigation to kubernetes preferences", () => {
       });
 
       it("shows kubernetes preferences", () => {
-        const { discovered } = discover.getSingleElement(
-          "preference-page",
-          "kubernetes-page",
-        );
+        const { discovered } = discover.getSingleElement("preference-page", "kubernetes-page");
 
         expect(discovered).not.toBeNull();
       });

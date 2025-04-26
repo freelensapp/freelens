@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { when } from "mobx";
@@ -19,9 +21,7 @@ const helmChartRepoInjectable = getInjectable({
 
         const version = release.getVersion();
 
-        return chartVersions.value
-          .get()
-          .find((chartVersion) => chartVersion.version === version)?.repo;
+        return chartVersions.value.get().find((chartVersion) => chartVersion.version === version)?.repo;
       },
     });
   },

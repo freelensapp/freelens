@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -21,7 +22,7 @@ import listClusterHelmReleasesInjectable from "../../../main/helm/helm-service/l
 import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { testUsingFakeTime, advanceFakeTime } from "../../../test-utils/use-fake-time";
+import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
 
 describe("New Upgrade Helm Chart Dock Tab", () => {
   let builder: ApplicationBuilder;
@@ -109,7 +110,9 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
 
         describe("when clicking the menu for a helm release", () => {
           beforeEach(() => {
-            const helmReleaseMenu = renderResult.getByTestId("menu-actions-icon-for-release-menu-for-my-second-namespace/some-name");
+            const helmReleaseMenu = renderResult.getByTestId(
+              "menu-actions-icon-for-release-menu-for-my-second-namespace/some-name",
+            );
 
             helmReleaseMenu.click();
           });
@@ -120,7 +123,9 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
 
           describe("when clicking the upgrade chart menu item", () => {
             beforeEach(() => {
-              const upgradeHelmChartMenuItem = renderResult.getByTestId("upgrade-chart-menu-item-for-my-second-namespace/some-name");
+              const upgradeHelmChartMenuItem = renderResult.getByTestId(
+                "upgrade-chart-menu-item-for-my-second-namespace/some-name",
+              );
 
               upgradeHelmChartMenuItem.click();
               advanceFakeTime(100);
@@ -162,22 +167,20 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
               });
 
               it("requests versions of the helm charts", () => {
-                expect(requestHelmChartVersionsMock).toBeCalledWith(
-                  "some-repo",
-                  "some-chart",
-                );
-                expect(requestHelmChartVersionsMock).toBeCalledWith(
-                  "some-third-repo",
-                  "some-chart",
-                );
+                expect(requestHelmChartVersionsMock).toBeCalledWith("some-repo", "some-chart");
+                expect(requestHelmChartVersionsMock).toBeCalledWith("some-third-repo", "some-chart");
               });
 
               it("shows the dock tab of the upgrade chart tab", () => {
-                expect(renderResult.queryByTestId("dock-tab-content-for-some-irrelevant-random-id")).toBeInTheDocument();
+                expect(
+                  renderResult.queryByTestId("dock-tab-content-for-some-irrelevant-random-id"),
+                ).toBeInTheDocument();
               });
 
               it("does not yet show the dock contents of the upgrade chart tab", () => {
-                expect(renderResult.queryByTestId("upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name")).not.toBeInTheDocument();
+                expect(
+                  renderResult.queryByTestId("upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"),
+                ).not.toBeInTheDocument();
               });
 
               describe("when the requests of versions of the helm charts resolves", () => {
@@ -228,15 +231,13 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
                 });
 
                 it("shows the dock contents of the upgrade chart tab", () => {
-                  expect(renderResult.queryByTestId("upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name")).toBeInTheDocument();
+                  expect(
+                    renderResult.queryByTestId("upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"),
+                  ).toBeInTheDocument();
                 });
 
                 it("requests the configuration for the specific helm release", () => {
-                  expect(requestHelmReleaseConfigurationMock).toBeCalledWith(
-                    "some-name",
-                    "my-second-namespace",
-                    true,
-                  );
+                  expect(requestHelmReleaseConfigurationMock).toBeCalledWith("some-name", "my-second-namespace", true);
                 });
 
                 describe("when the configuration request resolves", () => {
@@ -260,7 +261,9 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
                     });
 
                     it("does so", () => {
-                      expect(renderResult.queryByTestId("dock-tab-content-for-some-irrelevant-random-id")).not.toBeInTheDocument();
+                      expect(
+                        renderResult.queryByTestId("dock-tab-content-for-some-irrelevant-random-id"),
+                      ).not.toBeInTheDocument();
                     });
                   });
                 });

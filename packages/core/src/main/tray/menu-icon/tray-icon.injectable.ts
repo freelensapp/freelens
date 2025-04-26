@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { pipeline } from "@ogre-tools/fp";
-import { find, sortBy } from "lodash/fp";
 import { getInjectable } from "@ogre-tools/injectable";
+import { find, sortBy } from "lodash/fp";
 import { computed } from "mobx";
 import { trayIconInjectionToken } from "./tray-icon-injection-token";
 

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -6,8 +7,7 @@
 import type { ItemObject } from "@freelensapp/list-layout";
 import autoBind from "auto-bind";
 import orderBy from "lodash/orderBy";
-import { action, computed, observable, when, makeObservable } from "mobx";
-
+import { action, computed, makeObservable, observable, when } from "mobx";
 
 export abstract class ItemStore<Item extends ItemObject> {
   protected defaultSorting = (item: Item) => item.getName();
@@ -28,7 +28,7 @@ export abstract class ItemStore<Item extends ItemObject> {
   }
 
   public pickOnlySelected(items: Item[]): Item[] {
-    return items.filter(item => this.selectedItemsIds.has(item.getId()));
+    return items.filter((item) => this.selectedItemsIds.has(item.getId()));
   }
 
   public getItems(): Item[] {
@@ -40,11 +40,11 @@ export abstract class ItemStore<Item extends ItemObject> {
   }
 
   getByName(name: string): Item | undefined {
-    return this.items.find(item => item.getName() === name);
+    return this.items.find((item) => item.getName() === name);
   }
 
   getIndexById(id: string): number {
-    return this.items.findIndex(item => item.getId() === id);
+    return this.items.findIndex((item) => item.getId() === id);
   }
 
   /**
@@ -57,7 +57,11 @@ export abstract class ItemStore<Item extends ItemObject> {
    * @param order whether to sort from least to greatest (`"asc"` (default)) or vice-versa (`"desc"`)
    */
   @action
-  protected sortItems(items: Item[] = this.items, sorting: ((item: Item) => any)[] = [this.defaultSorting], order?: "asc" | "desc"): Item[] {
+  protected sortItems(
+    items: Item[] = this.items,
+    sorting: ((item: Item) => any)[] = [this.defaultSorting],
+    order?: "asc" | "desc",
+  ): Item[] {
     return orderBy(items, sorting, order);
   }
 
@@ -65,7 +69,7 @@ export abstract class ItemStore<Item extends ItemObject> {
   @action
   protected async createItem(request: () => Promise<Item>) {
     const newItem = await request();
-    const item = this.items.find(item => item.getId() === newItem.getId());
+    const item = this.items.find((item) => item.getId() === newItem.getId());
 
     if (item) {
       return item;
@@ -114,10 +118,10 @@ export abstract class ItemStore<Item extends ItemObject> {
     const item = await Promise.resolve(request()).catch(() => null);
 
     if (item) {
-      const existingItem = this.items.find(el => el.getId() === item.getId());
+      const existingItem = this.items.find((el) => el.getId() === item.getId());
 
       if (existingItem) {
-        const index = this.items.findIndex(item => item === existingItem);
+        const index = this.items.findIndex((item) => item === existingItem);
 
         this.items.splice(index, 1, item);
       } else {
@@ -134,7 +138,7 @@ export abstract class ItemStore<Item extends ItemObject> {
   @action
   protected async updateItem(item: Item, request: () => Promise<Item>) {
     const updatedItem = await request();
-    const index = this.items.findIndex(i => i.getId() === item.getId());
+    const index = this.items.findIndex((i) => i.getId() === item.getId());
 
     this.items.splice(index, 1, updatedItem);
 
@@ -206,7 +210,7 @@ export abstract class ItemStore<Item extends ItemObject> {
 
   async removeItems?(items: Item[]): Promise<void>;
 
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     yield* this.items;
   }
 }

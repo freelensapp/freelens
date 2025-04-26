@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
+
 import type { Deployment } from "@freelensapp/kube-object";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
@@ -17,7 +19,11 @@ export interface DeploymentPodMetricData {
   networkTransmit: MetricData;
 }
 
-export type RequestPodMetricsForDeployments = (deployments: Deployment[], namespace: string, selector?: string) => Promise<DeploymentPodMetricData>;
+export type RequestPodMetricsForDeployments = (
+  deployments: Deployment[],
+  namespace: string,
+  selector?: string,
+) => Promise<DeploymentPodMetricData>;
 
 const requestPodMetricsForDeploymentsInjectable = getInjectable({
   id: "request-pod-metrics-for-deployments",
@@ -25,20 +31,25 @@ const requestPodMetricsForDeploymentsInjectable = getInjectable({
     const requestMetrics = di.inject(requestMetricsInjectable);
 
     return (deployments, namespace, selector = "") => {
-      const podSelector = deployments.map(deployment => `${deployment.getName()}-[[:alnum:]]{9,}-[[:alnum:]]{5}`).join("|");
+      const podSelector = deployments
+        .map((deployment) => `${deployment.getName()}-[[:alnum:]]{9,}-[[:alnum:]]{5}`)
+        .join("|");
       const opts = { category: "pods", pods: podSelector, namespace, selector };
 
-      return requestMetrics({
-        cpuUsage: opts,
-        memoryUsage: opts,
-        fsUsage: opts,
-        fsWrites: opts,
-        fsReads: opts,
-        networkReceive: opts,
-        networkTransmit: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          cpuUsage: opts,
+          memoryUsage: opts,
+          fsUsage: opts,
+          fsWrites: opts,
+          fsReads: opts,
+          networkReceive: opts,
+          networkTransmit: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

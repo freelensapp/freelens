@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./styles.module.scss";
 
+import type { IconProps } from "@freelensapp/icon";
+import { Icon } from "@freelensapp/icon";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
 import type { HTMLAttributes } from "react";
 import React, { useState } from "react";
 import { Menu, MenuItem } from "../../../../../../../renderer/components/menu";
-import { cssNames } from "@freelensapp/utilities";
-import type { IconProps } from "@freelensapp/icon";
-import { Icon } from "@freelensapp/icon";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { observer } from "mobx-react";
-import type { IComputedValue } from "mobx";
 import restartAndInstallUpdateInjectable from "../../../../../renderer/restart-and-install-update.injectable";
 import updateWarningLevelInjectable from "../update-warning-level.injectable";
 
@@ -46,20 +47,10 @@ const NonInjectedUpdateButton = observer(({ warningLevel, update, id }: UpdateBu
         })}
       >
         Update
-        <Icon material="arrow_drop_down" className={styles.icon}/>
+        <Icon material="arrow_drop_down" className={styles.icon} />
       </button>
-      <Menu
-        usePortal
-        htmlFor={buttonId}
-        isOpen={opened}
-        close={toggle}
-        open={toggle}
-      >
-        <MenuItem
-          icon={menuIconProps}
-          onClick={update}
-          data-testid="update-lens-menu-item"
-        >
+      <Menu usePortal htmlFor={buttonId} isOpen={opened} close={toggle} open={toggle}>
+        <MenuItem icon={menuIconProps} onClick={update} data-testid="update-lens-menu-item">
           Relaunch to Update Lens
         </MenuItem>
       </Menu>
@@ -67,13 +58,10 @@ const NonInjectedUpdateButton = observer(({ warningLevel, update, id }: UpdateBu
   );
 });
 
-export const UpdateButton = withInjectables<Dependencies, UpdateButtonProps>(
-  NonInjectedUpdateButton,
-  {
-    getProps: (di, props) => ({
-      ...props,
-      warningLevel: di.inject(updateWarningLevelInjectable),
-      update: di.inject(restartAndInstallUpdateInjectable),
-    }),
-  },
-);
+export const UpdateButton = withInjectables<Dependencies, UpdateButtonProps>(NonInjectedUpdateButton, {
+  getProps: (di, props) => ({
+    ...props,
+    warningLevel: di.inject(updateWarningLevelInjectable),
+    update: di.inject(restartAndInstallUpdateInjectable),
+  }),
+});

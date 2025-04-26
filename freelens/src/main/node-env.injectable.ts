@@ -1,5 +1,5 @@
-import { getInjectable } from "@ogre-tools/injectable";
 import { nodeEnvInjectionToken } from "@freelensapp/core/main";
+import { getInjectable } from "@ogre-tools/injectable";
 
 export const nodeEnvInjectable = getInjectable({
   id: "node-env",

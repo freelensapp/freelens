@@ -1,11 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { Singleton } from "../../common/utils/singleton";
-import type { LensExtension } from "../lens-extension";
+
 import { createHash } from "crypto";
 import { broadcastMessage } from "../../common/ipc";
+import { Singleton } from "../../common/utils/singleton";
+import type { LensExtension } from "../lens-extension";
 
 export const IpcPrefix = Symbol();
 

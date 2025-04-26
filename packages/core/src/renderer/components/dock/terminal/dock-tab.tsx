@@ -1,25 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./terminal-dock-tab.scss";
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import autoBindReact from "auto-bind/react";
+import { reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { DockTabProps } from "../dock-tab";
 import { DockTab } from "../dock-tab";
-import { Icon } from "@freelensapp/icon";
-import type { TerminalStore } from "./store";
 import type { DockStore } from "../dock/store";
-import { reaction } from "mobx";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import dockStoreInjectable from "../dock/store.injectable";
+import type { TerminalStore } from "./store";
 import terminalStoreInjectable from "./store.injectable";
-import autoBindReact from "auto-bind/react";
 
-export interface TerminalTabProps extends DockTabProps {
-}
+export interface TerminalTabProps extends DockTabProps {}
 
 interface Dependencies {
   dockStore: DockStore;
@@ -34,9 +34,7 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(() => this.isDisconnected, this.close),
-    ]);
+    disposeOnUnmount(this, [reaction(() => this.isDisconnected, this.close)]);
   }
 
   private close() {
@@ -54,9 +52,7 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
   private get isDisconnected() {
     const { tabId } = this;
 
-    return tabId
-      ? this.props.terminalStore.isDisconnected(tabId)
-      : false;
+    return tabId ? this.props.terminalStore.isDisconnected(tabId) : false;
   }
 
   private reconnect() {
@@ -79,15 +75,17 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
         {...tabProps}
         className={className}
         icon={<Icon material="terminal" />}
-        moreActions={this.isDisconnected && (
-          <Icon
-            small
-            material="refresh"
-            className="restart-icon"
-            tooltip="Restart session"
-            onClick={this.reconnect}
-          />
-        )}
+        moreActions={
+          this.isDisconnected && (
+            <Icon
+              small
+              material="refresh"
+              className="restart-icon"
+              tooltip="Restart session"
+              onClick={this.reconnect}
+            />
+          )
+        }
       />
     );
   }

@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -17,11 +18,11 @@ interface Pre360ClusterModel extends ClusterModel {
   kubeConfig?: string;
 }
 
-import { getInjectable } from "@ogre-tools/injectable";
-import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
-import readFileBufferSyncInjectable from "../../../common/fs/read-file-buffer-sync.injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
+import readFileBufferSyncInjectable from "../../../common/fs/read-file-buffer-sync.injectable";
 import writeFileSyncInjectable from "../../../common/fs/write-file-sync.injectable";
+import { clusterStoreMigrationInjectionToken } from "../../../features/cluster/storage/common/migration-token";
 
 const v360Beta1ClusterStoreMigrationInjectable = getInjectable({
   id: "v3.6.0-beta.1-cluster-store-migration",
@@ -59,9 +60,11 @@ const v360Beta1ClusterStoreMigrationInjectable = getInjectable({
             clusterModel.kubeConfigPath = absPath;
             clusterModel.contextName = loadConfigFromString(readFileSync(absPath)).config.getCurrentContext();
             delete clusterModel.kubeConfig;
-
           } catch (error) {
-            logger.info(`Failed to migrate Kubeconfig for cluster "${clusterModel.id}", removing clusterModel...`, error);
+            logger.info(
+              `Failed to migrate Kubeconfig for cluster "${clusterModel.id}", removing clusterModel...`,
+              error,
+            );
 
             continue;
           }

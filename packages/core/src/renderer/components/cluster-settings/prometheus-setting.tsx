@@ -1,22 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Spinner } from "@freelensapp/spinner";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { autorun, computed, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { observer, disposeOnUnmount } from "mobx-react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
+import type { Cluster } from "../../../common/cluster/cluster";
+import type {
+  MetricProviderInfo,
+  RequestMetricsProviders,
+} from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
+import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
+import productNameInjectable from "../../../common/vars/product-name.injectable";
+import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
 import type { SelectOption } from "../select";
 import { Select } from "../select";
-import { Input } from "../input";
-import { observable, computed, autorun, makeObservable } from "mobx";
-import { Spinner } from "@freelensapp/spinner";
-import type { MetricProviderInfo, RequestMetricsProviders } from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
-import productNameInjectable from "../../../common/vars/product-name.injectable";
 
 export interface ClusterPrometheusSettingProps {
   cluster: Cluster;
@@ -69,7 +73,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 
   componentDidMount() {
-    disposeOnUnmount(this,
+    disposeOnUnmount(
+      this,
       autorun(() => {
         const { prometheus, prometheusProvider, filesystemMountpoints } = this.props.cluster.preferences;
 
@@ -82,7 +87,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
         }
 
         if (prometheusProvider) {
-          this.selectedOption = this.options.find(opt => opt.value === prometheusProvider.type)?.value ?? autoDetectPrometheus;
+          this.selectedOption =
+            this.options.find((opt) => opt.value === prometheusProvider.type)?.value ?? autoDetectPrometheus;
         } else {
           this.selectedOption = autoDetectPrometheus;
         }
@@ -93,11 +99,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       }),
     );
 
-    this.props.requestMetricsProviders()
-      .then(values => {
-        this.loading = false;
-        this.loadedOptions.replace(values.map(provider => [provider.id, provider]));
-      });
+    this.props.requestMetricsProviders().then((values) => {
+      this.loading = false;
+      this.loadedOptions.replace(values.map((provider) => [provider.id, provider]));
+    });
   }
 
   parsePrometheusPath = () => {
@@ -120,9 +125,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   };
 
   onSaveProvider = () => {
-    this.props.cluster.preferences.prometheusProvider = typeof this.selectedOption === "string"
-      ? { type: this.selectedOption }
-      : undefined;
+    this.props.cluster.preferences.prometheusProvider =
+      typeof this.selectedOption === "string" ? { type: this.selectedOption } : undefined;
   };
 
   onSavePath = () => {
@@ -138,25 +142,23 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       <>
         <section>
           <SubTitle title="Prometheus" />
-          {
-            this.loading
-              ? <Spinner />
-              : (
-                <>
-                  <Select
-                    id="cluster-prometheus-settings-input"
-                    value={this.selectedOption}
-                    onChange={option => {
-                      this.selectedOption = option?.value ?? autoDetectPrometheus;
-                      this.onSaveProvider();
-                    }}
-                    options={this.options}
-                    themeName="lens"
-                  />
-                  <small className="hint">What query format is used to fetch metrics from Prometheus</small>
-                </>
-              )
-          }
+          {this.loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <Select
+                id="cluster-prometheus-settings-input"
+                value={this.selectedOption}
+                onChange={(option) => {
+                  this.selectedOption = option?.value ?? autoDetectPrometheus;
+                  this.onSaveProvider();
+                }}
+                options={this.options}
+                themeName="lens"
+              />
+              <small className="hint">What query format is used to fetch metrics from Prometheus</small>
+            </>
+          )}
         </section>
         {this.canEditPrometheusPath && (
           <>
@@ -166,7 +168,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
               <Input
                 theme="round-black"
                 value={this.path}
-                onChange={(value) => this.path = value}
+                onChange={(value) => (this.path = value)}
                 onBlur={this.onSavePath}
                 placeholder="<namespace>/<service>:<port>"
               />
@@ -183,7 +185,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
             <Input
               theme="round-black"
               value={this.mountpoints}
-              onChange={(value) => this.mountpoints = value}
+              onChange={(value) => (this.mountpoints = value)}
               onBlur={this.onSaveMountpoints}
               placeholder={this.initialFilesystemMountpoints}
             />
@@ -197,10 +199,13 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 }
 
-export const ClusterPrometheusSetting = withInjectables<Dependencies, ClusterPrometheusSettingProps>(NonInjectedClusterPrometheusSetting, {
-  getProps: (di, props) => ({
-    ...props,
-    productName: di.inject(productNameInjectable),
-    requestMetricsProviders: di.inject(requestMetricsProvidersInjectable),
-  }),
-});
+export const ClusterPrometheusSetting = withInjectables<Dependencies, ClusterPrometheusSettingProps>(
+  NonInjectedClusterPrometheusSetting,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      productName: di.inject(productNameInjectable),
+      requestMetricsProviders: di.inject(requestMetricsProvidersInjectable),
+    }),
+  },
+);

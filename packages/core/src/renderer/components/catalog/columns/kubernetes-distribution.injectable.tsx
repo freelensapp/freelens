@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import type { KubernetesCluster } from "../../../../common/catalog-entities";
@@ -15,14 +17,10 @@ const kubernetesDistributionColumnInjectable = getInjectable({
     registration: {
       id: "distro",
       priority: 30,
-      renderCell: entity => {
+      renderCell: (entity) => {
         const k8sDistro = (entity as KubernetesCluster).metadata.distro;
 
-        return (
-          <span key="distro">
-            {k8sDistro === "unknown" ? "" : k8sDistro}
-          </span>
-        );
+        return <span key="distro">{k8sDistro === "unknown" ? "" : k8sDistro}</span>;
       },
       titleProps: {
         title: "Distro",
@@ -33,4 +31,3 @@ const kubernetesDistributionColumnInjectable = getInjectable({
 });
 
 export default kubernetesDistributionColumnInjectable;
-

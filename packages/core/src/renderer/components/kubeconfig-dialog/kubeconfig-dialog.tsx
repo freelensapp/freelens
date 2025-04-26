@@ -1,34 +1,34 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./kubeconfig-dialog.module.scss";
-import React from "react";
-import type { IObservableValue } from "mobx";
-import { observer } from "mobx-react";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import { cssNames } from "@freelensapp/utilities";
 import { Button } from "@freelensapp/button";
-import type { DialogProps } from "../dialog";
-import { Dialog } from "../dialog";
 import { Icon } from "@freelensapp/icon";
 import type { ShowNotification } from "@freelensapp/notifications";
-import { Wizard, WizardStep } from "../wizard";
-import { MonacoEditor } from "../monaco-editor";
-import { clipboard } from "electron";
-import { withInjectables } from "@ogre-tools/injectable-react";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import kubeconfigDialogStateInjectable from "./state.injectable";
+import type { StrictReactNode } from "@freelensapp/utilities";
+import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { clipboard } from "electron";
+import type { IObservableValue } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import { saveFileDialog } from "../../utils/saveFile";
+import type { DialogProps } from "../dialog";
+import { Dialog } from "../dialog";
+import { MonacoEditor } from "../monaco-editor";
+import { Wizard, WizardStep } from "../wizard";
+import styles from "./kubeconfig-dialog.module.scss";
+import kubeconfigDialogStateInjectable from "./state.injectable";
 
 export interface KubeconfigDialogData {
   title?: StrictReactNode;
   config: string;
 }
 
-export interface KubeConfigDialogProps extends Partial<DialogProps> {
-}
+export interface KubeConfigDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   state: IObservableValue<KubeconfigDialogData | undefined>;
@@ -55,9 +55,9 @@ class NonInjectedKubeConfigDialog extends React.Component<KubeConfigDialogProps 
   };
 
   renderContents = (data: KubeconfigDialogData) => (
-    <Wizard header={<h5>{ data.title || "Kubeconfig File" }</h5>}>
+    <Wizard header={<h5>{data.title || "Kubeconfig File"}</h5>}>
       <WizardStep
-        customButtons={ (
+        customButtons={
           <div className="actions flex gaps">
             <Button plain onClick={() => this.copyToClipboard(data.config)}>
               <Icon material="assignment" />
@@ -67,22 +67,14 @@ class NonInjectedKubeConfigDialog extends React.Component<KubeConfigDialogProps 
               <Icon material="cloud_download" />
               {" Download file"}
             </Button>
-            <Button
-              plain
-              className="box right"
-              onClick={this.close}
-            >
+            <Button plain className="box right" onClick={this.close}>
               Close
             </Button>
           </div>
-        ) }
+        }
         prev={this.close}
       >
-        <MonacoEditor
-          readOnly
-          className={styles.editor}
-          value={data.config}
-        />
+        <MonacoEditor readOnly className={styles.editor} value={data.config} />
       </WizardStep>
     </Wizard>
   );

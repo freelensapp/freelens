@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
+import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 
 export type EnvironmentVariables = Partial<Record<string, string>>;

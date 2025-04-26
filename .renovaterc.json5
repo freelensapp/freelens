@@ -96,6 +96,19 @@
       "depNameTemplate": "helm/helm",
       "versioningTemplate": "semver"
     },
+    // pnpm dlx
+    {
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "fileMatch": [
+        "package\\.json$"
+      ],
+      "matchStrings": [
+        "pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s\"|<>]"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm"
+    },
     // renovate hints after comment
     {
       "customType": "regex",

@@ -1,6 +1,6 @@
 import { pipeline } from "@ogre-tools/fp";
-import { filter, isString } from "lodash/fp";
 import { getInjectable } from "@ogre-tools/injectable";
+import { filter, isString } from "lodash/fp";
 import { Binding, KeyboardShortcut, keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
 import platformInjectable from "./platform.injectable";
 
@@ -17,7 +17,6 @@ const toShortcutsWithMatchingScope = (shortcut: KeyboardShortcut) => {
 
   const castedActiveScopeElementHtml = activeScopeElement as HTMLDivElement;
 
-  // eslint-disable-next-line xss/no-mixed-html
   const activeScope = castedActiveScopeElementHtml.dataset.keyboardShortcutScope;
 
   return shortcut.scope === activeScope;

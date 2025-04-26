@@ -1,13 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as uuid from "uuid";
-import { action, comparer, computed, makeObservable, observable, reaction, runInAction } from "mobx";
-import throttle from "lodash/throttle";
-import type { StorageLayer } from "../../../utils/storage-helper";
 import autoBind from "auto-bind";
+import throttle from "lodash/throttle";
+import { action, comparer, computed, makeObservable, observable, reaction, runInAction } from "mobx";
+import * as uuid from "uuid";
+import type { StorageLayer } from "../../../utils/storage-helper";
 
 export type TabId = string;
 
@@ -157,10 +158,7 @@ export class DockStore implements DockStorageState {
   get selectedTabId(): TabId | undefined {
     const storageData = this.dependencies.storage.get();
 
-    return (
-      storageData.selectedTabId ||
-      (this.tabs.length > 0 ? this.tabs[0]?.id : undefined)
-    );
+    return storageData.selectedTabId || (this.tabs.length > 0 ? this.tabs[0]?.id : undefined);
   }
 
   set selectedTabId(tabId: TabId | undefined) {
@@ -169,12 +167,12 @@ export class DockStore implements DockStorageState {
     this.dependencies.storage.merge({ selectedTabId: tabId });
   }
 
-  @computed get tabsNumber() : number {
+  @computed get tabsNumber(): number {
     return this.tabs.length;
   }
 
   @computed get selectedTab() {
-    return this.tabs.find(tab => tab.id === this.selectedTabId);
+    return this.tabs.find((tab) => tab.id === this.selectedTabId);
   }
 
   get maxHeight() {
@@ -199,37 +197,46 @@ export class DockStore implements DockStorageState {
   }
 
   onTabClose(callback: (evt: DockTabCloseEvent) => void, opts: { fireImmediately?: boolean } = {}) {
-    return reaction(() => this.tabs.map(tab => tab.id), (tabs: TabId[], prevTabs?: TabId[]) => {
-      if (!Array.isArray(prevTabs)) {
-        return; // tabs not yet modified
-      }
+    return reaction(
+      () => this.tabs.map((tab) => tab.id),
+      (tabs: TabId[], prevTabs?: TabId[]) => {
+        if (!Array.isArray(prevTabs)) {
+          return; // tabs not yet modified
+        }
 
-      const closedTabs: TabId[] = prevTabs.filter(id => !tabs.includes(id));
+        const closedTabs: TabId[] = prevTabs.filter((id) => !tabs.includes(id));
 
-      if (closedTabs.length > 0) {
-        runInAction(() => {
-          closedTabs.forEach(tabId => callback({ tabId }));
-        });
-      }
-    }, {
-      equals: comparer.structural,
-      fireImmediately: opts.fireImmediately,
-    });
+        if (closedTabs.length > 0) {
+          runInAction(() => {
+            closedTabs.forEach((tabId) => callback({ tabId }));
+          });
+        }
+      },
+      {
+        equals: comparer.structural,
+        fireImmediately: opts.fireImmediately,
+      },
+    );
   }
 
   onTabChange(callback: (evt: DockTabChangeEvent) => void, options: DockTabChangeEventOptions = {}) {
     const { tabKind, dockIsVisible = true, ...reactionOpts } = options;
 
-    return reaction(() => this.selectedTab, ((tab, prevTab) => {
-      if (!tab) return; // skip when dock is empty
-      if (tabKind && tabKind !== tab.kind) return; // handle specific tab.kind only
-      if (dockIsVisible && !this.isOpen) return;
+    return reaction(
+      () => this.selectedTab,
+      (tab, prevTab) => {
+        if (!tab) return; // skip when dock is empty
+        if (tabKind && tabKind !== tab.kind) return; // handle specific tab.kind only
+        if (dockIsVisible && !this.isOpen) return;
 
-      callback({
-        tab, prevTab,
-        tabId: tab.id,
-      });
-    }), reactionOpts);
+        callback({
+          tab,
+          prevTab,
+          tabId: tab.id,
+        });
+      },
+      reactionOpts,
+    );
   }
 
   hasTabs() {
@@ -263,17 +270,17 @@ export class DockStore implements DockStorageState {
   }
 
   getTabById(tabId: TabId) {
-    return this.tabs.find(tab => tab.id === tabId);
+    return this.tabs.find((tab) => tab.id === tabId);
   }
 
   getTabIndex(tabId: TabId) {
-    return this.tabs.findIndex(tab => tab.id === tabId);
+    return this.tabs.findIndex((tab) => tab.id === tabId);
   }
 
   protected getNewTabNumber(kind: TabKind) {
     const tabNumbers = this.tabs
-      .filter(tab => tab.kind === kind)
-      .map(tab => {
+      .filter((tab) => tab.kind === kind)
+      .map((tab) => {
         const tabNumber = Number(tab.title.match(/\d+/));
 
         return tabNumber === 0 ? 1 : tabNumber; // tab without a number is first
@@ -285,12 +292,7 @@ export class DockStore implements DockStorageState {
   }
 
   createTab = action((rawTabDesc: DockTabCreate, addNumber = true): DockTab => {
-    const {
-      id = uuid.v4(),
-      kind,
-      pinned = false,
-      ...restOfTabFields
-    } = rawTabDesc;
+    const { id = uuid.v4(), kind, pinned = false, ...restOfTabFields } = rawTabDesc;
     let { title = kind } = rawTabDesc;
 
     if (addNumber) {
@@ -325,7 +327,7 @@ export class DockStore implements DockStorageState {
       return;
     }
 
-    this.tabs = this.tabs.filter(tab => tab.id !== tabId);
+    this.tabs = this.tabs.filter((tab) => tab.id !== tabId);
     this.dependencies.tabDataClearers[tab.kind](tab.id);
 
     if (this.selectedTabId === tab.id) {
@@ -342,7 +344,7 @@ export class DockStore implements DockStorageState {
 
   @action
   closeTabs(tabs: DockTab[]) {
-    tabs.forEach(tab => this.closeTab(tab.id));
+    tabs.forEach((tab) => this.closeTab(tab.id));
   }
 
   closeAllTabs() {

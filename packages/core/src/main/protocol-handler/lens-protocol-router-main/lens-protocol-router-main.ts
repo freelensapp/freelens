@@ -1,16 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as proto from "../../../common/protocol-handler";
-import URLParse from "url-parse";
-import type { LensExtension } from "../../../extensions/lens-extension";
+import { disposer, noop } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
+import URLParse from "url-parse";
+import type { BroadcastMessage } from "../../../common/ipc/broadcast-message.injectable";
+import * as proto from "../../../common/protocol-handler";
 import type { LensProtocolRouterDependencies, RouteAttempt } from "../../../common/protocol-handler";
 import { ProtocolHandlerInvalid } from "../../../common/protocol-handler";
-import { disposer, noop } from "@freelensapp/utilities";
-import type { BroadcastMessage } from "../../../common/ipc/broadcast-message.injectable";
+import type { LensExtension } from "../../../extensions/lens-extension";
 
 export interface FallbackHandler {
   (name: string): Promise<boolean>;
@@ -116,7 +117,8 @@ export class LensProtocolRouterMain extends proto.LensProtocolRouter {
   protected _routeToInternal(url: URLParse<Record<string, string | undefined>>): RouteAttempt {
     const rawUrl = url.toString(); // for sending to renderer
     const attempt = super._routeToInternal(url);
-    const broadcastToRenderer = () => this.dependencies.broadcastMessage(proto.ProtocolHandlerInternal, rawUrl, attempt);
+    const broadcastToRenderer = () =>
+      this.dependencies.broadcastMessage(proto.ProtocolHandlerInternal, rawUrl, attempt);
 
     if (this.rendererLoaded.get()) {
       broadcastToRenderer();
@@ -138,7 +140,8 @@ export class LensProtocolRouterMain extends proto.LensProtocolRouter {
      * argument.
      */
     const attempt = await super._routeToExtension(new URLParse(url.toString(), true));
-    const broadcastToRenderer = () => this.dependencies.broadcastMessage(proto.ProtocolHandlerExtension, rawUrl, attempt);
+    const broadcastToRenderer = () =>
+      this.dependencies.broadcastMessage(proto.ProtocolHandlerExtension, rawUrl, attempt);
 
     if (this.rendererLoaded.get()) {
       broadcastToRenderer();

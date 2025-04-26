@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 
-import podSecurityPoliciesRouteInjectable from "../../../common/front-end-routing/routes/cluster/user-management/pod-security-policies/pod-security-policies-route.injectable";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import navigateToPodSecurityPoliciesInjectable from "../../../common/front-end-routing/routes/cluster/user-management/pod-security-policies/navigate-to-pod-security-policies.injectable";
+import podSecurityPoliciesRouteInjectable from "../../../common/front-end-routing/routes/cluster/user-management/pod-security-policies/pod-security-policies-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import userManagementSidebarItemInjectable from "../user-management/user-management-sidebar-item.injectable";
 
 const podSecurityPoliciesSidebarItemInjectable = getInjectable({

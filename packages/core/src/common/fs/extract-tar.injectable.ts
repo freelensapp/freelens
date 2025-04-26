@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { extract } from "tar";
 import type { TarOptionsWithAliasesAsyncNoFile } from "tar";
@@ -14,11 +16,12 @@ const extractTarInjectable = getInjectable({
   instantiate: (di): ExtractTar => {
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
 
-    return (filePath, opts = {}) => extract({
-      file: filePath,
-      cwd: getDirnameOfPath(filePath),
-      ...opts,
-    });
+    return (filePath, opts = {}) =>
+      extract({
+        file: filePath,
+        cwd: getDirnameOfPath(filePath),
+        ...opts,
+      });
   },
   causesSideEffects: true,
 });

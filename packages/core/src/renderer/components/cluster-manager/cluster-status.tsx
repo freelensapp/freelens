@@ -1,28 +1,29 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./cluster-status.module.scss";
 
-import { computed, observable, makeObservable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import React from "react";
-import { ipcRendererOn } from "../../../common/ipc";
-import type { Cluster } from "../../../common/cluster/cluster";
-import type { IClassName } from "@freelensapp/utilities";
-import { hasTypedProperty, isObject, isString, cssNames } from "@freelensapp/utilities";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
-import type { KubeAuthUpdate } from "../../../common/cluster-types";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
-import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
+import type { IClassName } from "@freelensapp/utilities";
+import { cssNames, hasTypedProperty, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { computed, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import type { KubeAuthUpdate } from "../../../common/cluster-types";
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
-import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import { ipcRendererOn } from "../../../common/ipc";
 import type { RequestClusterActivation } from "../../../features/cluster/activation/common/request-token";
 import requestClusterActivationInjectable from "../../../features/cluster/activation/renderer/request-activation.injectable";
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
+import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 
 export interface ClusterStatusProps {
   className?: IClassName;
@@ -61,9 +62,11 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     disposeOnUnmount(this, [
       ipcRendererOn(`cluster:${this.cluster.id}:connection-update`, (evt, res: unknown) => {
         if (
-          isObject(res)
-          && hasTypedProperty(res, "message", isString)
-          && hasTypedProperty(res, "level", function (val): val is KubeAuthUpdate["level"] { return ["info", "warning", "error"].includes(val as string); })
+          isObject(res) &&
+          hasTypedProperty(res, "message", isString) &&
+          hasTypedProperty(res, "level", function (val): val is KubeAuthUpdate["level"] {
+            return ["info", "warning", "error"].includes(val as string);
+          })
         ) {
           this.authOutput.push(res);
         } else {
@@ -106,13 +109,11 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
   renderAuthenticationOutput() {
     return (
       <pre>
-        {
-          this.authOutput.map(({ message, level }, index) => (
-            <p key={index} className={cssNames({ error: level === "error", warning: level === "warning" })}>
-              {message.trim()}
-            </p>
-          ))
-        }
+        {this.authOutput.map(({ message, level }, index) => (
+          <p key={index} className={cssNames({ error: level === "error", warning: level === "warning" })}>
+            {message.trim()}
+          </p>
+        ))}
       </pre>
     );
   }
@@ -146,10 +147,7 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
             onClick={this.reconnect}
             waiting={this.isReconnecting}
           />
-          <a
-            className="box center interactive"
-            onClick={this.manageProxySettings}
-          >
+          <a className="box center interactive" onClick={this.manageProxySettings}>
             Manage Proxy Settings
           </a>
         </>
@@ -161,7 +159,9 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
 
   render() {
     return (
-      <div className={cssNames(styles.status, "flex column box center align-center justify-center", this.props.className)}>
+      <div
+        className={cssNames(styles.status, "flex column box center align-center justify-center", this.props.className)}
+      >
         <div className="flex items-center column gaps">
           <h2>{this.entity?.getName() ?? this.cluster.name.get()}</h2>
           {this.renderStatusIcon()}

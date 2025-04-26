@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { RenderResult } from "@testing-library/react";
 import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
@@ -30,9 +32,7 @@ describe("reactively hide workloads overview details item", () => {
         kubeWorkloadsOverviewItems: [
           {
             components: {
-              Details: () => (
-                <div data-testid="some-workload-overview-detail-item">Some detail component</div>
-              ),
+              Details: () => <div data-testid="some-workload-overview-detail-item">Some detail component</div>,
             },
 
             visible: computed(() => someObservable.get()),
@@ -45,9 +45,7 @@ describe("reactively hide workloads overview details item", () => {
 
     const windowDi = builder.applicationWindow.only.di;
 
-    const navigateToWorkloadsOverview = windowDi.inject(
-      navigateToWorkloadsOverviewInjectable,
-    );
+    const navigateToWorkloadsOverview = windowDi.inject(navigateToWorkloadsOverviewInjectable);
 
     navigateToWorkloadsOverview();
 

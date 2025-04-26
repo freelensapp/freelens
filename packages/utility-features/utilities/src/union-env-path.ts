@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -14,7 +15,7 @@ import { iter } from "./iter";
  * it was found that `zsh` (at least on `macOS`) does not when trying to find programs
  */
 export function unionPATHs(...PATHs: string[]): string {
-  const entries = new Set(iter.filterFlatMap(PATHs, PATH => PATH.split(path.delimiter)));
+  const entries = new Set(iter.filterFlatMap(PATHs, (PATH) => PATH.split(path.delimiter)));
 
   return iter.join(entries.values(), path.delimiter);
 }

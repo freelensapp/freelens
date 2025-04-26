@@ -1,6 +1,6 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 
-import { computed, type IComputedValue, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from "mobx";
+import { type IComputedValue, computed, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from "mobx";
 
 import type { MessageChannel } from "@freelensapp/messaging";
 import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";

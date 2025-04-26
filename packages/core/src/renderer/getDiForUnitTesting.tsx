@@ -1,30 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop, chunk } from "lodash/fp";
-import { createContainer, isInjectable } from "@ogre-tools/injectable";
-import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
-import terminalSpawningPoolInjectable from "./components/dock/terminal/terminal-spawning-pool.injectable";
-import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
-import { runInAction } from "mobx";
 import { animateFeature, requestAnimationFrameInjectable } from "@freelensapp/animate";
-import startTopbarStateSyncInjectable from "./components/layout/top-bar/start-state-sync.injectable";
-import watchHistoryStateInjectable from "./remote-helpers/watch-history-state.injectable";
-import legacyOnChannelListenInjectable from "./ipc/legacy-channel-listen.injectable";
-import type { GlobalOverride } from "@freelensapp/test-utils";
+import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
+import { registerFeature } from "@freelensapp/feature-core";
+import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
 import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { loggerFeature } from "@freelensapp/logger";
+import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
+import { notificationsFeature } from "@freelensapp/notifications";
+import { randomFeature } from "@freelensapp/random";
+import { routingFeature } from "@freelensapp/routing";
+import type { GlobalOverride } from "@freelensapp/test-utils";
+import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { registerFeature } from "@freelensapp/feature-core";
-import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
-import { routingFeature } from "@freelensapp/routing";
-import { loggerFeature } from "@freelensapp/logger";
-import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
-import { randomFeature } from "@freelensapp/random";
-import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
-import { notificationsFeature } from "@freelensapp/notifications";
+import { chunk, noop } from "lodash/fp";
+import { runInAction } from "mobx";
+import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
+import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
+import terminalSpawningPoolInjectable from "./components/dock/terminal/terminal-spawning-pool.injectable";
+import startTopbarStateSyncInjectable from "./components/layout/top-bar/start-state-sync.injectable";
+import legacyOnChannelListenInjectable from "./ipc/legacy-channel-listen.injectable";
+import watchHistoryStateInjectable from "./remote-helpers/watch-history-state.injectable";
 
 export const getDiForUnitTesting = () => {
   const environment = "renderer";
@@ -37,7 +38,8 @@ export const getDiForUnitTesting = () => {
   setLegacyGlobalDiForExtensionApi(di, environment);
 
   runInAction(() => {
-    registerFeature(di,
+    registerFeature(
+      di,
       messagingFeature,
       messagingTestUtils.messagingFeatureForUnitTesting,
       routingFeature,
@@ -54,7 +56,7 @@ export const getDiForUnitTesting = () => {
 
   runInAction(() => {
     const injectables = global.injectablePaths.renderer.paths
-      .map(path => require(path))
+      .map((path) => require(path))
       .flatMap(Object.values)
       .filter(isInjectable);
 
@@ -69,9 +71,7 @@ export const getDiForUnitTesting = () => {
     di.override(globalOverride.injectable, globalOverride.overridingInstantiate);
   }
 
-  [
-    startTopbarStateSyncInjectable,
-  ].forEach((injectable) => {
+  [startTopbarStateSyncInjectable].forEach((injectable) => {
     di.override(injectable, () => ({
       id: injectable.id,
       run: () => {},

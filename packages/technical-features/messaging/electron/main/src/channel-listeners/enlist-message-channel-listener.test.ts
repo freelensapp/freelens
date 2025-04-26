@@ -1,9 +1,9 @@
-import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
-import type { IpcMain, IpcMainEvent } from "electron";
+import { registerFeature } from "@freelensapp/feature-core";
 import { type EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { createContainer } from "@ogre-tools/injectable";
-import { registerFeature } from "@freelensapp/feature-core";
+import type { IpcMain, IpcMainEvent } from "electron";
 import { messagingFeatureForMain } from "../feature";
+import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
 
 describe("enlist message channel listener in main", () => {
   let enlistMessageChannelListener: EnlistMessageChannelListener;

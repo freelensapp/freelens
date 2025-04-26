@@ -15,8 +15,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "webpack"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "node-fetch": "^3.3.2",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
-    "webpack": "^5.99.5",
+    "webpack": "^5.99.7",
     "webpack-cli": "^6.0.1"
   }
 }

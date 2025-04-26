@@ -1,9 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export interface StaticThis<T, R extends any[]> { new(...args: R): T }
+export interface StaticThis<T, R extends any[]> {
+  new (...args: R): T;
+}
 
 /**
  * @deprecated This is a form of global shared state
@@ -33,7 +36,9 @@ export class Singleton {
   static createInstance<T extends Singleton, R extends any[]>(this: StaticThis<T, R>, ...args: R): T {
     if (!Singleton.instances.has(this)) {
       if (Singleton.creating.length > 0) {
-        throw new TypeError(`Cannot create a second singleton (${this.name}) while creating a first (${Singleton.creating})`);
+        throw new TypeError(
+          `Cannot create a second singleton (${this.name}) while creating a first (${Singleton.creating})`,
+        );
       }
 
       try {
@@ -61,7 +66,7 @@ export class Singleton {
       throw new TypeError(`instance of ${this.name} is not created`);
     }
 
-    return Singleton.instances.get(this) as (T | undefined);
+    return Singleton.instances.get(this) as T | undefined;
   }
 
   /**

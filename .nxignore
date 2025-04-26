@@ -1,8 +1,0 @@
-freelens/dist
-freelens/static/build
-freelens/static/webpack
-freelens/binaries
-packages/**/dist
-packages/**/static/build
-packages/**/build/webpack
-packages/**/binaries

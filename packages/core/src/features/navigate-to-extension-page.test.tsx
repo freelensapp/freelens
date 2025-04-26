@@ -1,17 +1,19 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
+
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import isEmpty from "lodash/isEmpty";
-import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
-import currentPathInjectable from "../renderer/routes/current-path.injectable";
 import type { IComputedValue } from "mobx";
+import React from "react";
+import type { LensRendererExtension } from "../extensions/lens-renderer-extension";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../renderer/components/test-utils/get-extension-fake";
-import type { LensRendererExtension } from "../extensions/lens-renderer-extension";
+import currentPathInjectable from "../renderer/routes/current-path.injectable";
+import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
 
 describe("navigate to extension page", () => {
   let rendered: RenderResult;
@@ -28,8 +30,7 @@ describe("navigate to extension page", () => {
 
     const windowDi = builder.applicationWindow.only.di;
 
-    testExtension =
-      builder.extensions.get("some-extension-id").applicationWindows.only;
+    testExtension = builder.extensions.get("some-extension-id").applicationWindows.only;
 
     queryParameters = windowDi.inject(queryParametersInjectable);
     currentPath = windowDi.inject(currentPathInjectable);
@@ -75,8 +76,7 @@ describe("navigate to extension page", () => {
         expect(queryParameters.get()).toEqual({
           someStringParameter: "some-changed-string-value",
           someNumberParameter: "84",
-          someArrayParameter:
-            "some-changed-array-value,some-other-changed-array-value",
+          someArrayParameter: "some-changed-array-value,some-other-changed-array-value",
         });
       });
     });
@@ -145,10 +145,7 @@ const extensionWithPagesHavingParameters: FakeExtensionOptions = {
                 onClick={() => {
                   params.someStringParameter.set("some-changed-string-value");
                   params.someNumberParameter.set(84);
-                  params.someArrayParameter.set([
-                    "some-changed-array-value",
-                    "some-other-changed-array-value",
-                  ]);
+                  params.someArrayParameter.set(["some-changed-array-value", "some-other-changed-array-value"]);
                 }}
               >
                 Some button

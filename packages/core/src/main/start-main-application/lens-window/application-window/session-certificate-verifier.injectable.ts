@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { X509Certificate, timingSafeEqual } from "crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import { timingSafeEqual, X509Certificate } from "crypto";
 import type { Request } from "electron";
 import lensProxyCertificateInjectable from "../../../../common/certificate/lens-proxy-certificate.injectable";
 
@@ -25,9 +27,9 @@ const sessionCertificateVerifierInjectable = getInjectable({
     return (request: Request, shouldBeTrusted: CertificateVerificationCallback) => {
       const { certificate } = request;
       const cert = new X509Certificate(certificate.data);
-      const shouldTrustCert = cert.raw.length === lensProxyX509Cert.raw.length
-        && timingSafeEqual(cert.raw, lensProxyX509Cert.raw);
-  
+      const shouldTrustCert =
+        cert.raw.length === lensProxyX509Cert.raw.length && timingSafeEqual(cert.raw, lensProxyX509Cert.raw);
+
       shouldBeTrusted(shouldTrustCert ? ChromiumNetError.SUCCESS : ChromiumNetError.RESULT_FROM_CHROMIUM);
     };
   },

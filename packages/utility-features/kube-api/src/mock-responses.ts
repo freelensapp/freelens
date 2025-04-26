@@ -1,9 +1,11 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { Response, Headers as NodeFetchHeaders } from "@freelensapp/node-fetch";
+
 import { PassThrough } from "stream";
+import { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
   const res: jest.Mocked<Response> = {

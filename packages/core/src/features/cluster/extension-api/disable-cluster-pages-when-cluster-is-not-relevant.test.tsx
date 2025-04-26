@@ -1,15 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
+import React from "react";
+import type { KubernetesCluster } from "../../../common/catalog-entities";
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { TestExtensionRenderer } from "../../../renderer/components/test-utils/get-extension-fake";
-import type { KubernetesCluster } from "../../../common/catalog-entities";
-import React from "react";
 
 describe("disable-cluster-pages-when-cluster-is-not-relevant", () => {
   let builder: ApplicationBuilder;
@@ -31,11 +33,13 @@ describe("disable-cluster-pages-when-cluster-is-not-relevant", () => {
       rendererOptions: {
         isEnabledForCluster: isEnabledForClusterMock,
 
-        clusterPages: [{
-          components: {
-            Page: () => <div data-testid="some-test-page">Some page</div>,
+        clusterPages: [
+          {
+            components: {
+              Page: () => <div data-testid="some-test-page">Some page</div>,
+            },
           },
-        }],
+        ],
       },
     };
 
@@ -43,8 +47,7 @@ describe("disable-cluster-pages-when-cluster-is-not-relevant", () => {
 
     builder.extensions.enable(testExtension);
 
-    rendererTestExtension =
-      builder.extensions.get("test-extension-id").applicationWindows.only;
+    rendererTestExtension = builder.extensions.get("test-extension-id").applicationWindows.only;
   });
 
   describe("given not yet known if extension should be enabled for the cluster, when navigating", () => {

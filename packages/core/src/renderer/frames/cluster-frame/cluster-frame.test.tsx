@@ -1,29 +1,30 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import { render as testingLibraryRender } from "@testing-library/react";
-import React from "react";
-import { DiContextProvider } from "@ogre-tools/injectable-react";
-import { Router } from "react-router";
-import { DefaultProps } from "../../mui-base-theme";
-import { ClusterFrame } from "./cluster-frame";
 import { historyInjectionToken } from "@freelensapp/routing";
+import type { DiContainer } from "@ogre-tools/injectable";
+import { DiContextProvider } from "@ogre-tools/injectable-react";
+import type { RenderResult } from "@testing-library/react";
+import { render as testingLibraryRender } from "@testing-library/react";
 import { computed } from "mobx";
-import { Cluster } from "../../../common/cluster/cluster";
-import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import React from "react";
+import { Router } from "react-router";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import legacyOnChannelListenInjectable from "../../ipc/legacy-channel-listen.injectable";
-import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import legacyOnChannelListenInjectable from "../../ipc/legacy-channel-listen.injectable";
+import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { DefaultProps } from "../../mui-base-theme";
+import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
 import currentlyInClusterFrameInjectable from "../../routes/currently-in-cluster-frame.injectable";
-import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
+import { ClusterFrame } from "./cluster-frame";
 
 describe("<ClusterFrame />", () => {
   let render: () => RenderResult;
@@ -32,13 +33,12 @@ describe("<ClusterFrame />", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    render = () => testingLibraryRender((
-      <DiContextProvider value={{ di }}>
-        <Router history={di.inject(historyInjectionToken)}>
-          {DefaultProps(ClusterFrame)}
-        </Router>
-      </DiContextProvider>
-    ));
+    render = () =>
+      testingLibraryRender(
+        <DiContextProvider value={{ di }}>
+          <Router history={di.inject(historyInjectionToken)}>{DefaultProps(ClusterFrame)}</Router>
+        </DiContextProvider>,
+      );
 
     di.override(subscribeStoresInjectable, () => jest.fn().mockImplementation(() => jest.fn()));
     di.override(legacyOnChannelListenInjectable, () => jest.fn().mockImplementation(() => jest.fn()));
@@ -92,7 +92,9 @@ describe("<ClusterFrame />", () => {
           const result = render();
 
           expect(
-            result.getByText("An error has occurred. No route can be found matching the current route, which is also the starting route."),
+            result.getByText(
+              "An error has occurred. No route can be found matching the current route, which is also the starting route.",
+            ),
           ).toBeInTheDocument();
         });
       });

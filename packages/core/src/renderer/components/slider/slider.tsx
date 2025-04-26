@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,11 +8,11 @@
 // API docs: https://material-ui.com/lab/api/slider/
 import "./slider.scss";
 
-import React, { Component } from "react";
-import { cssNames } from "@freelensapp/utilities";
-import type { SliderClassKey, SliderProps as MaterialSliderProps } from "@mui/material/Slider";
-import MaterialSlider from "@mui/material/Slider";
 import assert from "assert";
+import { cssNames } from "@freelensapp/utilities";
+import type { SliderProps as MaterialSliderProps, SliderClassKey } from "@mui/material/Slider";
+import MaterialSlider from "@mui/material/Slider";
+import React, { Component } from "react";
 
 export interface SliderProps extends Omit<MaterialSliderProps, "onChange"> {
   className?: string;

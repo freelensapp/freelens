@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -7,18 +8,25 @@
 // API docs: https://react-select.com/
 import "./select.scss";
 
-import React from "react";
-import type { IComputedValue, ObservableSet } from "mobx";
-import { action, computed, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-import ReactSelect, { components, createFilter } from "react-select";
-import type { Props as ReactSelectProps, GroupBase, MultiValue, OptionsOrGroups, PropsValue, SingleValue } from "react-select";
-import type { LensTheme } from "../../themes/lens-theme";
 import type { ObservableHashSet, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import activeThemeInjectable from "../../themes/active.injectable";
 import autoBindReact from "auto-bind/react";
+import type { IComputedValue, ObservableSet } from "mobx";
+import { action, computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
+import ReactSelect, { components, createFilter } from "react-select";
+import type {
+  GroupBase,
+  MultiValue,
+  OptionsOrGroups,
+  PropsValue,
+  Props as ReactSelectProps,
+  SingleValue,
+} from "react-select";
+import activeThemeInjectable from "../../themes/active.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
 
 const { Menu } = components;
 
@@ -85,7 +93,13 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-export function onMultiSelectFor<Value, Option extends SelectOption<Value>, Group extends GroupBase<Option> = GroupBase<Option>>(collection: Set<Value> | ObservableSet<Value> | ObservableHashSet<Value>): SelectProps<Value, Option, true, Group>["onChange"] {
+export function onMultiSelectFor<
+  Value,
+  Option extends SelectOption<Value>,
+  Group extends GroupBase<Option> = GroupBase<Option>,
+>(
+  collection: Set<Value> | ObservableSet<Value> | ObservableHashSet<Value>,
+): SelectProps<Value, Option, true, Group>["onChange"] {
   return action((newValue, meta) => {
     switch (meta.action) {
       case "clear":
@@ -139,21 +153,23 @@ class NonInjectedSelect<
     }
   }
 
-  private filterSelectedMultiValue(values: MultiValue<Value> | null, options: OptionsOrGroups<Option, Group>): MultiValue<Option> | null {
+  private filterSelectedMultiValue(
+    values: MultiValue<Value> | null,
+    options: OptionsOrGroups<Option, Group>,
+  ): MultiValue<Option> | null {
     if (!values) {
       return null;
     }
 
     return options
-      .flatMap(option => (
-        isGroup(option)
-          ? option.options
-          : option
-      ))
-      .filter(option => values.includes(option.value));
+      .flatMap((option) => (isGroup(option) ? option.options : option))
+      .filter((option) => values.includes(option.value));
   }
 
-  private findSelectedSingleValue(value: SingleValue<Value>, options: OptionsOrGroups<Option, Group>): SingleValue<Option> {
+  private findSelectedSingleValue(
+    value: SingleValue<Value>,
+    options: OptionsOrGroups<Option, Group>,
+  ): SingleValue<Option> {
     if (value === null) {
       return null;
     }
@@ -173,7 +189,11 @@ class NonInjectedSelect<
     return null;
   }
 
-  private findSelectedPropsValue(value: PropsValue<Value>, options: OptionsOrGroups<Option, Group>, isMulti: IsMulti | undefined): PropsValue<Option> {
+  private findSelectedPropsValue(
+    value: PropsValue<Value>,
+    options: OptionsOrGroups<Option, Group>,
+    isMulti: IsMulti | undefined,
+  ): PropsValue<Option> {
     if (isMulti) {
       return this.filterSelectedMultiValue(value as MultiValue<Value>, options);
     }
@@ -185,10 +205,7 @@ class NonInjectedSelect<
     const {
       className,
       menuClass,
-      components: {
-        Menu: WrappedMenu = Menu,
-        ...components
-      } = {},
+      components: { Menu: WrappedMenu = Menu, ...components } = {},
       styles,
       value = null,
       options,
@@ -198,14 +215,14 @@ class NonInjectedSelect<
       ...props
     } = this.props;
 
-    const convertedOptions = options.map(option => (
+    const convertedOptions = options.map((option) =>
       typeof option === "string"
-        ? {
-          value: option,
-          label: option,
-        } as unknown as Option
-        : option
-    ));
+        ? ({
+            value: option,
+            label: option,
+          } as unknown as Option)
+        : option,
+    );
 
     if (options.length > 0 && !(options?.[0] as { label?: string }).label) {
       console.warn("[SELECT]: will not display any label in dropdown");
@@ -215,7 +232,7 @@ class NonInjectedSelect<
       <ReactSelect
         {...props}
         styles={{
-          menuPortal: styles => ({
+          menuPortal: (styles) => ({
             ...styles,
             zIndex: "auto",
           }),
@@ -247,14 +264,19 @@ class NonInjectedSelect<
   }
 }
 
-export const Select = withInjectables<Dependencies, SelectProps<unknown, SelectOption<unknown>, boolean>>(NonInjectedSelect, {
-  getProps: (di, props) => ({
-    ...props,
-    activeTheme: di.inject(activeThemeInjectable),
-  }),
-}) as <
+export const Select = withInjectables<Dependencies, SelectProps<unknown, SelectOption<unknown>, boolean>>(
+  NonInjectedSelect,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      activeTheme: di.inject(activeThemeInjectable),
+    }),
+  },
+) as <
   Value,
   Option extends SelectOption<Value>,
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>,
->(props: SelectProps<Value, Option, IsMulti, Group>) => React.ReactElement;
+>(
+  props: SelectProps<Value, Option, IsMulti, Group>,
+) => React.ReactElement;

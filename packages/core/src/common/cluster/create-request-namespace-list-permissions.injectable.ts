@@ -1,11 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
-import { getInjectable } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getInjectable } from "@ogre-tools/injectable";
 import type { KubeApiResource } from "../rbac";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
@@ -25,26 +26,29 @@ const createRequestNamespaceListPermissionsInjectable = getInjectable({
 
     return (api) => async (namespace) => {
       try {
-        const { body: { status }} = await api.createSelfSubjectRulesReview({
+        const {
+          body: { status },
+        } = await api.createSelfSubjectRulesReview({
           apiVersion: "authorization.k8s.io/v1",
           kind: "SelfSubjectRulesReview",
           spec: { namespace },
         });
 
         if (!status || status.incomplete) {
-          logger.warn(`[AUTHORIZATION-NAMESPACE-REVIEW]: allowing all resources in namespace="${namespace}" due to incomplete SelfSubjectRulesReview: ${status?.evaluationError}`);
+          logger.warn(
+            `[AUTHORIZATION-NAMESPACE-REVIEW]: allowing all resources in namespace="${namespace}" due to incomplete SelfSubjectRulesReview: ${status?.evaluationError}`,
+          );
 
           return () => true;
         }
 
         const { resourceRules } = status;
 
-        return (resource) => (
+        return (resource) =>
           resourceRules
             .filter(({ apiGroups = ["*"] }) => apiGroups.includes("*") || apiGroups.includes(resource.group))
             .filter(({ resources = ["*"] }) => resources.includes("*") || resources.includes(resource.apiName))
-            .some(({ verbs }) => verbs.includes("*") || verbs.includes("list"))
-        );
+            .some(({ verbs }) => verbs.includes("*") || verbs.includes("list"));
       } catch (error) {
         logger.error(`[AUTHORIZATION-NAMESPACE-REVIEW]: failed to create subject rules review`, { namespace, error });
 

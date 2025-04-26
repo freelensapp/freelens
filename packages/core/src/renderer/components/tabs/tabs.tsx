@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./tabs.scss";
-import type { DOMAttributes } from "react";
-import React from "react";
+import { Icon } from "@freelensapp/icon";
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
-import { Icon } from "@freelensapp/icon";
 import autoBindReact from "auto-bind/react";
+import type { DOMAttributes } from "react";
+import React from "react";
 
 const TabsContext = React.createContext<TabsContextValue<unknown>>({});
 
@@ -41,11 +42,7 @@ export class Tabs<D> extends React.PureComponent<TabsProps<D>> {
 
     return (
       <TabsContext.Provider value={{ autoFocus, value, onChange }}>
-        <div
-          {...elemProps}
-          className={className}
-          ref={elem => this.elem = elem}
-        />
+        <div {...elemProps} className={className} ref={(elem) => (this.elem = elem)} />
       </TabsContext.Provider>
     );
   }
@@ -121,7 +118,7 @@ export class Tab<D> extends React.PureComponent<TabProps<D>> {
     let { className } = this.props;
 
     className = cssNames("Tab flex gaps align-center", className, {
-      "active": this.isActive,
+      active: this.isActive,
       disabled,
     });
 
@@ -136,10 +133,8 @@ export class Tab<D> extends React.PureComponent<TabProps<D>> {
         role="tab"
         ref={this.ref}
       >
-        {typeof icon === "string" ? <Icon small material={icon}/> : icon}
-        <div className="label">
-          {label}
-        </div>
+        {typeof icon === "string" ? <Icon small material={icon} /> : icon}
+        <div className="label">{label}</div>
       </div>
     );
   }

@@ -1,24 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./list-view.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import { Badge } from "../badge";
 import { cssNames } from "@freelensapp/utilities";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { KubeObjectAge } from "../kube-object/age";
-import type { HorizontalPodAutoscalerStore } from "./store";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
-import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+import { observer } from "mobx-react";
+import React from "react";
+import { Badge } from "../badge";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { KubeObjectAge } from "../kube-object/age";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+import type { HorizontalPodAutoscalerStore } from "./store";
+import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
 
 enum columnId {
   name = "name",
@@ -49,9 +50,7 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
 
     return (
       <p>
-        {this.props.getMetrics(hpa)[0]}
-        {" "}
-        {metricsRemain}
+        {this.props.getMetrics(hpa)[0]} {metricsRemain}
       </p>
     );
   }
@@ -65,16 +64,14 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
           className="HorizontalPodAutoscalers"
           store={this.props.horizontalPodAutoscalerStore}
           sortingCallbacks={{
-            [columnId.name]: hpa => hpa.getName(),
-            [columnId.namespace]: hpa => hpa.getNs(),
-            [columnId.minPods]: hpa => hpa.getMinPods(),
-            [columnId.maxPods]: hpa => hpa.getMaxPods(),
-            [columnId.replicas]: hpa => hpa.getReplicas(),
-            [columnId.age]: hpa => -hpa.getCreationTimestamp(),
+            [columnId.name]: (hpa) => hpa.getName(),
+            [columnId.namespace]: (hpa) => hpa.getNs(),
+            [columnId.minPods]: (hpa) => hpa.getMinPods(),
+            [columnId.maxPods]: (hpa) => hpa.getMaxPods(),
+            [columnId.replicas]: (hpa) => hpa.getReplicas(),
+            [columnId.age]: (hpa) => -hpa.getCreationTimestamp(),
           }}
-          searchFilters={[
-            hpa => hpa.getSearchFields(),
-          ]}
+          searchFilters={[(hpa) => hpa.getSearchFields()]}
           renderHeaderTitle="Horizontal Pod Autoscalers"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name },
@@ -87,19 +84,17 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Status", className: "status scrollable", id: columnId.status },
           ]}
-          renderTableContents={hpa => [
+          renderTableContents={(hpa) => [
             hpa.getName(),
             <KubeObjectStatusIcon key="icon" object={hpa} />,
-            <NamespaceSelectBadge
-              key="namespace"
-              namespace={hpa.getNs()}
-            />,
+            <NamespaceSelectBadge key="namespace" namespace={hpa.getNs()} />,
             this.getTargets(hpa),
             hpa.getMinPods(),
             hpa.getMaxPods(),
             hpa.getReplicas(),
             <KubeObjectAge key="age" object={hpa} />,
-            hpa.getConditions()
+            hpa
+              .getConditions()
               .filter(({ isReady }) => isReady)
               .map(({ type, tooltip }) => (
                 <Badge

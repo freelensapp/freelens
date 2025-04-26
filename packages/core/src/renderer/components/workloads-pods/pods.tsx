@@ -1,22 +1,23 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./pods.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { EventStore } from "../events/store";
-import type { PodStore } from "./store";
-import eventStoreInjectable from "../events/store.injectable";
-import podStoreInjectable from "./store.injectable";
+import type { Pod } from "@freelensapp/kube-object";
 import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
-import type { Pod } from "@freelensapp/kube-object";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
+import type { EventStore } from "../events/store";
+import eventStoreInjectable from "../events/store.injectable";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
+import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import type { PodStore } from "./store";
+import podStoreInjectable from "./store.injectable";
 
 interface Dependencies {
   eventStore: EventStore;
@@ -25,11 +26,7 @@ interface Dependencies {
 }
 
 const NonInjectedPods = observer((props: Dependencies) => {
-  const {
-    columns,
-    eventStore,
-    podStore,
-  } = props;
+  const { columns, eventStore, podStore } = props;
 
   return (
     <SiblingsInTabLayout>
@@ -40,10 +37,10 @@ const NonInjectedPods = observer((props: Dependencies) => {
         tableId="workloads_pods"
         isConfigurable
         searchFilters={[
-          pod => pod.getSearchFields(),
-          pod => pod.getStatusMessage(),
-          pod => pod.status?.podIP,
-          pod => pod.getNodeName(),
+          (pod) => pod.getSearchFields(),
+          (pod) => pod.getStatusMessage(),
+          (pod) => pod.status?.podIP,
+          (pod) => pod.getNodeName(),
         ]}
         renderHeaderTitle="Pods"
         renderTableHeader={[]}

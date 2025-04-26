@@ -1,18 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
-import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
-import type { DownloadPlatformUpdate } from "./download-platform-update.injectable";
-import downloadPlatformUpdateInjectable from "./download-platform-update.injectable";
-import type { AppUpdater } from "electron-updater";
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { getPromiseStatus } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getPromiseStatus } from "@freelensapp/test-utils";
 import { noop } from "@freelensapp/utilities";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { AppUpdater } from "electron-updater";
+import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
+import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
+import type { DownloadPlatformUpdate } from "./download-platform-update.injectable";
+import downloadPlatformUpdateInjectable from "./download-platform-update.injectable";
 
 describe("download-platform-update", () => {
   let downloadPlatformUpdate: DownloadPlatformUpdate;
@@ -84,9 +86,7 @@ describe("download-platform-update", () => {
       beforeEach(() => {
         onDownloadProgressMock.mockClear();
 
-        const [, callback] = electronUpdaterOnMock.mock.calls.find(
-          ([event]) => event === "download-progress",
-        );
+        const [, callback] = electronUpdaterOnMock.mock.calls.find(([event]) => event === "download-progress");
 
         callback({
           percent: 42,
@@ -119,10 +119,7 @@ describe("download-platform-update", () => {
         });
 
         it("stops watching for download progress", () => {
-          expect(electronUpdaterOffMock).toHaveBeenCalledWith(
-            "download-progress",
-            expect.any(Function),
-          );
+          expect(electronUpdaterOffMock).toHaveBeenCalledWith("download-progress", expect.any(Function));
         });
 
         it("when starting download again, resets progress of download", () => {
@@ -146,10 +143,7 @@ describe("download-platform-update", () => {
         });
 
         it("stops watching for download progress", () => {
-          expect(electronUpdaterOffMock).toHaveBeenCalledWith(
-            "download-progress",
-            expect.any(Function),
-          );
+          expect(electronUpdaterOffMock).toHaveBeenCalledWith("download-progress", expect.any(Function));
         });
 
         it("resolves with failure", async () => {

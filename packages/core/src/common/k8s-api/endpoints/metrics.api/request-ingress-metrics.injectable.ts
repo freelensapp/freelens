@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
 import requestMetricsInjectable from "./request-metrics.injectable";
@@ -23,14 +25,17 @@ const requestIngressMetricsInjectable = getInjectable({
     return (ingress, namespace) => {
       const opts = { category: "ingress", ingress, namespace };
 
-      return requestMetrics({
-        bytesSentSuccess: opts,
-        bytesSentFailure: opts,
-        requestDurationSeconds: opts,
-        responseDurationSeconds: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          bytesSentSuccess: opts,
+          bytesSentFailure: opts,
+          requestDurationSeconds: opts,
+          responseDurationSeconds: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

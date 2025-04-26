@@ -1,4 +1,4 @@
-import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
+import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
 import { lensBuildEnvironmentInjectionToken } from "./environment-token";
 
 describe("environment-token coverage tests", () => {

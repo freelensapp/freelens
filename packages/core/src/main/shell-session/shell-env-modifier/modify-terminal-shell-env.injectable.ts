@@ -1,16 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import type { ClusterId } from "../../../common/cluster-types";
-import { isDefined } from "@freelensapp/utilities";
 import mainExtensionsInjectable from "../../../extensions/main-extensions.injectable";
 import catalogEntityRegistryInjectable from "../../catalog/entity-registry.injectable";
 
-export type ModifyTerminalShellEnv = (clusterId: ClusterId, env: Partial<Record<string, string>>) => Partial<Record<string, string>>;
+export type ModifyTerminalShellEnv = (
+  clusterId: ClusterId,
+  env: Partial<Record<string, string>>,
+) => Partial<Record<string, string>>;
 
 const modifyTerminalShellEnvInjectable = getInjectable({
   id: "terminal-shell-env-modify",
@@ -18,11 +22,12 @@ const modifyTerminalShellEnvInjectable = getInjectable({
   instantiate: (di): ModifyTerminalShellEnv => {
     const extensions = di.inject(mainExtensionsInjectable);
     const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
-    const terminalShellEnvModifiers = computed(() => (
-      extensions.get()
+    const terminalShellEnvModifiers = computed(() =>
+      extensions
+        .get()
         .map((extension) => extension.terminalShellEnvModifier)
-        .filter(isDefined)
-    ));
+        .filter(isDefined),
+    );
 
     return (clusterId, env) => {
       const modifiers = terminalShellEnvModifiers.get();

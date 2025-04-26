@@ -22,7 +22,7 @@
     "precompute-versions": "tsc --pretty --project build",
     "compute-versions": "node ./build/compute-versions.mjs",
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@types/semver": "^7.7.0",
-    "fast-xml-parser": "^5.2.0",
+    "fast-xml-parser": "^5.2.1",
     "node-fetch": "^3.3.2",
     "semver": "^7.7.1",
     "ts-node": "^10.9.2",

@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import type { RenderResult } from "@testing-library/react";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
-import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 
 describe("preferences - navigation to terminal preferences", () => {
   let applicationBuilder: ApplicationBuilder;
@@ -34,10 +36,7 @@ describe("preferences - navigation to terminal preferences", () => {
     });
 
     it("does not show terminal preferences yet", () => {
-      const { discovered } = discover.querySingleElement(
-        "preference-page",
-        "terminal-page",
-      );
+      const { discovered } = discover.querySingleElement("preference-page", "terminal-page");
 
       expect(discovered).toBeNull();
     });
@@ -51,12 +50,8 @@ describe("preferences - navigation to terminal preferences", () => {
         expect(rendered.container).toMatchSnapshot();
       });
 
-
       it("shows terminal preferences", () => {
-        const { discovered } = discover.getSingleElement(
-          "preference-page",
-          "terminal-page",
-        );
+        const { discovered } = discover.getSingleElement("preference-page", "terminal-page");
 
         expect(discovered).not.toBeNull();
       });

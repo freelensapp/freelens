@@ -1,10 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { Namespace } from "@freelensapp/kube-object";
+import type { Disposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
@@ -14,14 +18,11 @@ import directoryForUserDataInjectable from "../../../common/app-paths/directory-
 import { Cluster } from "../../../common/cluster/cluster";
 import type { Fetch } from "../../../common/fetch/fetch.injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
-import { Namespace } from "@freelensapp/kube-object";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { Disposer } from "@freelensapp/utilities";
-import { disposer } from "@freelensapp/utilities";
 import { renderFor } from "../test-utils/renderFor";
 import { NamespaceSelectFilter } from "./namespace-select-filter";
 import type { NamespaceStore } from "./store";
@@ -58,11 +59,15 @@ describe("<NamespaceSelectFilter />", () => {
     fetchMock = asyncFn();
     di.override(fetchInjectable, () => fetchMock);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     namespaceStore = di.inject(namespaceStoreInjectable);
 
@@ -72,9 +77,7 @@ describe("<NamespaceSelectFilter />", () => {
 
     const render = renderFor(di);
 
-    result = render((
-      <NamespaceSelectFilter id="namespace-select-filter" />
-    ));
+    result = render(<NamespaceSelectFilter id="namespace-select-filter" />);
   });
 
   afterEach(() => {
@@ -83,28 +86,32 @@ describe("<NamespaceSelectFilter />", () => {
 
   describe("once the subscribe resolves", () => {
     beforeEach(async () => {
-      await fetchMock.resolveSpecific([
-        "https://127.0.0.1:12345/api-kube/api/v1/namespaces",
-      ], createMockResponseFromString("https://127.0.0.1:12345/api-kube/api/v1/namespaces", JSON.stringify({
-        apiVersion: "v1",
-        kind: "NamespaceList",
-        metadata: {},
-        items: [
-          createNamespace("test-1"),
-          createNamespace("test-2"),
-          createNamespace("test-3"),
-          createNamespace("test-4"),
-          createNamespace("test-5"),
-          createNamespace("test-6"),
-          createNamespace("test-7"),
-          createNamespace("test-8"),
-          createNamespace("test-9"),
-          createNamespace("test-10"),
-          createNamespace("test-11"),
-          createNamespace("test-12"),
-          createNamespace("test-13"),
-        ],
-      })));
+      await fetchMock.resolveSpecific(
+        ["https://127.0.0.1:12345/api-kube/api/v1/namespaces"],
+        createMockResponseFromString(
+          "https://127.0.0.1:12345/api-kube/api/v1/namespaces",
+          JSON.stringify({
+            apiVersion: "v1",
+            kind: "NamespaceList",
+            metadata: {},
+            items: [
+              createNamespace("test-1"),
+              createNamespace("test-2"),
+              createNamespace("test-3"),
+              createNamespace("test-4"),
+              createNamespace("test-5"),
+              createNamespace("test-6"),
+              createNamespace("test-7"),
+              createNamespace("test-8"),
+              createNamespace("test-9"),
+              createNamespace("test-10"),
+              createNamespace("test-11"),
+              createNamespace("test-12"),
+              createNamespace("test-13"),
+            ],
+          }),
+        ),
+      );
     });
 
     it("renders", () => {
@@ -197,7 +204,9 @@ describe("<NamespaceSelectFilter />", () => {
                 });
 
                 it("keeps menu open", () => {
-                  expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).not.toBeNull();
+                  expect(
+                    result.baseElement.querySelector("#react-select-namespace-select-filter-listbox"),
+                  ).not.toBeNull();
                 });
 
                 it("does not show 'kube-system' as selected", () => {
@@ -228,7 +237,9 @@ describe("<NamespaceSelectFilter />", () => {
                   });
 
                   it("closes menu", () => {
-                    expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).toBeNull();
+                    expect(
+                      result.baseElement.querySelector("#react-select-namespace-select-filter-listbox"),
+                    ).toBeNull();
                   });
                 });
               });
@@ -241,7 +252,9 @@ describe("<NamespaceSelectFilter />", () => {
                 });
 
                 it("keeps menu open", () => {
-                  expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).not.toBeNull();
+                  expect(
+                    result.baseElement.querySelector("#react-select-namespace-select-filter-listbox"),
+                  ).not.toBeNull();
                 });
               });
             });
@@ -257,7 +270,9 @@ describe("<NamespaceSelectFilter />", () => {
         });
 
         it("should show placeholder text as 'All namespaces'", () => {
-          expect(result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder")).toHaveTextContent("All namespaces");
+          expect(
+            result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
+          ).toHaveTextContent("All namespaces");
         });
 
         describe("when 'test-2' is clicked", () => {
@@ -266,7 +281,9 @@ describe("<NamespaceSelectFilter />", () => {
           });
 
           it("should not show placeholder text as 'All namespaces'", () => {
-            expect(result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder")).not.toHaveTextContent("All namespaces");
+            expect(
+              result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
+            ).not.toHaveTextContent("All namespaces");
           });
 
           describe("when 'test-2' is clicked", () => {
@@ -275,7 +292,9 @@ describe("<NamespaceSelectFilter />", () => {
             });
 
             it("should not show placeholder as 'All namespaces'", () => {
-              expect(result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder")).not.toHaveTextContent("All namespaces");
+              expect(
+                result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
+              ).not.toHaveTextContent("All namespaces");
             });
 
             describe("when multi-selection key is raised", () => {
@@ -286,7 +305,9 @@ describe("<NamespaceSelectFilter />", () => {
               });
 
               it("should show placeholder text as 'All namespaces'", () => {
-                expect(result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder")).not.toHaveTextContent("All namespaces");
+                expect(
+                  result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
+                ).not.toHaveTextContent("All namespaces");
               });
             });
           });

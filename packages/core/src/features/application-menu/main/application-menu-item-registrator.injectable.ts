@@ -1,10 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { computed } from "mobx";
+
 import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
+import logErrorInjectable from "../../../common/log-error.injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensMainExtension } from "../../../extensions/lens-main-extension";
 import type {
@@ -15,7 +18,6 @@ import type {
 } from "./menu-items/application-menu-item-injection-token";
 import applicationMenuItemInjectionToken from "./menu-items/application-menu-item-injection-token";
 import type { MenuRegistration } from "./menu-registration";
-import logErrorInjectable from "../../../common/log-error.injectable";
 
 const applicationMenuItemRegistratorInjectable = getInjectable({
   id: "application-menu-item-registrator",
@@ -30,9 +32,7 @@ const applicationMenuItemRegistratorInjectable = getInjectable({
       return computed(() => {
         const appMenus = Array.isArray(mainExtension.appMenus) ? mainExtension.appMenus : mainExtension.appMenus.get();
 
-        return appMenus.flatMap(
-          toRecursedInjectables([mainExtension.sanitizedExtensionId]),
-        );
+        return appMenus.flatMap(toRecursedInjectables([mainExtension.sanitizedExtensionId]));
       });
     };
   },
@@ -43,16 +43,13 @@ const applicationMenuItemRegistratorInjectable = getInjectable({
 export default applicationMenuItemRegistratorInjectable;
 
 const toRecursedInjectablesFor = (logError: (errorMessage: string) => void) => {
-  const toRecursedInjectables = (previousIdPath: string[]) =>
+  const toRecursedInjectables =
+    (previousIdPath: string[]) =>
     (
       registration: MenuRegistration,
       index: number,
       // Todo: new version of injectable would require less type parameters with defaults.
-    ): Injectable<
-      ApplicationMenuItemTypes,
-      ApplicationMenuItemTypes,
-      void
-      >[] => {
+    ): Injectable<ApplicationMenuItemTypes, ApplicationMenuItemTypes, void>[] => {
       const previousIdPathString = previousIdPath.join("/");
       const registrationId = registration.id || index.toString();
       const currentIdPath = [...previousIdPath, registrationId];
@@ -67,7 +64,9 @@ const toRecursedInjectablesFor = (logError: (errorMessage: string) => void) => {
       });
 
       if (!menuItem) {
-        logError(`[MENU]: Tried to register menu item "${currentIdPathString}" but it is not recognizable as any of ApplicationMenuItemTypes`);
+        logError(
+          `[MENU]: Tried to register menu item "${currentIdPathString}" but it is not recognizable as any of ApplicationMenuItemTypes`,
+        );
 
         return [];
       }
@@ -82,9 +81,7 @@ const toRecursedInjectablesFor = (logError: (errorMessage: string) => void) => {
         }),
 
         ...((registration.submenu as MenuRegistration[])
-          ? (registration.submenu as MenuRegistration[]).flatMap(
-            toRecursedInjectables(currentIdPath),
-          )
+          ? (registration.submenu as MenuRegistration[]).flatMap(toRecursedInjectables(currentIdPath))
           : []),
       ];
     };
@@ -136,9 +133,7 @@ const getApplicationMenuItem = ({
       isShown: registration.visible ?? true,
       orderNumber,
 
-      ...(registration.accelerator
-        ? { keyboardShortcut: registration.accelerator as string }
-        : {}),
+      ...(registration.accelerator ? { keyboardShortcut: registration.accelerator as string } : {}),
     } as ClickableMenuItem;
   }
 
@@ -152,9 +147,7 @@ const getApplicationMenuItem = ({
       orderNumber,
       actionName: registration.role,
 
-      ...(registration.accelerator
-        ? { keyboardShortcut: registration.accelerator as string }
-        : {}),
+      ...(registration.accelerator ? { keyboardShortcut: registration.accelerator as string } : {}),
     } as OsActionMenuItem;
   }
 

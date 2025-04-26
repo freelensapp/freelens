@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -21,8 +22,5 @@ export interface KubeObjectAgeProps {
 }
 
 export const KubeObjectAge = ({ object, compact = true }: KubeObjectAgeProps) => (
-  <ReactiveDuration
-    timestamp={object.metadata.creationTimestamp}
-    compact={compact}
-  />
+  <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
 );

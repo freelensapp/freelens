@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiPrefix } from "../vars";
 import isDebuggingInjectable from "../vars/is-debugging.injectable";
@@ -18,15 +20,18 @@ const apiBaseInjectable = getInjectable({
     const serverAddress = di.inject(apiBaseServerAddressInjectionToken);
     const hostHeaderValue = di.inject(apiBaseHostHeaderInjectionToken);
 
-    return createJsonApi({
-      serverAddress,
-      apiBase: apiPrefix,
-      debug: isDevelopment || isDebugging,
-    }, {
-      headers: {
-        "Host": hostHeaderValue,
+    return createJsonApi(
+      {
+        serverAddress,
+        apiBase: apiPrefix,
+        debug: isDevelopment || isDebugging,
       },
-    });
+      {
+        headers: {
+          Host: hostHeaderValue,
+        },
+      },
+    );
   },
 });
 

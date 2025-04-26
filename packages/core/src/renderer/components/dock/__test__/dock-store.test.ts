@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -61,9 +62,7 @@ describe("DockStore", () => {
   });
 
   it("closes last tab and selects none", () => {
-    dockStore.tabs = [
-      { id: "create", kind: TabKind.CREATE_RESOURCE, title: "Create resource", pinned: false },
-    ];
+    dockStore.tabs = [{ id: "create", kind: TabKind.CREATE_RESOURCE, title: "Create resource", pinned: false }];
     dockStore.closeTab("create");
 
     expect(dockStore.selectedTabId).toBeUndefined();

@@ -51,13 +51,13 @@ lint:
         run: yamlfmt -version
       known_good_version: 0.16.0
   enabled:
-    - yamlfmt@0.16.0
     - actionlint@1.7.7
+    - biome@1.9.4
     - git-diff-check
     - markdownlint@0.44.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
-    - trufflehog@3.88.23
+    - yamlfmt@0.16.0
     - yamllint@1.37.0
   disabled:
     - checkov
@@ -66,6 +66,7 @@ lint:
     - prettier
     - renovate
     - svgo
+    - trufflehog
 actions:
   enabled:
     - trunk-announce

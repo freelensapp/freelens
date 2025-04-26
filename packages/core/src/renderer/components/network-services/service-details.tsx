@@ -1,30 +1,30 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./service-details.scss";
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { Badge } from "../badge";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Service } from "@freelensapp/kube-object";
-import { ServicePortComponent } from "./service-port-component";
-import type { EndpointsStore } from "../network-endpoints/store";
-import { ServiceDetailsEndpoint } from "./service-details-endpoint";
-import type { PortForwardStore } from "../../port-forward";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import type { PortForwardStore } from "../../port-forward";
+import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import { Badge } from "../badge";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { EndpointsStore } from "../network-endpoints/store";
 import endpointsStoreInjectable from "../network-endpoints/store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
+import { ServiceDetailsEndpoint } from "./service-details-endpoint";
+import { ServicePortComponent } from "./service-port-component";
 
-export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {
-}
+export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -36,17 +36,10 @@ interface Dependencies {
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
   componentDidMount() {
-    const {
-      object: service,
-      subscribeStores,
-      endpointsStore,
-      portForwardStore,
-    } = this.props;
+    const { object: service, subscribeStores, endpointsStore, portForwardStore } = this.props;
 
     disposeOnUnmount(this, [
-      subscribeStores([
-        endpointsStore,
-      ], {
+      subscribeStores([endpointsStore], {
         namespaces: [service.getNs()],
       }),
       portForwardStore.watch(),
@@ -77,33 +70,23 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     return (
       <div className="ServicesDetails">
         <DrawerItem name="Selector" labelsOnly>
-          {service.getSelector().map(selector => <Badge key={selector} label={selector}/>)}
+          {service.getSelector().map((selector) => (
+            <Badge key={selector} label={selector} />
+          ))}
         </DrawerItem>
 
-        <DrawerItem name="Type">
-          {spec.type}
-        </DrawerItem>
+        <DrawerItem name="Type">{spec.type}</DrawerItem>
 
-        <DrawerItem name="Session Affinity">
-          {spec.sessionAffinity}
-        </DrawerItem>
+        <DrawerItem name="Session Affinity">{spec.sessionAffinity}</DrawerItem>
 
         <DrawerTitle>Connection</DrawerTitle>
 
-        <DrawerItem name="Cluster IP">
-          {spec.clusterIP}
-        </DrawerItem>
+        <DrawerItem name="Cluster IP">{spec.clusterIP}</DrawerItem>
 
-        <DrawerItem
-          name="Cluster IPs"
-          hidden={!service.getClusterIps().length}
-          labelsOnly
-        >
-          {
-            service.getClusterIps().map(label => (
-              <Badge key={label} label={label}/>
-            ))
-          }
+        <DrawerItem name="Cluster IPs" hidden={!service.getClusterIps().length} labelsOnly>
+          {service.getClusterIps().map((label) => (
+            <Badge key={label} label={label} />
+          ))}
         </DrawerItem>
 
         <DrawerItem name="IP families" hidden={!service.getIpFamilies().length}>
@@ -116,34 +99,28 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
 
         {externalIps.length > 0 && (
           <DrawerItem name="External IPs">
-            {externalIps.map(ip => <div key={ip}>{ip}</div>)}
+            {externalIps.map((ip) => (
+              <div key={ip}>{ip}</div>
+            ))}
           </DrawerItem>
         )}
 
         <DrawerItem name="Ports">
           <div>
-            {
-              service.getPorts().map((port) => (
-                <ServicePortComponent
-                  service={service}
-                  port={port}
-                  key={port.toString()}
-                />
-              ))
-            }
+            {service.getPorts().map((port) => (
+              <ServicePortComponent service={service} port={port} key={port.toString()} />
+            ))}
           </div>
         </DrawerItem>
 
         {spec.type === "LoadBalancer" && spec.loadBalancerIP && (
-          <DrawerItem name="Load Balancer IP">
-            {spec.loadBalancerIP}
-          </DrawerItem>
+          <DrawerItem name="Load Balancer IP">{spec.loadBalancerIP}</DrawerItem>
         )}
 
         {endpoints && (
           <>
             <DrawerTitle>Endpoint</DrawerTitle>
-            <ServiceDetailsEndpoint endpoints={endpoints}/>
+            <ServiceDetailsEndpoint endpoints={endpoints} />
           </>
         )}
       </div>

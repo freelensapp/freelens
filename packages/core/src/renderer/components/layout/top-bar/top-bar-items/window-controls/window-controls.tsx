@@ -1,13 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import React from "react";
-import { withInjectables } from "@ogre-tools/injectable-react";
+
 import { cssNames } from "@freelensapp/utilities";
-import styles from "../../top-bar.module.scss";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import React from "react";
 import isLinuxInjectable from "../../../../../../common/vars/is-linux.injectable";
 import toggleMaximizeWindowInjectable from "../../toggle-maximize-window/toggle-maximize-window.injectable";
+import styles from "../../top-bar.module.scss";
 import closeWindowInjectable from "./close-window/close-window.injectable";
 import maximizeWindowInjectable from "./maximize-window/maximize-window.injectable";
 
@@ -18,54 +20,25 @@ interface Dependencies {
   minimizeWindow: () => void;
 }
 
-const NonInjectedWindowControls = ({
-  isLinux,
-  toggleMaximizeWindow,
-  closeWindow,
-  minimizeWindow,
-}: Dependencies) => (
+const NonInjectedWindowControls = ({ isLinux, toggleMaximizeWindow, closeWindow, minimizeWindow }: Dependencies) => (
   <div
     className={cssNames(styles.windowButtons, {
       [styles.linuxButtons]: isLinux,
     })}
   >
-    <div
-      className={styles.minimize}
-      data-testid="window-minimize"
-      onClick={minimizeWindow}
-    >
+    <div className={styles.minimize} data-testid="window-minimize" onClick={minimizeWindow}>
       <svg shapeRendering="crispEdges" viewBox="0 0 12 12">
-        <rect
-          fill="currentColor"
-          width="10"
-          height="1"
-          x="1"
-          y="9" />
+        <rect fill="currentColor" width="10" height="1" x="1" y="9" />
       </svg>
     </div>
 
-    <div
-      className={styles.maximize}
-      data-testid="window-maximize"
-      onClick={toggleMaximizeWindow}
-    >
+    <div className={styles.maximize} data-testid="window-maximize" onClick={toggleMaximizeWindow}>
       <svg shapeRendering="crispEdges" viewBox="0 0 12 12">
-        <rect
-          width="9"
-          height="9"
-          x="1.5"
-          y="1.5"
-          fill="none"
-          stroke="currentColor"
-        />
+        <rect width="9" height="9" x="1.5" y="1.5" fill="none" stroke="currentColor" />
       </svg>
     </div>
 
-    <div
-      className={styles.close}
-      data-testid="window-close"
-      onClick={closeWindow}
-    >
+    <div className={styles.close} data-testid="window-close" onClick={closeWindow}>
       <svg shapeRendering="crispEdges" viewBox="0 0 12 12">
         <polygon
           fill="currentColor"

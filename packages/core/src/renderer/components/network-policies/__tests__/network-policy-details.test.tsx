@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import { findByTestId, findByText } from "@testing-library/react";
 import { NetworkPolicy } from "@freelensapp/kube-object";
-import { NetworkPolicyDetails } from "../network-policy-details";
+import { findByTestId, findByText } from "@testing-library/react";
+import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
+import { NetworkPolicyDetails } from "../network-policy-details";
 
 describe("NetworkPolicyDetails", () => {
   let render: DiRender;
@@ -50,15 +51,19 @@ describe("NetworkPolicyDetails", () => {
         uid: "1",
       },
       spec: {
-        egress: [{
-          to: [{
-            namespaceSelector: {
-              matchLabels: {
-                foo: "bar",
+        egress: [
+          {
+            to: [
+              {
+                namespaceSelector: {
+                  matchLabels: {
+                    foo: "bar",
+                  },
+                },
               },
-            },
-          }],
-        }],
+            ],
+          },
+        ],
         podSelector: {},
       },
       apiVersion: "networking.k8s.io/v1",
@@ -80,11 +85,15 @@ describe("NetworkPolicyDetails", () => {
         uid: "1",
       },
       spec: {
-        egress: [{
-          to: [{
-            namespaceSelector: {},
-          }],
-        }],
+        egress: [
+          {
+            to: [
+              {
+                namespaceSelector: {},
+              },
+            ],
+          },
+        ],
         podSelector: {},
       },
       apiVersion: "networking.k8s.io/v1",

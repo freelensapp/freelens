@@ -1,30 +1,31 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import "./view.scss";
 
 import { observer } from "mobx-react";
 import React from "react";
 
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { Input } from "../../../input";
+import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
+import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../../layout/sub-title";
 import { Wizard, WizardStep } from "../../../wizard";
-import type { AddClusterRoleDialogState } from "./state.injectable";
 import type { ClusterRoleStore } from "../store";
-import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import closeAddClusterRoleDialogInjectable from "./close.injectable";
 import clusterRoleStoreInjectable from "../store.injectable";
-import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
+import closeAddClusterRoleDialogInjectable from "./close.injectable";
+import type { AddClusterRoleDialogState } from "./state.injectable";
 import addClusterRoleDialogStateInjectable from "./state.injectable";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
-import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 
-export interface AddClusterRoleDialogProps extends Partial<DialogProps> {
-}
+export interface AddClusterRoleDialogProps extends Partial<DialogProps> {}
 
 interface Dependencies {
   state: AddClusterRoleDialogState;
@@ -37,13 +38,8 @@ interface Dependencies {
 @observer
 class NonInjectedAddClusterRoleDialog extends React.Component<AddClusterRoleDialogProps & Dependencies> {
   createRole = async () => {
-    const {
-      closeAddClusterRoleDialog,
-      clusterRoleStore,
-      showDetails,
-      state,
-      showCheckedErrorNotification,
-    } = this.props;
+    const { closeAddClusterRoleDialog, clusterRoleStore, showDetails, state, showCheckedErrorNotification } =
+      this.props;
 
     try {
       const role = await clusterRoleStore.create({ name: state.clusterRoleName.get() });
@@ -65,15 +61,8 @@ class NonInjectedAddClusterRoleDialog extends React.Component<AddClusterRoleDial
         isOpen={state.isOpen.get()}
         close={closeAddClusterRoleDialog}
       >
-        <Wizard
-          header={<h5>Create ClusterRole</h5>}
-          done={closeAddClusterRoleDialog}
-        >
-          <WizardStep
-            contentClass="flex gaps column"
-            nextLabel="Create"
-            next={this.createRole}
-          >
+        <Wizard header={<h5>Create ClusterRole</h5>} done={closeAddClusterRoleDialog}>
+          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.createRole}>
             <SubTitle title="ClusterRole Name" />
             <Input
               required
@@ -81,7 +70,7 @@ class NonInjectedAddClusterRoleDialog extends React.Component<AddClusterRoleDial
               placeholder="Name"
               iconLeft="supervisor_account"
               value={state.clusterRoleName.get()}
-              onChange={v => state.clusterRoleName.set(v)}
+              onChange={(v) => state.clusterRoleName.set(v)}
             />
           </WizardStep>
         </Wizard>
@@ -90,13 +79,16 @@ class NonInjectedAddClusterRoleDialog extends React.Component<AddClusterRoleDial
   }
 }
 
-export const AddClusterRoleDialog = withInjectables<Dependencies, AddClusterRoleDialogProps>(NonInjectedAddClusterRoleDialog, {
-  getProps: (di, props) => ({
-    ...props,
-    closeAddClusterRoleDialog: di.inject(closeAddClusterRoleDialogInjectable),
-    clusterRoleStore: di.inject(clusterRoleStoreInjectable),
-    showDetails: di.inject(showDetailsInjectable),
-    state: di.inject(addClusterRoleDialogStateInjectable),
-    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
-  }),
-});
+export const AddClusterRoleDialog = withInjectables<Dependencies, AddClusterRoleDialogProps>(
+  NonInjectedAddClusterRoleDialog,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      closeAddClusterRoleDialog: di.inject(closeAddClusterRoleDialogInjectable),
+      clusterRoleStore: di.inject(clusterRoleStoreInjectable),
+      showDetails: di.inject(showDetailsInjectable),
+      state: di.inject(addClusterRoleDialogStateInjectable),
+      showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    }),
+  },
+);

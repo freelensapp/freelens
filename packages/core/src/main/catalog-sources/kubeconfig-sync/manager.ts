@@ -1,16 +1,17 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IComputedValue, ObservableMap } from "mobx";
-import { action, observable, computed, makeObservable, observe } from "mobx";
-import type { CatalogEntity } from "../../../common/catalog";
+import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
 import { iter } from "@freelensapp/utilities";
-import type { Logger } from "@freelensapp/logger";
-import type { WatchKubeconfigFileChanges } from "./watch-file-changes.injectable";
+import type { IComputedValue, ObservableMap } from "mobx";
+import { action, computed, makeObservable, observable, observe } from "mobx";
+import type { CatalogEntity } from "../../../common/catalog";
 import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
+import type { WatchKubeconfigFileChanges } from "./watch-file-changes.injectable";
 
 interface KubeconfigSyncManagerDependencies {
   readonly directoryForKubeConfigs: string;
@@ -33,18 +34,17 @@ export class KubeconfigSyncManager {
      */
     const seenIds = new Set<string>();
 
-    return (
-      iter.chain(this.sources.values())
-        .flatMap(([entities]) => entities.get())
-        .filter(entity => {
-          const alreadySeen = seenIds.has(entity.getId());
+    return iter
+      .chain(this.sources.values())
+      .flatMap(([entities]) => entities.get())
+      .filter((entity) => {
+        const alreadySeen = seenIds.has(entity.getId());
 
-          seenIds.add(entity.getId());
+        seenIds.add(entity.getId());
 
-          return !alreadySeen;
-        })
-        .collect(items => [...items])
-    );
+        return !alreadySeen;
+      })
+      .collect((items) => [...items]);
   });
 
   @action
@@ -58,7 +58,7 @@ export class KubeconfigSyncManager {
       this.startNewSync(filePath);
     }
 
-    this.syncListDisposer = observe(this.dependencies.kubeconfigSyncs, change => {
+    this.syncListDisposer = observe(this.dependencies.kubeconfigSyncs, (change) => {
       switch (change.type) {
         case "add":
           this.startNewSync(change.name);
@@ -87,13 +87,12 @@ export class KubeconfigSyncManager {
       return this.dependencies.logger.debug(`already syncing file/folder`, { filePath });
     }
 
-    this.sources.set(
-      filePath,
-      this.dependencies.watchKubeconfigFileChanges(filePath),
-    );
+    this.sources.set(filePath, this.dependencies.watchKubeconfigFileChanges(filePath));
 
     this.dependencies.logger.info(`starting sync of file/folder`, { filePath });
-    this.dependencies.logger.debug(`${this.sources.size} files/folders watched`, { files: Array.from(this.sources.keys()) });
+    this.dependencies.logger.debug(`${this.sources.size} files/folders watched`, {
+      files: Array.from(this.sources.keys()),
+    });
   }
 
   @action
@@ -112,6 +111,8 @@ export class KubeconfigSyncManager {
     this.sources.delete(filePath);
 
     this.dependencies.logger.info(`stopping sync of file/folder`, { filePath });
-    this.dependencies.logger.debug(`${this.sources.size} files/folders watched`, { files: Array.from(this.sources.keys()) });
+    this.dependencies.logger.debug(`${this.sources.size} files/folders watched`, {
+      files: Array.from(this.sources.keys()),
+    });
   }
 }

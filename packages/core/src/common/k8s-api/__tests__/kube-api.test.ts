@@ -1,31 +1,32 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import asyncFn from "@async-fn/jest";
 import { KubeApi, PodApi } from "@freelensapp/kube-api";
+import { podApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
+import type { KubeStatusData } from "@freelensapp/kube-object";
+import { flushPromises } from "@freelensapp/test-utils";
+import type { DiContainer } from "@ogre-tools/injectable";
+import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
+import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
+import apiKubeInjectable from "../../../renderer/k8s/api-kube.injectable";
+import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
+import { createMockResponseFromString } from "../../../test-utils/mock-responses";
+import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import type { Fetch } from "../../fetch/fetch.injectable";
 import fetchInjectable from "../../fetch/fetch.injectable";
 import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remote-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "../create-kube-api-for-remote-cluster.injectable";
-import type { AsyncFnMock } from "@async-fn/jest";
-import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@freelensapp/test-utils";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
-import type { KubeStatusData } from "@freelensapp/kube-object";
-import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
-import { createMockResponseFromString } from "../../../test-utils/mock-responses";
-import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
-import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
-import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import apiKubeInjectable from "../../../renderer/k8s/api-kube.injectable";
-import type { DiContainer } from "@ogre-tools/injectable";
-import { podApiInjectable } from "@freelensapp/kube-api-specifics";
 
 // NOTE: this is fine because we are testing something that only exported
-// eslint-disable-next-line no-restricted-imports
 import { PodsApi } from "../../../extensions/common-api/k8s-api";
 import { Cluster } from "../../cluster/cluster";
 
@@ -40,11 +41,15 @@ describe("createKubeApiForRemoteCluster", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     fetchMock = asyncFn();
     di.override(fetchInjectable, () => fetchMock);
@@ -53,14 +58,17 @@ describe("createKubeApiForRemoteCluster", () => {
   });
 
   it("builds api client for KubeObject", () => {
-    const api = createKubeApiForRemoteCluster({
-      cluster: {
-        server: "https://127.0.0.1:6443",
+    const api = createKubeApiForRemoteCluster(
+      {
+        cluster: {
+          server: "https://127.0.0.1:6443",
+        },
+        user: {
+          token: "daa",
+        },
       },
-      user: {
-        token: "daa",
-      },
-    }, Pod);
+      Pod,
+    );
 
     expect(api).toBeInstanceOf(KubeApi);
   });
@@ -69,14 +77,18 @@ describe("createKubeApiForRemoteCluster", () => {
     let api: PodApi;
 
     beforeEach(() => {
-      api = createKubeApiForRemoteCluster({
-        cluster: {
-          server: "https://127.0.0.1:6443",
+      api = createKubeApiForRemoteCluster(
+        {
+          cluster: {
+            server: "https://127.0.0.1:6443",
+          },
+          user: {
+            token: "daa",
+          },
         },
-        user: {
-          token: "daa",
-        },
-      }, Pod, PodsApi);
+        Pod,
+        PodsApi,
+      );
     });
 
     it("uses the constructor", () => {
@@ -109,14 +121,17 @@ describe("createKubeApiForRemoteCluster", () => {
         beforeEach(async () => {
           await fetchMock.resolveSpecific(
             ["https://127.0.0.1:6443/api/v1/pods"],
-            createMockResponseFromString("https://127.0.0.1:6443/api/v1/pods", JSON.stringify({
-              kind: "PodList",
-              apiVersion: "v1",
-              metadata:{
-                resourceVersion: "452899",
-              },
-              items: [],
-            })),
+            createMockResponseFromString(
+              "https://127.0.0.1:6443/api/v1/pods",
+              JSON.stringify({
+                kind: "PodList",
+                apiVersion: "v1",
+                metadata: {
+                  resourceVersion: "452899",
+                },
+                items: [],
+              }),
+            ),
           );
         });
 
@@ -144,16 +159,22 @@ describe("KubeApi", () => {
 
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
-    di.override(apiKubeInjectable, () => createKubeJsonApi({
-      serverAddress: `http://127.0.0.1:9999`,
-      apiBase: "/api-kube",
-    }));
+    di.override(apiKubeInjectable, () =>
+      createKubeJsonApi({
+        serverAddress: `http://127.0.0.1:9999`,
+        apiBase: "/api-kube",
+      }),
+    );
 
     const setupAutoRegistration = di.inject(setupAutoRegistrationInjectable);
 
@@ -189,12 +210,15 @@ describe("KubeApi", () => {
       it("should resolve the call with >=200 <300 http code", async () => {
         void fetchMock.resolveSpecific(
           ["http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction"],
-          createMockResponseFromString("http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction", JSON.stringify({
-            apiVersion: "policy/v1",
-            kind: "Status",
-            code: 201,
-            status: "all good",
-          } as KubeStatusData)),
+          createMockResponseFromString(
+            "http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction",
+            JSON.stringify({
+              apiVersion: "policy/v1",
+              kind: "Status",
+              code: 201,
+              status: "all good",
+            } as KubeStatusData),
+          ),
         );
 
         expect(await evictRequest).toBe("201: all good");
@@ -203,12 +227,15 @@ describe("KubeApi", () => {
       it("should throw in case of error", async () => {
         void fetchMock.resolveSpecific(
           ["http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction"],
-          createMockResponseFromString("http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction", JSON.stringify({
-            apiVersion: "policy/v1",
-            kind: "Status",
-            code: 500,
-            status: "something went wrong",
-          } as KubeStatusData)),
+          createMockResponseFromString(
+            "http://127.0.0.1:9999/api-kube/api/v1/namespaces/test/pods/foo/eviction",
+            JSON.stringify({
+              apiVersion: "policy/v1",
+              kind: "Status",
+              code: 500,
+              status: "something went wrong",
+            } as KubeStatusData),
+          ),
         );
 
         await expect(async () => evictRequest).rejects.toBe("500: something went wrong");

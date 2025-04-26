@@ -5,14 +5,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "tsc --pretty --project ."
   },
   "type": "module",
   "devDependencies": {
     "@types/command-line-args": "^5.2.3",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.2",
     "@types/semver": "^7.7.0",
     "command-line-args": "^6.0.1",
     "semver": "^7.7.1",

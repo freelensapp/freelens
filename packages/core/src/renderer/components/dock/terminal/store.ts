@@ -1,15 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { action, observable } from "mobx";
-import type { Terminal } from "./terminal";
-import type { TerminalApi } from "../../../api/terminal-api";
-import type { DockTab, TabId } from "../dock/store";
-import { WebSocketApiState } from "../../../api/websocket-api";
 import type { CreateTerminalApi } from "../../../api/create-terminal-api.injectable";
+import type { TerminalApi } from "../../../api/terminal-api";
+import { WebSocketApiState } from "../../../api/websocket-api";
+import type { DockTab, TabId } from "../dock/store";
 import type { CreateTerminal } from "./create-terminal.injectable";
+import type { Terminal } from "./terminal";
 
 export interface ITerminalTab extends DockTab {
   node?: string; // activate node shell mode
@@ -24,8 +25,7 @@ export class TerminalStore {
   protected terminals = new Map<TabId, Terminal>();
   protected connections = observable.map<TabId, TerminalApi>();
 
-  constructor(private dependencies: Dependencies) {
-  }
+  constructor(private dependencies: Dependencies) {}
 
   @action
   connect(tab: ITerminalTab) {

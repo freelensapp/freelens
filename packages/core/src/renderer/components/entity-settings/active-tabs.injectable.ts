@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import { byOrderNumber } from "@freelensapp/utilities";
 import type { CatalogEntity } from "../../api/catalog-entity";
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import type { RegisteredEntitySetting } from "./extension-registrator.injectable";
 import catalogEntitySettingItemsInjectable from "./settings.injectable";
 
@@ -43,11 +45,9 @@ const getSettingGroups = (items: RegisteredEntitySetting[]): SettingGroup[] => {
     return left <= right ? -1 : 1;
   });
 
-  return titles.map(title => ({
+  return titles.map((title) => ({
     title,
-    tabs: items
-      .filter(({ group }) => group === title)
-      .sort(byOrderNumber),
+    tabs: items.filter(({ group }) => group === title).sort(byOrderNumber),
   }));
 };
 
@@ -72,7 +72,8 @@ const activeEntitySettingsTabInjectable = getInjectable({
     };
   },
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, entity: CatalogEntity) => `${entity.apiVersion}/${entity.kind}[${entity.metadata.source ?? ""}]`,
+    getInstanceKey: (di, entity: CatalogEntity) =>
+      `${entity.apiVersion}/${entity.kind}[${entity.metadata.source ?? ""}]`,
   }),
 });
 

@@ -65,9 +65,7 @@ jobs:
       - name: Set version
         run: |
           set -eo pipefail
-          pushd freelens
-            pnpm version "$newversion" --no-git-tag-version --no-workspaces-update | tee .github/update.log
-          popd
+          pnpm bump-version "$newversion" | tee .github/update.log
           jq -r .version freelens/package.json > .github/version.log
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$version"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml

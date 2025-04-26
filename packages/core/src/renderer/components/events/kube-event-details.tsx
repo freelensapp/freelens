@@ -1,24 +1,25 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./kube-event-details.module.scss";
 
-import React from "react";
-import { disposeOnUnmount, observer } from "mobx-react";
 import { KubeObject } from "@freelensapp/kube-object";
-import { DrawerItem, DrawerTitle } from "../drawer";
+import type { Logger } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
+import { DrawerItem, DrawerTitle } from "../drawer";
 import { LocaleDate } from "../locale-date";
 import type { EventStore } from "./store";
-import type { Logger } from "@freelensapp/logger";
-import { withInjectables } from "@ogre-tools/injectable-react";
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import eventStoreInjectable from "./store.injectable";
-import { loggerInjectionToken } from "@freelensapp/logger";
 
 export interface KubeEventDetailsProps {
   object: KubeObject;
@@ -33,11 +34,7 @@ interface Dependencies {
 @observer
 class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps & Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([
-        this.props.eventStore,
-      ]),
-    ]);
+    disposeOnUnmount(this, [this.props.subscribeStores([this.props.eventStore])]);
   }
 
   render() {
@@ -62,20 +59,12 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
         </DrawerTitle>
         {events.length > 0 && (
           <div className={styles.KubeEventDetails}>
-            {events.map(event => (
+            {events.map((event) => (
               <div className={styles.event} key={event.getId()}>
-                <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>
-                  {event.message}
-                </div>
-                <DrawerItem name="Source">
-                  {event.getSource()}
-                </DrawerItem>
-                <DrawerItem name="Count">
-                  {event.count}
-                </DrawerItem>
-                <DrawerItem name="Sub-object">
-                  {event.involvedObject.fieldPath}
-                </DrawerItem>
+                <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>{event.message}</div>
+                <DrawerItem name="Source">{event.getSource()}</DrawerItem>
+                <DrawerItem name="Count">{event.count}</DrawerItem>
+                <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
                 {event.lastTimestamp && (
                   <DrawerItem name="Last seen">
                     <LocaleDate date={event.lastTimestamp} />
@@ -85,11 +74,7 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
             ))}
           </div>
         )}
-        {events.length === 0 && (
-          <div className={styles.empty}>
-            No events found
-          </div>
-        )}
+        {events.length === 0 && <div className={styles.empty}>No events found</div>}
       </div>
     );
   }

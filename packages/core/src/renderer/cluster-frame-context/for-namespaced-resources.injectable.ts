@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import type { ClusterContext } from "./cluster-frame-context";
-import namespaceStoreInjectable from "../components/namespaces/store.injectable";
-import hostedClusterInjectable from "./hosted-cluster.injectable";
+
 import assert from "assert";
+import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import selectedNamespacesStorageInjectable from "../../features/namespace-filtering/renderer/storage.injectable";
+import namespaceStoreInjectable from "../components/namespaces/store.injectable";
+import type { ClusterContext } from "./cluster-frame-context";
+import hostedClusterInjectable from "./hosted-cluster.injectable";
 
 const clusterFrameContextForNamespacedResourcesInjectable = getInjectable({
   id: "cluster-frame-context-for-namespaced-resources",
@@ -27,7 +29,7 @@ const clusterFrameContextForNamespacedResourcesInjectable = getInjectable({
       }
 
       if (namespaceStore.items.length > 0) {
-      // namespaces from kubernetes api
+        // namespaces from kubernetes api
         return namespaceStore.items.map((namespace) => namespace.getName());
       }
 
@@ -37,24 +39,23 @@ const clusterFrameContextForNamespacedResourcesInjectable = getInjectable({
     const contextNamespaces = computed(() => {
       const selectedNamespaces = selectedNamespacesStorage.get();
 
-      return selectedNamespaces.length > 0
-        ? selectedNamespaces
-        : allNamespaces.get();
+      return selectedNamespaces.length > 0 ? selectedNamespaces : allNamespaces.get();
     });
     const hasSelectedAll = computed(() => {
       const namespaces = new Set(contextNamespaces.get());
 
-      return allNamespaces.get().length > 1
-        && cluster.accessibleNamespaces.length === 0
-        && allNamespaces.get().every(ns => namespaces.has(ns));
+      return (
+        allNamespaces.get().length > 1 &&
+        cluster.accessibleNamespaces.length === 0 &&
+        allNamespaces.get().every((ns) => namespaces.has(ns))
+      );
     });
 
     return {
-      isLoadingAll: (namespaces) => (
-        allNamespaces.get().length > 1
-        && cluster.accessibleNamespaces.length === 0
-        && allNamespaces.get().every(ns => namespaces.includes(ns))
-      ),
+      isLoadingAll: (namespaces) =>
+        allNamespaces.get().length > 1 &&
+        cluster.accessibleNamespaces.length === 0 &&
+        allNamespaces.get().every((ns) => namespaces.includes(ns)),
       isGlobalWatchEnabled: () => cluster.isGlobalWatchEnabled.get(),
       get allNamespaces() {
         return allNamespaces.get();

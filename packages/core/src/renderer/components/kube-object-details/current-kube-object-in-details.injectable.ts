@@ -1,12 +1,14 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { getInjectable } from "@ogre-tools/injectable";
-import kubeDetailsUrlParamInjectable from "../kube-detail-params/kube-details-url.injectable";
-import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
+
 import type { KubeObject } from "@freelensapp/kube-object";
+import { getInjectable } from "@ogre-tools/injectable";
+import { asyncComputed } from "@ogre-tools/injectable-react";
+import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import kubeDetailsUrlParamInjectable from "../kube-detail-params/kube-details-url.injectable";
 
 export type CurrentKubeObject =
   | undefined
@@ -32,7 +34,7 @@ const currentKubeObjectInDetailsInjectable = getInjectable({
         }
 
         try {
-          const object = store.getByPath(path) ?? await store.loadFromPath(path);
+          const object = store.getByPath(path) ?? (await store.loadFromPath(path));
 
           return { object };
         } catch (error) {

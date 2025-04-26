@@ -1,4 +1,4 @@
-import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
+import { type DiContainer, type Injectable, createContainer } from "@ogre-tools/injectable";
 
 import { registerFeature } from "@freelensapp/feature-core";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
@@ -12,15 +12,15 @@ import {
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 import {
-  getMessageChannelListenerInjectable,
   type MessageChannel,
   type MessageChannelListener,
+  getMessageChannelListenerInjectable,
 } from "./features/actual/message/message-channel-listener-injection-token";
 
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 
-import { getMessageChannel } from "./features/actual/message/get-message-channel";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
+import { getMessageChannel } from "./features/actual/message/get-message-channel";
 
 describe("listening-of-messages", () => {
   let di: DiContainer;

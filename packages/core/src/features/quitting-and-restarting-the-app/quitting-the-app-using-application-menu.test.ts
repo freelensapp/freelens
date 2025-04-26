@@ -1,12 +1,13 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import requestQuitOfAppInjectable from "../../main/electron-app/features/require-quit.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
-import requestQuitOfAppInjectable from "../../main/electron-app/features/require-quit.injectable";
 
 describe("quitting the app using application menu", () => {
   describe("given application has started", () => {

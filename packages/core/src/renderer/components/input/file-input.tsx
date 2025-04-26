@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -38,10 +39,10 @@ export class FileInput extends React.Component<FileInputProps> {
     if (!fileList.length) {
       return;
     }
-    let selectedFiles: FileInputSelection[] = fileList.map(file => ({ file }));
+    let selectedFiles: FileInputSelection[] = fileList.map((file) => ({ file }));
 
     if (this.props.readAsText) {
-      const readingFiles: Promise<FileInputSelection>[] = fileList.map(file => {
+      const readingFiles: Promise<FileInputSelection>[] = fileList.map((file) => {
         return new Promise((resolve) => {
           const reader = new FileReader();
 
@@ -64,14 +65,6 @@ export class FileInput extends React.Component<FileInputProps> {
   render() {
     const { onSelectFiles, readAsText, ...props } = this.props;
 
-    return (
-      <input
-        type="file"
-        style={this.style}
-        onChange={this.onChange}
-        ref={e => this.input = e}
-        {...props}
-      />
-    );
+    return <input type="file" style={this.style} onChange={this.onChange} ref={(e) => (this.input = e)} {...props} />;
   }
 }

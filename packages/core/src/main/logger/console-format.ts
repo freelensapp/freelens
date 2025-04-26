@@ -1,14 +1,15 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
-import chalk from "chalk";
 import type { InspectOptions } from "util";
 import { inspect } from "util";
+import chalk from "chalk";
 import { omit } from "lodash";
 import type { Format, TransformableInfo } from "logform";
+import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
 
 // The following license was copied from https://github.com/duccio/winston-console-format/blob/master/LICENSE
 // This was modified to support formatting causes
@@ -46,7 +47,6 @@ export interface ConsoleFormatOptions {
 export class ConsoleFormat implements Format {
   private static readonly reSpaces = /^\s+/;
   private static readonly reSpacesOrEmpty = /^(\s*)/;
-  // eslint-disable-next-line no-control-regex
   private static readonly reColor = /\x1B\[\d+m/;
   private static readonly defaultStrip = [LEVEL, MESSAGE, SPLAT, "level", "message", "ms", "stack"];
   private static readonly chars = {
@@ -109,7 +109,7 @@ export class ConsoleFormat implements Format {
 
     if (source instanceof Error && source.cause) {
       messages.push("Cause:");
-      messages.push(...this.getLines(omit(source.cause, "response")).map(l => `    ${l}`));
+      messages.push(...this.getLines(omit(source.cause, "response")).map((l) => `    ${l}`));
       messages.push(...this._cause(source.cause));
     }
 
@@ -120,7 +120,7 @@ export class ConsoleFormat implements Format {
     const splats = info[SPLAT];
 
     if (Array.isArray(splats)) {
-      return splats.flatMap(splat => this._cause(splat));
+      return splats.flatMap((splat) => this._cause(splat));
     }
 
     return [];

@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import { createContainer, type DiContainer, getInjectable } from "@ogre-tools/injectable";
-import { computed, type IComputedValue } from "mobx";
+
+import { type DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { noop } from "lodash/fp";
+import { type IComputedValue, computed } from "mobx";
+import { clusterSidebarFeature } from "./feature";
 import sidebarItemsInjectable from "./sidebar-items.injectable";
 import { type SidebarItemDeclaration, sidebarItemInjectionToken } from "./tokens";
-import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { clusterSidebarFeature } from "./feature";
 
 const someParentSidebarItemInjectable = getInjectable({
   id: "sidebar-item-some-parent",

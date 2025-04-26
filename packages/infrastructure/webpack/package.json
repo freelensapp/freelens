@@ -21,8 +21,8 @@
   "homepage": "https://github.com/lensapp/lens",
   "scripts": {
     "build": "webpack",
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "test:unit": "jest --coverage --runInBand"
   },
   "devDependencies": {
@@ -43,13 +43,13 @@
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.9.2",
-    "sass": "^1.86.3",
+    "sass": "^1.87.0",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.17",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "webpack": "^5.99.5",
+    "webpack": "^5.99.7",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   },

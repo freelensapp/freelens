@@ -1,8 +1,8 @@
-import { sendMessageToChannelInjectionToken } from "../actual/message/message-to-channel-injection-token";
-import { enlistMessageChannelListenerInjectionToken } from "../actual/message/enlist-message-channel-listener-injection-token";
-import { requestFromChannelInjectionToken } from "../actual/request/request-from-channel-injection-token";
-import { enlistRequestChannelListenerInjectionToken } from "../actual/request/enlist-request-channel-listener-injection-token";
 import { getInjectable } from "@ogre-tools/injectable";
+import { enlistMessageChannelListenerInjectionToken } from "../actual/message/enlist-message-channel-listener-injection-token";
+import { sendMessageToChannelInjectionToken } from "../actual/message/message-to-channel-injection-token";
+import { enlistRequestChannelListenerInjectionToken } from "../actual/request/enlist-request-channel-listener-injection-token";
+import { requestFromChannelInjectionToken } from "../actual/request/request-from-channel-injection-token";
 
 export const sendMessageToChannelStubInjectable = getInjectable({
   id: "send-message-to-channel-stub",

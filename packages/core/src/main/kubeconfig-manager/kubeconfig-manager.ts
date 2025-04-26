@@ -1,21 +1,22 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
-import { dumpConfigYaml } from "../../common/kube-helpers";
-import { isErrnoException } from "@freelensapp/utilities";
-import type { PartialDeep } from "type-fest";
 import type { Logger } from "@freelensapp/logger";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
+import { isErrnoException } from "@freelensapp/utilities";
+import type { SelfSignedCert } from "selfsigned";
+import type { PartialDeep } from "type-fest";
+import type { Cluster } from "../../common/cluster/cluster";
+import type { LoadKubeconfig } from "../../common/cluster/load-kubeconfig.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
-import type { SelfSignedCert } from "selfsigned";
-import type { Cluster } from "../../common/cluster/cluster";
-import type { LoadKubeconfig } from "../../common/cluster/load-kubeconfig.injectable";
+import { dumpConfigYaml } from "../../common/kube-helpers";
+import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 
 interface KubeconfigManagerDependencies {
@@ -83,7 +84,7 @@ export class KubeconfigManager {
     try {
       await this.dependencies.kubeAuthProxyServer.ensureRunning();
 
-      return this.tempFilePath = await this.createProxyKubeconfig();
+      return (this.tempFilePath = await this.createProxyKubeconfig());
     } catch (error) {
       throw new Error(`Failed to create temp config for auth-proxy: ${error}`);
     }
@@ -94,12 +95,12 @@ export class KubeconfigManager {
    * This way any user of the config does not need to know anything about the auth etc. details.
    */
   protected async createProxyKubeconfig(): Promise<string> {
-    const { id, preferences: { defaultNamespace }} = this.cluster;
+    const {
+      id,
+      preferences: { defaultNamespace },
+    } = this.cluster;
     const contextName = this.cluster.contextName.get();
-    const tempFile = this.dependencies.joinPaths(
-      this.dependencies.directoryForTemp,
-      `kubeconfig-${id}`,
-    );
+    const tempFile = this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubeconfig-${id}`);
     const kubeConfig = await this.dependencies.loadKubeconfig();
     const proxyConfig: PartialDeep<KubeConfig> = {
       currentContext: contextName,
@@ -111,9 +112,7 @@ export class KubeconfigManager {
           caData: Buffer.from(this.dependencies.certificate.cert).toString("base64"),
         },
       ],
-      users: [
-        { name: "proxy", username: "lens", password: "fake" },
-      ],
+      users: [{ name: "proxy", username: "lens", password: "fake" }],
       contexts: [
         {
           user: "proxy",
@@ -127,7 +126,9 @@ export class KubeconfigManager {
     const configYaml = dumpConfigYaml(proxyConfig);
 
     await this.dependencies.writeFile(tempFile, configYaml, { mode: 0o600 });
-    this.dependencies.logger.debug(`[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}": \n${configYaml}`);
+    this.dependencies.logger.debug(
+      `[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}": \n${configYaml}`,
+    );
 
     return tempFile;
   }

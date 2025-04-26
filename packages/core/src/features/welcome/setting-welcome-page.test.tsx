@@ -1,21 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
+import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";
+import welcomeRouteConfigInjectable from "../../common/front-end-routing/routes/welcome/welcome-route-config.injectable";
+import welcomeRouteInjectable from "../../common/front-end-routing/routes/welcome/welcome-route.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
-import welcomeRouteConfigInjectable from "../../common/front-end-routing/routes/welcome/welcome-route-config.injectable";
-import welcomeRouteInjectable from "../../common/front-end-routing/routes/welcome/welcome-route.injectable";
-import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";
-
 
 describe("setting-welcome-page", () => {
   let applicationBuilder: ApplicationBuilder;
-  let rendered : RenderResult;
+  let rendered: RenderResult;
   let welcomeRoute: Route;
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe("setting-welcome-page", () => {
     });
 
     it("launches to the default welcome page", () => {
-      const welcomePage = rendered.getByTestId("welcome-page");  // from the Welcome component (welcome.tsx)
+      const welcomePage = rendered.getByTestId("welcome-page"); // from the Welcome component (welcome.tsx)
 
       expect(welcomePage).toBeInTheDocument();
     });

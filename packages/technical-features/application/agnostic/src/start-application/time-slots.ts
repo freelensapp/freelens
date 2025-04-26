@@ -1,5 +1,5 @@
-import { getInjectionToken } from "@ogre-tools/injectable";
 import type { Runnable } from "@freelensapp/run-many";
+import { getInjectionToken } from "@ogre-tools/injectable";
 
 export const beforeApplicationIsLoadingInjectionToken = getInjectionToken<Runnable>({
   id: "before-application-is-loading-injection-token",

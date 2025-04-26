@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Job, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
+import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
+import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../../common/cluster/cluster";
+import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import type { JobStore } from "../workloads-jobs/store";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import { Job, Pod } from "@freelensapp/kube-object";
-import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import { Cluster } from "../../../common/cluster/cluster";
 
 const runningJob = new Job({
   apiVersion: "foo",
@@ -70,12 +71,14 @@ const runningPod = new Pod({
     name: "foobar",
     resourceVersion: "foobar",
     uid: "foobar",
-    ownerReferences: [{
-      uid: "runningJob",
-      apiVersion: "v1",
-      kind: "Pod",
-      name: "running",
-    }],
+    ownerReferences: [
+      {
+        uid: "runningJob",
+        apiVersion: "v1",
+        kind: "Pod",
+        name: "running",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar",
   },
@@ -110,12 +113,14 @@ const pendingPod = new Pod({
     name: "foobar-pending",
     resourceVersion: "foobar",
     uid: "foobar-pending",
-    ownerReferences: [{
-      uid: "pendingJob",
-      apiVersion: "v1",
-      kind: "Pod",
-      name: "pending",
-    }],
+    ownerReferences: [
+      {
+        uid: "pendingJob",
+        apiVersion: "v1",
+        kind: "Pod",
+        name: "pending",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-pending",
   },
@@ -128,12 +133,14 @@ const failedPod = new Pod({
     name: "foobar-failed",
     resourceVersion: "foobar",
     uid: "foobar-failed",
-    ownerReferences: [{
-      uid: "failedJob",
-      apiVersion: "v1",
-      kind: "Pod",
-      name: "failed",
-    }],
+    ownerReferences: [
+      {
+        uid: "failedJob",
+        apiVersion: "v1",
+        kind: "Pod",
+        name: "failed",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-failed",
   },
@@ -153,12 +160,14 @@ const succeededPod = new Pod({
     name: "foobar-succeeded",
     resourceVersion: "foobar",
     uid: "foobar-succeeded",
-    ownerReferences: [{
-      uid: "succeededJob",
-      apiVersion: "v1",
-      kind: "Pod",
-      name: "succeeded",
-    }],
+    ownerReferences: [
+      {
+        uid: "succeededJob",
+        apiVersion: "v1",
+        kind: "Pod",
+        name: "succeeded",
+      },
+    ],
     namespace: "default",
     selfLink: "/api/v1/pods/default/foobar-succeeded",
   },
@@ -181,32 +190,26 @@ describe("Job Store tests", () => {
     di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
-    di.override(hostedClusterInjectable, () => new Cluster({
-      contextName: "some-context-name",
-      id: "some-cluster-id",
-      kubeConfigPath: "/some-path-to-a-kubeconfig",
-    }));
+    di.override(
+      hostedClusterInjectable,
+      () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-path-to-a-kubeconfig",
+        }),
+    );
 
     jobStore = di.inject(jobStoreInjectable);
 
     const podStore = di.inject(podStoreInjectable);
 
     // Add pods to pod store
-    podStore.items = observable.array([
-      runningPod,
-      failedPod,
-      pendingPod,
-      succeededPod,
-    ]);
+    podStore.items = observable.array([runningPod, failedPod, pendingPod, succeededPod]);
   });
 
   it("gets Job statuses in proper sorting order", () => {
-    const statuses = Object.entries(jobStore.getStatuses([
-      failedJob,
-      succeededJob,
-      runningJob,
-      pendingJob,
-    ]));
+    const statuses = Object.entries(jobStore.getStatuses([failedJob, succeededJob, runningJob, pendingJob]));
 
     expect(statuses).toEqual([
       ["succeeded", 1],

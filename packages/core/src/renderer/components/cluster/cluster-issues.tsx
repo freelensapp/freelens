@@ -1,33 +1,34 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import styles from "./cluster-issues.module.scss";
 
-import React from "react";
-import { observer } from "mobx-react";
+import { Icon } from "@freelensapp/icon";
+import { Spinner } from "@freelensapp/spinner";
+import { cssNames, prevDefault } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
-import { Icon } from "@freelensapp/icon";
-import { SubHeader } from "../layout/sub-header";
-import { Table, TableCell, TableHead, TableRow } from "../table";
-import { cssNames, prevDefault } from "@freelensapp/utilities";
-import { Spinner } from "@freelensapp/spinner";
+import { observer } from "mobx-react";
+import React from "react";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import { KubeObjectAge } from "../kube-object/age";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { NodeStore } from "../nodes/store";
-import type { EventStore } from "../events/store";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import eventStoreInjectable from "../events/store.injectable";
-import nodeStoreInjectable from "../nodes/store.injectable";
 import type { PageParam } from "../../navigation/page-param";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
-import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
 import activeThemeInjectable from "../../themes/active.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { EventStore } from "../events/store";
+import eventStoreInjectable from "../events/store.injectable";
+import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
+import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
+import { KubeObjectAge } from "../kube-object/age";
+import { SubHeader } from "../layout/sub-header";
+import type { NodeStore } from "../nodes/store";
+import nodeStoreInjectable from "../nodes/store.injectable";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
 export interface ClusterIssuesProps {
   className?: string;
@@ -67,19 +68,18 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
   @computed get warnings(): Warning[] {
     return [
-      ...this.props.nodeStore.items.flatMap(node => (
-        node.getWarningConditions()
-          .map(({ message }) => ({
-            selfLink: node.selfLink,
-            getId: () => node.getId(),
-            getName: () => node.getName(),
-            kind: node.kind,
-            message,
-            renderAge: () => <KubeObjectAge key="age" object={node} />,
-            ageMs: -node.getCreationTimestamp(),
-          }))
-      )),
-      ...this.props.eventStore.getWarnings().map(warning => ({
+      ...this.props.nodeStore.items.flatMap((node) =>
+        node.getWarningConditions().map(({ message }) => ({
+          selfLink: node.selfLink,
+          getId: () => node.getId(),
+          getName: () => node.getName(),
+          kind: node.kind,
+          message,
+          renderAge: () => <KubeObjectAge key="age" object={node} />,
+          ageMs: -node.getCreationTimestamp(),
+        })),
+      ),
+      ...this.props.eventStore.getWarnings().map((warning) => ({
         getId: () => warning.involvedObject.uid,
         getName: () => warning.involvedObject.name,
         renderAge: () => <KubeObjectAge key="age" object={warning} />,
@@ -94,7 +94,7 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
   getTableRow = (uid: string) => {
     const { warnings } = this;
     const { kubeSelectedUrlParam, toggleKubeDetailsPane: toggleDetails } = this.props;
-    const warning = warnings.find(warn => warn.getId() == uid);
+    const warning = warnings.find((warn) => warn.getId() == uid);
 
     if (!warning) {
       return undefined;
@@ -109,18 +109,10 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         selected={selfLink === kubeSelectedUrlParam.get()}
         onClick={prevDefault(() => toggleDetails(selfLink))}
       >
-        <TableCell className={styles.message}>
-          {message ?? "<unknown>"}
-        </TableCell>
-        <TableCell className={styles.object}>
-          {getName()}
-        </TableCell>
-        <TableCell className="kind">
-          {kind}
-        </TableCell>
-        <TableCell className="age">
-          {renderAge()}
-        </TableCell>
+        <TableCell className={styles.message}>{message ?? "<unknown>"}</TableCell>
+        <TableCell className={styles.object}>{getName()}</TableCell>
+        <TableCell className="kind">{kind}</TableCell>
+        <TableCell className="age">{renderAge()}</TableCell>
       </TableRow>
     );
   };
@@ -129,20 +121,13 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
     const { warnings } = this;
 
     if (!this.props.eventStore.isLoaded) {
-      return (
-        <Spinner center/>
-      );
+      return <Spinner center />;
     }
 
     if (!warnings.length) {
       return (
         <div className={cssNames(styles.noIssues, "flex column box grow gaps align-center justify-center")}>
-          <Icon
-            className={styles.Icon}
-            material="check"
-            big
-            sticker
-          />
+          <Icon className={styles.Icon} material="check" big sticker />
           <p className={styles.title}>No issues found</p>
           <p>Everything is fine in the Cluster</p>
         </div>
@@ -152,7 +137,7 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
     return (
       <>
         <SubHeader className={styles.SubHeader}>
-          <Icon material="error_outline"/>
+          <Icon material="error_outline" />
           {` Warnings: ${warnings.length}`}
         </SubHeader>
         <Table
@@ -161,9 +146,9 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           virtual
           selectable
           sortable={{
-            [sortBy.type]: warning => warning.kind,
-            [sortBy.object]: warning => warning.getName(),
-            [sortBy.age]: warning => warning.ageMs,
+            [sortBy.type]: (warning) => warning.kind,
+            [sortBy.object]: (warning) => warning.getName(),
+            [sortBy.age]: (warning) => warning.ageMs,
           }}
           sortByDefault={{ sortBy: sortBy.object, orderBy: "asc" }}
           sortSyncWithUrl={false}
@@ -172,9 +157,15 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         >
           <TableHead nowrap>
             <TableCell className="message">Message</TableCell>
-            <TableCell className="object" sortBy={sortBy.object}>Object</TableCell>
-            <TableCell className="kind" sortBy={sortBy.type}>Type</TableCell>
-            <TableCell className="timestamp" sortBy={sortBy.age}>Age</TableCell>
+            <TableCell className="object" sortBy={sortBy.object}>
+              Object
+            </TableCell>
+            <TableCell className="kind" sortBy={sortBy.type}>
+              Type
+            </TableCell>
+            <TableCell className="timestamp" sortBy={sortBy.age}>
+              Age
+            </TableCell>
           </TableHead>
         </Table>
       </>
@@ -183,9 +174,7 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
   render() {
     return (
-      <div className={cssNames(styles.ClusterIssues, "flex column", this.props.className)}>
-        {this.renderContent()}
-      </div>
+      <div className={cssNames(styles.ClusterIssues, "flex column", this.props.className)}>{this.renderContent()}</div>
     );
   }
 }

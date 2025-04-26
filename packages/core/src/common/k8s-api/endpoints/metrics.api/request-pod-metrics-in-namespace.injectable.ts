@@ -1,7 +1,9 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable } from "@ogre-tools/injectable";
 import type { MetricData } from "../metrics.api";
 import requestMetricsInjectable from "./request-metrics.injectable";
@@ -26,17 +28,20 @@ const requestPodMetricsInNamespaceInjectable = getInjectable({
     return (namespace, selector) => {
       const opts = { category: "pods", pods: ".*", namespace, selector };
 
-      return requestMetrics({
-        cpuUsage: opts,
-        memoryUsage: opts,
-        fsUsage: opts,
-        fsWrites: opts,
-        fsReads: opts,
-        networkReceive: opts,
-        networkTransmit: opts,
-      }, {
-        namespace,
-      });
+      return requestMetrics(
+        {
+          cpuUsage: opts,
+          memoryUsage: opts,
+          fsUsage: opts,
+          fsWrites: opts,
+          fsReads: opts,
+          networkReceive: opts,
+          networkTransmit: opts,
+        },
+        {
+          namespace,
+        },
+      );
     };
   },
 });

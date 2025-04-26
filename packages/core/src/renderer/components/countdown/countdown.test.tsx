@@ -1,19 +1,21 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { noop } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { createContainer } from "@ogre-tools/injectable";
-import countdownStateInjectable from "./countdown-state.injectable";
-import type { DiRender } from "../test-utils/renderFor";
-import { renderFor } from "../test-utils/renderFor";
-import { Countdown } from "./countdown";
-import React from "react";
 import type { RenderResult } from "@testing-library/react";
 import type { IComputedValue } from "mobx";
 import { observe } from "mobx";
-import { noop } from "@freelensapp/utilities";
-import { testUsingFakeTime, advanceFakeTime } from "../../../test-utils/use-fake-time";
+import React from "react";
+import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
+import type { DiRender } from "../test-utils/renderFor";
+import { renderFor } from "../test-utils/renderFor";
+import { Countdown } from "./countdown";
+import countdownStateInjectable from "./countdown-state.injectable";
 
 describe("countdown", () => {
   let di: DiContainer;
@@ -41,9 +43,7 @@ describe("countdown", () => {
         onZero: onZeroMock,
       });
 
-      rendered = render(
-        <Countdown secondsTill={secondsTill} />,
-      );
+      rendered = render(<Countdown secondsTill={secondsTill} />);
     });
 
     it("renders with initial seconds", () => {

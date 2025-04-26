@@ -1,25 +1,26 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "./cluster-manager.scss";
 
+import { buildURL } from "@freelensapp/utilities";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Redirect } from "react-router";
-import { disposeOnUnmount, observer } from "mobx-react";
-import { StatusBar } from "../status-bar/status-bar";
-import { HotbarMenu } from "../hotbar/hotbar-menu";
-import { DeleteClusterDialog } from "../delete-cluster-dialog";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import { TopBar } from "../layout/top-bar/top-bar";
-import type { IComputedValue } from "mobx";
-import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
 import welcomeRouteInjectable from "../../../common/front-end-routing/routes/welcome/welcome-route.injectable";
-import { buildURL } from "@freelensapp/utilities";
 import type { WatchForGeneralEntityNavigation } from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 import watchForGeneralEntityNavigationInjectable from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 import currentPathInjectable from "../../routes/current-path.injectable";
+import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
+import { DeleteClusterDialog } from "../delete-cluster-dialog";
+import { HotbarMenu } from "../hotbar/hotbar-menu";
+import { TopBar } from "../layout/top-bar/top-bar";
+import { StatusBar } from "../status-bar/status-bar";
 
 interface Dependencies {
   currentRouteComponent: IComputedValue<React.ElementType | undefined>;
@@ -31,9 +32,7 @@ interface Dependencies {
 @observer
 class NonInjectedClusterManager extends React.Component<Dependencies> {
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.watchForGeneralEntityNavigation(),
-    ]);
+    disposeOnUnmount(this, [this.props.watchForGeneralEntityNavigation()]);
   }
 
   renderMainComponent() {
@@ -53,11 +52,7 @@ class NonInjectedClusterManager extends React.Component<Dependencies> {
       <div className="error">
         <h2>ERROR!!</h2>
         <p>
-          No matching route for the current path:
-          {" "}
-          <code>{currentPath}</code>
-          {" "}
-          which is the welcomeUrl. This is a bug.
+          No matching route for the current path: <code>{currentPath}</code> which is the welcomeUrl. This is a bug.
         </p>
       </div>
     );

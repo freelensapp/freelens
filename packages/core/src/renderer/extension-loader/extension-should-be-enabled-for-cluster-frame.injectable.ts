@@ -1,14 +1,16 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
+import { untracked } from "mobx";
 import type { KubernetesCluster } from "../../common/catalog-entities";
 import extensionIsEnabledForClusterInjectable from "../../extensions/extension-loader/extension-is-enabled-for-cluster.injectable";
+import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import activeKubernetesClusterInjectable from "../cluster-frame-context/active-kubernetes-cluster.injectable";
-import { untracked } from "mobx";
 
 const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
   id: "extension-should-be-enabled-for-cluster-frame",
@@ -16,10 +18,7 @@ const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
   instantiate: (di, extension: LensRendererExtension) => {
     const activeKubernetesCluster = di.inject(activeKubernetesClusterInjectable);
 
-    const getExtensionIsEnabledForCluster = (
-      extension: LensRendererExtension,
-      cluster: KubernetesCluster,
-    ) =>
+    const getExtensionIsEnabledForCluster = (extension: LensRendererExtension, cluster: KubernetesCluster) =>
       untracked(() => di.inject(extensionIsEnabledForClusterInjectable, { extension, cluster }));
 
     return asyncComputed({
@@ -38,8 +37,7 @@ const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, extension: LensRendererExtension) =>
-      extension.sanitizedExtensionId,
+    getInstanceKey: (di, extension: LensRendererExtension) => extension.sanitizedExtensionId,
   }),
 });
 

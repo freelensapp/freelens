@@ -1,19 +1,20 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { lensBuildEnvironmentInjectionToken } from "@freelensapp/application";
+import { asLegacyGlobalForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { issuesTrackerUrl } from "../../common/vars";
 import appNameInjectable from "../../common/vars/app-name.injectable";
 import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
 import isLinuxInjectable from "../../common/vars/is-linux.injectable";
 import isMacInjectable from "../../common/vars/is-mac.injectable";
 import isSnapPackageInjectable from "../../common/vars/is-snap-package.injectable";
 import isWindowsInjectable from "../../common/vars/is-windows.injectable";
-import { getLegacyGlobalDiForExtensionApi, asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
-import { issuesTrackerUrl } from "../../common/vars";
 import enabledExtensionsInjectable from "../../features/extensions/enabled/common/enabled-extensions.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import { lensBuildEnvironmentInjectionToken } from "@freelensapp/application";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 
 const userStore = asLegacyGlobalForExtensionApi(userPreferencesStateInjectable);

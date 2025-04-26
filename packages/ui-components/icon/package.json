@@ -31,14 +31,11 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
-    "lint": "lens-lint",
-    "lint:fix": "lens-lint --fix"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
     "@freelensapp/button": "workspace:^",
-    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",

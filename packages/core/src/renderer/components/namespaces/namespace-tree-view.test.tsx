@@ -1,24 +1,30 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { Namespace } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { fireEvent } from "@testing-library/react";
 import React from "react";
-import { Namespace } from "@freelensapp/kube-object";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import { NamespaceTreeView } from "./namespace-tree-view";
 import type { NamespaceTree } from "./store";
-import type { StrictReactNode } from "@freelensapp/utilities";
 
 jest.mock("react-router-dom", () => ({
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 
-function createNamespace(name: string, labels?: Record<string, string>, annotations?: Record<string, string>): Namespace {
+function createNamespace(
+  name: string,
+  labels?: Record<string, string>,
+  annotations?: Record<string, string>,
+): Namespace {
   return new Namespace({
     apiVersion: "v1",
     kind: "Namespace",
@@ -70,14 +76,18 @@ const teamC = createNamespace("team-c", {
   "team-c.tree.hnc.x-k8s.io/depth": "0",
 });
 
-const service1 = createNamespace("service-1", {
-  "hnc.x-k8s.io/included-namespace": "true",
-  "org-a.tree.hnc.x-k8s.io/depth": "1",
-  "kubernetes.io/metadata.name": "team-c",
-  "service-1.tree.hnc.x-k8s.io/depth": "0",
-}, {
-  "hnc.x-k8s.io/subnamespace-of": "org-a",
-});
+const service1 = createNamespace(
+  "service-1",
+  {
+    "hnc.x-k8s.io/included-namespace": "true",
+    "org-a.tree.hnc.x-k8s.io/depth": "1",
+    "kubernetes.io/metadata.name": "team-c",
+    "service-1.tree.hnc.x-k8s.io/depth": "0",
+  },
+  {
+    "hnc.x-k8s.io/subnamespace-of": "org-a",
+  },
+);
 
 const levelsDeep = createNamespace("levels-deep", {
   "hnc.x-k8s.io/included-namespace": "true",
@@ -230,10 +240,12 @@ describe("<NamespaceTreeView />", () => {
         {
           id: "level-deep-child-b",
           namespace: levelDeepChildB,
-          children: [{
-            id: "level-deep-subchild-a",
-            namespace: levelDeepSubChildA,
-          }],
+          children: [
+            {
+              id: "level-deep-subchild-a",
+              namespace: levelDeepSubChildA,
+            },
+          ],
         },
       ],
     };
@@ -254,10 +266,12 @@ describe("<NamespaceTreeView />", () => {
         {
           id: "level-deep-child-b",
           namespace: levelDeepChildB,
-          children: [{
-            id: "level-deep-subchild-a",
-            namespace: levelDeepSubChildA,
-          }],
+          children: [
+            {
+              id: "level-deep-subchild-a",
+              namespace: levelDeepSubChildA,
+            },
+          ],
         },
       ],
     };
@@ -279,10 +293,12 @@ describe("<NamespaceTreeView />", () => {
         {
           id: "level-deep-child-b",
           namespace: levelDeepChildB,
-          children: [{
-            id: "level-deep-subchild-a",
-            namespace: levelDeepSubChildA,
-          }],
+          children: [
+            {
+              id: "level-deep-subchild-a",
+              namespace: levelDeepSubChildA,
+            },
+          ],
         },
       ],
     };
@@ -309,10 +325,12 @@ describe("<NamespaceTreeView />", () => {
         {
           id: "level-deep-child-b",
           namespace: levelDeepChildB,
-          children: [{
-            id: "level-deep-subchild-a",
-            namespace: levelDeepSubChildA,
-          }],
+          children: [
+            {
+              id: "level-deep-subchild-a",
+              namespace: levelDeepSubChildA,
+            },
+          ],
         },
       ],
     };

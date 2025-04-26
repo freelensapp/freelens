@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import type { Namespace } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { Namespace } from "@freelensapp/kube-object";
 import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 import { staticKubeObjectHandlerInjectionToken } from "../../kube-object/handler";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
@@ -14,7 +16,7 @@ const namespaceRemoveContextMenuOverridingListenerInjectable = getInjectable({
   instantiate: (di) => {
     const requestDeleteNamespace = di.inject(requestDeleteNamespaceInjectable);
 
-    return ({
+    return {
       apiVersions: ["v1"],
       kind: "Namespace",
       onContextMenuOpen: action((ctx: KubeObjectOnContextMenuOpenContext) => {
@@ -28,7 +30,7 @@ const namespaceRemoveContextMenuOverridingListenerInjectable = getInjectable({
           ...ctx.menuItems.filter((menuItem) => menuItem.id !== "delete-kube-object"),
         ]);
       }),
-    });
+    };
   },
   injectionToken: staticKubeObjectHandlerInjectionToken,
 });

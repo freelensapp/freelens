@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
@@ -12,8 +13,7 @@ import type { Role } from "@freelensapp/kube-object";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
 
-export interface RoleDetailsProps extends KubeObjectDetailsProps<Role> {
-}
+export interface RoleDetailsProps extends KubeObjectDetailsProps<Role> {}
 
 @observer
 export class RoleDetails extends React.Component<RoleDetailsProps> {
@@ -45,10 +45,7 @@ export class RoleDetails extends React.Component<RoleDetailsProps> {
                 <>
                   <div className="name">Api Groups</div>
                   <div className="value">
-                    {apiGroups
-                      .map(apiGroup => apiGroup === "" ? `'${apiGroup}'` : apiGroup)
-                      .join(", ")
-                    }
+                    {apiGroups.map((apiGroup) => (apiGroup === "" ? `'${apiGroup}'` : apiGroup)).join(", ")}
                   </div>
                 </>
               )}

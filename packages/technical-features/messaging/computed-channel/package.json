@@ -24,16 +24,13 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf dist",
-    "clean:node_modules": "pnpm dlx rimraf node_modules",
+    "clean": "pnpm dlx rimraf@6.0.1 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build",
-    "test:unit": "jest --coverage --runInBand",
-    "lint": "lens-lint",
-    "lint:fix": "lens-lint --fix"
+    "test:unit": "jest --coverage --runInBand"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
-    "@freelensapp/eslint-config": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/messaging": "workspace:^",

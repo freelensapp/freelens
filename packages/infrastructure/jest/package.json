@@ -20,19 +20,19 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^12.1.5",
     "@types/jest": "^29.5.14",
-    "glob": "^11.0.1",
+    "glob": "^11.0.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-watch-select-projects": "^2.0.0",
     "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
-    "ts-jest": "^29.3.1"
+    "ts-jest": "^29.3.2"
   }
 }

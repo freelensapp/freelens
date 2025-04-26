@@ -1,10 +1,12 @@
 /**
+ * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+
+import { getRandomIdInjectionToken } from "@freelensapp/random";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getRandomIdInjectionToken } from "@freelensapp/random";
 
 describe("multiple separators originating from extension", () => {
   let builder: ApplicationBuilder;
@@ -26,7 +28,7 @@ describe("multiple separators originating from extension", () => {
       name: "some-extension",
 
       mainOptions: {
-        trayMenus: [{ type: "separator" as const }, { type: "separator" as const } ],
+        trayMenus: [{ type: "separator" as const }, { type: "separator" as const }],
       },
     };
 
