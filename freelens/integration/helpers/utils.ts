@@ -10,7 +10,6 @@ import * as path from "path";
 import { setImmediate } from "timers";
 import { disposer } from "@freelensapp/utilities";
 import { mkdirp, remove } from "fs-extra";
-import { noop } from "lodash";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
 import * as uuid from "uuid";
@@ -72,7 +71,7 @@ async function attemptStart() {
   global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
-  await remove(CICD).catch(noop);
+  await remove(CICD);
   // We need original .kube/config with minikube context
   const testHomeDir = path.join(CICD, "home");
   await mkdirp(testHomeDir);
@@ -96,12 +95,20 @@ async function attemptStart() {
       window,
       cleanup: async () => {
         app.process().kill();
-        await remove(CICD).catch(noop);
+        try {
+          await withTimeout(remove(CICD), 15_000);
+        } catch (_e) {
+          // no-op
+        }
       },
     };
   } catch (error) {
     await app.close();
-    await remove(CICD).catch(noop);
+    try {
+      await withTimeout(remove(CICD), 15_000);
+    } catch (_e) {
+      // no-op
+    }
     throw error;
   }
 }
@@ -146,4 +153,22 @@ export async function launchMinikubeClusterFromCatalog(window: Page): Promise<Fr
   await frame.waitForSelector("[data-testid=cluster-sidebar]");
 
   return frame;
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timeout: NodeJS.Timeout | undefined = undefined;
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => {
+      reject(new Error(`Operation timed out after ${timeoutMs} ms`));
+    }, timeoutMs);
+  });
+
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  }
 }
