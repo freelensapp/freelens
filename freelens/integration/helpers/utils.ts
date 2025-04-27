@@ -73,8 +73,8 @@ async function attemptStart() {
   // Make sure that the directory is clear
   await remove(FREELENS_INTEGRATION_TESTING_DIR);
   // We need original .kube/config with minikube context
-  const testHomeDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home");
-  await mkdirp(testHomeDir);
+  const testDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home", ".freelens", "extensions");
+  await mkdirp(testDir);
 
   const app = await electron.launch({
     args: ["--integration-testing"], // this argument turns off the blocking of quit
