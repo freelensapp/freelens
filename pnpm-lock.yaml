@@ -760,9 +760,6 @@ importers:
       '@types/react-table':
         specifier: ^7.7.20
         version: 7.7.20
-      '@types/react-virtualized-auto-sizer':
-        specifier: ^1.0.8
-        version: 1.0.8(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/react-window':
         specifier: ^1.8.8
         version: 1.8.8
@@ -4294,10 +4291,6 @@ packages:
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
     peerDependencies:
       '@types/react': '*'
-
-  '@types/react-virtualized-auto-sizer@1.0.8':
-    resolution: {integrity: sha512-keJpNyhiwfl2+N12G1ocCVA5ZDBArbPLe/S90X3kt7fam9naeHdaYYWbpe2sHczp70JWJ+2QLhBE8kLvLuVNjA==}
-    deprecated: This is a stub types definition. react-virtualized-auto-sizer provides its own type definitions, so you do not need this installed.
 
   '@types/react-window@1.8.8':
     resolution: {integrity: sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==}
@@ -10589,13 +10582,6 @@ snapshots:
   '@types/react-transition-group@4.4.12(@types/react@17.0.85)':
     dependencies:
       '@types/react': 17.0.85
-
-  '@types/react-virtualized-auto-sizer@1.0.8(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
-    dependencies:
-      react-virtualized-auto-sizer: 1.0.26(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-    transitivePeerDependencies:
-      - react
-      - react-dom
 
   '@types/react-window@1.8.8':
     dependencies:
