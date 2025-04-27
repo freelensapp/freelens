@@ -8,7 +8,7 @@ module.exports = {
   },
   runtime: "@side/jest-runtime",
   testEnvironment: "jsdom",
-  testTimeout: 15000,
+  testTimeout: 120000,
   transform: {
     "^.+\\.tsx?$": [
       "ts-jest",

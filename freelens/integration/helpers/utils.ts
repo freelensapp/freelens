@@ -94,8 +94,8 @@ async function attemptStart() {
       app,
       window,
       cleanup: async () => {
-        app.process().kill();
         try {
+          await app.close();
           await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
         } catch (_e) {
           // no-op
@@ -103,8 +103,8 @@ async function attemptStart() {
       },
     };
   } catch (error) {
-    await app.close();
     try {
+      await app.close();
       await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
     } catch (_e) {
       // no-op
