@@ -9,7 +9,7 @@ import * as os from "os";
 import * as path from "path";
 import { setImmediate } from "timers";
 import { disposer } from "@freelensapp/utilities";
-import { copy, mkdirp, pathExists, remove } from "fs-extra";
+import { mkdirp, remove } from "fs-extra";
 import { noop } from "lodash";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
@@ -61,6 +61,12 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 async function attemptStart() {
   const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
   process.env.CICD = CICD;
+
+  // Playwright does not work with jest-runtime for reading the package.json
+  process.env.PW_VERSION_OVERRIDE = require("./../../package.json").devDependencies["playwright"].replace(
+    /[^0-9.]/g,
+    "",
+  );
 
   // Fixes `electron.launch: setImmediate is not defined`
   global.setImmediate = setImmediate;
