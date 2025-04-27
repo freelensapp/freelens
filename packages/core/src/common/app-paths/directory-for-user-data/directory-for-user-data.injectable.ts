@@ -13,10 +13,13 @@ import appPathsInjectable from "../app-paths.injectable";
 const directoryForUserDataInjectable = getInjectable({
   id: "directory-for-user-data",
   instantiate: (di) => {
-    if (process.env.CICD && process.env.CICD.startsWith(os.tmpdir())) {
+    if (
+      process.env.FREELENS_INTEGRATION_TESTING_DIR &&
+      process.env.FREELENS_INTEGRATION_TESTING_DIR.startsWith(os.tmpdir())
+    ) {
       const appName = di.inject(appNameInjectable);
 
-      return path.join(process.env.CICD, appName);
+      return path.join(process.env.FREELENS_INTEGRATION_TESTING_DIR, appName);
     }
 
     return di.inject(appPathsInjectable).userData;

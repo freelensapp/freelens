@@ -58,8 +58,8 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 }
 
 async function attemptStart() {
-  const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
-  process.env.CICD = CICD;
+  const FREELENS_INTEGRATION_TESTING_DIR = path.join(os.tmpdir(), "freelens-integration-testing", uuid.v4());
+  process.env.FREELENS_INTEGRATION_TESTING_DIR = FREELENS_INTEGRATION_TESTING_DIR;
 
   // Playwright does not work with jest-runtime for reading the package.json
   process.env.PW_VERSION_OVERRIDE = require("./../../package.json").devDependencies["playwright"].replace(
@@ -71,9 +71,9 @@ async function attemptStart() {
   global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
-  await remove(CICD);
+  await remove(FREELENS_INTEGRATION_TESTING_DIR);
   // We need original .kube/config with minikube context
-  const testHomeDir = path.join(CICD, "home");
+  const testHomeDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home");
   await mkdirp(testHomeDir);
 
   const app = await electron.launch({
@@ -81,7 +81,7 @@ async function attemptStart() {
     executablePath: appPaths[process.platform],
     bypassCSP: true,
     env: {
-      CICD,
+      FREELENS_INTEGRATION_TESTING_DIR,
       ...process.env,
     },
     timeout: 100_000,
@@ -96,7 +96,7 @@ async function attemptStart() {
       cleanup: async () => {
         app.process().kill();
         try {
-          await withTimeout(remove(CICD), 15_000);
+          await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
         } catch (_e) {
           // no-op
         }
@@ -105,7 +105,7 @@ async function attemptStart() {
   } catch (error) {
     await app.close();
     try {
-      await withTimeout(remove(CICD), 15_000);
+      await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
     } catch (_e) {
       // no-op
     }
