@@ -179,7 +179,7 @@
     "openid-client": "^6.4.2",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
-    "pnpm": "^10.9.0",
+    "pnpm": "^10.10.0",
     "proper-lockfile": "^4.1.2",
     "react": "^17.0.2",
     "react-router": "^5.3.4",
