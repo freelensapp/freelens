@@ -145,6 +145,15 @@
       }
     },
 
+    "packages/generate-tray-icons": {
+      "entry": ["bin/generate-tray-icons.js!", "dist/index.js!"],
+      "project": ["bin/*.js!", "dist/*.js!", "src/*.ts"],
+      "ignoreDependencies": ["@freelensapp/icon"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
     "packages/infrastructure/jest": {
       "entry": ["index.js!", "*.ts"],
       "project": ["*.js!", "*.ts"],
