@@ -183,6 +183,28 @@
       }
     },
 
+    "packages/kubernetes-client-node": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/node-fetch": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "src/*.mts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/utility-features/kube-api": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
