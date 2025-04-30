@@ -2,6 +2,7 @@
   "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
   "entry": [],
   "project": [],
+
   "workspaces": {
     "freelens": {
       "entry": [
@@ -110,6 +111,7 @@
         "config": ["!webpack/dev-server.ts", "webpack/*.ts"]
       }
     },
+
     "packages/core": {
       "entry": [
         "src/{main,renderer}/index.ts",
@@ -134,11 +136,21 @@
         "config": ["webpack/library-bundle.ts"]
       }
     },
+
+    "packages/ensure-binaries": {
+      "entry": ["bin/ensure-binaries.js!", "dist/index.mjs!", "src/index.mts"],
+      "project": ["bin/*.js!", "dist/*.mjs!", "src/*.mts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
     "packages/infrastructure/jest": {
       "entry": ["index.js!", "*.ts"],
       "project": ["*.js!", "*.ts"],
       "ignoreDependencies": ["identity-obj-proxy"]
     },
+
     "packages/infrastructure/webpack": {
       "entry": ["bin/webpack-build!", "dist/index.js!", "index.ts"],
       "project": ["*.js", "*.ts", "bin/*", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "static/build/**/*.js!"],
@@ -159,6 +171,7 @@
         "config": ["webpack.config.ts", "src/get-react-config-for.ts"]
       }
     },
+
     "packages/utility-features/kube-api": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
@@ -172,6 +185,7 @@
         "config": ["webpack.config.ts"]
       }
     },
+
     "packages/utility-features/utilities": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["**/*.js!", "**/*.ts"],
