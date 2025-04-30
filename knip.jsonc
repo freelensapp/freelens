@@ -149,7 +149,8 @@
         "sass",
         "sass-loader",
         "style-loader",
-        "tailwindcss"
+        "tailwindcss",
+        "ts-node"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
