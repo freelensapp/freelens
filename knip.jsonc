@@ -214,7 +214,7 @@
       }
     },
 
-    "packages/utility-features/kube-api": {
+    "packages/utility-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
       "ignoreDependencies": [],
@@ -226,18 +226,8 @@
       "webpack": {
         "config": ["webpack.config.ts"]
       }
-    },
-
-    "packages/utility-features/utilities": {
-      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
-      "project": ["**/*.js!", "**/*.ts"],
-      "ignoreDependencies": ["@freelensapp/jest", "@freelensapp/typescript"],
-      "ignoreBinaries": [],
-      "ignoreUnresolved": [],
-      "webpack": {
-        "config": ["webpack.config.js"]
-      }
     }
   },
+
   "exclude": ["exports"]
 }

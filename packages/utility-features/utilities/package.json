@@ -54,7 +54,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "react-router": "^5.3.4",
     "ts-jest": "^29.3.2",
-    "ts-loader": "^9.5.2",
     "type-fest": "^2.19.0"
   }
 }
