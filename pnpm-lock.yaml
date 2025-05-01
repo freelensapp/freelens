@@ -1566,28 +1566,10 @@ importers:
   packages/resource-templates: {}
 
   packages/routing:
-    devDependencies:
-      '@async-fn/jest':
-        specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+    dependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../technical-features/feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../infrastructure/jest
-      '@freelensapp/react-application':
-        specifier: workspace:^
-        version: link:../technical-features/react-application
-      '@freelensapp/react-testing-library-discovery':
-        specifier: workspace:^
-        version: link:../utility-features/react-testing-library-discovery
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
@@ -1597,39 +1579,28 @@ importers:
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
-      '@ogre-tools/injectable-react':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@testing-library/react':
-        specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.85)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@types/history':
-        specifier: ^4.7.11
-        version: 4.7.11
-      auto-bind:
-        specifier: ^4.0.0
-        version: 4.0.0
       history:
         specifier: ^4.10.1
         version: 4.10.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      mobx:
-        specifier: ^6.13.7
-        version: 6.13.7
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
-      mobx-react:
-        specifier: ^7.6.0
-        version: 7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      react:
-        specifier: ^17.0.2
-        version: 17.0.2
-      react-dom:
-        specifier: ^17.0.2
-        version: 17.0.2(react@17.0.2)
+    devDependencies:
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../infrastructure/jest
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../infrastructure/webpack
+      '@types/history':
+        specifier: ^4.7.11
+        version: 4.7.11
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
 
   packages/semver:
     devDependencies:
