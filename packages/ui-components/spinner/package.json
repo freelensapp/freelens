@@ -31,12 +31,15 @@
     "build": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
+  "dependencies": {
+    "@freelensapp/utilities": "workspace:^",
+    "react": "^17.0.2"
+  },
   "devDependencies": {
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/react": "^17.0.85",
-    "react": "^17.0.2"
+    "typescript": "^5.8.3"
   }
 }

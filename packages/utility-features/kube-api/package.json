@@ -31,6 +31,9 @@
     "test:unit": "jest --coverage --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
+    "@freelensapp/json-api": "workspace:^",
+    "@freelensapp/kube-object": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "byline": "^5.0.0",
@@ -41,13 +44,10 @@
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
     "@freelensapp/jest": "workspace:^",
-    "@freelensapp/json-api": "workspace:^",
-    "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/byline": "^4.2.36",
     "@types/lodash": "^4.17.16",

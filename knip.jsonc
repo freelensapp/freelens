@@ -363,6 +363,17 @@
       }
     },
 
+    "packages/ui-components/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "tailwind.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.{ts,tsx}"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/technical-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],

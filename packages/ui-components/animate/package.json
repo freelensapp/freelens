@@ -31,16 +31,19 @@
     "build": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
-  "devDependencies": {
+  "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
-    "@types/react": "^17.0.85",
     "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/react": "^17.0.85",
+    "typescript": "^5.8.3"
   }
 }
