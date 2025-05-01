@@ -1505,10 +1505,11 @@ importers:
         version: 4.9.0
 
   packages/metrics:
+    dependencies:
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
     devDependencies:
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../infrastructure/jest
       '@freelensapp/kube-object':
         specifier: workspace:^
         version: link:../kube-object
@@ -1518,9 +1519,6 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../infrastructure/webpack
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85

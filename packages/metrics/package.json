@@ -26,15 +26,15 @@
   "scripts": {
     "build": "lens-webpack-build",
     "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "dev": "webpack --mode=development --watch"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
+  },
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.11.1"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
     "@types/react": "^17.0.85",
     "react": "^17.0.2"
   }
