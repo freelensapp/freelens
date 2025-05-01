@@ -28,10 +28,16 @@
     "build": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.11.1"
+  },
   "devDependencies": {
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
   }
 }

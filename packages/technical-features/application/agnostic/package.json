@@ -29,18 +29,21 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
-  "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+  "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
-    "@freelensapp/logger": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1"
+  },
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "ts-jest": "^29.3.2"
   }
 }

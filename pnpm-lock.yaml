@@ -1625,28 +1625,13 @@ importers:
         version: 5.8.3
 
   packages/technical-features/application/agnostic:
-    devDependencies:
-      '@async-fn/jest':
-        specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+    dependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../../../infrastructure/jest
-      '@freelensapp/logger':
-        specifier: workspace:^
-        version: link:../../../logger
       '@freelensapp/run-many':
         specifier: workspace:^
         version: link:../../../utility-features/run-many
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
@@ -1656,56 +1641,89 @@ importers:
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
+    devDependencies:
+      '@async-fn/jest':
+        specifier: ^1.6.4
+        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
+      '@freelensapp/test-utils':
+        specifier: workspace:^
+        version: link:../../../utility-features/test-utils
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../../../infrastructure/webpack
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
 
   packages/technical-features/application/electron-main:
-    devDependencies:
-      '@async-fn/jest':
-        specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+    dependencies:
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../agnostic
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../../../infrastructure/jest
       '@freelensapp/run-many':
         specifier: workspace:^
         version: link:../../../utility-features/run-many
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
-      '@ogre-tools/test-utils':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
       electron:
         specifier: ^35.2.1
         version: 35.2.1
+    devDependencies:
+      '@async-fn/jest':
+        specifier: ^1.6.4
+        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../../../infrastructure/webpack
+      '@ogre-tools/test-utils':
+        specifier: ^17.11.1
+        version: 17.11.1(lodash@4.17.21)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/technical-features/application/legacy-extensions:
+    dependencies:
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
     devDependencies:
       '@freelensapp/jest':
         specifier: workspace:^
@@ -1716,11 +1734,24 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/technical-features/feature-core:
+    dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-
-  packages/technical-features/feature-core:
     devDependencies:
       '@freelensapp/jest':
         specifier: workspace:^
@@ -1731,36 +1762,33 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../infrastructure/webpack
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
 
   packages/technical-features/messaging/agnostic:
-    devDependencies:
+    dependencies:
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../../application/agnostic
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../../../infrastructure/jest
       '@freelensapp/startable-stoppable':
         specifier: workspace:^
         version: link:../../../utility-features/startable-stoppable
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../infrastructure/typescript
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -1770,21 +1798,49 @@ importers:
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       mobx:
         specifier: ^6.13.7
         version: 6.13.7
-
-  packages/technical-features/messaging/computed-channel:
-    dependencies:
+    devDependencies:
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../infrastructure/jest
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../../../infrastructure/webpack
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/technical-features/messaging/computed-channel:
+    dependencies:
+      '@freelensapp/messaging':
+        specifier: workspace:^
+        version: link:../agnostic
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      mobx:
+        specifier: ^6.13.7
+        version: 6.13.7
     devDependencies:
       '@freelensapp/application':
         specifier: workspace:^
@@ -1795,12 +1851,12 @@ importers:
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
-      '@freelensapp/messaging':
-        specifier: workspace:^
-        version: link:../agnostic
       '@freelensapp/messaging-fake-bridge':
         specifier: workspace:^
         version: link:../message-bridge-fake
+      '@freelensapp/test-utils':
+        specifier: workspace:^
+        version: link:../../../utility-features/test-utils
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
@@ -1810,129 +1866,180 @@ importers:
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
+      '@testing-library/react':
+        specifier: ^12.1.5
+        version: 12.1.5(@types/react@17.0.85)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      mobx:
-        specifier: ^6.13.7
-        version: 6.13.7
-      type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      mobx-react:
+        specifier: ^7.6.0
+        version: 7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      react:
+        specifier: ^17.0.2
+        version: 17.0.2
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/technical-features/messaging/electron/main:
-    devDependencies:
-      '@freelensapp/application':
-        specifier: workspace:^
-        version: link:../../../application/agnostic
+    dependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../../feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/jest
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../../agnostic
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/webpack
-      '@ogre-tools/fp':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
-      electron:
-        specifier: ^35.2.1
-        version: 35.2.1
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-
-  packages/technical-features/messaging/electron/renderer:
-    devDependencies:
-      '@freelensapp/application':
-        specifier: workspace:^
-        version: link:../../../application/agnostic
-      '@freelensapp/feature-core':
-        specifier: workspace:^
-        version: link:../../../feature-core
-      '@freelensapp/jest':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/jest
-      '@freelensapp/messaging':
-        specifier: workspace:^
-        version: link:../../agnostic
-      '@freelensapp/run-many':
-        specifier: workspace:^
-        version: link:../../../../utility-features/run-many
-      '@freelensapp/startable-stoppable':
-        specifier: workspace:^
-        version: link:../../../../utility-features/startable-stoppable
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../../infrastructure/webpack
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-      '@ogre-tools/injectable-extension-for-auto-registration':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
-      electron:
-        specifier: ^35.2.1
-        version: 35.2.1
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-
-  packages/technical-features/messaging/message-bridge-fake:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
         version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/jest
+      '@freelensapp/test-utils':
+        specifier: workspace:^
+        version: link:../../../../utility-features/test-utils
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/webpack
+      '@ogre-tools/fp':
+        specifier: ^17.11.1
+        version: 17.11.1(lodash@4.17.21)
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      electron:
+        specifier: ^35.2.1
+        version: 35.2.1
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/technical-features/messaging/electron/renderer:
+    dependencies:
+      '@freelensapp/feature-core':
+        specifier: workspace:^
+        version: link:../../../feature-core
+      '@freelensapp/messaging':
+        specifier: workspace:^
+        version: link:../../agnostic
+      '@ogre-tools/injectable-extension-for-auto-registration':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
+    devDependencies:
+      '@async-fn/jest':
+        specifier: ^1.6.4
+        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+      '@freelensapp/application':
+        specifier: workspace:^
+        version: link:../../../application/agnostic
+      '@freelensapp/jest':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/jest
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../../../../infrastructure/webpack
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      '@ogre-tools/injectable-extension-for-mobx':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
+      electron:
+        specifier: ^35.2.1
+        version: 35.2.1
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      mobx:
+        specifier: ^6.13.7
+        version: 6.13.7
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/technical-features/messaging/message-bridge-fake:
+    dependencies:
+      '@async-fn/jest':
+        specifier: ^1.6.4
+        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
+      '@freelensapp/messaging':
+        specifier: workspace:^
+        version: link:../agnostic
+      '@ogre-tools/fp':
+        specifier: ^17.11.1
+        version: 17.11.1(lodash@4.17.21)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@freelensapp/application':
+        specifier: workspace:^
+        version: link:../../application/agnostic
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
-      '@freelensapp/messaging':
+      '@freelensapp/test-utils':
         specifier: workspace:^
-        version: link:../agnostic
+        version: link:../../../utility-features/test-utils
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
-      '@ogre-tools/fp':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -1945,42 +2052,70 @@ importers:
       '@types/lodash':
         specifier: ^4.17.16
         version: 4.17.16
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
       mobx:
         specifier: ^6.13.7
         version: 6.13.7
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/technical-features/prometheus:
-    devDependencies:
+    dependencies:
       '@freelensapp/application':
         specifier: workspace:^
         version: link:../application/agnostic
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../feature-core
-      '@freelensapp/jest':
+      '@freelensapp/utilities':
         specifier: workspace:^
-        version: link:../../infrastructure/jest
+        version: link:../../utility-features/utilities
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      '@ogre-tools/injectable-extension-for-auto-registration':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
+    devDependencies:
       '@freelensapp/kubernetes-client-node':
         specifier: workspace:^
         version: link:../../kubernetes-client-node
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/utilities':
-        specifier: workspace:^
-        version: link:../../utility-features/utilities
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
+
+  packages/technical-features/react-application:
+    dependencies:
+      '@freelensapp/application':
+        specifier: workspace:^
+        version: link:../application/agnostic
+      '@freelensapp/feature-core':
+        specifier: workspace:^
+        version: link:../feature-core
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -1990,18 +2125,22 @@ importers:
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
-
-  packages/technical-features/react-application:
+      '@ogre-tools/injectable-react':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      mobx:
+        specifier: ^6.13.7
+        version: 6.13.7
+      mobx-react:
+        specifier: ^7.6.0
+        version: 7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      react:
+        specifier: ^17.0.2
+        version: 17.0.2
+      react-dom:
+        specifier: ^17.0.2
+        version: 17.0.2(react@17.0.2)
     devDependencies:
-      '@async-fn/jest':
-        specifier: ^1.6.4
-        version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
-      '@freelensapp/application':
-        specifier: workspace:^
-        version: link:../application/agnostic
-      '@freelensapp/feature-core':
-        specifier: workspace:^
-        version: link:../feature-core
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../infrastructure/jest
@@ -2020,18 +2159,6 @@ importers:
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-      '@ogre-tools/injectable-extension-for-auto-registration':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
-      '@ogre-tools/injectable-extension-for-mobx':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
-      '@ogre-tools/injectable-react':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.85)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -2041,24 +2168,24 @@ importers:
       '@types/react-dom':
         specifier: ^17.0.26
         version: 17.0.26(@types/react@17.0.85)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      mobx:
-        specifier: ^6.13.7
-        version: 6.13.7
-      mobx-react:
-        specifier: ^7.6.0
-        version: 7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      react:
-        specifier: ^17.0.2
-        version: 17.0.2
-      react-dom:
-        specifier: ^17.0.2
-        version: 17.0.2(react@17.0.2)
+      ts-jest:
+        specifier: ^29.3.2
+        version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/ui-components/animate:
     devDependencies:
