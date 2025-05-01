@@ -112,6 +112,17 @@
       }
     },
 
+    "packages/business-features/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/core": {
       "entry": [
         "src/{main,renderer}/index.ts",
@@ -217,9 +228,6 @@
     "packages/utility-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
-      "ignoreDependencies": [],
-      "ignoreBinaries": [],
-      "ignoreUnresolved": [],
       "typescript": {
         "config": ["tsconfig.json"]
       },
