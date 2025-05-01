@@ -123,6 +123,28 @@
       }
     },
 
+    "packages/cluster-settings": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/cluster-sidebar": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/core": {
       "entry": [
         "src/{main,renderer}/index.ts",
@@ -153,6 +175,32 @@
       "project": ["bin/*.js!", "dist/*.mjs!", "src/*.mts"],
       "typescript": {
         "config": ["tsconfig.json"]
+      }
+    },
+
+    "packages/extension-api": {
+      "entry": [
+        "dist/extension-api.js!",
+        "index.ts",
+        "jest.config.js",
+        "src/**/*.injectable.ts",
+        "webpack/extensions.ts"
+      ],
+      "project": [
+        "*.js",
+        "*.ts",
+        "__mocks__/**/*.{ts,tsx}",
+        "dist/**/*.js!",
+        "dist/**/*.ts",
+        "src/**/*.ts",
+        "webpack/**/*.ts"
+      ],
+      "ignoreDependencies": ["ignore-loader", "ts-node"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack/extensions.ts"]
       }
     },
 

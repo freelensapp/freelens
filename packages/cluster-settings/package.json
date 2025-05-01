@@ -19,10 +19,12 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build"
   },
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.11.1"
+  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
     "@types/react": "^17.0.85"
   }
 }
