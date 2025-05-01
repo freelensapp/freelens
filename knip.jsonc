@@ -355,6 +355,14 @@
       }
     },
 
+    "packages/semver": {
+      "entry": ["dist/index.js!", "src/index.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
     "packages/utility-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],

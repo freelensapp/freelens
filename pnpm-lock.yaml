@@ -1603,6 +1603,13 @@ importers:
         version: 4.17.21
 
   packages/semver:
+    dependencies:
+      command-line-args:
+        specifier: ^6.0.1
+        version: 6.0.1
+      semver:
+        specifier: ^7.7.1
+        version: 7.7.1
     devDependencies:
       '@types/command-line-args':
         specifier: ^5.2.3
@@ -1613,12 +1620,6 @@ importers:
       '@types/semver':
         specifier: ^7.7.0
         version: 7.7.0
-      command-line-args:
-        specifier: ^6.0.1
-        version: 6.0.1
-      semver:
-        specifier: ^7.7.1
-        version: 7.7.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
