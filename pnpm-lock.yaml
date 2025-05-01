@@ -1542,16 +1542,10 @@ importers:
         version: 5.99.7(webpack-cli@6.0.1)
 
   packages/random-id:
-    devDependencies:
+    dependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../technical-features/feature-core
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -1561,6 +1555,13 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
+    devDependencies:
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../infrastructure/webpack
 
   packages/resource-templates: {}
 

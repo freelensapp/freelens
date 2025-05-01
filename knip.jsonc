@@ -328,6 +328,17 @@
       }
     },
 
+    "packages/random-id": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/utility-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
