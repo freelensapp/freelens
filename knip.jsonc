@@ -240,6 +240,17 @@
       }
     },
 
+    "packages/kube-object": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
     "packages/kubectl-versions": {
       "entry": ["*.js", "build/compute-versions.mjs!", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
       "project": ["bin/*.js!", "build/*.mjs!", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
