@@ -169,7 +169,7 @@
       }
     },
 
-    "packages/extension-api": {
+    "packages/extensions": {
       "entry": [
         "dist/extension-api.js!",
         "index.ts",
@@ -319,7 +319,7 @@
       }
     },
 
-    "packages/random-id": {
+    "packages/random": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
       "typescript": {
