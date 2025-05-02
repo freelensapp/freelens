@@ -112,8 +112,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^5.4.1
+        version: 5.4.1
       chokidar:
         specifier: ^4.0.3
         version: 4.0.3
@@ -815,8 +815,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^5.4.1
+        version: 5.4.1
       chart.js:
         specifier: ^2.9.4
         version: 2.9.4
