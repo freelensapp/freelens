@@ -1351,7 +1351,16 @@ importers:
         version: 2.19.0
 
   packages/kubectl-versions:
-    dependencies:
+    devDependencies:
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../infrastructure/typescript
+      '@freelensapp/webpack':
+        specifier: workspace:^
+        version: link:../infrastructure/webpack
+      '@types/semver':
+        specifier: ^7.7.0
+        version: 7.7.0
       fast-xml-parser:
         specifier: ^5.2.1
         version: 5.2.1
@@ -1364,16 +1373,6 @@ importers:
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
-    devDependencies:
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
-      '@types/semver':
-        specifier: ^7.7.0
-        version: 7.7.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

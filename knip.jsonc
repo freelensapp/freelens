@@ -243,8 +243,8 @@
     },
 
     "packages/kubectl-versions": {
-      "entry": ["*.js", "build/compute-versions.mjs!", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
-      "project": ["bin/*.js!", "build/*.mjs!", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
+      "entry": ["*.js", "build/compute-versions.mjs", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
+      "project": ["bin/*.js!", "build/*.mjs", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
