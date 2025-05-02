@@ -13,7 +13,7 @@
     "asar": "pnpm dlx @electron/asar@3.4.1",
     "biome": "pnpm dlx @biomejs/biome@1.9.4",
     "biome:check": "pnpm biome check",
-    "biome:fix": "pnpm biome check",
+    "biome:fix": "pnpm biome check --fix",
     "build": "pnpm dlx cross-env@7.0.3 NODE_ENV=production pnpm -r build",
     "build:app": "cd freelens && pnpm build:app",
     "build:dev": "pnpm dlx cross-env@7.0.3 NODE_ENV=development pnpm -r build",
