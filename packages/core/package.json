@@ -170,7 +170,7 @@
     "await-lock": "^2.2.2",
     "byline": "^5.0.0",
     "chalk": "^4.1.2",
-    "chart.js": "^2.9.4",
+    "chart.js": "^4.4.8",
     "chokidar": "^4.0.3",
     "circular-dependency-plugin": "^5.2.2",
     "clsx": "^2.1.1",

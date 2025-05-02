@@ -818,8 +818,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       chart.js:
-        specifier: ^2.9.4
-        version: 2.9.4
+        specifier: ^4.4.8
+        version: 4.4.8
       chokidar:
         specifier: ^4.0.3
         version: 4.0.3
@@ -3700,6 +3700,9 @@ packages:
   '@kubernetes/client-node@0.22.3':
     resolution: {integrity: sha512-dG8uah3+HDJLpJEESshLRZlAZ4PgDeV9mZXT0u1g7oy4KMRzdZ7n5g0JEIlL6QhK51/2ztcIqURAnjfjJt6Z+g==}
 
+  '@kurkle/color@0.3.4':
+    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
+
   '@leichtgewicht/ip-codec@2.0.4':
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
 
@@ -4867,14 +4870,9 @@ packages:
     resolution: {integrity: sha512-cbGOjAptfM2LVmWhwRFHEKTPkLwNddVmuqYZQt895yXwAsWsXObCG+YN4DGQ/JBtT4GP1a1lPPdio2z413LmTg==}
     engines: {node: '>=12.20'}
 
-  chart.js@2.9.4:
-    resolution: {integrity: sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==}
-
-  chartjs-color-string@0.6.0:
-    resolution: {integrity: sha512-TIB5OKn1hPJvO7JcteW4WY/63v6KwEdt6udfnDE9iCAZgy+V4SrbSxoIbTw/xkUIapjEI4ExGtD0+6D3KyFd7A==}
-
-  chartjs-color@2.4.1:
-    resolution: {integrity: sha512-haqOg1+Yebys/Ts/9bLo/BqUcONQOdr/hoEr2LLTRl6C5LXctUdHxsCYfvQVg5JIxITrfCNUDr4ntqmQk9+/0w==}
+  chart.js@4.4.8:
+    resolution: {integrity: sha512-IkGZlVpXP+83QpMm4uxEiGqSI7jFizwVtF3+n5Pc3k7sMO+tkd0qxh2OzLhenM0K80xtmAONWGBn082EiBQSDA==}
+    engines: {pnpm: '>=8'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -9949,6 +9947,8 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@kurkle/color@0.3.4': {}
+
   '@leichtgewicht/ip-codec@2.0.4': {}
 
   '@malept/cross-spawn-promise@2.0.0':
@@ -11330,19 +11330,9 @@ snapshots:
 
   char-regex@2.0.2: {}
 
-  chart.js@2.9.4:
+  chart.js@4.4.8:
     dependencies:
-      chartjs-color: 2.4.1
-      moment: 2.30.1
-
-  chartjs-color-string@0.6.0:
-    dependencies:
-      color-name: 1.1.4
-
-  chartjs-color@2.4.1:
-    dependencies:
-      chartjs-color-string: 0.6.0
-      color-convert: 1.9.3
+      '@kurkle/color': 0.3.4
 
   chokidar@3.6.0:
     dependencies:
