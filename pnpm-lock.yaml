@@ -1651,6 +1651,9 @@ importers:
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../../../utility-features/test-utils
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../../infrastructure/typescript
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
@@ -1666,6 +1669,9 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/technical-features/application/electron-main:
     dependencies:
