@@ -174,7 +174,7 @@
     "chokidar": "^4.0.3",
     "circular-dependency-plugin": "^5.2.2",
     "clsx": "^2.1.1",
-    "color": "^4.2.3",
+    "color": "^5.0.0",
     "concurrently": "^9.1.2",
     "conf": "^10.2.0",
     "crypto-js": "^4.2.0",
