@@ -43,7 +43,9 @@
     "jest-environment-jsdom": "^29.7.0",
     "mobx": "^6.13.7",
     "ts-jest": "^29.3.2",
+    "ts-loader": "^9.5.2",
     "type-fest": "^2.19.0",
-    "typed-emitter": "^1.4.0"
+    "typed-emitter": "^1.4.0",
+    "webpack": "^5.99.7"
   }
 }

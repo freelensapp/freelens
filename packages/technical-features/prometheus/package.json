@@ -41,6 +41,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
+    "@types/webpack-env": "^1.18.8",
+    "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.7"
   }

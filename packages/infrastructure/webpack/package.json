@@ -41,6 +41,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
@@ -54,8 +55,7 @@
     "@types/webpack-node-externals": "3.0.4",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "ts-jest": "^29.3.2",
-    "webpack-cli": "^6.0.1"
+    "ts-jest": "^29.3.2"
   },
   "bin": {
     "lens-webpack-build": "bin/webpack-build"

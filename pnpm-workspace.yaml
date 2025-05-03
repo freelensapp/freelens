@@ -17,11 +17,6 @@ patchedDependencies:
   monaco-editor: patches/monaco-editor.patch
 
 publicHoistPattern:
-  - '@types/webpack-env'
-  - '*css-loader*'
-  - '*ts-loader*'
-  - '*sass-loader*'
   - node-gyp
-  - webpack
 
 nodeGyp: ../../../../node-gyp/bin/node-gyp.js

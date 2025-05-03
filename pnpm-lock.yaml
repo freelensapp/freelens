@@ -328,6 +328,9 @@ importers:
       '@types/node':
         specifier: ^22.15.2
         version: 22.15.2
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       circular-dependency-plugin:
         specifier: ^5.2.2
         version: 5.2.2(webpack@5.99.7)
@@ -470,6 +473,9 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -485,6 +491,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/cluster-settings:
     dependencies:
@@ -501,6 +513,12 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/cluster-sidebar:
     dependencies:
@@ -535,6 +553,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.16
         version: 4.17.16
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -550,6 +571,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/core:
     dependencies:
@@ -1013,6 +1040,9 @@ importers:
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       '@types/webpack-node-externals':
         specifier: ^3.0.4
         version: 3.0.4(webpack-cli@6.0.1)
@@ -1272,6 +1302,9 @@ importers:
       webpack:
         specifier: ^5.99.7
         version: 5.99.7(webpack-cli@6.0.1)
+      webpack-cli:
+        specifier: ^6.0.1
+        version: 6.0.1(webpack@5.99.7)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1309,9 +1342,6 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
-      webpack-cli:
-        specifier: ^6.0.1
-        version: 6.0.1(webpack@5.99.7)
 
   packages/kube-object:
     dependencies:
@@ -1352,9 +1382,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/kubectl-versions:
     devDependencies:
@@ -1376,6 +1412,9 @@ importers:
       semver:
         specifier: ^7.7.1
         version: 7.7.1
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -1422,6 +1461,9 @@ importers:
       '@kubernetes/client-node':
         specifier: ^0.22.3
         version: 0.22.3
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -1440,6 +1482,12 @@ importers:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/list-layout:
     dependencies:
@@ -1459,6 +1507,12 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../infrastructure/webpack
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/logger:
     dependencies:
@@ -1493,6 +1547,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.16
         version: 4.17.16
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1505,6 +1562,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
       winston-transport:
         specifier: ^4.9.0
         version: 4.9.0
@@ -1530,6 +1593,12 @@ importers:
       react:
         specifier: ^17.0.2
         version: 17.0.2
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/node-fetch:
     devDependencies:
@@ -1539,6 +1608,9 @@ importers:
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -1567,6 +1639,15 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../infrastructure/webpack
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/resource-templates: {}
 
@@ -1603,9 +1684,18 @@ importers:
       '@types/history':
         specifier: ^4.7.11
         version: 4.7.11
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/semver:
     dependencies:
@@ -1662,6 +1752,9 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1674,9 +1767,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/application/application-for-electron-main:
     dependencies:
@@ -1714,6 +1813,9 @@ importers:
       '@ogre-tools/test-utils':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1726,9 +1828,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/application/legacy-extensions:
     dependencies:
@@ -1754,9 +1862,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/feature-core:
     dependencies:
@@ -1785,6 +1899,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/computed-channel:
     dependencies:
@@ -1831,6 +1951,9 @@ importers:
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.85)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1852,9 +1975,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging:
     dependencies:
@@ -1867,9 +1996,6 @@ importers:
       '@freelensapp/startable-stoppable':
         specifier: workspace:^
         version: link:../../../utility-features/startable-stoppable
-      '@freelensapp/utilities':
-        specifier: workspace:^
-        version: link:../../../utility-features/utilities
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
@@ -1889,9 +2015,15 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
+      '@freelensapp/utilities':
+        specifier: workspace:^
+        version: link:../../../utility-features/utilities
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1907,9 +2039,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-fake-bridge:
     dependencies:
@@ -1971,9 +2109,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-for-main:
     dependencies:
@@ -1983,9 +2127,21 @@ importers:
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../messaging
+      '@ogre-tools/fp':
+        specifier: ^17.11.1
+        version: 17.11.1(lodash@4.17.21)
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
+      electron:
+        specifier: ^35.2.1
+        version: 35.2.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -2002,49 +2158,52 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
-      '@ogre-tools/fp':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-      electron:
-        specifier: ^35.2.1
-        version: 35.2.1
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.2)(typescript@5.8.3))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-for-renderer:
     dependencies:
+      '@freelensapp/application':
+        specifier: workspace:^
+        version: link:../../application/application
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../feature-core
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../messaging
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-auto-registration':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
+      electron:
+        specifier: ^35.2.1
+        version: 35.2.1
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
         version: 1.6.4(jest@29.7.0(babel-plugin-macros@3.1.0))
-      '@freelensapp/application':
-        specifier: workspace:^
-        version: link:../../application/application
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -2054,15 +2213,12 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../../infrastructure/webpack
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)
-      electron:
-        specifier: ^35.2.1
-        version: 35.2.1
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2078,9 +2234,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/technical-features/prometheus:
     dependencies:
@@ -2112,6 +2274,12 @@ importers:
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.17.21)
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -2179,6 +2347,9 @@ importers:
       '@types/react-dom':
         specifier: ^17.0.26
         version: 17.0.26(@types/react@17.0.85)
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2194,9 +2365,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/animate:
     dependencies:
@@ -2231,9 +2408,27 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/button:
     dependencies:
@@ -2259,9 +2454,24 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/error-boundary:
     dependencies:
@@ -2308,12 +2518,27 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/icon:
     dependencies:
@@ -2372,12 +2597,27 @@ importers:
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
       history:
         specifier: ^4.10.1
         version: 4.10.1
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/notifications:
     dependencies:
@@ -2448,12 +2688,30 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/resizing-anchor:
     dependencies:
@@ -2488,9 +2746,24 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/spinner:
     dependencies:
@@ -2513,9 +2786,24 @@ importers:
       '@types/react':
         specifier: ^17.0.85
         version: 17.0.85
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/ui-components/tooltip:
     dependencies:
@@ -2568,6 +2856,9 @@ importers:
       '@types/react-dom':
         specifier: ^17.0.26
         version: 17.0.26(@types/react@17.0.85)
+      css-loader:
+        specifier: ^6.11.0
+        version: 6.11.0(webpack@5.99.7)
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2577,12 +2868,24 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.5.3)(typescript@5.8.3)(webpack@5.99.7)
+      sass-loader:
+        specifier: ^16.0.5
+        version: 16.0.5(sass@1.87.0)(webpack@5.99.7)
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/event-emitter:
     devDependencies:
@@ -2607,6 +2910,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/json-api:
     dependencies:
@@ -2641,6 +2950,9 @@ importers:
       rfc6902:
         specifier: ^5.1.2
         version: 5.1.2
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
@@ -2717,6 +3029,9 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
@@ -2751,6 +3066,12 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../../infrastructure/webpack
+      '@types/webpack-env':
+        specifier: ^1.18.8
+        version: 1.18.8
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       webpack:
         specifier: ^5.99.7
         version: 5.99.7(webpack-cli@6.0.1)
@@ -2770,6 +3091,12 @@ importers:
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.85)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/run-many:
     dependencies:
@@ -2819,12 +3146,18 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
       typed-emitter:
         specifier: ^1.4.0
         version: 1.4.0
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/startable-stoppable:
     devDependencies:
@@ -2849,6 +3182,12 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/test-utils:
     dependencies:
@@ -2895,6 +3234,12 @@ importers:
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
   packages/utility-features/utilities:
     dependencies:
@@ -2971,9 +3316,15 @@ importers:
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       type-fest:
         specifier: ^2.19.0
         version: 2.19.0
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
 
 packages:
 

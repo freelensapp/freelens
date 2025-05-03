@@ -15,10 +15,14 @@
       ],
       "project": ["*.js", "build/*.js", "integration/**/*.ts", "src/**/*.ts!", "static/build/*.js!", "webpack/*.ts"],
       "ignoreDependencies": [
+        // used for `require.context` in webpacked files
+        "@types/webpack-env",
         // it is really runtime dependency but implicitly used in Electron app
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
         "electron-builder-squirrel-windows",
+        // explicit dependency to prevent using version from pnpm
+        "node-gyp",
         // used as script to run in fork()
         "pnpm",
         // used as a hint for knip plugin
@@ -105,6 +109,7 @@
     "packages/business-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -116,6 +121,7 @@
     "packages/cluster-settings": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -127,6 +133,7 @@
     "packages/cluster-sidebar": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -152,7 +159,14 @@
         "tailwind.config.js",
         "webpack/*.ts"
       ],
-      "ignoreDependencies": ["@freelensapp/resource-templates", "ts-node"],
+      "ignoreDependencies": [
+        "@freelensapp/resource-templates",
+        "@types/webpack-env",
+        "node-gyp",
+        "ts-loader",
+        "ts-node",
+        "webpack"
+      ],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -234,6 +248,7 @@
     "packages/kube-object": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -245,6 +260,7 @@
     "packages/kubectl-versions": {
       "entry": ["*.js", "build/compute-versions.mjs", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
       "project": ["bin/*.js!", "build/*.mjs", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -256,6 +272,7 @@
     "packages/kubernetes-client-node": {
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
       "project": ["dist/*.mjs!", "*.ts"],
+      "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -267,6 +284,7 @@
     "packages/legacy-global-di": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -278,6 +296,7 @@
     "packages/list-layout": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -289,6 +308,7 @@
     "packages/logger": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -300,6 +320,7 @@
     "packages/metrics": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -311,6 +332,7 @@
     "packages/node-fetch": {
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
       "project": ["dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -322,6 +344,7 @@
     "packages/random": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -338,6 +361,7 @@
     "packages/routing": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -354,9 +378,10 @@
       }
     },
 
-    "packages/ui-components/*": {
-      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "tailwind.config.js", "webpack.config.js"],
-      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.{ts,tsx}"],
+    "packages/technical-features/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -365,9 +390,29 @@
       }
     },
 
-    "packages/technical-features/*": {
+    "packages/technical-features/*/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/ui-components/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "tailwind.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.{ts,tsx}"],
+      "ignoreDependencies": [
+        "@types/webpack-env",
+        "css-loader",
+        "postcss-loader",
+        "sass-loader",
+        "ts-loader",
+        "webpack"
+      ],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -379,6 +424,7 @@
     "packages/utility-features/*": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
