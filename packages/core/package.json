@@ -130,7 +130,7 @@
     "conf": "^10.2.0",
     "crypto-js": "^4.2.0",
     "dompurify": "^3.2.5",
-    "electron": "^35.2.1",
+    "electron": "^35.2.2",
     "electron-devtools-installer": "^4.0.0",
     "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
