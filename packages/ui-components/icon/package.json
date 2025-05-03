@@ -54,7 +54,12 @@
     "@types/lodash": "^4.17.16",
     "@types/react": "^17.0.85",
     "@types/react-router-dom": "^5.3.3",
+    "css-loader": "^6.11.0",
     "history": "^4.10.1",
-    "typescript": "^5.8.3"
+    "postcss-loader": "^8.1.1",
+    "sass-loader": "^16.0.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7"
   }
 }

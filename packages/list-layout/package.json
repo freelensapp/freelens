@@ -36,6 +36,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "^17.11.1",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7"
   }
 }

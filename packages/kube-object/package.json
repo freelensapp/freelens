@@ -44,6 +44,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "rfc6902": "^5.1.2",
     "ts-jest": "^29.3.2",
-    "type-fest": "^2.19.0"
+    "ts-loader": "^9.5.2",
+    "type-fest": "^2.19.0",
+    "webpack": "^5.99.7"
   }
 }
