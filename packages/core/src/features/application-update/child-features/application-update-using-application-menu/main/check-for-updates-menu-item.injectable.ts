@@ -40,7 +40,7 @@ const checkForUpdatesMenuItemInjectable = getInjectable({
           showMessagePopup(
             "No Updates Available",
             "You're all good",
-            "You've got the latest version of Lens,\nthanks for staying on the ball.",
+            "You've got the latest version of Freelens,\nthanks for staying on the ball.",
             {
               textWidth: 300,
             },

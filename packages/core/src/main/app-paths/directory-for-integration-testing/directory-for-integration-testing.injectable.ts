@@ -8,7 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 const directoryForIntegrationTestingInjectable = getInjectable({
   id: "directory-for-integration-testing",
-  instantiate: () => process.env.CICD,
+  instantiate: () => process.env.FREELENS_INTEGRATION_TESTING_DIR,
   causesSideEffects: true,
 });
 

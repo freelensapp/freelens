@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-api-specifics",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Kube api",
   "type": "commonjs",
   "publishConfig": {
@@ -29,14 +29,18 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch"
   },
-  "devDependencies": {
+  "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/kube-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1"
+  },
+  "devDependencies": {
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/webpack-env": "^1.18.8",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7"
   }
 }

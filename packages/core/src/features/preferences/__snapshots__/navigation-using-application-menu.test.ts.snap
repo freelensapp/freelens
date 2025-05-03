@@ -742,7 +742,7 @@ exports[`preferences - navigation using application menu when navigating to pref
                     class="Switch"
                     data-testid="switch"
                   >
-                    Automatically start Lens on login
+                    Automatically start Freelens on login
                     <input
                       role="switch"
                       type="checkbox"

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/list-layout",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Injection tokens for list layout",
   "type": "commonjs",
   "publishConfig": {
@@ -26,16 +26,18 @@
   "scripts": {
     "build": "lens-webpack-build",
     "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "dev": "webpack --mode=development --watch"
+    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
+  },
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.11.1"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "react": "^17.0.2"
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7"
   }
 }

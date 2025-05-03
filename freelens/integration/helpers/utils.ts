@@ -9,8 +9,7 @@ import * as os from "os";
 import * as path from "path";
 import { setImmediate } from "timers";
 import { disposer } from "@freelensapp/utilities";
-import { copy, mkdirp, pathExists, remove } from "fs-extra";
-import { noop } from "lodash";
+import { mkdirp, remove } from "fs-extra";
 import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
 import * as uuid from "uuid";
@@ -59,24 +58,30 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 }
 
 async function attemptStart() {
-  const CICD = path.join(os.tmpdir(), "lens-integration-testing", uuid.v4());
-  process.env.CICD = CICD;
+  const FREELENS_INTEGRATION_TESTING_DIR = path.join(os.tmpdir(), "freelens-integration-testing", uuid.v4());
+  process.env.FREELENS_INTEGRATION_TESTING_DIR = FREELENS_INTEGRATION_TESTING_DIR;
+
+  // Playwright does not work with jest-runtime for reading the package.json
+  process.env.PW_VERSION_OVERRIDE = require("./../../package.json").devDependencies["playwright"].replace(
+    /[^0-9.]/g,
+    "",
+  );
 
   // Fixes `electron.launch: setImmediate is not defined`
   global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
-  await remove(CICD).catch(noop);
+  await remove(FREELENS_INTEGRATION_TESTING_DIR);
   // We need original .kube/config with minikube context
-  const testHomeDir = path.join(CICD, "home");
-  await mkdirp(testHomeDir);
+  const testDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home", ".freelens", "extensions");
+  await mkdirp(testDir);
 
   const app = await electron.launch({
     args: ["--integration-testing"], // this argument turns off the blocking of quit
     executablePath: appPaths[process.platform],
     bypassCSP: true,
     env: {
-      CICD,
+      FREELENS_INTEGRATION_TESTING_DIR,
       ...process.env,
     },
     timeout: 100_000,
@@ -89,13 +94,21 @@ async function attemptStart() {
       app,
       window,
       cleanup: async () => {
-        app.process().kill();
-        await remove(CICD).catch(noop);
+        try {
+          await app.close();
+          await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
+        } catch (_e) {
+          // no-op
+        }
       },
     };
   } catch (error) {
-    await app.close();
-    await remove(CICD).catch(noop);
+    try {
+      await app.close();
+      await withTimeout(remove(FREELENS_INTEGRATION_TESTING_DIR), 15_000);
+    } catch (_e) {
+      // no-op
+    }
     throw error;
   }
 }
@@ -140,4 +153,22 @@ export async function launchMinikubeClusterFromCatalog(window: Page): Promise<Fr
   await frame.waitForSelector("[data-testid=cluster-sidebar]");
 
   return frame;
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timeout: NodeJS.Timeout | undefined = undefined;
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => {
+      reject(new Error(`Operation timed out after ${timeoutMs} ms`));
+    }, timeoutMs);
+  });
+
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  }
 }

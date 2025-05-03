@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-api",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Kube api",
   "type": "commonjs",
   "publishConfig": {
@@ -30,25 +30,34 @@
     "dev": "webpack --mode=development --watch",
     "test:unit": "jest --coverage --runInBand --detectOpenHandles --forceExit"
   },
-  "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
+  "dependencies": {
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
-    "@freelensapp/logger": "workspace:^",
-    "@freelensapp/node-fetch": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@types/byline": "^4.2.36",
-    "@types/lodash": "^4.17.16",
     "byline": "^5.0.0",
-    "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "mobx": "^6.13.7",
-    "moment": "^2.30.1",
+    "moment": "^2.30.1"
+  },
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/logger": "workspace:^",
+    "@freelensapp/node-fetch": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/byline": "^4.2.36",
+    "@types/lodash": "^4.17.16",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
     "rfc6902": "^5.1.2",
-    "type-fest": "^2.19.0"
+    "ts-jest": "^29.3.2",
+    "ts-loader": "^9.5.2",
+    "type-fest": "^2.19.0",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7"
   }
 }

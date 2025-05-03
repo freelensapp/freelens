@@ -1,0 +1,438 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+  "entry": [],
+  "project": [],
+
+  "workspaces": {
+    "freelens": {
+      "entry": [
+        "build/notarize.js",
+        "integration/**/*.tests.ts",
+        "src/{main,renderer}/library.ts",
+        "src/**/*.injectable.ts",
+        "static/build/{freelens,main}.js!",
+        "webpack/main.ts"
+      ],
+      "project": ["*.js", "build/*.js", "integration/**/*.ts", "src/**/*.ts!", "static/build/*.js!", "webpack/*.ts"],
+      "ignoreDependencies": [
+        // used for `require.context` in webpacked files
+        "@types/webpack-env",
+        // it is really runtime dependency but implicitly used in Electron app
+        "electron",
+        // explicit dependency to prevent to install different versions of app-build-lib
+        "electron-builder-squirrel-windows",
+        // explicit dependency to prevent using version from pnpm
+        "node-gyp",
+        // used as script to run in fork()
+        "pnpm",
+        // used as a hint for knip plugin
+        "ts-node",
+        // // only for Windows
+        "win-ca",
+        // all packages used in require() calls in webpacked files
+        "@astronautlabs/jsonpath",
+        "@freelensapp/animate",
+        "@freelensapp/button",
+        "@freelensapp/cluster-sidebar",
+        "@freelensapp/error-boundary",
+        "@freelensapp/event-emitter",
+        "@freelensapp/icon",
+        "@freelensapp/json-api",
+        "@freelensapp/keyboard-shortcuts",
+        "@freelensapp/kube-api",
+        "@freelensapp/kube-object",
+        "@freelensapp/kubectl-versions",
+        "@freelensapp/kubernetes-client-node",
+        "@freelensapp/legacy-extensions",
+        "@freelensapp/legacy-global-di",
+        "@freelensapp/messaging",
+        "@freelensapp/messaging-for-renderer",
+        "@freelensapp/node-fetch",
+        "@freelensapp/notifications",
+        "@freelensapp/react-application",
+        "@freelensapp/resizing-anchor",
+        "@freelensapp/routing",
+        "@freelensapp/run-many",
+        "@freelensapp/spinner",
+        "@freelensapp/startable-stoppable",
+        "@freelensapp/tooltip",
+        "@freelensapp/utilities",
+        "@hapi/call",
+        "@hapi/subtext",
+        "@ogre-tools/injectable-react",
+        "auto-bind",
+        "await-lock",
+        "chalk",
+        "chokidar",
+        "conf",
+        "crypto-js",
+        "electron-updater",
+        "electron-window-state",
+        "fs-extra",
+        "glob-to-regexp",
+        "got",
+        "grapheme-splitter",
+        "handlebars",
+        "hpagent",
+        "http-proxy",
+        "immer",
+        "joi",
+        "moment",
+        "moment-timezone",
+        "node-pty",
+        "p-limit",
+        "path-to-regexp",
+        "proper-lockfile",
+        "react",
+        "react-router",
+        "selfsigned",
+        "semver",
+        "stoppable",
+        "tcp-port-used",
+        "tempy",
+        "triple-beam",
+        "typed-regex",
+        "url-parse",
+        "winston",
+        "zod"
+      ],
+      "ignoreBinaries": ["distwin-unpackedFreelens.exe", "^start:"],
+      "ignoreUnresolved": [".*/__mocks__/assetMock.t"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["!webpack/dev-server.ts", "webpack/*.ts"]
+      }
+    },
+
+    "packages/business-features/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/cluster-settings": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/cluster-sidebar": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/core": {
+      "entry": [
+        "src/{main,renderer}/index.ts",
+        "src/**/*.injectable.ts",
+        "static/build/library/{main,renderer}.js!",
+        "tailwind.config.js",
+        "webpack/{main,renderer}.ts"
+      ],
+      "project": [
+        "__mocks__/**/*.ts",
+        "jest.config.js",
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "static/build/**/*.js!",
+        "tailwind.config.js",
+        "webpack/*.ts"
+      ],
+      "ignoreDependencies": [
+        "@freelensapp/resource-templates",
+        "@types/webpack-env",
+        "node-gyp",
+        "ts-loader",
+        "ts-node",
+        "webpack"
+      ],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack/library-bundle.ts"]
+      }
+    },
+
+    "packages/ensure-binaries": {
+      "entry": ["bin/ensure-binaries.js!", "dist/index.mjs!", "src/index.mts"],
+      "project": ["bin/*.js!", "dist/*.mjs!", "src/*.mts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
+    "packages/extensions": {
+      "entry": [
+        "dist/extension-api.js!",
+        "index.ts",
+        "jest.config.js",
+        "src/**/*.injectable.ts",
+        "webpack/extensions.ts"
+      ],
+      "project": [
+        "*.js",
+        "*.ts",
+        "__mocks__/**/*.{ts,tsx}",
+        "dist/**/*.js!",
+        "dist/**/*.ts",
+        "src/**/*.ts",
+        "webpack/**/*.ts"
+      ],
+      "ignoreDependencies": ["ignore-loader", "ts-node"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack/extensions.ts"]
+      }
+    },
+
+    "packages/generate-tray-icons": {
+      "entry": ["bin/generate-tray-icons.js!", "dist/index.js!"],
+      "project": ["bin/*.js!", "dist/*.js!", "src/*.ts"],
+      "ignoreDependencies": ["@freelensapp/icon"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
+    "packages/infrastructure/jest": {
+      "entry": ["index.js!", "*.ts"],
+      "project": ["*.js!", "*.ts"],
+      "ignoreDependencies": ["identity-obj-proxy"]
+    },
+
+    "packages/infrastructure/webpack": {
+      "entry": ["bin/webpack-build!", "dist/index.js!", "index.ts"],
+      "project": ["*.js", "*.ts", "bin/*", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "static/build/**/*.js!"],
+      "ignoreDependencies": [
+        "@ogre-tools/injectable-extension-for-auto-registration",
+        "@types/webpack-env",
+        "css-loader",
+        "sass",
+        "sass-loader",
+        "style-loader",
+        "tailwindcss",
+        "ts-node"
+      ],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts", "src/get-react-config-for.ts"]
+      }
+    },
+
+    "packages/kube-object": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/kubectl-versions": {
+      "entry": ["*.js", "build/compute-versions.mjs", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
+      "project": ["bin/*.js!", "build/*.mjs", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/kubernetes-client-node": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "*.ts"],
+      "ignoreDependencies": ["ts-loader"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/legacy-global-di": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/list-layout": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/logger": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/metrics": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/node-fetch": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/random": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/resource-templates": {
+      "entry": [],
+      "project": []
+    },
+
+    "packages/routing": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "src/**/*.injectable.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/semver": {
+      "entry": ["dist/index.js!", "src/index.ts", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
+    "packages/technical-features/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/technical-features/*/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/ui-components/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "tailwind.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.{ts,tsx}"],
+      "ignoreDependencies": [
+        "@types/webpack-env",
+        "css-loader",
+        "postcss-loader",
+        "sass-loader",
+        "ts-loader",
+        "webpack"
+      ],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/utility-features/*": {
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
+      "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
+      "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    }
+  },
+
+  "exclude": ["exports"]
+}

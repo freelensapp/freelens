@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/react-testing-library-discovery",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A way to discover HTML-elements using react-testing-library",
   "type": "commonjs",
   "files": [
@@ -28,11 +28,14 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build"
   },
+  "dependencies": {
+    "@testing-library/dom": "^10.4.0"
+  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^12.1.5"
+    "@testing-library/react": "^12.1.5",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7"
   }
 }

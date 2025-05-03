@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Package for creating Freelens applications",
   "type": "commonjs",
   "files": [
@@ -29,18 +29,26 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
-  "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+  "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
-    "@freelensapp/logger": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1"
+  },
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/webpack-env": "^1.18.8",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "ts-jest": "^29.3.2",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7"
   }
 }

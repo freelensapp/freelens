@@ -425,7 +425,7 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                       class="Switch"
                       data-testid="switch"
                     >
-                      Automatically start Lens on login
+                      Automatically start Freelens on login
                       <input
                         role="switch"
                         type="checkbox"

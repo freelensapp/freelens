@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "commonjs",
   "description": "A package containing runMany and runManySync",
   "publishConfig": {
@@ -25,18 +25,27 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
+  "dependencies": {
+    "@freelensapp/utilities": "workspace:^",
+    "uuid": "^11.1.0"
+  },
   "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "@types/uuid": "^10.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "mobx": "^6.13.7",
+    "ts-jest": "^29.3.2",
+    "ts-loader": "^9.5.2",
     "type-fest": "^2.19.0",
     "typed-emitter": "^1.4.0",
-    "uuid": "^11.1.0"
+    "webpack": "^5.99.7"
   }
 }

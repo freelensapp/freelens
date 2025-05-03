@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/cluster-settings",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Injection token exporter for cluster settings configuration",
   "license": "MIT",
   "type": "commonjs",
@@ -19,10 +19,14 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build"
   },
+  "dependencies": {
+    "@ogre-tools/injectable": "^17.11.1"
+  },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@types/react": "^17.0.85"
+    "@types/react": "^17.0.85",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7"
   }
 }

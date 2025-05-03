@@ -2,13 +2,6 @@ packages:
   - freelens
   - packages/**
 
-publicHoistPattern:
-  - '@types/webpack-env'
-  - '*css-loader*'
-  - '*ts-loader*'
-  - '*sass-loader*'
-  - webpack
-
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - core-js-pure
@@ -22,3 +15,8 @@ onlyBuiltDependencies:
 
 patchedDependencies:
   monaco-editor: patches/monaco-editor.patch
+
+publicHoistPattern:
+  - node-gyp
+
+nodeGyp: ../../../../node-gyp/bin/node-gyp.js
