@@ -29,18 +29,20 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch"
   },
-  "devDependencies": {
+  "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.15.2",
-    "lodash": "^4.17.21",
     "rfc6902": "^5.1.2",
-    "type-fest": "^2.19.0"
+    "type-fest": "^2.19.0",
+    "webpack": "^5.99.7"
   }
 }

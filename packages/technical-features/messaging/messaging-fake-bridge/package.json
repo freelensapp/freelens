@@ -1,8 +1,8 @@
 {
-  "name": "@freelensapp/messaging",
+  "name": "@freelensapp/messaging-fake-bridge",
   "private": false,
   "version": "1.2.1",
-  "description": "An abstraction for messaging between Lens environments",
+  "description": "Fake implementation to bridge multiple dependency injection containers.",
   "type": "commonjs",
   "publishConfig": {
     "access": "public",
@@ -29,19 +29,28 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
+  "dependencies": {
+    "@async-fn/jest": "^1.6.4",
+    "@freelensapp/messaging": "workspace:^",
+    "@ogre-tools/fp": "^17.11.1",
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/jest": "workspace:^",
-    "@freelensapp/startable-stoppable": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@testing-library/react": "^12.1.5",
+    "@types/lodash": "^4.17.16",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "lodash": "^4.17.21",
-    "mobx": "^6.13.7"
+    "jest-environment-jsdom": "^29.7.0",
+    "mobx": "^6.13.7",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
   }
 }

@@ -29,7 +29,6 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1"

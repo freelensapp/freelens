@@ -29,17 +29,19 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "dev": "webpack --mode=development --watch"
   },
-  "devDependencies": {
+  "dependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/utilities": "workspace:^",
+    "@ogre-tools/injectable": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1"
+  },
+  "devDependencies": {
     "@freelensapp/kubernetes-client-node": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1"
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7"
   }
 }

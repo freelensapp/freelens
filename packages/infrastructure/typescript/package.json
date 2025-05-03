@@ -21,7 +21,7 @@
   "scripts": {
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
-  "devDependencies": {
+  "dependencies": {
     "typescript": "^5.8.3",
     "typescript-plugin-css-modules": "^5.1.0"
   }
