@@ -2332,7 +2332,7 @@ importers:
         specifier: ^7.0.0
         version: 7.4.3
       tmp-promise:
-        specifier: ^3.0.2
+        specifier: ^3.0.3
         version: 3.0.3
     devDependencies:
       '@freelensapp/typescript':

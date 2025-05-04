@@ -34,7 +34,7 @@
     "socks-proxy-agent": "^8.0.4",
     "stream-buffers": "^3.0.2",
     "tar": "^7.0.0",
-    "tmp-promise": "^3.0.2"
+    "tmp-promise": "^3.0.3"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
