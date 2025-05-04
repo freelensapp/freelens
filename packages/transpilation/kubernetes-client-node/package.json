@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@freelensapp/node-fetch": "workspace:^",
+    "@freelensapp/openid-client": "workspace:^",
     "hpagent": "^1.2.0",
     "isomorphic-ws": "^5.0.0",
     "js-yaml": "^4.1.0",

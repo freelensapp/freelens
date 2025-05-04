@@ -269,18 +269,6 @@
       }
     },
 
-    "packages/kubernetes-client-node": {
-      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
-      "project": ["*.js", "*.ts", "dist/*.cjs!", "dist/*.ts"],
-      "ignoreDependencies": ["ts-loader"],
-      "typescript": {
-        "config": ["tsconfig.json"]
-      },
-      "webpack": {
-        "config": ["webpack.config.ts"]
-      }
-    },
-
     "packages/legacy-global-di": {
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
@@ -321,18 +309,6 @@
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
       "ignoreDependencies": ["ts-loader", "webpack"],
-      "typescript": {
-        "config": ["tsconfig.json"]
-      },
-      "webpack": {
-        "config": ["webpack.config.ts"]
-      }
-    },
-
-    "packages/node-fetch": {
-      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
-      "project": ["dist/*.mjs!", "src/*.mts"],
-      "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -394,6 +370,42 @@
       "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts"],
       "ignoreDependencies": ["@types/webpack-env", "ts-loader", "webpack"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/transpilation/kubernetes-client-node": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["*.js", "*.ts", "dist/*.cjs!", "dist/*.ts"],
+      "ignoreDependencies": ["ts-loader"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/transpilation/node-fetch": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      },
+      "webpack": {
+        "config": ["webpack.config.ts"]
+      }
+    },
+
+    "packages/transpilation/openid-client": {
+      "entry": ["*.js", "dist/index.cjs!", "index.ts"],
+      "project": ["dist/*.mjs!", "src/*.mts"],
+      "ignoreDependencies": ["ts-loader"],
       "typescript": {
         "config": ["tsconfig.json"]
       },

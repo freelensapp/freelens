@@ -1,10 +1,10 @@
-import path from "path";
+const path = require("path");
 
-export default {
+module.exports = {
   entry: "./index.ts",
   output: {
     path: path.resolve("dist"),
-    filename: "index.cjs",
+    filename: "index.js",
     library: {
       type: "commonjs",
     },
@@ -16,19 +16,6 @@ export default {
   optimization: {
     concatenateModules: true,
     minimize: false,
-  },
-  async externals({ request }) {
-    if (
-      !request.startsWith(".") &&
-      !request.startsWith("@kubernetes/client-node") &&
-      !request.startsWith("jsonpath-plus")
-    ) {
-      if (request === "node-fetch") {
-        return Promise.resolve(["node-commonjs @freelensapp/node-fetch", "default"]);
-      }
-      return Promise.resolve(`node-commonjs ${request}`);
-    }
-    return Promise.resolve();
   },
   module: {
     rules: [

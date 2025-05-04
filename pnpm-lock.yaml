@@ -50,7 +50,7 @@ importers:
         version: link:../packages/kubectl-versions
       '@freelensapp/kubernetes-client-node':
         specifier: workspace:^
-        version: link:../packages/kubernetes-client-node
+        version: link:../packages/transpilation/kubernetes-client-node
       '@freelensapp/legacy-extensions':
         specifier: workspace:^
         version: link:../packages/technical-features/application/legacy-extensions
@@ -68,7 +68,7 @@ importers:
         version: link:../packages/technical-features/messaging/messaging-for-main
       '@freelensapp/node-fetch':
         specifier: workspace:^
-        version: link:../packages/node-fetch
+        version: link:../packages/transpilation/node-fetch
       '@freelensapp/prometheus':
         specifier: workspace:^
         version: link:../packages/technical-features/prometheus
@@ -621,7 +621,7 @@ importers:
         version: link:../kubectl-versions
       '@freelensapp/kubernetes-client-node':
         specifier: workspace:^
-        version: link:../kubernetes-client-node
+        version: link:../transpilation/kubernetes-client-node
       '@freelensapp/legacy-extensions':
         specifier: workspace:^
         version: link:../technical-features/application/legacy-extensions
@@ -642,7 +642,7 @@ importers:
         version: link:../metrics
       '@freelensapp/node-fetch':
         specifier: workspace:^
-        version: link:../node-fetch
+        version: link:../transpilation/node-fetch
       '@freelensapp/notifications':
         specifier: workspace:^
         version: link:../ui-components/notifications
@@ -1419,55 +1419,6 @@ importers:
         specifier: ^5.99.7
         version: 5.99.7(webpack-cli@6.0.1)
 
-  packages/kubernetes-client-node:
-    dependencies:
-      '@freelensapp/node-fetch':
-        specifier: workspace:^
-        version: link:../node-fetch
-      hpagent:
-        specifier: ^1.2.0
-        version: 1.2.0
-      isomorphic-ws:
-        specifier: ^5.0.0
-        version: 5.0.0(ws@8.18.1)
-      js-yaml:
-        specifier: ^4.1.0
-        version: 4.1.0
-      openid-client:
-        specifier: ^6.1.3
-        version: 6.4.2
-      rfc4648:
-        specifier: ^1.3.0
-        version: 1.5.4
-      socks-proxy-agent:
-        specifier: ^8.0.4
-        version: 8.0.5
-      stream-buffers:
-        specifier: ^3.0.2
-        version: 3.0.3
-      tar:
-        specifier: ^7.0.0
-        version: 7.4.3
-      tmp-promise:
-        specifier: ^3.0.2
-        version: 3.0.3
-    devDependencies:
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      '@kubernetes/client-node':
-        specifier: ^1.1.2
-        version: 1.1.2(encoding@0.1.13)
-      ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      webpack:
-        specifier: ^5.99.7
-        version: 5.99.7(webpack-cli@6.0.1)
-
   packages/legacy-global-di:
     devDependencies:
       '@freelensapp/typescript':
@@ -1593,24 +1544,6 @@ importers:
       ts-loader:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
-      webpack:
-        specifier: ^5.99.7
-        version: 5.99.7(webpack-cli@6.0.1)
-
-  packages/node-fetch:
-    devDependencies:
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      node-fetch:
-        specifier: ^3.3.2
-        version: 3.3.2
-      ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
       webpack:
         specifier: ^5.99.7
         version: 5.99.7(webpack-cli@6.0.1)
@@ -2261,7 +2194,7 @@ importers:
     devDependencies:
       '@freelensapp/kubernetes-client-node':
         specifier: workspace:^
-        version: link:../../kubernetes-client-node
+        version: link:../../transpilation/kubernetes-client-node
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2367,6 +2300,94 @@ importers:
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
       typescript:
         specifier: ^5.8.3
+        version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
+
+  packages/transpilation/kubernetes-client-node:
+    dependencies:
+      '@freelensapp/node-fetch':
+        specifier: workspace:^
+        version: link:../node-fetch
+      '@freelensapp/openid-client':
+        specifier: workspace:^
+        version: link:../openid-client
+      hpagent:
+        specifier: ^1.2.0
+        version: 1.2.0
+      isomorphic-ws:
+        specifier: ^5.0.0
+        version: 5.0.0(ws@8.18.1)
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
+      openid-client:
+        specifier: ^6.1.3
+        version: 6.4.2
+      rfc4648:
+        specifier: ^1.3.0
+        version: 1.5.4
+      socks-proxy-agent:
+        specifier: ^8.0.4
+        version: 8.0.5
+      stream-buffers:
+        specifier: ^3.0.2
+        version: 3.0.3
+      tar:
+        specifier: ^7.0.0
+        version: 7.4.3
+      tmp-promise:
+        specifier: ^3.0.2
+        version: 3.0.3
+    devDependencies:
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../infrastructure/typescript
+      '@kubernetes/client-node':
+        specifier: ^1.1.2
+        version: 1.1.2(encoding@0.1.13)
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
+
+  packages/transpilation/node-fetch:
+    devDependencies:
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../infrastructure/typescript
+      node-fetch:
+        specifier: ^3.3.2
+        version: 3.3.2
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      webpack:
+        specifier: ^5.99.7
+        version: 5.99.7(webpack-cli@6.0.1)
+
+  packages/transpilation/openid-client:
+    devDependencies:
+      '@freelensapp/typescript':
+        specifier: workspace:^
+        version: link:../../infrastructure/typescript
+      openid-client:
+        specifier: ^6.1.3
+        version: 6.4.2
+      ts-loader:
+        specifier: ^9.5.2
+        version: 9.5.2(typescript@5.8.3)(webpack@5.99.7)
+      typescript:
+        specifier: ^5.8.2
         version: 5.8.3
       webpack:
         specifier: ^5.99.7
@@ -2931,7 +2952,7 @@ importers:
         version: link:../../logger
       '@freelensapp/node-fetch':
         specifier: workspace:^
-        version: link:../../node-fetch
+        version: link:../../transpilation/node-fetch
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
@@ -2998,7 +3019,7 @@ importers:
         version: link:../../logger
       '@freelensapp/node-fetch':
         specifier: workspace:^
-        version: link:../../node-fetch
+        version: link:../../transpilation/node-fetch
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../test-utils
