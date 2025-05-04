@@ -25,10 +25,12 @@ const createCanIInjectable = getInjectable({
     return (api) =>
       async (resourceAttributes: V1ResourceAttributes): Promise<boolean> => {
         try {
-          const { body } = await api.createSelfSubjectAccessReview({
-            apiVersion: "authorization.k8s.io/v1",
-            kind: "SelfSubjectAccessReview",
-            spec: { resourceAttributes },
+          const body = await api.createSelfSubjectAccessReview({
+            body: {
+              apiVersion: "authorization.k8s.io/v1",
+              kind: "SelfSubjectAccessReview",
+              spec: { resourceAttributes },
+            },
           });
 
           return body.status?.allowed ?? false;

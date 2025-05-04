@@ -11,13 +11,12 @@ import type {
   CoreV1Api,
   V1APIGroupList,
   V1APIVersions,
-  V1NamespaceList,
   V1SelfSubjectAccessReview,
   V1SelfSubjectRulesReview,
 } from "@freelensapp/kubernetes-client-node";
-import { flushPromises } from "@freelensapp/test-utils";
-import { anyObject } from "jest-mock-extended";
-import type { PartialDeep } from "type-fest";
+import { flushPromises } from "@freelensapp/test-utils/dist";
+import { anyObject } from "jest-mock-extended/lib";
+import { PartialDeep } from "type-fest";
 import type { Cluster } from "../../common/cluster/cluster";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
@@ -502,20 +501,18 @@ const nonCoreApiResponse = {
 } as V1APIGroupList;
 
 const listNamespaceResponse = {
-  body: {
-    items: [
-      {
-        metadata: {
-          name: "default",
-        },
+  items: [
+    {
+      metadata: {
+        name: "default",
       },
-      {
-        metadata: {
-          name: "my-namespace",
-        },
+    },
+    {
+      metadata: {
+        name: "my-namespace",
       },
-    ],
-  } as PartialDeep<V1NamespaceList>,
+    },
+  ],
 } as Awaited<ReturnType<CoreV1Api["listNamespace"]>>;
 
 const coreApiKindsResponse = {
@@ -586,15 +583,13 @@ const discoveryK8sIoKindsResponse = {
 type CreateSelfSubjectRulesReviewRes = Awaited<ReturnType<AuthorizationV1Api["createSelfSubjectRulesReview"]>>;
 
 const defaultIncompletePermissions = {
-  body: {
-    status: {
-      incomplete: true,
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
+  status: {
+    incomplete: true,
+  },
 } as CreateSelfSubjectRulesReviewRes;
 
 const emptyPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [],
     },
@@ -602,7 +597,7 @@ const emptyPermissions = {
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultSingleListPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [
         {
@@ -616,7 +611,7 @@ const defaultSingleListPermissions = {
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultMultipleListPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [
         {
