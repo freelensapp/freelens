@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@kubernetes/client-node": "^0.22.3",
+    "@kubernetes/client-node": "^1.1.2",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.7"
