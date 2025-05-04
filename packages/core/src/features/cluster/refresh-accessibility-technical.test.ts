@@ -502,21 +502,19 @@ const nonCoreApiResponse = {
 } as V1APIGroupList;
 
 const listNamespaceResponse = {
-  body: {
-    items: [
-      {
-        metadata: {
-          name: "default",
-        },
+  items: [
+    {
+      metadata: {
+        name: "default",
       },
-      {
-        metadata: {
-          name: "my-namespace",
-        },
+    },
+    {
+      metadata: {
+        name: "my-namespace",
       },
-    ],
-  } as PartialDeep<V1NamespaceList>,
-} as Awaited<ReturnType<CoreV1Api["listNamespace"]>>;
+    },
+  ],
+} as PartialDeep<V1NamespaceList> as Awaited<ReturnType<CoreV1Api["listNamespace"]>>;
 
 const coreApiKindsResponse = {
   kind: "APIResourceList",
@@ -586,50 +584,42 @@ const discoveryK8sIoKindsResponse = {
 type CreateSelfSubjectRulesReviewRes = Awaited<ReturnType<AuthorizationV1Api["createSelfSubjectRulesReview"]>>;
 
 const defaultIncompletePermissions = {
-  body: {
-    status: {
-      incomplete: true,
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
-} as CreateSelfSubjectRulesReviewRes;
+  status: {
+    incomplete: true,
+  },
+} as PartialDeep<V1SelfSubjectRulesReview> as CreateSelfSubjectRulesReviewRes;
 
 const emptyPermissions = {
-  body: {
-    status: {
-      resourceRules: [],
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
-} as CreateSelfSubjectRulesReviewRes;
+  status: {
+    resourceRules: [],
+  },
+} as PartialDeep<V1SelfSubjectRulesReview> as CreateSelfSubjectRulesReviewRes;
 
 const defaultSingleListPermissions = {
-  body: {
-    status: {
-      resourceRules: [
-        {
-          apiGroups: [""],
-          resources: ["pods"],
-          verbs: ["list"],
-        },
-      ],
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
-} as CreateSelfSubjectRulesReviewRes;
+  status: {
+    resourceRules: [
+      {
+        apiGroups: [""],
+        resources: ["pods"],
+        verbs: ["list"],
+      },
+    ],
+  },
+} as PartialDeep<V1SelfSubjectRulesReview> as CreateSelfSubjectRulesReviewRes;
 
 const defaultMultipleListPermissions = {
-  body: {
-    status: {
-      resourceRules: [
-        {
-          apiGroups: [""],
-          resources: ["pods"],
-          verbs: ["get"],
-        },
-        {
-          apiGroups: [""],
-          resources: ["pods"],
-          verbs: ["list"],
-        },
-      ],
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
-} as CreateSelfSubjectRulesReviewRes;
+  status: {
+    resourceRules: [
+      {
+        apiGroups: [""],
+        resources: ["pods"],
+        verbs: ["get"],
+      },
+      {
+        apiGroups: [""],
+        resources: ["pods"],
+        verbs: ["list"],
+      },
+    ],
+  },
+} as PartialDeep<V1SelfSubjectRulesReview> as CreateSelfSubjectRulesReviewRes;

@@ -49,8 +49,8 @@ export class NodeShellSession extends ShellSession {
 
     const cleanup = once(() => {
       coreApi
-        .deleteNamespacedPod(this.podName, "kube-system")
-        .catch((error) => this.dependencies.logger.warn(`[NODE-SHELL]: failed to remove pod shell`, error));
+        .deleteNamespacedPod({ name: this.podName, namespace: "kube-system" })
+        .catch(error => this.dependencies.logger.warn(`[NODE-SHELL]: failed to remove pod shell`, error));
     });
 
     this.websocket.once("close", cleanup);
@@ -143,39 +143,39 @@ export class NodeShellSession extends ShellSession {
         break;
     }
 
-    return coreApi.createNamespacedPod("kube-system", {
-      metadata: {
-        name: this.podName,
+    return coreApi
+      .createNamespacedPod({
         namespace: "kube-system",
-      },
-      spec: {
-        nodeName: this.nodeName,
-        restartPolicy: "Never",
-        terminationGracePeriodSeconds: 0,
-        hostPID: true,
-        hostIPC: true,
-        hostNetwork: true,
-        tolerations: [
-          {
-            operator: "Exists",
+        body: {
+          metadata: {
+            name: this.podName,
+            namespace: "kube-system",
           },
-        ],
-        priorityClassName: "system-node-critical",
-        containers: [
-          {
-            name: "shell",
-            image,
-            securityContext,
-            command,
-            args,
-            stdin: true,
-            stdinOnce: true,
-            tty: true,
+          spec: {
+            nodeName: this.nodeName,
+            restartPolicy: "Never",
+            terminationGracePeriodSeconds: 0,
+            hostPID: true,
+            hostIPC: true,
+            hostNetwork: true,
+            tolerations: [{
+              operator: "Exists",
+            }],
+            priorityClassName: "system-node-critical",
+            containers: [{
+              name: "shell",
+              image,
+              securityContext,
+              command,
+              args,
+              stdin: true,
+              stdinOnce: true,
+              tty: true,
+            }],
+            imagePullSecrets,
           },
-        ],
-        imagePullSecrets,
-      },
-    });
+        },
+      });
   }
 
   protected waitForRunningPod(kc: KubeConfig): Promise<void> {

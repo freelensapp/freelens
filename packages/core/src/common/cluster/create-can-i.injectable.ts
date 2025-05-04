@@ -22,18 +22,19 @@ const createCanIInjectable = getInjectable({
   instantiate: (di): CreateCanI => {
     const logger = di.inject(loggerInjectionToken);
 
-    return (api) =>
-      async (resourceAttributes: V1ResourceAttributes): Promise<boolean> => {
-        try {
-          const { body } = await api.createSelfSubjectAccessReview({
+    return (api) => async (resourceAttributes: V1ResourceAttributes): Promise<boolean> => {
+      try {
+        const res = await api.createSelfSubjectAccessReview({
+          body: {
             apiVersion: "authorization.k8s.io/v1",
             kind: "SelfSubjectAccessReview",
             spec: { resourceAttributes },
-          });
+          }
+        });
 
-          return body.status?.allowed ?? false;
-        } catch (error) {
-          logger.error(`[AUTHORIZATION-REVIEW]: failed to create access review: ${error}`, { resourceAttributes });
+        return res.status?.allowed ?? false;
+      } catch (error) {
+        logger.error(`[AUTHORIZATION-REVIEW]: failed to create access review: ${error}`, { resourceAttributes });
 
           return false;
         }

@@ -7,6 +7,7 @@
 import path from "path";
 import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
 import type * as K8slensTooltip from "@freelensapp/tooltip";
+import fetch from "@freelensapp/node-fetch";
 import * as glob from "glob";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
@@ -41,6 +42,8 @@ global.fail = ((error = "Test failed without explicit error") => {
 process.on("unhandledRejection", (err: any) => {
   global.fail(err);
 });
+
+global.fetch = fetch as any;
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoderNode as unknown as typeof TextDecoder;

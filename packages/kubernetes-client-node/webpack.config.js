@@ -17,16 +17,6 @@ export default {
     concatenateModules: true,
     minimize: false,
   },
-  async externals({ request }) {
-    if (
-      !request.startsWith(".") &&
-      !request.startsWith("@kubernetes/client-node") &&
-      !request.startsWith("jsonpath-plus")
-    ) {
-      return Promise.resolve(`node-commonjs ${request}`);
-    }
-    return Promise.resolve();
-  },
   module: {
     rules: [
       {
@@ -44,5 +34,8 @@ export default {
   },
   resolve: {
     extensions: [".ts", ".js", ".cjs"],
+    alias: {
+      "node-fetch": "node-fetch/lib/index.js"
+    }
   },
 };
