@@ -14,6 +14,7 @@ onlyBuiltDependencies:
   - win-ca
 
 patchedDependencies:
+  circular-dependency-plugin: patches/circular-dependency-plugin.patch
   monaco-editor: patches/monaco-editor.patch
 
 publicHoistPattern:

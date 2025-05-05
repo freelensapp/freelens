@@ -23,9 +23,9 @@
         "electron-builder-squirrel-windows",
         // explicit dependency to prevent using version from pnpm
         "node-gyp",
-        // used as script to run in fork()
+        // used as script to run in fork() to install extensions
         "pnpm",
-        // used as a hint for knip plugin
+        // used by webpack and for dev-server
         "ts-node",
         // // only for Windows
         "win-ca",
@@ -160,9 +160,17 @@
         "webpack/*.ts"
       ],
       "ignoreDependencies": [
+        // dependency with static artifacts only
         "@freelensapp/resource-templates",
+        // used for `require.context` in webpacked files
         "@types/webpack-env",
+        // it is really runtime dependency but implicitly used in Electron app
+        "electron",
+        // explicit dependency to prevent using version from pnpm
         "node-gyp",
+        // used as script to run in fork() to install extensions
+        "pnpm",
+        // webpack dependencies are not handled by knip correctly
         "ts-loader",
         "ts-node",
         "webpack"
