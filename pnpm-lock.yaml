@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  circular-dependency-plugin:
+    hash: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
+    path: patches/circular-dependency-plugin.patch
   monaco-editor:
     hash: 1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0
     path: patches/monaco-editor.patch
@@ -324,7 +327,7 @@ importers:
         version: 1.18.8
       circular-dependency-plugin:
         specifier: ^5.2.2
-        version: 5.2.2(webpack@5.99.7)
+        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.99.7)
       concurrently:
         specifier: ^9.1.2
         version: 9.1.2
@@ -1039,7 +1042,7 @@ importers:
         version: 8.18.1
       circular-dependency-plugin:
         specifier: ^5.2.2
-        version: 5.2.2(webpack@5.99.7)
+        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.99.7)
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.99.7)
@@ -11502,7 +11505,7 @@ snapshots:
 
   ci-info@3.8.0: {}
 
-  circular-dependency-plugin@5.2.2(webpack@5.99.7):
+  circular-dependency-plugin@5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.99.7):
     dependencies:
       webpack: 5.99.7(webpack-cli@6.0.1)
 

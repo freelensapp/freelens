@@ -1,0 +1,20 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index b8a7010046e9d4c103b4b8d6c71e6f5637ae4d4e..0000000000000000000000000000000000000000
+diff --git a/index.js b/index.js
+index 32c7be94cdd532857ac91f204a0acec33a385a45..245fa57733d2f2238166088959ea1a64817d797f 100644
+--- a/index.js
++++ b/index.js
+@@ -1,11 +1,10 @@
+ let path = require('path')
+-let extend = require('util')._extend
+ let BASE_ERROR = 'Circular dependency detected:\r\n'
+ let PluginTitle = 'CircularDependencyPlugin'
+ 
+ class CircularDependencyPlugin {
+   constructor(options) {
+-    this.options = extend({
++    this.options = Object.assign({
+       exclude: new RegExp('$^'),
+       include: new RegExp('.*'),
+       failOnError: false,
