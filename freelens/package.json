@@ -143,7 +143,7 @@
     "win-ca": "^3.5.1",
     "winston": "^3.17.0",
     "ws": "^8.18.2",
-    "zod": "^3.24.3"
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.1",
