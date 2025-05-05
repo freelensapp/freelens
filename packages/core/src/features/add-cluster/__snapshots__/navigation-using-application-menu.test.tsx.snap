@@ -442,7 +442,7 @@ exports[`add-cluster - navigation using application menu when navigating to add 
               </code>
                file. 
               <a
-                href="https://github.com/freelensapp/freelens/wiki/getting-started/add-cluster/"
+                href="https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/"
                 rel="noreferrer"
                 target="_blank"
               >

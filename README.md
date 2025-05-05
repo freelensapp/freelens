@@ -177,17 +177,21 @@ scoop install freelens
 
 ## Development
 
-Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
-from source.
+Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
+wiki page to see how to build the application from source.
 
 ## Extensions
 
-Anyone can develop extensions for Freelens and many extensions previously used with Open Lens have already been converted.  
-Visit the [extensions page](https://github.com/freelensapp/freelens/wiki/Extensions) to see them and write in the [appropriate discussion](https://github.com/freelensapp/freelens/discussions/117) if you also want to propose yours.
+Anyone can develop extensions for Freelens and many extensions previously used
+with Open Lens have already been converted. Visit
+[Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
+page to see them and write in the [appropriate
+discussion](https://github.com/freelensapp/freelens/discussions/117) if you
+also want to propose yours.
 
 ## Community
 
-Get updates about Freelens & keep in touch with our community  
+Get updates about Freelens & keep in touch with our community
 
 - Follow us on [LinkedIn](https://www.linkedin.com/company/freelensapp/)
 - Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
@@ -204,7 +208,7 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 
 ## Expenses and Donations
 
-Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.  
+Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.
 For more information, see our dedicated page in our Wiki: [Expenses and Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
 
 ## License
