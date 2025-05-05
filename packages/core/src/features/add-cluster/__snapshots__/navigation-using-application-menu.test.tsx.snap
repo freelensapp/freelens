@@ -95,15 +95,15 @@ exports[`add-cluster - navigation using application menu renders 1`] = `
                 viewBox="0 0 400 400"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                 
-  
+
+
                 <defs>
                   <style>
                     .cls-1{fill:none!important;}
                   </style>
                 </defs>
-                
-  
+
+
                 <rect
                   class="cls-1"
                   height="400"
@@ -144,10 +144,10 @@ exports[`add-cluster - navigation using application menu renders 1`] = `
                   id="path4"
                   stroke="none"
                 />
-                
+
 
               </svg>
-              
+
 
             </span>
           </i>
@@ -165,7 +165,7 @@ exports[`add-cluster - navigation using application menu renders 1`] = `
                 To get you started we have auto-detected your clusters in your kubeconfig file and added them to the catalog, your centralized view for managing all your cloud-native resources.
                 <br />
                 <br />
-                If you have any questions or feedback, please join us on our 
+                If you have any questions or feedback, please join us on our
                 <a
                   class="link"
                   href="https://github.com/freelensapp/freelens/discussions"
@@ -432,17 +432,17 @@ exports[`add-cluster - navigation using application menu when navigating to add 
               Add Clusters from Kubeconfig
             </h2>
             <p>
-              Clusters added here are  
+              Clusters added here are
               <b>
                 not
               </b>
-               merged into the 
+               merged into the
               <code>
                 ~/.kube/config
               </code>
-               file. 
+               file.
               <a
-                href="https://github.com/freelensapp/freelens/wiki/getting-started/add-cluster/"
+                href="https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/"
                 rel="noreferrer"
                 target="_blank"
               >

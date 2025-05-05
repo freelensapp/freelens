@@ -121,7 +121,11 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
           {" merged into the "}
           <code>~/.kube/config</code>
           {" file. "}
-          <a href={`${docsUrl}/getting-started/add-cluster/`} rel="noreferrer" target="_blank">
+          <a
+            href="https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/"
+            rel="noreferrer"
+            target="_blank"
+          >
             Read more about adding clusters.
           </a>
         </p>
