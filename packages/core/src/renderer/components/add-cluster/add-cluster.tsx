@@ -26,7 +26,6 @@ import navigateToCatalogInjectable from "../../../common/front-end-routing/route
 import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
-import { docsUrl } from "../../../common/vars";
 import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 
