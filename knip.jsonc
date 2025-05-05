@@ -160,9 +160,15 @@
         "webpack/*.ts"
       ],
       "ignoreDependencies": [
+        // dependency with static artifacts only
         "@freelensapp/resource-templates",
+        // used for `require.context` in webpacked files
         "@types/webpack-env",
+        // it is really runtime dependency but implicitly used in Electron app
+        "electron",
+        // explicit dependency to prevent using version from pnpm
         "node-gyp",
+        // webpack dependencies are not handled by knip correctly
         "ts-loader",
         "ts-node",
         "webpack"
