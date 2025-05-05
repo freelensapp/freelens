@@ -183,9 +183,9 @@ wiki page to see how to build the application from source.
 ## Extensions
 
 Anyone can develop extensions for Freelens and many extensions previously used
-with Open Lens have already been converted. Visit [Extensions]
-(https://github.com/freelensapp/freelens/wiki/Extensions) wiki page to see
-them and write in the [appropriate
+with Open Lens have already been converted. Visit
+[Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
+page to see them and write in the [appropriate
 discussion](https://github.com/freelensapp/freelens/discussions/117) if you
 also want to propose yours.
 
