@@ -39,6 +39,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
+
       - name: Get pnpm cache directory
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
