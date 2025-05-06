@@ -58,7 +58,7 @@ lint:
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - yamlfmt@0.16.0
-    - yamllint@1.37.0
+    - yamllint@1.37.1
   disabled:
     - checkov
     - osv-scanner
