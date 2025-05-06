@@ -219,6 +219,9 @@ importers:
       tar:
         specifier: ^7.4.3
         version: 7.4.3
+      tar-fs:
+        specifier: ^3.0.8
+        version: 3.0.8
       tcp-port-used:
         specifier: ^1.0.2
         version: 1.0.2
@@ -2337,12 +2340,9 @@ importers:
       stream-buffers:
         specifier: ^3.0.3
         version: 3.0.3
-      tar:
-        specifier: ^7.4.3
-        version: 7.4.3
-      tmp-promise:
-        specifier: ^3.0.3
-        version: 3.0.3
+      tar-fs:
+        specifier: ^3.0.8
+        version: 3.0.8
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^

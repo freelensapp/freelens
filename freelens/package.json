@@ -134,6 +134,7 @@
     "stoppable": "^1.1.0",
     "stream-buffers": "^3.0.3",
     "tar": "^7.4.3",
+    "tar-fs": "^3.0.8",
     "tcp-port-used": "^1.0.2",
     "tempy": "1.0.1",
     "triple-beam": "^1.4.1",
