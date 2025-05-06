@@ -13,8 +13,12 @@
     cursor: pointer;
 
     &:global(.active), &:hover {
-      background: var(--blue);
+      background: var(--primary);
       color: var(--sidebarActiveColor);
+
+      + .subMenu {
+        border-color: var(--primary);
+      }
     }
 
     span {
@@ -29,14 +33,10 @@
   .subMenu {
     border-left: 4px solid transparent;
 
-    &.active {
-      border-color: var(--blue);
-    }
-  
     .SidebarItem {
       color: var(--textColorPrimary);
       padding-left: 25px;
-  
+
       .navItem {
         padding-top: 4px;
         padding-bottom: 4px;
@@ -60,4 +60,3 @@
     }
   }
 }
-
