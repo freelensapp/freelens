@@ -1,4 +1,4 @@
-name: Unit tests
+name: Knip
 
 on:
   push:
@@ -14,8 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  test-unit:
-    name: unit tests on ${{ matrix.os }}
+  knip:
+    name: knip on ${{ matrix.os }}
 
     strategy:
       fail-fast: false
@@ -67,13 +67,8 @@ jobs:
       - name: Build packages
         run: pnpm --color=always --stream build
 
-      - name: Run test units
-        run: pnpm --color=always --stream test:unit
+      - name: Run Knip (development)
+        run: pnpm --color=always --stream knip:development
 
-      - name: Clean after tests
-        run: pnpm --color=always --parallel clean
-
-      - name: Check untracked files
-        shell: bash
-        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f;
-          done
+      - name: Run Knip (production)
+        run: pnpm --color=always --stream knip:production
