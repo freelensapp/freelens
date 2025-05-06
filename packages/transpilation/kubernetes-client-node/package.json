@@ -33,12 +33,11 @@
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",
-    "tar": "^7.4.3",
-    "tmp-promise": "^3.0.3"
+    "tar-fs": "^3.0.8"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@kubernetes/client-node": "^1.1.2",
+    "@kubernetes/client-node": "^1.2.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.8"

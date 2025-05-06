@@ -89,6 +89,7 @@
         "semver",
         "stoppable",
         "tcp-port-used",
+        "tar-fs",
         "tempy",
         "triple-beam",
         "typed-regex",
