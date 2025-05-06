@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  http-proxy-middleware: ^3.0.0
+
 patchedDependencies:
   circular-dependency-plugin:
     hash: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
@@ -152,7 +155,7 @@ importers:
         version: 1.2.0
       http-proxy:
         specifier: ^1.18.1
-        version: 1.18.1
+        version: 1.18.1(debug@4.4.0)
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -780,7 +783,7 @@ importers:
         version: 1.2.0
       http-proxy:
         specifier: ^1.18.1
-        version: 1.18.1
+        version: 1.18.1(debug@4.4.0)
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -6316,14 +6319,9 @@ packages:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
     engines: {node: '>= 14'}
 
-  http-proxy-middleware@2.0.7:
-    resolution: {integrity: sha512-fgVY8AV7qU7z/MmXJ/rxwbrtQH4jBQ9m7kp3llF0liB7glmFeVZFBepQb32T3y8n8k2+AEYuMPCpinYW+/CuRA==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/express': ^4.17.13
-    peerDependenciesMeta:
-      '@types/express':
-        optional: true
+  http-proxy-middleware@3.0.5:
+    resolution: {integrity: sha512-GLZZm1X38BPY4lkXA01jhwxvDoOkkXqjgVyUzVxiEK4iuRu03PZoYHhHRwxnfhQMDuaxi3vVri0YgSro/1oWqg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
   http-proxy@1.18.1:
     resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
@@ -6566,12 +6564,12 @@ packages:
     resolution: {integrity: sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==}
     engines: {node: '>=8'}
 
-  is-plain-obj@3.0.0:
-    resolution: {integrity: sha512-gwsOE28k+23GP1B6vFl1oVh/WOzmawBrKwo5Ev6wMKzPkaXaCDIQKzLnvsA42DRlbVTWorkgTKIviAKCWkfUwA==}
-    engines: {node: '>=10'}
-
   is-plain-object@2.0.4:
     resolution: {integrity: sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==}
+    engines: {node: '>=0.10.0'}
+
+  is-plain-object@5.0.0:
+    resolution: {integrity: sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==}
     engines: {node: '>=0.10.0'}
 
   is-potential-custom-element-name@1.0.1:
@@ -12439,7 +12437,9 @@ snapshots:
 
   fn.name@1.1.0: {}
 
-  follow-redirects@1.15.9: {}
+  follow-redirects@1.15.9(debug@4.4.0):
+    optionalDependencies:
+      debug: 4.4.0(supports-color@5.5.0)
 
   for-each@0.3.3:
     dependencies:
@@ -12799,22 +12799,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  http-proxy-middleware@2.0.7(@types/express@4.17.21):
+  http-proxy-middleware@3.0.5:
     dependencies:
       '@types/http-proxy': 1.17.16
-      http-proxy: 1.18.1
+      debug: 4.4.0(supports-color@5.5.0)
+      http-proxy: 1.18.1(debug@4.4.0)
       is-glob: 4.0.3
-      is-plain-obj: 3.0.0
+      is-plain-object: 5.0.0
       micromatch: 4.0.8
-    optionalDependencies:
-      '@types/express': 4.17.21
     transitivePeerDependencies:
-      - debug
+      - supports-color
 
-  http-proxy@1.18.1:
+  http-proxy@1.18.1(debug@4.4.0):
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.9
+      follow-redirects: 1.15.9(debug@4.4.0)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -13013,11 +13012,11 @@ snapshots:
 
   is-path-inside@3.0.3: {}
 
-  is-plain-obj@3.0.0: {}
-
   is-plain-object@2.0.4:
     dependencies:
       isobject: 3.0.1
+
+  is-plain-object@5.0.0: {}
 
   is-potential-custom-element-name@1.0.1: {}
 
@@ -15806,7 +15805,7 @@ snapshots:
       connect-history-api-fallback: 2.0.0
       express: 4.21.2
       graceful-fs: 4.2.11
-      http-proxy-middleware: 2.0.7(@types/express@4.17.21)
+      http-proxy-middleware: 3.0.5
       ipaddr.js: 2.2.0
       launch-editor: 2.10.0
       open: 10.1.0
@@ -15823,7 +15822,6 @@ snapshots:
       webpack-cli: 6.0.1(webpack-dev-server@5.2.1)(webpack@5.99.7)
     transitivePeerDependencies:
       - bufferutil
-      - debug
       - supports-color
       - utf-8-validate
 
