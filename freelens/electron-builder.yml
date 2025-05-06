@@ -12,10 +12,12 @@ publish: []
 
 ## Files in app.asar
 files:
-  - static/**/*
-  - "!node_modules/@freelensapp/core/node_modules/**/*"
-  - "!node_modules/@freelensapp/core/src"
-  - "!node_modules/win-ca/pem/*"
+  - static
+  - "!node_modules/@freelensapp/*/src"
+  - "!node_modules/@freelensapp/core/build"
+  - "!node_modules/@freelensapp/core/static/build/library/fonts"
+  - "!node_modules/electron"
+  - "!node_modules/win-ca/pem"
 
 ## Extra files added to unpacked resources
 extraResources:

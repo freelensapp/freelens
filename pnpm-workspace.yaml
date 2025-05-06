@@ -13,6 +13,9 @@ onlyBuiltDependencies:
   - sharp
   - win-ca
 
+overrides:
+  http-proxy-middleware: ^3.0.0
+
 patchedDependencies:
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
   monaco-editor: patches/monaco-editor.patch
