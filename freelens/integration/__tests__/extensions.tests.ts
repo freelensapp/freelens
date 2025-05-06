@@ -30,9 +30,11 @@ describe("extensions page tests", () => {
   const extensions = process.env.EXTENSION_PATH
     ? [process.env.EXTENSION_PATH]
     : [
+        "@freelensapp/extension-example",
+        "@freelensapp/extension-example@1.0.0",
         "@freelensapp/freelens-node-pod-menu",
-        "@freelensapp/freelens-node-pod-menu@1.0.0",
         "@freelensapp/freelens-node-pod-menu@1.1.0",
+        "@freelensapp/freelens-node-pod-menu@1.0.0",
       ];
 
   it.each(extensions)(
