@@ -14,6 +14,8 @@ publish: []
 files:
   - static
   - "!node_modules/@freelensapp/*/src"
+  - "!node_modules/@freelensapp/core/build"
+  - "!node_modules/@freelensapp/core/static"
   - "!node_modules/electron"
   - "!node_modules/win-ca/pem"
 
