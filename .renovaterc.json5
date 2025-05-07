@@ -1,116 +1,128 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: [
-    'config:recommended',
-    ':semanticCommitsDisabled',
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled"
   ],
-  prHourlyLimit: 20,
-  addLabels: [
-    'renovate',
+  "prHourlyLimit": 20,
+  "addLabels": [
+    "renovate"
   ],
-  osvVulnerabilityAlerts: true,
-  postUpdateOptions: [
-    'pnpmDedupe',
+  "osvVulnerabilityAlerts": true,
+  "postUpdateOptions": [
+    "pnpmDedupe"
   ],
-  rangeStrategy: 'bump',
-  vulnerabilityAlerts: {
-    labels: [
-      'security',
+  // always bump depdenencies even when are in the range
+  "rangeStrategy": "bump",
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
     ],
-    rangeStrategy: 'bump',
+    "rangeStrategy": "bump",
   },
-  rebaseWhen: 'conflicted',
-  ignoreDeps: [
-    'node',
-    'ubuntu',
+  // disable autorebasing to save unecessary workflow runs
+  "rebaseWhen": "conflicted",
+  "ignoreDeps": [
+    // it must be the same as bundled in Electron
+    "node",
+    // it must be the oldest possible version to get binary compatibility with older OSes
+    "ubuntu"
   ],
-  packageRules: [
+  "packageRules": [
+    // peerDependencies are widen
     {
-      matchDepTypes: [
-        'peerDependencies',
+      "matchDepTypes": [
+        "peerDependencies"
       ],
-      rangeStrategy: 'widen',
-      semanticCommitScope: 'peer-deps',
+      "rangeStrategy": "widen",
+      "semanticCommitScope": "peer-deps"
     },
+    // non-major updates only
     {
-      matchDepNames: [
-        '@types/node',
-        'electron',
-        'npm',
+      "matchDepNames": [
+        "@types/node",
+        "electron",
+        "npm"
       ],
-      matchUpdateTypes: [
-        'major',
+      "matchUpdateTypes": [
+        "major"
       ],
-      enabled: false,
+      "enabled": false
     },
+    // packages that misuse semver
     {
-      matchDepNames: [
-        'node-pty',
+      "matchDepNames": [
+        "node-pty"
       ],
-      versioning: 'deb',
-      enabled: true,
+      "versioning": "deb",
+      "enabled": true
     },
+    // monorepo
     {
-      groupName: 'ogre-tools monorepo',
-      matchSourceUrls: [
-        'https://github.com/ogre-works/ogre-tools',
-      ],
-    },
+      "groupName": "ogre-tools monorepo",
+      "matchSourceUrls": [
+        "https://github.com/ogre-works/ogre-tools"
+      ]
+    }
   ],
-  customManagers: [
+  "customManagers": [
+    // bundled freelens-k8s-proxy
     {
-      customType: 'regex',
-      extractVersionTemplate: '^(?<version>.*)$',
-      managerFilePatterns: [
-        '/^freelens/package\\.json$/',
-        '/^packages/core/package\\.json$/',
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
-      matchStrings: [
-        '"k8sProxyVersion":\\s*"(?<currentValue>\\d+\\.\\d+\\.\\d+)"',
+      "matchStrings": [
+        "\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
       ],
-      datasourceTemplate: 'github-releases',
-      depNameTemplate: 'freelensapp/freelens-k8s-proxy',
-      versioningTemplate: 'semver',
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "freelensapp/freelens-k8s-proxy",
+      "versioningTemplate": "semver"
     },
+    // bundled helm
     {
-      customType: 'regex',
-      extractVersionTemplate: '^(?<version>.*)$',
-      managerFilePatterns: [
-        '/^freelens/package\\.json$/',
-        '/^packages/core/package\\.json$/',
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
-      matchStrings: [
-        '"bundledHelmVersion":\\s*"(?<currentValue>\\d+\\.\\d+\\.\\d+)"',
+      "matchStrings": [
+        "\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
       ],
-      datasourceTemplate: 'github-releases',
-      depNameTemplate: 'helm/helm',
-      versioningTemplate: 'semver',
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "helm/helm",
+      "versioningTemplate": "semver"
     },
+    // pnpm dlx
     {
-      customType: 'regex',
-      extractVersionTemplate: '^(?<version>.*)$',
-      managerFilePatterns: [
-        '/package\\.json$/',
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": [
+        "/package\\.json$/"
       ],
-      matchStrings: [
-        'pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s"|<>]',
+      "matchStrings": [
+        "pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s\"|<>]"
       ],
-      datasourceTemplate: 'npm',
-      versioningTemplate: 'npm',
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm"
     },
+    // renovate hints after comment
     {
-      customType: 'regex',
-      extractVersionTemplate: '^v?(?<version>.*)$',
-      managerFilePatterns: [
-        '/^\\.github/workflows/.*\\.ya?ml$/',
-        '/^\\.trunk/trunk.yaml/',
-        '/^\\.tool-versions$/',
-        '/^freelens/electron-builder\\.yml$/',
+      "customType": "regex",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/",
+        "/^\\.trunk/trunk.yaml/",
+        "/^\\.tool-versions$/",
+        "/^freelens/electron-builder\\.yml$/"
       ],
-      matchStrings: [
-        '(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n',
+      "matchStrings": [
+        "(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
       ],
-      versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
-    },
-  ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ]
 }
