@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
+import type fetch from "@freelensapp/node-fetch";
+import { type Injectable, getInjectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import type { Fetch } from "./fetch.injectable";
 import fetchInjectable from "./fetch.injectable";
 
-const proxyFetchInjectable = getInjectable({
+const proxyFetchInjectable: Injectable<typeof fetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
   instantiate: (di): Fetch => {
     const fetch = di.inject(fetchInjectable);
