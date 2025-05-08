@@ -23,7 +23,7 @@
     "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf@6.0.1 node_modules",
     "start": "cd freelens && pnpm start",
     "dev": "pnpm --parallel dev",
-    "knip": "pnpm dlx knip@5.55.0 --dependencies",
+    "knip": "pnpm dlx knip@5.55.1 --dependencies",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm biome:check",
