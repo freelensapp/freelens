@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/ensure-binaries",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
   "main": "dist/index.js",
   "license": "MIT",
@@ -18,19 +18,20 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "devDependencies": {
-    "@types/cli-progress": "^3.11.6",
-    "@types/gunzip-maybe": "^1.4.2",
-    "@types/node": "^22.15.2",
-    "@types/semver": "^7.7.0",
-    "@types/tar-stream": "^3.1.3",
+  "dependencies": {
     "arg": "^5.0.2",
     "cli-progress": "^3.12.0",
     "gunzip-maybe": "^1.4.2",
     "node-fetch": "^3.3.2",
     "tar-stream": "^3.1.7",
-    "typescript": "^5.8.3",
-    "zod": "^3.24.3"
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/cli-progress": "^3.11.6",
+    "@types/gunzip-maybe": "^1.4.2",
+    "@types/node": "^22.15.17",
+    "@types/tar-stream": "^3.1.3",
+    "typescript": "^5.8.3"
   },
   "bin": {
     "ensure-binaries": "bin/ensure-binaries.js"

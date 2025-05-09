@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/animate",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Highly extendable animate in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -31,16 +31,25 @@
     "build": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
-  "devDependencies": {
+  "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
-    "@types/react": "^17.0.85",
     "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@types/react": "^17.0.85",
+    "@types/webpack-env": "^1.18.8",
+    "css-loader": "^6.11.0",
+    "postcss-loader": "^8.1.1",
+    "sass-loader": "^16.0.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.8"
   }
 }

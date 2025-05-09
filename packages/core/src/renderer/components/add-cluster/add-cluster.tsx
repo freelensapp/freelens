@@ -26,7 +26,6 @@ import navigateToCatalogInjectable from "../../../common/front-end-routing/route
 import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
-import { docsUrl } from "../../../common/vars";
 import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 
@@ -121,7 +120,11 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
           {" merged into the "}
           <code>~/.kube/config</code>
           {" file. "}
-          <a href={`${docsUrl}/getting-started/add-cluster/`} rel="noreferrer" target="_blank">
+          <a
+            href="https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/"
+            rel="noreferrer"
+            target="_blank"
+          >
             Read more about adding clusters.
           </a>
         </p>

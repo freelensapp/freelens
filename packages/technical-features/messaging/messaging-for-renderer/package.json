@@ -1,16 +1,16 @@
 {
-  "name": "@freelensapp/application-for-electron-main",
+  "name": "@freelensapp/messaging-for-renderer",
   "private": false,
-  "version": "1.2.0",
-  "description": "Electron's main specifics for creating Freelens applications",
+  "version": "1.2.1",
+  "description": "Implementations for 'messaging' in Electron renderer",
   "type": "commonjs",
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
@@ -29,19 +29,28 @@
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
-  "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+  "dependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/jest": "workspace:^",
-    "@freelensapp/run-many": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
+    "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "@ogre-tools/test-utils": "^17.11.1",
-    "electron": "^35.2.1",
+    "electron": "^35.3.0"
+  },
+  "devDependencies": {
+    "@async-fn/jest": "^1.6.4",
+    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/typescript": "workspace:^",
+    "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@types/webpack-env": "^1.18.8",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "mobx": "^6.13.7",
+    "ts-jest": "^29.3.2",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.8"
   }
 }

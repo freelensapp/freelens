@@ -2,7 +2,7 @@
   "name": "@freelensapp/extensions",
   "productName": "Freelens extensions",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "copyright": "© 2024-2025 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
@@ -25,21 +25,16 @@
     "clean": "pnpm dlx rimraf@6.0.1 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
+  "dependencies": {
+    "@freelensapp/core": "workspace:^"
+  },
   "devDependencies": {
-    "@freelensapp/core": "workspace:^",
-    "@types/node": "^22.15.2",
-    "@types/webpack": "^5.28.5",
-    "@types/webpack-env": "^1.18.8",
-    "@types/webpack-node-externals": "3.0.4",
-    "css-loader": "^6.11.0",
-    "node-loader": "^2.1.0",
-    "style-loader": "^4.0.0",
+    "@types/node": "^22.15.17",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typed-emitter": "^2.1.0",
     "typescript": "^5.8.3",
     "typescript-plugin-css-modules": "^5.1.0",
-    "webpack": "^5.99.7",
+    "webpack": "^5.99.8",
     "webpack-cli": "^6.0.1"
   }
 }

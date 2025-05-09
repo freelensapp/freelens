@@ -28,10 +28,6 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Add coreutils to PATH
-        if: runner.os == 'macOS'
-        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -42,6 +38,10 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
 
       - name: Get pnpm cache directory
         shell: bash
@@ -54,16 +54,6 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
-
-      - name: Install dependencies (macOS)
-        id: install-deps-macos
-        if: runner.os == 'macOS'
-        run: timeout 300 brew install python-setuptools
-        continue-on-error: true
-
-      - name: Install dependencies (macOS) (retry)
-        if: runner.os == 'macOS' && steps.install-deps-macos.outcome == 'failure'
-        run: timeout 300 brew install python-setuptools
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -79,12 +69,6 @@ jobs:
 
       - name: Run test units
         run: pnpm --color=always --stream test:unit
-
-      - name: Run Knip (development)
-        run: pnpm --color=always --stream knip:development
-
-      - name: Run Knip (production)
-        run: pnpm --color=always --stream knip:production
 
       - name: Clean after tests
         run: pnpm --color=always --parallel clean

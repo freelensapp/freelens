@@ -5,11 +5,11 @@
  */
 
 import fetch from "@freelensapp/node-fetch";
-import { getInjectable } from "@ogre-tools/injectable";
+import { type Injectable, getInjectable } from "@ogre-tools/injectable";
 
 export type Fetch = typeof fetch;
 
-const fetchInjectable = getInjectable({
+const fetchInjectable: Injectable<typeof fetch, unknown, void> = getInjectable({
   id: "fetch",
   instantiate: () => fetch,
   causesSideEffects: true,

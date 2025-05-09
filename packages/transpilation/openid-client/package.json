@@ -1,16 +1,15 @@
 {
-  "name": "@freelensapp/node-fetch",
-  "version": "1.2.0",
-  "description": "Node fetch for Freelens",
+  "name": "@freelensapp/openid-client",
+  "version": "1.2.1",
+  "description": "Open ID for Freelens",
   "license": "MIT",
   "private": false,
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -21,10 +20,9 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "node-fetch": "^3.3.2",
+    "openid-client": "^6.5.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
-    "webpack": "^5.99.7",
-    "webpack-cli": "^6.0.1"
+    "webpack": "^5.99.8"
   }
 }

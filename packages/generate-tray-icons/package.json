@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/generate-tray-icons",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "CLI generating tray icons for building a lens-like application",
   "license": "MIT",
   "scripts": {
@@ -18,13 +18,15 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "dependencies": {
+    "arg": "^5.0.2",
+    "jsdom": "^26.1.0",
+    "sharp": "^0.34.1"
+  },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.15.2",
-    "arg": "^5.0.2",
-    "jsdom": "^26.1.0",
-    "sharp": "^0.34.1",
+    "@types/node": "^22.15.17",
     "typescript": "^5.8.3"
   },
   "bin": {

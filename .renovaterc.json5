@@ -70,9 +70,9 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "^freelens/package\\.json$",
-        "^packages/core/package\\.json$"
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
       "matchStrings": [
         "\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
@@ -85,9 +85,9 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "^freelens/package\\.json$",
-        "^packages/core/package\\.json$"
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
       "matchStrings": [
         "\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
@@ -100,8 +100,8 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "package\\.json$"
+      "managerFilePatterns": [
+        "/package\\.json$/"
       ],
       "matchStrings": [
         "pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s\"|<>]"
@@ -113,11 +113,11 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^v?(?<version>.*)$",
-      "fileMatch": [
-        "^\\.github/workflows/.*\\.ya?ml$",
-        "^\\.trunk/trunk.yaml",
-        "^\\.tool-versions$",
-        "^freelens/electron-builder\\.yml$"
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/",
+        "/^\\.trunk/trunk.yaml/",
+        "/^\\.tool-versions$/",
+        "/^freelens/electron-builder\\.yml$/"
       ],
       "matchStrings": [
         "(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"

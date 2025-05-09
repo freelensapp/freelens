@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/spinner",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Highly extendable spinner in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -31,12 +31,20 @@
     "build": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
   },
+  "dependencies": {
+    "@freelensapp/utilities": "workspace:^",
+    "react": "^17.0.2"
+  },
   "devDependencies": {
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/react": "^17.0.85",
-    "react": "^17.0.2"
+    "css-loader": "^6.11.0",
+    "postcss-loader": "^8.1.1",
+    "sass-loader": "^16.0.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.8"
   }
 }
