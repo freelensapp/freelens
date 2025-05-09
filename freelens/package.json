@@ -58,7 +58,7 @@
     "knip:production": "pnpm dlx knip@5.55.1 --dependencies --production --strict"
   },
   "config": {
-    "k8sProxyVersion": "1.3.0",
+    "k8sProxyVersion": "1.3.1",
     "bundledKubectlVersion": "1.33.0",
     "bundledHelmVersion": "3.17.3",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
