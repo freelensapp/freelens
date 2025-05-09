@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application-for-electron-main",
   "private": false,
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Electron's main specifics for creating Freelens applications",
   "type": "commonjs",
   "files": [
