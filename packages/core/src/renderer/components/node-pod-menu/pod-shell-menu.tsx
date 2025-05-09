@@ -6,10 +6,8 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import type { Container } from "@freelensapp/kube-object";
-import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";
 import type { DockTabCreateSpecific } from "../dock/dock/store";
