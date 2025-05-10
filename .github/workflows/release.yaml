@@ -120,6 +120,7 @@ jobs:
       - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
           'Windows' && matrix.arch == 'arm64'
+        shell: bash
         run: |
           echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
 
