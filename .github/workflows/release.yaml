@@ -325,6 +325,6 @@ jobs:
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME} freelens/dist/Freelens*.*
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
