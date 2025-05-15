@@ -10,11 +10,13 @@ import { action } from "mobx";
 import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 import { staticKubeObjectHandlerInjectionToken } from "../../kube-object/handler";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
+import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 
 const namespaceRemoveContextMenuOverridingListenerInjectable = getInjectable({
   id: "namespace-remove-context-menu-overriding-listener",
   instantiate: (di) => {
     const requestDeleteNamespace = di.inject(requestDeleteNamespaceInjectable);
+    const withConfirmation = di.inject(withConfirmationInjectable);
 
     return {
       apiVersions: ["v1"],
@@ -25,7 +27,11 @@ const namespaceRemoveContextMenuOverridingListenerInjectable = getInjectable({
             id: "new-delete-kube-object",
             icon: "delete",
             title: "Delete",
-            onClick: (obj) => requestDeleteNamespace(obj as Namespace),
+            onClick: (obj) => withConfirmation({
+              message: `Are you sure you want to delete namespace ${obj.getName()}?`,
+              labelOk: "Remove",
+              ok: async () => requestDeleteNamespace(obj as Namespace),
+            })(),
           },
           ...ctx.menuItems.filter((menuItem) => menuItem.id !== "delete-kube-object"),
         ]);
