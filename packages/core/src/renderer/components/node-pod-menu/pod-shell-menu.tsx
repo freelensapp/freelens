@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
 import { Pod } from "@freelensapp/kube-object";
 import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -16,6 +15,8 @@ import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.in
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
+
+// For this to work we always need exec to be the second element in the array
 
 export interface PodShellMenuProps {
   object: any;
@@ -50,10 +51,14 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
     const commandParts = [kubectlPath, "exec", "-i", "-t", "-n", pod.getNs(), pod.getName()];
 
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
+    // Debugging: Log the initial value of commandParts
+    console.debug("Initial commandParts:", commandParts);
 
+    // removed Windows check, as the issues were related to commandParts being,
+    // a constant and unrelated to the shell type
+    // Powershell on Mac and presumably Linux will work,
+    // but Powershell on Windows will not work with exec due to upstream kubectl issues
+    // More reading can be found here: https://discord.com/channels/1344433118924374148/1344832026884313149/1362927839543820438
     if (containerName) {
       commandParts.push("-c", containerName);
     }
