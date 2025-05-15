@@ -143,10 +143,16 @@ package page.
 
 Windows 10 or later is required.
 
-Download the EXE or MSI installers from the
+Download the EXE (NSIS) or MSI installers from the
 [releases](https://github.com/freelensapp/freelens/releases) page.
 
-Only the x64 (amd64) version of the Windows binaries is provided.
+Both the x64 (amd64) and arm64 versions of the Windows binaries are provided.
+However, an EXE installer (NSIS) itself is x86 binary only even if it installs
+arm64 application and then installs to `C:\Program Files (x86)\Freelens` path
+by default.
+
+The version of the MSI package has the last 4th digit always `0` and this is a
+limitation of this package format.
 
 #### WinGet
 
@@ -162,6 +168,11 @@ winget install Freelensapp.Freelens
 
 The `--silent` option is supported to suppress all UI.
 
+The `--scope user` or `--scope machine` option can be used to install it
+either to local user directory or to `C:\Program Files`.
+
+WinGet installs the application from EXE installer (NSIS).
+
 #### Scoop
 
 The package is available in the
@@ -174,6 +185,8 @@ Run the following command:
 scoop bucket add extras
 scoop install freelens
 ```
+
+Scoop uses MSI package to install the application.
 
 ## Development
 
