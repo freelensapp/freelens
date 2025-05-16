@@ -36,7 +36,7 @@
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
-    "semver": "^7.7.1",
+    "semver": "^7.7.2",
     "tar": "^7.4.3",
     "typed-regex": "^0.0.8"
   },
