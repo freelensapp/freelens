@@ -8,21 +8,19 @@ import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import type { RenderResult } from "@testing-library/react";
 import navigateToNamespacesInjectable from "../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
+import type { WithConfirmation } from "../../renderer/components/confirm-dialog/with-confirm.injectable"; // Assuming ConfirmationDialogParams is exported or reconstruct its shape
+import withConfirmInjectable from "../../renderer/components/confirm-dialog/with-confirm.injectable";
 import type { RequestDeleteNormalNamespace } from "../../renderer/components/namespaces/request-delete-normal-namespace.injectable";
 import requestDeleteNormalNamespaceInjectable from "../../renderer/components/namespaces/request-delete-normal-namespace.injectable";
 import type { RequestDeleteSubNamespaceAnchor } from "../../renderer/components/namespaces/request-delete-sub-namespace.injectable";
 import requestDeleteSubNamespaceAnchorInjectable from "../../renderer/components/namespaces/request-delete-sub-namespace.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { WithConfirmation } from "../../renderer/components/confirm-dialog/with-confirm.injectable"; // Assuming ConfirmationDialogParams is exported or reconstruct its shape
-import withConfirmInjectable from "../../renderer/components/confirm-dialog/with-confirm.injectable";
 
-// Helper type for the options passed to withConfirmation, adjust if ConfirmationDialogParams is different
 interface MockConfirmationDialogParams {
   message: string;
   labelOk: string;
   ok?: () => Promise<void> | void | unknown;
-  // Add other properties if your WithConfirmation expects them
 }
 
 describe("namespaces route when viewed with some subNamespaces", () => {
@@ -32,7 +30,6 @@ describe("namespaces route when viewed with some subNamespaces", () => {
   let requestDeleteSubNamespaceAnchorMock: AsyncFnMock<RequestDeleteSubNamespaceAnchor>;
   // Use jest.Mock for the HOF. It mocks a function that takes options and returns another function.
   let withConfirmMock: jest.Mock<() => Promise<void> | void, [MockConfirmationDialogParams]>;
-
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -46,7 +43,6 @@ describe("namespaces route when viewed with some subNamespaces", () => {
     requestDeleteNormalNamespaceMock = asyncFn();
     requestDeleteSubNamespaceAnchorMock = asyncFn();
 
-    // Setup withConfirmMock using jest.fn()
     withConfirmMock = jest.fn();
     withConfirmMock.mockImplementation(
       // This is the implementation of the outer function `withConfirmation(options)`
@@ -62,7 +58,7 @@ describe("namespaces route when viewed with some subNamespaces", () => {
           // If the SUT awaits this thunk's result and it's e.g. a boolean, return Promise.resolve(true)
         });
         return confirmThunkMock; // Return the callable thunk mock
-      }
+      },
     );
 
     builder.beforeWindowStart(({ windowDi }) => {
@@ -128,7 +124,10 @@ describe("namespaces route when viewed with some subNamespaces", () => {
 
           // Capture the returned thunk mock for further assertions
           if (withConfirmMock.mock.results.length > 0 && withConfirmMock.mock.results[0].type === "return") {
-            returnedConfirmThunkMock = withConfirmMock.mock.results[0].value as unknown as jest.MockInstance<Promise<void> | void, []>;
+            returnedConfirmThunkMock = withConfirmMock.mock.results[0].value as unknown as jest.MockInstance<
+              Promise<void> | void,
+              []
+            >;
           }
         });
 
@@ -139,7 +138,7 @@ describe("namespaces route when viewed with some subNamespaces", () => {
               message: "Are you sure you want to delete namespace default?",
               labelOk: "Remove",
               ok: expect.any(Function),
-            })
+            }),
           );
         });
 
@@ -185,7 +184,10 @@ describe("namespaces route when viewed with some subNamespaces", () => {
           result.getByTestId("menu-action-delete-for-/api/v1/namespaces/my-sub-namespace").click();
 
           if (withConfirmMock.mock.results.length > 0 && withConfirmMock.mock.results[0].type === "return") {
-            returnedConfirmThunkMock = withConfirmMock.mock.results[0].value as unknown as jest.MockInstance<Promise<void> | void, []>;
+            returnedConfirmThunkMock = withConfirmMock.mock.results[0].value as unknown as jest.MockInstance<
+              Promise<void> | void,
+              []
+            >;
           }
         });
 
@@ -196,7 +198,7 @@ describe("namespaces route when viewed with some subNamespaces", () => {
               message: "Are you sure you want to delete namespace my-sub-namespace?",
               labelOk: "Remove",
               ok: expect.any(Function),
-            })
+            }),
           );
         });
 
