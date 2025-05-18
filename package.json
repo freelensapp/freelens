@@ -10,7 +10,7 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@3.4.1",
+    "asar": "pnpm dlx @electron/asar@4.0.0",
     "biome": "pnpm dlx @biomejs/biome@1.9.4",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
