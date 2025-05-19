@@ -13,7 +13,7 @@ plugins:
 runtimes:
   enabled:
     - go@1.21.0
-    - node@22.14.0
+    - node@22.15.0
     - python@3.11.9
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 tools:
@@ -54,7 +54,7 @@ lint:
     - actionlint@1.7.7
     - biome@1.9.4
     - git-diff-check
-    - markdownlint@0.44.0
+    - markdownlint@0.45.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - yamlfmt@0.16.0
