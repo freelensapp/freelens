@@ -10,7 +10,7 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@3.4.1",
+    "asar": "pnpm dlx @electron/asar@4.0.0",
     "biome": "pnpm dlx @biomejs/biome@1.9.4",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
@@ -23,7 +23,7 @@
     "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf@6.0.1 node_modules",
     "start": "cd freelens && pnpm start",
     "dev": "pnpm --parallel dev",
-    "knip": "pnpm dlx knip@5.55.1 --dependencies",
+    "knip": "pnpm dlx knip@5.56.0 --dependencies",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm biome:check",
@@ -39,5 +39,5 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
+  "packageManager": "pnpm@10.11.0"
 }
