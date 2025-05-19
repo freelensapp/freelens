@@ -17,7 +17,11 @@ patchedDependencies:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      pnpm:
+        specifier: 10.11.0
+        version: 10.11.0
 
   freelens:
     dependencies:
