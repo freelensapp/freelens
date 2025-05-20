@@ -26,25 +26,13 @@ const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
 
 const getByNewGroup = (group: string, stateCrd: string|any) =>{
-  // I want to transform the stateCrd to object, the state is json
   const state = JSON.parse(stateCrd);
   // the object is like this { "keda": ["eventing.keda.sh","eventing.keda.sh"],"test":["test"] }
 
-  // i want to check if the group is in subState i want to return the state 
-  // if not i want to return the group
   const subState = Object.keys(state).find((key) => state[key].includes(group));
   if (subState) {
     return subState;
   }
-  // if the group is not in subState i want to return the group
-
-  // state.forEach((newGroup: any) => {
-  //   newGroup.forEach((item: any) => {
-  //     if (item === group) {
-  //       group = newGroup.newGroup;
-  //     }
-  //   })
-  // });
 
       return group;
 }
