@@ -48,6 +48,29 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
         onBlur={() => (state.crdGroup = crdGroup)}
         validators={[jsonValidator]}
       />
+      <button
+        type="button"
+        style={{
+          margin: "8px 0",
+          padding: "4px 12px",
+          borderRadius: 4,
+          border: "1px solid #444",
+          background: "#222",
+          color: "#fff",
+          cursor: "pointer"
+        }}
+        onClick={() => {
+          try {
+            const formatted = JSON.stringify(JSON.parse(crdGroup), null, 2);
+            setCrdGroup(formatted);
+          } catch {
+            // Optionally, you could set a local error state and display a message below the button
+            // For now, do nothing visually
+          }
+        }}
+      >
+        Format JSON
+      </button>
       <small className="hint">{hint}</small>
     </section>
   );
