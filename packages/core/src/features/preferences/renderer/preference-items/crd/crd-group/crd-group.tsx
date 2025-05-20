@@ -19,26 +19,21 @@ interface Dependencies {
 const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   const [crdGroup, setCrdGroup] = React.useState(state.crdGroup || "");
 
-  // Dynamic hint based on input value
-  let hint = "Proxy is used only for non-cluster communication.";
-  try {
-    const parsed = JSON.parse(crdGroup);
-    if (
-      typeof parsed === "object" &&
-      parsed !== null &&
-      Object.values(parsed).every(
-        v => Array.isArray(v) && v.every(item => typeof item === "string")
-      )
-    ) {
-      hint = "Valid JSON object. Example: { \"KEDA\": [\"eventing.keda.sh\", \"keda.sh\"] }";
-    } else {
-      hint = "JSON must be an object with string array values. Example: { \"KEDA\": [\"eventing.keda.sh\", \"keda.sh\"] }";
-    }
-  } catch {
-    if (crdGroup.trim() !== "") {
-      hint = "Invalid JSON format. Example: { \"KEDA\": [\"eventing.keda.sh\", \"keda.sh\"] }";
-    }
-  }
+  // More interesting and informative hint in English
+  const hint = "Define your custom CRD groups in JSON format. Example: { \"KEDA\": [\"eventing.keda.sh\", \"keda.sh\"] }";
+
+  const jsonValidator = {
+    validate: (value: string) => {
+      if (!value.trim()) return true;
+      try {
+        JSON.parse(value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    message: "The format must be valid JSON.",
+  };
 
   return (
     <section>
@@ -48,7 +43,10 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
         placeholder='The json for example: { "KEDA": ["eventing.keda.sh","keda.sh"]}'
         value={crdGroup}
         onChange={(v) => setCrdGroup(v)}
+        multiLine={true}
+        rows={20}
         onBlur={() => (state.crdGroup = crdGroup)}
+        validators={[jsonValidator]}
       />
       <small className="hint">{hint}</small>
     </section>
