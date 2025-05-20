@@ -24,6 +24,16 @@ const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
 
+const getByNewGroup = (group: string) =>{
+  switch (group) {
+    case "keda.sh":
+    case "eventing.keda.sh":
+      return "KEDA";
+    default:
+      return group;
+  }
+}
+
 const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-computed",
   instantiate: (di) => {
@@ -78,7 +88,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     return computed(() => {
       const customResourceDefinitionGroups = iter
         .chain(customResourceDefinitions.get().values())
-        .map((crd) => [crd.getGroup(), crd] as const)
+        .map((crd) => [getByNewGroup(crd.getGroup()), crd] as const)
         .toMap();
 
       return Array.from(customResourceDefinitionGroups.entries(), toCustomResourceGroupToSidebarItems).flat();
