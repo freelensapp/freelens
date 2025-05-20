@@ -27,7 +27,7 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
         placeholder='The json for example: {\"group\": \"acme.org\", \"version\": \"v1\"}'
         value={crdGroup}
         onChange={(v) => setCrdGroup(v)}
-        onBlur={() => (state.httpsProxy = crdGroup)}
+        onBlur={() => (state.crdGroup = crdGroup)}
       />
       <small className="hint">Proxy is used only for non-cluster communication.</small>
     </section>

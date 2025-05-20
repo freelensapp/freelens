@@ -16,6 +16,7 @@ import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
@@ -24,14 +25,28 @@ const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
 
-const getByNewGroup = (group: string) =>{
-  switch (group) {
-    case "keda.sh":
-    case "eventing.keda.sh":
-      return "KEDA";
-    default:
-      return group;
+const getByNewGroup = (group: string, stateCrd: string|any) =>{
+  // I want to transform the stateCrd to object, the state is json
+  const state = JSON.parse(stateCrd);
+  // the object is like this { "keda": ["eventing.keda.sh","eventing.keda.sh"],"test":["test"] }
+
+  // i want to check if the group is in subState i want to return the state 
+  // if not i want to return the group
+  const subState = Object.keys(state).find((key) => state[key].includes(group));
+  if (subState) {
+    return subState;
   }
+  // if the group is not in subState i want to return the group
+
+  // state.forEach((newGroup: any) => {
+  //   newGroup.forEach((item: any) => {
+  //     if (item === group) {
+  //       group = newGroup.newGroup;
+  //     }
+  //   })
+  // });
+
+      return group;
 }
 
 const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectable({
@@ -41,6 +56,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const navigateToCustomResources = di.inject(navigateToCustomResourcesInjectable);
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
+    const state = di.inject(userPreferencesStateInjectable);
 
     const toCustomResourceGroupToSidebarItems = (
       [group, definitions]: [string, CustomResourceDefinition[]],
@@ -88,7 +104,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     return computed(() => {
       const customResourceDefinitionGroups = iter
         .chain(customResourceDefinitions.get().values())
-        .map((crd) => [getByNewGroup(crd.getGroup()), crd] as const)
+        .map((crd) => [getByNewGroup(crd.getGroup(), state.crdGroup), crd] as const)
         .toMap();
 
       return Array.from(customResourceDefinitionGroups.entries(), toCustomResourceGroupToSidebarItems).flat();
