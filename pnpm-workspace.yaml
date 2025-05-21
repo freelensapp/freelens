@@ -24,3 +24,5 @@ publicHoistPattern:
   - node-gyp
 
 nodeGyp: ../../../../node-gyp/bin/node-gyp.js
+
+shellEmulator: true
