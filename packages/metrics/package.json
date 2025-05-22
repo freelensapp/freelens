@@ -35,7 +35,7 @@
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.85",
+    "@types/react": "^17.0.86",
     "react": "^17.0.2",
     "ts-loader": "^9.5.2",
     "webpack": "^5.99.8"
