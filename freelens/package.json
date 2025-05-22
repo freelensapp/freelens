@@ -23,7 +23,7 @@
   "scripts": {
     "clean": "pnpm dlx rimraf@6.0.1 binaries dist static/build",
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "build": "pnpm dlx cross-env@7.0.3 NODE_ENV=production webpack --config webpack/webpack.ts --progress",
+    "build": "NODE_ENV=production webpack --config webpack/webpack.ts --progress",
     "postbuild": "pnpm build:resources",
     "build:resources": "pnpm \"/^build:resources:/\"",
     "build:resources:client": "ensure-binaries --package package.json --base-dir binaries/client",
@@ -51,8 +51,8 @@
     "dev:run": "nodemon --watch ./static/build/main.js --exec \"electron --remote-debugging-port=9223 --inspect .\"",
     "dev:build": "pnpm \"/^dev:build:/\"",
     "postdev:build": "pnpm build:resources",
-    "dev:build:main": "pnpm dlx cross-env@7.0.3 NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
-    "dev:build:renderer": "pnpm dlx cross-env@7.0.3 NODE_ENV=development ts-node ./webpack/dev-server.ts",
+    "dev:build:main": "NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
+    "dev:build:renderer": "NODE_ENV=development ts-node ./webpack/dev-server.ts",
     "test:integration": "jest -xyz --runInBand --detectOpenHandles --forceExit",
     "knip": "pnpm dlx knip@5.56.0 --dependencies",
     "knip:production": "pnpm dlx knip@5.56.0 --dependencies --production --strict"
