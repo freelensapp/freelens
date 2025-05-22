@@ -40,6 +40,6 @@
     "@kubernetes/client-node": "^1.2.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
-    "webpack": "^5.99.8"
+    "webpack": "^5.99.9"
   }
 }

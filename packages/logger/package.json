@@ -47,7 +47,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.3.2",
     "ts-loader": "^9.5.2",
-    "webpack": "^5.99.8",
+    "webpack": "^5.99.9",
     "winston-transport": "^4.9.0"
   }
 }
