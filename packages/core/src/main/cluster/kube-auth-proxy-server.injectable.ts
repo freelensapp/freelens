@@ -5,7 +5,7 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { ServerOptions } from "http-proxy";
+import type { ServerOptions } from "http-proxy-node16";
 import type { Cluster } from "../../common/cluster/cluster";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";

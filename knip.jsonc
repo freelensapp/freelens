@@ -80,7 +80,7 @@
         "grapheme-splitter",
         "handlebars",
         "hpagent",
-        "http-proxy",
+        "http-proxy-node16",
         "immer",
         "joi",
         "moment",
