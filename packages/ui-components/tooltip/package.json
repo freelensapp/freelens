@@ -57,7 +57,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss-loader": "^8.1.1",
     "sass-loader": "^16.0.5",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.9"
