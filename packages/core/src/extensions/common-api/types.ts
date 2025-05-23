@@ -12,6 +12,7 @@ export type { StatusBarRegistration } from "../../renderer/components/status-bar
 export type {
   KubeObjectMenuRegistration,
   KubeObjectMenuComponents,
+  KubeObjectMenuItemProps,
 } from "../../renderer/components/kube-object-menu/kube-object-menu-registration";
 export type {
   AppPreferenceRegistration,
