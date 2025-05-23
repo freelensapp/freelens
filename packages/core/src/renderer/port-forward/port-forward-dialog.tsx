@@ -6,6 +6,7 @@
 
 import "./port-forward-dialog.scss";
 
+import { Icon } from "@freelensapp/icon";
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
@@ -45,6 +46,7 @@ interface Dependencies {
 class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & Dependencies> {
   @observable currentPort = 0;
   @observable desiredPort = 0;
+  @observable desiredAddress = "localhost";
 
   constructor(props: PortForwardDialogProps & Dependencies) {
     super(props);
@@ -58,15 +60,22 @@ class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & De
   onOpen = async (data: PortForwardDialogData) => {
     this.currentPort = +data.portForward.forwardPort;
     this.desiredPort = this.currentPort;
+    this.desiredAddress = data.portForward.address ?? "localhost";
   };
 
   changePort = (value: string) => {
     this.desiredPort = Number(value);
   };
 
+  changeAddress = (value: string) => {
+    this.desiredAddress = value;
+  };
+
   startPortForward = async (data: PortForwardDialogData) => {
     let { portForward } = data;
     const { currentPort, desiredPort } = this;
+
+    portForward.address = this.desiredAddress;
 
     try {
       // determine how many port-forwards already exist
@@ -127,6 +136,23 @@ class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & De
           nextLabel={this.currentPort === 0 ? "Start" : "Modify"}
         >
           <div className="flex column gaps align-left">
+            <div className="input-container flex align-center">
+              <div className="current-address" data-testid="current-address">
+                Addresses to listen on (comma separated):
+              </div>
+              <Icon
+                material="info"
+                tooltip="Only accepts IP addresses or localhost as a value. When localhost is
+	supplied, kubectl will try to bind on both 127.0.0.1 and ::1 and will fail if neither of these addresses are
+	available to bind."
+              />
+              <Input
+                className="portInput"
+                placeholder="localhost"
+                value={this.desiredAddress}
+                onChange={this.changeAddress}
+              />
+            </div>
             <div className="input-container flex align-center">
               <div className="current-port" data-testid="current-port">
                 Local port to forward from:
