@@ -39,7 +39,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "webpack": "^5.99.9"
   }

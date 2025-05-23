@@ -55,7 +55,7 @@
     "@types/webpack-node-externals": "3.0.4",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "ts-jest": "^29.3.2"
+    "ts-jest": "^29.3.4"
   },
   "bin": {
     "lens-webpack-build": "bin/webpack-build"

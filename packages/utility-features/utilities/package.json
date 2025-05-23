@@ -53,7 +53,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "react-router": "^5.3.4",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "type-fest": "^2.19.0",
     "webpack": "^5.99.9"
