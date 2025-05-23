@@ -213,7 +213,7 @@
     "@types/node": "^22.15.19",
     "@types/proper-lockfile": "^4.1.4",
     "@types/randomcolor": "^0.5.9",
-    "@types/react": "^17.0.85",
+    "@types/react": "^17.0.86",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^17.0.26",
     "@types/react-router": "^5.1.20",
