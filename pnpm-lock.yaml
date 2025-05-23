@@ -5,7 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  http-proxy: npm:http-proxy-node16@^1.0.0
   http-proxy-middleware: ^3.0.0
+  '@types/http-proxy': '-'
 
 patchedDependencies:
   circular-dependency-plugin:
@@ -157,9 +159,9 @@ importers:
       hpagent:
         specifier: ^1.2.0
         version: 1.2.0
-      http-proxy:
-        specifier: ^1.18.1
-        version: 1.18.1(debug@4.4.0)
+      http-proxy-node16:
+        specifier: ^1.0.6
+        version: 1.0.6(debug@4.4.0)
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -788,9 +790,9 @@ importers:
       hpagent:
         specifier: ^1.2.0
         version: 1.2.0
-      http-proxy:
-        specifier: ^1.18.1
-        version: 1.18.1(debug@4.4.0)
+      http-proxy-node16:
+        specifier: ^1.0.6
+        version: 1.0.6(debug@4.4.0)
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -981,9 +983,6 @@ importers:
       '@types/history':
         specifier: ^4.7.11
         version: 4.7.11
-      '@types/http-proxy':
-        specifier: ^1.17.16
-        version: 1.17.16
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -4484,9 +4483,6 @@ packages:
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
 
-  '@types/http-proxy@1.17.16':
-    resolution: {integrity: sha512-sdWoUajOB1cd0A8cRRQ1cfyWNbmFKLAqBB89Y8x5iYyG/mkJHc0YUH8pdWBy2omi9qtCpiIgGjuwO0dQST2l5w==}
-
   '@types/istanbul-lib-coverage@2.0.4':
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
 
@@ -6351,8 +6347,8 @@ packages:
     resolution: {integrity: sha512-GLZZm1X38BPY4lkXA01jhwxvDoOkkXqjgVyUzVxiEK4iuRu03PZoYHhHRwxnfhQMDuaxi3vVri0YgSro/1oWqg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  http-proxy@1.18.1:
-    resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
+  http-proxy-node16@1.0.6:
+    resolution: {integrity: sha512-RLtYkbmbLmh+To4lmqLpiEitu0igXb/j1SOW8F6w/esXsapGT5dSShMF9vg7shtxGJSXaWiFE3wYWCoLOuiibg==}
     engines: {node: '>=8.0.0'}
 
   http2-wrapper@1.0.3:
@@ -10658,10 +10654,6 @@ snapshots:
 
   '@types/http-errors@2.0.4': {}
 
-  '@types/http-proxy@1.17.16':
-    dependencies:
-      '@types/node': 22.15.19
-
   '@types/istanbul-lib-coverage@2.0.4': {}
 
   '@types/istanbul-lib-report@3.0.0':
@@ -12841,16 +12833,15 @@ snapshots:
 
   http-proxy-middleware@3.0.5:
     dependencies:
-      '@types/http-proxy': 1.17.16
       debug: 4.4.0(supports-color@5.5.0)
-      http-proxy: 1.18.1(debug@4.4.0)
+      http-proxy: http-proxy-node16@1.0.6(debug@4.4.0)
       is-glob: 4.0.3
       is-plain-object: 5.0.0
       micromatch: 4.0.8
     transitivePeerDependencies:
       - supports-color
 
-  http-proxy@1.18.1(debug@4.4.0):
+  http-proxy-node16@1.0.6(debug@4.4.0):
     dependencies:
       eventemitter3: 4.0.7
       follow-redirects: 1.15.9(debug@4.4.0)
