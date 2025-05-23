@@ -21,5 +21,5 @@ export interface ClusterPageMenuRegistration {
 }
 
 export interface ClusterPageMenuComponents {
-  Icon: React.ComponentType<IconProps>;
+  Icon?: React.ComponentType<IconProps>;
 }
