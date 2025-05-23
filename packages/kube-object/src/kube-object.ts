@@ -6,6 +6,7 @@
 
 import { formatDuration, isObject, isString } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
+import { omit } from "lodash";
 import moment from "moment";
 import type { Patch } from "rfc6902";
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
@@ -218,8 +219,8 @@ export class KubeObject<
     return [this.getName(), this.getNs(), this.getId(), ...this.getLabels(), ...this.getAnnotations(true)];
   }
 
-  toPlainObject() {
-    return JSON.parse(JSON.stringify(this)) as Record<string, unknown>;
+  toPlainObject(omitFields: string[] = ["metadata.managedFields"]) {
+    return omit(JSON.parse(JSON.stringify(this)), omitFields) as Record<string, unknown>;
   }
 
   /**
