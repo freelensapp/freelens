@@ -69,4 +69,15 @@ describe("kube object tests", () => {
 
     expect(obj.getResourceVersion()).toEqual("");
   });
+
+  it("toPlainObject should return a plain object without omitted fields", () => {
+    const data = getStubData();
+    const obj = new KubeObject(data);
+
+    const plain = obj.toPlainObject(["metadata.uid", "metadata.resourceVersion"]);
+    delete data.metadata.uid;
+    delete data.metadata.resourceVersion;
+
+    expect(plain).toEqual(data);
+  });
 });

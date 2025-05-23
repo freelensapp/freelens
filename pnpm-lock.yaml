@@ -1358,6 +1358,9 @@ importers:
       auto-bind:
         specifier: ^4.0.0
         version: 4.0.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -1374,6 +1377,9 @@ importers:
       '@freelensapp/webpack':
         specifier: workspace:^
         version: link:../infrastructure/webpack
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0

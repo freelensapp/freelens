@@ -166,7 +166,9 @@ export class EditResourceModel {
     }
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject());
+      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), {
+        sortKeys: true,
+      });
     });
   };
 
