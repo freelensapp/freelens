@@ -256,7 +256,7 @@
     "typed-emitter": "^1.4.0",
     "typescript": "^5.8.3",
     "typescript-plugin-css-modules": "^5.1.0",
-    "webpack": "^5.99.8",
+    "webpack": "^5.99.9",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   }
