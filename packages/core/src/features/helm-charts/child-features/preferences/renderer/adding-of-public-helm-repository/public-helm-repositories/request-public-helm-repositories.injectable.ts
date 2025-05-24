@@ -11,8 +11,33 @@ import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/downl
 import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
-const publicHelmReposUrl =
-  "https://github.com/lensapp/artifact-hub-repositories/releases/download/latest/repositories.json";
+const artifactsHubSearchUrl = "https://artifacthub.io:443/api/chartsvc/v1/charts/search?q=";
+
+interface ArtifactsHubSearchResponse {
+  data: ArtifactsHubChartItem[];
+}
+
+interface ArtifactsHubChartItem {
+  id: string;
+  artifactHub: {
+    packageUrl: string;
+  };
+  attributes: {
+    description: string;
+    repo: {
+      name: string;
+      url: string;
+    };
+    relationships: {
+      latestChartVersion: {
+        data: {
+          version: string;
+          appVersion: string;
+        };
+      };
+    };
+  };
+}
 
 const requestPublicHelmRepositoriesInjectable = getInjectable({
   id: "request-public-helm-repositories",
@@ -23,7 +48,7 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
 
     return async (): Promise<HelmRepo[]> => {
       const controller = withTimeout(10_000);
-      const result = await downloadJson(publicHelmReposUrl, {
+      const result = await downloadJson(artifactsHubSearchUrl, {
         signal: controller.signal,
       });
 
@@ -33,7 +58,11 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
         return [];
       }
 
-      return sortBy((repo) => repo.name, result.response as HelmRepo[]);
+      const response = result.response as ArtifactsHubSearchResponse;
+      const repos = response.data.map((item) => item.attributes.repo);
+      const uniqueRepos = Array.from(new Map(repos.map((repo) => [repo.name, repo])).values());
+
+      return sortBy((repo) => repo.name, uniqueRepos);
     };
   },
 
