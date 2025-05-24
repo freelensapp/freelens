@@ -60,7 +60,9 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
 
       const response = result.response as ArtifactsHubSearchResponse;
       const repos = response.data.map((item) => item.attributes.repo);
-      const uniqueRepos = Array.from(new Map(repos.map((repo) => [repo.name, repo])).values());
+      const uniqueRepos = Array.from(
+        new Map(repos.map((repo) => [repo.name, { ...repo, cacheFilePath: "" }])).values(),
+      );
 
       return sortBy((repo) => repo.name, uniqueRepos);
     };
