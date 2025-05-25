@@ -31,7 +31,7 @@ export const podsUsedMemoryColumnInjectable = getInjectable({
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
 
-      return metrics.memory;
+      return isNaN(metrics.memory) ? 0 : metrics.memory;
     },
   }),
   injectionToken: podListLayoutColumnInjectionToken,

@@ -31,7 +31,7 @@ export const podsUsedCpuColumnInjectable = getInjectable({
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
 
-      return metrics.cpu;
+      return isNaN(metrics.cpu) ? 0 : metrics.cpu;
     },
   }),
   injectionToken: podListLayoutColumnInjectionToken,
