@@ -11,7 +11,7 @@ import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/downl
 import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
-const artifactsHubSearchUrl = "https://artifacthub.io:443/api/chartsvc/v1/charts/search?q=";
+const artifactsHubSearchUrl = "https://hub.helm.sh/api/chartsvc/v1/charts/search?q=";
 
 interface ArtifactsHubSearchResponse {
   data: ArtifactsHubChartItem[];
