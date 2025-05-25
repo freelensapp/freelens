@@ -21,6 +21,18 @@
       flex-grow: 0.8;
     }
 
+    &.cpu {
+      flex-grow: 0.5;
+    }
+
+    &.memory {
+      flex-grow: 0.8;
+    }
+
+    &.restarts {
+      flex-grow: 0.5;
+    }
+
     &.warning {
       @include table.table-cell-warning;
     }
