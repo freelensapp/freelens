@@ -184,8 +184,8 @@ importers:
         specifier: ^2.30.1
         version: 2.30.1
       moment-timezone:
-        specifier: ^0.5.48
-        version: 0.5.48
+        specifier: ^0.6.0
+        version: 0.6.0
       node-pty:
         specifier: 1.1.0-beta34
         version: 1.1.0-beta34
@@ -824,8 +824,8 @@ importers:
         specifier: ^2.30.1
         version: 2.30.1
       moment-timezone:
-        specifier: ^0.5.48
-        version: 0.5.48
+        specifier: ^0.6.0
+        version: 0.6.0
       monaco-editor:
         specifier: ^0.52.2
         version: 0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
@@ -7353,8 +7353,8 @@ packages:
     resolution: {integrity: sha512-97fZUUUd+/cUhLv1nNoMpB2vjNS1rNqfuXqxcWXZNiDjEQbwbiZfxnkvg1YpUDJS6LP99Ic5OVVszu+bQDQcDg==}
     engines: {node: '>=6.0.0'}
 
-  moment-timezone@0.5.48:
-    resolution: {integrity: sha512-f22b8LV1gbTO2ms2j2z13MuPogNoh5UzxL3nzNAYKGraILnbGc9NEE6dyiiiLv46DGRb8A4kg8UKWLjPthxBHw==}
+  moment-timezone@0.6.0:
+    resolution: {integrity: sha512-ldA5lRNm3iJCWZcBCab4pnNL3HSZYXVb/3TYr75/1WCTWYuTqYUb5f/S384pncYjJ88lbO8Z4uPDvmoluHJc8Q==}
 
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
@@ -14026,7 +14026,7 @@ snapshots:
     dependencies:
       mergee: 1.0.1
 
-  moment-timezone@0.5.48:
+  moment-timezone@0.6.0:
     dependencies:
       moment: 2.30.1
 
