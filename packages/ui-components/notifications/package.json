@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/notifications",
   "private": false,
-  "version": "1.3.0",
+  "version": "1.3.1-0",
   "description": "Highly extendable notifications in the Freelens.",
   "type": "commonjs",
   "files": [
