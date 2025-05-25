@@ -10,6 +10,7 @@ import { Tooltip } from "@freelensapp/tooltip";
 import { getConvertedParts } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "name";
 
@@ -19,7 +20,7 @@ export const podsNameColumnInjectable = getInjectable({
     id: columnId,
     kind: "Pod",
     apiVersion: "v1",
-    priority: 100,
+    priority: COLUMN_PRIORITY.NAME,
     content: (pod: Pod) => (
       <>
         <span id={`list-pod-name-${pod.getId()}`} data-testid={`list-pod-name-${pod.getId()}`}>

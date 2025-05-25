@@ -69,7 +69,7 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
       return [metric.getName() === pod.getName(), metric.getNs() === pod.getNs()].every((v) => v);
     });
 
-    if (!metrics) return empty;
+    if (!metrics) return { cpu: NaN, memory: NaN };
 
     return containers.reduce((total, container) => {
       const metric = metrics.containers.find((item) => item.name == container.name);

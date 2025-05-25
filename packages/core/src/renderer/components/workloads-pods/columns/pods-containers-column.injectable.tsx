@@ -11,6 +11,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import startCase from "lodash/startCase";
 import React from "react";
 import { StatusBrick } from "../../status-brick";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 const renderState = (name: string, ready: boolean, key: string, data?: ContainerStateValues) =>
   data && (
@@ -63,7 +64,7 @@ export const podsContainersColumnInjectable = getInjectable({
     id: columnId,
     kind: "Pod",
     apiVersion: "v1",
-    priority: 80,
+    priority: COLUMN_PRIORITY.CONTAINERS,
     content: renderContainersStatus,
     header: {
       title: "Containers",

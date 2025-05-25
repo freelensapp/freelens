@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../../badge";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 export const podsOwnersColumnInjectable = getInjectable({
   id: "pods-owners-column",
@@ -24,7 +25,7 @@ export const podsOwnersColumnInjectable = getInjectable({
       id: columnId,
       kind: "Pod",
       apiVersion: "v1",
-      priority: 60,
+      priority: COLUMN_PRIORITY.OWNERS,
       content: (pod) =>
         pod.getOwnerRefs().map((ref) => {
           const { kind, name } = ref;

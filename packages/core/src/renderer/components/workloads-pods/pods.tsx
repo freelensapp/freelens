@@ -9,9 +9,10 @@ import "./pods.scss";
 import type { Pod } from "@freelensapp/kube-object";
 import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { interval } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useEffect } from "react";
 import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -25,8 +26,18 @@ interface Dependencies {
   columns: SpecificKubeListLayoutColumn<Pod>[];
 }
 
+const REFRESH_METRICS_INTERVAL = 10;
+
 const NonInjectedPods = observer((props: Dependencies) => {
   const { columns, eventStore, podStore } = props;
+
+  useEffect(() => {
+    const fetchPodsMetricsInterval = interval(REFRESH_METRICS_INTERVAL, () => podStore.loadKubeMetrics());
+
+    fetchPodsMetricsInterval.start(true);
+
+    return () => fetchPodsMetricsInterval.stop();
+  }, [podStore]);
 
   return (
     <SiblingsInTabLayout>
