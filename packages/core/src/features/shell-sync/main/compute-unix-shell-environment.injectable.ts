@@ -58,9 +58,9 @@ const getResetProcessEnv = (
 const computeUnixShellEnvironmentInjectable = getInjectable({
   id: "compute-unix-shell-environment",
   instantiate: (di): ComputeUnixShellEnvironment => {
-    const powerShellName = /^pwsh(-preview)?$/;
-    const cshLikeShellName = /^(t?csh)$/;
-    const fishLikeShellName = /^fish$/;
+    const powerShellName = /^pwsh(-preview)?(\.exe)?$/i;
+    const cshLikeShellName = /^(t?csh)(\.exe)?$/i;
+    const fishLikeShellName = /^fish(\.exe)?$/i;
 
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
     const spawn = di.inject(spawnInjectable);
