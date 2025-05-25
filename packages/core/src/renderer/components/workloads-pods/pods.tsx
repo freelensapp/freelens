@@ -11,7 +11,7 @@ import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -30,11 +30,10 @@ const REFRESH_METRICS_INTERVAL = 10;
 
 const NonInjectedPods = observer((props: Dependencies) => {
   const { columns, eventStore, podStore } = props;
-  const fetchPodsMetricsInterval = useMemo(() => interval(REFRESH_METRICS_INTERVAL, () => {
-    podStore.loadKubeMetrics();
-  }), [podStore]);
 
   useEffect(() => {
+    const fetchPodsMetricsInterval = interval(REFRESH_METRICS_INTERVAL, () => podStore.loadKubeMetrics());
+
     fetchPodsMetricsInterval.start(true);
 
     return () => fetchPodsMetricsInterval.stop();
