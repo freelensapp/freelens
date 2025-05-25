@@ -221,27 +221,32 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 
 ## Expenses and Donations
 
-Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.
-For more information, see our dedicated page in our Wiki: [Expenses and Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+Anyone can support the Freelens project by making donations to cover
+maintenance costs and invest in its development.
+
+For more information, see our dedicated page in our Wiki: [Expenses and
+Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
 
 ## Core Team
 
-Each member of the core team is focused on specific roles.<br/>
-You can contact us at any time according to them.
+Each member of the core team is focused on specific roles. You can contact us
+at any time according to them.
 
-* [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [robertobandini](https://github.com/robertobandini) - Founder<br/>
+- [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
 General organization management, relationships, product management, community, marketing, freelens-ai extension
-* [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [dex4er](https://github.com/dex4er) - Maintainer<br/>
+- [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
 Development direction, architecture and release management, flux-cd extension, freelens-ai extension
-* [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [mariomamo](https://github.com/mariomamo) - Maintainer<br/>
+- [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
 UI, Docs, freelens-ai extension development management
-* [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
+- [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
 GenAI solutions & freelens-ai extension development management
 
-The project is growing very quickly and everyone is welcome!<br/>
-If you also want to be part of it, visit the page [We want you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+The project is growing very quickly and everyone is welcome!
 
-Or contact us at freelens@freelens.app for any questions or suggestions!
+If you also want to be part of it, visit the wiki page: [We want
+you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+
+Or contact us at <freelens@freelens.app> for any questions or suggestions!
 
 ## License
 
