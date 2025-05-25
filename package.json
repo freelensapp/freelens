@@ -26,8 +26,10 @@
     "knip": "pnpm dlx knip@5.58.0 --dependencies",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
-    "lint": "pnpm biome:check",
-    "lint:fix": "pnpm biome:fix",
+    "trunk": "trunk",
+    "fmt": "trunk fmt --all",
+    "lint": "trunk check --all",
+    "lint:fix": "trunk check --all --fix",
     "test:unit": "pnpm -r --no-bail test:unit",
     "test:unit:core": "cd packages/core && pnpm test:unit",
     "test:unit:core:updatesnapshot": "cd packages/core && pnpm test:unit -u",
@@ -41,6 +43,7 @@
   },
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
+    "@trunkio/launcher": "^1.3.4",
     "pnpm": "10.11.0"
   }
 }
