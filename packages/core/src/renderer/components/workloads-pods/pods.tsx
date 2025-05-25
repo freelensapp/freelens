@@ -30,14 +30,14 @@ const REFRESH_METRICS_INTERVAL = 10;
 
 const NonInjectedPods = observer((props: Dependencies) => {
   const { columns, eventStore, podStore } = props;
-  const podMetricsInterval = useMemo(() => interval(REFRESH_METRICS_INTERVAL, () => {
+  const fetchPodsMetricsInterval = useMemo(() => interval(REFRESH_METRICS_INTERVAL, () => {
     podStore.loadKubeMetrics();
   }), [podStore]);
 
   useEffect(() => {
-    podMetricsInterval.start(true);
+    fetchPodsMetricsInterval.start(true);
 
-    return () => podMetricsInterval.stop();
+    return () => fetchPodsMetricsInterval.stop();
   }, [podStore]);
 
   return (
