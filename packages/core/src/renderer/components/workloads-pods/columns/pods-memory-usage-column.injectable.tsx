@@ -5,10 +5,10 @@
  */
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { bytesToUnits } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
-import { bytesToUnits } from "@freelensapp/utilities";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "memoryUsage";
@@ -30,9 +30,9 @@ export const podsUsedMemoryColumnInjectable = getInjectable({
     sortingCallBack: (pod) => {
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
-      
-      return metrics.memory
+
+      return metrics.memory;
     },
   }),
-  injectionToken: podListLayoutColumnInjectionToken,  
+  injectionToken: podListLayoutColumnInjectionToken,
 });

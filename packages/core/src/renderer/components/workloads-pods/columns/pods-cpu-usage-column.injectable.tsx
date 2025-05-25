@@ -22,15 +22,15 @@ export const podsUsedCpuColumnInjectable = getInjectable({
     content: (pod) => {
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
-      const cpuUsage = metrics.cpu
-      
+      const cpuUsage = metrics.cpu;
+
       return <span>{cpuUsage === 0 ? "N/A" : cpuUsage.toFixed(3)}</span>;
     },
     header: { title: "CPU", className: "cpu", sortBy: columnId, id: columnId },
     sortingCallBack: (pod) => {
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
-      
+
       return metrics.cpu;
     },
   }),

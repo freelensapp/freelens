@@ -9,6 +9,7 @@ import "./pods.scss";
 import type { Pod } from "@freelensapp/kube-object";
 import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { interval } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
@@ -18,7 +19,6 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import type { PodStore } from "./store";
 import podStoreInjectable from "./store.injectable";
-import { interval } from "@freelensapp/utilities";
 
 interface Dependencies {
   eventStore: EventStore;
