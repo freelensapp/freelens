@@ -24,7 +24,7 @@ export const podsUsedCpuColumnInjectable = getInjectable({
       const metrics = podStore.getPodKubeMetrics(pod);
       const cpuUsage = metrics.cpu;
 
-      return <span>{cpuUsage <= 0 ? "N/A" : cpuUsage.toFixed(3)}</span>;
+      return <span>{isNaN(cpuUsage) ? "N/A" : cpuUsage.toFixed(3)}</span>;
     },
     header: { title: "CPU", className: "cpu", sortBy: columnId, id: columnId },
     sortingCallBack: (pod) => {
