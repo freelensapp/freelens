@@ -18,7 +18,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import type { PodStore } from "./store";
 import podStoreInjectable from "./store.injectable";
-import { interval } from "@freelensapp/utilities/dist";
+import { interval } from "@freelensapp/utilities";
 
 interface Dependencies {
   eventStore: EventStore;
