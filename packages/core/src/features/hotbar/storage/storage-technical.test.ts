@@ -20,8 +20,6 @@ import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import activeHotbarInjectable from "./common/active.injectable";
 import type { AddHotbar } from "./common/add.injectable";
 import addHotbarInjectable from "./common/add.injectable";
-import type { GetHotbarById } from "./common/get-by-id.injectable";
-import getHotbarByIdInjectable from "./common/get-by-id.injectable";
 import type { Hotbar } from "./common/hotbar";
 import hotbarsInjectable from "./common/hotbars.injectable";
 import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
