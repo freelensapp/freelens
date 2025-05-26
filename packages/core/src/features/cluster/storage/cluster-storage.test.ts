@@ -15,14 +15,11 @@ import getCustomKubeConfigFilePathInjectable from "../../../common/app-paths/get
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ReadFileSync } from "../../../common/fs/read-file-sync.injectable";
 import readFileSyncInjectable from "../../../common/fs/read-file-sync.injectable";
-import type { WriteBufferSync } from "../../../common/fs/write-buffer-sync.injectable";
-import writeBufferSyncInjectable from "../../../common/fs/write-buffer-sync.injectable";
 import type { WriteFileSync } from "../../../common/fs/write-file-sync.injectable";
 import writeFileSyncInjectable from "../../../common/fs/write-file-sync.injectable";
 import type { WriteJsonSync } from "../../../common/fs/write-json-sync.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";
-import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import kubectlBinaryNameInjectable from "../../../main/kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../../../main/kubectl/normalized-arch.injectable";
@@ -66,7 +63,6 @@ describe("cluster storage technical tests", () => {
   let clustersPersistentStorage: PersistentStorage;
   let writeJsonSync: WriteJsonSync;
   let writeFileSync: WriteFileSync;
-  let writeBufferSync: WriteBufferSync;
   let readFileSync: ReadFileSync;
   let getCustomKubeConfigFilePath: GetCustomKubeConfigFilePath;
   let writeFileSyncAndReturnPath: (filePath: string, contents: string) => string;
@@ -84,7 +80,6 @@ describe("cluster storage technical tests", () => {
     di.override(normalizedPlatformInjectable, () => "darwin");
     writeJsonSync = di.inject(writeJsonSyncInjectable);
     writeFileSync = di.inject(writeFileSyncInjectable);
-    writeBufferSync = di.inject(writeBufferSyncInjectable);
     readFileSync = di.inject(readFileSyncInjectable);
     addCluster = di.inject(addClusterInjectable);
     getClusterById = di.inject(getClusterByIdInjectable);
@@ -219,37 +214,4 @@ describe("cluster storage technical tests", () => {
       expect(storedClusters[2].id).toBe("cluster3");
     });
   });
-});
-
-const minimalValidKubeConfig = JSON.stringify({
-  apiVersion: "v1",
-  clusters: [
-    {
-      name: "minikube",
-      cluster: {
-        server: "https://192.168.64.3:8443",
-      },
-    },
-  ],
-  "current-context": "minikube",
-  contexts: [
-    {
-      context: {
-        cluster: "minikube",
-        user: "minikube",
-      },
-      name: "minikube",
-    },
-  ],
-  users: [
-    {
-      name: "minikube",
-      user: {
-        "client-certificate": "/Users/foo/.minikube/client.crt",
-        "client-key": "/Users/foo/.minikube/client.key",
-      },
-    },
-  ],
-  kind: "Config",
-  preferences: {},
 });

@@ -5,7 +5,6 @@
  */
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { ClusterStoreModel } from "../../features/cluster/storage/common/storage.injectable";
 import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
 import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
@@ -14,11 +13,9 @@ import userPreferencesPersistentStorageInjectable from "../../features/user-pref
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import writeFileSyncInjectable from "../fs/write-file-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import { defaultThemeId } from "../vars";
-import storeMigrationVersionInjectable from "../vars/store-migration-version.injectable";
 
 describe("user store tests", () => {
   let state: UserPreferencesState;
