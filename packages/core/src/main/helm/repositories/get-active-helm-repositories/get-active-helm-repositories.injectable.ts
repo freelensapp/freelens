@@ -80,17 +80,20 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
       const updateResult = await execHelm(["repo", "update"]);
 
       if (!updateResult.callWasSuccessful) {
-        if (!updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
+        if (updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
           return {
-            callWasSuccessful: false,
-            error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+            callWasSuccessful: true,
+            response: [],
           };
         }
+        return {
+          callWasSuccessful: false,
+          error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+        };
       }
 
       return {
         callWasSuccessful: true,
-
         response: await getRepositories(repositoryConfigFilePath, helmRepositoryCacheDirPath),
       };
     };
