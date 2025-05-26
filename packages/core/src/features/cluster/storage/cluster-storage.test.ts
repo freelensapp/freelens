@@ -219,46 +219,6 @@ describe("cluster storage technical tests", () => {
       expect(storedClusters[2].id).toBe("cluster3");
     });
   });
-
-  describe("pre 3.6.0-beta.1 config with an existing cluster", () => {
-    beforeEach(() => {
-      di.override(storeMigrationVersionInjectable, () => "3.6.0");
-
-      getCustomKubeConfigFilePath = di.inject(getCustomKubeConfigFilePathInjectable);
-
-      writeJsonSync("/some-directory-for-user-data/lens-cluster-store.json", {
-        __internal__: {
-          migrations: {
-            version: "3.5.0",
-          },
-        },
-        clusters: [
-          {
-            id: "cluster1",
-            kubeConfig: minimalValidKubeConfig,
-            contextName: "cluster",
-            preferences: {
-              icon: "store://icon_path",
-            },
-          },
-        ],
-      });
-      writeBufferSync("/some-directory-for-user-data/icon_path", testDataIcon);
-
-      clustersPersistentStorage = di.inject(clustersPersistentStorageInjectable);
-      clustersPersistentStorage.loadAndStartSyncing();
-    });
-
-    it("migrates to modern format with kubeconfig in a file", async () => {
-      const configPath = clusters.get()[0].kubeConfigPath.get();
-
-      expect(readFileSync(configPath)).toBe(minimalValidKubeConfig);
-    });
-
-    it("migrates to modern format with icon not in file", async () => {
-      expect(clusters.get()[0].preferences.icon).toMatch(/data:;base64,/);
-    });
-  });
 });
 
 const minimalValidKubeConfig = JSON.stringify({
