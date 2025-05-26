@@ -39,8 +39,17 @@ jobs:
         run: |
           echo "version=$(jq -r .version freelens/package.json)" >> $GITHUB_OUTPUT
 
+      - name: Check if version is release
+        id: check-version
+        run: |
+          if [[ "${{ steps.package-json.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "is_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_release=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create tag from the main branch
-        if: steps.package-json.outputs.version
+        if: steps.check-version.outputs.is_release == 'true'
         uses: actions/github-script@v7
         with:
           script: |
