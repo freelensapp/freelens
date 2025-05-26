@@ -2513,7 +2513,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           class="flex gaps"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens box grow css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -2526,7 +2526,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="css-1f43avz-a11yText-A11yText"
                             />
                             <div
-                              class="Select__control Select__control--is-disabled css-16xfy0z-control"
+                              class="Select__control css-13cymwt-control"
                             >
                               <div
                                 class="Select__value-container css-hlgwow"
@@ -2538,7 +2538,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   Repositories
                                 </div>
                                 <div
-                                  class="Select__input-container css-1mkvw8y"
+                                  class="Select__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -2550,7 +2550,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                     autocomplete="off"
                                     autocorrect="off"
                                     class="Select__input"
-                                    disabled=""
                                     id="selection-of-active-public-helm-repository"
                                     role="combobox"
                                     spellcheck="false"
@@ -2564,22 +2563,8 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               <div
                                 class="Select__indicators css-1wy0on6"
                               >
-                                <div
-                                  aria-hidden="true"
-                                  class="Select__indicator Select__loading-indicator css-pogzpp-loadingIndicator"
-                                >
-                                  <span
-                                    class="css-15mwx6b-LoadingDot"
-                                  />
-                                  <span
-                                    class="css-1cg5uks-LoadingDot"
-                                  />
-                                  <span
-                                    class="css-10osd3t-LoadingDot"
-                                  />
-                                </div>
                                 <span
-                                  class="Select__indicator-separator css-894a34-indicatorSeparator"
+                                  class="Select__indicator-separator css-1u9des2-indicatorSeparator"
                                 />
                                 <div
                                   aria-hidden="true"
@@ -2611,16 +2596,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                         </div>
                         <div
                           class="repos"
-                        >
-                          <div
-                            class="pt-5 relative"
-                          >
-                            <div
-                              class="Spinner singleColor center"
-                              data-testid="helm-repositories-are-loading"
-                            />
-                          </div>
-                        </div>
+                        />
                         <div />
                       </div>
                     </div>
