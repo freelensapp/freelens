@@ -5,7 +5,6 @@
  */
 
 import assert from "assert";
-import { readFileSync } from "fs";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
@@ -32,7 +31,6 @@ import getClusterByIdInjectable from "./common/get-by-id.injectable";
 import clustersPersistentStorageInjectable from "./common/storage.injectable";
 
 // NOTE: this is intended to read the actual file system
-const testDataIcon = readFileSync("test-data/cluster-store-migration-icon.png");
 const clusterServerUrl = "https://localhost";
 const kubeconfig = `
 apiVersion: v1

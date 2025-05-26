@@ -14,7 +14,6 @@ import directoryForUserDataInjectable from "../../../common/app-paths/directory-
 import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
 import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
-import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
@@ -55,7 +54,6 @@ describe("Hotbars technical tests", () => {
   let hotbars: IComputedValue<Hotbar[]>;
   let activeHotbar: IComputedValue<Hotbar | undefined>;
   let addHotbar: AddHotbar;
-  let getHotbarById: GetHotbarById;
 
   beforeEach(async () => {
     di = getDiForUnitTesting();
@@ -127,7 +125,6 @@ describe("Hotbars technical tests", () => {
     activeHotbar = di.inject(activeHotbarInjectable);
 
     addHotbar = di.inject(addHotbarInjectable);
-    getHotbarById = di.inject(getHotbarByIdInjectable);
   });
 
   describe("given no previous data in store, running all migrations", () => {
