@@ -13,6 +13,13 @@ import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "memoryUsage";
 
+function bytesToUnitsAligned(bytes: number): string {
+  if (bytes < 1024) {
+    return `${(bytes / 1024).toFixed(1)}Ki`;
+  }
+  return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
+}
+
 export const podsUsedMemoryColumnInjectable = getInjectable({
   id: "pods-memory-usage-column",
   instantiate: (di) => ({
@@ -24,7 +31,7 @@ export const podsUsedMemoryColumnInjectable = getInjectable({
       const podStore = di.inject(podStoreInjectable);
       const metrics = podStore.getPodKubeMetrics(pod);
 
-      return <span>{bytesToUnits(metrics.memory)}</span>;
+      return <span>{bytesToUnitsAligned(metrics.memory)}</span>;
     },
     header: { title: "Memory", className: "memory", sortBy: columnId, id: columnId },
     sortingCallBack: (pod) => {
