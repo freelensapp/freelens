@@ -55,6 +55,10 @@ describe("unitsToBytes", () => {
     expect(unitsToBytes("1234Pi")).toBe(unitsToBytes("1234PiB"));
   });
 
+  it("should parse with Ei suffix as the same as EiB", () => {
+    expect(unitsToBytes("1234Ei")).toBe(unitsToBytes("1234EiB"));
+  });
+
   it("given unrelated data, return NaN", () => {
     expect(unitsToBytes("I am not a number")).toBeNaN();
   });
@@ -108,6 +112,13 @@ describe("bytesToUnits", () => {
     expect(bytesToUnits(2048 ** 5)).toBe("32.0PiB");
     expect(bytesToUnits(1900 * 1024 ** 4)).toBe("1.9PiB");
     expect(bytesToUnits(50 * 1024 ** 5 + 1)).toBe("50.0PiB");
+  });
+
+  it("given a number within the magnitude of 1024^6..1024^7, format with EiB", () => {
+    expect(bytesToUnits(1024 ** 6)).toBe("1.0EiB");
+    expect(bytesToUnits(2048 ** 6)).toBe("64.0EiB");
+    expect(bytesToUnits(1900 * 1024 ** 5)).toBe("1.9EiB");
+    expect(bytesToUnits(50 * 1024 ** 6 + 1)).toBe("50.0EiB");
   });
 });
 

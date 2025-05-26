@@ -14,7 +14,10 @@ import { COLUMN_PRIORITY } from "./column-priority";
 const columnId = "memoryUsage";
 
 function bytesToUnitsAligned(bytes: number): string {
-  return bytesToUnits(bytes, { precision: 1 }).replace(/iB$/, "");
+  if (bytes < 1024) {
+    return `${(bytes / 1024).toFixed(1)}Ki`;
+  }
+  return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
 }
 
 export const podsUsedMemoryColumnInjectable = getInjectable({
