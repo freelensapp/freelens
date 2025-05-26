@@ -23,12 +23,20 @@
 
     &.cpu {
       flex-grow: 0.5;
-      text-align: right;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
     }
 
     &.memory {
       flex-grow: 0.8;
-      text-align: right;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
     }
 
     &.restarts {
