@@ -78,6 +78,7 @@ jobs:
         run: |
           trunk upgrade --yes-to-all --no-progress --ci --color | tee .github/update.log
           sed -e '/Downloading Trunk/,/Unpacking Trunk... done/d' -e 's/\x1b\[[0-9;]*m//g' -e 's/^\(  \)\{0,1\}  /\1- /' .github/update.log > .github/pr_body.log
+          perl -0777 -ne 'print join ", ", map {s/^- //r} grep {/^- /} split "\n"' .github/pr_body.log > .github/pr_title.log
 
       - name: Check for changes
         run: |
@@ -118,7 +119,8 @@ jobs:
 
       - name: Update pull request description
         if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --body-file .github/pr_body.log
+        run: |
+          gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" --body-file .github/pr_body.log
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
