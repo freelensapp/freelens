@@ -342,7 +342,9 @@ jobs:
         shell: bash
         run: |
           for f in freelens/dist/Freelens*.*; do
-            sha256sum "$f" | tee "$f.sha256"
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
           done
 
       - name: Make checksums for binaries (macOS)
@@ -350,7 +352,9 @@ jobs:
         shell: bash
         run: |
           for f in freelens/dist/Freelens*.*; do
-            shasum -a 256 "$f" | tee "$f.sha256"
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
           done
 
       - name: List files before upload
