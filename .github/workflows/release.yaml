@@ -62,6 +62,9 @@ jobs:
             arch: x64
             concurrency: macos
           - os: windows-2022
+            arch: arm64
+            concurrency: windows
+          - os: windows-2022
             arch: x64
             concurrency: windows
 
@@ -160,8 +163,10 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Enable downloading for all architectures (macOS x64, Linux arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+      - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
+          'Windows' && matrix.arch == 'arm64'
+        shell: bash
         run: |
           echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
 
@@ -175,8 +180,12 @@ jobs:
           echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Rebuild native packages for Electron
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
+          'Windows' && matrix.arch == 'arm64'
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_target_arch: ${{ matrix.arch }}
 
       - name: Build extra resources
         id: build-resources
@@ -281,16 +290,16 @@ jobs:
             AppImage deb rpm \
             --${{ matrix.arch }}
 
-      - name: Build Electron app (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
+      - name: Build Electron app (Windows)
+        if: runner.os == 'Windows'
         shell: bash
         run: |
           pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
-      - name: Azure Trusted Signing (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
+      - name: Azure Trusted Signing (Windows)
+        if: runner.os == 'Windows'
         uses: azure/trusted-signing-action@v0.5.1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -367,7 +376,7 @@ jobs:
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME} freelens/dist/Freelens*.*
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
