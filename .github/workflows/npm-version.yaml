@@ -103,15 +103,16 @@ jobs:
       - name: Create pull request
         if: env.changes == 'true'
         run: |-
+          version=$(cat .github/version.log)
           if [[ $(gh pr view automated/npm-version --json state --jq .state || true) != "OPEN" ]]; then
             gh pr create \
               --head automated/npm-version \
-              --title "Automated npm version v${{ github.event.inputs.newversion }}" \
+              --title "Automated npm version v${version}" \
               --body-file .github/pr_body.log \
               --label automated
           else
             gh pr edit automated/npm-version \
-              --title "Automated npm version v${{ github.event.inputs.newversion }}" \
+              --title "Automated npm version v${version}" \
               --body-file .github/pr_body.log
           fi
         env:
