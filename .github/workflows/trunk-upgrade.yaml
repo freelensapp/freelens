@@ -107,20 +107,19 @@ jobs:
           push: origin automated/trunk-upgrade --set-upstream --force
 
       - name: Create pull request
-        id: pr
         if: env.changes == 'true'
-        uses: devops-infra/action-pull-request@master
-        with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          target_branch: main
-          label: automated
-          title: Automated trunk upgrade [skip ci]
-          get_diff: false
-
-      - name: Update pull request description
-        if: env.changes == 'true'
-        run: |
-          gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" --body-file .github/pr_body.log
+        run: |-
+          if [[ $(gh pr view automated/trunk-upgrade --json state --jq .state || true) != "OPEN" ]]; then
+            gh pr create \
+              --head automated/trunk-upgrade \
+              --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \
+              --body-file .github/pr_body.log \
+              --label automated,trunk
+          else
+            gh pr edit automated/trunk-upgrade \
+              --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \
+              --body-file .github/pr_body.log
+          fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 

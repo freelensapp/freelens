@@ -98,20 +98,20 @@ jobs:
           push: origin automated/kubectl-versions --set-upstream --force
 
       - name: Create pull request
-        id: pr
         if: env.changes == 'true'
-        uses: devops-infra/action-pull-request@master
-        with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          target_branch: main
-          label: kubectl
-          title: Automated update of kubectl versions
-          get_diff: true
-
-      - name: Update pull request description
-        if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --title "Automated update of kubectl versions (bundled $(cat .github/version.log))"
-          --body-file .github/pr_body.log
+        run: |-
+          kubectl_version=$(cat .github/version.log)
+          if [[ $(gh pr view automated/kubectl-versions --json state --jq .state || true) != "OPEN" ]]; then
+            gh pr create \
+              --head automated/kubectl-versions \
+              --title "Automated update of kubectl versions (bundled ${kubectl_version})" \
+              --body-file .github/pr_body.log \
+              --label automated,kubectl
+          else
+            gh pr edit automated/kubectl-versions \
+              --title "Automated update of kubectl versions (bundled ${kubectl_version})" \
+              --body-file .github/pr_body.log
+          fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
