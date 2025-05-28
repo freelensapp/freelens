@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - sign/v*
   workflow_dispatch: {}
 
 permissions:
@@ -11,58 +11,15 @@ permissions:
   id-token: write
 
 jobs:
-  make-draft-release:
-    name: make draft release
-
-    permissions: write-all
-
-    runs-on: ubuntu-22.04
-    timeout-minutes: 360
-
-    env:
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Check if package version matches
-        run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
-
-      - name: Create draft release
-        run: |
-          gh release create ${GITHUB_REF_NAME} \
-            --draft \
-            --title ${GITHUB_REF_NAME} \
-            --generate-notes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build-app:
     name: build app
-
-    needs:
-      - make-draft-release
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
-            arch: arm64
-            concurrency: linux-arm64
-          - os: ubuntu-22.04
-            arch: x64
-            concurrency: linux-amd64
-          - os: macos-14
-            arch: arm64
-            concurrency: macos
-          - os: macos-14
-            arch: x64
-            concurrency: macos
           - os: windows-2022
-            arch: x64
+            arch: arm64
             concurrency: windows
 
     runs-on: ${{ matrix.os }}
@@ -160,8 +117,10 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Enable downloading for all architectures (macOS x64, Linux arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+      - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
+          'Windows' && matrix.arch == 'arm64'
+        shell: bash
         run: |
           echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
 
@@ -175,8 +134,12 @@ jobs:
           echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Rebuild native packages for Electron
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
+          'Windows' && matrix.arch == 'arm64'
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_target_arch: ${{ matrix.arch }}
 
       - name: Build extra resources
         id: build-resources
@@ -281,16 +244,16 @@ jobs:
             AppImage deb rpm \
             --${{ matrix.arch }}
 
-      - name: Build Electron app (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
+      - name: Build Electron app (Windows)
+        if: runner.os == 'Windows'
         shell: bash
         run: |
           pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
-      - name: Azure Trusted Signing (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
+      - name: Azure Trusted Signing (Windows)
+        if: runner.os == 'Windows'
         uses: azure/trusted-signing-action@v0.5.1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -367,167 +330,6 @@ jobs:
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME} freelens/dist/Freelens*.*
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-github-release:
-    name: publish GitHub release
-
-    needs:
-      - make-draft-release
-      - build-app
-
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Publish GitHub release
-        run: gh release edit ${GITHUB_REF_NAME} --draft=false
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-npm-release:
-    name: publish NPM release
-
-    needs:
-      - make-draft-release
-      - build-app
-      - publish-github-release
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-22.04
-            arch: x64
-
-    runs-on: ${{ matrix.os }}
-    environment: publishing
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          registry-url: https://registry.npmjs.org
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Get pnpm cache directory
-        shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
-
-      - name: Use pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
-
-      - name: Install pnpm dependencies
-        id: install-pnpm
-        shell: bash
-        run: pnpm install --color=always --prefer-offline --frozen-lockfile
-        continue-on-error: true
-
-      - name: Install pnpm dependencies (retry)
-        if: steps.install-pnpm.outcome == 'failure'
-        shell: bash
-        run: pnpm install --color=always --prefer-offline --frozen-lockfile
-
-      - name: Build packages
-        run: pnpm --color=always --stream build
-
-      - name: Publish npm packages
-        id: publish-npm
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        continue-on-error: true
-
-      - name: Publish npm packages (retry)
-        id: publish-npm-2
-        if: steps.publish-npm.outcome == 'failure'
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        continue-on-error: true
-
-      - name: Publish npm packages (retry 2)
-        if: steps.publish-npm-2.outcome == 'failure'
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  release-apt-repository:
-    name: Release APT repository
-
-    needs:
-      - make-draft-release
-      - publish-github-release
-
-    runs-on: ubuntu-24.04
-    environment: apt-signing
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: GPG configuration
-        run: |
-          mkdir -p -m 0700 $HOME/.gnupg
-          echo "use-agent" > $HOME/.gnupg/gpg.conf
-          echo "pinentry-program $GITHUB_WORKSPACE/.github/scripts/pinentry.sh" > $HOME/.gnupg/gpg-agent.conf
-          echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
-          gpgconf --launch gpg-agent
-          echo "$GPG_PRIVATE_KEY" | gpg --import
-          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
-        env:
-          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Release APT repository
-        run: |
-          set -x
-          gh release download ${GITHUB_REF_NAME} -p "*.deb" -D tmp
-          pushd tmp
-            apt-ftparchive packages . | tee Packages | xz > Packages.xz
-            apt-ftparchive release -c ../freelens/build/apt/release.conf . > Release
-            gpg --clearsign -o InRelease Release
-            gpg --armor --detach-sign --sign -o Release.gpg Release
-            gh release upload ${GITHUB_REF_NAME} InRelease Packages Packages.xz Release Release.gpg --clobber
-          popd
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
