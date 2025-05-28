@@ -114,7 +114,8 @@ jobs:
               --head automated/trunk-upgrade \
               --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \
               --body-file .github/pr_body.log \
-              --label automated,trunk
+              --label automated \
+              --label trunk
           else
             gh pr edit automated/trunk-upgrade \
               --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \

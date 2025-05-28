@@ -106,7 +106,8 @@ jobs:
               --head automated/kubectl-versions \
               --title "Automated update of kubectl versions (bundled ${kubectl_version})" \
               --body-file .github/pr_body.log \
-              --label automated,kubectl
+              --label automated \
+              --label kubectl
           else
             gh pr edit automated/kubectl-versions \
               --title "Automated update of kubectl versions (bundled ${kubectl_version})" \
