@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/startable-stoppable",
   "private": false,
-  "version": "1.3.1",
+  "version": "1.3.2-0",
   "description": "TBD",
   "type": "commonjs",
   "publishConfig": {
