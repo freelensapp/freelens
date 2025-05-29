@@ -63,23 +63,40 @@ const openNodeShellSessionInjectable = getInjectable({
     };
 
     return async (args) => {
-      const kubectl = createKubectl(args.cluster.version.get());
-      const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
-      const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
-      const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
-      const directoryContainingKubectl = await kubectl.binDir();
+      // Added try logic to help with debugging shell session issues
+      // and to ensure the session is closed if an error occurs, as it can hang forever
+      try {
+        const kubectl = createKubectl(args.cluster.version.get());
+        const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
+        const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
+        const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
+        const directoryContainingKubectl = await kubectl.binDir();
 
-      const session = new NodeShellSession(
-        {
-          ...dependencies,
-          loadProxyKubeconfig,
-          proxyKubeconfigPath,
-          directoryContainingKubectl,
-        },
-        { kubectl, ...args },
-      );
+        dependencies.logger.info(`[open-node-shell-session] initializing session for node ${args.nodeName}`);
+        const session = new NodeShellSession(
+          {
+            ...dependencies,
+            loadProxyKubeconfig,
+            proxyKubeconfigPath,
+            directoryContainingKubectl,
+          },
+          { kubectl, ...args },
+        );
 
-      return session.open();
+        try {
+          const result = await session.open();
+
+          dependencies.logger.info(`[open-node-shell-session] session opened successfully`);
+
+          return result;
+        } catch (error: any) {
+          dependencies.logger.error(`[open-node-shell-session] failed to open session: ${String(error)}`, { error });
+          throw error;
+        }
+      } catch (error: any) {
+        dependencies.logger.error(`[open-node-shell-session] error during session setup: ${String(error)}`, { error });
+        throw error;
+      }
     };
   },
 });
