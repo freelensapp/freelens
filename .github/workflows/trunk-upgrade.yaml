@@ -78,7 +78,7 @@ jobs:
         run: |
           trunk upgrade --yes-to-all --no-progress --ci --color | tee .github/update.log
           sed -e '/Downloading Trunk/,/Unpacking Trunk... done/d' -e 's/\x1b\[[0-9;]*m//g' -e 's/^\(  \)\{0,1\}  /\1- /' .github/update.log > .github/pr_body.log
-          perl -0777 -ne 'print join ", ", map {s/^- //r} grep {/^- /} split "\n"' .github/pr_body.log > .github/pr_title.log
+          perl -0777 -ne 'print join ", ", map {s/://gr} map {s/^- //r} grep {/^(-|cli) /} split "\n"' .github/pr_body.log > .github/pr_title.log
 
       - name: Check for changes
         run: |
