@@ -17,7 +17,26 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
       const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(di);
 
-      reaction(() => sidebarItems.get(), injectableDifferencingRegistrator, { fireImmediately: true });
+      reaction(
+        // Data function - wrapped in try/catch to prevent error propagation
+        () => {
+          try {
+            return sidebarItems.get();
+          } catch (error) {
+            console.error("Error getting sidebar items:", error);
+            return []; // Return empty array in case of error
+          }
+        },
+        // Effect - also protected against errors
+        (items) => {
+          try {
+            injectableDifferencingRegistrator(items);
+          } catch (error) {
+            console.error("Error registering sidebar items:", error);
+          }
+        },
+        { fireImmediately: true }
+      );
     },
   }),
   injectionToken: beforeClusterFrameStartsSecondInjectionToken,
