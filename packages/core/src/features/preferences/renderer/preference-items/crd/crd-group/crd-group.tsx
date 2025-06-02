@@ -19,20 +19,46 @@ interface Dependencies {
 const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   const [crdGroup, setCrdGroup] = React.useState(state.crdGroup || "");
 
-  // More interesting and informative hint in English
-  const hint = "Define your custom CRD groups in JSON format. Example: { \"KEDA\": [\"eventing.keda.sh\", \"keda.sh\"] }";
+  // A more detailed hint describing the JSON structure
+  const hint = "Define your custom CRD groups in JSON format. You can use a two-level structure. Example: { \"KEDA\": [{ \"Eventing\": [\"eventing.keda.sh\"] }, \"keda.sh\"], \"linkerd.io\": [\"policy.linkerd.io\", \"linkerd.io\"] }";
+
+  const [validationError, setValidationError] = React.useState<string | null>(null);
 
   const jsonValidator = {
     validate: (value: string) => {
-      if (!value.trim()) return true;
-      try {
-        JSON.parse(value);
+      if (!value.trim()) {
+        setValidationError(null);
         return true;
-      } catch {
+      }
+      try {
+        const parsed = JSON.parse(value);
+        
+        // Verify that it's a valid object
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          setValidationError("Configuration must be a valid JSON object");
+          return false;
+        }
+
+        // Check the structure
+        let valid = true;
+        Object.entries(parsed).forEach(([key, val]) => {
+          if (!Array.isArray(val)) {
+            valid = false;
+            setValidationError(`Value for "${key}" must be an array`);
+          }
+        });
+        
+        if (valid) {
+          setValidationError(null);
+        }
+        
+        return valid;
+      } catch (error) {
+        setValidationError(`JSON Error: ${error instanceof Error ? error.message : "Invalid format"}`);
         return false;
       }
     },
-    message: "The format must be valid JSON.",
+    message: "Format must be valid JSON.",
   };
 
   return (
@@ -40,7 +66,7 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
       <SubTitle title="CRD Group" />
       <Input
         theme="round-black"
-        placeholder='The json for example: { "KEDA": ["eventing.keda.sh","keda.sh"]}'
+        placeholder='{ "KEDA": [{ "Eventing": ["eventing.keda.sh"] }, "keda.sh"], "linkerd.io": ["policy.linkerd.io", "linkerd.io"] }'
         value={crdGroup}
         onChange={(v) => setCrdGroup(v)}
         multiLine={true}
@@ -63,15 +89,20 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
           try {
             const formatted = JSON.stringify(JSON.parse(crdGroup), null, 2);
             setCrdGroup(formatted);
-          } catch {
-            // Optionally, you could set a local error state and display a message below the button
-            // For now, do nothing visually
+            setValidationError(null);
+          } catch (error) {
+            setValidationError(`Formatting failed: ${error instanceof Error ? error.message : "Invalid JSON"}`);
           }
         }}
       >
         Format JSON
       </button>
       <small className="hint">{hint}</small>
+      {validationError && (
+        <div style={{ color: "red", marginTop: "8px" }}>
+          {validationError}
+        </div>
+      )}
     </section>
   );
 });
