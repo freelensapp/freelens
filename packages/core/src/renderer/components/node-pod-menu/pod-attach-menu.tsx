@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
 import { Pod } from "@freelensapp/kube-object";
 import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -49,10 +48,6 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
     const commandParts = [kubectlPath, "attach", "-i", "-t", "-n", pod.getNs(), pod.getName()];
-
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
 
     if (containerName) {
       commandParts.push("-c", containerName);
