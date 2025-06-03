@@ -9,7 +9,7 @@ import type http from "http";
 import https from "https";
 import net from "net";
 import type { Logger } from "@freelensapp/logger";
-import type httpProxy from "http-proxy";
+import type httpProxy from "http-proxy-node16";
 import type { SelfSignedCert } from "selfsigned";
 import stoppable from "stoppable";
 import type { SetRequired } from "type-fest";

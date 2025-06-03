@@ -78,6 +78,7 @@ jobs:
         run: |
           trunk upgrade --yes-to-all --no-progress --ci --color | tee .github/update.log
           sed -e '/Downloading Trunk/,/Unpacking Trunk... done/d' -e 's/\x1b\[[0-9;]*m//g' -e 's/^\(  \)\{0,1\}  /\1- /' .github/update.log > .github/pr_body.log
+          perl -0777 -ne 'print join ", ", map {s/://gr} map {s/^- //r} grep {/^(-|cli) /} split "\n"' .github/pr_body.log > .github/pr_title.log
 
       - name: Check for changes
         run: |
@@ -106,19 +107,20 @@ jobs:
           push: origin automated/trunk-upgrade --set-upstream --force
 
       - name: Create pull request
-        id: pr
         if: env.changes == 'true'
-        uses: devops-infra/action-pull-request@master
-        with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          target_branch: main
-          label: automated
-          title: Automated trunk upgrade [skip ci]
-          get_diff: false
-
-      - name: Update pull request description
-        if: env.changes == 'true'
-        run: gh pr edit ${{ steps.pr.outputs.pr_number }} --body-file .github/pr_body.log
+        run: |-
+          if [[ $(gh pr view automated/trunk-upgrade --json state --jq .state || true) != "OPEN" ]]; then
+            gh pr create \
+              --head automated/trunk-upgrade \
+              --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \
+              --body-file .github/pr_body.log \
+              --label automated \
+              --label trunk
+          else
+            gh pr edit automated/trunk-upgrade \
+              --title "Automated trunk upgrade $(cat .github/pr_title.log) [skip ci]" \
+              --body-file .github/pr_body.log
+          fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 

@@ -263,12 +263,12 @@ export class PortForwardStore extends ItemStore<PortForwardItem> {
       throw new Error("cannot start non-existent port-forward");
     }
 
-    const { port, forwardPort } = pf;
+    const { port, forwardPort, address } = pf;
     let response: { port: number };
 
     try {
       response = await this.dependencies.apiBase.post(`/pods/port-forward/${pf.namespace}/${pf.kind}/${pf.name}`, {
-        query: { port, forwardPort },
+        query: { port, forwardPort, address },
       });
 
       // expecting the received port to be the specified port, unless the specified port is 0, which indicates any available port is suitable

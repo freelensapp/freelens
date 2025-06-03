@@ -7,7 +7,8 @@
 import type { ForwardedPort } from "./port-forward-item";
 
 export function portForwardAddress(portForward: ForwardedPort) {
-  return `${portForward.protocol ?? "http"}://localhost:${portForward.forwardPort}`;
+  const address = portForward.address?.split(",")[0].trim() ?? "localhost";
+  return `${portForward.protocol ?? "http"}://${address}:${portForward.forwardPort}`;
 }
 
 export function predictProtocol(name: string | undefined) {

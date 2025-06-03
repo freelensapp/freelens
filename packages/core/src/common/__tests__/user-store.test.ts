@@ -5,7 +5,6 @@
  */
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { ClusterStoreModel } from "../../features/cluster/storage/common/storage.injectable";
 import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
 import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
@@ -14,11 +13,9 @@ import userPreferencesPersistentStorageInjectable from "../../features/user-pref
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import writeFileSyncInjectable from "../fs/write-file-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import { defaultThemeId } from "../vars";
-import storeMigrationVersionInjectable from "../vars/store-migration-version.injectable";
 
 describe("user store tests", () => {
   let state: UserPreferencesState;
@@ -61,47 +58,6 @@ describe("user store tests", () => {
       state.colorTheme = "some other theme";
       resetTheme();
       expect(state.colorTheme).toBe(defaultThemeId);
-    });
-  });
-
-  describe("migrations", () => {
-    beforeEach(() => {
-      const writeJsonSync = di.inject(writeJsonSyncInjectable);
-      const writeFileSync = di.inject(writeFileSyncInjectable);
-
-      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
-        preferences: { colorTheme: "light" },
-      });
-
-      writeJsonSync("/some-directory-for-user-data/lens-cluster-store.json", {
-        clusters: [
-          {
-            id: "foobar",
-            kubeConfigPath: "/some-directory-for-user-data/extension_data/foo/bar",
-          },
-          {
-            id: "barfoo",
-            kubeConfigPath: "/some/other/path",
-          },
-        ],
-      } as ClusterStoreModel);
-
-      writeJsonSync("/some-directory-for-user-data/extension_data", {});
-
-      writeFileSync("/some/other/path", "is file");
-
-      di.override(storeMigrationVersionInjectable, () => "10.0.0");
-
-      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
-    });
-
-    it("skips clusters for adding to kube-sync with files under extension_data/", () => {
-      expect(state.syncKubeconfigEntries.has("/some-directory-for-user-data/extension_data/foo/bar")).toBe(false);
-      expect(state.syncKubeconfigEntries.has("/some/other/path")).toBe(true);
-    });
-
-    it("allows access to the colorTheme preference", () => {
-      expect(state.colorTheme).toBe("light");
     });
   });
 });

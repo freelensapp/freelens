@@ -4,6 +4,12 @@
   "project": [],
 
   "workspaces": {
+    ".": {
+      "ignoreDependencies": [
+        // used to run pnpm in monorepo workspaces from the root
+        "pnpm"
+      ]
+    },
     "freelens": {
       "entry": [
         "build/notarize.js",
@@ -74,7 +80,7 @@
         "grapheme-splitter",
         "handlebars",
         "hpagent",
-        "http-proxy",
+        "http-proxy-node16",
         "immer",
         "joi",
         "moment",

@@ -8,6 +8,7 @@ import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "qos";
 
@@ -17,7 +18,7 @@ export const podsQosColumnInjectable = getInjectable({
     id: columnId,
     kind: "Pod",
     apiVersion: "v1",
-    priority: 99,
+    priority: COLUMN_PRIORITY.STATUS_ICON,
     content: (pod) => <KubeObjectStatusIcon key="icon" object={pod} />,
     header: { className: "warning", showWithColumn: "name" },
     sortingCallBack: (pod) => pod.getQosClass(),

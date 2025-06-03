@@ -59,6 +59,7 @@ class NonInjectedPortForwardDetails extends React.Component<PortForwardDetailsPr
         <DrawerItem name="Pod Port">{portForward.getPort()}</DrawerItem>
         <DrawerItem name="Local Port">{portForward.getForwardPort()}</DrawerItem>
         <DrawerItem name="Protocol">{portForward.getProtocol()}</DrawerItem>
+        <DrawerItem name="Address">{portForward.getAddress()}</DrawerItem>
         <DrawerItem name="Status">
           <span className={cssNames("status", portForward.getStatus().toLowerCase())}>{portForward.getStatus()}</span>
         </DrawerItem>

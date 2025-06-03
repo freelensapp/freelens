@@ -14,15 +14,12 @@ import directoryForUserDataInjectable from "../../../common/app-paths/directory-
 import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
 import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
-import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import activeHotbarInjectable from "./common/active.injectable";
 import type { AddHotbar } from "./common/add.injectable";
 import addHotbarInjectable from "./common/add.injectable";
-import type { GetHotbarById } from "./common/get-by-id.injectable";
-import getHotbarByIdInjectable from "./common/get-by-id.injectable";
 import type { Hotbar } from "./common/hotbar";
 import hotbarsInjectable from "./common/hotbars.injectable";
 import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
@@ -55,7 +52,6 @@ describe("Hotbars technical tests", () => {
   let hotbars: IComputedValue<Hotbar[]>;
   let activeHotbar: IComputedValue<Hotbar | undefined>;
   let addHotbar: AddHotbar;
-  let getHotbarById: GetHotbarById;
 
   beforeEach(async () => {
     di = getDiForUnitTesting();
@@ -127,7 +123,6 @@ describe("Hotbars technical tests", () => {
     activeHotbar = di.inject(activeHotbarInjectable);
 
     addHotbar = di.inject(addHotbarInjectable);
-    getHotbarById = di.inject(getHotbarByIdInjectable);
   });
 
   describe("given no previous data in store, running all migrations", () => {
@@ -304,98 +299,6 @@ describe("Hotbars technical tests", () => {
 
         expect(activeHotbar.get()?.hasEntity(testCluster.getId())).toBeTruthy();
         expect(activeHotbar.get()?.hasEntity(awsCluster.getId())).toBeFalsy();
-      });
-    });
-  });
-
-  describe("given data from 5.0.0-beta.3 and version being 5.0.0-beta.10", () => {
-    beforeEach(() => {
-      const writeJsonSync = di.inject(writeJsonSyncInjectable);
-
-      writeJsonSync("/some-directory-for-user-data/lens-hotbar-store.json", {
-        __internal__: {
-          migrations: {
-            version: "5.0.0-beta.3",
-          },
-        },
-        hotbars: [
-          {
-            id: "3caac17f-aec2-4723-9694-ad204465d935",
-            name: "myhotbar",
-            items: [
-              {
-                entity: {
-                  uid: "some-aws-id",
-                },
-              },
-              {
-                entity: {
-                  uid: "55b42c3c7ba3b04193416cda405269a5",
-                },
-              },
-              {
-                entity: {
-                  uid: "176fd331968660832f62283219d7eb6e",
-                },
-              },
-              {
-                entity: {
-                  uid: "61c4fb45528840ebad1badc25da41d14",
-                  name: "user1-context",
-                  source: "local",
-                },
-              },
-              {
-                entity: {
-                  uid: "27d6f99fe9e7548a6e306760bfe19969",
-                  name: "foo2",
-                  source: "local",
-                },
-              },
-              null,
-              {
-                entity: {
-                  uid: "c0b20040646849bb4dcf773e43a0bf27",
-                  name: "multinode-demo",
-                  source: "local",
-                },
-              },
-              null,
-              null,
-              null,
-              null,
-              null,
-            ],
-          },
-        ],
-      });
-
-      di.override(storeMigrationVersionInjectable, () => "5.0.0-beta.10");
-
-      di.inject(hotbarsPersistentStorageInjectable).loadAndStartSyncing();
-    });
-
-    it("allows to retrieve a hotbar", () => {
-      const hotbar = getHotbarById("3caac17f-aec2-4723-9694-ad204465d935");
-
-      expect(hotbar?.id).toBe("3caac17f-aec2-4723-9694-ad204465d935");
-    });
-
-    it("clears cells without entity", () => {
-      const items = hotbars.get()[0].items;
-
-      expect(items[2]).toBeNull();
-    });
-
-    it("adds extra data to cells with according entity", () => {
-      const items = hotbars.get()[0].items;
-
-      expect(items[0]).toEqual({
-        entity: {
-          name: "my-aws-cluster",
-          source: "local",
-          uid: "some-aws-id",
-        },
       });
     });
   });

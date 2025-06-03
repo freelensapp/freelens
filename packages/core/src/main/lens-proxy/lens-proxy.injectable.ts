@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import httpProxy from "http-proxy";
+import httpProxy from "http-proxy-node16";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 import contentSecurityPolicyInjectable from "../../common/vars/content-security-policy.injectable";

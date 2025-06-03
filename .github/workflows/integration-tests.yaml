@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  minikube_version: 1.35.0 # datasource=github-releases depName=kubernetes/minikube
+  minikube_version: 1.36.0 # datasource=github-releases depName=kubernetes/minikube
 
 jobs:
   test-integration:

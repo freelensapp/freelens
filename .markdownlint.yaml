@@ -1,4 +1,11 @@
 # Prettier friendly markdownlint config (all formatting rules disabled)
 extends: markdownlint/style/prettier
+# Inline HTML
+MD033:
+  allowed_elements:
+    - br
+    - img
+    - picture
+    - source
 # Emphasis used instead of a header
 MD036: false

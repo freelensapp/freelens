@@ -16,7 +16,6 @@ import type { ErrorInfo } from "react";
 import React from "react";
 
 const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";
-const forumsUrl = "https://forums.k8slens.dev";
 
 export interface ErrorBoundaryProps {
   children?: StrictReactNode;
@@ -56,10 +55,6 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
           </h5>
           <p>
             {"To help us improve the product please report bugs on "}
-            <a href={forumsUrl} rel="noreferrer" target="_blank">
-              Lens Forums
-            </a>
-            {" or on our "}
             <a href={issuesTrackerUrl} rel="noreferrer" target="_blank">
               Github
             </a>

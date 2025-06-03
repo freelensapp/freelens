@@ -12,6 +12,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../badge";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 export const podsNodeColumnInjectable = getInjectable({
   id: "pods-node-column",
@@ -24,7 +25,7 @@ export const podsNodeColumnInjectable = getInjectable({
       id: columnId,
       kind: "Pod",
       apiVersion: "v1",
-      priority: 50,
+      priority: COLUMN_PRIORITY.NODE,
       content: (pod) =>
         pod.getNodeName() ? (
           <Badge flat key="node" className="node" tooltip={pod.getNodeName()} expandable={false}>

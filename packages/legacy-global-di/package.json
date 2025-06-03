@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/legacy-global-di",
   "private": false,
-  "version": "1.3.0",
+  "version": "1.3.2-0",
   "description": "Injection tokens for implementing metrics for Freelens",
   "type": "commonjs",
   "publishConfig": {
@@ -33,6 +33,6 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "ts-loader": "^9.5.2",
-    "webpack": "^5.99.8"
+    "webpack": "^5.99.9"
   }
 }

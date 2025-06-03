@@ -30,6 +30,7 @@ enum columnId {
   forwardPort = "forwardPort",
   protocol = "protocol",
   status = "status",
+  address = "address",
 }
 
 interface Dependencies {
@@ -119,6 +120,7 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
             { title: "Pod Port", className: "port", sortBy: columnId.port, id: columnId.port },
             { title: "Local Port", className: "forwardPort", sortBy: columnId.forwardPort, id: columnId.forwardPort },
             { title: "Protocol", className: "protocol", sortBy: columnId.protocol, id: columnId.protocol },
+            { title: "Address", className: "address", sortBy: columnId.address, id: columnId.address },
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
           renderTableContents={(item) => [
@@ -128,6 +130,7 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
             item.getPort(),
             item.getForwardPort(),
             item.getProtocol(),
+            item.getAddress(),
             { title: item.getStatus(), className: item.getStatus().toLowerCase() },
           ]}
           renderItemMenu={(pf) => (

@@ -5,7 +5,6 @@
  */
 
 import assert from "assert";
-import { readFileSync } from "fs";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
@@ -15,14 +14,11 @@ import getCustomKubeConfigFilePathInjectable from "../../../common/app-paths/get
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ReadFileSync } from "../../../common/fs/read-file-sync.injectable";
 import readFileSyncInjectable from "../../../common/fs/read-file-sync.injectable";
-import type { WriteBufferSync } from "../../../common/fs/write-buffer-sync.injectable";
-import writeBufferSyncInjectable from "../../../common/fs/write-buffer-sync.injectable";
 import type { WriteFileSync } from "../../../common/fs/write-file-sync.injectable";
 import writeFileSyncInjectable from "../../../common/fs/write-file-sync.injectable";
 import type { WriteJsonSync } from "../../../common/fs/write-json-sync.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";
-import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import kubectlBinaryNameInjectable from "../../../main/kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../../../main/kubectl/normalized-arch.injectable";
@@ -35,7 +31,6 @@ import getClusterByIdInjectable from "./common/get-by-id.injectable";
 import clustersPersistentStorageInjectable from "./common/storage.injectable";
 
 // NOTE: this is intended to read the actual file system
-const testDataIcon = readFileSync("test-data/cluster-store-migration-icon.png");
 const clusterServerUrl = "https://localhost";
 const kubeconfig = `
 apiVersion: v1
@@ -66,7 +61,6 @@ describe("cluster storage technical tests", () => {
   let clustersPersistentStorage: PersistentStorage;
   let writeJsonSync: WriteJsonSync;
   let writeFileSync: WriteFileSync;
-  let writeBufferSync: WriteBufferSync;
   let readFileSync: ReadFileSync;
   let getCustomKubeConfigFilePath: GetCustomKubeConfigFilePath;
   let writeFileSyncAndReturnPath: (filePath: string, contents: string) => string;
@@ -84,7 +78,6 @@ describe("cluster storage technical tests", () => {
     di.override(normalizedPlatformInjectable, () => "darwin");
     writeJsonSync = di.inject(writeJsonSyncInjectable);
     writeFileSync = di.inject(writeFileSyncInjectable);
-    writeBufferSync = di.inject(writeBufferSyncInjectable);
     readFileSync = di.inject(readFileSyncInjectable);
     addCluster = di.inject(addClusterInjectable);
     getClusterById = di.inject(getClusterByIdInjectable);
@@ -219,77 +212,4 @@ describe("cluster storage technical tests", () => {
       expect(storedClusters[2].id).toBe("cluster3");
     });
   });
-
-  describe("pre 3.6.0-beta.1 config with an existing cluster", () => {
-    beforeEach(() => {
-      di.override(storeMigrationVersionInjectable, () => "3.6.0");
-
-      getCustomKubeConfigFilePath = di.inject(getCustomKubeConfigFilePathInjectable);
-
-      writeJsonSync("/some-directory-for-user-data/lens-cluster-store.json", {
-        __internal__: {
-          migrations: {
-            version: "3.5.0",
-          },
-        },
-        clusters: [
-          {
-            id: "cluster1",
-            kubeConfig: minimalValidKubeConfig,
-            contextName: "cluster",
-            preferences: {
-              icon: "store://icon_path",
-            },
-          },
-        ],
-      });
-      writeBufferSync("/some-directory-for-user-data/icon_path", testDataIcon);
-
-      clustersPersistentStorage = di.inject(clustersPersistentStorageInjectable);
-      clustersPersistentStorage.loadAndStartSyncing();
-    });
-
-    it("migrates to modern format with kubeconfig in a file", async () => {
-      const configPath = clusters.get()[0].kubeConfigPath.get();
-
-      expect(readFileSync(configPath)).toBe(minimalValidKubeConfig);
-    });
-
-    it("migrates to modern format with icon not in file", async () => {
-      expect(clusters.get()[0].preferences.icon).toMatch(/data:;base64,/);
-    });
-  });
-});
-
-const minimalValidKubeConfig = JSON.stringify({
-  apiVersion: "v1",
-  clusters: [
-    {
-      name: "minikube",
-      cluster: {
-        server: "https://192.168.64.3:8443",
-      },
-    },
-  ],
-  "current-context": "minikube",
-  contexts: [
-    {
-      context: {
-        cluster: "minikube",
-        user: "minikube",
-      },
-      name: "minikube",
-    },
-  ],
-  users: [
-    {
-      name: "minikube",
-      user: {
-        "client-certificate": "/Users/foo/.minikube/client.crt",
-        "client-key": "/Users/foo/.minikube/client.key",
-      },
-    },
-  ],
-  kind: "Config",
-  preferences: {},
 });

@@ -4,7 +4,7 @@
 
 [![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
 [![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90)](https://github.com/freelensapp/freelens)
-[![Discord](https://img.shields.io/badge/%E2%80%8E-Discord-5763f6?style=flat&logo=discord)](https://discord.com/channels/1344433118924374148/1344433119549329532)
+[![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
@@ -221,8 +221,32 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 
 ## Expenses and Donations
 
-Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.
-For more information, see our dedicated page in our Wiki: [Expenses and Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+Anyone can support the Freelens project by making donations to cover
+maintenance costs and invest in its development.
+
+For more information, see our dedicated page in our Wiki: [Expenses and
+Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+
+## Core Team
+
+Each member of the core team is focused on specific roles. You can contact us
+at any time according to them.
+
+- [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
+General organization management, relationships, product management, community, marketing, freelens-ai extension
+- [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
+Development direction, architecture and release management, flux-cd extension, freelens-ai extension
+- [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
+UI, Docs, freelens-ai extension development management
+- [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
+GenAI solutions & freelens-ai extension development management
+
+The project is growing very quickly and everyone is welcome!
+
+If you also want to be part of it, visit the wiki page: [We want
+you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+
+Or contact us at <freelens@freelens.app> for any questions or suggestions!
 
 ## License
 

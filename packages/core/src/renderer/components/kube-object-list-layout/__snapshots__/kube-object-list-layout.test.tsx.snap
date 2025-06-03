@@ -191,6 +191,46 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 </i>
               </div>
               <div
+                class="TableCell cpu nowrap sorting"
+                id="cpuUsage"
+              >
+                <div
+                  class="content"
+                >
+                  CPU
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+              </div>
+              <div
+                class="TableCell memory nowrap sorting"
+                id="memoryUsage"
+              >
+                <div
+                  class="content"
+                >
+                  Memory
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+              </div>
+              <div
                 class="TableCell restarts nowrap sorting"
                 id="restarts"
               >

@@ -59,8 +59,13 @@ export class LocalShellSession extends ShellSession {
       ? this.dependencies.directoryContainingKubectl
       : this.dependencies.getDirnameOfPath(pathFromPreferences);
 
-    switch (this.dependencies.getBasenameOfPath(shell)) {
-      case "powershell.exe":
+    const shellName = this.dependencies
+      .getBasenameOfPath(shell)
+      .replace(/\.exe$/i, "")
+      .toLowerCase();
+
+    switch (shellName) {
+      case "powershell":
         return [
           "-NoExit",
           "-command",

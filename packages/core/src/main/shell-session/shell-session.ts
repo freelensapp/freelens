@@ -142,6 +142,8 @@ export abstract class ShellSession {
 
   protected abstract get cwd(): string | undefined;
 
+  protected readonly autoCloseSeconds = 15;
+
   protected ensureShellProcess(
     shell: string,
     args: string[],
@@ -235,12 +237,11 @@ export abstract class ShellSession {
       if (this.running) {
         this.running = false;
 
-        if (exitCode > 0) {
-          this.send({ type: TerminalChannels.STDOUT, data: "Terminal will auto-close in 15 seconds ..." });
-          setTimeout(() => this.exit(), 15 * 1000);
-        } else {
-          this.exit();
-        }
+        this.send({
+          type: TerminalChannels.STDOUT,
+          data: `Terminal will auto-close in ${this.autoCloseSeconds} seconds ...`,
+        });
+        setTimeout(() => this.exit(), this.autoCloseSeconds * 1000);
       }
     });
 

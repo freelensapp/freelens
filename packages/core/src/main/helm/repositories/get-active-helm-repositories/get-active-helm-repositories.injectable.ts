@@ -80,30 +80,20 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
       const updateResult = await execHelm(["repo", "update"]);
 
       if (!updateResult.callWasSuccessful) {
-        if (!updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
+        if (updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
           return {
-            callWasSuccessful: false,
-            error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+            callWasSuccessful: true,
+            response: [],
           };
         }
-        const resultOfAddingDefaultRepository = await execHelm([
-          "repo",
-          "add",
-          "bitnami",
-          "https://charts.bitnami.com/bitnami",
-        ]);
-
-        if (!resultOfAddingDefaultRepository.callWasSuccessful) {
-          return {
-            callWasSuccessful: false,
-            error: `Error when adding default Helm repository: ${resultOfAddingDefaultRepository.error.stderr}`,
-          };
-        }
+        return {
+          callWasSuccessful: false,
+          error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+        };
       }
 
       return {
         callWasSuccessful: true,
-
         response: await getRepositories(repositoryConfigFilePath, helmRepositoryCacheDirPath),
       };
     };

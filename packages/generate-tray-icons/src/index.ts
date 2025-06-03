@@ -20,6 +20,7 @@ const options = arg({
   "--notice-icon": String,
   "--spinner-icon": String,
   "--output-size": Number,
+  "--none-color": String,
 });
 
 type Options = typeof options;
@@ -56,6 +57,7 @@ const resolve = async (input: string) => {
 };
 
 const size = options["--output-size"] ?? 16;
+const noneColor = options["--none-color"] ?? "#ffffff";
 const outputFolder = joinWithInitCwd(assertOption("--output"));
 const inputFile = await resolve(assertOption("--input"));
 const noticeFile = await resolve(assertOption("--notice-icon"));
@@ -79,11 +81,14 @@ const getSvgStyling = (colouring: "dark" | "light") => `
 type TargetSystems = "macos" | "windows-or-linux";
 
 const getBaseIconImage = async (system: TargetSystems) => {
-  const svgData = await readFile(inputFile, { encoding: "utf-8" });
+  let svgData = await readFile(inputFile, { encoding: "utf-8" });
+
+  if (system === "macos") {
+    svgData = svgData.replaceAll(`#${noneColor}`, "none");
+  }
+
   const dom = new JSDOM(`<body>${svgData}</body>`);
   const root = dom.window.document.body.getElementsByTagName("svg")[0];
-
-  //root.innerHTML += getSvgStyling(system === "macos" ? "light" : "dark");
 
   return Buffer.from(root.outerHTML);
 };

@@ -471,6 +471,46 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       </i>
                     </div>
                     <div
+                      class="TableCell cpu nowrap sorting"
+                      id="cpuUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        CPU
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell memory nowrap sorting"
+                      id="memoryUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Memory
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
                       class="TableCell restarts nowrap sorting"
                       id="restarts"
                     >
@@ -673,6 +713,20 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                               <div
                                 class="TableCell containers"
                               />
+                              <div
+                                class="TableCell cpu"
+                              >
+                                <span>
+                                  N/A
+                                </span>
+                              </div>
+                              <div
+                                class="TableCell memory"
+                              >
+                                <span>
+                                  N/A
+                                </span>
+                              </div>
                               <div
                                 class="TableCell restarts"
                               >
@@ -1364,6 +1418,46 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell cpu nowrap sorting"
+                      id="cpuUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        CPU
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell memory nowrap sorting"
+                      id="memoryUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Memory
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
@@ -2164,6 +2258,46 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell cpu nowrap sorting"
+                      id="cpuUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        CPU
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell memory nowrap sorting"
+                      id="memoryUsage"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Memory
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
