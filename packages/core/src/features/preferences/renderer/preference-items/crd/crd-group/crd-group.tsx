@@ -20,7 +20,8 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   const [crdGroup, setCrdGroup] = React.useState(state.crdGroup || "");
 
   // A more detailed hint describing the JSON structure
-  const hint = "Define your custom CRD groups in JSON format. You can use a two-level structure. Example: { \"KEDA\": [{ \"Eventing\": [\"eventing.keda.sh\"] }, \"keda.sh\"], \"linkerd.io\": [\"policy.linkerd.io\", \"linkerd.io\"] }";
+  const hint =
+    'Define your custom CRD groups in JSON format. You can use a two-level structure. Example: { "KEDA": [{ "Eventing": ["eventing.keda.sh"] }, "keda.sh"], "linkerd.io": ["policy.linkerd.io", "linkerd.io"] }';
 
   const [validationError, setValidationError] = React.useState<string | null>(null);
 
@@ -32,9 +33,9 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
       }
       try {
         const parsed = JSON.parse(value);
-        
+
         // Verify that it's a valid object
-        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
           setValidationError("Configuration must be a valid JSON object");
           return false;
         }
@@ -47,11 +48,11 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
             setValidationError(`Value for "${key}" must be an array`);
           }
         });
-        
+
         if (valid) {
           setValidationError(null);
         }
-        
+
         return valid;
       } catch (error) {
         setValidationError(`JSON Error: ${error instanceof Error ? error.message : "Invalid format"}`);
@@ -83,7 +84,7 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
           border: "1px solid #444",
           background: "#222",
           color: "#fff",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         onClick={() => {
           try {
@@ -98,17 +99,13 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
         Format JSON
       </button>
       <small className="hint">{hint}</small>
-      {validationError && (
-        <div style={{ color: "red", marginTop: "8px" }}>
-          {validationError}
-        </div>
-      )}
+      {validationError && <div style={{ color: "red", marginTop: "8px" }}>{validationError}</div>}
     </section>
   );
 });
 
-export const CrdGroup = withInjectables<Dependencies>(NonInjectedCrdGroup, {
-  getProps: (di) => ({
+export const CrdGroup = withInjectables<Dependencies, {}>(NonInjectedCrdGroup, {
+  getProps: (di): Dependencies => ({
     state: di.inject(userPreferencesStateInjectable),
   }),
 });
