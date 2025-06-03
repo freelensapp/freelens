@@ -14,11 +14,11 @@ import { computed } from "mobx";
 import customResourcesRouteInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/custom-resources-route.injectable";
 import navigateToCustomResourcesInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import { shouldShowResourceInjectionToken } from "../../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
@@ -39,13 +39,13 @@ interface GroupConfig {
  * @returns Parsed configuration or null if invalid
  */
 const parseGroupConfig = (configJson: string): GroupConfig | null => {
-  if (!configJson || typeof configJson !== 'string' || configJson.trim() === '') {
+  if (!configJson || typeof configJson !== "string" || configJson.trim() === "") {
     return null;
   }
 
   try {
     const config = JSON.parse(configJson);
-    if (!config || typeof config !== 'object' || Array.isArray(config)) {
+    if (!config || typeof config !== "object" || Array.isArray(config)) {
       return null;
     }
     return config;
@@ -63,26 +63,26 @@ const parseGroupConfig = (configJson: string): GroupConfig | null => {
 const getByNewGroup = (group: string, configJson: string): GroupInfo => {
   // Default result uses the original group
   const defaultResult = { topLevel: group, subLevel: null };
-  
+
   // Parse configuration
   const config = parseGroupConfig(configJson);
   if (!config) return defaultResult;
-  
+
   // Search in configuration
   for (const topLevel of Object.keys(config)) {
     const topLevelConfig = config[topLevel];
-    
+
     // Skip invalid configurations
     if (!Array.isArray(topLevelConfig)) continue;
-    
+
     // Check for direct match in top level
     if (topLevelConfig.includes(group)) {
       return { topLevel, subLevel: null };
     }
-    
+
     // Check subgroups
     for (const item of topLevelConfig) {
-      if (typeof item === 'object' && !Array.isArray(item)) {
+      if (typeof item === "object" && !Array.isArray(item)) {
         for (const subLevel of Object.keys(item)) {
           const subGroups = item[subLevel];
           if (Array.isArray(subGroups) && subGroups.includes(group)) {
@@ -92,7 +92,7 @@ const getByNewGroup = (group: string, configJson: string): GroupInfo => {
       }
     }
   }
-  
+
   return defaultResult;
 };
 
@@ -122,11 +122,11 @@ const createCrdSidebarItem = ({
     group: definition.getGroup(),
     name: definition.getPluralName(),
   };
-  
+
   const idPrefix = subLevelName
     ? `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`
     : `sidebar-item-custom-resource-group-${topLevelName}`;
-  
+
   return getInjectable({
     id: `${idPrefix}/${definition.getPluralName()}`,
     instantiate: (di): SidebarItemRegistration => ({
@@ -155,19 +155,19 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
     const state = di.inject(userPreferencesStateInjectable);
-      return computed(() => {
+    return computed(() => {
       try {
         // Organize CRDs into structure: { topLevel: { subLevel: [CRDs] } }
         const structure = organizeCrdsIntoGroups(
-          customResourceDefinitions.get().values(), 
-          state.crdGroup || "" // Fournir une chaîne vide par défaut si crdGroup est undefined
+          customResourceDefinitions.get().values(),
+          state.crdGroup || "", // Fournir une chaîne vide par défaut si crdGroup est undefined
         );
-        
+
         // Generate sidebar items from structure
         return generateSidebarItems(structure, {
           navigateToCustomResources,
           customResourcesRoute,
-          pathParameters
+          pathParameters,
         });
       } catch (error) {
         console.error("Error generating sidebar items:", error);
@@ -182,17 +182,17 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
  */
 function organizeCrdsIntoGroups(
   crds: Iterable<CustomResourceDefinition>,
-  configJson: string
+  configJson: string,
 ): Record<string, Record<string, CustomResourceDefinition[]>> {
   const structure: Record<string, Record<string, CustomResourceDefinition[]>> = {};
-  
+
   for (const crd of crds) {
     try {
       const { topLevel, subLevel } = getByNewGroup(crd.getGroup(), configJson);
       if (!topLevel) continue;
-      
+
       const subLevelKey = subLevel || "direct";
-      
+
       // Initialize structure if needed
       if (!structure[topLevel]) {
         structure[topLevel] = {};
@@ -200,13 +200,13 @@ function organizeCrdsIntoGroups(
       if (!structure[topLevel][subLevelKey]) {
         structure[topLevel][subLevelKey] = [];
       }
-      
+
       structure[topLevel][subLevelKey].push(crd);
     } catch (error) {
       console.error("Error processing CRD:", error);
     }
   }
-  
+
   return structure;
 }
 
@@ -215,14 +215,14 @@ function organizeCrdsIntoGroups(
  */
 function generateSidebarItems(
   structure: Record<string, Record<string, CustomResourceDefinition[]>>,
-  options: { 
+  options: {
     navigateToCustomResources: any;
     customResourcesRoute: any;
     pathParameters: any;
-  }
+  },
 ): any[] {
   const result: any[] = [];
-  
+
   // Process each top level group
   Object.keys(structure).forEach((topLevelName, topLevelIndex) => {
     try {
@@ -237,9 +237,9 @@ function generateSidebarItems(
         }),
         injectionToken: sidebarItemInjectionToken,
       });
-      
+
       result.push(topLevelItem);
-      
+
       // Process direct CRDs (without sublevel)
       const directCrds = structure[topLevelName]["direct"] || [];
       if (directCrds.length > 0) {
@@ -250,24 +250,24 @@ function generateSidebarItems(
               definition,
               topLevelName,
               itemIndex,
-              ...options
-            })
+              ...options,
+            }),
           );
-          
+
           result.push(...directItems);
         } catch (error) {
           console.error("Error creating direct CRD items:", error);
         }
       }
-      
+
       // Process sublevels
       Object.keys(structure[topLevelName])
-        .filter(key => key !== "direct")
+        .filter((key) => key !== "direct")
         .forEach((subLevelKey, subLevelIndex) => {
           try {
             const subLevelName = subLevelKey;
             const subLevelCrds = structure[topLevelName][subLevelKey];
-            
+
             // Create sublevel item
             const subLevelItem = getInjectable({
               id: `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`,
@@ -279,9 +279,9 @@ function generateSidebarItems(
               }),
               injectionToken: sidebarItemInjectionToken,
             });
-            
+
             result.push(subLevelItem);
-            
+
             // Create items for CRDs in sublevel
             const subLevelItems = subLevelCrds.map((definition, itemIndex) =>
               createCrdSidebarItem({
@@ -290,10 +290,10 @@ function generateSidebarItems(
                 topLevelName,
                 subLevelName,
                 itemIndex,
-                ...options
-              })
+                ...options,
+              }),
             );
-            
+
             result.push(...subLevelItems);
           } catch (error) {
             console.error(`Error processing sublevel "${subLevelKey}":`, error);
@@ -303,7 +303,7 @@ function generateSidebarItems(
       console.error(`Error processing top level "${topLevelName}":`, error);
     }
   });
-  
+
   return result;
 }
 
