@@ -35,7 +35,7 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
             console.error("Error registering sidebar items:", error);
           }
         },
-        { fireImmediately: true }
+        { fireImmediately: true },
       );
     },
   }),
