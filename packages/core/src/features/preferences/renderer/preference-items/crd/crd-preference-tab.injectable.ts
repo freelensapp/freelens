@@ -15,7 +15,7 @@ const crdPreferenceTabInjectable = getInjectable({
     id: "crd-tab",
     parentId: "general-tab-group" as const,
     pathId: "crd",
-    label: "Crd",
+    label: "CRDs",
     orderNumber: 20,
   }),
 
