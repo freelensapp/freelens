@@ -81,7 +81,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             shell: descriptors.shell.toStore(state.shell),
             syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
-            crdGroup: descriptors.crdGroup.fromStore(state.crdGroup),
+            crdGroup: descriptors.crdGroup.toStore(state.crdGroup),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
           },
