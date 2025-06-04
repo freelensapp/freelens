@@ -12,7 +12,7 @@ import type { PreferenceItemComponent, PreferencePage } from "../preference-item
 import { preferenceItemInjectionToken } from "../preference-item-injection-token";
 
 const CrdPage: PreferenceItemComponent<PreferencePage> = ({ children, item }) => (
-  <PreferencePageComponent title="Crd" id={item.id}>
+  <PreferencePageComponent title="CRDs" id={item.id}>
     {children}
   </PreferencePageComponent>
 );
