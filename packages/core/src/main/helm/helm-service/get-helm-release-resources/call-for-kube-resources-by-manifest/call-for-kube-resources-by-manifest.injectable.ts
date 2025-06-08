@@ -10,6 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import yaml from "js-yaml";
 import { map } from "lodash/fp";
 import type { JsonObject } from "type-fest";
+import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import execFileWithInputInjectable from "./exec-file-with-input/exec-file-with-input.injectable";
 
@@ -29,15 +30,7 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
     return async (namespace, kubeconfigPath, kubectlPath, resourceManifests) => {
       const input = pipeline(
         resourceManifests,
-        map((manifest) =>
-          yaml.dump(manifest, {
-            noArrayIndent: true,
-            noCompatMode: true,
-            noRefs: true,
-            quotingType: '"',
-            sortKeys: true,
-          }),
-        ),
+        map((manifest) => yaml.dump(manifest, defaultYamlDumpOptions)),
         wideJoin("---\n"),
       );
 

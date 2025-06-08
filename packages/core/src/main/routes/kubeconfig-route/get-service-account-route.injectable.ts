@@ -6,6 +6,7 @@
 
 import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import * as yaml from "js-yaml";
+import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { apiPrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
@@ -77,7 +78,7 @@ const getServiceAccountRouteInjectable = getRouteInjectable({
             ],
             "current-context": contextName,
           },
-          { noArrayIndent: true, noCompatMode: true, noRefs: true, quotingType: '"', sortKeys: true },
+          defaultYamlDumpOptions,
         ),
       };
     }),
