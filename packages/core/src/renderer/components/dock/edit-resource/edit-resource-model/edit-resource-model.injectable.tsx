@@ -167,6 +167,10 @@ export class EditResourceModel {
 
     runInAction(() => {
       this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), {
+        noArrayIndent: true,
+        noCompatMode: true,
+        noRefs: true,
+        quotingType: '"',
         sortKeys: true,
       });
     });
@@ -222,7 +226,13 @@ export class EditResourceModel {
     );
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(currentVersion);
+      this.editingResource.firstDraft = yaml.dump(currentVersion, {
+        noArrayIndent: true,
+        noCompatMode: true,
+        noRefs: true,
+        quotingType: '"',
+        sortKeys: true,
+      });
       this.editingResource.resource = selfLink;
     });
 

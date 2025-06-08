@@ -132,7 +132,9 @@ export class ResourceStack {
           labels["app.kubernetes.io/created-by"] = "resource-stack";
         }
 
-        resources.push(yaml.dump(entry));
+        resources.push(
+          yaml.dump(entry, { noArrayIndent: true, noCompatMode: true, noRefs: true, quotingType: '"', sortKeys: true }),
+        );
       }
     }
 

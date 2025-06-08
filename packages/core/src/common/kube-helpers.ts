@@ -195,7 +195,14 @@ export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
   };
 
   // skipInvalid: true makes dump ignore undefined values
-  return yaml.dump(config, { skipInvalid: true });
+  return yaml.dump(config, {
+    noArrayIndent: true,
+    noCompatMode: true,
+    noRefs: true,
+    quotingType: '"',
+    sortKeys: true,
+    skipInvalid: true,
+  });
 }
 
 export type ValidateKubeConfigResult =

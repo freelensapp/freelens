@@ -25,7 +25,17 @@ export class PodDetailsAffinities extends React.Component<PodDetailsAffinitiesPr
     return (
       <DrawerItem name="Affinities" className="PodDetailsAffinities">
         <DrawerParamToggler label={affinitiesNum}>
-          <MonacoEditor readOnly style={{ height: 200 }} value={yaml.dump(affinities)} />
+          <MonacoEditor
+            readOnly
+            style={{ height: 200 }}
+            value={yaml.dump(affinities, {
+              noArrayIndent: true,
+              noCompatMode: true,
+              noRefs: true,
+              quotingType: '"',
+              sortKeys: true,
+            })}
+          />
         </DrawerParamToggler>
       </DrawerItem>
     );

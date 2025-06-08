@@ -29,7 +29,15 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
     return async (namespace, kubeconfigPath, kubectlPath, resourceManifests) => {
       const input = pipeline(
         resourceManifests,
-        map((manifest) => yaml.dump(manifest)),
+        map((manifest) =>
+          yaml.dump(manifest, {
+            noArrayIndent: true,
+            noCompatMode: true,
+            noRefs: true,
+            quotingType: '"',
+            sortKeys: true,
+          }),
+        ),
         wideJoin("---\n"),
       );
 
