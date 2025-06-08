@@ -175,7 +175,7 @@ describe("kubeconfig manager tests", () => {
           beforeEach(async () => {
             await writeFileMock.resolveSpecific([
               "/some-directory-for-temp/kubeconfig-foo",
-              "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
+              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: minikube\ncontexts:\n- context:\n    cluster: minikube\n    user: proxy\n  name: minikube\ncurrent-context: minikube\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
             ]);
           });
 
@@ -302,7 +302,7 @@ describe("kubeconfig manager tests", () => {
                     beforeEach(async () => {
                       await writeFileMock.resolveSpecific([
                         "/some-directory-for-temp/kubeconfig-foo",
-                        "apiVersion: v1\nkind: Config\npreferences: {}\ncurrent-context: minikube\nclusters:\n  - name: minikube\n    cluster:\n      certificate-authority-data: PGNhLWRhdGE+\n      server: https://127.0.0.1:9191/foo\n      insecure-skip-tls-verify: false\ncontexts:\n  - name: minikube\n    context:\n      cluster: minikube\n      user: proxy\nusers:\n  - name: proxy\n    user:\n      username: lens\n      password: fake\n",
+                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: minikube\ncontexts:\n- context:\n    cluster: minikube\n    user: proxy\n  name: minikube\ncurrent-context: minikube\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
                       ]);
                     });
 
