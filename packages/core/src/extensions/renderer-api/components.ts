@@ -103,6 +103,7 @@ export * from "../../renderer/components/layout/sub-title";
 export * from "../../renderer/components/input/search-input";
 export * from "../../renderer/components/chart/bar-chart";
 export * from "../../renderer/components/chart/pie-chart";
+export * from "../../renderer/components/markdown-viewer";
 export {
   MonacoEditor,
   type MonacoEditorProps,
