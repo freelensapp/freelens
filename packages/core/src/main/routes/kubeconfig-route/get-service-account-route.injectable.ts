@@ -6,6 +6,7 @@
 
 import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import * as yaml from "js-yaml";
+import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { apiPrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
@@ -44,38 +45,41 @@ const getServiceAccountRouteInjectable = getRouteInjectable({
       const contextName = cluster.contextName.get();
 
       return {
-        response: yaml.dump({
-          apiVersion: "v1",
-          kind: "Config",
-          clusters: [
-            {
-              name: contextName,
-              cluster: {
-                server: apiUrl,
-                "certificate-authority-data": caCrt,
+        response: yaml.dump(
+          {
+            apiVersion: "v1",
+            kind: "Config",
+            clusters: [
+              {
+                name: contextName,
+                cluster: {
+                  server: apiUrl,
+                  "certificate-authority-data": caCrt,
+                },
               },
-            },
-          ],
-          users: [
-            {
-              name: params.account,
-              user: {
-                token: Buffer.from(token, "base64").toString("utf8"),
+            ],
+            users: [
+              {
+                name: params.account,
+                user: {
+                  token: Buffer.from(token, "base64").toString("utf8"),
+                },
               },
-            },
-          ],
-          contexts: [
-            {
-              name: `${contextName}-${params.account}`,
-              context: {
-                user: params.account,
-                cluster: contextName,
-                namespace: secret.metadata.namespace,
+            ],
+            contexts: [
+              {
+                name: `${contextName}-${params.account}`,
+                context: {
+                  user: params.account,
+                  cluster: contextName,
+                  namespace: secret.metadata.namespace,
+                },
               },
-            },
-          ],
-          "current-context": contextName,
-        }),
+            ],
+            "current-context": contextName,
+          },
+          defaultYamlDumpOptions,
+        ),
       };
     }),
 });

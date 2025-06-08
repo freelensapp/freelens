@@ -9,6 +9,7 @@ import { KubeConfig, newClusters, newContexts, newUsers } from "@freelensapp/kub
 import { isDefined } from "@freelensapp/utilities";
 import Joi from "joi";
 import yaml from "js-yaml";
+import type { DumpOptions } from "js-yaml";
 import type { PartialDeep } from "type-fest";
 
 const clusterSchema = Joi.object({
@@ -147,6 +148,14 @@ export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
   });
 }
 
+export const defaultYamlDumpOptions: DumpOptions = {
+  noArrayIndent: true,
+  noCompatMode: true,
+  noRefs: true,
+  quotingType: '"',
+  sortKeys: true,
+};
+
 /**
  * Pretty format the object as human readable yaml, such as would be on the filesystem
  * @param kubeConfig The kubeconfig object to format as pretty yaml
@@ -195,7 +204,10 @@ export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
   };
 
   // skipInvalid: true makes dump ignore undefined values
-  return yaml.dump(config, { skipInvalid: true });
+  return yaml.dump(config, {
+    ...defaultYamlDumpOptions,
+    skipInvalid: true,
+  });
 }
 
 export type ValidateKubeConfigResult =

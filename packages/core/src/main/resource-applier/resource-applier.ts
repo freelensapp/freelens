@@ -15,6 +15,7 @@ import type { Cluster } from "../../common/cluster/cluster";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
+import { defaultYamlDumpOptions } from "../../common/kube-helpers";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
@@ -161,6 +162,6 @@ export class ResourceApplier {
     delete res.metadata?.resourceVersion;
     delete res.metadata?.annotations?.["kubectl.kubernetes.io/last-applied-configuration"];
 
-    return yaml.dump(res);
+    return yaml.dump(res, defaultYamlDumpOptions);
   }
 }

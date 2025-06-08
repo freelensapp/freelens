@@ -13,6 +13,7 @@ import yaml from "js-yaml";
 import type { KubernetesCluster } from "../catalog-entities";
 import type { ReadDirectory } from "../fs/read-directory.injectable";
 import type { ReadFile } from "../fs/read-file.injectable";
+import { defaultYamlDumpOptions } from "../kube-helpers";
 import type { KubectlApplyAll, KubectlDeleteAll } from "../kube-helpers/channels";
 import type { JoinPaths } from "../path/join-paths.injectable";
 import productNameInjectable from "../vars/product-name.injectable";
@@ -132,7 +133,7 @@ export class ResourceStack {
           labels["app.kubernetes.io/created-by"] = "resource-stack";
         }
 
-        resources.push(yaml.dump(entry));
+        resources.push(yaml.dump(entry, defaultYamlDumpOptions));
       }
     }
 

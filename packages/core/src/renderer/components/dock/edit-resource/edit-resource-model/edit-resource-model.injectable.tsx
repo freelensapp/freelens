@@ -15,6 +15,7 @@ import yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { createPatch } from "rfc6902";
+import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import type { EditResourceTabStore, EditingResource } from "../store";
 import editResourceTabStoreInjectable from "../store.injectable";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
@@ -166,9 +167,7 @@ export class EditResourceModel {
     }
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), {
-        sortKeys: true,
-      });
+      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), defaultYamlDumpOptions);
     });
   };
 
@@ -222,7 +221,7 @@ export class EditResourceModel {
     );
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(currentVersion);
+      this.editingResource.firstDraft = yaml.dump(currentVersion, defaultYamlDumpOptions);
       this.editingResource.resource = selfLink;
     });
 
