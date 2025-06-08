@@ -141,14 +141,25 @@ const createKubeAuthProxyInjectable = getInjectable({
           }
         });
 
-        port = await getPortFromStream(proxyProcess.stdout, {
-          lineRegex: startingServeRegex,
-          onFind: () =>
-            broadcastConnectionUpdate({
-              level: "info",
-              message: "Authentication proxy started",
-            }),
-        });
+        try {
+          port = await getPortFromStream(proxyProcess.stdout, {
+            lineRegex: startingServeRegex,
+            onFind: () =>
+              broadcastConnectionUpdate({
+                level: "info",
+                message: "Authentication proxy started",
+              }),
+          });
+        } catch (error) {
+          logger.warn("[KUBE-AUTH-PROXY]: getPortFromStream failed", error);
+          broadcastConnectionUpdate({
+            level: "error",
+            message: "Proxy port can't be found, restarting...",
+          });
+          exit();
+
+          return run();
+        }
 
         logger.info(`[KUBE-AUTH-PROXY]: found port=${port}`);
 
