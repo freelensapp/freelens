@@ -124,6 +124,7 @@ export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrl
 export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);
 
 // kube helpers
+export * from "../../renderer/components/kube-object";
 export * from "../../renderer/components/kube-object-details";
 export * from "../../renderer/components/kube-object-list-layout";
 export * from "../../renderer/components/kube-object-menu";
