@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/feature-core",
   "private": false,
-  "version": "1.3.2",
+  "version": "1.3.3-0",
   "description": "Code that is common to all Features and those registering them.",
   "type": "commonjs",
   "publishConfig": {
