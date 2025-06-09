@@ -63,10 +63,10 @@ jobs:
             concurrency: macos
           - os: windows-2022
             arch: arm64
-            concurrency: windows
+            concurrency: windows-arm64
           - os: windows-2022
             arch: x64
-            concurrency: windows
+            concurrency: windows-amd64
 
     runs-on: ${{ matrix.os }}
     environment: signing
