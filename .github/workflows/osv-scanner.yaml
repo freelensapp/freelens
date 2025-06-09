@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      - "*"
   schedule:
     - cron: 38 20 * * 1
   workflow_dispatch: {}

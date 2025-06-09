@@ -2,12 +2,11 @@ name: Trunk Check
 
 on:
   push:
-    branches-ignore:
-      - automated/*
-      - renovate/*
-  pull_request:
     branches:
       - main
+  pull_request:
+    branches:
+      - "*"
   workflow_dispatch: {}
 
 permissions:
