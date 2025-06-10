@@ -49,60 +49,67 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
     }
 
     return (
-      <div className="EndpointSliceDetails">
-        <DrawerTitle>Data</DrawerTitle>
-        {endpointSlice.endpoints.length > 0 && (
-          <div>
-            <div className="title flex gaps">Addresses</div>
-            <Table items={endpointSlice.endpoints} selectable={false} scrollable={false} className="box grow">
-              <TableHead>
-                <TableCell className="ip">IP</TableCell>
-                <TableCell className="host">Hostname</TableCell>
-                <TableCell className="target">Target</TableCell>
-                <TableCell className="conditions">Conditions</TableCell>
-              </TableHead>
-              {endpointSlice.endpoints.map((endpoint) =>
-                endpoint.addresses.map((address) => (
-                  <TableRow key={address} nowrap>
-                    <TableCell className="ip">{address}</TableCell>
-                    <TableCell className="name">{endpoint.hostname}</TableCell>
-                    <TableCell className="target">
-                      {endpoint.targetRef && (
-                        <Link to={getDetailsUrl(apiManager.lookupApiLink(endpoint.targetRef, endpointSlice))}>
-                          {endpoint.targetRef.name}
-                        </Link>
-                      )}
-                    </TableCell>
-                    <TableCell className="conditions">
-                      {endpoint.conditions?.ready && <Badge key="ready" label="Ready" className="ready" />}
-                      {endpoint.conditions?.serving && <Badge key="serving" label="Serving" className="serving" />}
-                      {endpoint.conditions?.terminating && (
-                        <Badge key="terminating" label="Terminating" className="terminating" />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )),
-              )}
-            </Table>
-          </div>
-        )}
+      endpointSlice.endpoints &&
+      endpointSlice.ports && (
+        <div className="EndpointSliceDetails">
+          <DrawerTitle>Data</DrawerTitle>
+          {endpointSlice.endpoints && endpointSlice.endpoints.length > 0 && (
+            <>
+              <div className="title flex gaps">Addresses</div>
+              <Table items={endpointSlice.endpoints} selectable={false} scrollable={false} className="box grow">
+                <TableHead>
+                  <TableCell className="ip">IP</TableCell>
+                  <TableCell className="host">Hostname</TableCell>
+                  <TableCell className="target">Target</TableCell>
+                  <TableCell className="conditions">Conditions</TableCell>
+                </TableHead>
+                {endpointSlice.endpoints.map((endpoint) =>
+                  endpoint.addresses.map((address) => (
+                    <TableRow key={address} nowrap>
+                      <TableCell className="ip">{address}</TableCell>
+                      <TableCell className="name">{endpoint.hostname}</TableCell>
+                      <TableCell className="target">
+                        {endpoint.targetRef && (
+                          <Link to={getDetailsUrl(apiManager.lookupApiLink(endpoint.targetRef, endpointSlice))}>
+                            {endpoint.targetRef.name}
+                          </Link>
+                        )}
+                      </TableCell>
+                      <TableCell className="conditions">
+                        {endpoint.conditions?.ready && <Badge key="ready" label="Ready" className="ready" />}
+                        {endpoint.conditions?.serving && <Badge key="serving" label="Serving" className="serving" />}
+                        {endpoint.conditions?.terminating && (
+                          <Badge key="terminating" label="Terminating" className="terminating" />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )),
+                )}
+              </Table>
+            </>
+          )}
 
-        <div className="title flex gaps">Ports</div>
-        <Table selectable={false} virtual={false} scrollable={false} className="box grow">
-          <TableHead>
-            <TableCell className="port">Port</TableCell>
-            <TableCell className="name">Name</TableCell>
-            <TableCell className="protocol">Protocol</TableCell>
-          </TableHead>
-          {endpointSlice.ports?.map((port) => (
-            <TableRow key={port.port} nowrap>
-              <TableCell className="name">{port.port}</TableCell>
-              <TableCell className="name">{port.name}</TableCell>
-              <TableCell className="node">{port.protocol}</TableCell>
-            </TableRow>
-          ))}
-        </Table>
-      </div>
+          {endpointSlice.ports && endpointSlice.ports.length > 0 && (
+            <>
+              <div className="title flex gaps">Ports</div>
+              <Table selectable={false} virtual={false} scrollable={false} className="box grow">
+                <TableHead>
+                  <TableCell className="port">Port</TableCell>
+                  <TableCell className="name">Name</TableCell>
+                  <TableCell className="protocol">Protocol</TableCell>
+                </TableHead>
+                {endpointSlice.ports?.map((port) => (
+                  <TableRow key={port.port} nowrap>
+                    <TableCell className="name">{port.port}</TableCell>
+                    <TableCell className="name">{port.name}</TableCell>
+                    <TableCell className="node">{port.protocol}</TableCell>
+                  </TableRow>
+                ))}
+              </Table>
+            </>
+          )}
+        </div>
+      )
     );
   }
 }
