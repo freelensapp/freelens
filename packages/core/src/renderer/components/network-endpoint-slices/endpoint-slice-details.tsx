@@ -15,7 +15,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { Badge } from "../badge";
+import { Badge, SimpleBadge } from "../badge";
 import { DrawerTitle } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
@@ -52,7 +52,7 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
       endpointSlice.endpoints &&
       endpointSlice.ports && (
         <div className="EndpointSliceDetails">
-          <DrawerTitle>Data</DrawerTitle>
+          <DrawerTitle>Endpoints</DrawerTitle>
           {endpointSlice.endpoints && endpointSlice.endpoints.length > 0 && (
             <>
               <div className="title flex gaps">Addresses</div>
@@ -60,26 +60,46 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
                 <TableHead>
                   <TableCell className="ip">IP</TableCell>
                   <TableCell className="host">Hostname</TableCell>
+                  <TableCell className="node">Node</TableCell>
+                  <TableCell className="zone">Zone</TableCell>
                   <TableCell className="target">Target</TableCell>
                   <TableCell className="conditions">Conditions</TableCell>
                 </TableHead>
                 {endpointSlice.endpoints.map((endpoint) =>
                   endpoint.addresses.map((address) => (
                     <TableRow key={address} nowrap>
-                      <TableCell className="ip">{address}</TableCell>
-                      <TableCell className="name">{endpoint.hostname}</TableCell>
+                      <TableCell className="ip">
+                        <SimpleBadge>{address}</SimpleBadge>
+                      </TableCell>
+                      <TableCell className="name">
+                        <SimpleBadge>{endpoint.hostname}</SimpleBadge>
+                      </TableCell>
+                      <TableCell className="node">
+                        {endpoint.nodeName && (
+                          <Link to={getDetailsUrl(apiManager.lookupApiLink({ kind: "Node", name: endpoint.nodeName }))}>
+                            <SimpleBadge>{endpoint.nodeName}</SimpleBadge>
+                          </Link>
+                        )}
+                      </TableCell>
+                      <TableCell className="zone">
+                        <SimpleBadge>{endpoint.zone}</SimpleBadge>
+                      </TableCell>
                       <TableCell className="target">
                         {endpoint.targetRef && (
                           <Link to={getDetailsUrl(apiManager.lookupApiLink(endpoint.targetRef, endpointSlice))}>
-                            {endpoint.targetRef.name}
+                            <SimpleBadge>{endpoint.targetRef.name}</SimpleBadge>
                           </Link>
                         )}
                       </TableCell>
                       <TableCell className="conditions">
-                        {endpoint.conditions?.ready && <Badge key="ready" label="Ready" className="ready" />}
-                        {endpoint.conditions?.serving && <Badge key="serving" label="Serving" className="serving" />}
+                        {endpoint.conditions?.ready && (
+                          <Badge key="ready" label="Ready" tooltip="Ready" className="ready" />
+                        )}
+                        {endpoint.conditions?.serving && (
+                          <Badge key="serving" label="Serving" tooltip="Serving" className="serving" />
+                        )}
                         {endpoint.conditions?.terminating && (
-                          <Badge key="terminating" label="Terminating" className="terminating" />
+                          <Badge key="terminating" label="Terminating" tooltip="Terminating" className="terminating" />
                         )}
                       </TableCell>
                     </TableRow>

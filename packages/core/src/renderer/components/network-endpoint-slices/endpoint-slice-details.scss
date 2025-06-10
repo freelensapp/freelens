@@ -10,7 +10,12 @@
   .title {
     margin-top: $margin * 2;
     margin-bottom: $margin;
-    font-weight: bold;
+  }
+
+  .TableCell {
+    &.conditions {
+      flex-grow: 1.5;
+    }
   }
 
   .conditions {
