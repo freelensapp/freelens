@@ -89,6 +89,7 @@ export * from "../../renderer/components/namespaces/namespace-select";
 export * from "../../renderer/components/no-items";
 export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
+export * from "../../renderer/components/render-delay";
 export * from "../../renderer/components/resource-metrics/resource-metrics";
 export * from "../../renderer/components/select";
 export * from "../../renderer/components/slider";
