@@ -81,6 +81,7 @@ export * from "../../renderer/components/layout/wizard-layout";
 export * from "../../renderer/components/line-progress";
 export * from "../../renderer/components/list";
 export * from "../../renderer/components/locale-date";
+export * from "../../renderer/components/map";
 export * from "../../renderer/components/markdown-viewer";
 export * from "../../renderer/components/menu";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
