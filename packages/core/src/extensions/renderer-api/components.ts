@@ -67,6 +67,7 @@ export const ConfirmDialog = Object.assign(_ConfirmDialog, {
 
 export * from "@freelensapp/icon";
 export * from "@freelensapp/tooltip";
+
 export * from "../../renderer/components/tabs";
 export * from "../../renderer/components/table";
 export * from "../../renderer/components/badge";
@@ -94,6 +95,7 @@ export const Notifications = {
 };
 
 export * from "@freelensapp/spinner";
+
 export * from "../../renderer/components/stepper";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-details-list";
@@ -104,6 +106,7 @@ export * from "../../renderer/components/input/search-input";
 export * from "../../renderer/components/chart/bar-chart";
 export * from "../../renderer/components/chart/pie-chart";
 export * from "../../renderer/components/markdown-viewer";
+
 export {
   MonacoEditor,
   type MonacoEditorProps,
@@ -111,6 +114,7 @@ export {
   type MonacoTheme,
   type MonacoCustomTheme,
 } from "../../renderer/components/monaco-editor";
+
 export * from "../../renderer/components/resource-metrics/resource-metrics";
 export * from "../../renderer/components/workloads-pods/pod-charts";
 
@@ -131,9 +135,10 @@ export * from "../../renderer/components/kube-object-list-layout";
 export * from "../../renderer/components/kube-object-menu";
 export * from "../../renderer/components/kube-object-meta";
 export * from "../../renderer/components/events/kube-event-details";
-export * from "../../renderer/components/duration/reactive-duration";
 
 // specific exports
+export * from "../../renderer/components/add-remove-buttons";
+export * from "../../renderer/components/duration/reactive-duration";
 export * from "../../renderer/components/status-brick";
 
 export const createTerminalTab = asLegacyGlobalFunctionForExtensionApi(createTerminalTabInjectable);
