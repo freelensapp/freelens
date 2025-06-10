@@ -139,6 +139,7 @@ export * from "../../renderer/components/events/kube-event-details";
 // specific exports
 export * from "../../renderer/components/add-remove-buttons";
 export * from "../../renderer/components/avatar";
+export * from "../../renderer/components/countdown";
 export * from "../../renderer/components/duration";
 export * from "../../renderer/components/status-brick";
 
