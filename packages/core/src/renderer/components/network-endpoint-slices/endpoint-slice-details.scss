@@ -4,5 +4,32 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars" as *;
+
 .EndpointSliceDetails {
+  .title {
+    margin-top: $margin * 2;
+    margin-bottom: $margin;
+    font-weight: bold;
+  }
+
+  .conditions {
+    .ready {
+      background-color: #4caf50;
+      color: #ffffff;
+      margin: $margin / 2;
+    }
+
+    .serving {
+      background-color: #068DBF;
+      color: #ffffff;
+      margin: $margin / 2;
+    }
+
+    .terminating {
+      background-color: #4c5053;
+      color: #ffffff;
+      margin: $margin / 2;
+    }
+  }
 }

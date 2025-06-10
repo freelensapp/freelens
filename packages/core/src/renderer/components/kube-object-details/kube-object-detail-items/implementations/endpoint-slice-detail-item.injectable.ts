@@ -27,6 +27,6 @@ const endpointSliceDetailItemInjectable = getInjectable({
   injectionToken: kubeObjectDetailItemInjectionToken,
 });
 
-export const isEndpoint = kubeObjectMatchesToKindAndApiVersion("EndpointSlices", ["discovery.k8s.io/v1"]);
+export const isEndpoint = kubeObjectMatchesToKindAndApiVersion("EndpointSlice", ["discovery.k8s.io/v1"]);
 
 export default endpointSliceDetailItemInjectable;

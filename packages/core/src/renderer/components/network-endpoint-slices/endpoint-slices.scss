@@ -13,13 +13,11 @@
     }
 
     &.endpoints {
-      flex-grow: 5.0;
+      flex-grow: 3.0;
     }
 
-    &.warning {
-      @include table.table-cell-warning;
+    &.age {
+      flex-grow: 0.3;
     }
-
-
   }
 }

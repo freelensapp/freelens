@@ -40,18 +40,20 @@ export class EndpointSlice extends KubeObject<NamespaceScopedMetadata, void, voi
   static apiBase = "/apis/discovery.k8s.io/v1/endpointslices";
 
   addressType: string;
-  endpoints: Endpoint[];
-  ports?: EndpointPort[];
+  endpoints: Endpoint[] | null;
+  ports?: EndpointPort[] | null;
 
   getPortsString(): string {
-    return this.ports?.map((port) => port.port).join(",") ?? "";
+    return this.ports?.map((port) => `${port.port}/${port.protocol ?? "TCP"}`).join(", ") ?? "";
   }
 
   getEndpointsString(): string {
-    return this.endpoints
-      .map((endpoint) => endpoint.addresses)
-      .flat()
-      .join(",");
+    return (
+      this.endpoints
+        ?.map((endpoint) => endpoint.addresses)
+        .flat()
+        .join(", ") ?? ""
+    );
   }
 
   constructor({ addressType, endpoints, ports, ...rest }: EndpointSliceData) {

@@ -9,6 +9,7 @@ import "./endpoint-slices.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { SimpleBadge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -50,21 +51,26 @@ class NonInjectedEndpointSlices extends React.Component<Dependencies> {
           searchFilters={[(endpointSlice) => endpointSlice.getSearchFields()]}
           renderHeaderTitle="Endpoint Slices"
           renderTableHeader={[
-            { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
+            { title: "Name", className: columnId.name, sortBy: columnId.name, id: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Address Type", className: "addressType", sortBy: columnId.addressType, id: columnId.addressType },
             { title: "Ports", className: "ports", sortBy: columnId.ports, id: columnId.ports },
             { title: "Endpoints", className: "endpoints", sortBy: columnId.endpoints, id: columnId.endpoints },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={(endpointSlice) => [
-            endpointSlice.getName(),
-            <NamespaceSelectBadge key="namespace" namespace={endpointSlice.getNs()} />,
-            endpointSlice.addressType,
-            endpointSlice.getPortsString(),
-            endpointSlice.getEndpointsString(),
-            <KubeObjectAge key="age" object={endpointSlice} />,
-          ]}
+          renderTableContents={(endpointSlice) => {
+            const name = endpointSlice.getName();
+            const ports = endpointSlice.getPortsString();
+            const endpoints = endpointSlice.getEndpointsString();
+            return [
+              <SimpleBadge>{name}</SimpleBadge>,
+              <NamespaceSelectBadge key="namespace" namespace={endpointSlice.getNs()} />,
+              endpointSlice.addressType,
+              <SimpleBadge>{ports}</SimpleBadge>,
+              <SimpleBadge>{endpoints}</SimpleBadge>,
+              <KubeObjectAge key="age" object={endpointSlice} />,
+            ];
+          }}
         />
       </SiblingsInTabLayout>
     );

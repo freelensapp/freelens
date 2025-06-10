@@ -5,3 +5,4 @@
  */
 
 export * from "./badge";
+export * from "./simple-badge";
