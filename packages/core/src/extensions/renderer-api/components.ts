@@ -61,6 +61,7 @@ export * from "../../renderer/components/dialog";
 export * from "../../renderer/components/drawer";
 export * from "../../renderer/components/dropdown";
 export * from "../../renderer/components/duration";
+export * from "../../renderer/components/editable-list";
 export * from "../../renderer/components/events/kube-event-details";
 export * from "../../renderer/components/input/input";
 export * from "../../renderer/components/input/search-input";
