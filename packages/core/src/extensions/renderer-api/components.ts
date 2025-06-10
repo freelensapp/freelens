@@ -87,6 +87,7 @@ export * from "../../renderer/components/menu";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/namespaces/namespace-select";
 export * from "../../renderer/components/no-items";
+export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
 export * from "../../renderer/components/resource-metrics/resource-metrics";
 export * from "../../renderer/components/select";
