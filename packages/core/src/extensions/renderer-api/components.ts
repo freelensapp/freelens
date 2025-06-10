@@ -129,7 +129,7 @@ export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrl
 export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);
 
 // kube helpers
-export * from "../../renderer/components/kube-object/age";
+export * from "../../renderer/components/kube-object";
 export * from "../../renderer/components/kube-object-details";
 export * from "../../renderer/components/kube-object-list-layout";
 export * from "../../renderer/components/kube-object-menu";
@@ -138,7 +138,8 @@ export * from "../../renderer/components/events/kube-event-details";
 
 // specific exports
 export * from "../../renderer/components/add-remove-buttons";
-export * from "../../renderer/components/duration/reactive-duration";
+export * from "../../renderer/components/avatar";
+export * from "../../renderer/components/duration";
 export * from "../../renderer/components/status-brick";
 
 export const createTerminalTab = asLegacyGlobalFunctionForExtensionApi(createTerminalTabInjectable);
