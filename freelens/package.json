@@ -102,7 +102,7 @@
     "byline": "^5.0.0",
     "chalk": "^4.1.2",
     "chokidar": "^4.0.3",
-    "conf": "^10.2.0",
+    "conf": "^14.0.0",
     "crypto-js": "^4.2.0",
     "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
