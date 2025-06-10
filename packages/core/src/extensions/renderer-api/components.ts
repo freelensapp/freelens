@@ -99,6 +99,7 @@ export * from "../../renderer/components/switch";
 export * from "../../renderer/components/table";
 export * from "../../renderer/components/tabs";
 export * from "../../renderer/components/tree-view";
+export * from "../../renderer/components/virtual-list";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-charts";
 export * from "../../renderer/components/workloads-pods/pod-details-list";
