@@ -5,11 +5,15 @@
  */
 
 .ServicesDetails {
-    .EndpointList{
-        .TableCell {
-          &.endpoints {
-            flex-grow: 3;
-          }
-        }
+  .EndpointSlicesList {
+    .TableCell {
+      &.ports {
+        flex-grow: 2.0;
       }
+
+      &.endpoints {
+        flex-grow: 3.0;
+      }
+    }
+  }
 }

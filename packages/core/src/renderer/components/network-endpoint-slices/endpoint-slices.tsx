@@ -58,19 +58,14 @@ class NonInjectedEndpointSlices extends React.Component<Dependencies> {
             { title: "Endpoints", className: "endpoints", sortBy: columnId.endpoints, id: columnId.endpoints },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
-          renderTableContents={(endpointSlice) => {
-            const name = endpointSlice.getName();
-            const ports = endpointSlice.getPortsString();
-            const endpoints = endpointSlice.getEndpointsString();
-            return [
-              <SimpleBadge>{name}</SimpleBadge>,
-              <NamespaceSelectBadge key="namespace" namespace={endpointSlice.getNs()} />,
-              endpointSlice.addressType,
-              <SimpleBadge>{ports}</SimpleBadge>,
-              <SimpleBadge>{endpoints}</SimpleBadge>,
-              <KubeObjectAge key="age" object={endpointSlice} />,
-            ];
-          }}
+          renderTableContents={(endpointSlice) => [
+            <SimpleBadge>{endpointSlice.getName()}</SimpleBadge>,
+            <NamespaceSelectBadge key="namespace" namespace={endpointSlice.getNs()} />,
+            endpointSlice.addressType,
+            <SimpleBadge>{endpointSlice.getPortsString()}</SimpleBadge>,
+            <SimpleBadge>{endpointSlice.getEndpointsString()}</SimpleBadge>,
+            <KubeObjectAge key="age" object={endpointSlice} />,
+          ]}
         />
       </SiblingsInTabLayout>
     );

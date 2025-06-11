@@ -156,8 +156,19 @@ export class KubeObjectStore<
   }
 
   getByName(name: string, namespace?: string): K | undefined {
-    return this.items.find((item) => {
-      return item.getName() === name && (namespace ? item.getNs() === namespace : true);
+    return this.items.find((item) => item.getName() === name && (namespace ? item.getNs() === namespace : true));
+  }
+
+  getByOwnerReference(apiVersion: string | undefined, kind: string, name: string, namespace: string): K[] {
+    return this.items.filter((item) => {
+      const ownerRefs = item.getOwnerRefs();
+      return (
+        item.getNs() === namespace &&
+        ownerRefs &&
+        ownerRefs.filter(
+          (ref) => (!apiVersion || ref.apiVersion === apiVersion) && ref.kind === kind && ref.name === name,
+        ).length > 0
+      );
     });
   }
 
