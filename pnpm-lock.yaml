@@ -256,8 +256,8 @@ importers:
         specifier: ^8.18.2
         version: 8.18.2
       zod:
-        specifier: ^3.25.56
-        version: 3.25.56
+        specifier: ^3.25.61
+        version: 3.25.61
     devDependencies:
       '@electron/notarize':
         specifier: ^3.0.1
@@ -923,8 +923,8 @@ importers:
         specifier: ^8.18.2
         version: 8.18.2
       zod:
-        specifier: ^3.25.56
-        version: 3.25.56
+        specifier: ^3.25.61
+        version: 3.25.61
     devDependencies:
       '@async-fn/jest':
         specifier: 1.6.4
@@ -1161,8 +1161,8 @@ importers:
         specifier: ^3.1.7
         version: 3.1.7
       zod:
-        specifier: ^3.25.56
-        version: 3.25.56
+        specifier: ^3.25.61
+        version: 3.25.61
     devDependencies:
       '@types/cli-progress':
         specifier: ^3.11.6
@@ -9261,8 +9261,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.56:
-    resolution: {integrity: sha512-rd6eEF3BTNvQnR2e2wwolfTmUTnp70aUTqr0oaGbHifzC3BKJsoV+Gat8vxUMR1hwOKBs6El+qWehrHbCpW6SQ==}
+  zod@3.25.61:
+    resolution: {integrity: sha512-fzfJgUw78LTNnHujj9re1Ov/JJQkRZZGDMcYqSx7Hp4rPOkKywaFHq0S6GoHeXs0wGNE/sIOutkXgnwzrVOGCQ==}
 
 snapshots:
 
@@ -16096,4 +16096,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.56: {}
+  zod@3.25.61: {}
