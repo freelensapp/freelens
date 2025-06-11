@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "sass:math";
 @use "../vars" as *;
 
 .EndpointSliceDetails {
