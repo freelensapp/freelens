@@ -19,9 +19,9 @@ import portForwardStoreInjectable from "../../port-forward/port-forward-store/po
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { EndpointsStore } from "../network-endpoints/store";
-import endpointsStoreInjectable from "../network-endpoints/store.injectable";
-import { ServiceDetailsEndpoint } from "./service-details-endpoint";
+import type { EndpointSliceStore } from "../network-endpoint-slices/store";
+import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
+import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
 
 export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {}
@@ -29,25 +29,20 @@ export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {}
 interface Dependencies {
   subscribeStores: SubscribeStores;
   portForwardStore: PortForwardStore;
-  endpointsStore: EndpointsStore;
+  endpointSliceStore: EndpointSliceStore;
   logger: Logger;
 }
 
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
   componentDidMount() {
-    const { object: service, subscribeStores, endpointsStore, portForwardStore } = this.props;
+    const { subscribeStores, endpointSliceStore: endpointSliceStore, portForwardStore } = this.props;
 
-    disposeOnUnmount(this, [
-      subscribeStores([endpointsStore], {
-        namespaces: [service.getNs()],
-      }),
-      portForwardStore.watch(),
-    ]);
+    disposeOnUnmount(this, [subscribeStores([endpointSliceStore], {}), portForwardStore.watch()]);
   }
 
   render() {
-    const { object: service, endpointsStore } = this.props;
+    const { object: service, endpointSliceStore: endpointSliceStore } = this.props;
 
     if (!service) {
       return null;
@@ -60,7 +55,12 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     }
 
     const { spec } = service;
-    const endpoints = endpointsStore.getByName(service.getName(), service.getNs());
+    const endpointSlices = endpointSliceStore.getByOwnerReference(
+      service.apiVersion,
+      service.kind,
+      service.getName(),
+      service.getNs(),
+    );
     const externalIps = service.getExternalIps();
 
     if (externalIps.length === 0 && spec?.externalName) {
@@ -117,10 +117,10 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
           <DrawerItem name="Load Balancer IP">{spec.loadBalancerIP}</DrawerItem>
         )}
 
-        {endpoints && (
+        {endpointSlices && (
           <>
-            <DrawerTitle>Endpoint</DrawerTitle>
-            <ServiceDetailsEndpoint endpoints={endpoints} />
+            <DrawerTitle>Endpoint Slices</DrawerTitle>
+            <ServiceDetailsEndpointSlices endpointSlices={endpointSlices} />
           </>
         )}
       </div>
@@ -133,7 +133,7 @@ export const ServiceDetails = withInjectables<Dependencies, ServiceDetailsProps>
     ...props,
     subscribeStores: di.inject(subscribeStoresInjectable),
     portForwardStore: di.inject(portForwardStoreInjectable),
-    endpointsStore: di.inject(endpointsStoreInjectable),
+    endpointSliceStore: di.inject(endpointSliceStoreInjectable),
     logger: di.inject(loggerInjectionToken),
   }),
 });

@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./badge";
-export * from "./with-tooltip";
+export * from "./endpoint-slices";
+export * from "./endpoint-slice-details";

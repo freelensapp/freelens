@@ -32,6 +32,7 @@ export const ResourceNames: Record<KubeResource, string> = {
   jobs: "Jobs",
   cronjobs: "Cron Jobs",
   endpoints: "Endpoints",
+  endpointslices: "Endpoint Slices",
   customresourcedefinitions: "Custom Resource Definitions",
   horizontalpodautoscalers: "Horizontal Pod Autoscalers",
   podsecuritypolicies: "Pod Security Policies",

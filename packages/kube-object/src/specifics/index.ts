@@ -14,6 +14,7 @@ export * from "./custom-resource-definition";
 export * from "./daemon-set";
 export * from "./deployment";
 export * from "./endpoint";
+export * from "./endpoint-slice";
 export * from "./events";
 export * from "./horizontal-pod-autoscaler";
 export * from "./ingress-class";

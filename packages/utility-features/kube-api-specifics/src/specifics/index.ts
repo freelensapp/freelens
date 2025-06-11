@@ -9,6 +9,7 @@ export * from "./custom-resource-definition.api.injectable";
 export * from "./daemon-set.api.injectable";
 export * from "./deployment.api.injectable";
 export * from "./endpoint.api.injectable";
+export * from "./endpoint-slice.api.injectable";
 export * from "./event.api.injectable";
 export * from "./horizontal-pod-autoscaler.api.injectable";
 export * from "./ingress-class.api.injectable";

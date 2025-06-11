@@ -57,6 +57,7 @@ export const vpaApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.verticalPod
 export const pdbApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podDisruptionBudgetApiInjectable);
 export const pcApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.priorityClassApiInjectable);
 export const endpointApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.endpointsApiInjectable);
+export const endpointSliceApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.endpointSliceApiInjectable);
 export const ingressApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.ingressApiInjectable);
 export const networkPolicyApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.networkPolicyApiInjectable);
 export const persistentVolumeApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.persistentVolumeApiInjectable);
@@ -111,6 +112,7 @@ export type { PodDisruptionBudgetStore as PodDisruptionBudgetsStore } from "../.
 export type { PriorityClassStore as PriorityClassStoreStore } from "../../renderer/components/config-priority-classes/store";
 export type { ServiceStore } from "../../renderer/components/network-services/store";
 export type { EndpointsStore as EndpointStore } from "../../renderer/components/network-endpoints/store";
+export type { EndpointSliceStore } from "../../renderer/components/network-endpoint-slices/store";
 export type { IngressStore } from "../../renderer/components/network-ingresses/ingress-store";
 export type { IngressClassStore } from "../../renderer/components/network-ingresses/ingress-class-store";
 export type { NetworkPolicyStore } from "../../renderer/components/network-policies/store";

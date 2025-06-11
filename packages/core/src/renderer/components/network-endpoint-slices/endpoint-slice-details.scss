@@ -1,0 +1,41 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "sass:math";
+@use "../vars" as *;
+
+.EndpointSliceDetails {
+  .title {
+    margin-top: $margin * 2;
+    margin-bottom: $margin;
+  }
+
+  .TableCell {
+    &.conditions {
+      flex-grow: 1.5;
+    }
+  }
+
+  .conditions {
+    .ready {
+      background-color: #4caf50;
+      color: #ffffff;
+      margin: math.div($margin, 2);
+    }
+
+    .serving {
+      background-color: #068DBF;
+      color: #ffffff;
+      margin: math.div($margin, 2);
+    }
+
+    .terminating {
+      background-color: #4c5053;
+      color: #ffffff;
+      margin: math.div($margin, 2);
+    }
+  }
+}

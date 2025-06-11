@@ -320,6 +320,7 @@ export {
   PriorityClass,
   Service,
   Endpoints as Endpoint,
+  EndpointSlice,
   Ingress,
   NetworkPolicy,
   PersistentVolume,

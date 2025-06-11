@@ -4,5 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./badge";
-export * from "./with-tooltip";
+@use "../table/table.mixins";
+
+.EndpointSlices {
+  .TableCell {
+    &.ports {
+      flex-grow: 2.0;
+    }
+
+    &.endpoints {
+      flex-grow: 3.0;
+    }
+
+    &.age {
+      flex-grow: 0.3;
+    }
+  }
+}

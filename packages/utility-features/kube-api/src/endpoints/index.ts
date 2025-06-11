@@ -17,6 +17,7 @@ export * from "./component-status.api";
 export * from "./daemon-set.api";
 export * from "./deployment.api";
 export * from "./endpoint.api";
+export * from "./endpoint-slice.api";
 export * from "./events.api";
 export * from "./horizontal-pod-autoscaler.api";
 export * from "./ingress.api";

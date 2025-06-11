@@ -15,6 +15,7 @@ import navigateToResourceQuotasInjectable from "../../../../common/front-end-rou
 import navigateToSecretsInjectable from "../../../../common/front-end-routing/routes/cluster/config/secrets/navigate-to-secrets.injectable";
 import navigateToHelmChartsInjectable from "../../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import navigateToEndpointSlicesInjectable from "../../../../common/front-end-routing/routes/cluster/network/endpoint-slices/navigate-to-endpoint-slices.injectable";
 import navigateToEndpointsInjectable from "../../../../common/front-end-routing/routes/cluster/network/endpoints/navigate-to-endpoints.injectable";
 import navigateToIngressesInjectable from "../../../../common/front-end-routing/routes/cluster/network/ingresses/navigate-to-ingresses.injectable";
 import navigateToNetworkPoliciesInjectable from "../../../../common/front-end-routing/routes/cluster/network/network-policies/navigate-to-network-policies.injectable";
@@ -63,6 +64,7 @@ interface Dependencies {
   navigateToPriorityClasses: () => void;
   navigateToServices: () => void;
   navigateToEndpoints: () => void;
+  navigateToEndpointSlices: () => void;
   navigateToIngresses: () => void;
   navigateToNetworkPolicies: () => void;
   navigateToNodes: () => void;
@@ -148,6 +150,12 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
       title: "Cluster: View Endpoints",
       isActive: isKubernetesClusterActive,
       action: () => dependencies.navigateToEndpoints(),
+    },
+    {
+      id: "cluster.viewEndpointSlices",
+      title: "Cluster: View Endpoint Slices",
+      isActive: isKubernetesClusterActive,
+      action: () => dependencies.navigateToEndpointSlices(),
     },
     {
       id: "cluster.viewIngresses",
@@ -269,6 +277,7 @@ const internalCommandsInjectable = getInjectable({
       navigateToPriorityClasses: di.inject(navigateToPriorityClassesInjectable),
       navigateToServices: di.inject(navigateToServicesInjectable),
       navigateToEndpoints: di.inject(navigateToEndpointsInjectable),
+      navigateToEndpointSlices: di.inject(navigateToEndpointSlicesInjectable),
       navigateToIngresses: di.inject(navigateToIngressesInjectable),
       navigateToNetworkPolicies: di.inject(navigateToNetworkPoliciesInjectable),
       navigateToNodes: di.inject(navigateToNodesInjectable),
