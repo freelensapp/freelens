@@ -15,7 +15,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { Badge, SimpleBadge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { DrawerTitle } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
@@ -69,25 +69,25 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
                   endpoint.addresses.map((address) => (
                     <TableRow key={address} nowrap>
                       <TableCell className="ip">
-                        <SimpleBadge>{address}</SimpleBadge>
+                        <WithTooltip>{address}</WithTooltip>
                       </TableCell>
                       <TableCell className="name">
-                        <SimpleBadge>{endpoint.hostname}</SimpleBadge>
+                        <WithTooltip>{endpoint.hostname}</WithTooltip>
                       </TableCell>
                       <TableCell className="node">
                         {endpoint.nodeName && (
                           <Link to={getDetailsUrl(apiManager.lookupApiLink({ kind: "Node", name: endpoint.nodeName }))}>
-                            <SimpleBadge>{endpoint.nodeName}</SimpleBadge>
+                            <WithTooltip>{endpoint.nodeName}</WithTooltip>
                           </Link>
                         )}
                       </TableCell>
                       <TableCell className="zone">
-                        <SimpleBadge>{endpoint.zone}</SimpleBadge>
+                        <WithTooltip>{endpoint.zone}</WithTooltip>
                       </TableCell>
                       <TableCell className="target">
                         {endpoint.targetRef && (
                           <Link to={getDetailsUrl(apiManager.lookupApiLink(endpoint.targetRef, endpointSlice))}>
-                            <SimpleBadge>{endpoint.targetRef.name}</SimpleBadge>
+                            <WithTooltip>{endpoint.targetRef.name}</WithTooltip>
                           </Link>
                         )}
                       </TableCell>

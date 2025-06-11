@@ -9,7 +9,7 @@ import "./endpoint-slices.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { SimpleBadge } from "../badge";
+import { WithTooltip } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -59,11 +59,11 @@ class NonInjectedEndpointSlices extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(endpointSlice) => [
-            <SimpleBadge>{endpointSlice.getName()}</SimpleBadge>,
+            <WithTooltip>{endpointSlice.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={endpointSlice.getNs()} />,
             endpointSlice.addressType,
-            <SimpleBadge>{endpointSlice.getPortsString()}</SimpleBadge>,
-            <SimpleBadge>{endpointSlice.getEndpointsString()}</SimpleBadge>,
+            <WithTooltip>{endpointSlice.getPortsString()}</WithTooltip>,
+            <WithTooltip>{endpointSlice.getEndpointsString()}</WithTooltip>,
             <KubeObjectAge key="age" object={endpointSlice} />,
           ]}
         />

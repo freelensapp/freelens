@@ -11,7 +11,7 @@ import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { SimpleBadge } from "../badge";
+import { WithTooltip } from "../badge";
 import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
@@ -52,14 +52,14 @@ class NonInjectedServiceDetailsEndpointSlices extends React.Component<
               onClick={prevDefault(() => this.props.showDetails(endpointSlice.selfLink, false))}
             >
               <TableCell className="name">
-                <SimpleBadge>{endpointSlice.getName()}</SimpleBadge>
+                <WithTooltip>{endpointSlice.getName()}</WithTooltip>
               </TableCell>
               <TableCell className="addressType">{endpointSlice.addressType}</TableCell>
               <TableCell className="ports">
-                <SimpleBadge>{endpointSlice.getPortsString()}</SimpleBadge>
+                <WithTooltip>{endpointSlice.getPortsString()}</WithTooltip>
               </TableCell>
               <TableCell className="endpoints">
-                <SimpleBadge>{endpointSlice.getEndpointsString()}</SimpleBadge>
+                <WithTooltip>{endpointSlice.getEndpointsString()}</WithTooltip>
               </TableCell>
             </TableRow>
           ))}

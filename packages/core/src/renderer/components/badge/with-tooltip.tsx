@@ -8,13 +8,13 @@ import { StrictReactNode } from "@freelensapp/utilities/dist";
 import React from "react";
 import { Badge } from "./badge";
 
-export interface SimpleBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface WithTooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   flat?: boolean;
   expandable?: boolean;
   children?: StrictReactNode;
 }
 
-export function SimpleBadge(props: SimpleBadgeProps) {
+export function WithTooltip(props: WithTooltipProps) {
   return (
     <Badge
       label={props.children}

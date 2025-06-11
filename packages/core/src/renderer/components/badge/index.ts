@@ -5,4 +5,4 @@
  */
 
 export * from "./badge";
-export * from "./simple-badge";
+export * from "./with-tooltip";
