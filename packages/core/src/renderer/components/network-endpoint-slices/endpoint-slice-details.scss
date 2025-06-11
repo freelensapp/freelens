@@ -22,19 +22,19 @@
     .ready {
       background-color: #4caf50;
       color: #ffffff;
-      margin: $margin / 2;
+      margin: math.div($margin, 2);
     }
 
     .serving {
       background-color: #068DBF;
       color: #ffffff;
-      margin: $margin / 2;
+      margin: math.div($margin, 2);
     }
 
     .terminating {
       background-color: #4c5053;
       color: #ffffff;
-      margin: $margin / 2;
+      margin: math.div($margin, 2);
     }
   }
 }
