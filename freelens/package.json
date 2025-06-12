@@ -166,7 +166,7 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@ogre-tools/injectable-react": "^17.11.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.16",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
     "@side/jest-runtime": "^1.1.0",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
