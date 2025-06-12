@@ -199,6 +199,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -217,6 +218,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-theme-input-placeholder"
                             aria-expanded="false"
@@ -290,6 +292,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -307,6 +310,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -435,6 +439,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -452,6 +457,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -861,6 +867,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -879,6 +886,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-theme-input-placeholder"
                             aria-expanded="false"
@@ -952,6 +960,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -969,6 +978,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -1097,6 +1107,7 @@ exports[`preferences - navigation to application preferences given in preference
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -1114,6 +1125,7 @@ exports[`preferences - navigation to application preferences given in preference
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -1961,6 +1973,7 @@ exports[`preferences - navigation to application preferences given in some child
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -1979,6 +1992,7 @@ exports[`preferences - navigation to application preferences given in some child
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-theme-input-placeholder"
                             aria-expanded="false"
@@ -2052,6 +2066,7 @@ exports[`preferences - navigation to application preferences given in some child
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -2069,6 +2084,7 @@ exports[`preferences - navigation to application preferences given in some child
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -2197,6 +2213,7 @@ exports[`preferences - navigation to application preferences given in some child
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -2214,6 +2231,7 @@ exports[`preferences - navigation to application preferences given in some child
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -2624,6 +2642,7 @@ exports[`preferences - navigation to application preferences given in some child
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
@@ -2642,6 +2661,7 @@ exports[`preferences - navigation to application preferences given in some child
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-describedby="react-select-theme-input-placeholder"
                               aria-expanded="false"
@@ -2715,6 +2735,7 @@ exports[`preferences - navigation to application preferences given in some child
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
@@ -2732,6 +2753,7 @@ exports[`preferences - navigation to application preferences given in some child
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -2860,6 +2882,7 @@ exports[`preferences - navigation to application preferences given in some child
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
@@ -2877,6 +2900,7 @@ exports[`preferences - navigation to application preferences given in some child
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"

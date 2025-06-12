@@ -288,6 +288,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -306,6 +307,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -955,6 +957,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -973,6 +976,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -1725,6 +1729,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -1743,6 +1748,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -2549,6 +2555,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -2567,6 +2574,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -3371,6 +3379,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -3389,6 +3398,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -3949,6 +3959,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
@@ -3966,6 +3977,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -4333,6 +4345,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -4351,6 +4364,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
@@ -4911,6 +4925,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         aria-live="polite"
                         aria-relevant="additions text"
                         class="css-1f43avz-a11yText-A11yText"
+                        role="log"
                       />
                       <div
                         class="Select__control css-13cymwt-control"
@@ -4928,6 +4943,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                             data-value=""
                           >
                             <input
+                              aria-activedescendant=""
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
@@ -5297,6 +5313,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -5315,6 +5332,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-namespace-select-filter-placeholder"
                             aria-expanded="false"
