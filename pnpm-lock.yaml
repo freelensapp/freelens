@@ -863,8 +863,8 @@ importers:
         specifier: ^5.3.4
         version: 5.3.4(react@17.0.2)
       react-select:
-        specifier: ^5.7.0
-        version: 5.7.3(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        specifier: ^5.10.1
+        version: 5.10.1(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react-table:
         specifier: ^7.8.0
         version: 7.8.0(react@17.0.2)
@@ -8018,11 +8018,11 @@ packages:
   react-select-event@5.5.1:
     resolution: {integrity: sha512-goAx28y0+iYrbqZA2FeRTreHHs/ZtSuKxtA+J5jpKT5RHPCbVZJ4MqACfPnWyFXsEec+3dP5bCrNTxIX8oYe9A==}
 
-  react-select@5.7.3:
-    resolution: {integrity: sha512-z8i3NCuFFWL3w27xq92rBkVI2onT0jzIIPe480HlBjXJ3b5o6Q+Clp4ydyeKrj9DZZ3lrjawwLC5NGl0FSvUDg==}
+  react-select@5.10.1:
+    resolution: {integrity: sha512-roPEZUL4aRZDx6DcsD+ZNreVl+fM8VsKn0Wtex1v4IazH60ILp5xhdlp464IsEAlJdXeD+BhDAFsBVMfvLQueA==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-table@7.8.0:
     resolution: {integrity: sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==}
@@ -8941,11 +8941,11 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
-  use-isomorphic-layout-effect@1.1.2:
-    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+  use-isomorphic-layout-effect@1.2.1:
+    resolution: {integrity: sha512-tpZZ+EX0gaghDAiFR37hj5MgY6ZN55kLiPkJsKxBMZ6GZdOSPJXiOzPM984oPYZ5AnehYx5WQp1+ME8I/P/pRA==}
     peerDependencies:
       '@types/react': '*'
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -14686,7 +14686,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  react-select@5.7.3(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
+  react-select@5.10.1(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
     dependencies:
       '@babel/runtime': 7.26.10
       '@emotion/cache': 11.14.0
@@ -14698,7 +14698,7 @@ snapshots:
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
       react-transition-group: 4.4.5(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      use-isomorphic-layout-effect: 1.1.2(@types/react@17.0.87)(react@17.0.2)
+      use-isomorphic-layout-effect: 1.2.1(@types/react@17.0.87)(react@17.0.2)
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
@@ -15721,7 +15721,7 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  use-isomorphic-layout-effect@1.1.2(@types/react@17.0.87)(react@17.0.2):
+  use-isomorphic-layout-effect@1.2.1(@types/react@17.0.87)(react@17.0.2):
     dependencies:
       react: 17.0.2
     optionalDependencies:
