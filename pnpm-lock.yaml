@@ -193,8 +193,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       path-to-regexp:
-        specifier: ^6.3.0
-        version: 6.3.0
+        specifier: ^8.2.0
+        version: 8.2.0
       pnpm:
         specifier: ^10.12.1
         version: 10.12.1
@@ -833,8 +833,8 @@ importers:
         specifier: 1.1.0-beta34
         version: 1.1.0-beta34
       path-to-regexp:
-        specifier: ^6.3.0
-        version: 6.3.0
+        specifier: ^8.2.0
+        version: 8.2.0
       pnpm:
         specifier: ^10.12.1
         version: 10.12.1
@@ -3292,8 +3292,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       path-to-regexp:
-        specifier: ^6.3.0
-        version: 6.3.0
+        specifier: ^8.2.0
+        version: 8.2.0
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -7675,8 +7675,9 @@ packages:
   path-to-regexp@1.9.0:
     resolution: {integrity: sha512-xIp7/apCFJuUHdDLWe8O1HIkb0kQrOMb/0u6FXQjemHn/ii5LrIzU6bdECnsiTF/GjZkMEKg1xdiZwNqDYlZ6g==}
 
-  path-to-regexp@6.3.0:
-    resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
+  path-to-regexp@8.2.0:
+    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
+    engines: {node: '>=16'}
 
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -14355,7 +14356,7 @@ snapshots:
     dependencies:
       isarray: 0.0.1
 
-  path-to-regexp@6.3.0: {}
+  path-to-regexp@8.2.0: {}
 
   path-type@4.0.0: {}
 
