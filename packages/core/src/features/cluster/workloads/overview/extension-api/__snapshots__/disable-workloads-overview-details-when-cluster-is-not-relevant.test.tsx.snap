@@ -271,6 +271,7 @@ exports[`disable workloads overview details when cluster is not relevant given e
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -289,6 +290,7 @@ exports[`disable workloads overview details when cluster is not relevant given e
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"
@@ -793,6 +795,7 @@ exports[`disable workloads overview details when cluster is not relevant given e
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -811,6 +814,7 @@ exports[`disable workloads overview details when cluster is not relevant given e
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"
@@ -1310,6 +1314,7 @@ exports[`disable workloads overview details when cluster is not relevant given n
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -1328,6 +1333,7 @@ exports[`disable workloads overview details when cluster is not relevant given n
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-overview-namespace-select-filter-input-placeholder"
                             aria-expanded="false"

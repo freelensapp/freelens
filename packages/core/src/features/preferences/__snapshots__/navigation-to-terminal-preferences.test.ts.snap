@@ -199,6 +199,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -217,6 +218,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-describedby="react-select-theme-input-placeholder"
                             aria-expanded="false"
@@ -290,6 +292,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -307,6 +310,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -435,6 +439,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -452,6 +457,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -923,6 +929,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -940,6 +947,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -1045,6 +1053,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -1066,6 +1075,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
