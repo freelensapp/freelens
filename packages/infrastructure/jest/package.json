@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "identity-obj-proxy": "^3.0.0",
-    "glob": "^11.0.2",
+    "glob": "^11.0.3",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
