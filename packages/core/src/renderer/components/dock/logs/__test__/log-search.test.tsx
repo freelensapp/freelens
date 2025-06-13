@@ -91,7 +91,7 @@ describe("LogSearch tests", () => {
     await user.click(await screen.findByPlaceholderText("Search..."));
     await user.keyboard("o");
     await user.click(await screen.findByText("keyboard_arrow_up"));
-    expect(scrollToOverlay).toBeCalled();
+    expect(scrollToOverlay).toHaveBeenCalled();
   });
 
   it("should scroll to new active overlay when clicking the next button", async () => {
@@ -105,7 +105,7 @@ describe("LogSearch tests", () => {
     await user.click(await screen.findByPlaceholderText("Search..."));
     await user.keyboard("o");
     await user.click(await screen.findByText("keyboard_arrow_down"));
-    expect(scrollToOverlay).toBeCalled();
+    expect(scrollToOverlay).toHaveBeenCalled();
   });
 
   it("next and previous should be disabled initially", async () => {
@@ -118,6 +118,6 @@ describe("LogSearch tests", () => {
 
     await user.click(await screen.findByText("keyboard_arrow_down"));
     await user.click(await screen.findByText("keyboard_arrow_up"));
-    expect(scrollToOverlay).not.toBeCalled();
+    expect(scrollToOverlay).not.toHaveBeenCalled();
   });
 });

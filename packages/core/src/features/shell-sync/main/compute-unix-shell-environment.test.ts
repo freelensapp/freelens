@@ -95,7 +95,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should spawn a process with the correct arguments", () => {
-      expect(spawnMock).toBeCalledWith(
+      expect(spawnMock).toHaveBeenCalledWith(
         shellPath,
         ["-l"],
         expect.objectContaining({
@@ -207,7 +207,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should spawn a process with the correct arguments", () => {
-      expect(spawnMock).toBeCalledWith(
+      expect(spawnMock).toHaveBeenCalledWith(
         shellPath,
         ["-l", "-i"],
         expect.objectContaining({
@@ -319,7 +319,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should spawn a process with the correct arguments", () => {
-      expect(spawnMock).toBeCalledWith(
+      expect(spawnMock).toHaveBeenCalledWith(
         shellPath,
         [
           "-l",
@@ -433,7 +433,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should spawn a process with the correct arguments", () => {
-      expect(spawnMock).toBeCalledWith(
+      expect(spawnMock).toHaveBeenCalledWith(
         shellPath,
         ["-Login"],
         expect.objectContaining({

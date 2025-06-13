@@ -10,33 +10,33 @@ import { HelmChart } from "../endpoints/helm-charts.api";
 describe("HelmChart tests", () => {
   describe("HelmChart.create() tests", () => {
     it("should throw on non-object input", () => {
-      expect(() => HelmChart.create("" as never)).toThrowError('"value" must be of type object');
-      expect(() => HelmChart.create(1 as never)).toThrowError('"value" must be of type object');
-      expect(() => HelmChart.create(false as never)).toThrowError('"value" must be of type object');
-      expect(() => HelmChart.create([] as never)).toThrowError('"value" must be of type object');
-      expect(() => HelmChart.create(Symbol() as never)).toThrowError('"value" must be of type object');
+      expect(() => HelmChart.create("" as never)).toThrow('"value" must be of type object');
+      expect(() => HelmChart.create(1 as never)).toThrow('"value" must be of type object');
+      expect(() => HelmChart.create(false as never)).toThrow('"value" must be of type object');
+      expect(() => HelmChart.create([] as never)).toThrow('"value" must be of type object');
+      expect(() => HelmChart.create(Symbol() as never)).toThrow('"value" must be of type object');
     });
 
     it("should throw on missing fields", () => {
-      expect(() => HelmChart.create({} as never)).toThrowError('"apiVersion" is required');
+      expect(() => HelmChart.create({} as never)).toThrow('"apiVersion" is required');
       expect(() =>
         HelmChart.create({
           apiVersion: "!",
         } as never),
-      ).toThrowError('"name" is required');
+      ).toThrow('"name" is required');
       expect(() =>
         HelmChart.create({
           apiVersion: "!",
           name: "!",
         } as never),
-      ).toThrowError('"version" is required');
+      ).toThrow('"version" is required');
       expect(() =>
         HelmChart.create({
           apiVersion: "!",
           name: "!",
           version: "!",
         } as never),
-      ).toThrowError('"repo" is required');
+      ).toThrow('"repo" is required');
       expect(() =>
         HelmChart.create({
           apiVersion: "!",
@@ -44,7 +44,7 @@ describe("HelmChart tests", () => {
           version: "!",
           repo: "!",
         } as never),
-      ).toThrowError('"created" is required');
+      ).toThrow('"created" is required');
     });
 
     it("should throw on fields being wrong type", () => {
@@ -57,7 +57,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: "!",
         } as never),
-      ).toThrowError('"apiVersion" must be a string');
+      ).toThrow('"apiVersion" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -67,7 +67,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: "!",
         } as never),
-      ).toThrowError('"name" must be a string');
+      ).toThrow('"name" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "!",
@@ -77,7 +77,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: 1,
         } as never),
-      ).toThrowError('"digest" must be a string');
+      ).toThrow('"digest" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -87,7 +87,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: "!",
         } as never),
-      ).toThrowError('"version" must be a string');
+      ).toThrow('"version" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -97,7 +97,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: "!",
         } as never),
-      ).toThrowError('"repo" must be a string');
+      ).toThrow('"repo" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -107,7 +107,7 @@ describe("HelmChart tests", () => {
           created: 1,
           digest: "a",
         } as never),
-      ).toThrowError('"created" must be a string');
+      ).toThrow('"created" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -117,7 +117,7 @@ describe("HelmChart tests", () => {
           created: "!",
           digest: 1,
         } as never),
-      ).toThrowError('"digest" must be a string');
+      ).toThrow('"digest" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -128,7 +128,7 @@ describe("HelmChart tests", () => {
           created: "!",
           kubeVersion: 1,
         } as never),
-      ).toThrowError('"kubeVersion" must be a string');
+      ).toThrow('"kubeVersion" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -139,7 +139,7 @@ describe("HelmChart tests", () => {
           created: "!",
           description: 1,
         } as never),
-      ).toThrowError('"description" must be a string');
+      ).toThrow('"description" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -150,7 +150,7 @@ describe("HelmChart tests", () => {
           created: "!",
           home: 1,
         } as never),
-      ).toThrowError('"home" must be a string');
+      ).toThrow('"home" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -161,7 +161,7 @@ describe("HelmChart tests", () => {
           created: "!",
           engine: 1,
         } as never),
-      ).toThrowError('"engine" must be a string');
+      ).toThrow('"engine" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -172,7 +172,7 @@ describe("HelmChart tests", () => {
           created: "!",
           icon: 1,
         } as never),
-      ).toThrowError('"icon" must be a string');
+      ).toThrow('"icon" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -183,7 +183,7 @@ describe("HelmChart tests", () => {
           created: "!",
           appVersion: 1,
         } as never),
-      ).toThrowError('"appVersion" must be a string');
+      ).toThrow('"appVersion" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -194,7 +194,7 @@ describe("HelmChart tests", () => {
           created: "!",
           tillerVersion: 1,
         } as never),
-      ).toThrowError('"tillerVersion" must be a string');
+      ).toThrow('"tillerVersion" must be a string');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -205,7 +205,7 @@ describe("HelmChart tests", () => {
           created: "!",
           deprecated: 1,
         } as never),
-      ).toThrowError('"deprecated" must be a boolean');
+      ).toThrow('"deprecated" must be a boolean');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -216,7 +216,7 @@ describe("HelmChart tests", () => {
           created: "!",
           keywords: 1,
         } as never),
-      ).toThrowError('"keywords" must be an array');
+      ).toThrow('"keywords" must be an array');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -227,7 +227,7 @@ describe("HelmChart tests", () => {
           created: "!",
           sources: 1,
         } as never),
-      ).toThrowError('"sources" must be an array');
+      ).toThrow('"sources" must be an array');
       expect(() =>
         HelmChart.create({
           apiVersion: "1",
@@ -238,7 +238,7 @@ describe("HelmChart tests", () => {
           created: "!",
           maintainers: 1,
         } as never),
-      ).toThrowError('"maintainers" must be an array');
+      ).toThrow('"maintainers" must be an array');
     });
 
     it("should filter non-string keywords", () => {

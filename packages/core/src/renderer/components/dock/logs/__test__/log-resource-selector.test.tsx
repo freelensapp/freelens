@@ -207,7 +207,7 @@ describe("<LogResourceSelector />", () => {
 
       selectEvent.openMenu(selector);
       await user.click(await findByText("deploymentPod2", { selector: ".pod-selector-menu .Select__option" }));
-      expect(renameTab).toBeCalledWith("foobar", "Pod deploymentPod2");
+      expect(renameTab).toHaveBeenCalledWith("foobar", "Pod deploymentPod2");
     });
   });
 });

@@ -48,7 +48,7 @@ describe("requestNamespaceListPermissions", () => {
     });
 
     it("should request the creation of a SelfSubjectRulesReview", () => {
-      expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+      expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
         anyObject({
           spec: {
             namespace: "irrelevant-namespace",

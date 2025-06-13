@@ -39,7 +39,7 @@ describe("quitting the app using application menu", () => {
       });
 
       it("requests quit of application", () => {
-        expect(requestQuitOfAppMock).toBeCalled();
+        expect(requestQuitOfAppMock).toHaveBeenCalled();
       });
     });
   });
