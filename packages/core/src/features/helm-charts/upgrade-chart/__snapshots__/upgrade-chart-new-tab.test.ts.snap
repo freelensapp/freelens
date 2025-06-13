@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navigating to the helm releases view renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -689,7 +689,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1459,7 +1459,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -2283,7 +2283,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -3105,7 +3105,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -4067,7 +4067,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -5031,7 +5031,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

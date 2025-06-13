@@ -147,7 +147,7 @@ describe("namespaces route when viewed with some subNamespaces", () => {
         });
 
         it("should not call requestDeleteSubNamespaceAnchor", () => {
-          expect(requestDeleteSubNamespaceAnchorMock).not.toBeCalled();
+          expect(requestDeleteSubNamespaceAnchorMock).not.toHaveBeenCalled();
         });
 
         it("should call requestDeleteNormalNamespace", () => {
@@ -213,7 +213,7 @@ describe("namespaces route when viewed with some subNamespaces", () => {
 
         it("should not call requestDeleteNormalNamespace", () => {
           // Assuming deleting a subnamespace anchor does not also delete a normal namespace directly in this step
-          expect(requestDeleteNormalNamespaceMock).not.toBeCalled();
+          expect(requestDeleteNormalNamespaceMock).not.toHaveBeenCalled();
         });
       });
     });

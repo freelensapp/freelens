@@ -111,7 +111,7 @@ describe("PrometheusHandler", () => {
         }
       });
 
-      expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrowError();
+      expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrow();
     });
 
     it.each([

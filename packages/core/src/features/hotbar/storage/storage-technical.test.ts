@@ -239,34 +239,32 @@ describe("Hotbars technical tests", () => {
         setAsActiveHotbar("hottest");
 
         activeHotbar.get()?.addEntity(testCluster, -1);
-        expect(loggerMock.error).toBeCalledWith(
+        expect(loggerMock.error).toHaveBeenCalledWith(
           "[HOTBAR]: cannot pin entity to hotbar outside of index range",
           anyObject(),
         );
 
         activeHotbar.get()?.addEntity(testCluster, 12);
-        expect(loggerMock.error).toBeCalledWith(
+        expect(loggerMock.error).toHaveBeenCalledWith(
           "[HOTBAR]: cannot pin entity to hotbar outside of index range",
           anyObject(),
         );
 
         activeHotbar.get()?.addEntity(testCluster, 13);
-        expect(loggerMock.error).toBeCalledWith(
+        expect(loggerMock.error).toHaveBeenCalledWith(
           "[HOTBAR]: cannot pin entity to hotbar outside of index range",
           anyObject(),
         );
       });
 
       it("throws an error if getId is invalid or returns not a string", () => {
-        expect(() => activeHotbar.get()?.addEntity({} as any)).toThrowError(TypeError);
-        expect(() => activeHotbar.get()?.addEntity({ getId: () => true } as any)).toThrowError(TypeError);
+        expect(() => activeHotbar.get()?.addEntity({} as any)).toThrow(TypeError);
+        expect(() => activeHotbar.get()?.addEntity({ getId: () => true } as any)).toThrow(TypeError);
       });
 
       it("throws an error if getName is invalid or returns not a string", () => {
-        expect(() => activeHotbar.get()?.addEntity({ getId: () => "" } as any)).toThrowError(TypeError);
-        expect(() => activeHotbar.get()?.addEntity({ getId: () => "", getName: () => 4 } as any)).toThrowError(
-          TypeError,
-        );
+        expect(() => activeHotbar.get()?.addEntity({ getId: () => "" } as any)).toThrow(TypeError);
+        expect(() => activeHotbar.get()?.addEntity({ getId: () => "", getName: () => 4 } as any)).toThrow(TypeError);
       });
 
       it("does nothing when item moved to same cell", () => {

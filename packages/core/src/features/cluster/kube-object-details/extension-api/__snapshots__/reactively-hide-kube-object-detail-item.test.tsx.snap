@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`reactively hide kube object detail item renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`reactively hide kube object detail item renders 1`] = `
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -605,7 +605,7 @@ exports[`reactively hide kube object detail item when the item is shown renders 
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

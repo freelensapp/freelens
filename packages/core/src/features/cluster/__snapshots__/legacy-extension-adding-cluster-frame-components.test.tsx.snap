@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`legacy extension adding cluster frame components given custom components for cluster view available renders 1`] = `
 <div>
@@ -21,7 +21,7 @@ exports[`legacy extension adding cluster frame components given custom component
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`show status for a kube object given application starts and in test page renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -411,7 +411,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -840,7 +840,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1269,7 +1269,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1658,7 +1658,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -2047,7 +2047,7 @@ exports[`show status for a kube object given application starts and in test page
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

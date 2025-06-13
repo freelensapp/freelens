@@ -122,11 +122,11 @@ describe("kubeconfig manager tests", () => {
     });
 
     it("should not call pathExists()", () => {
-      expect(pathExistsMock).not.toBeCalled();
+      expect(pathExistsMock).not.toHaveBeenCalled();
     });
 
     it("should call ensureServer on the cluster context", () => {
-      expect(ensureServerMock).toBeCalledTimes(1);
+      expect(ensureServerMock).toHaveBeenCalledTimes(1);
     });
 
     describe("when ensureServer resolves", () => {
@@ -191,7 +191,7 @@ describe("kubeconfig manager tests", () => {
             });
 
             it("should call deleteFile", () => {
-              expect(deleteFileMock).toBeCalledTimes(1);
+              expect(deleteFileMock).toHaveBeenCalledTimes(1);
             });
 
             describe("when deleteFile resolves", () => {
@@ -237,7 +237,7 @@ describe("kubeconfig manager tests", () => {
             });
 
             it("should call pathExists", () => {
-              expect(pathExistsMock).toBeCalledTimes(1);
+              expect(pathExistsMock).toHaveBeenCalledTimes(1);
             });
 
             describe("when pathExists resoves to true", () => {
@@ -256,7 +256,7 @@ describe("kubeconfig manager tests", () => {
               });
 
               it("should call ensureServer on the cluster context", () => {
-                expect(ensureServerMock).toBeCalledTimes(1);
+                expect(ensureServerMock).toHaveBeenCalledTimes(1);
               });
 
               describe("when ensureServer resolves", () => {

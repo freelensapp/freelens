@@ -41,7 +41,7 @@ describe("Crds", () => {
         },
       });
 
-      expect(() => crd.getVersion()).toThrowError("Failed to find a version for CustomResourceDefinition foo");
+      expect(() => crd.getVersion()).toThrow("Failed to find a version for CustomResourceDefinition foo");
     });
 
     it("should get the version that is both served and stored", () => {

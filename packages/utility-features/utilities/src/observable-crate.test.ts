@@ -92,8 +92,8 @@ describe("observable-crate", () => {
     });
 
     it("does not call any transition handler", () => {
-      expect(correctHandler).not.toBeCalled();
-      expect(incorrectHandler).not.toBeCalled();
+      expect(correctHandler).not.toHaveBeenCalled();
+      expect(incorrectHandler).not.toHaveBeenCalled();
     });
 
     describe("when setting a new value", () => {
@@ -102,11 +102,11 @@ describe("observable-crate", () => {
       });
 
       it("calls the associated transition handler", () => {
-        expect(correctHandler).toBeCalled();
+        expect(correctHandler).toHaveBeenCalled();
       });
 
       it("does not call any other transition handler", () => {
-        expect(incorrectHandler).not.toBeCalled();
+        expect(incorrectHandler).not.toHaveBeenCalled();
       });
 
       it("new value is available", () => {

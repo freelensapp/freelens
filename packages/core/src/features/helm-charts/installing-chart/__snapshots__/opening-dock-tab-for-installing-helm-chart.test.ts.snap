@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -526,7 +526,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1134,7 +1134,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1799,7 +1799,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -2612,7 +2612,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -3435,7 +3435,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -4248,7 +4248,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -5065,7 +5065,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -5888,7 +5888,7 @@ exports[`opening dock tab for installing helm chart given application is started
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

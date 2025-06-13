@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`cluster/namespaces - edit namespaces from previously opened tab given tab was previously opened, when application is started renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab given t
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -574,7 +574,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab given t
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

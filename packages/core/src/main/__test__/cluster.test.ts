@@ -96,11 +96,11 @@ describe("create clusters", () => {
   });
 
   it("reconnect should not throw if contextHandler is missing", () => {
-    expect(() => clusterConnection.reconnect()).not.toThrowError();
+    expect(() => clusterConnection.reconnect()).not.toThrow();
   });
 
   it("disconnect should not throw if contextHandler is missing", () => {
-    expect(() => clusterConnection.disconnect()).not.toThrowError();
+    expect(() => clusterConnection.disconnect()).not.toThrow();
   });
 
   it("activating cluster should try to connect to cluster and do a refresh", async () => {
@@ -109,7 +109,7 @@ describe("create clusters", () => {
 
     await clusterConnection.activate();
 
-    expect(clusterConnection.reconnect).toBeCalled();
-    expect(clusterConnection.refreshConnectionStatus).toBeCalled();
+    expect(clusterConnection.reconnect).toHaveBeenCalled();
+    expect(clusterConnection.refreshConnectionStatus).toHaveBeenCalled();
   });
 });

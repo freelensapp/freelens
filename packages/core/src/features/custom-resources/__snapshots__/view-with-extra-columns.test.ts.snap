@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Viewing Custom Resources with extra columns renders 1`] = `
 <div>
@@ -21,7 +21,7 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>

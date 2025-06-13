@@ -125,7 +125,7 @@ describe("pod-menu-item", () => {
     const menuItem = screen.getByTestId("menu-item-testid");
 
     fireEvent.click(menuItem);
-    expect(callback).toBeCalledWith(containers[0]);
+    expect(callback).toHaveBeenCalledWith(containers[0]);
   });
 
   it("given containers with more elements should render SubMenu", () => {
@@ -210,6 +210,6 @@ describe("pod-menu-item", () => {
     const menuItem = screen.getAllByTestId("menu-item-testid");
 
     fireEvent.click(menuItem[1]);
-    expect(callback).toBeCalledWith(containers[0]);
+    expect(callback).toHaveBeenCalledWith(containers[0]);
   });
 });
