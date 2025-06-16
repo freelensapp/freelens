@@ -10,7 +10,6 @@ import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di"
 import { getOrInsertWith } from "@freelensapp/utilities";
 import type { Options } from "conf";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { StaticThis } from "../common/utils/singleton";
 import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
@@ -30,21 +29,33 @@ export abstract class BaseExtensionStore<T extends object> {
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
    */
-  static createInstance<T, R extends any[]>(this: StaticThis<T, R>, ...args: R): T {
-    return getOrInsertWith(BaseExtensionStore.instances, this, () => new this(...args)) as T;
+  static createInstance<S extends object, T extends BaseExtensionStore<S>, R extends any[]>(...args: R): T {
+    return getOrInsertWith<object, T>(BaseExtensionStore.instances, this, () => new (this as any)(...args));
   }
 
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
    */
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict?: true): T;
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict: false): T | undefined;
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict = true): T | undefined {
+  static getInstance<T, R extends any[]>(strict?: true): T;
+  static getInstance<T, R extends any[]>(strict: false): T | undefined;
+  static getInstance<T, R extends any[]>(strict = true): T | undefined {
     if (!BaseExtensionStore.instances.has(this) && strict) {
       throw new TypeError(`instance of ${this.name} is not created`);
     }
 
     return BaseExtensionStore.instances.get(this) as T | undefined;
+  }
+
+  static getInstanceOrCreate<R extends any[]>(...args: R) {
+    try {
+      return this.getInstance();
+    } catch (e) {
+      if (e instanceof TypeError) {
+        return this.createInstance(...args);
+      } else {
+        throw e;
+      }
+    }
   }
 
   protected persistentStorage?: PersistentStorage;
