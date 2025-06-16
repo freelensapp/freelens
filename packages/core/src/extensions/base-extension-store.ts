@@ -10,7 +10,6 @@ import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di"
 import { getOrInsertWith } from "@freelensapp/utilities";
 import type { Options } from "conf";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { StaticThis } from "../common/utils/singleton";
 import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
