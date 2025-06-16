@@ -15,6 +15,7 @@ export { registerLensCore } from "./register-lens-core";
 export { React, ReactDOM, setStatusBarStatusInjectable };
 export * as Mobx from "mobx";
 export * as MobxReact from "mobx-react";
+export * as ReactJsxRuntime from "react/jsx-runtime";
 export * as ReactRouter from "react-router";
 export * as ReactRouterDom from "react-router-dom";
 export * as rendererExtensionApi from "../extensions/renderer-api";
