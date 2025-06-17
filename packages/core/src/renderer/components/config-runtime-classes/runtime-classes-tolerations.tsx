@@ -6,10 +6,11 @@
 
 import "./runtime-classes-tolerations.scss";
 
-import type { Toleration } from "@freelensapp/kube-object";
 import uniqueId from "lodash/uniqueId";
 import React from "react";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+
+import type { Toleration } from "@freelensapp/kube-object";
 
 export interface RuntimeClassTolerationsProps {
   tolerations: Toleration[];

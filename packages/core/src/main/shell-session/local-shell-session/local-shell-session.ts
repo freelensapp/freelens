@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { ShellSession } from "../shell-session";
+
 import type { GetBasenameOfPath } from "../../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../../common/path/join-paths.injectable";
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { ModifyTerminalShellEnv } from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
-import { ShellSession } from "../shell-session";
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
   readonly directoryForBinaries: string;

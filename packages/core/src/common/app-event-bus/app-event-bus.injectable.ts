@@ -6,6 +6,7 @@
 
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { AppEvent } from "./event-bus";
 
 const appEventBusInjectable = getInjectable({

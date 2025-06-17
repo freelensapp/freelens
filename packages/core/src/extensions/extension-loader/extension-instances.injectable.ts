@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
+import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 
 const extensionInstancesInjectable = getInjectable({
   id: "extension-instances",

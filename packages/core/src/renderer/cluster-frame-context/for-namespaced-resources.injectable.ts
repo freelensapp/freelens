@@ -9,8 +9,9 @@ import assert from "assert";
 import { computed } from "mobx";
 import selectedNamespacesStorageInjectable from "../../features/namespace-filtering/renderer/storage.injectable";
 import namespaceStoreInjectable from "../components/namespaces/store.injectable";
-import type { ClusterContext } from "./cluster-frame-context";
 import hostedClusterInjectable from "./hosted-cluster.injectable";
+
+import type { ClusterContext } from "./cluster-frame-context";
 
 const clusterFrameContextForNamespacedResourcesInjectable = getInjectable({
   id: "cluster-frame-context-for-namespaced-resources",

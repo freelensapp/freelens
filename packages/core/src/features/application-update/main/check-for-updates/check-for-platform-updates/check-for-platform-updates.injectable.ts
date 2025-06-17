@@ -6,8 +6,10 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { UpdateCheckResult } from "electron-updater";
 import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
+
+import type { UpdateCheckResult } from "electron-updater";
+
 import type { UpdateChannel } from "../../../common/update-channels";
 
 export type CheckForUpdatesResult =

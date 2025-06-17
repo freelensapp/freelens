@@ -5,12 +5,14 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { ServerOptions } from "http-proxy-node16";
-import type { Cluster } from "../../common/cluster/cluster";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+
+import type { ServerOptions } from "http-proxy-node16";
+
+import type { Cluster } from "../../common/cluster/cluster";
+import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 
 export interface KubeAuthProxyServer {
   getApiTarget(isLongRunningRequest?: boolean): Promise<ServerOptions>;

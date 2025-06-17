@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+export { CatalogCategory, CatalogEntity } from "../../common/catalog";
+
 export type {
   CatalogEntityActionContext,
   CatalogEntityAddMenu,
@@ -13,4 +15,3 @@ export type {
   CatalogEntityData,
   CatalogEntityKindData,
 } from "../../common/catalog";
-export { CatalogCategory, CatalogEntity } from "../../common/catalog";

@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApi } from "@freelensapp/kube-api";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiKubeInjectable from "./api-kube.injectable";
+
+import type { KubeJsonApi } from "@freelensapp/kube-api";
 
 export type ApiKubeGet = KubeJsonApi["get"];
 

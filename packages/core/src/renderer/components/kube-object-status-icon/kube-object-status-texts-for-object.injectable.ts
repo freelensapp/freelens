@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { conforms, eq, includes } from "lodash/fp";
 import { computed } from "mobx";
 import kubeObjectStatusTextsInjectable from "./kube-object-status-texts.injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
 
 const kubeObjectStatusTextsForObjectInjectable = getInjectable({
   id: "kube-object-status-texts-for-object",

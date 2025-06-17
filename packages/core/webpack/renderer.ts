@@ -8,11 +8,12 @@ import CircularDependencyPlugin from "circular-dependency-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
-import type webpack from "webpack";
-import type { WebpackPluginInstance } from "webpack";
 import { DefinePlugin, optimize } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { buildDir, isDevelopment } from "./vars";
+
+import type webpack from "webpack";
+import type { WebpackPluginInstance } from "webpack";
 
 export function webpackLensRenderer(): webpack.Configuration {
   return {

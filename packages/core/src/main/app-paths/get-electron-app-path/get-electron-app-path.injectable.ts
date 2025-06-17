@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { PathName } from "../../../common/app-paths/app-path-names";
 import electronAppInjectable from "../../electron-app/electron-app.injectable";
+
+import type { PathName } from "../../../common/app-paths/app-path-names";
 
 export type GetElectronAppPath = (name: PathName | "currentApp") => string;
 

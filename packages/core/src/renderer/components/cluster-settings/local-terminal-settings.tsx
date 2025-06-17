@@ -5,26 +5,28 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
-import type { ValidateDirectory } from "../../../common/fs/validate-directory.injectable";
 import validateDirectoryInjectable from "../../../common/fs/validate-directory.injectable";
-import type { ResolveTilde } from "../../../common/path/resolve-tilde.injectable";
 import resolveTildeInjectable from "../../../common/path/resolve-tilde.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import Gutter from "../gutter/gutter";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
-import type { LocalTerminalSettingPresenter } from "./local-terminal-setting-presenter.injectable";
 import localTerminalSettingPresenterInjectable from "./local-terminal-setting-presenter.injectable";
+
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { ValidateDirectory } from "../../../common/fs/validate-directory.injectable";
+import type { ResolveTilde } from "../../../common/path/resolve-tilde.injectable";
+import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
+import type { LocalTerminalSettingPresenter } from "./local-terminal-setting-presenter.injectable";
 
 export interface ClusterLocalTerminalSettingProps {
   cluster: Cluster;

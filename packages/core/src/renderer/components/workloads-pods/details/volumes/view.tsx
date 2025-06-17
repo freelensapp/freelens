@@ -5,11 +5,12 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { Pod } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../../../drawer";
 import { VolumeVariant } from "./variant";
+
+import type { Pod } from "@freelensapp/kube-object";
 
 export interface PodVolumesProps {
   pod: Pod;

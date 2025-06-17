@@ -13,8 +13,9 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { StorageClassStore } from "./store";
 import storageClassStoreInjectable from "./store.injectable";
+
+import type { StorageClassStore } from "./store";
 
 enum columnId {
   name = "name",

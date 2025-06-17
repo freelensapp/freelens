@@ -7,9 +7,10 @@
 import "./status-brick.scss";
 
 import { withTooltip } from "@freelensapp/tooltip";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import React from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface StatusBrickProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;

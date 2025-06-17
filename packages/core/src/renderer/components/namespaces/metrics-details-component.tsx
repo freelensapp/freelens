@@ -4,15 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Namespace } from "@freelensapp/kube-object";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { PodMetricInNamespaceData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-in-namespace.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import namespaceMetricsInjectable from "./metrics.injectable";
+
+import type { Namespace } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { PodMetricInNamespaceData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-in-namespace.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<PodMetricInNamespaceData>;

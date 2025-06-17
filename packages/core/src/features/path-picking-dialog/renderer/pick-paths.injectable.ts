@@ -6,8 +6,9 @@
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { PathPickOpts } from "../../../renderer/components/path-picker";
 import { openPathPickingDialogChannel } from "../common/channel";
+
+import type { PathPickOpts } from "../../../renderer/components/path-picker";
 
 export type OpenPathPickingDialog = (options: PathPickOpts) => Promise<void>;
 

@@ -7,12 +7,14 @@
 import "./release-details.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { ReleaseDetailsDrawer } from "./release-details-drawer";
-import type { TargetHelmRelease } from "./target-helm-release.injectable";
 import targetHelmReleaseInjectable from "./target-helm-release.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { TargetHelmRelease } from "./target-helm-release.injectable";
 
 interface Dependencies {
   targetRelease: IComputedValue<TargetHelmRelease | undefined>;

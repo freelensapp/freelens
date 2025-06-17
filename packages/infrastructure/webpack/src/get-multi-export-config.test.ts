@@ -1,9 +1,10 @@
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
 import { inspect } from "util";
-import type { Configuration } from "webpack";
 import { getMultiExportConfig } from "./get-multi-export-config";
 import { getReactConfigFor } from "./get-react-config-for";
+
+import type { Configuration } from "webpack";
 
 const resolvePathFake = path.posix.resolve;
 

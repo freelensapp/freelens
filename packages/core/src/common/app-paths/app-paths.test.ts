@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import directoryForIntegrationTestingInjectable from "../../main/app-paths/directory-for-integration-testing/directory-for-integration-testing.injectable";
 import getElectronAppPathInjectable from "../../main/app-paths/get-electron-app-path/get-electron-app-path.injectable";
 import setElectronAppPathInjectable from "../../main/app-paths/set-electron-app-path/set-electron-app-path.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import appPathsInjectable from "./app-paths.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { AppPaths } from "./app-path-injection-token";
 import type { PathName } from "./app-path-names";
-import appPathsInjectable from "./app-paths.injectable";
 
 describe("app-paths", () => {
   let builder: ApplicationBuilder;

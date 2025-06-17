@@ -5,12 +5,14 @@
  */
 
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { Disposer } from "@freelensapp/utilities";
-import type { CatalogCategory, CatalogEntity } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
-import type { CatalogEntityOnBeforeRun } from "../../renderer/api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
 import activeKubernetesClusterInjectable from "../../renderer/cluster-frame-context/active-kubernetes-cluster.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { CatalogCategory, CatalogEntity } from "../../common/catalog";
+import type { CatalogEntityOnBeforeRun } from "../../renderer/api/catalog/entity/registry";
 
 export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
 

@@ -4,23 +4,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-
 import { isEmpty, matches } from "lodash/fp";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
 import { extensionRegistratorInjectionToken } from "../../extensions/extension-loader/extension-registrator-injection-token";
-import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import { SiblingsInTabLayout } from "../components/layout/siblings-in-tab-layout";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import extensionPageParametersInjectable from "./extension-page-parameters.injectable";
 import { getExtensionRoutePath } from "./for-extension";
-import type { PageRegistration } from "./page-registration";
 import { routeSpecificComponentInjectionToken } from "./route-specific-component-injection-token";
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+
+import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
+import type { PageRegistration } from "./page-registration";
 
 const extensionRouteRegistratorInjectable = getInjectable({
   id: "extension-route-registrator",

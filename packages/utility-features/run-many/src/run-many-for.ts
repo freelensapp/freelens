@@ -5,11 +5,13 @@
  */
 
 import { getOrInsert } from "@freelensapp/utilities";
-import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import EventEmitter from "events";
+import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
+
+import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import type { Asyncify } from "type-fest";
 import type TypedEventEmitter from "typed-emitter";
-import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
+
 import type { Run, Runnable, RunnableWithId } from "./types";
 
 export type RunMany = <Param>(injectionToken: InjectionToken<Runnable<Param>, void>) => Asyncify<Run<Param>>;

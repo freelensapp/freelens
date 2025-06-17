@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestPersistentVolumeClaimMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-persistent-volume-claim-metrics.injectable";
+
+import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 
 const persistentVolumeClaimMetricsInjectable = getInjectable({
   id: "persistent-volume-claim-metrics",

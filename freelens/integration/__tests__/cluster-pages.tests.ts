@@ -7,7 +7,6 @@
 import { describeIf } from "@freelensapp/test-utils";
 import { pipeline } from "@ogre-tools/fp";
 import { groupBy, toPairs } from "lodash/fp";
-import type { Frame, Page } from "playwright";
 import { minikubeReady } from "../helpers/minikube";
 /*
   Cluster tests are run if there is a pre-existing minikube cluster. Before running cluster tests the TEST_NAMESPACE
@@ -16,6 +15,8 @@ import { minikubeReady } from "../helpers/minikube";
   cluster and vice versa.
 */
 import * as utils from "../helpers/utils";
+
+import type { Frame, Page } from "playwright";
 
 const TEST_NAMESPACE = "integration-tests";
 

@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PersistentVolume, StorageClass } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import persistentVolumeStoreInjectable from "./store.injectable";
+
+import type { PersistentVolume, StorageClass } from "@freelensapp/kube-object";
 
 export type GetPersistentVolumesByStorageClass = (obj: StorageClass) => PersistentVolume[];
 

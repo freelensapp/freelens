@@ -5,8 +5,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ReadStream } from "fs";
 import fsInjectable from "./fs.injectable";
+import type { ReadStream } from "fs";
 
 export interface CreateReadStreamOptions {
   mode?: number;

@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult } from "@freelensapp/utilities";
 import { isNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
-import type { ChildProcess } from "child_process";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
+import type { ChildProcess } from "child_process";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export type ExecFileWithInput = (options: {
   filePath: string;

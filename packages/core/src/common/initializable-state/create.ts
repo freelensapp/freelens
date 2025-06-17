@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Runnable } from "@freelensapp/run-many";
-import type { DiContainerForInjection, Injectable, InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import assert from "assert";
+
+import type { Runnable } from "@freelensapp/run-many";
+
+import type { DiContainerForInjection, Injectable, InjectionToken } from "@ogre-tools/injectable";
 
 export interface Initializable<T> {
   readonly rootId: string;

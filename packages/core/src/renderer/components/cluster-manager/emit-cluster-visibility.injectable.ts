@@ -7,6 +7,7 @@
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { clusterVisibilityChannel } from "../../../common/cluster/visibility-channel";
+
 import type { ClusterId } from "../../../common/cluster-types";
 
 const emitClusterVisibilityInjectable = getInjectable({

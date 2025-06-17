@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
-import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import countBy from "lodash/countBy";
 import { observable } from "mobx";
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
+import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
+import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
+
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export interface PodStoreDependencies extends KubeObjectStoreDependencies {
   readonly podMetricsApi: PodMetricsApi;

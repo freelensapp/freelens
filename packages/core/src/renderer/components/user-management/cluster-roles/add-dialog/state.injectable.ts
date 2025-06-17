@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IObservableValue } from "mobx";
 import { observable } from "mobx";
+
+import type { IObservableValue } from "mobx";
 
 export interface AddClusterRoleDialogState {
   isOpen: IObservableValue<boolean>;

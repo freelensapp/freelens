@@ -9,10 +9,11 @@ import { Icon } from "@freelensapp/icon";
 import { makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import { SubTitle } from "../layout/sub-title";
 import { onMultiSelectFor, Select } from "../select/select";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterMetricsSettingProps {
   cluster: Cluster;

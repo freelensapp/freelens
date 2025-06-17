@@ -4,25 +4,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
 import { anyObject } from "jest-mock-extended";
-import type { NavigateToHelmReleases } from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
-import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import requestHelmChartVersionsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
-import type { RequestHelmReleaseConfiguration } from "../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import requestHelmReleaseConfigurationInjectable from "../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
-import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import listClusterHelmReleasesInjectable from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { NavigateToHelmReleases } from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+import type { RequestHelmReleaseConfiguration } from "../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
+import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("New Upgrade Helm Chart Dock Tab", () => {
   let builder: ApplicationBuilder;

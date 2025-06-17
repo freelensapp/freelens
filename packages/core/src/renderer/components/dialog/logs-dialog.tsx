@@ -8,15 +8,17 @@ import "./logs-dialog.scss";
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { clipboard } from "electron";
 import { kebabCase } from "lodash/fp";
 import React from "react";
-import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";
+
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { DialogProps } from "../dialog";
 
 export interface LogsDialogProps extends DialogProps {
   title: string;

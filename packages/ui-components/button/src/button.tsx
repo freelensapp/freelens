@@ -5,6 +5,7 @@
  */
 
 import "./button.scss";
+
 import { withTooltip } from "@freelensapp/tooltip";
 import { cssNames, type StrictReactNode } from "@freelensapp/utilities";
 import React, { type ButtonHTMLAttributes } from "react";

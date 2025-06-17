@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CopyOptions, EnsureDirOptions, JsonReadOptions } from "fs-extra";
 import fse from "fs-extra";
+
+import type { CopyOptions, EnsureDirOptions, JsonReadOptions } from "fs-extra";
 
 /**
  * NOTE: Add corresponding override of this injectable in `src/test-utils/override-fs-with-fakes.ts`

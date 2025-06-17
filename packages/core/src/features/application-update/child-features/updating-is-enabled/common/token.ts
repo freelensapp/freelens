@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RequestChannel } from "@freelensapp/messaging";
 import { getInitializable } from "../../../../../common/initializable-state/create";
+
+import type { RequestChannel } from "@freelensapp/messaging";
 
 export const updatingIsEnabledChannel: RequestChannel<void, boolean> = {
   id: "updating-is-enabled",

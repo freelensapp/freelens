@@ -8,8 +8,9 @@ import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import { addHelmRepositoryChannel } from "../../../../../../../common/helm/add-helm-repository-channel";
-import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 import activeHelmRepositoriesInjectable from "../../active-helm-repositories.injectable";
+
+import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
 const addHelmRepositoryInjectable = getInjectable({
   id: "add-public-helm-repository",

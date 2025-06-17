@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import lensProxyCertificateInjectable from "../../../../../common/certificate/lens-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import setupLensProxyCertificateInjectable from "../../../../start-main-application/runnables/setup-lens-proxy-certificate.injectable";
 import sessionCertificateVerifierInjectable, { ChromiumNetError } from "../session-certificate-verifier.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 const externalCertificate = `-----BEGIN CERTIFICATE-----
 MIIFzzCCBLegAwIBAgIQByL1wEn7yGRLqHZvmBzvpTANBgkqhkiG9w0BAQsFADA8

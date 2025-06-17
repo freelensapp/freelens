@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
 import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 
 const releaseRollbackDialogStateInjectable = getInjectable({

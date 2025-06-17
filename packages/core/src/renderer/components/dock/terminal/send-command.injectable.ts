@@ -11,9 +11,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { when } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
 import selectDockTabInjectable from "../dock/select-dock-tab.injectable";
-import type { TabId } from "../dock/store";
 import createTerminalTabInjectable from "./create-terminal-tab.injectable";
 import getTerminalApiInjectable from "./get-terminal-api.injectable";
+
+import type { TabId } from "../dock/store";
 
 export interface SendCommandOptions {
   /**

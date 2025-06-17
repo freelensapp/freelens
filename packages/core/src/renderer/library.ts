@@ -5,6 +5,7 @@
  */
 
 import "./components/app.scss";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import setStatusBarStatusInjectable from "./components/status-bar/set-status-bar-status.injectable";
@@ -13,6 +14,7 @@ import setStatusBarStatusInjectable from "./components/status-bar/set-status-bar
 export { nodeEnvInjectionToken } from "../common/vars/node-env-injection-token";
 export { registerLensCore } from "./register-lens-core";
 export { React, ReactDOM, setStatusBarStatusInjectable };
+
 export * as Mobx from "mobx";
 export * as MobxReact from "mobx-react";
 export * as ReactJsxRuntime from "react/jsx-runtime";

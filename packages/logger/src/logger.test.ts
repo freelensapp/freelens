@@ -3,7 +3,6 @@ import { getFeature } from "@freelensapp/feature-core/src/feature";
 import { createContainer, getInjectable } from "@ogre-tools/injectable";
 import TransportStream from "winston-transport";
 import { loggerFeature } from "./feature";
-
 import {
   logDebugInjectionToken,
   logErrorInjectionToken,

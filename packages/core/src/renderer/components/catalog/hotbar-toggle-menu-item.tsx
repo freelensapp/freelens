@@ -4,14 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import React, { useState } from "react";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
+import { MenuItem } from "../menu";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
+
 import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
 import type { CatalogEntity } from "../../api/catalog-entity";
-import { MenuItem } from "../menu";
 
 interface Dependencies {
   activeHotbar: IComputedValue<Hotbar | undefined>;

@@ -7,9 +7,10 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ServerResponse } from "http";
-import type { LensApiRequest, Route } from "./route";
 import { contentTypes } from "./router-content-types";
+import type { ServerResponse } from "http";
+
+import type { LensApiRequest, Route } from "./route";
 
 export type RouteHandler = (request: LensApiRequest<string>, response: ServerResponse) => Promise<void>;
 export type CreateHandlerForRoute = (route: Route<unknown, string>) => RouteHandler;

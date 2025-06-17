@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Pod } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import podStoreInjectable from "./store.injectable";
+
+import type { Pod } from "@freelensapp/kube-object";
 
 export type GetPodById = (id: string) => Pod | undefined;
 

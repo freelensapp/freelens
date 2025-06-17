@@ -6,9 +6,10 @@
 
 import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
 import { MESSAGE } from "triple-beam";
-import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
 import { ipcFileLoggerChannel } from "../common/ipc-file-logger-channel";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
+
+import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
 
 /**
  * Winston uses symbol property for the actual message.

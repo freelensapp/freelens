@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, NamespaceScopedMetadata } from "../api-types";
 import type { RoleRef } from "../types/role-ref";
 import type { Subject } from "../types/subject";
 

@@ -5,8 +5,9 @@
  */
 
 import React from "react";
-import type { CatalogCategorySpec } from "../catalog";
 import { CatalogCategory } from "../catalog";
+
+import type { CatalogCategorySpec } from "../catalog";
 
 class TestCatalogCategoryWithoutBadge extends CatalogCategory {
   public readonly apiVersion = "catalog.k8slens.dev/v1alpha1";

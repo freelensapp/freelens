@@ -7,8 +7,9 @@
 import "./table-row.scss";
 
 import { cssNames } from "@freelensapp/utilities";
-import type { CSSProperties } from "react";
 import React from "react";
+
+import type { CSSProperties } from "react";
 
 export type TableRowElem<Item> = React.ReactElement<TableRowProps<Item>>;
 

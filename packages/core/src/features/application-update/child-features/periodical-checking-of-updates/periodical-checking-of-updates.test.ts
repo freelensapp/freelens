@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
 import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
 import processCheckingForUpdatesInjectable from "../../main/process-checking-for-updates.injectable";
 import periodicalCheckForUpdatesInjectable from "./main/periodical-check-for-updates.injectable";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 
 const ENOUGH_TIME = 1000 * 60 * 60 * 2;
 

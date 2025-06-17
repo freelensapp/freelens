@@ -4,10 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import fse from "fs-extra";
-import type { SetRequired } from "type-fest";
 import { TypedRegEx } from "typed-regex";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { SetRequired } from "type-fest";
+
 import type { InputProps } from "./input";
 
 export type InputValidationResult<IsAsync extends boolean> = IsAsync extends true ? Promise<void> : boolean;

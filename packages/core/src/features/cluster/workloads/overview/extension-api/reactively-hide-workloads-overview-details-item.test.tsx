@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";
 import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
-import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+
+import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 
 describe("reactively hide workloads overview details item", () => {
   let builder: ApplicationBuilder;

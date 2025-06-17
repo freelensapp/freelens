@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import React from "react";
 import { Switch } from "./switch";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface SwitcherProps {
   disabled?: boolean;

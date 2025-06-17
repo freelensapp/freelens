@@ -3,6 +3,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
@@ -11,17 +16,18 @@ import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
-import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import { Input, InputValidators } from "../input";
 import { unionInputValidatorsAsync } from "../input/input_validators";
 import { SubTitle } from "../layout/sub-title";
 import styles from "./install.module.scss";
-import type { InstallExtensionFromInput } from "./install-extension-from-input.injectable";
 import installExtensionFromInputInjectable from "./install-extension-from-input.injectable";
-import type { InstallFromSelectFileDialog } from "./install-from-select-file-dialog.injectable";
 import installFromSelectFileDialogInjectable from "./install-from-select-file-dialog.injectable";
 import { supportedExtensionFormats } from "./supported-extension-formats";
+
+import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { InstallExtensionFromInput } from "./install-extension-from-input.injectable";
+import type { InstallFromSelectFileDialog } from "./install-from-select-file-dialog.injectable";
 
 interface Dependencies {
   installState: ExtensionInstallationStateStore;

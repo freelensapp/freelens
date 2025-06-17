@@ -1,5 +1,6 @@
-import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export interface RequestChannel<Request, Response> {
   id: string;

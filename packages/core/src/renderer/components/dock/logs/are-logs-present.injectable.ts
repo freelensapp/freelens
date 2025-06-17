@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import logStoreInjectable from "./store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const areLogsPresentInjectable = getInjectable({
   id: "are-logs-present",

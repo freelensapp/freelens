@@ -5,8 +5,6 @@
  */
 
 import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
-import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
@@ -16,12 +14,16 @@ import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { createPatch } from "rfc6902";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
-import type { EditingResource, EditResourceTabStore } from "../store";
 import editResourceTabStoreInjectable from "../store.injectable";
-import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
-import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
+
+import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { EditingResource, EditResourceTabStore } from "../store";
+import type { RequestKubeResource } from "./request-kube-resource.injectable";
+import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 
 const editResourceModelInjectable = getInjectable({
   id: "edit-resource-model",

@@ -13,11 +13,12 @@ import { KubeObjectAge } from "../../kube-object/age";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
-import type { OpenAddClusterRoleDialog } from "./add-dialog/open.injectable";
 import openAddClusterRoleDialogInjectable from "./add-dialog/open.injectable";
 import { AddClusterRoleDialog } from "./add-dialog/view";
-import type { ClusterRoleStore } from "./store";
 import clusterRoleStoreInjectable from "./store.injectable";
+
+import type { OpenAddClusterRoleDialog } from "./add-dialog/open.injectable";
+import type { ClusterRoleStore } from "./store";
 
 enum columnId {
   name = "name",

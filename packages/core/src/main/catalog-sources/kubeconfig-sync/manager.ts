@@ -4,11 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { iter } from "@freelensapp/utilities";
+import { action, computed, makeObservable, observable, observe } from "mobx";
+
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
-import { iter } from "@freelensapp/utilities";
+
 import type { IComputedValue, ObservableMap } from "mobx";
-import { action, computed, makeObservable, observable, observe } from "mobx";
+
 import type { CatalogEntity } from "../../../common/catalog";
 import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
 import type { WatchKubeconfigFileChanges } from "./watch-file-changes.injectable";

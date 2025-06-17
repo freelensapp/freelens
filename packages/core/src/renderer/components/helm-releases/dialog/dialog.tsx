@@ -6,27 +6,30 @@
 
 import "./dialog.scss";
 
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import orderBy from "lodash/orderBy";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import requestHelmReleaseHistoryInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
+import { Dialog } from "../../dialog";
+import { Select } from "../../select";
+import { Wizard, WizardStep } from "../../wizard";
+import rollbackReleaseInjectable from "../rollback-release/rollback-release.injectable";
+import releaseRollbackDialogStateInjectable from "./state.injectable";
+
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { IObservableValue } from "mobx";
+
 import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 import type {
   HelmReleaseRevision,
   RequestHelmReleaseHistory,
 } from "../../../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
-import requestHelmReleaseHistoryInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
 import type { DialogProps } from "../../dialog";
-import { Dialog } from "../../dialog";
-import { Select } from "../../select";
-import { Wizard, WizardStep } from "../../wizard";
 import type { RollbackRelease } from "../rollback-release/rollback-release.injectable";
-import rollbackReleaseInjectable from "../rollback-release/rollback-release.injectable";
-import releaseRollbackDialogStateInjectable from "./state.injectable";
 
 export interface ReleaseRollbackDialogProps extends DialogProps {}
 

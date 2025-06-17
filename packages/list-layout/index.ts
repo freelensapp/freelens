@@ -5,6 +5,8 @@
  */
 
 export { kubeObjectListLayoutColumnInjectionToken } from "./src/general-kube-column-token";
+export { podListLayoutColumnInjectionToken } from "./src/pod-list-layout-token";
+
 export type {
   BaseKubeObjectListLayoutColumn,
   GeneralKubeObjectListLayoutColumn,
@@ -20,4 +22,3 @@ export type {
   TableSortCallbacks,
   TableSortParams,
 } from "./src/list-layout-column";
-export { podListLayoutColumnInjectionToken } from "./src/pod-list-layout-token";

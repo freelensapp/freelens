@@ -7,38 +7,41 @@
 import "./view.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { ClusterRole, ServiceAccount, Subject } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { TooltipPosition } from "@freelensapp/tooltip";
 import { iter, ObservableHashSet } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IObservableValue } from "mobx";
 import { action, computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { EditableList } from "../../../editable-list";
 import { Input } from "../../../input";
-import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../../layout/sub-title";
 import { onMultiSelectFor, Select } from "../../../select";
 import { Wizard, WizardStep } from "../../../wizard";
-import type { ClusterRoleStore } from "../../cluster-roles/store";
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";
-import type { ServiceAccountStore } from "../../service-accounts/store";
 import serviceAccountStoreInjectable from "../../service-accounts/store.injectable";
-import type { ClusterRoleBindingStore } from "../store";
 import clusterRoleBindingStoreInjectable from "../store.injectable";
-import type { CloseClusterRoleBindingDialog } from "./close.injectable";
 import closeClusterRoleBindingDialogInjectable from "./close.injectable";
 import editClusterRoleBindingNameStateInjectable from "./edit-name-state.injectable";
-import type { OpenClusterRoleBindingDialog } from "./open.injectable";
 import openClusterRoleBindingDialogInjectable from "./open.injectable";
-import type { ClusterRoleBindingDialogState } from "./state.injectable";
 import clusterRoleBindingDialogStateInjectable from "./state.injectable";
+
+import type { ClusterRole, ServiceAccount, Subject } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { IObservableValue } from "mobx";
+
+import type { DialogProps } from "../../../dialog";
+import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
+import type { ClusterRoleStore } from "../../cluster-roles/store";
+import type { ServiceAccountStore } from "../../service-accounts/store";
+import type { ClusterRoleBindingStore } from "../store";
+import type { CloseClusterRoleBindingDialog } from "./close.injectable";
+import type { OpenClusterRoleBindingDialog } from "./open.injectable";
+import type { ClusterRoleBindingDialogState } from "./state.injectable";
 
 export interface ClusterRoleBindingDialogProps extends Partial<DialogProps> {}
 

@@ -6,10 +6,12 @@
 
 import "./details.scss";
 
-import type { Role } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../../drawer";
+
+import type { Role } from "@freelensapp/kube-object";
+
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
 
 export interface RoleDetailsProps extends KubeObjectDetailsProps<Role> {}

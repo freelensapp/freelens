@@ -5,10 +5,12 @@
  */
 
 import { type RenderResult } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("hovering hotbar menu tests", () => {
   let builder: ApplicationBuilder;

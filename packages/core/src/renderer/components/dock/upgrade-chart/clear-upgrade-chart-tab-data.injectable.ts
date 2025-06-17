@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import upgradeChartTabStoreInjectable from "./store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const clearUpgradeChartTabDataInjectable = getInjectable({
   id: "clear-upgrade-chart-tab-data",

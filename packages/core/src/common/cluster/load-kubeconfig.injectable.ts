@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { ConfigResult } from "../kube-helpers";
 import loadConfigFromFileInjectable from "../kube-helpers/load-config-from-file.injectable";
+
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
+import type { ConfigResult } from "../kube-helpers";
 import type { Cluster } from "./cluster";
 
 export interface LoadKubeconfig {

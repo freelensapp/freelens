@@ -6,20 +6,23 @@
 
 import "./drawer.scss";
 
-import type { AnimateName } from "@freelensapp/animate";
 import { Animate } from "@freelensapp/animate";
 import { Icon } from "@freelensapp/icon";
 import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelensapp/resizing-anchor";
 import { historyInjectionToken } from "@freelensapp/routing";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { clipboard } from "electron";
-import type { History } from "history";
 import React from "react";
 import { createPortal } from "react-dom";
-import type { StorageLayer } from "../../utils/storage-helper";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
+
+import type { AnimateName } from "@freelensapp/animate";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { History } from "history";
+
+import type { StorageLayer } from "../../utils/storage-helper";
 
 export type DrawerPosition = "top" | "left" | "right" | "bottom";
 

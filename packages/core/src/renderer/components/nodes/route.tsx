@@ -5,7 +5,7 @@
  */
 
 import "./nodes.scss";
-import type { Node } from "@freelensapp/kube-object";
+
 import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cssNames, interval } from "@freelensapp/utilities";
@@ -15,21 +15,24 @@ import upperFirst from "lodash/upperFirst";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type {
-  NodeMetricData,
-  RequestAllNodeMetrics,
-} from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
 import { Badge } from "../badge/badge";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
 import { LineProgress } from "../line-progress";
-import type { NodeStore } from "./store";
 import nodeStoreInjectable from "./store.injectable";
+
+import type { Node } from "@freelensapp/kube-object";
+
+import type {
+  NodeMetricData,
+  RequestAllNodeMetrics,
+} from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
+import type { EventStore } from "../events/store";
+import type { NodeStore } from "./store";
 
 enum columnId {
   name = "name",

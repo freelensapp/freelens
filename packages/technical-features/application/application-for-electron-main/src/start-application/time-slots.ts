@@ -1,5 +1,6 @@
-import type { RunnableSync } from "@freelensapp/run-many";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { RunnableSync } from "@freelensapp/run-many";
 
 export const beforeAnythingInjectionToken = getInjectionToken<RunnableSync>({
   id: "before-anything",

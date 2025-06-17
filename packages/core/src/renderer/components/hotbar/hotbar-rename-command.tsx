@@ -5,21 +5,23 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
 import computeHotbarDisplayLabelInjectable from "../../../features/hotbar/storage/common/compute-display-label.injectable";
-import type { GetHotbarById } from "../../../features/hotbar/storage/common/get-by-id.injectable";
 import getHotbarByIdInjectable from "../../../features/hotbar/storage/common/get-by-id.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
 import hotbarsInjectable from "../../../features/hotbar/storage/common/hotbars.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
-import type { InputValidator } from "../input";
 import { Input } from "../input";
 import uniqueHotbarNameInjectable from "../input/validators/unique-hotbar-name.injectable";
 import { Select } from "../select";
+
+import type { IComputedValue } from "mobx";
+
+import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
+import type { GetHotbarById } from "../../../features/hotbar/storage/common/get-by-id.injectable";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { InputValidator } from "../input";
 
 interface Dependencies {
   closeCommandOverlay: () => void;

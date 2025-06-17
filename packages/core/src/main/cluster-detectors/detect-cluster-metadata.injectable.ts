@@ -9,10 +9,11 @@ import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { groupBy, reduce } from "lodash";
 import { filter, map } from "lodash/fp";
+import { clusterMetadataDetectorInjectionToken } from "./token";
+
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterMetadata } from "../../common/cluster-types";
 import type { ClusterDetectionResult, ClusterMetadataDetector } from "./token";
-import { clusterMetadataDetectorInjectionToken } from "./token";
 
 export type DetectClusterMetadata = (cluster: Cluster) => Promise<ClusterMetadata>;
 

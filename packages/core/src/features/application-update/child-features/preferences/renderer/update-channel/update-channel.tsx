@@ -11,9 +11,10 @@ import { observer } from "mobx-react";
 import React from "react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
-import type { SelectedUpdateChannel } from "../../../../common/selected-update-channel.injectable";
 import selectedUpdateChannelInjectable from "../../../../common/selected-update-channel.injectable";
 import { updateChannels } from "../../../../common/update-channels";
+
+import type { SelectedUpdateChannel } from "../../../../common/selected-update-channel.injectable";
 
 interface Dependencies {
   selectedUpdateChannel: SelectedUpdateChannel;

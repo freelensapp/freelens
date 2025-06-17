@@ -5,8 +5,9 @@
  */
 
 import { getGlobalOverride } from "@freelensapp/test-utils";
-import type { BrowserWindow, Session, WebContents } from "electron";
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
+
+import type { BrowserWindow, Session, WebContents } from "electron";
 
 export default getGlobalOverride(
   resolveSystemProxyWindowInjectable,

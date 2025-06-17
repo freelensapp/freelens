@@ -7,7 +7,6 @@
  */
 
 import arg from "arg";
-import type { SingleBar } from "cli-progress";
 import { MultiBar } from "cli-progress";
 import { constants, type WriteStream } from "fs";
 import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
@@ -19,6 +18,8 @@ import { pipeline as _pipeline, Transform, Writable } from "stream";
 import { extract } from "tar-stream";
 import { promisify } from "util";
 import z from "zod";
+
+import type { SingleBar } from "cli-progress";
 
 const options = arg({
   "--package": String,

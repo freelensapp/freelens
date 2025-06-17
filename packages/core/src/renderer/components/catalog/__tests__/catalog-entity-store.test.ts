@@ -5,16 +5,18 @@
  */
 
 import { noop } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { CatalogCategoryMetadata, CatalogCategorySpec } from "../../../../common/catalog";
 import { CatalogEntity, categoryVersion } from "../../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../../common/catalog/category-registry.injectable";
-import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import { CatalogCategory } from "../../../api/catalog-entity";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { CatalogEntityStore } from "../catalog-entity-store.injectable";
 import catalogEntityStoreInjectable from "../catalog-entity-store.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { CatalogCategoryMetadata, CatalogCategorySpec } from "../../../../common/catalog";
+import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
+import type { CatalogEntityStore } from "../catalog-entity-store.injectable";
 
 class TestEntityOne extends CatalogEntity {
   public static readonly apiVersion: string = "entity.k8slens.dev/v1alpha1";

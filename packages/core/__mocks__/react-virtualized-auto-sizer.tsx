@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+
 import type { Size } from "react-virtualized-auto-sizer";
 
 export default ({ children }: { children: (size: Size) => React.ReactNode }) => {

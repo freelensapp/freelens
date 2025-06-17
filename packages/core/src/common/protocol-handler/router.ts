@@ -4,19 +4,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { countBy } from "lodash";
 import { when } from "mobx";
 import { pathToRegexp } from "path-to-regexp";
-import type { match } from "react-router";
 import { matchPath } from "react-router";
+import { RoutingError, RoutingErrorType } from "./error";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { match } from "react-router";
 import type Url from "url-parse";
+
 import type { ExtensionLoader } from "../../extensions/extension-loader";
 import type { LensExtension } from "../../extensions/lens-extension";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
-import { RoutingError, RoutingErrorType } from "./error";
 import type { RouteHandler, RouteParams } from "./registration";
 
 // IPC channel for protocol actions. Main broadcasts the open-url events to this channel.

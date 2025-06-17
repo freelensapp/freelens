@@ -6,11 +6,12 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
 import getPrometheusProviderByKindInjectable from "../../prometheus/get-by-kind.injectable";
 import prometheusProvidersInjectable from "../../prometheus/providers.injectable";
 import loadProxyKubeconfigInjectable from "../load-proxy-kubeconfig.injectable";
 import { createClusterPrometheusHandler } from "./prometheus-handler";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 const prometheusHandlerInjectable = getInjectable({
   id: "prometheus-handler",

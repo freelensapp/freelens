@@ -9,12 +9,13 @@ import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, comparer } from "mobx";
 import { Cluster } from "../../../../common/cluster/cluster";
-import type { ClusterId, ClusterModel } from "../../../../common/cluster-types";
 import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../../persistent-storage/common/migrations.injectable";
 import { clusterStoreMigrationInjectionToken } from "./migration-token";
 import clustersStateInjectable from "./state.injectable";
+
+import type { ClusterId, ClusterModel } from "../../../../common/cluster-types";
 
 export interface ClusterStoreModel {
   clusters?: ClusterModel[];

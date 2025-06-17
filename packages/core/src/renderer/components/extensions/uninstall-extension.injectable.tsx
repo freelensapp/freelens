@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -15,6 +14,8 @@ import extensionInstallationStateStoreInjectable from "../../../extensions/exten
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import { extensionDisplayName } from "../../../extensions/lens-extension";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
+
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 
 const uninstallExtensionInjectable = getInjectable({
   id: "uninstall-extension",

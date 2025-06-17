@@ -8,26 +8,28 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import type { PageParam } from "../../navigation/page-param";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { SubHeader } from "../layout/sub-header";
-import type { NodeStore } from "../nodes/store";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import styles from "./cluster-issues.module.scss";
+
+import type { IComputedValue } from "mobx";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { PageParam } from "../../navigation/page-param";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { EventStore } from "../events/store";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
+import type { NodeStore } from "../nodes/store";
 
 export interface ClusterIssuesProps {
   className?: string;

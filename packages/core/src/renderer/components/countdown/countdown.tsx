@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
-import type { HTMLAttributes } from "react";
 import React from "react";
+
+import type { IComputedValue } from "mobx";
+import type { HTMLAttributes } from "react";
 
 interface CountdownProps extends HTMLAttributes<HTMLSpanElement> {
   secondsTill: IComputedValue<number>;

@@ -10,8 +10,9 @@ import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { MutatingWebhookConfigurationStore } from "./mutating-webhook-configuration-store";
 import mutatingWebhookConfigurationsStoreInjectable from "./mutating-webhook-configuration-store.injectable";
+
+import type { MutatingWebhookConfigurationStore } from "./mutating-webhook-configuration-store";
 
 enum columnId {
   name = "name",

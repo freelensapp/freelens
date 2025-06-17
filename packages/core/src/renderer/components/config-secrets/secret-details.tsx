@@ -9,9 +9,7 @@ import "./secret-details.scss";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import { Secret } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -20,9 +18,13 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
+import secretStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { SecretStore } from "./store";
-import secretStoreInjectable from "./store.injectable";
 
 export interface SecretDetailsProps extends KubeObjectDetailsProps<Secret> {}
 

@@ -7,8 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { CronJobMenu } from "../../workloads-cronjobs/cron-job-menu";
-import type { KubeObjectMenuItemComponent } from "../kube-object-menu-item-injection-token";
 import { kubeObjectMenuItemInjectionToken } from "../kube-object-menu-item-injection-token";
+
+import type { KubeObjectMenuItemComponent } from "../kube-object-menu-item-injection-token";
 
 const cronJobMenuInjectable = getInjectable({
   id: "cron-job-menu-kube-object-menu",

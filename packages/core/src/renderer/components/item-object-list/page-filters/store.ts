@@ -6,6 +6,7 @@
 
 import autoBind from "auto-bind";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
+
 import type { PageParam } from "../../../navigation/page-param";
 
 export enum FilterType {

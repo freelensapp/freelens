@@ -8,11 +8,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { action, runInAction } from "mobx";
 import { getCurrentDateTime } from "../../../../common/utils/date/get-current-date-time";
 import discoveredUpdateVersionInjectable from "../../common/discovered-update-version.injectable";
-import type { ProgressOfDownload } from "../../common/progress-of-update-download.injectable";
 import progressOfUpdateDownloadInjectable from "../../common/progress-of-update-download.injectable";
 import updateDownloadedDateTimeInjectable from "../../common/update-downloaded-date-time.injectable";
 import updateIsBeingDownloadedInjectable from "../../common/update-is-being-downloaded.injectable";
 import downloadPlatformUpdateInjectable from "./download-platform-update/download-platform-update.injectable";
+
+import type { ProgressOfDownload } from "../../common/progress-of-update-download.injectable";
 
 const downloadUpdateInjectable = getInjectable({
   id: "download-update",

@@ -3,15 +3,21 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { BadgeProps } from "../badge";
 import { Badge } from "../badge";
 import styles from "./namespace-select-badge.module.scss";
-import type { FilterByNamespace } from "./namespace-select-filter-model/filter-by-namespace.injectable";
 import filterByNamespaceInjectable from "./namespace-select-filter-model/filter-by-namespace.injectable";
+
+import type { BadgeProps } from "../badge";
+import type { FilterByNamespace } from "./namespace-select-filter-model/filter-by-namespace.injectable";
 
 export interface NamespaceSelectBadgeProps extends BadgeProps {
   namespace: string;

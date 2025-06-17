@@ -8,13 +8,6 @@
 //       It is here to consolidate the common parts which are exported to `Main`
 //       and to `Renderer`
 
-import type { JsonApiConfig } from "@freelensapp/json-api";
-import type {
-  DerivedKubeApiOptions,
-  KubeJsonApi as InternalKubeJsonApi,
-  KubeApiDependencies,
-  KubeApiOptions,
-} from "@freelensapp/kube-api";
 import {
   DeploymentApi as InternalDeploymentApi,
   IngressApi as InternalIngressApi,
@@ -24,7 +17,6 @@ import {
   PodApi,
 } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import {
   asLegacyGlobalForExtensionApi,
   asLegacyGlobalFunctionForExtensionApi,
@@ -36,19 +28,29 @@ import {
   logInfoInjectionToken,
   logWarningInjectionToken,
 } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
 import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
-import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import createKubeApiForClusterInjectable from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
-import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
-import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+
+import type { JsonApiConfig } from "@freelensapp/json-api";
+import type {
+  DerivedKubeApiOptions,
+  KubeJsonApi as InternalKubeJsonApi,
+  KubeApiDependencies,
+  KubeApiOptions,
+} from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import type { RequestInit } from "@freelensapp/node-fetch";
+
+import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
+import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { KubernetesCluster } from "./catalog";
 
 export const apiManager = asLegacyGlobalForExtensionApi(apiManagerInjectable);
@@ -137,17 +139,6 @@ export interface IKubeApiCluster {
   };
 }
 
-export type {
-  BaseKubeJsonApiObjectMetadata,
-  ClusterScopedMetadata,
-  KubeJsonApiData,
-  KubeJsonApiDataFor,
-  KubeJsonApiObjectMetadata,
-  KubeObjectMetadata,
-  KubeStatusData,
-  NamespaceScopedMetadata,
-  OwnerReference,
-} from "@freelensapp/kube-object";
 export {
   createKubeObject,
   isJsonApiData,
@@ -162,6 +153,19 @@ export {
   KubeStatus,
   stringifyLabels,
 } from "@freelensapp/kube-object";
+
+export type {
+  BaseKubeJsonApiObjectMetadata,
+  ClusterScopedMetadata,
+  KubeJsonApiData,
+  KubeJsonApiDataFor,
+  KubeJsonApiObjectMetadata,
+  KubeObjectMetadata,
+  KubeStatusData,
+  NamespaceScopedMetadata,
+  OwnerReference,
+} from "@freelensapp/kube-object";
+
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 

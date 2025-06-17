@@ -6,8 +6,9 @@
 
 import { cpuUnitsToNumber, isObject, unitsToBytes } from "@freelensapp/utilities";
 import { TypedRegEx } from "typed-regex";
-import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 
 export interface NodeTaint {
   key: string;

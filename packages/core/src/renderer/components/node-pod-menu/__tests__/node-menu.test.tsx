@@ -1,4 +1,3 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
@@ -8,6 +7,8 @@ import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { NodeMenu } from "../node-menu";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 jest.mock("../../menu", () => ({
   __esModule: true,

@@ -3,16 +3,22 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { cssVar } from "@freelensapp/utilities";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useResizeObserver } from "../../hooks";
 import { Tabs } from "../tabs/tabs";
-import type { DockTab as DockTabModel } from "./dock/store";
 import { TabKind } from "./dock/store";
 import { DockTab } from "./dock-tab";
 import styles from "./dock-tabs.module.scss";
 import { TerminalTab } from "./terminal/dock-tab";
+
+import type { DockTab as DockTabModel } from "./dock/store";
 
 export interface DockTabsProps {
   tabs: DockTabModel[];

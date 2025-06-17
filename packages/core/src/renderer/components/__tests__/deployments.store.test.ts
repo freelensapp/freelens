@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PodSpec } from "@freelensapp/kube-object";
 import { Deployment, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -13,9 +12,12 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { DeploymentStore } from "../workloads-deployments/store";
 import deploymentStoreInjectable from "../workloads-deployments/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+
+import type { PodSpec } from "@freelensapp/kube-object";
+
+import type { DeploymentStore } from "../workloads-deployments/store";
 
 const spec: PodSpec = {
   containers: [

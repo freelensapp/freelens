@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CatalogEntityContextMenu } from "../api/catalog-entity";
 import withConfirmationInjectable from "../components/confirm-dialog/with-confirm.injectable";
+
+import type { CatalogEntityContextMenu } from "../api/catalog-entity";
 
 export interface NormalizedCatalogEntityContextMenu {
   title: string;

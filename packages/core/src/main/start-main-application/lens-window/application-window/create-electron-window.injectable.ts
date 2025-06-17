@@ -8,15 +8,17 @@ import { applicationInformationToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { BrowserWindow } from "electron";
-import type { RequireExactlyOne } from "type-fest";
 import pathExistsSyncInjectable from "../../../../common/fs/path-exists-sync.injectable";
 import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path.injectable";
 import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-browser.injectable";
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
-import type { ElectronWindow } from "./create-lens-window.injectable";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
+
+import type { RequireExactlyOne } from "type-fest";
+
+import type { ElectronWindow } from "./create-lens-window.injectable";
 
 export type ElectronWindowTitleBarStyle = "hiddenInset" | "hidden" | "default" | "customButtonsOnHover";
 

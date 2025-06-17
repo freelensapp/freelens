@@ -6,13 +6,16 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import type { Toleration } from "@freelensapp/kube-object";
+
 import { fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { PodTolerations } from "../pod-tolerations";
+
+import type { Toleration } from "@freelensapp/kube-object";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 const tolerations: Toleration[] = [
   {

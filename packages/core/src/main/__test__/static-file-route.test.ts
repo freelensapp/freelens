@@ -5,8 +5,9 @@
  */
 
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { LensApiRequest, Route } from "../router/route";
 import staticFileRouteInjectable from "../routes/files/static-file-route.injectable";
+
+import type { LensApiRequest, Route } from "../router/route";
 
 describe("static-file-route", () => {
   let handleStaticFileRoute: Route<Buffer, "/{path*}">;

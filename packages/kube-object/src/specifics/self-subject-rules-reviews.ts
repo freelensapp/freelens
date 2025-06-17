@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { ClusterScopedMetadata } from "../api-types";
 
 export interface SelfSubjectReviewRule {
   verbs: string[];

@@ -4,14 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
-import type { IComputedValue } from "mobx";
 import { computed, observe } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import { reactiveNow } from "./reactive-now";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IComputedValue } from "mobx";
 
 describe("reactiveNow", () => {
   let someComputed: IComputedValue<boolean>;

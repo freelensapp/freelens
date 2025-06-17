@@ -5,9 +5,10 @@
  */
 
 import { makeObservable } from "mobx";
+import { DockTabStore } from "../dock-tab-store/dock-tab.store";
+
 import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
-import { DockTabStore } from "../dock-tab-store/dock-tab.store";
 
 export interface IChartInstallData {
   name: string;

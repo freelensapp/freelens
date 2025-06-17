@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeApi } from "@freelensapp/kube-api";
 import { KubeObject } from "@freelensapp/kube-object";
 import { noop } from "@freelensapp/utilities";
-import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 import { KubeObjectStore } from "../kube-object.store";
+
+import type { KubeApi } from "@freelensapp/kube-api";
+
+import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 
 class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
   constructor(

@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import React from "react";
 import { VirtualList } from "./virtual-list";
+
+import type { RenderResult } from "@testing-library/react";
 
 const generateListOfIdObjects = (count: number) =>
   [...new Array(count)].map((v, index) => ({

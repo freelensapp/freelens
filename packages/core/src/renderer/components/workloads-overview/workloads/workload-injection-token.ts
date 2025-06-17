@@ -5,7 +5,9 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { IComputedValue } from "mobx";
+
 import type { KubeApiResourceDescriptor } from "../../../../common/rbac";
 import type { WorkloadStatus } from "../overview-workload-status";
 

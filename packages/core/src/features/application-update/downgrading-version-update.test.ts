@@ -4,19 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { DiContainer } from "@ogre-tools/injectable";
 import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
 import getBuildVersionInjectable from "../../main/electron-app/features/get-build-version.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import publishIsConfiguredInjectable from "./child-features/updating-is-enabled/main/publish-is-configured.injectable";
 import selectedUpdateChannelInjectable from "./common/selected-update-channel.injectable";
 import { updateChannels } from "./common/update-channels";
-import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import processCheckingForUpdatesInjectable from "./main/process-checking-for-updates.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 
 describe.skip("downgrading version update", () => {
   let applicationBuilder: ApplicationBuilder;

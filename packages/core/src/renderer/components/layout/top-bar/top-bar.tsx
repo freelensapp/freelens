@@ -3,9 +3,13 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import watchHistoryStateInjectable from "../../../remote-helpers/watch-history-state.injectable";
@@ -13,9 +17,12 @@ import Gutter from "../../gutter/gutter";
 import { Map } from "../../map/map";
 import toggleMaximizeWindowInjectable from "./toggle-maximize-window/toggle-maximize-window.injectable";
 import styles from "./top-bar.module.scss";
-import type { TopBarItem } from "./top-bar-items/top-bar-item-injection-token";
 import topBarItemsOnLeftSideInjectable from "./top-bar-items/top-bar-items-on-left-side.injectable";
 import topBarItemsOnRightSideInjectable from "./top-bar-items/top-bar-items-on-right-side.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { TopBarItem } from "./top-bar-items/top-bar-item-injection-token";
 
 interface Dependencies {
   itemsOnLeft: IComputedValue<TopBarItem[]>;

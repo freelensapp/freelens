@@ -10,11 +10,12 @@ import throttle from "lodash/throttle";
 import { reaction } from "mobx";
 import { observer } from "mobx-react";
 import React, { createRef, useEffect } from "react";
-import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
 import { MonacoEditor } from "../monaco-editor";
-import type { DockStore, TabId } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
 import styles from "./editor-panel.module.scss";
+
+import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
+import type { DockStore, TabId } from "./dock/store";
 
 export interface EditorPanelProps {
   tabId: TabId;

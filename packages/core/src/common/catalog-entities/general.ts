@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
+
 import type { CatalogEntityMetadata, CatalogEntitySpec, CatalogEntityStatus } from "../catalog";
 import type { CatalogEntityActionContext } from "../catalog/catalog-entity";
-import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 
 export interface GeneralEntitySpec extends CatalogEntitySpec {
   path: string;

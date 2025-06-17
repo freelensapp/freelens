@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
 import path from "path";
 import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
+
+import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
   const tarFiles = await listTarEntries(filePath);

@@ -9,8 +9,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
 import { Cluster } from "../../../../common/cluster/cluster";
-import type { ClusterModel } from "../../../../common/cluster-types";
 import clustersStateInjectable from "./state.injectable";
+
+import type { ClusterModel } from "../../../../common/cluster-types";
 
 export type AddCluster = (clusterModel: ClusterModel) => Cluster;
 

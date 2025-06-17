@@ -14,17 +14,18 @@ import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
-import type { ClusterRoleStore } from "../cluster-roles/store";
 import clusterRoleStoreInjectable from "../cluster-roles/store.injectable";
-import type { RoleStore } from "../roles/store";
 import roleStoreInjectable from "../roles/store.injectable";
-import type { ServiceAccountStore } from "../service-accounts/store";
 import serviceAccountStoreInjectable from "../service-accounts/store.injectable";
-import type { OpenRoleBindingDialog } from "./dialog/open.injectable";
 import openRoleBindingDialogInjectable from "./dialog/open.injectable";
 import { RoleBindingDialog } from "./dialog/view";
-import type { RoleBindingStore } from "./store";
 import roleBindingStoreInjectable from "./store.injectable";
+
+import type { ClusterRoleStore } from "../cluster-roles/store";
+import type { RoleStore } from "../roles/store";
+import type { ServiceAccountStore } from "../service-accounts/store";
+import type { OpenRoleBindingDialog } from "./dialog/open.injectable";
+import type { RoleBindingStore } from "./store";
 
 enum columnId {
   name = "name",

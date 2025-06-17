@@ -14,8 +14,9 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { EndpointSliceStore } from "./store";
 import endpointSliceStoreInjectable from "./store.injectable";
+
+import type { EndpointSliceStore } from "./store";
 
 enum columnId {
   name = "name",

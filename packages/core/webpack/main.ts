@@ -6,11 +6,12 @@
 
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
-import type webpack from "webpack";
 import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment } from "./vars";
+
+import type webpack from "webpack";
 
 const webpackLensMain = (): webpack.Configuration => {
   return {

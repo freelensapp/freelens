@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Orderable } from "@freelensapp/utilities";
 import React from "react";
+import { HorizontalLine } from "../../../../renderer/components/horizontal-line/horizontal-line";
+import styles from "./preference-tab-root.module.scss";
+
+import type { Orderable } from "@freelensapp/utilities";
+
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { RootComposite } from "../../../../common/utils/composite/interfaces";
-import { HorizontalLine } from "../../../../renderer/components/horizontal-line/horizontal-line";
 import type { ChildrenAreSeparated } from "./preference-item-injection-token";
-import styles from "./preference-tab-root.module.scss";
 
 export type PreferenceTabsRoot = Discriminable<"preference-tabs-root"> &
   RootComposite &

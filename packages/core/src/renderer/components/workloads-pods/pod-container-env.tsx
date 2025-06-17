@@ -6,19 +6,21 @@
 
 import "./pod-container-env.scss";
 
-import type { Container } from "@freelensapp/kube-object";
 import { object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import _ from "lodash";
 import { autorun } from "mobx";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
-import type { ConfigMapStore } from "../config-maps/store";
 import configMapStoreInjectable from "../config-maps/store.injectable";
-import type { SecretStore } from "../config-secrets/store";
 import secretStoreInjectable from "../config-secrets/store.injectable";
 import { DrawerItem } from "../drawer";
 import { SecretKey } from "./secret-key";
+
+import type { Container } from "@freelensapp/kube-object";
+
+import type { ConfigMapStore } from "../config-maps/store";
+import type { SecretStore } from "../config-secrets/store";
 
 export interface ContainerEnvironmentProps {
   container: Container;

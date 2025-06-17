@@ -6,20 +6,22 @@
 
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import { compositeHasDescendant } from "../../../../common/utils/composite/composite-has-descendant/composite-has-descendant";
-import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import { Map } from "../../../../renderer/components/map/map";
 import { Tabs } from "../../../../renderer/components/tabs";
-import type { PreferenceItemTypes } from "../preference-items/preference-item-injection-token";
-import type { PreferenceTabsRoot } from "../preference-items/preference-tab-root";
 import preferencesCompositeInjectable from "../preference-items/preferences-composite.injectable";
-import type { NavigateToPreferenceTab } from "./navigate-to-preference-tab/navigate-to-preference-tab.injectable";
 import navigateToPreferenceTabInjectable from "./navigate-to-preference-tab/navigate-to-preference-tab.injectable";
 import { PreferencesNavigationTab } from "./preferences-navigation-tab";
+
+import type { IComputedValue } from "mobx";
+
+import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
+import type { PreferenceItemTypes } from "../preference-items/preference-item-injection-token";
+import type { PreferenceTabsRoot } from "../preference-items/preference-tab-root";
+import type { NavigateToPreferenceTab } from "./navigate-to-preference-tab/navigate-to-preference-tab.injectable";
 
 interface Dependencies {
   composite: IComputedValue<Composite<PreferenceItemTypes | PreferenceTabsRoot>>;

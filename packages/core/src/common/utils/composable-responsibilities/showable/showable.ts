@@ -5,6 +5,7 @@
  */
 
 import { isBoolean } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
 
 export interface Showable {

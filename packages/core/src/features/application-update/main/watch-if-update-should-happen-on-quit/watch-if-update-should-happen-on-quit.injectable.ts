@@ -10,6 +10,7 @@ import { autorun } from "mobx";
 import setUpdateOnQuitInjectable from "../../../../main/electron-app/features/set-update-on-quit.injectable";
 import discoveredUpdateVersionInjectable from "../../common/discovered-update-version.injectable";
 import selectedUpdateChannelInjectable from "../../common/selected-update-channel.injectable";
+
 import type { ReleaseChannel, UpdateChannel } from "../../common/update-channels";
 
 const watchIfUpdateShouldHappenOnQuitInjectable = getInjectable({

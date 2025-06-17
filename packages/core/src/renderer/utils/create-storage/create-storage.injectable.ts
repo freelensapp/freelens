@@ -7,8 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import createStorageHelperInjectable from "../create-storage-helper.injectable";
-import type { StorageLayer } from "../storage-helper";
 import lensLocalStorageStateInjectable from "./state.injectable";
+
+import type { StorageLayer } from "../storage-helper";
 
 export type CreateStorage = <T>(key: string, defaultValue: T) => StorageLayer<T>;
 

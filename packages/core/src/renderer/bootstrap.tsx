@@ -6,13 +6,14 @@
 
 import "./components/app.scss";
 
-import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import assert from "assert";
 import extensionDiscoveryInjectable from "../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../extensions/extension-loader/extension-loader.injectable";
 import initClusterFrameInjectable from "./frames/cluster-frame/init-cluster-frame/init-cluster-frame.injectable";
 import initRootFrameInjectable from "./frames/root-frame/init-root-frame.injectable";
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export async function bootstrap(di: DiContainerForInjection) {
   const rootElem = document.getElementById("app");

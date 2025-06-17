@@ -7,10 +7,11 @@
 import { inspect } from "util";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import platformInjectable, { allPlatforms } from "../../common/vars/platform.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe.each(allPlatforms)("application-menu, given platform is '%s'", (platform) => {
   let builder: ApplicationBuilder;

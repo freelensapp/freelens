@@ -4,35 +4,38 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import assert from "assert";
 import { groupBy, map } from "lodash/fp";
-import type { IComputedValue, IObservableValue } from "mobx";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import type { NavigateToHelmReleases } from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
-import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
-import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
-import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
 import hostedClusterIdInjectable from "../../../../cluster-frame-context/hosted-cluster-id.injectable";
 import activeThemeInjectable from "../../../../themes/active.injectable";
-import type { LensTheme } from "../../../../themes/lens-theme";
 import createUpgradeChartTabInjectable from "../../../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import helmChartRepoInjectable from "../../helm-chart-repo.injectable";
 import updateReleaseInjectable from "../../update-release/update-release.injectable";
+import getResourceDetailsUrlInjectable from "./get-resource-details-url.injectable";
+import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-release.injectable";
+
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IComputedValue, IObservableValue } from "mobx";
+
+import type { NavigateToHelmReleases } from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
+import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
+import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
+import type { LensTheme } from "../../../../themes/lens-theme";
 import type { TargetHelmRelease } from "../target-helm-release.injectable";
 import type { GetResourceDetailsUrl } from "./get-resource-details-url.injectable";
-import getResourceDetailsUrlInjectable from "./get-resource-details-url.injectable";
 import type { DetailedHelmRelease, RequestDetailedHelmRelease } from "./request-detailed-helm-release.injectable";
-import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-release.injectable";
 
 const releaseDetailsModelInjectable = getInjectable({
   id: "release-details-model",

@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ItemObject } from "@freelensapp/list-layout";
 import autoBind from "auto-bind";
+
+import type { ItemObject } from "@freelensapp/list-layout";
 
 export type ForwardedPortStatus = "Active" | "Disabled";
 export interface ForwardedPort {

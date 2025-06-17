@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
+import type { Disposer } from "@freelensapp/utilities";
+
 import type { WebLink } from "../../../common/catalog-entities";
 
 const weblinkVerificationsInjectable = getInjectable({

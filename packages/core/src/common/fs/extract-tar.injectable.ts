@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TarOptionsWithAliasesAsyncNoFile } from "tar";
 import { extract } from "tar";
 import getDirnameOfPathInjectable from "../path/get-dirname.injectable";
+
+import type { TarOptionsWithAliasesAsyncNoFile } from "tar";
 
 export type ExtractTar = (filePath: string, opts?: TarOptionsWithAliasesAsyncNoFile) => Promise<void>;
 

@@ -6,18 +6,20 @@
 
 import "./port-forward-details.scss";
 
-import type { PodApi, ServiceApi } from "@freelensapp/kube-api";
 import { podApiInjectable, serviceApiInjectable } from "@freelensapp/kube-api-specifics";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { PortForwardItem } from "../../port-forward";
 import { portForwardAddress } from "../../port-forward";
 import { Drawer, DrawerItem } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { PortForwardMenu } from "./port-forward-menu";
+
+import type { PodApi, ServiceApi } from "@freelensapp/kube-api";
+
+import type { PortForwardItem } from "../../port-forward";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 
 export interface PortForwardDetailsProps {
   portForward: PortForwardItem;

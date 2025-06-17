@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 import defaultCategoryColumnsInjectable from "./default-category.injectable";
 import namedCategoryColumnInjectable from "./named-category.injectable";
+
+import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 
 const defaultBrowseAllColumns: RegisteredAdditionalCategoryColumn[] = [
   {

@@ -3,28 +3,36 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Icon } from "@freelensapp/icon";
-import type { Node } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { isNumber } from "lodash";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
-import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
-import type { PieChartData } from "../chart";
 import { PieChart } from "../chart";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
-import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+
+import type { Node } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+
+import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { PieChartData } from "../chart";
+import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 function createLabels(rawLabelData: [string, number | undefined][]): string[] {
   return rawLabelData.map(([key, value]) => `${key}: ${value?.toFixed(2) || "N/A"}`);

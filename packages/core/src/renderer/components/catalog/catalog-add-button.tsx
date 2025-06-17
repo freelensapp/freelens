@@ -13,11 +13,12 @@ import { EventEmitter } from "events";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { CatalogCategoryRegistry } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
+import navigateInjectable from "../../navigation/navigate.injectable";
+
+import type { CatalogCategoryRegistry } from "../../../common/catalog";
 import type { CatalogCategory, CatalogEntityAddMenu } from "../../api/catalog-entity";
 import type { Navigate } from "../../navigation/navigate.injectable";
-import navigateInjectable from "../../navigation/navigate.injectable";
 
 export interface CatalogAddButtonProps {
   category: CatalogCategory;

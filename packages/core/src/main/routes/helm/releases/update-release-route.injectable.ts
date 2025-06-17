@@ -6,10 +6,11 @@
 
 import Joi from "joi";
 import { apiPrefix } from "../../../../common/vars";
-import type { UpdateChartArgs } from "../../../helm/helm-service/update-helm-release.injectable";
 import updateHelmReleaseInjectable from "../../../helm/helm-service/update-helm-release.injectable";
 import { payloadValidatedClusterRoute } from "../../../router/route";
 import { getRouteInjectable } from "../../../router/router.injectable";
+
+import type { UpdateChartArgs } from "../../../helm/helm-service/update-helm-release.injectable";
 
 const updateChartArgsValidator = Joi.object<UpdateChartArgs, true, UpdateChartArgs>({
   chart: Joi.string().required(),

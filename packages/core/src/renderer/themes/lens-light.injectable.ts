@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
+
 import type { LensTheme } from "./lens-theme";
 
 const lensLightThemeInjectable = getInjectable({

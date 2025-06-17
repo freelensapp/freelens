@@ -6,17 +6,19 @@
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { waitFor } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
-import type { Stats } from "fs";
 import React from "react";
 import { Cluster } from "../../../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { ClusterLocalTerminalSetting } from "../local-terminal-settings";
+import type { Stats } from "fs";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("ClusterLocalTerminalSettings", () => {
   let render: DiRender;

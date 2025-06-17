@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RequestChannelHandler } from "@freelensapp/messaging";
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { initialClusterStatesChannel } from "../common/channels";
+
+import type { RequestChannelHandler } from "@freelensapp/messaging";
 
 export type RequestInitialClusterStates = RequestChannelHandler<typeof initialClusterStatesChannel>;
 

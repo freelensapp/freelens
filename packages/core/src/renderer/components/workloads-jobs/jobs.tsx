@@ -10,15 +10,16 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { observer } from "mobx-react";
 import React from "react";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { JobStore } from "./store";
 import jobStoreInjectable from "./store.injectable";
+
+import type { EventStore } from "../events/store";
+import type { JobStore } from "./store";
 
 enum columnId {
   name = "name",

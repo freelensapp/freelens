@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Namespace } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 import { staticKubeObjectHandlerInjectionToken } from "../../kube-object/handler";
 import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
+
+import type { Namespace } from "@freelensapp/kube-object";
+
+import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 
 const namespaceRemoveContextMenuOverridingListenerInjectable = getInjectable({
   id: "namespace-remove-context-menu-overriding-listener",

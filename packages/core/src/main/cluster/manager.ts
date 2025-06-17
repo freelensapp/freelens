@@ -5,18 +5,22 @@
  */
 
 import "../../common/ipc/cluster";
-import type { Logger } from "@freelensapp/logger";
+
 import { once } from "lodash";
-import type { IComputedValue, IObservableValue, ObservableSet } from "mobx";
 import { action, makeObservable, observe, reaction, toJS } from "mobx";
 import {
   isKubernetesCluster,
   KubernetesCluster,
   LensKubernetesClusterStatus,
 } from "../../common/catalog-entities/kubernetes-cluster";
+import { ipcMainOn } from "../../common/ipc";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { IComputedValue, IObservableValue, ObservableSet } from "mobx";
+
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterId } from "../../common/cluster-types";
-import { ipcMainOn } from "../../common/ipc";
 import type { AddCluster } from "../../features/cluster/storage/common/add.injectable";
 import type { GetClusterById } from "../../features/cluster/storage/common/get-by-id.injectable";
 import type { CatalogEntityRegistry } from "../catalog";

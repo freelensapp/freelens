@@ -6,9 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type WebSocket from "ws";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
 import statInjectable from "../../../common/fs/stat.injectable";
 import createKubeApiInjectable from "../../../common/k8s-api/create-kube-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
@@ -25,8 +23,12 @@ import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
-import type { NodeShellSessionDependencies } from "./node-shell-session";
 import { NodeShellSession } from "./node-shell-session";
+
+import type WebSocket from "ws";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { NodeShellSessionDependencies } from "./node-shell-session";
 
 export interface NodeShellSessionArgs {
   websocket: WebSocket;

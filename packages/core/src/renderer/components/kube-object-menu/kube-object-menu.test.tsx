@@ -4,22 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import { screen, waitFor } from "@testing-library/react";
 import React from "react";
+
+import type { RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import type { AsyncFnMock } from "@async-fn/jest";
+
 import asyncFn from "@async-fn/jest";
 import { KubeObject } from "@freelensapp/kube-object";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import clustersStateInjectable from "../../../features/cluster/storage/common/state.injectable";
 import activeEntityIdInjectable from "../../api/catalog/entity/active-entity-id.injectable";
@@ -29,10 +27,16 @@ import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { ConfirmDialog } from "../confirm-dialog";
 import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import { KubeObjectMenu } from "./index";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { DiRender } from "../test-utils/renderFor";
 
 // TODO: make `animated={false}` not required to make tests deterministic
 describe("kube-object-menu", () => {

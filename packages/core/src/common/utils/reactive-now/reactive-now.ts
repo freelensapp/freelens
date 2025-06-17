@@ -5,8 +5,9 @@
  */
 
 import { _isComputingDerivation } from "mobx";
-import type { IResource } from "mobx-utils";
 import { fromResource } from "mobx-utils";
+
+import type { IResource } from "mobx-utils";
 
 // Note: This file is copy-pasted from mobx-utils to fix very specific issue.
 // TODO: Remove this file once https://github.com/mobxjs/mobx-utils/issues/306 is fixed.

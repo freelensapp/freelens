@@ -6,7 +6,6 @@
 
 import "./list-view.scss";
 
-import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
@@ -18,8 +17,11 @@ import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
-import type { HorizontalPodAutoscalerStore } from "./store";
 import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
+
+import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
+
+import type { HorizontalPodAutoscalerStore } from "./store";
 
 enum columnId {
   name = "name",

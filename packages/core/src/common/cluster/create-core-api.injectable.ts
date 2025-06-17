@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
+
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 
 export type CreateCoreApi = (config: KubeConfig) => CoreV1Api;
 

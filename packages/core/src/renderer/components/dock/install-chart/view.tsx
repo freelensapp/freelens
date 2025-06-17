@@ -20,8 +20,9 @@ import { NamespaceSelect } from "../../namespaces/namespace-select";
 import { Select } from "../../select";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
-import type { InstallChartModel } from "./install-chart-model.injectable";
 import installChartModelInjectable from "./install-chart-model.injectable";
+
+import type { InstallChartModel } from "./install-chart-model.injectable";
 
 export interface InstallChartProps {
   tabId: string;

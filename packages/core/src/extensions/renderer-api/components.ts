@@ -14,11 +14,6 @@ import {
   showSuccessNotificationInjectable,
 } from "@freelensapp/notifications";
 import commandOverlayInjectable from "../../renderer/components/command-palette/command-overlay.injectable";
-import type {
-  ConfirmDialogBooleanParams,
-  ConfirmDialogParams,
-  ConfirmDialogProps,
-} from "../../renderer/components/confirm-dialog";
 import { ConfirmDialog as _ConfirmDialog } from "../../renderer/components/confirm-dialog";
 import confirmInjectable from "../../renderer/components/confirm-dialog/confirm.injectable";
 import openConfirmDialogInjectable from "../../renderer/components/confirm-dialog/open.injectable";
@@ -33,6 +28,12 @@ import getDetailsUrlInjectable from "../../renderer/components/kube-detail-param
 import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
 import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
 
+import type {
+  ConfirmDialogBooleanParams,
+  ConfirmDialogParams,
+  ConfirmDialogProps,
+} from "../../renderer/components/confirm-dialog";
+
 export * from "@freelensapp/button";
 export * from "@freelensapp/icon";
 export {
@@ -46,14 +47,9 @@ export {
 } from "@freelensapp/notifications";
 export * from "@freelensapp/spinner";
 export * from "@freelensapp/tooltip";
-
 export * from "../../renderer/components/add-remove-buttons";
 export * from "../../renderer/components/avatar";
 export * from "../../renderer/components/badge";
-export type {
-  AdditionalCategoryColumnRegistration,
-  CategoryColumnRegistration,
-} from "../../renderer/components/catalog/custom-category-columns";
 export * from "../../renderer/components/chart/bar-chart";
 export * from "../../renderer/components/chart/pie-chart";
 export * from "../../renderer/components/checkbox";
@@ -111,6 +107,11 @@ export * from "../../renderer/components/virtual-list";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-charts";
 export * from "../../renderer/components/workloads-pods/pod-details-list";
+
+export type {
+  AdditionalCategoryColumnRegistration,
+  CategoryColumnRegistration,
+} from "../../renderer/components/catalog/custom-category-columns";
 
 export const CommandOverlay = asLegacyGlobalForExtensionApi(commandOverlayInjectable);
 

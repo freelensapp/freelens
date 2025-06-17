@@ -7,19 +7,21 @@
 import { bytesToUnits, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import assert from "assert";
-import type { ChartOptions, ChartTooltipCallback, ChartTooltipItem, Scriptable } from "chart.js";
 import Color from "color";
 import merge from "lodash/merge";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import moment from "moment";
 import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
 import { NoMetrics } from "../resource-metrics/no-metrics";
-import type { ChartProps } from "./chart";
 import { Chart, ChartKind } from "./chart";
 import { ZebraStripesPlugin } from "./zebra-stripes.plugin";
+
+import type { ChartOptions, ChartTooltipCallback, ChartTooltipItem, Scriptable } from "chart.js";
+import type { IComputedValue } from "mobx";
+
+import type { LensTheme } from "../../themes/lens-theme";
+import type { ChartProps } from "./chart";
 
 export interface BarChartProps extends ChartProps {
   name?: string;

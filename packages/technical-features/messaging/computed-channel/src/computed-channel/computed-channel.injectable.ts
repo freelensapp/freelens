@@ -1,8 +1,9 @@
-import type { MessageChannel } from "@freelensapp/messaging";
 import { getMessageChannelListenerInjectable, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { computed, type IComputedValue, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from "mobx";
 import { computedChannelAdministrationChannel } from "./computed-channel-administration-channel.injectable";
+
+import type { MessageChannel } from "@freelensapp/messaging";
 
 export type ComputedChannelFactory = <T>(channel: MessageChannel<T>, pendingValue: T) => IComputedValue<T>;
 

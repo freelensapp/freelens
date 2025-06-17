@@ -7,9 +7,10 @@
 import { autorun, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { Input, InputValidators } from "../input";
 import { SubTitle } from "../layout/sub-title";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterProxySettingProps {
   cluster: Cluster;

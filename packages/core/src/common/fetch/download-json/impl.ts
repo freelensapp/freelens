@@ -6,6 +6,7 @@
 
 import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { AsyncResult } from "@freelensapp/utilities";
+
 import type { Fetch } from "../fetch.injectable";
 
 export interface DownloadJsonOptions {

@@ -13,8 +13,9 @@ import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { ReplicaSetStore } from "../workloads-replicasets/store";
 import replicasetsStoreInjectable from "../workloads-replicasets/store.injectable";
+
+import type { ReplicaSetStore } from "../workloads-replicasets/store";
 
 const runningReplicaSet = new ReplicaSet({
   apiVersion: "foo",

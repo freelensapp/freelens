@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StatefulSet } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
+import type { StatefulSet } from "@freelensapp/kube-object";
 
 const statefulSetDialogStateInjectable = getInjectable({
   id: "stateful-set-dialog-state",

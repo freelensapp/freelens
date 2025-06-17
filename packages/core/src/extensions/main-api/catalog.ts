@@ -5,9 +5,10 @@
  */
 
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { CatalogEntity } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../main/catalog/entity-registry.injectable";
+
+import type { CatalogEntity } from "../../common/catalog";
 
 export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
 const catalogEntityRegistry = asLegacyGlobalForExtensionApi(catalogEntityRegistryInjectable);

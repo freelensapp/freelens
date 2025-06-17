@@ -6,8 +6,9 @@
 
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { PageParamDependencies, PageParamInit } from "./page-param";
 import { PageParam } from "./page-param";
+
+import type { PageParamDependencies, PageParamInit } from "./page-param";
 
 export type CreatePageParam = <Value = string>(init: PageParamInit<Value>) => PageParam<Value>;
 

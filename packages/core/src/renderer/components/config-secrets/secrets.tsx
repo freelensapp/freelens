@@ -17,8 +17,9 @@ import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import openAddSecretDialogInjectable from "./add-dialog/open.injectable";
 import { AddSecretDialog } from "./add-dialog/view";
-import type { SecretStore } from "./store";
 import secretStoreInjectable from "./store.injectable";
+
+import type { SecretStore } from "./store";
 
 enum columnId {
   name = "name",

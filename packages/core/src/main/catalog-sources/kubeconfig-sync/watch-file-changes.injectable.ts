@@ -4,21 +4,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { getOrInsertWith, iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import GlobToRegExp from "glob-to-regexp";
-import type { IComputedValue, ObservableMap } from "mobx";
 import { computed, observable } from "mobx";
 import path from "path";
 import { inspect } from "util";
-import type { CatalogEntity } from "../../../common/catalog";
-import type { Cluster } from "../../../common/cluster/cluster";
 import statInjectable from "../../../common/fs/stat.injectable";
-import type { Watcher } from "../../../common/fs/watch/watch.injectable";
 import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import diffChangedKubeconfigInjectable from "./diff-changed-kubeconfig.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { IComputedValue, ObservableMap } from "mobx";
+
+import type { CatalogEntity } from "../../../common/catalog";
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { Watcher } from "../../../common/fs/watch/watch.injectable";
 
 export type WatchKubeconfigFileChanges = (filepath: string) => [IComputedValue<CatalogEntity[]>, Disposer];
 

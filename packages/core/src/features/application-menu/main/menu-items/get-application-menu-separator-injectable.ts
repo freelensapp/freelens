@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import isMacInjectable from "../../../../common/vars/is-mac.injectable";
-import type { Separator } from "./application-menu-item-injection-token";
 import applicationMenuItemInjectionToken from "./application-menu-item-injection-token";
+
+import type { Separator } from "./application-menu-item-injection-token";
 
 const getApplicationMenuSeparatorInjectable = ({
   id,

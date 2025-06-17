@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { extensionDisplayName } from "../../../extensions/lens-extension";
-import type { Confirm } from "../confirm-dialog/confirm.injectable";
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import uninstallExtensionInjectable from "./uninstall-extension.injectable";
+
+import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
+
+import type { Confirm } from "../confirm-dialog/confirm.injectable";
 
 interface Dependencies {
   uninstallExtension: (id: LensExtensionId) => Promise<boolean>;

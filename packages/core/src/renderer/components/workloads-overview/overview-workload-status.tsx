@@ -9,14 +9,16 @@ import "./overview-workload-status.scss";
 import { object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import capitalize from "lodash/capitalize";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { PascalCase } from "type-fest";
 import activeThemeInjectable from "../../themes/active.injectable";
+import { PieChart } from "../chart";
+
+import type { IComputedValue } from "mobx";
+import type { PascalCase } from "type-fest";
+
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
-import { PieChart } from "../chart";
 import type { Workload } from "./workloads/workload-injection-token";
 
 export type LowercaseOrPascalCase<T extends string> = Lowercase<T> | PascalCase<T>;

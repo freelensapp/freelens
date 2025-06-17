@@ -5,10 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { JsonObject } from "type-fest";
-import type { Cluster } from "../../../common/cluster/cluster";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import installHelmChartInjectable from "../install-helm-chart.injectable";
+
+import type { JsonObject } from "type-fest";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface InstallChartArgs {
   chart: string;

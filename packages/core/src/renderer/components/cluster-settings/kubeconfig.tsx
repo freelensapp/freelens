@@ -7,9 +7,10 @@
 import { shell } from "electron";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { Notice } from "../extensions/notice";
 import { SubTitle } from "../layout/sub-title";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterKubeconfigProps {
   cluster: Cluster;

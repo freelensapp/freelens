@@ -10,8 +10,9 @@ import React from "react";
 import defaultShellInjectable from "../../../../../../common/vars/default-shell.injectable";
 import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+
+import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;

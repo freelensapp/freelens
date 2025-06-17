@@ -7,7 +7,6 @@
 import "./details.scss";
 
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
@@ -16,9 +15,12 @@ import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { MonacoEditor } from "../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface CustomResourceDefinitionDetailsProps extends KubeObjectDetailsProps<CustomResourceDefinition> {}
 

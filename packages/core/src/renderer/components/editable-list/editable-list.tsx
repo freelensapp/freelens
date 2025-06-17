@@ -7,12 +7,14 @@
 import "./editable-list.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React from "react";
-import type { InputProps, InputValidator } from "../input";
 import { Input } from "../input";
+
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+
+import type { InputProps, InputValidator } from "../input";
 
 export interface EditableListProps<T> {
   items: T[];

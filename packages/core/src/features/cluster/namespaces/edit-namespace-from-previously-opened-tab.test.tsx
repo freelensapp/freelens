@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { Namespace } from "@freelensapp/kube-object";
-import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { TabKind } from "../../../renderer/components/dock/dock/store";
-import type { RequestKubeResource } from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
 import requestKubeResourceInjectable from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { RequestKubeResource } from "../../../renderer/components/dock/edit-resource/edit-resource-model/request-kube-resource.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("cluster/namespaces - edit namespaces from previously opened tab", () => {
   let builder: ApplicationBuilder;

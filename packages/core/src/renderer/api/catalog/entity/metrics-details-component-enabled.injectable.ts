@@ -6,9 +6,10 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { ClusterMetricsResourceType } from "../../../../common/cluster-types";
 import currentKubeObjectInDetailsInjectable from "../../../components/kube-object-details/current-kube-object-in-details.injectable";
 import enabledMetricsInjectable from "./metrics-enabled.injectable";
+
+import type { ClusterMetricsResourceType } from "../../../../common/cluster-types";
 
 const metricsDetailsComponentEnabledInjectable = getInjectable({
   id: "metrics-details-component-enabled",

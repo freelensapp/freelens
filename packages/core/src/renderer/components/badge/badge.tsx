@@ -5,12 +5,13 @@
  */
 
 import { withTooltip } from "@freelensapp/tooltip";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./badge.module.scss";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   small?: boolean;

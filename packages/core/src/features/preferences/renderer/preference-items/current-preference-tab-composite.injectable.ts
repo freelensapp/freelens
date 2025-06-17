@@ -8,12 +8,13 @@ import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { filter, map } from "lodash/fp";
 import { computed } from "mobx";
-import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import { getCompositeNormalization } from "../../../../common/utils/composite/get-composite-normalization/get-composite-normalization";
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
+import preferencesCompositeInjectable from "./preferences-composite.injectable";
+
+import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import type { PreferenceItemTypes, PreferenceTab } from "./preference-item-injection-token";
 import type { PreferenceTabsRoot } from "./preference-tab-root";
-import preferencesCompositeInjectable from "./preferences-composite.injectable";
 
 const currentPreferenceTabCompositeInjectable = getInjectable({
   id: "current-preference-page-composite",

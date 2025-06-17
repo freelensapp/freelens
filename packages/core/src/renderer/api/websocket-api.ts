@@ -4,11 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Defaulted } from "@freelensapp/utilities";
 import EventEmitter from "events";
 import { makeObservable, observable } from "mobx";
+
+import type { Defaulted } from "@freelensapp/utilities";
+
 import type TypedEventEmitter from "typed-emitter";
 import type { Arguments } from "typed-emitter";
+
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
 interface WebsocketApiParams {

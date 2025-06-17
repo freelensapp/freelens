@@ -1,9 +1,9 @@
 import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
-
 import { deregisterFeature } from "./deregister-feature";
-import type { Feature } from "./feature";
 import { getFeature } from "./feature";
 import { registerFeature } from "./register-feature";
+
+import type { Feature } from "./feature";
 
 describe("feature-dependencies", () => {
   describe("given a parent Feature with another Features as dependency", () => {

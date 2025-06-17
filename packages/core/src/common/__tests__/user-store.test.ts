@@ -4,10 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
-import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
@@ -16,6 +13,11 @@ import directoryForUserDataInjectable from "../app-paths/directory-for-user-data
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import { defaultThemeId } from "../vars";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
+import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
 
 describe("user store tests", () => {
   let state: UserPreferencesState;

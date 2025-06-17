@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import isEqual from "lodash/isEqual";
 import { makeObservable, observable } from "mobx";
 import url from "url";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
-import type { WebSocketApiDependencies, WebSocketEvents } from "./websocket-api";
 import { WebSocketApi } from "./websocket-api";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { WebSocketApiDependencies, WebSocketEvents } from "./websocket-api";
 
 enum TerminalColor {
   RED = "\u001b[31m",

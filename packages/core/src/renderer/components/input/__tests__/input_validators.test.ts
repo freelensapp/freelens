@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InputValidator } from "../input_validators";
 import { isEmail, isUrl, systemName, unionInputValidators, unionInputValidatorsAsync } from "../input_validators";
+
+import type { InputValidator } from "../input_validators";
 
 type TextValidationCase = [string, boolean];
 

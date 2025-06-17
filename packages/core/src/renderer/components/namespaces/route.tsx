@@ -15,11 +15,12 @@ import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
 import { AddNamespaceDialog } from "./add-dialog/dialog";
 import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
-import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
-import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
 import { SubnamespaceBadge } from "./subnamespace-badge";
+
+import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
+import type { NamespaceStore } from "./store";
 
 enum columnId {
   name = "name",

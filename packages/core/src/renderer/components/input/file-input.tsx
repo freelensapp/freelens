@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InputHTMLAttributes } from "react";
 import React from "react";
+
+import type { InputHTMLAttributes } from "react";
 
 export interface FileInputSelection<T = string> {
   file: File;

@@ -3,7 +3,6 @@ import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { type IComputedValue, reaction } from "mobx";
 import { enlistMessageChannelListenerInjectionToken } from "../message/enlist-message-channel-listener-injection-token";
-
 import {
   type MessageChannel,
   messageChannelListenerInjectionToken,

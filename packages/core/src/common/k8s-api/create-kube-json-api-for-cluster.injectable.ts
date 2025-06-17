@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApi } from "@freelensapp/kube-api";
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiKubePrefix } from "../vars";
 import isDebuggingInjectable from "../vars/is-debugging.injectable";
 import { apiBaseHostHeaderInjectionToken, apiBaseServerAddressInjectionToken } from "./api-base-configs";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
+
+import type { KubeJsonApi } from "@freelensapp/kube-api";
 
 export type CreateKubeJsonApiForCluster = (clusterId: string) => KubeJsonApi;
 

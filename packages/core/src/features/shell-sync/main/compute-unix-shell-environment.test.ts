@@ -5,18 +5,20 @@
  */
 
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { ChildProcessWithoutNullStreams } from "child_process";
 import EventEmitter from "events";
 import MemoryStream from "memorystream";
-import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
-import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 import processEnvInjectable from "./env.injectable";
 import processExecPathInjectable from "./execPath.injectable";
+import type { ChildProcessWithoutNullStreams } from "child_process";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { Spawn } from "../../../main/child-process/spawn.injectable";
+import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
 
 const expectedEnv = {
   SOME_ENV_VAR: "some-env-value",

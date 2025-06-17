@@ -5,6 +5,7 @@
  */
 
 import { Ordering, rectifyOrdering, sortCompare, tuple } from "@freelensapp/utilities";
+
 import type { TableOrderBy, TableSortCallback } from "./table";
 
 export function getSorted<T>(

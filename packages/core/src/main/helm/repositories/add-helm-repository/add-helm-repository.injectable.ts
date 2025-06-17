@@ -6,8 +6,9 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmRepo } from "../../../../common/helm/helm-repo";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
+
+import type { HelmRepo } from "../../../../common/helm/helm-repo";
 
 const addHelmRepositoryInjectable = getInjectable({
   id: "add-helm-repository",

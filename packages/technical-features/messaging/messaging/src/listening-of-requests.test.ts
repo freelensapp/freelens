@@ -1,5 +1,4 @@
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
-
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";

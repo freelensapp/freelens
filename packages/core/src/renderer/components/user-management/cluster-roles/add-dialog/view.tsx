@@ -6,23 +6,25 @@
 
 import "./view.scss";
 
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { Input } from "../../../input";
-import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../../layout/sub-title";
 import { Wizard, WizardStep } from "../../../wizard";
-import type { ClusterRoleStore } from "../store";
 import clusterRoleStoreInjectable from "../store.injectable";
 import closeAddClusterRoleDialogInjectable from "./close.injectable";
-import type { AddClusterRoleDialogState } from "./state.injectable";
 import addClusterRoleDialogStateInjectable from "./state.injectable";
+
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { DialogProps } from "../../../dialog";
+import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
+import type { ClusterRoleStore } from "../store";
+import type { AddClusterRoleDialogState } from "./state.injectable";
 
 export interface AddClusterRoleDialogProps extends Partial<DialogProps> {}
 

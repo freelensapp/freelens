@@ -3,32 +3,25 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { action, computed, makeObservable, observable, reaction, runInAction, when } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
-import type { CatalogCategory, CatalogCategoryRegistry, CatalogEntity } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
-import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
-import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
-import type { CatalogEntityContextMenu } from "../../api/catalog-entity";
-import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
-import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
-import type { StorageLayer } from "../../utils/storage-helper";
 import { ItemListLayout } from "../item-object-list";
 import { MainLayout } from "../layout/main-layout";
 import { MenuActions, MenuItem } from "../menu";
@@ -36,21 +29,36 @@ import { RenderDelay } from "../render-delay/render-delay";
 import styles from "./catalog.module.scss";
 import { CatalogAddButton } from "./catalog-add-button";
 import { browseCatalogTab } from "./catalog-browse-tab";
-import type { CatalogEntityStore } from "./catalog-entity-store.injectable";
 import catalogEntityStoreInjectable from "./catalog-entity-store.injectable";
 import { CatalogMenu } from "./catalog-menu";
 import catalogPreviousActiveTabStorageInjectable from "./catalog-previous-active-tab-storage/catalog-previous-active-tab-storage.injectable";
 import catalogRouteParametersInjectable from "./catalog-route-parameters.injectable";
-import type { CategoryColumns, GetCategoryColumnsParams } from "./columns/get.injectable";
 import getCategoryColumnsInjectable from "./columns/get.injectable";
-import type { CustomCategoryViewComponents } from "./custom-views";
-import type { RegisteredCustomCategoryViewDecl } from "./custom-views.injectable";
 import customCategoryViewsInjectable from "./custom-views.injectable";
-import type { OnCatalogEntityListClick } from "./entity-details/on-catalog-click.injectable";
 import onCatalogEntityListClickInjectable from "./entity-details/on-catalog-click.injectable";
-import type { ShowEntityDetails } from "./entity-details/show.injectable";
 import showEntityDetailsInjectable from "./entity-details/show.injectable";
 import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
+
+import type { Logger } from "@freelensapp/logger";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { IComputedValue } from "mobx";
+
+import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
+import type { CatalogCategory, CatalogCategoryRegistry, CatalogEntity } from "../../../common/catalog";
+import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
+import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { CatalogEntityContextMenu } from "../../api/catalog-entity";
+import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
+import type { Navigate } from "../../navigation/navigate.injectable";
+import type { StorageLayer } from "../../utils/storage-helper";
+import type { CatalogEntityStore } from "./catalog-entity-store.injectable";
+import type { CategoryColumns, GetCategoryColumnsParams } from "./columns/get.injectable";
+import type { CustomCategoryViewComponents } from "./custom-views";
+import type { RegisteredCustomCategoryViewDecl } from "./custom-views.injectable";
+import type { OnCatalogEntityListClick } from "./entity-details/on-catalog-click.injectable";
+import type { ShowEntityDetails } from "./entity-details/show.injectable";
 
 interface Dependencies {
   catalogPreviousActiveTabStorage: StorageLayer<string | null>;

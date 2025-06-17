@@ -11,8 +11,6 @@ import { loggerFeature } from "@freelensapp/logger";
 import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
 import { notificationsFeature } from "@freelensapp/notifications";
 import { randomFeature } from "@freelensapp/random";
-import type { GlobalOverride } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { chunk } from "lodash/fp";
@@ -33,6 +31,10 @@ import setupMainWindowVisibilityAfterActivationInjectable from "./electron-app/r
 import waitUntilBundledExtensionsAreLoadedInjectable from "./start-main-application/lens-window/application-window/wait-until-bundled-extensions-are-loaded.injectable";
 import initializeExtensionsInjectable from "./start-main-application/runnables/initialize-extensions.injectable";
 import setupLensProxyInjectable from "./start-main-application/runnables/setup-lens-proxy.injectable";
+
+import type { GlobalOverride } from "@freelensapp/test-utils";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 export function getDiForUnitTesting() {
   const environment = "main";

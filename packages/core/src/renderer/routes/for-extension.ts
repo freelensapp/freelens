@@ -5,6 +5,7 @@
  */
 
 import { getSanitizedPath } from "../../extensions/lens-extension";
+
 import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 
 export function getExtensionRoutePath(extension: LensRendererExtension, pageId: string | undefined) {

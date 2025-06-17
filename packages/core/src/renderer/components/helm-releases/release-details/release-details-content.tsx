@@ -20,13 +20,14 @@ import { DrawerItem, DrawerTitle } from "../../drawer";
 import { SubTitle } from "../../layout/sub-title";
 import { MonacoEditor } from "../../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
+import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
+
 import type {
   ConfigurationInput,
   MinimalResourceGroup,
   OnlyUserSuppliedValuesAreShownToggle,
   ReleaseDetailsModel,
 } from "./release-details-model/release-details-model.injectable";
-import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 
 interface ReleaseDetailsContentProps {

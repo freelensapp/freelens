@@ -13,7 +13,6 @@ import {
   logInfoInjectionToken,
   logWarningInjectionToken,
 } from "@freelensapp/logger";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import { runInAction } from "mobx";
@@ -25,10 +24,13 @@ import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-c
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
-import type { ApiManager } from "../api-manager";
 import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 import { KubeObjectStore } from "../kube-object.store";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ApiManager } from "../api-manager";
 
 class TestApi extends KubeApi<KubeObject> {
   protected checkPreferredVersion() {

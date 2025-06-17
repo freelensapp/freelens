@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
 import navigateToNamespacesInjectable from "../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
-import type { WithConfirmation } from "../../renderer/components/confirm-dialog/with-confirm.injectable"; // Assuming ConfirmationDialogParams is exported or reconstruct its shape
 import withConfirmInjectable from "../../renderer/components/confirm-dialog/with-confirm.injectable";
-import type { RequestDeleteNormalNamespace } from "../../renderer/components/namespaces/request-delete-normal-namespace.injectable";
 import requestDeleteNormalNamespaceInjectable from "../../renderer/components/namespaces/request-delete-normal-namespace.injectable";
-import type { RequestDeleteSubNamespaceAnchor } from "../../renderer/components/namespaces/request-delete-sub-namespace.injectable";
 import requestDeleteSubNamespaceAnchorInjectable from "../../renderer/components/namespaces/request-delete-sub-namespace.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { WithConfirmation } from "../../renderer/components/confirm-dialog/with-confirm.injectable"; // Assuming ConfirmationDialogParams is exported or reconstruct its shape
+import type { RequestDeleteNormalNamespace } from "../../renderer/components/namespaces/request-delete-normal-namespace.injectable";
+import type { RequestDeleteSubNamespaceAnchor } from "../../renderer/components/namespaces/request-delete-sub-namespace.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 interface MockConfirmationDialogParams {
   message: string;

@@ -9,7 +9,6 @@ import searchStoreInjectable from "../../../search-store/search-store.injectable
 import getPodByIdInjectable from "../../workloads-pods/get-pod-by-id.injectable";
 import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import renameTabInjectable from "../dock/rename-tab.injectable";
-import type { TabId } from "../dock/store";
 import areLogsPresentInjectable from "./are-logs-present.injectable";
 import downloadAllLogsInjectable from "./download-all-logs.injectable";
 import downloadLogsInjectable from "./download-logs.injectable";
@@ -22,6 +21,8 @@ import { LogTabViewModel } from "./logs-view-model";
 import reloadLogsInjectable from "./reload-logs.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
 import stopLoadingLogsInjectable from "./stop-loading-logs.injectable";
+
+import type { TabId } from "../dock/store";
 
 export interface InstantiateArgs {
   tabId: TabId;

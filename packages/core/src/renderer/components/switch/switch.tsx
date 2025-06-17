@@ -5,9 +5,10 @@
  */
 
 import { cssNames } from "@freelensapp/utilities";
-import type { ChangeEvent, HTMLProps } from "react";
 import React from "react";
 import styles from "./switch.module.scss";
+
+import type { ChangeEvent, HTMLProps } from "react";
 
 export interface SwitchProps extends Omit<HTMLProps<HTMLInputElement>, "onChange"> {
   onChange?: (checked: boolean, event: ChangeEvent<HTMLInputElement>) => void;

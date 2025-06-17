@@ -4,18 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { bytesToUnits, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Stats } from "fs";
 import { constants } from "fs";
-import type { ObservableMap } from "mobx";
-import type { Readable } from "stream";
-import type { CatalogEntity } from "../../../common/catalog";
-import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
 import computeKubeconfigDiffInjectable from "./compute-diff.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
+import type { Stats } from "fs";
+import type { Readable } from "stream";
+
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { ObservableMap } from "mobx";
+
+import type { CatalogEntity } from "../../../common/catalog";
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface DiffChangedKubeconfigArgs {
   filePath: string;

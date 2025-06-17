@@ -5,13 +5,16 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { EnvVarKeySelector } from "@freelensapp/kube-object";
 import { base64, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { useState } from "react";
-import type { SetRequired } from "type-fest";
-import type { SecretStore } from "../config-secrets/store";
 import secretStoreInjectable from "../config-secrets/store.injectable";
+
+import type { EnvVarKeySelector } from "@freelensapp/kube-object";
+
+import type { SetRequired } from "type-fest";
+
+import type { SecretStore } from "../config-secrets/store";
 
 export interface SecretKeyProps {
   reference: SetRequired<EnvVarKeySelector, "name">;

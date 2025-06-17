@@ -1,4 +1,3 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import os from "os";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
@@ -7,6 +6,8 @@ import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodAttachMenu } from "../pod-attach-menu";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "mocked-id"),

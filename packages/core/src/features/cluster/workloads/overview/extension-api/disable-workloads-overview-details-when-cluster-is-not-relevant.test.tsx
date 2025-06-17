@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { KubernetesCluster } from "../../../../../common/catalog-entities";
 import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
-import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { KubernetesCluster } from "../../../../../common/catalog-entities";
+import type { ApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 
 describe("disable workloads overview details when cluster is not relevant", () => {
   let builder: ApplicationBuilder;

@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { GeneralEntity } from "../index";
 
 export const generalCatalogEntityInjectionToken = getInjectionToken<GeneralEntity>({

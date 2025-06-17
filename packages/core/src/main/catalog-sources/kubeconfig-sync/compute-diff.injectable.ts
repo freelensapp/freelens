@@ -6,11 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { createHash } from "crypto";
-import type { ObservableMap } from "mobx";
 import { action } from "mobx";
 import { homedir } from "os";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
-import type { CatalogEntity } from "../../../common/catalog";
 import { Cluster } from "../../../common/cluster/cluster";
 import { loadConfigFromString } from "../../../common/kube-helpers";
 import getClusterByIdInjectable from "../../../features/cluster/storage/common/get-by-id.injectable";
@@ -19,6 +17,10 @@ import clusterConnectionInjectable from "../../cluster/cluster-connection.inject
 import { catalogEntityFromCluster } from "../../cluster/manager";
 import configToModelsInjectable from "./config-to-models.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
+
+import type { ObservableMap } from "mobx";
+
+import type { CatalogEntity } from "../../../common/catalog";
 
 export type ComputeKubeconfigDiff = (
   contents: string,

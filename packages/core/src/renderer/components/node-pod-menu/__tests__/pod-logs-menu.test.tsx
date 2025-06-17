@@ -1,10 +1,11 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodLogsMenu } from "../pod-logs-menu";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 let showLogs: (container: { name: string }) => void = () => {};
 

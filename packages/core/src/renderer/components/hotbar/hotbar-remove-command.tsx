@@ -5,19 +5,21 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
 import computeHotbarDisplayLabelInjectable from "../../../features/hotbar/storage/common/compute-display-label.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
 import hotbarsInjectable from "../../../features/hotbar/storage/common/hotbars.injectable";
-import type { RemoveHotbar } from "../../../features/hotbar/storage/common/remove.injectable";
 import removeHotbarInjectable from "../../../features/hotbar/storage/common/remove.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import { Select } from "../select";
+
+import type { IComputedValue } from "mobx";
+
+import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { RemoveHotbar } from "../../../features/hotbar/storage/common/remove.injectable";
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 
 interface Dependencies {
   closeCommandOverlay: () => void;

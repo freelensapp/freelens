@@ -11,9 +11,10 @@ import {
   getLegacyGlobalDiForExtensionApi,
 } from "@freelensapp/legacy-global-di";
 import requestMetricsInjectable from "../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
-import type { KubeResource } from "../../common/rbac";
 import { apiResourceRecord } from "../../common/rbac";
 import { shouldShowResourceInjectionToken } from "../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
+
+import type { KubeResource } from "../../common/rbac";
 
 export function isAllowedResource(resources: KubeResource | KubeResource[]) {
   const di = getLegacyGlobalDiForExtensionApi();
@@ -72,6 +73,11 @@ export * from "../common-api/k8s-api";
 
 export const requestMetrics = asLegacyGlobalFunctionForExtensionApi(requestMetricsInjectable);
 
+export {
+  type KubeObjectStatus,
+  KubeObjectStatusLevel,
+} from "../../common/k8s-api/kube-object-status";
+
 export type { CustomResourceStore as CRDResourceStore } from "../../common/k8s-api/api-manager/resource.store";
 export type {
   MetricData,
@@ -81,10 +87,6 @@ export type {
   RequestMetrics,
   RequestMetricsParams,
 } from "../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
-export {
-  type KubeObjectStatus,
-  KubeObjectStatusLevel,
-} from "../../common/k8s-api/kube-object-status";
 export type {
   /**
    * @deprecated

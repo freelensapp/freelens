@@ -11,9 +11,10 @@ import { Badge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { ReplicationControllerStore } from "./replication-controller-store";
 import replicationControllerStoreInjectable from "./replication-controller-store.injectable";
 import styles from "./replication-controllers.module.scss";
+
+import type { ReplicationControllerStore } from "./replication-controller-store";
 
 enum columnId {
   name = "name",

@@ -6,18 +6,20 @@
 
 import "./leases.scss";
 
-import type { Lease } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { KubeObjectAge } from "../kube-object/age";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { LeaseStore } from "./store";
 import leaseStoreInjectable from "./store.injectable";
+
+import type { Lease } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { LeaseStore } from "./store";
 
 enum columnId {
   name = "name",

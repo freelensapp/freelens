@@ -5,6 +5,7 @@
  */
 
 import Joi from "joi";
+
 import type { LogTabData, LogTabOwnerRef } from "./tab-store";
 
 export const logTabDataValidator = Joi.object<LogTabData>({

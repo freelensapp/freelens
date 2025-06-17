@@ -15,6 +15,7 @@ import isActiveRouteInjectable from "../../renderer/navigation/is-route-active.i
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
 
 export type { URLParams } from "@freelensapp/utilities";
+
 export type { PageParam, PageParamInit } from "../../renderer/navigation/page-param";
 
 export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);

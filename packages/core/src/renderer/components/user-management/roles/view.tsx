@@ -16,8 +16,9 @@ import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
 import openAddRoleDialogInjectable from "./add-dialog/open.injectable";
 import { AddRoleDialog } from "./add-dialog/view";
-import type { RoleStore } from "./store";
 import roleStoreInjectable from "./store.injectable";
+
+import type { RoleStore } from "./store";
 
 enum columnId {
   name = "name",

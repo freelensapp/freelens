@@ -4,14 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createFsFromVolume, Volume } from "memfs";
+import fsInjectable from "../common/fs/fs.injectable";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 import type {
   ensureDirSync as ensureDirSyncImpl,
   readJsonSync as readJsonSyncImpl,
   writeJsonSync as writeJsonSyncImpl,
 } from "fs-extra";
-import { createFsFromVolume, Volume } from "memfs";
-import fsInjectable from "../common/fs/fs.injectable";
 
 export const getOverrideFsWithFakes = () => {
   const root = createFsFromVolume(Volume.fromJSON({}));

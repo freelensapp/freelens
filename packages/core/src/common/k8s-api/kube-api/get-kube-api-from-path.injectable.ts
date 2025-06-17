@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeApi } from "@freelensapp/kube-api";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { kubeApiInjectionToken } from "@freelensapp/kube-api-specifics";
 import { getInjectable } from "@ogre-tools/injectable";
+
+import type { KubeApi } from "@freelensapp/kube-api";
 
 export type GetKubeApiFromPath = (apiPath: string) => KubeApi | undefined;
 

@@ -5,10 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type WebSocket from "ws";
-import type { Cluster } from "../../common/cluster/cluster";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
+
+import type WebSocket from "ws";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 export interface OpenShellSessionArgs {
   websocket: WebSocket;

@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
-import type { HelmReleasesPathParameters } from "./helm-releases-route.injectable";
 import helmReleasesRouteInjectable from "./helm-releases-route.injectable";
+
+import type { HelmReleasesPathParameters } from "./helm-releases-route.injectable";
 
 export type NavigateToHelmReleases = (parameters?: HelmReleasesPathParameters) => void;
 

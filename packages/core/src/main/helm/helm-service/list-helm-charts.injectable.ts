@@ -7,9 +7,10 @@
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
-import type { HelmRepo } from "../../../common/helm/helm-repo";
 import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 import getActiveHelmRepositoriesInjectable from "../repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
+
+import type { HelmRepo } from "../../../common/helm/helm-repo";
 
 const listHelmChartsInjectable = getInjectable({
   id: "list-helm-charts",

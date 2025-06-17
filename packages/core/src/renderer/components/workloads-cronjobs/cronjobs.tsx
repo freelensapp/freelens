@@ -10,15 +10,16 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import React from "react";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { CronJobStore } from "./store";
 import cronJobStoreInjectable from "./store.injectable";
+
+import type { EventStore } from "../events/store";
+import type { CronJobStore } from "./store";
 
 enum columnId {
   name = "name",

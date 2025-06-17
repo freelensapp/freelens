@@ -4,7 +4,6 @@ import { Discover, discoverFor } from "@freelensapp/react-testing-library-discov
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import type { RenderResult } from "@testing-library/react";
 import { act, render } from "@testing-library/react";
 import { computed, IObservableValue, observable, runInAction } from "mobx";
 import React from "react";
@@ -17,6 +16,8 @@ import {
 } from "./react-application/react-application-higher-order-component-injection-token";
 import renderInjectable from "./render-application/render.injectable";
 import { rootFrameChildComponentInjectionToken } from "./root-frame/root-frame-child-component-injection-token";
+
+import type { RenderResult } from "@testing-library/react";
 
 const SomeContent = () => <div data-some-content-test>Some children</div>;
 

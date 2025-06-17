@@ -8,11 +8,13 @@ import { loggerTransportInjectionToken } from "@freelensapp/logger";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { MESSAGE } from "triple-beam";
-import type winston from "winston";
-import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
 import { closeIpcFileLoggerChannel, ipcFileLoggerChannel } from "../common/ipc-file-logger-channel";
 import IpcLogTransport from "./ipc-transport";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
+
+import type winston from "winston";
+
+import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
 
 /**
  * Winston uses symbol property for the actual message.

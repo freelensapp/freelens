@@ -5,10 +5,11 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import { ClusterMetadataKey } from "../../common/cluster-types";
 import k8SRequestInjectable from "../k8s-request.injectable";
 import { clusterMetadataDetectorInjectionToken } from "./token";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const clusterNodeCountDetectorInjectable = getInjectable({
   id: "cluster-node-count-detector",

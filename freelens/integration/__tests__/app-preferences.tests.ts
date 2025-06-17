@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import * as utils from "../helpers/utils";
+
 /*
   Cluster tests are run if there is a pre-existing minikube cluster. Before running cluster tests the TEST_NAMESPACE
   namespace is removed, if it exists, from the minikube cluster. Resources are created as part of the cluster tests in the
@@ -11,7 +13,6 @@
   cluster and vice versa.
 */
 import type { ElectronApplication, Page } from "playwright";
-import * as utils from "../helpers/utils";
 
 describe("preferences page tests", () => {
   let window: Page;

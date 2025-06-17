@@ -5,13 +5,14 @@
  */
 
 import freelensFetch from "@freelensapp/node-fetch";
-import type * as K8slensTooltip from "@freelensapp/tooltip";
 import * as glob from "glob";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
 import path from "path";
 import React from "react";
 import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
+
+import type * as K8slensTooltip from "@freelensapp/tooltip";
 
 declare global {
   interface InjectablePaths {

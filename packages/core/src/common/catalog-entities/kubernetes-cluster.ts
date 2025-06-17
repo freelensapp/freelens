@@ -9,6 +9,11 @@ import {
   requestClusterActivationInjectionToken,
   requestClusterDeactivationInjectionToken,
 } from "../../features/cluster/activation/common/request-token";
+import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
+import { broadcastMessage } from "../ipc";
+import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
+import KubeClusterCategoryIcon from "./icons/kubernetes.svg";
+
 import type {
   CatalogCategorySpec,
   CatalogEntityActionContext,
@@ -17,10 +22,6 @@ import type {
   CatalogEntityStatus,
 } from "../catalog";
 import type { CatalogEntityConstructor, CatalogEntitySpec } from "../catalog/catalog-entity";
-import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
-import { broadcastMessage } from "../ipc";
-import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
-import KubeClusterCategoryIcon from "./icons/kubernetes.svg";
 
 export interface KubernetesClusterPrometheusMetrics {
   address?: {

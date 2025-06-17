@@ -5,8 +5,12 @@
  */
 
 import { pick } from "lodash";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction, toJS } from "mobx";
+import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
+import { replaceObservableObject } from "../utils/replace-observable-object";
+
+import type { IObservableValue } from "mobx";
+
 import type {
   ClusterId,
   ClusterMetadata,
@@ -16,9 +20,7 @@ import type {
   ClusterState,
   UpdateClusterModel,
 } from "../cluster-types";
-import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
 import type { KubeApiResource } from "../rbac";
-import { replaceObservableObject } from "../utils/replace-observable-object";
 
 export class Cluster {
   /**

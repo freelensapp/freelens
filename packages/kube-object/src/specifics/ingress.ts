@@ -5,9 +5,11 @@
  */
 
 import { hasTypedProperty, isString, iter } from "@freelensapp/utilities";
-import type { RequireExactlyOne } from "type-fest";
-import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { RequireExactlyOne } from "type-fest";
+
+import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 
 export interface ILoadBalancerIngress {
   hostname?: string;

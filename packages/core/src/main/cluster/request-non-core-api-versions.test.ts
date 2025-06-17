@@ -4,15 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { K8sRequest } from "../k8s-request.injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
-import type { ApiVersionsRequester } from "./api-versions-requester";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";
+
+import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { K8sRequest } from "../k8s-request.injectable";
+import type { ApiVersionsRequester } from "./api-versions-requester";
 
 describe("requestNonCoreApiVersions", () => {
   let di: DiContainer;

@@ -6,25 +6,27 @@
 
 import "./details.scss";
 
-import type { HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricTarget } from "@freelensapp/kube-object";
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { getMetricName } from "./get-metric-name";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+
+import type { HorizontalPodAutoscalerMetricSpec, HorizontalPodAutoscalerMetricTarget } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface HpaDetailsProps extends KubeObjectDetailsProps<HorizontalPodAutoscaler> {}
 

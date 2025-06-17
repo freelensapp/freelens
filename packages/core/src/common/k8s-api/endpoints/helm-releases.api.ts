@@ -5,6 +5,7 @@
  */
 
 import type { ItemObject } from "@freelensapp/list-layout";
+
 import type { HelmReleaseData } from "../../../features/helm-releases/common/channels";
 
 export interface HelmReleaseUpdateDetails {

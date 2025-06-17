@@ -6,7 +6,6 @@
 
 import "./pod-details-list.scss";
 
-import type { KubeObject, Pod } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames, interval, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -16,13 +15,16 @@ import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { PodStore } from "./store";
 import podStoreInjectable from "./store.injectable";
+
+import type { KubeObject, Pod } from "@freelensapp/kube-object";
+
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
+import type { PodStore } from "./store";
 
 enum sortBy {
   name = "name",

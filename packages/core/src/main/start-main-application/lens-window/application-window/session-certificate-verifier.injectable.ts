@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { timingSafeEqual, X509Certificate } from "crypto";
-import type { Request } from "electron";
 import lensProxyCertificateInjectable from "../../../../common/certificate/lens-proxy-certificate.injectable";
+
+import type { Request } from "electron";
 
 // see https://www.electronjs.org/docs/latest/api/session#sessetcertificateverifyprocproc
 export enum ChromiumNetError {

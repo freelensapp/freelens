@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import siblingTabsInjectable from "../../routes/sibling-tabs.injectable";
 import { TabLayout } from "./tab-layout-2";
+
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
 
 interface SiblingTabLayoutProps {
   children: StrictReactNode;

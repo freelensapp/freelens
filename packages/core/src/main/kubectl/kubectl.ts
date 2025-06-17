@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
 import fs from "fs";
 import { ensureDir, pathExists } from "fs-extra";
@@ -14,13 +13,16 @@ import * as lockFile from "proper-lockfile";
 import { coerce, SemVer } from "semver";
 import stream from "stream";
 import { promisify } from "util";
+import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
+
+import type { Logger } from "@freelensapp/logger";
+
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
-import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
 
 const initScriptVersionString = "# lens-initscript v3";
 

@@ -5,6 +5,7 @@
  */
 
 import "./resizing-anchor.scss";
+
 import { cssNames, noop } from "@freelensapp/utilities";
 import _ from "lodash";
 import { action, makeObservable, observable } from "mobx";

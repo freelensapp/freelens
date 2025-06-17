@@ -6,22 +6,25 @@
 
 import "./view.scss";
 
-import type { TableCellProps } from "@freelensapp/list-layout";
 import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
+
+import type { TableCellProps } from "@freelensapp/list-layout";
+
+import type { IComputedValue } from "mobx";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 
 enum columnId {
   name = "name",

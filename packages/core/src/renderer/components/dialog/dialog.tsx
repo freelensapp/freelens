@@ -8,14 +8,16 @@ import "./dialog.scss";
 
 import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
-import type { ObservableHistory } from "mobx-observable-history";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { createPortal } from "react-dom";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { ObservableHistory } from "mobx-observable-history";
 
 // todo: refactor + handle animation-end in props.onClose()?
 

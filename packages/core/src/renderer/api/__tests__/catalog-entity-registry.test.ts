@@ -5,14 +5,15 @@
  */
 
 import { observable } from "mobx";
-import type { CatalogCategoryRegistry } from "../../../common/catalog";
 import { categoryVersion } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import { KubernetesCluster, WebLink } from "../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { CatalogEntityRegistry } from "../catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../catalog/entity/registry.injectable";
 import { CatalogCategory } from "../catalog-entity";
+
+import type { CatalogCategoryRegistry } from "../../../common/catalog";
+import type { CatalogEntityRegistry } from "../catalog/entity/registry";
 
 class FooBarCategory extends CatalogCategory {
   public readonly apiVersion = "entityRegistry.k8slens.dev/v1alpha1";

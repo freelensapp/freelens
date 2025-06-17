@@ -5,6 +5,7 @@
  */
 
 import "./stepper.scss";
+
 import { cssNames } from "@freelensapp/utilities";
 import React from "react";
 

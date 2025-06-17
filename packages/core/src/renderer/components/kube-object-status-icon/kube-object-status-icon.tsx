@@ -7,16 +7,19 @@
 import "./kube-object-status-icon.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { KubeObject } from "@freelensapp/kube-object";
 import { cssNames, formatDuration, getOrInsert, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
 import { KubeObjectStatusLevel } from "../../../common/k8s-api/kube-object-status";
-import type { KubeObjectStatusText } from "./kube-object-status-text-injection-token";
 import kubeObjectStatusTextsForObjectInjectable from "./kube-object-status-texts-for-object.injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
+import type { IComputedValue } from "mobx";
+
+import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
+import type { KubeObjectStatusText } from "./kube-object-status-text-injection-token";
 
 function statusClassName(level: KubeObjectStatusLevel): string {
   switch (level) {

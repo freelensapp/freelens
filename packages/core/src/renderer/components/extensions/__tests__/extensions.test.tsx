@@ -11,24 +11,25 @@ import { observable, when } from "mobx";
 import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { DownloadBinary } from "../../../../common/fetch/download-binary.injectable";
 import downloadBinaryInjectable from "../../../../common/fetch/download-binary.injectable";
-import type { RemovePath } from "../../../../common/fs/remove.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";
-import type { ExtensionDiscovery } from "../../../../extensions/extension-discovery/extension-discovery";
 import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
-import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import type { ExtensionLoader } from "../../../../extensions/extension-loader";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
 import { ConfirmDialog } from "../../confirm-dialog";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { Extensions } from "../extensions";
-import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
 import installExtensionFromInputInjectable from "../install-extension-from-input.injectable";
+
+import type { DownloadBinary } from "../../../../common/fetch/download-binary.injectable";
+import type { RemovePath } from "../../../../common/fs/remove.injectable";
+import type { ExtensionDiscovery } from "../../../../extensions/extension-discovery/extension-discovery";
+import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import type { DiRender } from "../../test-utils/renderFor";
+import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
 
 describe("Extensions", () => {
   let extensionLoader: ExtensionLoader;

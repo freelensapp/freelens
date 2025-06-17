@@ -5,11 +5,13 @@
  */
 
 import { patchTypeHeaders } from "@freelensapp/kube-api";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { JsonPatch } from "../../../../../common/k8s-api/kube-object.store";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import apiKubePatchInjectable from "../../../../k8s/api-kube-patch.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { JsonPatch } from "../../../../../common/k8s-api/kube-object.store";
 
 export type RequestPatchKubeResource = (
   selfLink: string,

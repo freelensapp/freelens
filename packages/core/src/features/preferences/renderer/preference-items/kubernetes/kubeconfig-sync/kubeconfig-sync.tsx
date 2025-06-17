@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { iter, tuple } from "@freelensapp/utilities";
@@ -16,13 +15,16 @@ import isWindowsInjectable from "../../../../../../common/vars/is-windows.inject
 import { Notice } from "../../../../../../renderer/components/extensions/notice";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { PathPicker } from "../../../../../../renderer/components/path-picker/path-picker";
-import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 import { RemovableItem } from "../../../removable-item/removable-item";
-import type { DiscoverAllKubeconfigSyncKinds } from "./discover-all-sync-kinds.injectable";
 import discoverAllKubeconfigSyncKindsInjectable from "./discover-all-sync-kinds.injectable";
-import type { DiscoverKubeconfigSyncKind, SyncKind } from "./discover-sync-kind.injectable";
 import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
+import type { DiscoverAllKubeconfigSyncKinds } from "./discover-all-sync-kinds.injectable";
+import type { DiscoverKubeconfigSyncKind, SyncKind } from "./discover-sync-kind.injectable";
 
 interface Entry extends SyncKind {
   filePath: string;

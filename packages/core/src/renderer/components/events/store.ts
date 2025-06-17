@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeEventApi } from "@freelensapp/kube-api";
-import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
 import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import compact from "lodash/compact";
 import groupBy from "lodash/groupBy";
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
+import type { KubeEventApi } from "@freelensapp/kube-api";
+import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
+
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import type { GetPodById } from "../workloads-pods/get-pod-by-id.injectable";
 
 export interface EventStoreDependencies extends KubeObjectStoreDependencies {

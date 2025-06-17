@@ -5,13 +5,15 @@
  */
 
 import { parseKubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Writable } from "type-fest";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import apiKubeGetInjectable from "../../../../k8s/api-kube-get.injectable";
+
+import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { Writable } from "type-fest";
 
 export type RequestKubeResource = (selfLink: string) => AsyncResult<KubeObject | undefined>;
 

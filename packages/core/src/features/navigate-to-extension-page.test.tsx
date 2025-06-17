@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import isEmpty from "lodash/isEmpty";
-import type { IComputedValue } from "mobx";
 import React from "react";
-import type { LensRendererExtension } from "../extensions/lens-renderer-extension";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
-import type { FakeExtensionOptions } from "../renderer/components/test-utils/get-extension-fake";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";
 import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IComputedValue } from "mobx";
+
+import type { LensRendererExtension } from "../extensions/lens-renderer-extension";
+import type { FakeExtensionOptions } from "../renderer/components/test-utils/get-extension-fake";
 
 describe("navigate to extension page", () => {
   let rendered: RenderResult;

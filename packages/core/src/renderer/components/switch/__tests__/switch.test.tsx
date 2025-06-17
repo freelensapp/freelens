@@ -7,6 +7,7 @@
 import { fireEvent, render } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom";
+
 import { Switch } from "../switch";
 
 describe("<Switch/>", () => {

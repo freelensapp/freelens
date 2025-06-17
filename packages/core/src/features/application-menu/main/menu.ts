@@ -5,6 +5,7 @@
  */
 
 import { Menu } from "electron";
+
 import type { MenuItemOpts } from "./application-menu-items.injectable";
 
 export type MenuTopId = "mac" | "file" | "edit" | "view" | "help";

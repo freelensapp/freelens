@@ -7,10 +7,11 @@
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { EditableList } from "../editable-list";
 import { systemName } from "../input/input_validators";
 import { SubTitle } from "../layout/sub-title";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterAccessibleNamespacesProps {
   cluster: Cluster;

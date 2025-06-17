@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { editor } from "monaco-editor";
+
 import type { MonacoThemeData } from "../components/monaco-editor";
 
 const addNewMonacoThemeInjectable = getInjectable({

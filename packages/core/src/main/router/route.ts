@@ -5,9 +5,11 @@
  */
 
 import type http from "http";
+import type { URLSearchParams } from "url";
+
 import type httpProxy from "http-proxy-node16";
 import type Joi from "joi";
-import type { URLSearchParams } from "url";
+
 import type { Cluster } from "../../common/cluster/cluster";
 import type { LensApiResultContentType } from "./router-content-types";
 

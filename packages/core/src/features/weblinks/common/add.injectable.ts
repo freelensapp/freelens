@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import * as uuid from "uuid";
 import weblinksStateInjectable from "./state.injectable";
+
 import type { WeblinkData } from "./storage.injectable";
 
 export interface WeblinkCreateOptions {

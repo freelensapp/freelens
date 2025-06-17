@@ -4,9 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { noop } from "@freelensapp/utilities";
-import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
 import * as uuid from "uuid";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -18,11 +16,16 @@ import {
 } from "../../../common/protocol-handler";
 import extensionInstancesInjectable from "../../../extensions/extension-loader/extension-instances.injectable";
 import { LensMainExtension } from "../../../extensions/lens-main-extension";
-import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
 import enabledExtensionsStateInjectable from "../../../features/extensions/enabled/common/state.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
 import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-protocol-router-main.injectable";
+
+import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
+
+import type { ObservableMap } from "mobx";
+
+import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
+import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
 
 function throwIfDefined(val: any): void {
   if (val != null) {

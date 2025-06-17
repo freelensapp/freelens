@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { KubernetesCluster, KubernetesClusterPrometheusMetrics } from "../../common/catalog-entities";
 import type { Cluster } from "../../common/cluster/cluster";
 

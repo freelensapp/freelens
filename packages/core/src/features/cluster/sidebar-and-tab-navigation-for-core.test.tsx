@@ -6,9 +6,7 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import { noop } from "lodash/fp";
 import { computed, runInAction } from "mobx";
@@ -18,12 +16,16 @@ import { navigateToRouteInjectionToken } from "../../common/front-end-routing/na
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import routeIsActiveInjectable from "../../renderer/routes/route-is-active.injectable";
 import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
 import storageSaveDelayInjectable from "../../renderer/utils/create-storage/storage-save-delay.injectable";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("cluster - sidebar and tab navigation for core", () => {
   let builder: ApplicationBuilder;

@@ -5,6 +5,7 @@
  */
 
 import { getRequestChannel } from "@freelensapp/messaging";
+
 import type { ClusterId } from "../../../../common/cluster-types";
 
 export interface ActivateCluster {

@@ -8,11 +8,12 @@ import { Icon } from "@freelensapp/icon";
 import { makeObservable, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
 import Gutter from "../gutter/gutter";
 import { Input } from "../input/input";
 import { SubTitle } from "../layout/sub-title";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterNodeShellSettingProps {
   cluster: Cluster;

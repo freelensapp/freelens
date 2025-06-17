@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { MetricData } from "../metrics.api";
 import requestMetricsInjectable from "./request-metrics.injectable";
+
+import type { MetricData } from "../metrics.api";
 
 export interface IngressMetricData {
   bytesSentSuccess: MetricData;

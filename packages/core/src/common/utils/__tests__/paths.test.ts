@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import path from "path";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import getAbsolutePathInjectable from "../../path/get-absolute-path.injectable";
 import getDirnameOfPathInjectable from "../../path/get-dirname.injectable";
-import type { IsLogicalChildPath } from "../../path/is-logical-child-path.injectable";
 import isLogicalChildPathInjectable from "../../path/is-logical-child-path.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { IsLogicalChildPath } from "../../path/is-logical-child-path.injectable";
 
 describe("isLogicalChildPath", () => {
   let di: DiContainer;

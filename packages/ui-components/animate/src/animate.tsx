@@ -5,14 +5,17 @@
  */
 
 import "./animate.scss";
-import type { StrictReactNode } from "@freelensapp/utilities";
+
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { useEffect, useState } from "react";
 import { defaultEnterDurationForAnimatedInjectable } from "./default-enter-duration.injectable";
 import { defaultLeaveDurationForAnimatedInjectable } from "./default-leave-duration.injectable";
-import type { RequestAnimationFrame } from "./request-animation-frame.injectable";
 import { requestAnimationFrameInjectable } from "./request-animation-frame.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { RequestAnimationFrame } from "./request-animation-frame.injectable";
 
 export type AnimateName = "opacity" | "slide-right" | "opacity-scale" | string;
 

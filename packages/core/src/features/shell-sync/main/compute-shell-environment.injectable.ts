@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export type EnvironmentVariables = Partial<Record<string, string>>;
 export type ComputeShellEnvironment = (shell?: string | null) => AsyncResult<EnvironmentVariables | undefined, string>;

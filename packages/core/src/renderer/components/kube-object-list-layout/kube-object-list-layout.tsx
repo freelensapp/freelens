@@ -7,31 +7,33 @@
 import "./kube-object-list-layout.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { KubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { kubeObjectListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { TooltipPosition } from "@freelensapp/tooltip";
-import type { Disposer } from "@freelensapp/utilities";
 import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { sortBy } from "lodash";
 import { computed, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { PageParam } from "../../navigation/page-param";
 import { ResourceKindMap, ResourceNames } from "../../utils/rbac";
-import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
 import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
+
+import type { KubeApi } from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
+import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { PageParam } from "../../navigation/page-param";
+import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 
 export type KubeItemListStore<K extends KubeObject> = ItemListStore<K, false> &
   SubscribableStore & {

@@ -8,8 +8,6 @@ import { formatDuration, isObject, isString } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { omit } from "lodash";
 import moment from "moment";
-import type { Patch } from "rfc6902";
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
 import { KubeCreationError } from "./api-types";
 import {
   filterOutResourceApplierAnnotations,
@@ -22,6 +20,10 @@ import {
   isPartialJsonApiMetadata,
   stringifyLabels,
 } from "./utils";
+
+import type { Patch } from "rfc6902";
+
+import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
 
 export function createKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,

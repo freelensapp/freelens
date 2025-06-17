@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observe, runInAction } from "mobx";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import createSyncBoxInjectable from "./create-sync-box.injectable";
-import type { SyncBox } from "./sync-box-injection-token";
 import { syncBoxInjectionToken } from "./sync-box-injection-token";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import type { SyncBox } from "./sync-box-injection-token";
 
 describe("sync-box", () => {
   let applicationBuilder: ApplicationBuilder;

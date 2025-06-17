@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { useEffect, useState } from "react";
-import type { CancelIdleCallback } from "./cancel-idle-callback.injectable";
 import cancelIdleCallbackInjectable from "./cancel-idle-callback.injectable";
 import idleCallbackTimeoutInjectable from "./idle-callback-timeout.injectable";
-import type { RequestIdleCallback } from "./request-idle-callback.injectable";
 import requestIdleCallbackInjectable from "./request-idle-callback.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { CancelIdleCallback } from "./cancel-idle-callback.injectable";
+import type { RequestIdleCallback } from "./request-idle-callback.injectable";
 
 export interface RenderDelayProps {
   placeholder?: StrictReactNode;

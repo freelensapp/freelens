@@ -1,8 +1,9 @@
 import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
 import { deregisterFeature } from "./deregister-feature";
-import type { Feature } from "./feature";
 import { getFeature } from "./feature";
 import { registerFeature } from "./register-feature";
+
+import type { Feature } from "./feature";
 
 describe("register-feature", () => {
   describe("given di-container and a Features with injectables, and given Features are registered", () => {

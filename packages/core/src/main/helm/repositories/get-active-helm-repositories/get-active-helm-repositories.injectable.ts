@@ -5,13 +5,15 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
 import readYamlFileInjectable from "../../../../common/fs/read-yaml-file.injectable";
-import type { HelmRepo } from "../../../../common/helm/helm-repo";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import getHelmEnvInjectable from "../../get-helm-env/get-helm-env.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
+import type { HelmRepo } from "../../../../common/helm/helm-repo";
 
 interface HelmRepositoryFromYaml {
   name: string;

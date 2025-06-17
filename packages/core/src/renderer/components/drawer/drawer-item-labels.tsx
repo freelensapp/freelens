@@ -7,8 +7,9 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import React from "react";
 import { Badge } from "../badge";
-import type { DrawerItemProps } from "./drawer-item";
 import { DrawerItem } from "./drawer-item";
+
+import type { DrawerItemProps } from "./drawer-item";
 
 export interface DrawerItemLabelsProps extends DrawerItemProps {
   labels: string[] | Partial<Record<string, string>>;

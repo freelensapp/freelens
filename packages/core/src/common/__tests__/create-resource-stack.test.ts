@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import kubectlApplyAllInjectable from "../../main/kubectl/kubectl-apply-all.injectable";
 import appPathsStateInjectable from "../app-paths/app-paths-state.injectable";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { KubernetesCluster } from "../catalog-entities";
 import readDirectoryInjectable from "../fs/read-directory.injectable";
 import readFileInjectable from "../fs/read-file.injectable";
 import createResourceStackInjectable from "../k8s/create-resource-stack.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { KubernetesCluster } from "../catalog-entities";
 
 describe("create resource stack tests", () => {
   let di: DiContainer;

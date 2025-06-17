@@ -6,8 +6,9 @@
 
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import defaultWebsocketApiParamsInjectable from "../default-websocket-api-params.injectable";
-import type { WebSocketEvents } from "../websocket-api";
 import { WebSocketApi } from "../websocket-api";
+
+import type { WebSocketEvents } from "../websocket-api";
 
 class TestWebSocketApi extends WebSocketApi<WebSocketEvents> {
   flush(): void {

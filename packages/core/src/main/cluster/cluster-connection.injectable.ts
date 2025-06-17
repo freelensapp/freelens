@@ -5,48 +5,50 @@
  */
 
 import { ApiException, type KubeConfig } from "@freelensapp/kubernetes-client-node";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { comparer, reaction, runInAction } from "mobx";
+import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
+import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
+import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
+import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
+import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
+import { ClusterStatus } from "../../common/cluster-types";
+import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
+import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
+import { formatKubeApiResource } from "../../common/rbac";
+import { replaceObservableObject } from "../../common/utils/replace-observable-object";
+import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
+import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
+import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
+import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
+import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
+import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
+import requestApiResourcesInjectable from "./request-api-resources.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
 import type { Cluster } from "../../common/cluster/cluster";
 import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
-import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import type { CreateCanI } from "../../common/cluster/create-can-i.injectable";
-import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
 import type { CreateCoreApi } from "../../common/cluster/create-core-api.injectable";
-import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import type {
   CreateRequestNamespaceListPermissions,
   RequestNamespaceListPermissions,
 } from "../../common/cluster/create-request-namespace-list-permissions.injectable";
-import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
 import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
-import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
-import { ClusterStatus } from "../../common/cluster-types";
 import type { BroadcastMessage } from "../../common/ipc/broadcast-message.injectable";
-import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
 import type { KubeApiResource } from "../../common/rbac";
-import { formatKubeApiResource } from "../../common/rbac";
-import { replaceObservableObject } from "../../common/utils/replace-observable-object";
-import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
 import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
-import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
 import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
 import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
-import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
 import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
-import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
-import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
-import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
 import type { RequestApiResources } from "./request-api-resources.injectable";
-import requestApiResourcesInjectable from "./request-api-resources.injectable";
 
 interface Dependencies {
   readonly logger: Logger;

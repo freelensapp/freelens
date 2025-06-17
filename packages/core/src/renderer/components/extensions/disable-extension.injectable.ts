@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 
 export type DisableExtension = (extId: LensExtensionId) => void;
 

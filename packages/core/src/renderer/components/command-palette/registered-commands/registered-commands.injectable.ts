@@ -4,15 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import customResourceDefinitionsInjectable from "../../custom-resource-definitions/definitions.injectable";
-import type { CommandRegistration, RegisteredCommand } from "./commands";
 import internalCommandsInjectable, { isKubernetesClusterActive } from "./internal-commands.injectable";
+
+import type { CustomResourceDefinition } from "@freelensapp/kube-object";
+
+import type { IComputedValue } from "mobx";
+
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
+import type { CommandRegistration, RegisteredCommand } from "./commands";
 
 interface Dependencies {
   extensions: IComputedValue<LensRendererExtension[]>;

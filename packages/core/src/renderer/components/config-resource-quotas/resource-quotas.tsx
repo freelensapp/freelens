@@ -16,8 +16,9 @@ import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import openAddQuotaDialogInjectable from "./add-dialog/open.injectable";
 import { AddQuotaDialog } from "./add-dialog/view";
-import type { ResourceQuotaStore } from "./store";
 import resourceQuotaStoreInjectable from "./store.injectable";
+
+import type { ResourceQuotaStore } from "./store";
 
 enum columnId {
   name = "name",

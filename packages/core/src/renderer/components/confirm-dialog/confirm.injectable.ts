@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ConfirmDialogBooleanParams } from "./confirm-dialog";
 import openConfirmDialogInjectable from "./open.injectable";
+
+import type { ConfirmDialogBooleanParams } from "./confirm-dialog";
 
 export type Confirm = (params: ConfirmDialogBooleanParams) => Promise<boolean>;
 

@@ -6,24 +6,27 @@
 
 import "./hotbar-menu.scss";
 
-import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable, type DropResult } from "react-beautiful-dnd";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
-import type { HotbarItem } from "../../../features/hotbar/storage/common/types";
 import { defaultHotbarCells } from "../../../features/hotbar/storage/common/types";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import { HotbarCell } from "./hotbar-cell";
 import { HotbarEntityIcon } from "./hotbar-entity-icon";
 import { HotbarIcon } from "./hotbar-icon";
 import { HotbarSelector } from "./hotbar-selector";
+
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
+
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { HotbarItem } from "../../../features/hotbar/storage/common/types";
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 export interface HotbarMenuProps {
   className?: IClassName;

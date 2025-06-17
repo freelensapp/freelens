@@ -32,15 +32,16 @@ import navigateToEntitySettingsInjectable from "../../../../common/front-end-rou
 // TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
 import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
 import { ActivateEntityCommand } from "../../activate-entity-command";
-import type { DockTabCreate } from "../../dock/dock/store";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
-import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
 import hasCatalogEntitySettingItemsInjectable from "../../entity-settings/has-settings.injectable";
 import { HotbarAddCommand } from "../../hotbar/hotbar-add-command";
 import { HotbarRemoveCommand } from "../../hotbar/hotbar-remove-command";
 import { HotbarRenameCommand } from "../../hotbar/hotbar-rename-command";
 import { HotbarSwitchCommand } from "../../hotbar/hotbar-switch-command";
 import commandOverlayInjectable from "../command-overlay.injectable";
+
+import type { DockTabCreate } from "../../dock/dock/store";
+import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
 import type { CommandContext, CommandRegistration } from "./commands";
 
 export function isKubernetesClusterActive(context: CommandContext): boolean {

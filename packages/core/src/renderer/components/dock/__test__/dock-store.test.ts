@@ -7,9 +7,10 @@
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import hostedClusterIdInjectable from "../../../cluster-frame-context/hosted-cluster-id.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DockStore, DockTab } from "../dock/store";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
+
+import type { DockStore, DockTab } from "../dock/store";
 
 const initialTabs: DockTab[] = [
   { id: "terminal", kind: TabKind.TERMINAL, title: "Terminal", pinned: false },

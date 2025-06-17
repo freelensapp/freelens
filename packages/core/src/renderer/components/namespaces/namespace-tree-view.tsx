@@ -3,11 +3,14 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import type { Namespace } from "@freelensapp/kube-object";
 import { prevDefault } from "@freelensapp/utilities";
 import TreeItem, { useTreeItem } from "@mui/lab/TreeItem";
-import type { TreeItemContentProps } from "@mui/lab/TreeItem/TreeItemContent";
 import TreeView from "@mui/lab/TreeView";
 import { SvgIcon } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -16,12 +19,17 @@ import clsx from "clsx";
 import React from "react";
 import { Link } from "react-router-dom";
 import { DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import styles from "./namespace-tree-view.module.scss";
-import type { NamespaceTree } from "./store";
 import { SubnamespaceBadge } from "./subnamespace-badge";
+
+import type { Namespace } from "@freelensapp/kube-object";
+
+import type { TreeItemContentProps } from "@mui/lab/TreeItem/TreeItemContent";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { NamespaceTree } from "./store";
 
 interface NamespaceTreeViewProps {
   tree: NamespaceTree;

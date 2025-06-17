@@ -7,7 +7,6 @@
 import "./namespace-details.scss";
 
 import { Namespace } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
@@ -16,19 +15,22 @@ import { computed, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { LimitRangeStore } from "../config-limit-ranges/store";
 import limitRangeStoreInjectable from "../config-limit-ranges/store.injectable";
-import type { ResourceQuotaStore } from "../config-resource-quotas/store";
 import resourceQuotaStoreInjectable from "../config-resource-quotas/store.injectable";
 import { DrawerItem } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { NamespaceTreeView } from "./namespace-tree-view";
-import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { LimitRangeStore } from "../config-limit-ranges/store";
+import type { ResourceQuotaStore } from "../config-resource-quotas/store";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { NamespaceStore } from "./store";
 
 export interface NamespaceDetailsProps extends KubeObjectDetailsProps<Namespace> {}
 

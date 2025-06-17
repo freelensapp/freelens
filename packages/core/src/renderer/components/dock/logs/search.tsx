@@ -10,6 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { SearchInput } from "../../input";
+
 import type { LogTabViewModel } from "./logs-view-model";
 
 export interface PodLogSearchProps {

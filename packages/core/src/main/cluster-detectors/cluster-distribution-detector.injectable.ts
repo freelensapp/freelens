@@ -5,13 +5,14 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { URL } from "url";
-import type { Cluster } from "../../common/cluster/cluster";
 import { ClusterMetadataKey } from "../../common/cluster-types";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import k8SRequestInjectable from "../k8s-request.injectable";
 import requestClusterVersionInjectable from "./request-cluster-version.injectable";
 import { clusterMetadataDetectorInjectionToken } from "./token";
+import type { URL } from "url";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const isGKE = (version: string) => version.includes("gke");
 const isEKS = (version: string) => version.includes("eks");

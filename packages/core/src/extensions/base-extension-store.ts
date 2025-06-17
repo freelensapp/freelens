@@ -7,12 +7,14 @@
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import assert from "assert";
-import type { Options } from "conf";
 import * as path from "path";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
+
+import type { Options } from "conf";
+
 import type { Migrations } from "../features/persistent-storage/common/migrations.injectable";
 import type { PersistentStorageParams } from "./common-api/stores";
 import type { LensExtension } from "./lens-extension";

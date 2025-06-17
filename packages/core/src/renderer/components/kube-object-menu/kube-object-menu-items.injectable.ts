@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { filter, map, sortBy } from "lodash/fp";
 import { computed } from "mobx";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
+
+import type { KubeObject } from "@freelensapp/kube-object";
 
 const kubeObjectMenuItemsInjectable = getInjectable({
   id: "kube-object-menu-items",

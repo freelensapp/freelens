@@ -4,15 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { PersistentVolumeClaimMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-persistent-volume-claim-metrics.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";
 import persistentVolumeClaimMetricsInjectable from "./metrics.injectable";
 import { VolumeClaimDiskChart } from "./volume-claim-disk-chart";
+
+import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { PersistentVolumeClaimMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-persistent-volume-claim-metrics.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<PersistentVolumeClaimMetricData>;

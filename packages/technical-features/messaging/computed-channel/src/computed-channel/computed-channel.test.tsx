@@ -1,6 +1,5 @@
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
-import type { MessageChannel } from "@freelensapp/messaging";
 import { getMessageChannelListenerInjectable, testUtils } from "@freelensapp/messaging";
 import { getMessageBridgeFake, MessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { renderFor, runWithThrownMobxReactions } from "@freelensapp/test-utils";
@@ -16,6 +15,8 @@ import {
   ComputedChannelAdminMessage,
   computedChannelAdministrationChannel,
 } from "./computed-channel-administration-channel.injectable";
+
+import type { MessageChannel } from "@freelensapp/messaging";
 
 const testChannel: MessageChannel<string> = { id: "some-channel-id" };
 const testChannel2: MessageChannel<string> = { id: "some-other-channel-id" };

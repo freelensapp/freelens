@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { LensRequestInit } from "../common/fetch/lens-fetch.injectable";
 import lensFetchInjectable from "../common/fetch/lens-fetch.injectable";
 import { withTimeout } from "../common/fetch/timeout-controller";
+
+import type { LensRequestInit } from "../common/fetch/lens-fetch.injectable";
 
 export interface K8sRequestInit extends LensRequestInit {
   timeout?: number;

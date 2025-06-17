@@ -4,15 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type {
-  LabelMatchExpression,
-  LabelSelector,
-  NetworkPolicyPeer,
-  NetworkPolicyPort,
-  PolicyIpBlock,
-} from "@freelensapp/kube-object";
 import { NetworkPolicy } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { isEmpty } from "lodash";
@@ -20,9 +12,19 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { SubTitle } from "../layout/sub-title";
 import styles from "./network-policy-details.module.scss";
+
+import type {
+  LabelMatchExpression,
+  LabelSelector,
+  NetworkPolicyPeer,
+  NetworkPolicyPort,
+  PolicyIpBlock,
+} from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface NetworkPolicyDetailsProps extends KubeObjectDetailsProps<NetworkPolicy> {}
 

@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
-import type { KubeObjectDetailMetrics } from "@freelensapp/metrics";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+import type { KubeObjectDetailMetrics } from "@freelensapp/metrics";
+
+import type { IComputedValue } from "mobx";
 
 export interface DetailsMetricsContainerProps<K extends KubeObject> {
   metrics: IComputedValue<KubeObjectDetailMetrics<K>[]>;

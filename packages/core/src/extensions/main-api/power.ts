@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { powerMonitor } from "electron";
+
+import type { Disposer } from "@freelensapp/utilities";
 
 /**
  * Event listener for system power events

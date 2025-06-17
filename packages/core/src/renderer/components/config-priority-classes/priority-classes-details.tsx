@@ -6,10 +6,12 @@
 
 import "./priority-classes.scss";
 
-import type { PriorityClass } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem } from "../drawer";
+
+import type { PriorityClass } from "@freelensapp/kube-object";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PriorityClassesDetailsProps extends KubeObjectDetailsProps<PriorityClass> {}

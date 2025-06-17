@@ -16,16 +16,18 @@ import debounce from "lodash/debounce";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import moment from "moment-timezone";
-import type { ForwardedRef } from "react";
 import React from "react";
-import type { Align, ListOnScrollProps } from "react-window";
-import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import { SearchStore } from "../../../search-store/search-store";
-import type { VirtualListRef } from "../../virtual-list";
 import { VirtualList } from "../../virtual-list";
-import type { LogTabViewModel } from "../logs/logs-view-model";
 import { ToBottom } from "./to-bottom";
+
+import type { ForwardedRef } from "react";
+import type { Align, ListOnScrollProps } from "react-window";
+
+import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
+import type { VirtualListRef } from "../../virtual-list";
+import type { LogTabViewModel } from "../logs/logs-view-model";
 
 export interface LogListProps {
   model: LogTabViewModel;

@@ -3,26 +3,33 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { ChartOptions, ChartPoint } from "chart.js";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
-import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import { BarChart } from "../chart";
 import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";
 import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-metrics.module.scss";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
-import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
-import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { ChartOptions, ChartPoint } from "chart.js";
+
+import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
+import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 interface Dependencies {
   clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;

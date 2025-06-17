@@ -10,13 +10,14 @@ import { action } from "mobx";
 import { toJS } from "../../../common/utils";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import selectedUpdateChannelInjectable from "../../application-update/common/selected-update-channel.injectable";
-import type { ReleaseChannel } from "../../application-update/common/update-channels";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
 import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
-import type { UserPreferencesModel } from "./preferences-helpers";
 import userPreferencesStateInjectable from "./state.injectable";
+
+import type { ReleaseChannel } from "../../application-update/common/update-channels";
+import type { UserPreferencesModel } from "./preferences-helpers";
 
 export interface UserStoreModel {
   preferences: UserPreferencesModel;

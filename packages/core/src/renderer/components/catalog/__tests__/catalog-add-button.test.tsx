@@ -5,14 +5,16 @@
  */
 
 import { screen } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import React from "react";
-import type { CatalogCategorySpec } from "../../../../common/catalog";
 import { CatalogCategory } from "../../../../common/catalog";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { CatalogAddButton } from "../catalog-add-button";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { CatalogCategorySpec } from "../../../../common/catalog";
 
 class TestCatalogCategory extends CatalogCategory {
   public readonly apiVersion = "catalog.k8slens.dev/v1alpha1";

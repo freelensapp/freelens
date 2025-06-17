@@ -6,13 +6,15 @@
 
 import "./runtime-classes.scss";
 
-import type { RuntimeClass } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { RuntimeClassDetailsTolerations } from "./runtime-classes-details-tolerations";
+
+import type { RuntimeClass } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface RuntimeClassesDetailsProps extends KubeObjectDetailsProps<RuntimeClass> {}
 

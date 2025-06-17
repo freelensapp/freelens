@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
 import { PassThrough } from "stream";
+
+import type { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
   const res: jest.Mocked<Response> = {

@@ -7,11 +7,13 @@
 import { Button } from "@freelensapp/button";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { FileFilter, OpenDialogOptions } from "electron";
 import { observer } from "mobx-react";
 import React from "react";
-import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
+
+import type { FileFilter, OpenDialogOptions } from "electron";
+
+import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 
 export interface PathPickOpts {
   message: string;

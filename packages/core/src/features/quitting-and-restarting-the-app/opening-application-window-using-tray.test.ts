@@ -4,17 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { runInAction } from "mobx";
 import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import focusApplicationInjectable from "../../main/electron-app/features/focus-application.injectable";
-import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
 import createElectronWindowInjectable from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
-import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
 import splashWindowInjectable from "../../main/start-main-application/lens-window/splash-window/splash-window.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+
+import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
+import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("opening application window using tray", () => {
   describe("given application has started", () => {

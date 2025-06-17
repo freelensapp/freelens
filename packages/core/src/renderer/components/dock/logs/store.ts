@@ -4,11 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
+import { observable } from "mobx";
+
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
 import type { IntervalFn } from "@freelensapp/utilities";
-import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import { observable } from "mobx";
+
 import type { TabId } from "../dock/store";
 import type { CallForLogs } from "./call-for-logs.injectable";
 import type { LogTabData } from "./tab-store";

@@ -6,14 +6,15 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
-import type { DockStore, DockTabCreateSpecific, TabId } from "../dock/store";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
-import type { DockTabStore } from "../dock-tab-store/dock-tab.store";
 import getRandomUpgradeChartTabIdInjectable from "./get-random-upgrade-chart-tab-id.injectable";
-import type { IChartUpgradeData } from "./store.injectable";
 import upgradeChartTabStoreInjectable from "./store.injectable";
+
+import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
+import type { DockStore, DockTabCreateSpecific, TabId } from "../dock/store";
+import type { DockTabStore } from "../dock-tab-store/dock-tab.store";
+import type { IChartUpgradeData } from "./store.injectable";
 
 interface Dependencies {
   upgradeChartStore: DockTabStore<IChartUpgradeData>;

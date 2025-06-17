@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { TerminalFont } from "./token";
 
 export type LoadTerminalFont = (font: TerminalFont) => Promise<void>;

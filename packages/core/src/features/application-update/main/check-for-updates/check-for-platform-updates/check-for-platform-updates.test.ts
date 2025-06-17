@@ -4,17 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { noop } from "@freelensapp/utilities";
-import type { AppUpdater, UpdateCheckResult } from "electron-updater";
 import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
+import checkForPlatformUpdatesInjectable from "./check-for-platform-updates.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { AppUpdater, UpdateCheckResult } from "electron-updater";
+
 import type { ReleaseChannel, UpdateChannel } from "../../../common/update-channels";
 import type { CheckForPlatformUpdates } from "./check-for-platform-updates.injectable";
-import checkForPlatformUpdatesInjectable from "./check-for-platform-updates.injectable";
 
 describe("check-for-platform-updates", () => {
   let checkForPlatformUpdates: CheckForPlatformUpdates;

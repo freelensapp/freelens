@@ -6,11 +6,8 @@
 
 import "./details.scss";
 
-import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
@@ -18,6 +15,11 @@ import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { Input } from "../input";
+
+import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface CustomResourceDetailsProps extends KubeObjectDetailsProps<KubeObject> {

@@ -4,14 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 import navigateToProxyPreferencesInjectable from "./common/navigate-to-proxy-preferences.injectable";
+
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("preferences - navigation to application preferences", () => {
   let builder: ApplicationBuilder;

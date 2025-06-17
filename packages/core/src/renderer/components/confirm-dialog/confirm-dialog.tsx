@@ -6,21 +6,24 @@
 
 import "./confirm-dialog.scss";
 
-import type { ButtonProps } from "@freelensapp/button";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IObservableValue } from "mobx";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
 import confirmDialogStateInjectable from "./state.injectable";
+
+import type { ButtonProps } from "@freelensapp/button";
+import type { ShowNotification } from "@freelensapp/notifications";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { IObservableValue } from "mobx";
+
+import type { DialogProps } from "../dialog";
 
 export interface ConfirmDialogProps extends Partial<DialogProps> {}
 

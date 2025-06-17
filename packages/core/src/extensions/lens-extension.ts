@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import { disposer } from "@freelensapp/utilities";
 import { action, computed, makeObservable, observable } from "mobx";
+
+import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+
 import type { ProtocolHandlerRegistration } from "../common/protocol-handler/registration";
 import type { Logger } from "./common-api";
 import type { EnsureHashedDirectoryForExtension } from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";

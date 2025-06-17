@@ -7,12 +7,13 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import tempy from "tempy";
-import type { Cluster } from "../../../common/cluster/cluster";
 import removePathInjectable from "../../../common/fs/remove.injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import execHelmInjectable from "../exec-helm/exec-helm.injectable";
 import getHelmReleaseInjectable from "./get-helm-release.injectable";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface UpdateChartArgs {
   chart: string;

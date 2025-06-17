@@ -7,18 +7,21 @@
 import "./input.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { TooltipProps } from "@freelensapp/tooltip";
 import { Tooltip } from "@freelensapp/tooltip";
-import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, debouncePromise, isPromiseSettledFulfilled } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
 import { debounce } from "lodash";
 import uniqueId from "lodash/uniqueId";
-import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import React from "react";
 import * as uuid from "uuid";
-import type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage } from "./input_validators";
 import * as Validators from "./input_validators";
+
+import type { TooltipProps } from "@freelensapp/tooltip";
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+
+import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+
+import type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage } from "./input_validators";
 
 const {
   conditionalValidators,

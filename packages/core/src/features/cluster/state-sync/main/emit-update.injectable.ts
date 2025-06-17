@@ -6,8 +6,9 @@
 
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ClusterStateSync } from "../common/channels";
 import { clusterStateSyncChannel } from "../common/channels";
+
+import type { ClusterStateSync } from "../common/channels";
 
 const emitClusterStateUpdateInjectable = getInjectable({
   id: "emit-cluster-state-update",

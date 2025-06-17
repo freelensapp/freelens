@@ -6,10 +6,11 @@
 
 import chalk from "chalk";
 import { omit } from "lodash";
-import type { Format, TransformableInfo } from "logform";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
-import type { InspectOptions } from "util";
 import { inspect } from "util";
+import type { InspectOptions } from "util";
+
+import type { Format, TransformableInfo } from "logform";
 
 // The following license was copied from https://github.com/duccio/winston-console-format/blob/master/LICENSE
 // This was modified to support formatting causes

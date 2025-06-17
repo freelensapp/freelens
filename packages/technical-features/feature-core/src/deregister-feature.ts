@@ -1,6 +1,8 @@
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { Feature } from "./feature";
 import { featureContextMapInjectable } from "./feature-context-map-injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { Feature } from "./feature";
 
 const getDependingFeaturesFor = (featureContextMap: Map<Feature, { dependedBy: Map<Feature, number> }>) => {
   const getDependingFeaturesForRecursion = (feature: Feature, atRoot = true): string[] => {

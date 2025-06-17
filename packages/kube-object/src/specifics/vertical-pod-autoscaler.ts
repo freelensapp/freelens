@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { BaseKubeObjectCondition, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { BaseKubeObjectCondition, NamespaceScopedMetadata } from "../api-types";
 import type { CrossVersionObjectReference } from "../types/cross-version-object-reference";
 
 export enum ResourceName {

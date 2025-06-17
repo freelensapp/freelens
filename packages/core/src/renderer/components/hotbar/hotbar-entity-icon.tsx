@@ -3,25 +3,33 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Icon } from "@freelensapp/icon";
-import type { IClassName } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
-import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
 import { LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
-import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import styles from "./hotbar-entity-icon.module.scss";
 import { HotbarIcon } from "./hotbar-icon";
+
+import type { IClassName } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
+import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
+import type { Navigate } from "../../navigation/navigate.injectable";
 
 export interface HotbarEntityIconProps {
   entity: CatalogEntity;

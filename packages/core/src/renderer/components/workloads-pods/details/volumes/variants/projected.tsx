@@ -7,6 +7,7 @@
 import { displayMode } from "@freelensapp/utilities";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../../../../drawer";
+
 import type { VolumeVariantComponent } from "../variant-helpers";
 
 export const Projected: VolumeVariantComponent<"projected"> = ({ variant: { sources, defaultMode } }) => (

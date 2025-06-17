@@ -5,6 +5,7 @@
  */
 
 import type { ITheme } from "@xterm/xterm";
+
 import type { MonacoTheme } from "../components/monaco-editor";
 
 export type ThemeId = string;

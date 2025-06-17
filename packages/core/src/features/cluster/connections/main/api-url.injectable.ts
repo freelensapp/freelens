@@ -6,9 +6,10 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { URL } from "url";
-import type { Cluster } from "../../../../common/cluster/cluster";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import loadValidatedClusterConfigInjectable from "../../../../common/kube-helpers/load-validated-config-from-file.injectable";
+
+import type { Cluster } from "../../../../common/cluster/cluster";
 
 interface ClusterApiUrlState {
   url: URL;

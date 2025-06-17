@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { DockTabCreateSpecific } from "../dock/store";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
+
+import type { DockTabCreateSpecific } from "../dock/store";
 
 const createTerminalTabInjectable = getInjectable({
   id: "create-terminal-tab",

@@ -5,9 +5,12 @@
  */
 
 import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+
 import type { Logger } from "@freelensapp/logger";
 import type { PrometheusProvider, PrometheusService } from "@freelensapp/prometheus";
+
 import type { IComputedValue } from "mobx";
+
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type { GetPrometheusProviderByKind } from "../../prometheus/get-by-kind.injectable";

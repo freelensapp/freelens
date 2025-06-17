@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { getSecondsFromUnixEpoch } from "../../../utils/date/get-current-date-time";
 import apiBaseInjectable from "../../api-base.injectable";
+
 import type { MetricData } from "../metrics.api";
 
 export interface RequestMetricsParams {

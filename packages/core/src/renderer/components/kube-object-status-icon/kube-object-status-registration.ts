@@ -5,7 +5,9 @@
  */
 
 import type { KubeObject } from "@freelensapp/kube-object";
+
 import type { IComputedValue } from "mobx";
+
 import type { KubeObjectStatus } from "../../../common/k8s-api/kube-object-status";
 
 export interface KubeObjectStatusRegistration {

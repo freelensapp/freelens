@@ -4,15 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { IngressApi } from "@freelensapp/kube-api";
 import { HorizontalPodAutoscalerApi } from "@freelensapp/kube-api";
 import { ingressApiInjectable, maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Ingress } from "@freelensapp/kube-object";
 import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
@@ -21,10 +18,16 @@ import { createMockResponseFromString } from "../../../test-utils/mock-responses
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
-import type { Fetch } from "../../fetch/fetch.injectable";
 import fetchInjectable from "../../fetch/fetch.injectable";
-import type { ApiManager } from "../api-manager";
 import apiManagerInjectable from "../api-manager/manager.injectable";
+
+import type { IngressApi } from "@freelensapp/kube-api";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { Fetch } from "../../fetch/fetch.injectable";
+import type { ApiManager } from "../api-manager";
 
 describe("KubeApi", () => {
   let fetchMock: AsyncFnMock<Fetch>;

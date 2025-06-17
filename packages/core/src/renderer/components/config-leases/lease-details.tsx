@@ -6,10 +6,12 @@
 
 import "./lease-details.scss";
 
-import type { Lease } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem } from "../drawer";
+
+import type { Lease } from "@freelensapp/kube-object";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface LeaseDetailsProps extends KubeObjectDetailsProps<Lease> {}

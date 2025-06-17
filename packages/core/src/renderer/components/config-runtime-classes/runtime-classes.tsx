@@ -6,18 +6,20 @@
 
 import "./runtime-classes.scss";
 
-import type { RuntimeClass } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { KubeObjectAge } from "../kube-object/age";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { RuntimeClassStore } from "./store";
 import runtimeClassStoreInjectable from "./store.injectable";
+
+import type { RuntimeClass } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { RuntimeClassStore } from "./store";
 
 enum columnId {
   name = "name",

@@ -4,23 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
-import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import type { DownloadPlatformUpdate } from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 import processCheckingForUpdatesInjectable from "../../main/process-checking-for-updates.injectable";
 import quitAndInstallUpdateInjectable from "../../main/quit-and-install-update.injectable";
 import forceUpdateModalRootFrameComponentInjectable from "./renderer/force-update-modal/force-update-modal-root-frame-component.injectable";
 import secondsAfterInstallStartsInjectable from "./renderer/force-update-modal/seconds-after-install-starts.injectable";
 import timeAfterUpdateMustBeInstalledInjectable from "./renderer/force-update-modal/time-after-update-must-be-installed.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
+import type { DownloadPlatformUpdate } from "../../main/download-update/download-platform-update/download-platform-update.injectable";
 
 const TIME_AFTER_UPDATE_MUST_BE_INSTALLED = 1000;
 const TIME_AFTER_INSTALL_STARTS = 5 * 1000;

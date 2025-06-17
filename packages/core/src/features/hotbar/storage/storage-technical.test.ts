@@ -4,28 +4,31 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { anyObject } from "jest-mock-extended";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
 import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import activeHotbarInjectable from "./common/active.injectable";
-import type { AddHotbar } from "./common/add.injectable";
 import addHotbarInjectable from "./common/add.injectable";
-import type { Hotbar } from "./common/hotbar";
 import hotbarsInjectable from "./common/hotbars.injectable";
-import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
 import setAsActiveHotbarInjectable from "./common/set-as-active.injectable";
 import hotbarsPersistentStorageInjectable from "./common/storage.injectable";
 import { defaultHotbarCells } from "./common/types";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+
+import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
+import type { AddHotbar } from "./common/add.injectable";
+import type { Hotbar } from "./common/hotbar";
+import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
 
 function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKindData): CatalogEntity {
   return {

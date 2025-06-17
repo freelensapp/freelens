@@ -10,8 +10,9 @@ import React from "react";
 import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../../renderer/components/select";
 import { defaultPackageMirror, packageMirrors } from "../../../../../../user-preferences/common/preferences-helpers";
-import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../../user-preferences/common/state.injectable";
+
+import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;

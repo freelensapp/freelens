@@ -5,8 +5,6 @@
  */
 
 import { Button } from "@freelensapp/button";
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -16,17 +14,21 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import * as uuid from "uuid";
-import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import getCustomKubeConfigFilePathInjectable from "../../../common/app-paths/get-custom-kube-config-directory/get-custom-kube-config-directory.injectable";
-import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import { loadConfigFromString, splitConfig } from "../../../common/kube-helpers";
-import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
 import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 import styles from "./add-cluster.module.scss";
+
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
+import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 
 interface Option {
   config: KubeConfig;

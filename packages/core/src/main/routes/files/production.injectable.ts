@@ -10,8 +10,9 @@ import path from "path";
 import readFileBufferInjectable from "../../../common/fs/read-file-buffer.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import staticFilesDirectoryInjectable from "../../../common/vars/static-files-directory.injectable";
-import type { LensApiRequest } from "../../router/route";
 import { contentTypes } from "../../router/router-content-types";
+
+import type { LensApiRequest } from "../../router/route";
 
 const prodStaticFileRouteHandlerInjectable = getInjectable({
   id: "prod-static-file-route-handler",

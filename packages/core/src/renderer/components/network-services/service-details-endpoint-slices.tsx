@@ -5,16 +5,18 @@
  */
 
 import { EndpointSlice } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { WithTooltip } from "../badge";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 
 export interface ServiceDetailsEndpointSlicesProps {
   endpointSlices: EndpointSlice[];

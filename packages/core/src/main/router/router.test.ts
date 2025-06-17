@@ -4,23 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { Request } from "mock-http";
-import type { SetRequired } from "type-fest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
 import parseRequestInjectable from "./parse-request.injectable";
-import type { Route } from "./route";
-import type { Router } from "./router";
 import routerInjectable, { routeInjectionToken } from "./router.injectable";
 import { contentTypes } from "./router-content-types";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { SetRequired } from "type-fest";
+
+import type { Cluster } from "../../common/cluster/cluster";
+import type { Route } from "./route";
+import type { Router } from "./router";
 
 describe("router", () => {
   let router: Router;

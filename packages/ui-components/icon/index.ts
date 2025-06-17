@@ -4,5 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export type { BaseIconProps, IconProps, NamedSvg } from "./src/icon";
 export { Icon, isSvg } from "./src/icon";
+
+export type { BaseIconProps, IconProps, NamedSvg } from "./src/icon";

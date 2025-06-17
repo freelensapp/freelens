@@ -6,10 +6,12 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observableCrate } from "@freelensapp/utilities";
-import type { IComputedValue } from "mobx";
 import { action, comparer, computed, observable } from "mobx";
 import React from "react";
+
+import type { IComputedValue } from "mobx";
 import type { ActionMeta, MultiValue } from "react-select";
+
 import type { ClusterContext } from "../../../cluster-frame-context/cluster-frame-context";
 import type { SelectOption } from "../../select";
 import type { NamespaceStore } from "../store";

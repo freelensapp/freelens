@@ -13,10 +13,11 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import path from "path";
-import type webpack from "webpack";
-import type { WebpackPluginInstance } from "webpack";
 import { DefinePlugin } from "webpack";
 import { assetsFolderName, buildDir, htmlTemplate, isDevelopment, publicPath, rendererDir } from "./vars";
+
+import type webpack from "webpack";
+import type { WebpackPluginInstance } from "webpack";
 
 const renderer: webpack.Configuration = {
   target: "electron-renderer",

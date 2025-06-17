@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { BaseKubeObjectCondition, KubeObjectStatus, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { BaseKubeObjectCondition, KubeObjectStatus, NamespaceScopedMetadata } from "../api-types";
 import type { PodTemplateSpec } from "../types/pod-template-spec";
 
 export interface ReplicationControllerSpec {

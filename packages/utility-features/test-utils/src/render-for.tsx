@@ -1,8 +1,9 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
-import type { RenderResult } from "@testing-library/react";
 import { render as testingLibraryRender } from "@testing-library/react";
 import React from "react";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 
 export type DiRender = (ui: React.ReactElement) => RenderResult;
 

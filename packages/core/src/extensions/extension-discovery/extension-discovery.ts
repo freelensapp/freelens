@@ -4,6 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isErrnoException } from "@freelensapp/utilities";
+import { ipcRenderer } from "electron";
+import { EventEmitter } from "events";
+import { makeObservable, observable, reaction, when } from "mobx";
+import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
+import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
+import { toJS } from "../../common/utils";
+import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
+import type { Stats } from "fs";
+
 import type {
   ExternalInstalledExtension,
   InstalledExtension,
@@ -11,12 +21,9 @@ import type {
   LensExtensionManifest,
 } from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
-import { isErrnoException } from "@freelensapp/utilities";
-import { ipcRenderer } from "electron";
-import { EventEmitter } from "events";
-import type { Stats } from "fs";
-import { makeObservable, observable, reaction, when } from "mobx";
+
 import type TypedEventEmitter from "typed-emitter";
+
 import type { AccessPath } from "../../common/fs/access-path.injectable";
 import type { Copy } from "../../common/fs/copy.injectable";
 import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
@@ -26,15 +33,11 @@ import type { ReadDirectory } from "../../common/fs/read-directory.injectable";
 import type { ReadJson } from "../../common/fs/read-json-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
-import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
-import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { GetRelativePath } from "../../common/path/get-relative-path.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import { toJS } from "../../common/utils";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
-import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../extension-loader";
 

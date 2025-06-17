@@ -4,13 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { GetSingleElement } from "@freelensapp/react-testing-library-discovery";
 import { getSingleElement } from "@freelensapp/react-testing-library-discovery";
-import type { RenderResult } from "@testing-library/react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import navigateToPreferencesInjectable from "../preferences/common/navigate-to-preferences.injectable";
 import updatingIsEnabledInjectable from "./child-features/updating-is-enabled/main/updating-is-enabled.injectable";
+
+import type { GetSingleElement } from "@freelensapp/react-testing-library-discovery";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("hiding Update Channel preference with updating is not enabled", () => {
   let builder: ApplicationBuilder;

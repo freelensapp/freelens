@@ -5,8 +5,9 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const kubeAuthProxyUrlInjectable = getInjectable({
   id: "kube-auth-proxy-url",

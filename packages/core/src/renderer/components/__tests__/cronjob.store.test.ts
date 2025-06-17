@@ -11,8 +11,9 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { CronJobStore } from "../workloads-cronjobs/store";
 import cronJobStoreInjectable from "../workloads-cronjobs/store.injectable";
+
+import type { CronJobStore } from "../workloads-cronjobs/store";
 
 const scheduledCronJob = new CronJob({
   apiVersion: "foo",

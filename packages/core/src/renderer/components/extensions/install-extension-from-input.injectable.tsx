@@ -6,7 +6,6 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { ExtendableDisposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
@@ -18,6 +17,8 @@ import attemptInstallInjectable from "./attempt-install/attempt-install.injectab
 import attemptInstallByInfoInjectable from "./attempt-install-by-info.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 import readFileNotifyInjectable from "./read-file-notify/read-file-notify.injectable";
+
+import type { ExtendableDisposer } from "@freelensapp/utilities";
 
 export type InstallExtensionFromInput = (input: string) => Promise<void>;
 

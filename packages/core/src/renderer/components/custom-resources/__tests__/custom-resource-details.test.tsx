@@ -7,9 +7,10 @@
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { CustomResourceDetails } from "../details";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<CustomResourceDetails />", () => {
   let render: DiRender;

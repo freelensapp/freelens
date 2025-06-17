@@ -8,7 +8,6 @@ import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-
 import eventsRouteInjectable from "../../../common/front-end-routing/routes/cluster/events/events-route.injectable";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
