@@ -13,6 +13,7 @@ import navigateToPodDisruptionBudgetsInjectable from "../../../../common/front-e
 import navigateToPriorityClassesInjectable from "../../../../common/front-end-routing/routes/cluster/config/priority-classes/navigate-to-priority-classes.injectable";
 import navigateToResourceQuotasInjectable from "../../../../common/front-end-routing/routes/cluster/config/resource-quotas/navigate-to-resource-quotas.injectable";
 import navigateToSecretsInjectable from "../../../../common/front-end-routing/routes/cluster/config/secrets/navigate-to-secrets.injectable";
+import navigateToCustomResourceDefinitionsInjectable from "../../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resource-definitions.injectable";
 import navigateToHelmChartsInjectable from "../../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToEndpointSlicesInjectable from "../../../../common/front-end-routing/routes/cluster/network/endpoint-slices/navigate-to-endpoint-slices.injectable";
@@ -28,21 +29,19 @@ import navigateToJobsInjectable from "../../../../common/front-end-routing/route
 import navigateToPodsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import navigateToStatefulsetsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/statefulsets/navigate-to-statefulsets.injectable";
 import navigateToEntitySettingsInjectable from "../../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
+// TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
+import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
 import { ActivateEntityCommand } from "../../activate-entity-command";
 import type { DockTabCreate } from "../../dock/dock/store";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
+import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
+import hasCatalogEntitySettingItemsInjectable from "../../entity-settings/has-settings.injectable";
 import { HotbarAddCommand } from "../../hotbar/hotbar-add-command";
 import { HotbarRemoveCommand } from "../../hotbar/hotbar-remove-command";
 import { HotbarRenameCommand } from "../../hotbar/hotbar-rename-command";
 import { HotbarSwitchCommand } from "../../hotbar/hotbar-switch-command";
 import commandOverlayInjectable from "../command-overlay.injectable";
 import type { CommandContext, CommandRegistration } from "./commands";
-
-import navigateToCustomResourceDefinitionsInjectable from "../../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resource-definitions.injectable";
-// TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
-import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
-import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
-import hasCatalogEntitySettingItemsInjectable from "../../entity-settings/has-settings.injectable";
 
 export function isKubernetesClusterActive(context: CommandContext): boolean {
   return context.entity?.kind === "KubernetesCluster";

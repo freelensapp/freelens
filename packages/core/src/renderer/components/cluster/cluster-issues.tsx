@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-issues.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
@@ -29,6 +27,7 @@ import { SubHeader } from "../layout/sub-header";
 import type { NodeStore } from "../nodes/store";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import styles from "./cluster-issues.module.scss";
 
 export interface ClusterIssuesProps {
   className?: string;

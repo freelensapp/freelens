@@ -6,18 +6,17 @@
 
 import "./view.scss";
 
-import type { IObservableValue } from "mobx";
-import { action, computed, makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import React from "react";
-
 import { Icon } from "@freelensapp/icon";
 import type { ClusterRole, ServiceAccount, Subject } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { TooltipPosition } from "@freelensapp/tooltip";
-import { ObservableHashSet, iter } from "@freelensapp/utilities";
+import { iter, ObservableHashSet } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IObservableValue } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { EditableList } from "../../../editable-list";
@@ -25,7 +24,7 @@ import { Input } from "../../../input";
 import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../../layout/sub-title";
-import { Select, onMultiSelectFor } from "../../../select";
+import { onMultiSelectFor, Select } from "../../../select";
 import { Wizard, WizardStep } from "../../../wizard";
 import type { ClusterRoleStore } from "../../cluster-roles/store";
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";

@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { bytesToUnits, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import type { ChartOptions, ChartTooltipCallback, ChartTooltipItem, Scriptable } from "chart.js";
 import Color from "color";
 import merge from "lodash/merge";

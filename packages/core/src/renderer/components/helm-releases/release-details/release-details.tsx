@@ -6,12 +6,10 @@
 
 import "./release-details.scss";
 
-import React from "react";
-
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observer } from "mobx-react";
-
 import type { IComputedValue } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import { ReleaseDetailsDrawer } from "./release-details-drawer";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 import targetHelmReleaseInjectable from "./target-helm-release.injectable";

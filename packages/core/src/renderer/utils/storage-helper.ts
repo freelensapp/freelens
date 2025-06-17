@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import type { Logger } from "@freelensapp/logger";
+import assert from "assert";
 import type { Draft } from "immer";
 import { isDraft, produce } from "immer";
 import { isEqual, isPlainObject } from "lodash";

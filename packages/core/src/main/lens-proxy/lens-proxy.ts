@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { Logger } from "@freelensapp/logger";
 import assert from "assert";
 import type http from "http";
+import type httpProxy from "http-proxy-node16";
 import https from "https";
 import net from "net";
-import type { Logger } from "@freelensapp/logger";
-import type httpProxy from "http-proxy-node16";
 import type { SelfSignedCert } from "selfsigned";
 import stoppable from "stoppable";
 import type { SetRequired } from "type-fest";

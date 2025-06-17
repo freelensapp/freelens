@@ -12,10 +12,10 @@ import watchHistoryStateInjectable from "../../../remote-helpers/watch-history-s
 import Gutter from "../../gutter/gutter";
 import { Map } from "../../map/map";
 import toggleMaximizeWindowInjectable from "./toggle-maximize-window/toggle-maximize-window.injectable";
+import styles from "./top-bar.module.scss";
 import type { TopBarItem } from "./top-bar-items/top-bar-item-injection-token";
 import topBarItemsOnLeftSideInjectable from "./top-bar-items/top-bar-items-on-left-side.injectable";
 import topBarItemsOnRightSideInjectable from "./top-bar-items/top-bar-items-on-right-side.injectable";
-import styles from "./top-bar.module.scss";
 
 interface Dependencies {
   itemsOnLeft: IComputedValue<TopBarItem[]>;

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 
 const terminalSpawningPoolInjectable = getInjectable({
   id: "terminal-spawning-pool",

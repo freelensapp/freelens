@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import type { DiContainer } from "@ogre-tools/injectable";
+import path from "path";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import getAbsolutePathInjectable from "../../path/get-absolute-path.injectable";
 import getDirnameOfPathInjectable from "../../path/get-dirname.injectable";

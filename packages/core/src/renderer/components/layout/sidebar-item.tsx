@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./sidebar-items.module.scss";
-
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -13,6 +11,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import type { StorageLayer } from "../../utils/storage-helper";
+import styles from "./sidebar-items.module.scss";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
 

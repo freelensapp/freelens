@@ -4,16 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { anyObject } from "jest-mock-extended";
 import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
-import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
+import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import catalogEntityRegistryInjectable from "../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";

@@ -12,8 +12,8 @@ import { pipeline } from "@ogre-tools/fp";
 import { fromPairs, map, matches, toPairs } from "lodash/fp";
 import type { IComputedValue } from "mobx";
 import type { CatalogCategoryRegistry, CatalogEntity, CategoryFilter } from "../common/catalog";
-import type { KubernetesCluster } from "../common/catalog-entities";
 import catalogCategoryRegistryInjectable from "../common/catalog/category-registry.injectable";
+import type { KubernetesCluster } from "../common/catalog-entities";
 import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
 import type { NavigateToRoute } from "../common/front-end-routing/navigate-to-route-injection-token";
 import type { AppPreferenceRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-registration";
@@ -42,8 +42,8 @@ import type { PageRegistration } from "../renderer/routes/page-registration";
 import routesInjectable from "../renderer/routes/routes.injectable";
 import type { InstalledExtension } from "./common-api";
 import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
-import { Disposers, LensExtension } from "./lens-extension";
 import type { LensExtensionDependencies } from "./lens-extension";
+import { Disposers, LensExtension } from "./lens-extension";
 
 interface LensRendererExtensionDependencies extends LensExtensionDependencies {
   navigateToRoute: NavigateToRoute;

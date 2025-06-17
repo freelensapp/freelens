@@ -6,8 +6,8 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
 import { type RenderResult, waitFor } from "@testing-library/react";

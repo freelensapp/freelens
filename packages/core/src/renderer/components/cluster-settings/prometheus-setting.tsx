@@ -9,8 +9,8 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, computed, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import type { Cluster } from "../../../common/cluster/cluster";
+import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import type {
   MetricProviderInfo,
   RequestMetricsProviders,

@@ -6,8 +6,8 @@
 
 import { NodeApi } from "@freelensapp/kube-api";
 import type { Pod } from "@freelensapp/kube-object";
-import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
 import { get, once } from "lodash";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";

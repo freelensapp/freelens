@@ -6,8 +6,8 @@
 
 import "./components/app.scss";
 
-import assert from "assert";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
+import assert from "assert";
 import extensionDiscoveryInjectable from "../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../extensions/extension-loader/extension-loader.injectable";

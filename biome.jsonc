@@ -1,12 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignore": [".trunk/**", "**/build/**", "**/dist/**", "**/package.json"]
+    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "!**/package.json"]
   },
   "formatter": {
     "attributePosition": "auto",
@@ -19,9 +19,7 @@
     "lineWidth": 120,
     "useEditorconfig": true
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -37,7 +35,6 @@
       "correctness": {
         "noInvalidUseBeforeDeclaration": "error",
         "noUnusedVariables": "off", // should be error later
-        "useArrayLiterals": "off",
         "useExhaustiveDependencies": "off"
       },
       "recommended": false,
@@ -52,7 +49,8 @@
             "strictCase": false
           }
         },
-        "useTemplate": "off" // should be error later
+        "useTemplate": "off", // should be error later
+        "useArrayLiterals": "off"
       },
       "suspicious": {
         "noEmptyInterface": "off",

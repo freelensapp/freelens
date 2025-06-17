@@ -5,13 +5,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import type { PrometheusProvider } from "./provider";
 import {
   bytesSent,
   createPrometheusProvider,
   findNamespacedService,
   prometheusProviderInjectionToken,
 } from "./provider";
-import type { PrometheusProvider } from "./provider";
 
 export const getLensLikeQueryFor =
   ({ rateAccuracy }: { rateAccuracy: string }): PrometheusProvider["getQuery"] =>

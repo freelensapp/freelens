@@ -5,7 +5,7 @@
  */
 
 import fetch from "@freelensapp/node-fetch";
-import { type Injectable, getInjectable } from "@ogre-tools/injectable";
+import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 
 export type Fetch = typeof fetch;
 

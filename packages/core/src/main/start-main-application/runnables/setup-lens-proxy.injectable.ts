@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "https";
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import { Agent } from "https";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
@@ -15,8 +15,8 @@ import { buildVersionInitializable } from "../../../features/vars/build-version/
 import { buildVersionInitializationInjectable } from "../../../features/vars/build-version/main/init.injectable";
 import forceAppExitInjectable from "../../electron-app/features/force-app-exit.injectable";
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
-import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
 import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
+import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
 
 const setupLensProxyInjectable = getInjectable({
   id: "setup-lens-proxy",

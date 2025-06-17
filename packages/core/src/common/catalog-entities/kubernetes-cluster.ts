@@ -16,8 +16,8 @@ import type {
   CatalogEntityMetadata,
   CatalogEntityStatus,
 } from "../catalog";
-import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import type { CatalogEntityConstructor, CatalogEntitySpec } from "../catalog/catalog-entity";
+import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import { broadcastMessage } from "../ipc";
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
 import KubeClusterCategoryIcon from "./icons/kubernetes.svg";

@@ -6,10 +6,9 @@
 
 import "./resource-selector.scss";
 
+import type { Container, Pod } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
-
-import type { Container, Pod } from "@freelensapp/kube-object";
 import type { SingleValue } from "react-select";
 import { Badge } from "../../badge";
 import type { SelectOption } from "../../select";

@@ -6,14 +6,13 @@
 
 import "./details.scss";
 
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import React from "react";
-
 import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import { AddRemoveButtons } from "../../add-remove-buttons";
 import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";

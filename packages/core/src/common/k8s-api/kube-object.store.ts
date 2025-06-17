@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import type { IKubeWatchEvent, KubeApi, KubeApiQueryParams, KubeApiWatchCallback } from "@freelensapp/kube-api";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
@@ -13,6 +12,7 @@ import type { Logger } from "@freelensapp/logger";
 import type { RequestInit } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
 import { includes, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import assert from "assert";
 import autoBind from "auto-bind";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import type { Patch } from "rfc6902";

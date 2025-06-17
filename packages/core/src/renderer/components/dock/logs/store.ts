@@ -5,8 +5,8 @@
  */
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
-import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
 import type { IntervalFn } from "@freelensapp/utilities";
+import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 import { observable } from "mobx";
 import type { TabId } from "../dock/store";

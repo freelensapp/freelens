@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { URL } from "url";
 import { getInjectable } from "@ogre-tools/injectable";
-import { ClusterMetadataKey } from "../../common/cluster-types";
+import type { URL } from "url";
 import type { Cluster } from "../../common/cluster/cluster";
+import { ClusterMetadataKey } from "../../common/cluster-types";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import k8SRequestInjectable from "../k8s-request.injectable";
 import requestClusterVersionInjectable from "./request-cluster-version.injectable";

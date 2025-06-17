@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import { getInjectable } from "@ogre-tools/injectable";
 import httpProxy from "http-proxy-node16";
+import path from "path";
 import { webpackDevServerPort } from "../../../../webpack/vars";
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 

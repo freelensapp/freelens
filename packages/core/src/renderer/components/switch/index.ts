@@ -4,6 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./switcher";
 export * from "./form-switcher";
 export * from "./switch";
+export * from "./switcher";

@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./sidebar.module.scss";
-
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { cssNames } from "@freelensapp/utilities";
@@ -15,6 +13,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
 import { SidebarItem } from "./sidebar-item";
 

@@ -1,22 +1,21 @@
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import type { MessageChannel } from "@freelensapp/messaging";
-import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
-import { testUtils } from "@freelensapp/messaging";
-import { MessageBridgeFake, getMessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
+import { getMessageChannelListenerInjectable, testUtils } from "@freelensapp/messaging";
+import { getMessageBridgeFake, MessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { renderFor, runWithThrownMobxReactions } from "@freelensapp/test-utils";
-import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { RenderResult, act } from "@testing-library/react";
-import { IComputedValue, IObservableValue, computed, observable, reaction, runInAction } from "mobx";
+import { act, RenderResult } from "@testing-library/react";
+import { computed, IComputedValue, IObservableValue, observable, reaction, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { computedChannelFeature } from "../feature";
+import { computedChannelInjectionToken, computedChannelObserverInjectionToken } from "./computed-channel.injectable";
 import {
   ComputedChannelAdminMessage,
   computedChannelAdministrationChannel,
 } from "./computed-channel-administration-channel.injectable";
-import { computedChannelInjectionToken, computedChannelObserverInjectionToken } from "./computed-channel.injectable";
 
 const testChannel: MessageChannel<string> = { id: "some-channel-id" };
 const testChannel2: MessageChannel<string> = { id: "some-other-channel-id" };

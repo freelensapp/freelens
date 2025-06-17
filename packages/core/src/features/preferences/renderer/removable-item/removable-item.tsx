@@ -4,13 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./removable-item.module.scss";
-
-import type { DOMAttributes } from "react";
-import React from "react";
-
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
+import type { DOMAttributes } from "react";
+import React from "react";
+import styles from "./removable-item.module.scss";
 
 export interface RemovableItemProps extends DOMAttributes<any> {
   icon?: string;

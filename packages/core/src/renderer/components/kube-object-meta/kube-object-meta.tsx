@@ -19,8 +19,8 @@ import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.in
 import { DrawerItem, DrawerItemLabels } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
 
 export interface KubeObjectMetaProps {

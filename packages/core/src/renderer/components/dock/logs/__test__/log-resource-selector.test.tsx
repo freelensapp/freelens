@@ -6,9 +6,9 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import assert from "assert";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
+import assert from "assert";
 import * as selectEvent from "react-select-event";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../../../common/fs/fs.injectable";

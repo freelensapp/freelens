@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { globalAgent } from "https";
 import { getInjectable } from "@ogre-tools/injectable";
+import { globalAgent } from "https";
 import { requestSystemCAsInjectionToken } from "./request-system-cas-token";
 
 // DST Root CA X3, which was expired on 9.30.2021

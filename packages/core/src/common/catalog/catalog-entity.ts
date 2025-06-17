@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
 import { iter } from "@freelensapp/utilities";
+import EventEmitter from "events";
 import { once } from "lodash";
 import { makeObservable, observable } from "mobx";
 import type TypedEmitter from "typed-emitter";

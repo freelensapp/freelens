@@ -8,8 +8,8 @@ import { disposer, noop } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
 import URLParse from "url-parse";
 import type { BroadcastMessage } from "../../../common/ipc/broadcast-message.injectable";
-import * as proto from "../../../common/protocol-handler";
 import type { LensProtocolRouterDependencies, RouteAttempt } from "../../../common/protocol-handler";
+import * as proto from "../../../common/protocol-handler";
 import { ProtocolHandlerInvalid } from "../../../common/protocol-handler";
 import type { LensExtension } from "../../../extensions/lens-extension";
 

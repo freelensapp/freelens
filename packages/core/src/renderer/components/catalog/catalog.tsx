@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./catalog.module.scss";
-
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import type { ShowNotification } from "@freelensapp/notifications";
@@ -35,6 +33,7 @@ import { ItemListLayout } from "../item-object-list";
 import { MainLayout } from "../layout/main-layout";
 import { MenuActions, MenuItem } from "../menu";
 import { RenderDelay } from "../render-delay/render-delay";
+import styles from "./catalog.module.scss";
 import { CatalogAddButton } from "./catalog-add-button";
 import { browseCatalogTab } from "./catalog-browse-tab";
 import type { CatalogEntityStore } from "./catalog-entity-store.injectable";

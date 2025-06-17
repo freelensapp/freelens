@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import { FSWatcher } from "chokidar";
+import path from "path";
 
 /**
  * Wait for `filePath` and all parent directories to exist.

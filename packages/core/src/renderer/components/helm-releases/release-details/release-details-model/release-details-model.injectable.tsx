@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
@@ -12,6 +11,7 @@ import { waitUntilDefined } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import { groupBy, map } from "lodash/fp";
 import type { IComputedValue, IObservableValue } from "mobx";
 import { action, computed, observable, runInAction } from "mobx";

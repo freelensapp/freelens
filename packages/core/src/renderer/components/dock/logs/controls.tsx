@@ -4,12 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./controls.module.scss";
-
 import { observer } from "mobx-react";
 import React from "react";
-
 import { Checkbox } from "../../checkbox";
+import styles from "./controls.module.scss";
 import { DownloadLogsDropdown } from "./download-logs-dropdown";
 import type { LogTabViewModel } from "./logs-view-model";
 

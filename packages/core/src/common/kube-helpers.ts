@@ -8,8 +8,8 @@ import type { Cluster, Context, User } from "@freelensapp/kubernetes-client-node
 import { KubeConfig, newClusters, newContexts, newUsers } from "@freelensapp/kubernetes-client-node";
 import { isDefined } from "@freelensapp/utilities";
 import Joi from "joi";
-import yaml from "js-yaml";
 import type { DumpOptions } from "js-yaml";
+import yaml from "js-yaml";
 import type { PartialDeep } from "type-fest";
 
 const clusterSchema = Joi.object({

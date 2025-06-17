@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
-import path from "path";
 import type { Logger } from "@freelensapp/logger";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 import type * as pty from "node-pty";
+import os from "os";
+import path from "path";
 import type WebSocket from "ws";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";

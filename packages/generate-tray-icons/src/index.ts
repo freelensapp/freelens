@@ -6,11 +6,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import path from "path";
 import arg from "arg";
+import assert from "assert";
 import { mkdir, readFile } from "fs/promises";
 import { JSDOM } from "jsdom";
+import path from "path";
 import { platform } from "process";
 import sharp from "sharp";
 

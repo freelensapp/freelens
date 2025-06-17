@@ -5,7 +5,7 @@
  */
 
 import type fetch from "@freelensapp/node-fetch";
-import { type Injectable, getInjectable } from "@ogre-tools/injectable";
+import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import type { Fetch } from "./fetch.injectable";

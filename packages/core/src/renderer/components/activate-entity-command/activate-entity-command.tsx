@@ -10,8 +10,8 @@ import { observer } from "mobx-react";
 import React from "react";
 import { broadcastMessage } from "../../../common/ipc";
 import { catalogEntityRunListener } from "../../../common/ipc/catalog";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import catalogEnitiesInjectable from "../../api/catalog/entity/entities.injectable";
+import type { CatalogEntity } from "../../api/catalog-entity";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import { Select } from "../select";
 

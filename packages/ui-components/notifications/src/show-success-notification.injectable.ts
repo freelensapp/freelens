@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import type { ShowNotification } from "./notifications";
-import { notificationsStoreInjectable } from "./notifications-store.injectable";
 import { NotificationStatus } from "./notifications.store";
+import { notificationsStoreInjectable } from "./notifications-store.injectable";
 
 export const showSuccessNotificationInjectable = getInjectable({
   id: "show-success-notification",

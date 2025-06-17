@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { iter, tuple } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";

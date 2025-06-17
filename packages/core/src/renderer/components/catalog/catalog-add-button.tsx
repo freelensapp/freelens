@@ -5,11 +5,11 @@
  */
 
 import "./catalog-add-button.scss";
-import { EventEmitter } from "events";
 import { Icon } from "@freelensapp/icon";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { EventEmitter } from "events";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";

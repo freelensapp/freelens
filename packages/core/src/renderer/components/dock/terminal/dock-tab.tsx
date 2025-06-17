@@ -12,10 +12,10 @@ import autoBindReact from "auto-bind/react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { DockTabProps } from "../dock-tab";
-import { DockTab } from "../dock-tab";
 import type { DockStore } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
+import type { DockTabProps } from "../dock-tab";
+import { DockTab } from "../dock-tab";
 import type { TerminalStore } from "./store";
 import terminalStoreInjectable from "./store.injectable";
 

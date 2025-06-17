@@ -5,7 +5,7 @@
  */
 
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { ObservableHistory, createObservableHistory } from "mobx-observable-history";
+import { createObservableHistory, ObservableHistory } from "mobx-observable-history";
 import { historyInjectable } from "./history.injectable";
 import { searchParamsOptions } from "./search-params";
 

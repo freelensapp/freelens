@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
 import { isDefined } from "@freelensapp/utilities";
+import assert from "assert";
 import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import type { SearchStore } from "../../../search-store/search-store";

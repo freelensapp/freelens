@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import { action } from "mobx";
 import activeHotbarIdInjectable from "./active-id.injectable";
 import type { Hotbar } from "./hotbar";

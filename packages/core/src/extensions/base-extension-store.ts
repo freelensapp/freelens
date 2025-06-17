@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import * as path from "path";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { getOrInsertWith } from "@freelensapp/utilities";
+import assert from "assert";
 import type { Options } from "conf";
+import * as path from "path";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createPersistentStorageInjectable, {
   type PersistentStorage,

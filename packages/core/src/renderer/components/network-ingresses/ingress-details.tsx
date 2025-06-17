@@ -7,7 +7,7 @@
 import "./ingress-details.scss";
 
 import type { ILoadBalancerIngress } from "@freelensapp/kube-object";
-import { Ingress, computeRuleDeclarations } from "@freelensapp/kube-object";
+import { computeRuleDeclarations, Ingress } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";

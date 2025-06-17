@@ -10,7 +10,7 @@ import type {
   readJsonSync as readJsonSyncImpl,
   writeJsonSync as writeJsonSyncImpl,
 } from "fs-extra";
-import { Volume, createFsFromVolume } from "memfs";
+import { createFsFromVolume, Volume } from "memfs";
 import fsInjectable from "../common/fs/fs.injectable";
 
 export const getOverrideFsWithFakes = () => {

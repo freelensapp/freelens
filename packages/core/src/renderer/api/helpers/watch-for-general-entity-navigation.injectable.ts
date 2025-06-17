@@ -9,8 +9,8 @@ import type { Disposer } from "@freelensapp/utilities";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction, when } from "mobx";
-import type { GeneralEntity } from "../../../common/catalog-entities";
 import generalCategoryInjectable from "../../../common/catalog/categories/general.injectable";
+import type { GeneralEntity } from "../../../common/catalog-entities";
 import isActiveRouteInjectable from "../../navigation/is-route-active.injectable";
 import catalogEntityRegistryInjectable from "../catalog/entity/registry.injectable";
 

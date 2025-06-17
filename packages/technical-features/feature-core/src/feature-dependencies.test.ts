@@ -1,4 +1,4 @@
-import { DiContainer, Injectable, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
 
 import { deregisterFeature } from "./deregister-feature";
 import type { Feature } from "./feature";

@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import {
   applicationFeatureForElectronMain,
@@ -25,6 +24,7 @@ import type { RenderResult } from "@testing-library/react";
 import { fireEvent, queryByText } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
+import assert from "assert";
 import { filter, first, join, last, map, matches } from "lodash/fp";
 import type { IComputedValue, ObservableMap } from "mobx";
 import { action, computed, observable, runInAction } from "mobx";
@@ -67,8 +67,8 @@ import electronTrayInjectable from "../../../main/tray/electron-tray/electron-tr
 import { getOverrideFsWithFakes } from "../../../test-utils/override-fs-with-fakes";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import activeKubernetesClusterInjectable from "../../cluster-frame-context/active-kubernetes-cluster.injectable";
-import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import { ClusterFrame } from "../../frames/cluster-frame/cluster-frame";
 import { RootFrame } from "../../frames/root-frame/root-frame";
 import { getDiForUnitTesting as getRendererDi } from "../../getDiForUnitTesting";

@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import hostedClusterIdInjectable from "../cluster-frame-context/hosted-cluster-id.injectable";
 import defaultWebsocketApiParamsInjectable from "./default-websocket-api-params.injectable";
 import type { TerminalApiDependencies, TerminalApiQuery } from "./terminal-api";

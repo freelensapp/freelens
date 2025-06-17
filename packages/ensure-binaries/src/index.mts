@@ -6,18 +6,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { constants, type WriteStream } from "fs";
-import path from "path";
-import { Transform, Writable, pipeline as _pipeline } from "stream";
-import { promisify } from "util";
 import arg from "arg";
 import type { SingleBar } from "cli-progress";
 import { MultiBar } from "cli-progress";
+import { constants, type WriteStream } from "fs";
 import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
 import gunzip from "gunzip-maybe";
 import fetch from "node-fetch";
+import path from "path";
 import { arch } from "process";
+import { pipeline as _pipeline, Transform, Writable } from "stream";
 import { extract } from "tar-stream";
+import { promisify } from "util";
 import z from "zod";
 
 const options = arg({

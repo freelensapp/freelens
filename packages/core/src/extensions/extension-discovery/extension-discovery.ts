@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { EventEmitter } from "events";
-import type { Stats } from "fs";
 import type {
   ExternalInstalledExtension,
   InstalledExtension,
@@ -15,6 +13,8 @@ import type {
 import type { Logger } from "@freelensapp/logger";
 import { isErrnoException } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
+import { EventEmitter } from "events";
+import type { Stats } from "fs";
 import { makeObservable, observable, reaction, when } from "mobx";
 import type TypedEventEmitter from "typed-emitter";
 import type { AccessPath } from "../../common/fs/access-path.injectable";

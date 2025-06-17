@@ -4,6 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+export * from "./bar-chart";
 export * from "./chart";
 export * from "./pie-chart";
-export * from "./bar-chart";

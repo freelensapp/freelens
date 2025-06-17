@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./status-bar.module.scss";
-
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue, IObservableValue } from "mobx";
@@ -13,6 +11,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import type { StatusBarStatus } from "./current-status.injectable";
 import statusBarCurrentStatusInjectable from "./current-status.injectable";
+import styles from "./status-bar.module.scss";
 import type { StatusBarItems } from "./status-bar-items.injectable";
 import statusBarItemsInjectable from "./status-bar-items.injectable";
 

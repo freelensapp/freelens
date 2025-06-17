@@ -4,9 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./catalog-menu.module.scss";
-import treeStyles from "./catalog-tree.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
@@ -18,6 +15,8 @@ import { HorizontalLine } from "../horizontal-line/horizontal-line";
 import { TreeGroup, TreeItem, TreeView } from "../tree-view/tree-view";
 import { browseCatalogTab } from "./catalog-browse-tab";
 import { CatalogCategoryLabel } from "./catalog-category-label";
+import styles from "./catalog-menu.module.scss";
+import treeStyles from "./catalog-tree.module.scss";
 
 export interface CatalogMenuProps {
   activeTab: string | undefined;

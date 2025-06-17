@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
 import {
   clusterIconSettingsComponentInjectionToken,
   clusterIconSettingsMenuInjectionToken,
 } from "@freelensapp/cluster-settings";
-import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
 import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";

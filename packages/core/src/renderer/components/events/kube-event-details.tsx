@@ -4,21 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./kube-event-details.module.scss";
-
 import { KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { LocaleDate } from "../locale-date";
-import type { EventStore } from "./store";
-
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import { LocaleDate } from "../locale-date";
+import styles from "./kube-event-details.module.scss";
+import type { EventStore } from "./store";
 import eventStoreInjectable from "./store.injectable";
 
 export interface KubeEventDetailsProps {

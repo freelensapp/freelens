@@ -5,8 +5,8 @@
  */
 
 import type { ReplicaSetApi } from "@freelensapp/kube-api";
-import { PodStatusPhase } from "@freelensapp/kube-object";
 import type { Deployment, ReplicaSet } from "@freelensapp/kube-object";
+import { PodStatusPhase } from "@freelensapp/kube-object";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.injectable";

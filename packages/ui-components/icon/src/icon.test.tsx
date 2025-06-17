@@ -16,6 +16,7 @@ import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
 import React from "react";
 import { Icon } from "./icon";
+
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
   let logger: jest.MockedObject<Logger>;

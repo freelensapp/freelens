@@ -6,13 +6,13 @@
 
 import "./helm-chart-details.scss";
 
-import assert from "assert";
 import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
-import { Tooltip, styled } from "@mui/material";
+import { styled, Tooltip } from "@mui/material";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
@@ -23,9 +23,9 @@ import { Drawer, DrawerItem } from "../drawer";
 import { MarkdownViewer } from "../markdown-viewer";
 import { Select } from "../select";
 import readmeOfSelectHelmChartInjectable from "./details/readme-of-selected-helm-chart.injectable";
-import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-chart-details-version-selection.injectable";
+import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import { HelmChartIcon } from "./icon";
 
 export interface HelmChartDetailsProps {

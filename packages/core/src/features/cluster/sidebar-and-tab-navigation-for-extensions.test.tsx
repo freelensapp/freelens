@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { flushPromises } from "@freelensapp/test-utils";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
+import assert from "assert";
 import { matches } from "lodash/fp";
 import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";

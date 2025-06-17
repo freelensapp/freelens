@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./ingress-classes.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import type { IngressClass } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
@@ -16,6 +14,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import type { IngressClassStore } from "./ingress-class-store";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
+import styles from "./ingress-classes.module.scss";
 
 enum columnId {
   name = "name",

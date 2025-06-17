@@ -5,7 +5,7 @@
  */
 
 import type { KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
-import { KubeStatus, Pod, isKubeStatusData } from "@freelensapp/kube-object";
+import { isKubeStatusData, KubeStatus, Pod } from "@freelensapp/kube-object";
 import type {
   DeleteResourceDescriptor,
   DerivedKubeApiOptions,

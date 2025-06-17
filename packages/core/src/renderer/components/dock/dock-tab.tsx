@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./dock-tab.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import type { StrictReactNode } from "@freelensapp/utilities";
@@ -21,6 +19,7 @@ import type { TabProps } from "../tabs";
 import { Tab } from "../tabs";
 import type { DockStore, DockTab as DockTabModel } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
+import styles from "./dock-tab.module.scss";
 
 export interface DockTabProps extends TabProps<DockTabModel> {
   moreActions?: StrictReactNode;

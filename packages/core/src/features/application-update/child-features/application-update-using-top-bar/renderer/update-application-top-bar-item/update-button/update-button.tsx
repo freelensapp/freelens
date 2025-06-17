@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./styles.module.scss";
-
 import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
@@ -17,6 +15,7 @@ import React, { useState } from "react";
 import { Menu, MenuItem } from "../../../../../../../renderer/components/menu";
 import restartAndInstallUpdateInjectable from "../../../../../renderer/restart-and-install-update.injectable";
 import updateWarningLevelInjectable from "../update-warning-level.injectable";
+import styles from "./styles.module.scss";
 
 interface UpdateButtonProps extends HTMLAttributes<HTMLButtonElement> {}
 

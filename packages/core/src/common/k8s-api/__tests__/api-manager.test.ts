@@ -5,31 +5,30 @@
  */
 
 import { KubeApi } from "@freelensapp/kube-api";
+import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { KubeObject } from "@freelensapp/kube-object";
 import {
   logErrorInjectionToken,
+  loggerInjectionToken,
   logInfoInjectionToken,
   logWarningInjectionToken,
-  loggerInjectionToken,
 } from "@freelensapp/logger";
 import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
+import { runInAction } from "mobx";
+import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-can-be-created.injectable";
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { Cluster } from "../../cluster/cluster";
 import type { ApiManager } from "../api-manager";
+import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 import { KubeObjectStore } from "../kube-object.store";
-
-import assert from "assert";
-import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
-import { runInAction } from "mobx";
-import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
-import { Cluster } from "../../cluster/cluster";
-import { customResourceDefinitionApiInjectionToken } from "../api-manager/crd-api-token";
 
 class TestApi extends KubeApi<KubeObject> {
   protected checkPreferredVersion() {

@@ -8,9 +8,9 @@ import type { ShowNotification } from "@freelensapp/notifications";
 import { ipcRenderer } from "electron";
 import React from "react";
 import Url from "url-parse";
-import * as proto from "../../../common/protocol-handler";
 import type { LensProtocolRouterDependencies } from "../../../common/protocol-handler";
-import { ProtocolHandlerInvalid, RouteAttempt, foldAttemptResults } from "../../../common/protocol-handler";
+import * as proto from "../../../common/protocol-handler";
+import { foldAttemptResults, ProtocolHandlerInvalid, RouteAttempt } from "../../../common/protocol-handler";
 
 interface Dependencies extends LensProtocolRouterDependencies {
   showShortInfoNotification: ShowNotification;

@@ -4,13 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useState } from "react";
-import { SearchInput } from "../input";
-import styles from "./list.module.scss";
-
 import type { StrictReactNode } from "@freelensapp/utilities";
+import React, { useState } from "react";
 import type { UseTableOptions } from "react-table";
+import { SearchInput } from "../input";
 import { ReactTable } from "../table/react-table";
+import styles from "./list.module.scss";
 
 export type SearchFilter<T> = (item: T) => string | number;
 

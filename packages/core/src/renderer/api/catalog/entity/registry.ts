@@ -18,8 +18,8 @@ import type {
 import { ipcRendererOn } from "../../../../common/ipc";
 import "../../../../common/catalog-entities";
 import type { Logger } from "@freelensapp/logger";
-import { iter } from "@freelensapp/utilities";
 import type { Disposer } from "@freelensapp/utilities";
+import { iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import { isMainFrame } from "process";

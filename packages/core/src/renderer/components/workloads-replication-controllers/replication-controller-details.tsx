@@ -7,8 +7,8 @@
 import type { ReplicationControllerApi } from "@freelensapp/kube-api";
 import { replicationControllerApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { ReplicationController } from "@freelensapp/kube-object";
-import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";

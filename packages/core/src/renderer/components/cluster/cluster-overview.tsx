@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-overview.module.scss";
-
 import type { ClusterOverviewUIBlock } from "@freelensapp/metrics";
 import { clusterOverviewUIBlockInjectionToken } from "@freelensapp/metrics";
 import { Spinner } from "@freelensapp/spinner";
@@ -30,6 +28,7 @@ import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { ClusterIssues } from "./cluster-issues";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
+import styles from "./cluster-overview.module.scss";
 
 interface Dependencies {
   subscribeStores: SubscribeStores;

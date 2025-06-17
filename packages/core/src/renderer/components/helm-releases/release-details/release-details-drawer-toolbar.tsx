@@ -6,10 +6,9 @@
 
 import "./release-details.scss";
 
-import React from "react";
-
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmReleaseMenu } from "../release-menu";
 import type { ReleaseDetailsModel } from "./release-details-model/release-details-model.injectable";

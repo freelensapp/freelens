@@ -1,3 +1,4 @@
+import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
 import type {
   MessageChannel,
   MessageChannelHandler,
@@ -6,18 +7,15 @@ import type {
   RequestChannelHandler,
   RequestFromChannel,
 } from "@freelensapp/messaging";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { act } from "@testing-library/react";
-
 import {
   enlistMessageChannelListenerInjectionToken,
   enlistRequestChannelListenerInjectionToken,
   requestFromChannelInjectionToken,
   sendMessageToChannelInjectionToken,
 } from "@freelensapp/messaging";
-
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
 import { pipeline } from "@ogre-tools/fp";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { act } from "@testing-library/react";
 import { filter, map } from "lodash/fp";
 
 export type MessageBridgeFake = {

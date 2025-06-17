@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import { computed } from "mobx";
 import selectedNamespacesStorageInjectable from "../../features/namespace-filtering/renderer/storage.injectable";
 import namespaceStoreInjectable from "../components/namespaces/store.injectable";

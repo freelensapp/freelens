@@ -1,5 +1,5 @@
-import os from "os";
 import type { DiContainer } from "@ogre-tools/injectable";
+import os from "os";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";

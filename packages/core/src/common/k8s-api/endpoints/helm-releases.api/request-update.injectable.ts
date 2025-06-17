@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { urlBuilderFor } from "@freelensapp/utilities";
 import type { AsyncResult } from "@freelensapp/utilities";
+import { urlBuilderFor } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
 

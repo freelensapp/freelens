@@ -5,8 +5,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ClusterId } from "../../../../common/cluster-types";
 import type { Cluster } from "../../../../common/cluster/cluster";
+import type { ClusterId } from "../../../../common/cluster-types";
 import clustersStateInjectable from "./state.injectable";
 
 export type GetClusterById = (id: ClusterId) => Cluster | undefined;

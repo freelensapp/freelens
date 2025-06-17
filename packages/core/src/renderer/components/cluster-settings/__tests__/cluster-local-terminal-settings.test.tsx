@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Stats } from "fs";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { waitFor } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
+import type { Stats } from "fs";
 import React from "react";
 import { Cluster } from "../../../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";

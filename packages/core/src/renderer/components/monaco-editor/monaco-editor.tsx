@@ -13,7 +13,7 @@ import { debounce, merge } from "lodash";
 import type { IComputedValue } from "mobx";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
-import { Uri, editor } from "monaco-editor";
+import { editor, Uri } from "monaco-editor";
 import React from "react";
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";

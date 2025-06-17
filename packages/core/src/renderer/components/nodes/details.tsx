@@ -6,7 +6,7 @@
 
 import "./details.scss";
 
-import { Node, formatNodeTaint } from "@freelensapp/kube-object";
+import { formatNodeTaint, Node } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";

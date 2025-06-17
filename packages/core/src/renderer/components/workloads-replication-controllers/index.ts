@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./replication-controllers";
 export * from "./replication-controller-details";
+export * from "./replication-controllers";

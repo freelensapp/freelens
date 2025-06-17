@@ -4,11 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IObservableValue } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import { Notice } from "../../../../../renderer/components/extensions/notice";
 import { AddingOfCustomHelmRepositoryDialog } from "./adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog";
 import { AddingOfCustomHelmRepositoryOpenButton } from "./adding-of-custom-helm-repository/adding-of-custom-helm-repository-open-button";

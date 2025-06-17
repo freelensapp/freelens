@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-pie-charts.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import type { Node } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
@@ -24,6 +22,7 @@ import type { PieChartData } from "../chart";
 import { PieChart } from "../chart";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
+import styles from "./cluster-pie-charts.module.scss";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 

@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import { getOrInsert } from "@freelensapp/utilities";
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
+import EventEmitter from "events";
 import type { Asyncify } from "type-fest";
 import type TypedEventEmitter from "typed-emitter";
 import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";

@@ -4,21 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./hotbar-icon.module.scss";
-
-import React, { useState } from "react";
-
 import { Icon } from "@freelensapp/icon";
 import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React, { useState } from "react";
 import type { CatalogEntityContextMenu } from "../../../common/catalog";
 import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
 import type { AvatarProps } from "../avatar";
 import { Avatar } from "../avatar";
 import { Menu, MenuItem } from "../menu";
+import styles from "./hotbar-icon.module.scss";
 
 export interface HotbarIconProps extends AvatarProps {
   uid: string;

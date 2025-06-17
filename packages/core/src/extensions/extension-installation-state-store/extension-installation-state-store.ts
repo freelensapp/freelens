@@ -5,8 +5,8 @@
  */
 
 import type { Logger } from "@freelensapp/logger";
-import { disposer } from "@freelensapp/utilities";
 import type { ExtendableDisposer } from "@freelensapp/utilities";
+import { disposer } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { action, computed, observable } from "mobx";
 import * as uuid from "uuid";

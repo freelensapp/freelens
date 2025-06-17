@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import type { ChildProcess } from "child_process";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import assert from "assert";
+import type { ChildProcess } from "child_process";
 import { observable, when } from "mobx";
 import { TypedRegEx } from "typed-regex";
 import type { Cluster } from "../../common/cluster/cluster";

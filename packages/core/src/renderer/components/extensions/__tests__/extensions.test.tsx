@@ -5,8 +5,8 @@
  */
 
 import "@testing-library/jest-dom";
-import assert from "assert";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
+import assert from "assert";
 import { observable, when } from "mobx";
 import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";

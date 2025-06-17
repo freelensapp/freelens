@@ -1,5 +1,5 @@
-import { exec } from "child_process";
 import { getInjectable } from "@ogre-tools/injectable";
+import { exec } from "child_process";
 
 export type Exec = typeof exec;
 

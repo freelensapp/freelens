@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-metrics.module.scss";
-
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
@@ -19,6 +17,7 @@ import { BarChart } from "../chart";
 import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";
 import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
+import styles from "./cluster-metrics.module.scss";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";

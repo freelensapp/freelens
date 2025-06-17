@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./namespace-tree-view.module.scss";
-
 import type { Namespace } from "@freelensapp/kube-object";
 import { prevDefault } from "@freelensapp/utilities";
 import TreeItem, { useTreeItem } from "@mui/lab/TreeItem";
@@ -21,6 +19,7 @@ import { DrawerTitle } from "../drawer";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
+import styles from "./namespace-tree-view.module.scss";
 import type { NamespaceTree } from "./store";
 import { SubnamespaceBadge } from "./subnamespace-badge";
 

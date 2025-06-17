@@ -16,11 +16,11 @@ import extensionInstallationStateStoreInjectable from "../../../extensions/exten
 import { Input, InputValidators } from "../input";
 import { unionInputValidatorsAsync } from "../input/input_validators";
 import { SubTitle } from "../layout/sub-title";
+import styles from "./install.module.scss";
 import type { InstallExtensionFromInput } from "./install-extension-from-input.injectable";
 import installExtensionFromInputInjectable from "./install-extension-from-input.injectable";
 import type { InstallFromSelectFileDialog } from "./install-from-select-file-dialog.injectable";
 import installFromSelectFileDialogInjectable from "./install-from-select-file-dialog.injectable";
-import styles from "./install.module.scss";
 import { supportedExtensionFormats } from "./supported-extension-formats";
 
 interface Dependencies {

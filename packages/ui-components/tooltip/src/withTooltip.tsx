@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type StrictReactNode, isReactNode } from "@freelensapp/utilities";
+import { isReactNode, type StrictReactNode } from "@freelensapp/utilities";
 import uniqueId from "lodash/uniqueId";
 import React, { useState } from "react";
 import { Tooltip, type TooltipProps } from "./tooltip";

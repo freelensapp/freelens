@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./volume-claims";
 export * from "./volume-claim-details";
+export * from "./volume-claims";

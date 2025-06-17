@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
+import path from "path";
 import type webpack from "webpack";
 import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";

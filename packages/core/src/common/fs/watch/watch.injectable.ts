@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Stats } from "fs";
 import type { SingleOrMany } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { watch } from "chokidar";
+import type { Stats } from "fs";
 import type TypedEventEmitter from "typed-emitter";
 
 export interface AlwaysStatWatcherEvents {

@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./add-cluster.module.scss";
-
 import { Button } from "@freelensapp/button";
 import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { ShowNotification } from "@freelensapp/notifications";
@@ -28,6 +26,7 @@ import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectab
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
 import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
+import styles from "./add-cluster.module.scss";
 
 interface Option {
   config: KubeConfig;

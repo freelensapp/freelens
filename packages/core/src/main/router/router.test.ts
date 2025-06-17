@@ -19,8 +19,8 @@ import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-ar
 import parseRequestInjectable from "./parse-request.injectable";
 import type { Route } from "./route";
 import type { Router } from "./router";
-import { contentTypes } from "./router-content-types";
 import routerInjectable, { routeInjectionToken } from "./router.injectable";
+import { contentTypes } from "./router-content-types";
 
 describe("router", () => {
   let router: Router;

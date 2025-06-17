@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as uuid from "uuid";
-
 import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { noop } from "@freelensapp/utilities";
 import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
+import * as uuid from "uuid";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import broadcastMessageInjectable from "../../../common/ipc/broadcast-message.injectable";
 import {

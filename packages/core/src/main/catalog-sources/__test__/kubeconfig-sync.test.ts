@@ -4,20 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
-import type { ReadStream, Stats } from "fs";
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { iter, strictGet } from "@freelensapp/utilities";
 import type { DiContainer } from "@ogre-tools/injectable";
+import EventEmitter from "events";
+import type { ReadStream, Stats } from "fs";
 import { ObservableMap, observable, runInAction } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
-import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import pathExistsInjectable from "../../../common/fs/path-exists.injectable";
+import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
 import type { Stat } from "../../../common/fs/stat.injectable";
 import statInjectable from "../../../common/fs/stat.injectable";

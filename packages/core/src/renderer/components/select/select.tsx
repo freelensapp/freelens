@@ -16,7 +16,6 @@ import type { IComputedValue, ObservableSet } from "mobx";
 import { action, computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import ReactSelect, { components, createFilter } from "react-select";
 import type {
   GroupBase,
   MultiValue,
@@ -25,6 +24,7 @@ import type {
   Props as ReactSelectProps,
   SingleValue,
 } from "react-select";
+import ReactSelect, { components, createFilter } from "react-select";
 import activeThemeInjectable from "../../themes/active.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 

@@ -14,7 +14,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import type { ObservableHistory } from "mobx-observable-history";
 import { observer } from "mobx-react";
 import React from "react";
-import { Redirect, Route, Switch, matchPath } from "react-router";
+import { matchPath, Redirect, Route, Switch } from "react-router";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Tab, Tabs } from "../tabs";

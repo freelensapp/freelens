@@ -5,8 +5,8 @@
  */
 
 import { pick } from "lodash";
-import { computed, observable, runInAction, toJS } from "mobx";
 import type { IObservableValue } from "mobx";
+import { computed, observable, runInAction, toJS } from "mobx";
 import type {
   ClusterId,
   ClusterMetadata,

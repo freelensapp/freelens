@@ -4,25 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./hotbar-entity-icon.module.scss";
-
-import type { IComputedValue } from "mobx";
-import { observable } from "mobx";
-import { observer } from "mobx-react";
-import React from "react";
-
 import { Icon } from "@freelensapp/icon";
 import type { IClassName } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
-import { LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
+import { LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
+import styles from "./hotbar-entity-icon.module.scss";
 import { HotbarIcon } from "./hotbar-icon";
 
 export interface HotbarEntityIconProps {

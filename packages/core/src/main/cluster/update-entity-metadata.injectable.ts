@@ -7,8 +7,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { toJS } from "mobx";
 import type { KubernetesCluster } from "../../common/catalog-entities";
-import { ClusterMetadataKey } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
+import { ClusterMetadataKey } from "../../common/cluster-types";
 import { enumKeys } from "../../common/utils/enum";
 
 export type UpdateEntityMetadata = (entity: KubernetesCluster, cluster: Cluster) => void;

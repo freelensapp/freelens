@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { execFile } from "child_process";
 import { getInjectable } from "@ogre-tools/injectable";
+import { execFile } from "child_process";
 
 const nonPromiseExecFileInjectable = getInjectable({
   id: "non-promise-exec-file",

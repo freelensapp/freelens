@@ -1,5 +1,5 @@
 import { byOrderNumber } from "@freelensapp/utilities";
-import { type InjectionInstanceWithMeta, getInjectable } from "@ogre-tools/injectable";
+import { getInjectable, type InjectionInstanceWithMeta } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { type SidebarItemDeclaration, type SidebarItemRegistration, sidebarItemInjectionToken } from "./tokens";

@@ -6,8 +6,8 @@
 
 import "./drawer.scss";
 
-import { Animate } from "@freelensapp/animate";
 import type { AnimateName } from "@freelensapp/animate";
+import { Animate } from "@freelensapp/animate";
 import { Icon } from "@freelensapp/icon";
 import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } from "@freelensapp/resizing-anchor";
 import { historyInjectionToken } from "@freelensapp/routing";

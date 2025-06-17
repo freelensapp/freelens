@@ -6,8 +6,6 @@
 
 // Base class for building all kubernetes apis
 
-import assert from "assert";
-import { stringify } from "querystring";
 import type {
   KubeJsonApiData,
   KubeJsonApiDataFor,
@@ -16,23 +14,25 @@ import type {
   KubeObjectMetadata,
   KubeObjectScope,
   Scale,
+  ScaleCreateOptions,
 } from "@freelensapp/kube-object";
 import {
-  KubeStatus,
   isJsonApiData,
   isJsonApiDataList,
   isKubeStatusData,
   isPartialJsonApiData,
+  KubeStatus,
 } from "@freelensapp/kube-object";
-import type { ScaleCreateOptions } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
 import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
-import { WrappedAbortController, isDefined, noop } from "@freelensapp/utilities";
+import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
+import assert from "assert";
 import byline from "byline";
 import { merge } from "lodash";
 import { matches } from "lodash/fp";
 import { makeObservable, observable } from "mobx";
+import { stringify } from "querystring";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";

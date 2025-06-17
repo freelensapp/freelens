@@ -16,8 +16,8 @@ import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-l
 import callForLogsInjectable from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
 import getLogTabDataInjectable from "../../renderer/components/dock/logs/get-log-tab-data.injectable";
-import getLogsWithoutTimestampsInjectable from "../../renderer/components/dock/logs/get-logs-without-timestamps.injectable";
 import getLogsInjectable from "../../renderer/components/dock/logs/get-logs.injectable";
+import getLogsWithoutTimestampsInjectable from "../../renderer/components/dock/logs/get-logs-without-timestamps.injectable";
 import getRandomIdForPodLogsTabInjectable from "../../renderer/components/dock/logs/get-random-id-for-pod-logs-tab.injectable";
 import getTimestampSplitLogsInjectable from "../../renderer/components/dock/logs/get-timestamp-split-logs.injectable";
 import loadLogsInjectable from "../../renderer/components/dock/logs/load-logs.injectable";

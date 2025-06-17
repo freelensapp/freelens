@@ -23,9 +23,9 @@ import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/m
 import { Badge } from "../badge/badge";
 import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { TabLayout } from "../layout/tab-layout-2";
 import { LineProgress } from "../line-progress";
 import type { NodeStore } from "./store";

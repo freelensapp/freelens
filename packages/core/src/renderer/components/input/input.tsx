@@ -17,8 +17,8 @@ import uniqueId from "lodash/uniqueId";
 import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import React from "react";
 import * as uuid from "uuid";
-import * as Validators from "./input_validators";
 import type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage } from "./input_validators";
+import * as Validators from "./input_validators";
 
 const {
   conditionalValidators,

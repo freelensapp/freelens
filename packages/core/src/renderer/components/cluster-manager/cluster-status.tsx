@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-status.module.scss";
-
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
@@ -15,8 +13,8 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { KubeAuthUpdate } from "../../../common/cluster-types";
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { KubeAuthUpdate } from "../../../common/cluster-types";
 import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { ipcRendererOn } from "../../../common/ipc";
@@ -24,6 +22,7 @@ import type { RequestClusterActivation } from "../../../features/cluster/activat
 import requestClusterActivationInjectable from "../../../features/cluster/activation/renderer/request-activation.injectable";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import styles from "./cluster-status.module.scss";
 
 export interface ClusterStatusProps {
   className?: IClassName;

@@ -6,6 +6,7 @@
 
 import "./vpa-details.scss";
 
+import type { PodResourcePolicy, PodUpdatePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
 import {
   ContainerScalingMode,
   ControlledValues,
@@ -13,9 +14,8 @@ import {
   UpdateMode,
   VerticalPodAutoscaler,
 } from "@freelensapp/kube-object";
-import type { PodResourcePolicy, PodUpdatePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import startCase from "lodash/startCase";

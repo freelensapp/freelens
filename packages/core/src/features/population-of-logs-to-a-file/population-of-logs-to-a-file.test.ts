@@ -24,13 +24,7 @@ describe("Population of logs to a file", () => {
   let frameSpecificWinstonLogInMainMock: jest.Mock;
   let frameSpecificCloseLogInMainMock: jest.Mock;
 
-  async function setUpTestApplication({
-    testFileId,
-    isClusterFrame,
-  }: {
-    testFileId: string;
-    isClusterFrame: boolean;
-  }) {
+  async function setUpTestApplication({ testFileId, isClusterFrame }: { testFileId: string; isClusterFrame: boolean }) {
     builder = getApplicationBuilder();
 
     if (isClusterFrame) {

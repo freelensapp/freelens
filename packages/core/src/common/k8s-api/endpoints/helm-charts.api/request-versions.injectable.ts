@@ -7,8 +7,8 @@
 import { isDefined, urlBuilderFor } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
-import { HelmChart } from "../helm-charts.api";
 import type { RawHelmChart } from "../helm-charts.api";
+import { HelmChart } from "../helm-charts.api";
 
 const requestVersionsEndpoint = urlBuilderFor("/v2/charts/:repo/:name/versions");
 

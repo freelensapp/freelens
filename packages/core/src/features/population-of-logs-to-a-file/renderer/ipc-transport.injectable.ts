@@ -5,11 +5,10 @@
  */
 
 import { loggerTransportInjectionToken } from "@freelensapp/logger";
+import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { MESSAGE } from "triple-beam";
 import type winston from "winston";
-
-import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import type { IpcFileLogObject } from "../common/ipc-file-logger-channel";
 import { closeIpcFileLoggerChannel, ipcFileLoggerChannel } from "../common/ipc-file-logger-channel";
 import IpcLogTransport from "./ipc-transport";

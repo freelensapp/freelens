@@ -5,10 +5,10 @@
  */
 
 import type { ChildProcess } from "child_process";
-import type { Readable } from "stream";
-import { EventEmitter } from "stream";
 import type { DeepMockProxy } from "jest-mock-extended";
 import { mock, mockDeep } from "jest-mock-extended";
+import type { Readable } from "stream";
+import { EventEmitter } from "stream";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import type { Cluster } from "../../common/cluster/cluster";

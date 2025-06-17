@@ -6,8 +6,8 @@
 
 import "./menu.scss";
 
-import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
 import type { RequestAnimationFrame } from "@freelensapp/animate";
+import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
 import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
 import type { StrictReactNode } from "@freelensapp/utilities";

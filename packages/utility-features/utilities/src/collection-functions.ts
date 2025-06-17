@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { inspect } from "util";
 import { runInAction } from "mobx";
+import { inspect } from "util";
 import { isDefined } from "./type-narrowing";
 
 /**

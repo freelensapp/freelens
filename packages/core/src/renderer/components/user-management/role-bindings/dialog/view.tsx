@@ -12,7 +12,7 @@ import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
 import type { ClusterRole, Role, ServiceAccount, Subject } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import { ObservableHashSet, iter } from "@freelensapp/utilities";
+import { iter, ObservableHashSet } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IObservableValue } from "mobx";
 import { action, computed, makeObservable, observable } from "mobx";
@@ -27,7 +27,7 @@ import showDetailsInjectable from "../../../kube-detail-params/show-details.inje
 import { SubTitle } from "../../../layout/sub-title";
 import { NamespaceSelect } from "../../../namespaces/namespace-select";
 import type { SelectOption } from "../../../select";
-import { Select, onMultiSelectFor } from "../../../select";
+import { onMultiSelectFor, Select } from "../../../select";
 import { Wizard, WizardStep } from "../../../wizard";
 import type { ClusterRoleStore } from "../../cluster-roles/store";
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
+import EventEmitter from "events";
 import autoUpdaterInjectable from "./auto-updater.injectable";
 
 export default getGlobalOverride(autoUpdaterInjectable, () => {

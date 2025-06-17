@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./network-policy-details.module.scss";
-
 import type {
   LabelMatchExpression,
   LabelSelector,
@@ -24,6 +22,7 @@ import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { SubTitle } from "../layout/sub-title";
+import styles from "./network-policy-details.module.scss";
 
 export interface NetworkPolicyDetailsProps extends KubeObjectDetailsProps<NetworkPolicy> {}
 

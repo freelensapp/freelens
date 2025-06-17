@@ -10,12 +10,12 @@ import { once } from "lodash";
 import type { IComputedValue, IObservableValue, ObservableSet } from "mobx";
 import { action, makeObservable, observe, reaction, toJS } from "mobx";
 import {
+  isKubernetesCluster,
   KubernetesCluster,
   LensKubernetesClusterStatus,
-  isKubernetesCluster,
 } from "../../common/catalog-entities/kubernetes-cluster";
-import type { ClusterId } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
+import type { ClusterId } from "../../common/cluster-types";
 import { ipcMainOn } from "../../common/ipc";
 import type { AddCluster } from "../../features/cluster/storage/common/add.injectable";
 import type { GetClusterById } from "../../features/cluster/storage/common/get-by-id.injectable";

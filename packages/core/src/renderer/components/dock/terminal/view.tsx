@@ -6,9 +6,9 @@
 
 import "./terminal-window.scss";
 
-import assert from "assert";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import type { IComputedValue } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

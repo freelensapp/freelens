@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectable } from "@ogre-tools/injectable";
+import { chunk } from "lodash";
 import type { ConnectionOptions } from "tls";
 import { connect } from "tls";
 import url from "url";
-import { getInjectable } from "@ogre-tools/injectable";
-import { chunk } from "lodash";
 import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.injectable";

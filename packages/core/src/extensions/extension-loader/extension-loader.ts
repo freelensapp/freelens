@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import type {
   BundledExtension,
@@ -17,6 +16,7 @@ import type {
 } from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
 import { isDefined, iter } from "@freelensapp/utilities";
+import assert from "assert";
 import { ipcMain, ipcRenderer } from "electron";
 import { isEqual } from "lodash";
 import type { ObservableMap } from "mobx";

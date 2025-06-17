@@ -1,7 +1,7 @@
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { registerFeature } from "@freelensapp/feature-core";
-import { DiContainer, createContainer } from "@ogre-tools/injectable";
+import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { getPromiseStatus } from "@ogre-tools/test-utils";
 import electronAppInjectable from "../electron/electron-app.injectable";
 import { applicationFeatureForElectronMain } from "../feature";

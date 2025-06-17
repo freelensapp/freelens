@@ -4,11 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./close-button.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import type { HTMLAttributes } from "react";
 import React from "react";
+import styles from "./close-button.module.scss";
 
 export interface CloseButtonProps extends HTMLAttributes<HTMLDivElement> {}
 

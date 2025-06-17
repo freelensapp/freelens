@@ -6,12 +6,11 @@
 
 import "./view.scss";
 
-import { observer } from "mobx-react";
-import React from "react";
-
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import React from "react";
 import type { DialogProps } from "../../../dialog";
 import { Dialog } from "../../../dialog";
 import { Input } from "../../../input";

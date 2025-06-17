@@ -7,10 +7,10 @@
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
-import { Namespace } from "@freelensapp/kube-object";
 import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
-import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { Namespace } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";

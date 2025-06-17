@@ -4,14 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./avatar.module.scss";
-
 import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import randomColor from "randomcolor";
 import type { ImgHTMLAttributes, MouseEventHandler } from "react";
 import React from "react";
 import { computeDefaultShortName } from "../../../common/catalog/helpers";
+import styles from "./avatar.module.scss";
 
 export interface AvatarProps {
   title: string;

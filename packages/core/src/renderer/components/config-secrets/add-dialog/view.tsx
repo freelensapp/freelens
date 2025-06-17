@@ -9,7 +9,7 @@ import "./view.scss";
 import { Icon } from "@freelensapp/icon";
 import type { SecretApi } from "@freelensapp/kube-api";
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
-import { SecretType, reverseSecretTypeMap } from "@freelensapp/kube-object";
+import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { base64, iter, object } from "@freelensapp/utilities";

@@ -10,13 +10,9 @@ import Gutter from "../../../../../../renderer/components/gutter/gutter";
 import type { PreferenceItemTypes } from "../../preference-item-injection-token";
 import { preferenceItemInjectionToken } from "../../preference-item-injection-token";
 
-const PreferenceItemGroup = ({
-  children,
-  item,
-}: {
-  children: React.ReactElement;
-  item: PreferenceItemTypes;
-}) => <section id={item.id}>{children}</section>;
+const PreferenceItemGroup = ({ children, item }: { children: React.ReactElement; item: PreferenceItemTypes }) => (
+  <section id={item.id}>{children}</section>
+);
 
 const kubectlGroupPreferenceItemInjectable = getInjectable({
   id: "kubectl-group-preference-item",

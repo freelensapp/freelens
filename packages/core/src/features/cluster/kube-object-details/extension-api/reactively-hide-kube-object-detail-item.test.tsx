@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import type { KubeApi } from "@freelensapp/kube-api";
 import { KubeObject } from "@freelensapp/kube-object";
 import type { RenderResult } from "@testing-library/react";
+import assert from "assert";
 import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";

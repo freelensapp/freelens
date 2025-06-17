@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import assert from "assert";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import type { SingleValue } from "react-select";

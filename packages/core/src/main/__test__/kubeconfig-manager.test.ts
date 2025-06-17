@@ -6,15 +6,15 @@
 
 import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import { loggerInjectionToken } from "@freelensapp/logger";
 import type { Logger } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import type { DiContainer } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
-import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
+import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import type { ReadFile } from "../../common/fs/read-file.injectable";
 import readFileInjectable from "../../common/fs/read-file.injectable";
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";

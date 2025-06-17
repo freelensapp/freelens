@@ -5,12 +5,12 @@
  */
 
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
 import kubernetesClusterCategoryInjectable from "../../common/catalog/categories/kubernetes-cluster.injectable";
+import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
 
 export {
-  KubernetesCluster,
   GeneralEntity,
+  KubernetesCluster,
   WebLink,
 } from "../../common/catalog-entities";
 
@@ -18,16 +18,15 @@ export type { KubernetesClusterCategory };
 
 export const kubernetesClusterCategory = asLegacyGlobalForExtensionApi(kubernetesClusterCategoryInjectable);
 
+export * from "../../common/catalog/catalog-entity";
 export type {
+  GeneralEntitySpec,
+  KubernetesClusterMetadata,
   KubernetesClusterPrometheusMetrics,
   KubernetesClusterSpec,
-  KubernetesClusterMetadata,
+  KubernetesClusterStatus,
+  KubernetesClusterStatusPhase,
   WebLinkSpec,
   WebLinkStatus,
   WebLinkStatusPhase,
-  KubernetesClusterStatusPhase,
-  KubernetesClusterStatus,
-  GeneralEntitySpec,
 } from "../../common/catalog-entities";
-
-export * from "../../common/catalog/catalog-entity";

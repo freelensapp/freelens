@@ -7,9 +7,9 @@
 import type { IpcMainInvokeEvent } from "electron";
 import { BrowserWindow, Menu } from "electron";
 import type { IComputedValue, ObservableMap } from "mobx";
+import type { Cluster } from "../../../../common/cluster/cluster";
 import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
 import type { ClusterId } from "../../../../common/cluster-types";
-import type { Cluster } from "../../../../common/cluster/cluster";
 import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
 import { clusterSetFrameIdHandler, clusterStates } from "../../../../common/ipc/cluster";
 import {

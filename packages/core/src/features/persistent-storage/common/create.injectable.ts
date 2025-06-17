@@ -5,8 +5,8 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import type { MessageChannel } from "@freelensapp/messaging";
+import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { disposer, isPromiseLike } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Options } from "conf/dist/source";

@@ -1,21 +1,20 @@
 import { registerFeature } from "@freelensapp/feature-core";
+import { getFeature } from "@freelensapp/feature-core/src/feature";
 import { createContainer, getInjectable } from "@ogre-tools/injectable";
 import TransportStream from "winston-transport";
 import { loggerFeature } from "./feature";
-import { winstonLoggerInjectable } from "./winston-logger.injectable";
 
 import {
   logDebugInjectionToken,
   logErrorInjectionToken,
+  loggerInjectable,
   logInfoInjectionToken,
   logSillyInjectionToken,
   logWarningInjectionToken,
-  loggerInjectable,
 } from "./logger.injectable";
-
-import { getFeature } from "@freelensapp/feature-core/src/feature";
 import { prefixedLoggerInjectable } from "./prefixed-logger.injectable";
 import { loggerTransportInjectionToken } from "./transports";
+import { winstonLoggerInjectable } from "./winston-logger.injectable";
 
 describe("logger", () => {
   [

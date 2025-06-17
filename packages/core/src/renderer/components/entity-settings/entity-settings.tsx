@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./entity-settings.module.scss";
-
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
@@ -17,6 +15,7 @@ import { Tab, Tabs } from "../tabs";
 import type { ActiveEntitySettings } from "./active-tabs.injectable";
 import activeEntitySettingsTabInjectable from "./active-tabs.injectable";
 import currentCatalogEntityForSettingsInjectable from "./current-entity.injectable";
+import styles from "./entity-settings.module.scss";
 
 interface Dependencies {
   entity: IComputedValue<CatalogEntity | undefined>;

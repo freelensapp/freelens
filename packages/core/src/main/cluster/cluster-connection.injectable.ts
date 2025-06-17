@@ -10,7 +10,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { comparer, reaction, runInAction } from "mobx";
-import { ClusterStatus } from "../../common/cluster-types";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
@@ -25,6 +24,7 @@ import type {
 import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
 import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
 import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
+import { ClusterStatus } from "../../common/cluster-types";
 import type { BroadcastMessage } from "../../common/ipc/broadcast-message.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";

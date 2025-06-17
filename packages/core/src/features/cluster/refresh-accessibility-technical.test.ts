@@ -22,10 +22,10 @@ import createAuthorizationApiInjectable from "../../common/cluster/create-author
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
-import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";
 import clusterConnectionInjectable from "../../main/cluster/cluster-connection.injectable";
+import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
+import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import type { K8sRequest } from "../../main/k8s-request.injectable";
 import k8sRequestInjectable from "../../main/k8s-request.injectable";
 import type { KubeAuthProxy } from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";

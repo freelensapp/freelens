@@ -7,8 +7,8 @@
 import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";
-import welcomeRouteConfigInjectable from "../../common/front-end-routing/routes/welcome/welcome-route-config.injectable";
 import welcomeRouteInjectable from "../../common/front-end-routing/routes/welcome/welcome-route.injectable";
+import welcomeRouteConfigInjectable from "../../common/front-end-routing/routes/welcome/welcome-route-config.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";

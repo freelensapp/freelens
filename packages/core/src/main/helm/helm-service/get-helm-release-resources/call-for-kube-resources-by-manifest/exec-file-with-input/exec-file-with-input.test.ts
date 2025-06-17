@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import type { AsyncResult } from "@freelensapp/utilities";
+import EventEmitter from "events";
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import type { ExecFileWithInput } from "./exec-file-with-input.injectable";
 import execFileWithInputInjectable from "./exec-file-with-input.injectable";

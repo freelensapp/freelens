@@ -5,11 +5,11 @@
  */
 
 import "./preferences.scss";
-import React from "react";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
+import React from "react";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { Composite } from "../../../common/utils/composite/get-composite/get-composite";
 import Gutter from "../../../renderer/components/gutter/gutter";

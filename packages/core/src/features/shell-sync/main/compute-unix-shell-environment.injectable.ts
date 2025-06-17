@@ -5,8 +5,8 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { object } from "@freelensapp/utilities";
 import type { AsyncResult } from "@freelensapp/utilities";
+import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";

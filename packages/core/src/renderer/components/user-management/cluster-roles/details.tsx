@@ -6,10 +6,9 @@
 
 import "./details.scss";
 
+import type { ClusterRole } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
-
-import type { ClusterRole } from "@freelensapp/kube-object";
 import { DrawerTitle } from "../../drawer";
 import type { KubeObjectDetailsProps } from "../../kube-object-details";
 

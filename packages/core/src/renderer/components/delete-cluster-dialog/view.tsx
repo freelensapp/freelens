@@ -4,18 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./view.module.scss";
-
-import type { IObservableValue } from "mobx";
-import { runInAction } from "mobx";
-import { observer } from "mobx-react";
-import React from "react";
-
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import type { IObservableValue } from "mobx";
+import { runInAction } from "mobx";
+import { observer } from "mobx-react";
+import React from "react";
 import type { RequestClearClusterAsDeleting } from "../../../features/cluster/delete-dialog/renderer/request-clear-as-deleting.injectable";
 import requestClearClusterAsDeletingInjectable from "../../../features/cluster/delete-dialog/renderer/request-clear-as-deleting.injectable";
 import type { RequestDeleteCluster } from "../../../features/cluster/delete-dialog/renderer/request-delete.injectable";
@@ -34,6 +31,7 @@ import type { SaveKubeconfig } from "./save-kubeconfig.injectable";
 import saveKubeconfigInjectable from "./save-kubeconfig.injectable";
 import type { DeleteClusterDialogState } from "./state.injectable";
 import deleteClusterDialogStateInjectable from "./state.injectable";
+import styles from "./view.module.scss";
 
 interface Dependencies {
   state: IObservableValue<DeleteClusterDialogState | undefined>;

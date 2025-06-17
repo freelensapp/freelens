@@ -18,9 +18,9 @@ import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.ap
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { HelmChartDetails } from "./helm-chart-details";
-import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import helmChartsInjectable from "./helm-charts/helm-charts.injectable";
 import selectedHelmChartInjectable from "./helm-charts/selected-helm-chart.injectable";
+import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import { HelmChartIcon } from "./icon";
 
 enum columnId {
