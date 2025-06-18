@@ -34,7 +34,7 @@ Please ensure your pull request adheres to the following guidelines:
 
 ## Development Environment Setup
 
-Read the [DEVELOPMENT.md](DEVELOPMENT.md) document to learn how to build and
+Read the [Development Wiki](https://github.com/freelensapp/freelens/wiki/Development) document to learn how to build and
 run the application from source files.
 
 ## Style Guides
