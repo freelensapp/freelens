@@ -1,5 +1,5 @@
-import path from "path";
 import { readJsonSync } from "fs-extra";
+import path from "path";
 import { getDependencyName } from "./get-dependency-name/get-dependency-name";
 
 const pathToPackageJson = path.resolve(process.cwd(), "package.json");

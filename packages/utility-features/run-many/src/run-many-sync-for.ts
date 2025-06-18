@@ -5,11 +5,14 @@
  */
 
 import EventEmitter from "events";
+import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
+
 import type { Disposer } from "@freelensapp/utilities";
+
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import type TypedEventEmitter from "typed-emitter";
-import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
-import type { RunSync, RunnableSync, RunnableSyncWithId } from "./types";
+
+import type { RunnableSync, RunnableSyncWithId, RunSync } from "./types";
 
 export type RunManySync = <Param>(injectionToken: InjectionToken<RunnableSync<Param>, void>) => RunSync<Param>;
 

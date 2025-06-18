@@ -7,24 +7,26 @@
 import "./statefulset-details.scss";
 
 import { StatefulSet } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
 import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
-import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { StatefulSetStore } from "./store";
 import statefulSetStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PodStore } from "../workloads-pods/store";
+import type { StatefulSetStore } from "./store";
 
 export interface StatefulSetDetailsProps extends KubeObjectDetailsProps<StatefulSet> {}
 

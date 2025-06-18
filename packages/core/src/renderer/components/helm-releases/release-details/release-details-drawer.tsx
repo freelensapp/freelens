@@ -6,17 +6,17 @@
 
 import "./release-details.scss";
 
-import React from "react";
-
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
-import type { ActiveThemeType } from "../../../themes/active-type.injectable";
 import activeThemeTypeInjectable from "../../../themes/active-type.injectable";
 import { Drawer } from "../../drawer";
 import { ReleaseDetailsContent } from "./release-details-content";
 import { ReleaseDetailsDrawerToolbar } from "./release-details-drawer-toolbar";
+
+import type { ActiveThemeType } from "../../../themes/active-type.injectable";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 
 interface ReleaseDetailsDrawerProps {

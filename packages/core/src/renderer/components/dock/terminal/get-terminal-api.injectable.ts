@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import terminalStoreInjectable from "./store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const getTerminalApiInjectable = getInjectable({
   id: "get-terminal-api",

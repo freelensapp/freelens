@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import createResourceTabStoreInjectable from "./store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const clearCreateResourceTabDataInjectable = getInjectable({
   id: "clear-create-resource-tab-data",

@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "os";
 import { Pod } from "@freelensapp/kube-object";
-import type { Container } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import os from "os";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";
-import type { DockTabCreateSpecific } from "../dock/dock/store";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
+
+import type { Container } from "@freelensapp/kube-object";
+
+import type { DockTabCreateSpecific } from "../dock/dock/store";
 
 export interface PodShellMenuProps {
   object: any;

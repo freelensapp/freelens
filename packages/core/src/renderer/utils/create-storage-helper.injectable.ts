@@ -6,8 +6,9 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { StorageHelperDependencies, StorageHelperOptions } from "./storage-helper";
 import { StorageHelper } from "./storage-helper";
+
+import type { StorageHelperDependencies, StorageHelperOptions } from "./storage-helper";
 
 export type CreateStorageHelper = <T>(key: string, options: StorageHelperOptions<T>) => StorageHelper<T>;
 

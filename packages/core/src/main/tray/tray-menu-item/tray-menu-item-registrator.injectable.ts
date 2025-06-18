@@ -7,17 +7,19 @@
 import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { isBoolean, isString } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
-import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { WithErrorLoggingFor } from "../../../common/utils/with-error-logging/with-error-logging.injectable";
 import withErrorLoggingInjectable from "../../../common/utils/with-error-logging/with-error-logging.injectable";
 import { withErrorSuppression } from "../../../common/utils/with-error-suppression/with-error-suppression";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import { trayMenuItemInjectionToken } from "./tray-menu-item-injection-token";
+
+import type { Injectable } from "@ogre-tools/injectable";
+
+import type { WithErrorLoggingFor } from "../../../common/utils/with-error-logging/with-error-logging.injectable";
 import type { LensMainExtension } from "../../../extensions/lens-main-extension";
 import type { TrayMenuRegistration } from "../tray-menu-registration";
 import type { TrayMenuItem } from "./tray-menu-item-injection-token";
-import { trayMenuItemInjectionToken } from "./tray-menu-item-injection-token";
 
 const trayMenuItemRegistratorInjectable = getInjectable({
   id: "tray-menu-item-registrator",

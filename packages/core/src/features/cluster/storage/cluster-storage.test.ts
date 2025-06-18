@@ -5,30 +5,32 @@
  */
 
 import assert from "assert";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { GetCustomKubeConfigFilePath } from "../../../common/app-paths/get-custom-kube-config-directory/get-custom-kube-config-directory.injectable";
 import getCustomKubeConfigFilePathInjectable from "../../../common/app-paths/get-custom-kube-config-directory/get-custom-kube-config-directory.injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
-import type { ReadFileSync } from "../../../common/fs/read-file-sync.injectable";
 import readFileSyncInjectable from "../../../common/fs/read-file-sync.injectable";
-import type { WriteFileSync } from "../../../common/fs/write-file-sync.injectable";
 import writeFileSyncInjectable from "../../../common/fs/write-file-sync.injectable";
-import type { WriteJsonSync } from "../../../common/fs/write-json-sync.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../../common/vars/normalized-platform.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import kubectlBinaryNameInjectable from "../../../main/kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../../../main/kubectl/normalized-arch.injectable";
-import type { PersistentStorage } from "../../persistent-storage/common/create.injectable";
-import type { AddCluster } from "./common/add.injectable";
 import addClusterInjectable from "./common/add.injectable";
 import clustersInjectable from "./common/clusters.injectable";
-import type { GetClusterById } from "./common/get-by-id.injectable";
 import getClusterByIdInjectable from "./common/get-by-id.injectable";
 import clustersPersistentStorageInjectable from "./common/storage.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+
+import type { GetCustomKubeConfigFilePath } from "../../../common/app-paths/get-custom-kube-config-directory/get-custom-kube-config-directory.injectable";
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { ReadFileSync } from "../../../common/fs/read-file-sync.injectable";
+import type { WriteFileSync } from "../../../common/fs/write-file-sync.injectable";
+import type { WriteJsonSync } from "../../../common/fs/write-json-sync.injectable";
+import type { PersistentStorage } from "../../persistent-storage/common/create.injectable";
+import type { AddCluster } from "./common/add.injectable";
+import type { GetClusterById } from "./common/get-by-id.injectable";
 
 // NOTE: this is intended to read the actual file system
 const clusterServerUrl = "https://localhost";

@@ -4,25 +4,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import assert from "assert";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import type { SingleValue } from "react-select";
-import type { NavigateToHelmReleases } from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
-import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
-import type { RequestHelmChartValues } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import requestHelmChartValuesInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
-import type { RequestHelmChartVersions } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import requestHelmChartVersionsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
-import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
-import type { RequestCreateHelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
 import requestCreateHelmReleaseInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
 import dockStoreInjectable from "../dock/store.injectable";
-import type { IChartInstallData, InstallChartTabStore } from "./store";
 import installChartTabStoreInjectable from "./store.injectable";
+
+import type { SingleValue } from "react-select";
+
+import type { NavigateToHelmReleases } from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
+import type { RequestHelmChartValues } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
+import type { RequestHelmChartVersions } from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
+import type { RequestCreateHelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
+import type { IChartInstallData, InstallChartTabStore } from "./store";
 
 const installChartModelInjectable = getInjectable({
   id: "install-chart-model",

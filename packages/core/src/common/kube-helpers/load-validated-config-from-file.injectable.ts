@@ -5,11 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../cluster/cluster";
 import readFileInjectable from "../fs/read-file.injectable";
-import type { ValidateKubeConfigResult } from "../kube-helpers";
 import { loadValidatedConfig } from "../kube-helpers";
 import resolveTildeInjectable from "../path/resolve-tilde.injectable";
+
+import type { Cluster } from "../cluster/cluster";
+import type { ValidateKubeConfigResult } from "../kube-helpers";
 
 export type LoadValidatedClusterConfig = (cluster: Cluster) => Promise<ValidateKubeConfigResult>;
 

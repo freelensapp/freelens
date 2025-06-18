@@ -5,6 +5,7 @@
  */
 
 import { bytesToUnits, isDefined } from "@freelensapp/utilities";
+
 import type { ChartOptions, ChartPoint } from "chart.js";
 
 export type MetricsTab = "CPU" | "Memory" | "Disk" | "Pods" | "Network" | "Filesystem" | "Duration";

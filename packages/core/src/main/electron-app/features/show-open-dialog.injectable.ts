@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { OpenDialogOptions } from "electron";
 import { dialog } from "electron";
+
+import type { OpenDialogOptions } from "electron";
 
 export type ShowOpenDialog = (options: OpenDialogOptions) => Promise<Electron.OpenDialogReturnValue>;
 

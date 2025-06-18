@@ -9,10 +9,11 @@ import debounce from "lodash/debounce";
 import { autorun, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { PageParam } from "../../navigation/page-param";
-import type { InputProps } from "./input";
 import { SearchInput } from "./search-input";
 import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
+
+import type { PageParam } from "../../navigation/page-param";
+import type { InputProps } from "./input";
 
 export interface SearchInputUrlProps extends InputProps {
   compact?: boolean; // show only search-icon when not focused

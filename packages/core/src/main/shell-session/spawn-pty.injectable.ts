@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IPty, IPtyForkOptions, IWindowsPtyForkOptions } from "node-pty";
 import { spawn } from "node-pty";
+
+import type { IPty, IPtyForkOptions, IWindowsPtyForkOptions } from "node-pty";
 
 export type WindowsSpawnPtyOptions = Omit<IWindowsPtyForkOptions, "env"> & { env?: Partial<Record<string, string>> };
 export type UnixSpawnPtyOptions = Omit<IPtyForkOptions, "env"> & { env?: Partial<Record<string, string>> };

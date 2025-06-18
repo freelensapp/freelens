@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import createSyncBoxInjectable from "../../../common/utils/sync-box/create-sync-box.injectable";
-import type { SyncBox } from "../../../common/utils/sync-box/sync-box-injection-token";
 import { syncBoxInjectionToken } from "../../../common/utils/sync-box/sync-box-injection-token";
+
+import type { SyncBox } from "../../../common/utils/sync-box/sync-box-injection-token";
 
 export interface ProgressOfDownload {
   percentage: number;

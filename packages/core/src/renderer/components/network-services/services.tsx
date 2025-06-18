@@ -6,18 +6,20 @@
 
 import "./services.scss";
 
-import type { Service } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { ServiceStore } from "./store";
 import serviceStoreInjectable from "./store.injectable";
+
+import type { Service } from "@freelensapp/kube-object";
+
+import type { ServiceStore } from "./store";
 
 enum columnId {
   name = "name",

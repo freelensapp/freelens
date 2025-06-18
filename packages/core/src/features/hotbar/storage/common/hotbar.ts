@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { tuple } from "@freelensapp/utilities";
 import { type IObservableArray, type IObservableValue, observable, runInAction, toJS } from "mobx";
 import * as uuid from "uuid";
-import type { CatalogEntity } from "../../../../common/catalog";
 import { getShortName } from "../../../../common/catalog/helpers";
 import { broadcastMessage } from "../../../../common/ipc";
 import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
-import type { CreateHotbarData, HotbarItem } from "./types";
 import { defaultHotbarCells } from "./types";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { CatalogEntity } from "../../../../common/catalog";
+import type { CreateHotbarData, HotbarItem } from "./types";
 
 export interface HotbarDependencies {
   readonly logger: Logger;

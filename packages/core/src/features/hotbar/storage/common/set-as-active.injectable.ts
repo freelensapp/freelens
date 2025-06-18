@@ -8,8 +8,9 @@ import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import activeHotbarIdInjectable from "./active-id.injectable";
-import type { Hotbar } from "./hotbar";
 import hotbarsStateInjectable from "./state.injectable";
+
+import type { Hotbar } from "./hotbar";
 
 export type SetAsActiveHotbar = (desc: Hotbar | number | string) => void;
 

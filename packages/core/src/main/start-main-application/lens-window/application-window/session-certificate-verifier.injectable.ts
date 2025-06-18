@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { X509Certificate, timingSafeEqual } from "crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Request } from "electron";
+import { timingSafeEqual, X509Certificate } from "crypto";
 import lensProxyCertificateInjectable from "../../../../common/certificate/lens-proxy-certificate.injectable";
+
+import type { Request } from "electron";
 
 // see https://www.electronjs.org/docs/latest/api/session#sessetcertificateverifyprocproc
 export enum ChromiumNetError {

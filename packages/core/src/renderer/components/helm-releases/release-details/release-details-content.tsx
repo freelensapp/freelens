@@ -6,14 +6,13 @@
 
 import "./release-details.scss";
 
-import React from "react";
-
 import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "lodash/fp";
 import { observer } from "mobx-react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
@@ -21,13 +20,14 @@ import { DrawerItem, DrawerTitle } from "../../drawer";
 import { SubTitle } from "../../layout/sub-title";
 import { MonacoEditor } from "../../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
+import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
+
 import type {
   ConfigurationInput,
   MinimalResourceGroup,
   OnlyUserSuppliedValuesAreShownToggle,
   ReleaseDetailsModel,
 } from "./release-details-model/release-details-model.injectable";
-import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
 import type { TargetHelmRelease } from "./target-helm-release.injectable";
 
 interface ReleaseDetailsContentProps {
@@ -110,11 +110,7 @@ export const ReleaseDetailsContent = withInjectables<Dependencies, ReleaseDetail
   },
 );
 
-const ResourceGroup = ({
-  group: { kind, isNamespaced, resources },
-}: {
-  group: MinimalResourceGroup;
-}) => (
+const ResourceGroup = ({ group: { kind, isNamespaced, resources } }: { group: MinimalResourceGroup }) => (
   <>
     <SubTitle title={kind} />
 

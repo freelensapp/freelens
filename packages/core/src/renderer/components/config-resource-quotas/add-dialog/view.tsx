@@ -8,17 +8,12 @@ import "./view.scss";
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import type { ResourceQuotaApi } from "@freelensapp/kube-api";
 import { resourceQuotaApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { ResourceQuotaValues } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
@@ -28,6 +23,14 @@ import { Select } from "../../select";
 import { Wizard, WizardStep } from "../../wizard";
 import closeAddQuotaDialogInjectable from "./close.injectable";
 import isAddQuotaDialogOpenInjectable from "./is-open.injectable";
+
+import type { ResourceQuotaApi } from "@freelensapp/kube-api";
+import type { ResourceQuotaValues } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { IComputedValue } from "mobx";
+
+import type { DialogProps } from "../../dialog";
 
 export interface AddQuotaDialogProps extends DialogProps {}
 

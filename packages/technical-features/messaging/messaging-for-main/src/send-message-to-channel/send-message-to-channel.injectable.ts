@@ -1,10 +1,11 @@
 import { SendMessageToChannel, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { WebContents } from "electron";
 import { flatMap, reject } from "lodash/fp";
 import frameIdsInjectable from "./frameIds.injectable";
 import getWebContentsInjectable from "./get-web-contents.injectable";
+
+import type { WebContents } from "electron";
 
 const isDestroyed = (webContent: WebContents) => webContent.isDestroyed();
 const isCrashed = (webContent: WebContents) => webContent.isCrashed();

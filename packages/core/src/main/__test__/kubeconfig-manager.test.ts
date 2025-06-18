@@ -4,33 +4,36 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
-import type { DiContainer } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
-import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
-import type { PathExists } from "../../common/fs/path-exists.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
-import type { ReadFile } from "../../common/fs/read-file.injectable";
+import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import readFileInjectable from "../../common/fs/read-file.injectable";
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
-import type { RemovePath } from "../../common/fs/remove.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
-import type { WriteFile } from "../../common/fs/write-file.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
 import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { PathExists } from "../../common/fs/path-exists.injectable";
+import type { ReadFile } from "../../common/fs/read-file.injectable";
+import type { RemovePath } from "../../common/fs/remove.injectable";
+import type { WriteFile } from "../../common/fs/write-file.injectable";
+import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 
 const clusterServerUrl = "https://192.168.64.3:8443";
 

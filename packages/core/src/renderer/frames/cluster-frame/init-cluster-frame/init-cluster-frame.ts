@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { when } from "mobx";
+import { requestSetClusterFrameId } from "../../../ipc";
+
 import type { Logger } from "@freelensapp/logger";
 import type { ShowNotification } from "@freelensapp/notifications";
-import { when } from "mobx";
+
 import type { EmitAppEvent } from "../../../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../../../common/cluster/cluster";
 import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
-import { requestSetClusterFrameId } from "../../../ipc";
 
 interface Dependencies {
   hostedCluster: Cluster;

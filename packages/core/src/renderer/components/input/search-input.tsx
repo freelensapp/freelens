@@ -13,8 +13,9 @@ import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React, { createRef } from "react";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
-import type { InputProps } from "./input";
 import { Input } from "./input";
+
+import type { InputProps } from "./input";
 
 export interface SearchInputProps extends InputProps {
   compact?: boolean; // show only search-icon when not focused

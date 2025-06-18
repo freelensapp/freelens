@@ -13,8 +13,8 @@ import { applicationFeature, startApplicationInjectionToken } from "@freelensapp
 import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import {
   commonExtensionApi as Common,
-  rendererExtensionApi as Renderer,
   metricsFeature,
+  rendererExtensionApi as Renderer,
   registerLensCore,
 } from "@freelensapp/core/renderer";
 import { registerFeature } from "@freelensapp/feature-core";
@@ -75,12 +75,12 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication();
 
 export {
+  Mobx,
+  MobxReact,
   React,
   ReactDOM,
   ReactRouter,
   ReactRouterDom,
-  Mobx,
-  MobxReact,
 } from "@freelensapp/core/renderer";
 
 export const LensExtensions = {

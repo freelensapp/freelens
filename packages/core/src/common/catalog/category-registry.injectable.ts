@@ -5,8 +5,9 @@
  */
 
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import type { CatalogCategory } from "./catalog-entity";
 import { CatalogCategoryRegistry } from "./category-registry";
+
+import type { CatalogCategory } from "./catalog-entity";
 
 export const builtInCategoryInjectionToken = getInjectionToken<CatalogCategory>({
   id: "built-in-category-token",

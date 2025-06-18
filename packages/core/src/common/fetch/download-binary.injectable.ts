@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "./fetch.injectable";
+
+import type { RequestInit, Response } from "@freelensapp/node-fetch";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export interface DownloadBinaryOptions {
   signal?: AbortSignal | null | undefined;

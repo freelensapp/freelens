@@ -7,8 +7,9 @@
 import { pipeline } from "@ogre-tools/fp";
 import { identity, map } from "lodash/fp";
 import React from "react";
-import type { GetSeparator } from "../../../common/utils/add-separator/add-separator";
 import { addSeparator } from "../../../common/utils/add-separator/add-separator";
+
+import type { GetSeparator } from "../../../common/utils/add-separator/add-separator";
 
 interface RequiredPropertiesForItem {
   id: string;

@@ -6,6 +6,7 @@
 
 import { delay } from "./delay";
 import { noop } from "./noop";
+
 import type { AsyncResult, Result } from "./result";
 
 /**

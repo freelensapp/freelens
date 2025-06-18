@@ -6,8 +6,9 @@
 
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { LogEntry, transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
+
+import type { LogEntry, transports } from "winston";
 
 export interface IpcFileLogger {
   log: (fileLog: { fileId: string; entry: LogEntry }) => void;

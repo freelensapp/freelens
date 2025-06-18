@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { PlatformSpecific } from "../../../common/utils/platform-specific-version.injectable";
 
 export type RequestSystemCAs = () => Promise<string[]>;

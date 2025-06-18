@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { getOrInsert } from "@freelensapp/utilities";
-import type { ClientCertRequestParams, ProxyConfig } from "electron";
+import EventEmitter from "events";
 import { kebabCase } from "lodash";
 import electronAppInjectable from "./electron-app.injectable";
+
+import type { ClientCertRequestParams, ProxyConfig } from "electron";
 
 export default getGlobalOverride(electronAppInjectable, () => {
   const commandLineArgs: string[] = [];

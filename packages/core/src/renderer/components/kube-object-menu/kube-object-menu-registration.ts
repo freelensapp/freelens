@@ -5,6 +5,7 @@
  */
 
 import type { KubeObject } from "@freelensapp/kube-object";
+
 import type { IComputedValue } from "mobx";
 import type React from "react";
 

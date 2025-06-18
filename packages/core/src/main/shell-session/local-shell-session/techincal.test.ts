@@ -4,28 +4,30 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type WebSocket from "ws";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
-import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import pathExistsInjectable from "../../../common/fs/path-exists.injectable";
+import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
 import statInjectable from "../../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import platformInjectable from "../../../common/vars/platform.injectable";
 import { buildVersionStateInjectable } from "../../../features/vars/build-version/main/init.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
-import type { Kubectl } from "../../kubectl/kubectl";
 import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
-import type { OpenShellSession } from "../create-shell-session.injectable";
-import type { SpawnPty } from "../spawn-pty.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type WebSocket from "ws";
+
+import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
+import type { Kubectl } from "../../kubectl/kubectl";
+import type { OpenShellSession } from "../create-shell-session.injectable";
+import type { SpawnPty } from "../spawn-pty.injectable";
 
 describe("technical unit tests for local shell sessions", () => {
   let di: DiContainer;

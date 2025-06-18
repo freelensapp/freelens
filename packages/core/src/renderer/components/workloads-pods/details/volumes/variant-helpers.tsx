@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeApiQueryParams, ResourceDescriptor } from "@freelensapp/kube-api";
-import type { LocalObjectReference, Pod, PodVolumeVariants, SecretReference } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { DrawerItem } from "../../../drawer";
-import type { GetDetailsUrl } from "../../../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../../../kube-detail-params/get-details-url.injectable";
+
+import type { KubeApiQueryParams, ResourceDescriptor } from "@freelensapp/kube-api";
+import type { LocalObjectReference, Pod, PodVolumeVariants, SecretReference } from "@freelensapp/kube-object";
+
+import type { GetDetailsUrl } from "../../../kube-detail-params/get-details-url.injectable";
 
 export interface PodVolumeVariantSpecificProps<Kind extends keyof PodVolumeVariants> {
   variant: PodVolumeVariants[Kind];

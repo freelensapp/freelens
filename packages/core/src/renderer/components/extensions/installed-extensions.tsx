@@ -3,30 +3,38 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Icon } from "@freelensapp/icon";
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Row } from "react-table";
-import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
-import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import { List } from "../list/list";
 import { MenuActions, MenuItem } from "../menu";
-import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
 import confirmUninstallExtensionInjectable from "./confirm-uninstall-extension.injectable";
-import type { DisableExtension } from "./disable-extension.injectable";
 import disableExtensionInjectable from "./disable-extension.injectable";
-import type { EnableExtension } from "./enable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
 import styles from "./installed-extensions.module.scss";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
+
+import type { InstalledExtension } from "@freelensapp/legacy-extensions";
+
+import type { IComputedValue } from "mobx";
+import type { Row } from "react-table";
+
+import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
+import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
+import type { DisableExtension } from "./disable-extension.injectable";
+import type { EnableExtension } from "./enable-extension.injectable";
 
 export interface InstalledExtensionsProps {}
 

@@ -13,10 +13,11 @@ import createPersistentStorageInjectable from "../../../persistent-storage/commo
 import persistentStorageMigrationsInjectable from "../../../persistent-storage/common/migrations.injectable";
 import activeHotbarIdInjectable from "./active-id.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
-import type { Hotbar, HotbarData } from "./hotbar";
 import { hotbarStoreMigrationInjectionToken } from "./migrations-token";
 import hotbarsStateInjectable from "./state.injectable";
 import { defaultHotbarCells } from "./types";
+
+import type { Hotbar, HotbarData } from "./hotbar";
 
 export interface HotbarStoreModel {
   hotbars: HotbarData[];

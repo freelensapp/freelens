@@ -10,11 +10,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { App } from "../../../extensions/common-api";
 import openConfirmDialogInjectable, { type OpenConfirmDialog } from "../confirm-dialog/open.injectable";
-import type { DockTabCreateSpecific } from "../dock/dock/store";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import { MenuItem } from "../menu";
+
+import type { DockTabCreateSpecific } from "../dock/dock/store";
 
 export interface NodeMenuProps {
   object: any;

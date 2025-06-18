@@ -3,19 +3,24 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-
-import styles from "./helm-charts.module.scss";
-
-import React from "react";
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Spinner } from "@freelensapp/spinner";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import type { HelmRepo } from "../../../../../common/helm/helm-repo";
+import React from "react";
 import { RemovableItem } from "../../../../preferences/renderer/removable-item/removable-item";
 import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
+import styles from "./helm-charts.module.scss";
 import removeHelmRepositoryInjectable from "./remove-helm-repository.injectable";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { HelmRepo } from "../../../../../common/helm/helm-repo";
 
 interface Dependencies {
   activeHelmRepositories: IAsyncComputed<HelmRepo[]>;

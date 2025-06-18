@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IObservableArray, IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { IObservableArray, IObservableValue } from "mobx";
+
 import type { TrayMenuRegistration } from "../../main/tray/tray-menu-registration";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("preferences: extension adding tray items", () => {
   describe("when extension with tray items are statically defined", () => {

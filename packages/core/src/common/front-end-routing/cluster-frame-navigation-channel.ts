@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MessageChannel } from "@freelensapp/messaging";
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
+
+import type { MessageChannel } from "@freelensapp/messaging";
 
 export type ClusterFrameNavigationChannel = MessageChannel<string>;
 

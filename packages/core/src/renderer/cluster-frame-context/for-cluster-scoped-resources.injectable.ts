@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { ClusterContext } from "./cluster-frame-context";
 
 const clusterFrameContextForClusterScopedResourcesInjectable = getInjectable({

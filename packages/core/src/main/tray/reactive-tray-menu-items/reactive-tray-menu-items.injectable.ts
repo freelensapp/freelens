@@ -7,10 +7,11 @@
 import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
-import type { MinimalTrayMenuItem } from "../electron-tray/electron-tray.injectable";
 import electronTrayInjectable from "../electron-tray/electron-tray.injectable";
-import type { TrayMenuItem } from "../tray-menu-item/tray-menu-item-injection-token";
 import trayMenuItemsInjectable from "../tray-menu-item/tray-menu-items.injectable";
+
+import type { MinimalTrayMenuItem } from "../electron-tray/electron-tray.injectable";
+import type { TrayMenuItem } from "../tray-menu-item/tray-menu-item-injection-token";
 
 const reactiveTrayMenuItemsInjectable = getInjectable({
   id: "reactive-tray-menu-items",

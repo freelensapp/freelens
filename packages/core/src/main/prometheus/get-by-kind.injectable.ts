@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PrometheusProvider } from "@freelensapp/prometheus";
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash/fp";
 import prometheusProvidersInjectable from "./providers.injectable";
+
+import type { PrometheusProvider } from "@freelensapp/prometheus";
 
 export type GetPrometheusProviderByKind = (kind: string) => PrometheusProvider;
 

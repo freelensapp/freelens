@@ -5,14 +5,16 @@
  */
 
 import "./chart.scss";
+
 import { cssNames } from "@freelensapp/utilities";
-import type { PluginServiceRegistrationOptions } from "chart.js";
 import ChartJS from "chart.js";
 import { remove } from "lodash";
-import type { CSSProperties } from "react";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
+
+import type { PluginServiceRegistrationOptions } from "chart.js";
+import type { CSSProperties } from "react";
 
 export interface ChartData extends ChartJS.ChartData {
   datasets?: ChartDataSets[];

@@ -6,7 +6,6 @@
 
 import "./pod-details.scss";
 
-import type { NodeApi, PriorityClassApi, RuntimeClassApi, ServiceAccountApi } from "@freelensapp/kube-api";
 import {
   nodeApiInjectable,
   priorityClassApiInjectable,
@@ -14,7 +13,6 @@ import {
   serviceAccountApiInjectable,
 } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -24,15 +22,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { PodDetailsContainers } from "./details/containers/pod-details-containers";
 import { PodDetailsInitContainers } from "./details/containers/pod-details-init-containers";
 import { PodVolumes } from "./details/volumes/view";
 import { PodDetailsAffinities } from "./pod-details-affinities";
 import { PodDetailsSecrets } from "./pod-details-secrets";
 import { PodDetailsTolerations } from "./pod-details-tolerations";
+
+import type { NodeApi, PriorityClassApi, RuntimeClassApi, ServiceAccountApi } from "@freelensapp/kube-api";
+import type { Logger } from "@freelensapp/logger";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PodDetailsProps extends KubeObjectDetailsProps<Pod> {}
 

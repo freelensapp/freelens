@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Orderable } from "@freelensapp/utilities";
 import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import logErrorInjectable from "../../../common/log-error.injectable";
-import type { Discriminable } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import { isShown } from "../../../common/utils/composable-responsibilities/showable/showable";
 import { getCompositeFor } from "../../../common/utils/composite/get-composite/get-composite";
-import type { RootComposite } from "../../../common/utils/composite/interfaces";
 import applicationMenuItemsInjectable from "./application-menu-items.injectable";
+
+import type { Orderable } from "@freelensapp/utilities";
+
+import type { Discriminable } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
+import type { RootComposite } from "../../../common/utils/composite/interfaces";
 import type { ApplicationMenuItemTypes } from "./menu-items/application-menu-item-injection-token";
 
 export type MenuItemRoot = Discriminable<"root"> & RootComposite<"root"> & Orderable;

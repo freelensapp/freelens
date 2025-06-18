@@ -4,10 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
 import type { IComputedValue } from "mobx";
 import type React from "react";
+
 import type { KubeObjectMenuProps } from "./kube-object-menu";
 
 export type KubeObjectMenuItemComponent = React.ElementType<KubeObjectMenuProps<KubeObject>>;

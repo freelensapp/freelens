@@ -6,11 +6,13 @@
 
 import "./pod-disruption-budgets-details.scss";
 
-import type { PodDisruptionBudget } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
+
+import type { PodDisruptionBudget } from "@freelensapp/kube-object";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PodDisruptionBudgetDetailsProps extends KubeObjectDetailsProps<PodDisruptionBudget> {}

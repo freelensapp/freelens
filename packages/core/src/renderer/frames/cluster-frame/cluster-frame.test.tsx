@@ -5,9 +5,7 @@
  */
 
 import { historyInjectionToken } from "@freelensapp/routing";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
-import type { RenderResult } from "@testing-library/react";
 import { render as testingLibraryRender } from "@testing-library/react";
 import { computed } from "mobx";
 import React from "react";
@@ -15,8 +13,8 @@ import { Router } from "react-router";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
-import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import legacyOnChannelListenInjectable from "../../ipc/legacy-channel-listen.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -25,6 +23,9 @@ import currentRouteComponentInjectable from "../../routes/current-route-componen
 import currentlyInClusterFrameInjectable from "../../routes/currently-in-cluster-frame.injectable";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import { ClusterFrame } from "./cluster-frame";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 
 describe("<ClusterFrame />", () => {
   let render: () => RenderResult;

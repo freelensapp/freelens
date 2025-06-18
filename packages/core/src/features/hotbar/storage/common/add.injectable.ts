@@ -9,6 +9,7 @@ import { action } from "mobx";
 import activeHotbarIdInjectable from "./active-id.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
 import hotbarsStateInjectable from "./state.injectable";
+
 import type { CreateHotbarData, CreateHotbarOptions } from "./types";
 
 export type AddHotbar = (data: CreateHotbarData, options?: CreateHotbarOptions) => void;

@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
-import type webpack from "webpack";
+import path from "path";
 import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment } from "./vars";
+
+import type webpack from "webpack";
 
 const webpackLensMain = (): webpack.Configuration => {
   return {

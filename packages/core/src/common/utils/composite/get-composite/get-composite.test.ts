@@ -6,8 +6,9 @@
 
 import { sortBy } from "lodash/fp";
 import { getCompositePaths } from "../get-composite-paths/get-composite-paths";
-import type { Composite } from "./get-composite";
 import { getCompositeFor } from "./get-composite";
+
+import type { Composite } from "./get-composite";
 
 interface SomeItem {
   id: string;

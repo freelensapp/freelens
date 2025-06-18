@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./statefulsets";
 export * from "./statefulset-details";
+export * from "./statefulsets";

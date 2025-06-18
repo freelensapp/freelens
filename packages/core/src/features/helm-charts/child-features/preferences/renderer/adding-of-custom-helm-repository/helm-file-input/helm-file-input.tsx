@@ -7,11 +7,12 @@
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { InputValidator } from "../../../../../../../renderer/components/input";
 import { Input } from "../../../../../../../renderer/components/input";
 import isPathInjectable from "../../../../../../../renderer/components/input/validators/is-path.injectable";
-import type { RequestFilePaths } from "./get-file-paths.injectable";
 import requestFilePathsInjectable from "./get-file-paths.injectable";
+
+import type { InputValidator } from "../../../../../../../renderer/components/input";
+import type { RequestFilePaths } from "./get-file-paths.injectable";
 
 interface HelmFileInputProps {
   placeholder: string;

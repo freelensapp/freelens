@@ -6,22 +6,24 @@
 
 import "./helm-charts.scss";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { noop } from "lodash";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
-import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
-import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { HelmChartDetails } from "./helm-chart-details";
-import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import helmChartsInjectable from "./helm-charts/helm-charts.injectable";
 import selectedHelmChartInjectable from "./helm-charts/selected-helm-chart.injectable";
+import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import { HelmChartIcon } from "./icon";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+
+import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
+import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 
 enum columnId {
   name = "name",

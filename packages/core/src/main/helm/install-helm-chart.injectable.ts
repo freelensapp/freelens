@@ -7,10 +7,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { dump } from "js-yaml";
 import tempy from "tempy";
-import type { JsonValue } from "type-fest";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+
+import type { JsonValue } from "type-fest";
 
 export interface InstallHelmChartData {
   chart: string;

@@ -6,8 +6,8 @@
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom";
+
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -20,11 +20,14 @@ import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.inj
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
-import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { KubeObjectListLayout } from "./index";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { DiRender } from "../test-utils/renderFor";
+import type { PodStore } from "../workloads-pods/store";
 
 describe("kube-object-list-layout", () => {
   let di: DiContainer;

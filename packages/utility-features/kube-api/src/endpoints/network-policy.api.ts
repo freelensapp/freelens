@@ -5,8 +5,9 @@
  */
 
 import { NetworkPolicy } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class NetworkPolicyApi extends KubeApi<NetworkPolicy> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

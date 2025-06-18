@@ -5,14 +5,17 @@
  */
 
 import "./welcome.scss";
+
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { forumsUrl } from "../../../common/vars";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import welcomeMenuItemsInjectable from "./welcome-menu-items/welcome-menu-items.injectable";
+
+import type { IComputedValue } from "mobx";
+
 import type { WelcomeMenuRegistration } from "./welcome-menu-items/welcome-menu-registration";
 
 export const defaultWidth = 320;

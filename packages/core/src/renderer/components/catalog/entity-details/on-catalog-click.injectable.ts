@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { CatalogEntity } from "../../../api/catalog-entity";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import selectedCatalogEntityParamInjectable from "./selected-uid.injectable";
+
+import type { CatalogEntity } from "../../../api/catalog-entity";
 
 export type OnCatalogEntityListClick = (entity: CatalogEntity) => void;
 

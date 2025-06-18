@@ -5,8 +5,9 @@
  */
 
 import assert from "assert";
-import type { Container } from "../types/container";
 import { Pod, type PodContainerStatus } from "./pod";
+
+import type { Container } from "../types/container";
 
 interface GetDummyPodOptions {
   running?: number;

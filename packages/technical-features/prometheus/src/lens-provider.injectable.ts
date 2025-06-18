@@ -11,6 +11,7 @@ import {
   findNamespacedService,
   prometheusProviderInjectionToken,
 } from "./provider";
+
 import type { PrometheusProvider } from "./provider";
 
 export const getLensLikeQueryFor =

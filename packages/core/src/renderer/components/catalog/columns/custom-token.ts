@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 
 export interface CustomCatalogCategoryRegistration {

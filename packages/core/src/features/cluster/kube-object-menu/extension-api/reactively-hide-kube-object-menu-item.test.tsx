@@ -6,16 +6,18 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";
 import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
 import { KubeObjectMenu } from "../../../../renderer/components/kube-object-menu";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 
 describe("reactively hide kube object menu item", () => {
   let builder: ApplicationBuilder;

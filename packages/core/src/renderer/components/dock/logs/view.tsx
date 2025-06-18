@@ -8,19 +8,20 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { createRef, useEffect } from "react";
-import type { SubscribeStores } from "../../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../../kube-watch-api/subscribe-stores.injectable";
-import type { PodStore } from "../../workloads-pods/store";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
-import type { DockTab } from "../dock/store";
 import { InfoPanel } from "../info-panel";
 import { LogControls } from "./controls";
-import type { LogListRef } from "./list";
 import { LogList } from "./list";
-import type { LogTabViewModel } from "./logs-view-model";
 import logsViewModelInjectable from "./logs-view-model.injectable";
 import { LogResourceSelector } from "./resource-selector";
 import { LogSearch } from "./search";
+
+import type { SubscribeStores } from "../../../kube-watch-api/kube-watch-api";
+import type { PodStore } from "../../workloads-pods/store";
+import type { DockTab } from "../dock/store";
+import type { LogListRef } from "./list";
+import type { LogTabViewModel } from "./logs-view-model";
 
 export interface LogsDockTabProps {
   className?: string;

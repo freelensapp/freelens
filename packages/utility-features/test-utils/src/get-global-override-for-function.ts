@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Injectable } from "@ogre-tools/injectable";
 import { camelCase } from "lodash/fp";
 import { getGlobalOverride } from "./get-global-override";
+
+import type { Injectable } from "@ogre-tools/injectable";
 
 export const getGlobalOverrideForFunction = (injectable: Injectable<Function, any, any>) =>
   getGlobalOverride(injectable, () => (...args: any[]) => {

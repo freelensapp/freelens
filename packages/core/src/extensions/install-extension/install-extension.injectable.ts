@@ -4,18 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { fork } from "child_process";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { isErrnoException } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import AwaitLock from "await-lock";
+import { fork } from "child_process";
 import { once } from "lodash";
 import pathToPnpmCliInjectable from "../../common/app-paths/path-to-pnpm-cli.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import type { PackageJson } from "../common-api";
 import extensionPackageRootDirectoryInjectable from "./extension-package-root-directory.injectable";
+
+import type { PackageJson } from "../common-api";
 
 const basePnpmInstallArgs = ["install", "--prefer-offline", "--prod", "--save-optional"];
 

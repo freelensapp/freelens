@@ -5,6 +5,9 @@
  */
 
 import autoBind from "auto-bind";
+import { KubeObject } from "../kube-object";
+import { EndpointConditions, EndpointHints, EndpointPort } from "./endpoint";
+
 import type {
   KubeJsonApiData,
   KubeObjectMetadata,
@@ -12,8 +15,6 @@ import type {
   NamespaceScopedMetadata,
   ObjectReference,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
-import { EndpointConditions, EndpointHints, EndpointPort } from "./endpoint";
 
 export interface Endpoint {
   addresses: string[];

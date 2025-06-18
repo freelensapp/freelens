@@ -5,12 +5,13 @@
  */
 
 export { CatalogCategory, CatalogEntity } from "../../common/catalog";
+
 export type {
-  CatalogEntityData,
-  CatalogEntityKindData,
   CatalogEntityActionContext,
-  CatalogEntityAddMenuContext,
   CatalogEntityAddMenu,
+  CatalogEntityAddMenuContext,
   CatalogEntityContextMenu,
   CatalogEntityContextMenuContext,
+  CatalogEntityData,
+  CatalogEntityKindData,
 } from "../../common/catalog";

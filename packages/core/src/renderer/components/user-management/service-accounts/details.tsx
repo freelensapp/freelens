@@ -6,22 +6,23 @@
 
 import "./details.scss";
 
+import { Icon } from "@freelensapp/icon";
+import { Spinner } from "@freelensapp/spinner";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, observable, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-
-import { Icon } from "@freelensapp/icon";
-import type { Secret, ServiceAccount } from "@freelensapp/kube-object";
-import { Spinner } from "@freelensapp/spinner";
-import { withInjectables } from "@ogre-tools/injectable-react";
-import type { SecretStore } from "../../config-secrets/store";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
 import { DrawerItem, DrawerTitle } from "../../drawer";
-import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectDetailsProps } from "../../kube-object-details";
 import { ServiceAccountsSecret } from "./secret";
+
+import type { Secret, ServiceAccount } from "@freelensapp/kube-object";
+
+import type { SecretStore } from "../../config-secrets/store";
+import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../../kube-object-details";
 
 export interface ServiceAccountsDetailsProps extends KubeObjectDetailsProps<ServiceAccount> {}
 

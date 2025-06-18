@@ -10,17 +10,18 @@ import { autorun, computed, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
+import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
+import productNameInjectable from "../../../common/vars/product-name.injectable";
+import { Input } from "../input";
+import { SubTitle } from "../layout/sub-title";
+import { Select } from "../select";
+
 import type { Cluster } from "../../../common/cluster/cluster";
 import type {
   MetricProviderInfo,
   RequestMetricsProviders,
 } from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
-import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
-import productNameInjectable from "../../../common/vars/product-name.injectable";
-import { Input } from "../input";
-import { SubTitle } from "../layout/sub-title";
 import type { SelectOption } from "../select";
-import { Select } from "../select";
 
 export interface ClusterPrometheusSettingProps {
   cluster: Cluster;

@@ -6,8 +6,9 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getOrInsert, iter, object } from "@freelensapp/utilities";
-import type { InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+
+import type { InjectionToken } from "@ogre-tools/injectable";
 
 export type AllowedSetValue<T> = T extends (...args: any[]) => any ? never : T extends undefined | symbol ? never : T;
 

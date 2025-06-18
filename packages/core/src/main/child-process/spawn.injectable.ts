@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { spawn } from "child_process";
 import { getInjectable } from "@ogre-tools/injectable";
+import { spawn } from "child_process";
 
 export type Spawn = typeof spawn;
 

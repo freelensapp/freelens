@@ -6,8 +6,9 @@
 
 import { formatDuration } from "@freelensapp/utilities";
 import moment from "moment";
-import type { NamespaceScopedMetadata, ObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { NamespaceScopedMetadata, ObjectReference } from "../api-types";
 import type { JobTemplateSpec } from "../types/job-template-spec";
 
 export interface CronJobSpec {

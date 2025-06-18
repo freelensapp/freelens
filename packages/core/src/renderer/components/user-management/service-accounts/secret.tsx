@@ -6,13 +6,13 @@
 
 import "./secret.scss";
 
+import { Icon } from "@freelensapp/icon";
+import { prevDefault } from "@freelensapp/utilities";
 import moment from "moment";
 import React from "react";
 
-import { Icon } from "@freelensapp/icon";
 import type { Secret } from "@freelensapp/kube-object";
 import type { StrictReactNode } from "@freelensapp/utilities";
-import { prevDefault } from "@freelensapp/utilities";
 
 export interface ServiceAccountsSecretProps {
   secret: Secret | string;

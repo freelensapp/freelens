@@ -6,27 +6,29 @@
 
 import "./table.scss";
 
-import assert from "assert";
-import type { ItemObject } from "@freelensapp/list-layout";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import autoBindReact from "auto-bind/react";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { PageParam } from "../../navigation/page-param";
 import { VirtualList } from "../virtual-list";
 import orderByUrlParamInjectable from "./order-by-url-param.injectable";
 import sortByUrlParamInjectable from "./sort-by-url-param.injectable";
 import { getSorted } from "./sorting";
+import { TableHead } from "./table-head";
+import tableModelInjectable from "./table-model/table-model.injectable";
+import { TableRow } from "./table-row";
+
+import type { ItemObject } from "@freelensapp/list-layout";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { PageParam } from "../../navigation/page-param";
 import type { TableCellElem } from "./table-cell";
 import type { TableHeadElem } from "./table-head";
-import { TableHead } from "./table-head";
 import type { TableModel } from "./table-model/table-model";
-import tableModelInjectable from "./table-model/table-model.injectable";
 import type { TableRowElem, TableRowProps } from "./table-row";
-import { TableRow } from "./table-row";
 
 export type TableSortBy = string;
 export type TableOrderBy = "asc" | "desc";

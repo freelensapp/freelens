@@ -3,6 +3,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
@@ -11,10 +16,11 @@ import { DropFileInput } from "../input";
 import { SettingLayout } from "../layout/setting-layout";
 import styles from "./extensions.module.scss";
 import { ExtensionInstall } from "./install";
-import type { InstallOnDrop } from "./install-on-drop.injectable";
 import installOnDropInjectable from "./install-on-drop.injectable";
 import { InstalledExtensions } from "./installed-extensions";
 import { Notice } from "./notice";
+
+import type { InstallOnDrop } from "./install-on-drop.injectable";
 
 const ExtensionsNotice = () => (
   <Notice className={styles.notice}>

@@ -3,20 +3,27 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import styles from "./sidebar.module.scss";
-
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
 import { SidebarItem } from "./sidebar-item";
+
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;

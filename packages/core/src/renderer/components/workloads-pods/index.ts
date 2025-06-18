@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./pods";
 export * from "./pod-details";
+export * from "./pods";

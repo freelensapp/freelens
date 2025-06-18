@@ -6,6 +6,7 @@
 
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import kubernetesClusterCategoryInjectable from "../../catalog/categories/kubernetes-cluster.injectable";
+
 import type { KubernetesClusterCategory } from "../kubernetes-cluster";
 
 describe("kubernetesClusterCategory", () => {

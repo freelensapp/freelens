@@ -7,7 +7,6 @@
 import "./port-forward-dialog.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -15,21 +14,24 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
 import { Checkbox } from "../components/checkbox";
-import type { DialogProps } from "../components/dialog";
 import { Dialog } from "../components/dialog";
 import { Input } from "../components/input";
 import { Wizard, WizardStep } from "../components/wizard";
 import aboutPortForwardingInjectable from "./about-port-forwarding.injectable";
 import notifyErrorPortForwardingInjectable from "./notify-error-port-forwarding.injectable";
-import type { OpenPortForward } from "./open-port-forward.injectable";
 import openPortForwardInjectable from "./open-port-forward.injectable";
+import portForwardDialogModelInjectable from "./port-forward-dialog-model/port-forward-dialog-model.injectable";
+import portForwardStoreInjectable from "./port-forward-store/port-forward-store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { DialogProps } from "../components/dialog";
+import type { OpenPortForward } from "./open-port-forward.injectable";
 import type {
   PortForwardDialogData,
   PortForwardDialogModel,
 } from "./port-forward-dialog-model/port-forward-dialog-model";
-import portForwardDialogModelInjectable from "./port-forward-dialog-model/port-forward-dialog-model.injectable";
 import type { PortForwardStore } from "./port-forward-store/port-forward-store";
-import portForwardStoreInjectable from "./port-forward-store/port-forward-store.injectable";
 
 export interface PortForwardDialogProps extends Partial<DialogProps> {}
 

@@ -8,11 +8,12 @@
 // API docs: https://material-ui.com/lab/api/slider/
 import "./slider.scss";
 
-import assert from "assert";
 import { cssNames } from "@freelensapp/utilities";
-import type { SliderProps as MaterialSliderProps, SliderClassKey } from "@mui/material/Slider";
 import MaterialSlider from "@mui/material/Slider";
+import assert from "assert";
 import React, { Component } from "react";
+
+import type { SliderProps as MaterialSliderProps, SliderClassKey } from "@mui/material/Slider";
 
 export interface SliderProps extends Omit<MaterialSliderProps, "onChange"> {
   className?: string;

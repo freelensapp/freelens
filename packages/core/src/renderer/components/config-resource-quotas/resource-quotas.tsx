@@ -9,15 +9,16 @@ import "./resource-quotas.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import openAddQuotaDialogInjectable from "./add-dialog/open.injectable";
 import { AddQuotaDialog } from "./add-dialog/view";
-import type { ResourceQuotaStore } from "./store";
 import resourceQuotaStoreInjectable from "./store.injectable";
+
+import type { ResourceQuotaStore } from "./store";
 
 enum columnId {
   name = "name",

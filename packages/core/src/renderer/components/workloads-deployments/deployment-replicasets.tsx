@@ -6,21 +6,23 @@
 
 import "./deployment-replicasets.scss";
 
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectMenu } from "../kube-object-menu";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { ReplicaSetStore } from "../workloads-replicasets/store";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
+
+import type { ReplicaSet } from "@freelensapp/kube-object";
+
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
+import type { ReplicaSetStore } from "../workloads-replicasets/store";
 
 enum sortBy {
   name = "name",

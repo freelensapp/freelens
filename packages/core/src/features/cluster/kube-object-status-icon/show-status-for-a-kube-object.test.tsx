@@ -5,11 +5,8 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
-import type { IAtom } from "mobx";
 import { computed, createAtom, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -18,10 +15,15 @@ import { navigateToRouteInjectionToken } from "../../../common/front-end-routing
 import { KubeObjectStatusLevel } from "../../../common/k8s-api/kube-object-status";
 import { KubeObjectStatusIcon } from "../../../renderer/components/kube-object-status-icon";
 import { kubeObjectStatusTextInjectionToken } from "../../../renderer/components/kube-object-status-icon/kube-object-status-text-injection-token";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { routeSpecificComponentInjectionToken } from "../../../renderer/routes/route-specific-component-injection-token";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+import type { IAtom } from "mobx";
+
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("show status for a kube object", () => {
   let builder: ApplicationBuilder;

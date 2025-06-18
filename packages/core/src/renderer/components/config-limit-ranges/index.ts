@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./limit-ranges";
 export * from "./limit-range-details";
+export * from "./limit-ranges";

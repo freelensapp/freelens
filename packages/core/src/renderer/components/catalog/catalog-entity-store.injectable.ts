@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed, observable, reaction } from "mobx";
+import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import selectedCatalogEntityParamInjectable from "./entity-details/selected-uid.injectable";
 
 import type { Disposer } from "@freelensapp/utilities";
-import { disposer } from "@freelensapp/utilities";
+
 import type { IComputedValue, IObservableValue } from "mobx";
-import { computed, observable, reaction } from "mobx";
+
 import type { CatalogCategory } from "../../../common/catalog";
-import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import type { CatalogEntity } from "../../api/catalog-entity";
 import type { ItemListStore } from "../item-object-list";
-import selectedCatalogEntityParamInjectable from "./entity-details/selected-uid.injectable";
 
 export type CatalogEntityStore = ItemListStore<CatalogEntity, false> & {
   readonly entities: IComputedValue<CatalogEntity[]>;

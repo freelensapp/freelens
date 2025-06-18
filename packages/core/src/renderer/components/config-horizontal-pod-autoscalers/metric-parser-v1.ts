@@ -22,7 +22,10 @@ export class HorizontalPodAutoscalerV1MetricParser {
   public getResource({
     current,
     target,
-  }: { current: V2Beta1ResourceMetricStatus | undefined; target: V2Beta1ResourceMetricSource }): MetricCurrentTarget {
+  }: {
+    current: V2Beta1ResourceMetricStatus | undefined;
+    target: V2Beta1ResourceMetricSource;
+  }): MetricCurrentTarget {
     return {
       current:
         typeof current?.currentAverageUtilization === "number"
@@ -38,7 +41,10 @@ export class HorizontalPodAutoscalerV1MetricParser {
   public getPods({
     current,
     target,
-  }: { current: V2Beta1PodsMetricStatus | undefined; target: V2Beta1PodsMetricSource }): MetricCurrentTarget {
+  }: {
+    current: V2Beta1PodsMetricStatus | undefined;
+    target: V2Beta1PodsMetricSource;
+  }): MetricCurrentTarget {
     return {
       current: current?.currentAverageValue,
       target: target?.targetAverageValue,
@@ -48,7 +54,10 @@ export class HorizontalPodAutoscalerV1MetricParser {
   public getObject({
     current,
     target,
-  }: { current: V2Beta1ObjectMetricStatus | undefined; target: V2Beta1ObjectMetricSource }): MetricCurrentTarget {
+  }: {
+    current: V2Beta1ObjectMetricStatus | undefined;
+    target: V2Beta1ObjectMetricSource;
+  }): MetricCurrentTarget {
     return {
       current: current?.currentValue ?? current?.averageValue,
       target: target?.targetValue ?? target?.averageValue,
@@ -58,7 +67,10 @@ export class HorizontalPodAutoscalerV1MetricParser {
   public getExternal({
     current,
     target,
-  }: { current: V2Beta1ExternalMetricStatus | undefined; target: V2Beta1ExternalMetricSource }): MetricCurrentTarget {
+  }: {
+    current: V2Beta1ExternalMetricStatus | undefined;
+    target: V2Beta1ExternalMetricSource;
+  }): MetricCurrentTarget {
     return {
       current: current?.currentValue ?? current?.currentAverageValue,
       target: target?.targetValue ?? target?.targetAverageValue,

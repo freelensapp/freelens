@@ -8,10 +8,11 @@ import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/applicati
 import { getInjectable } from "@ogre-tools/injectable";
 import { isEqual } from "lodash";
 import { autorun } from "mobx";
-import type { ClusterId, ClusterState } from "../../../../common/cluster-types";
 import clustersInjectable from "../../storage/common/clusters.injectable";
 import initClusterStoreInjectable from "../../storage/main/init.injectable";
 import emitClusterStateUpdateInjectable from "./emit-update.injectable";
+
+import type { ClusterId, ClusterState } from "../../../../common/cluster-types";
 
 const setupClusterStateBroadcastingInjectable = getInjectable({
   id: "setup-cluster-state-broadcasting",

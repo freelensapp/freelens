@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { isCurrentContext } from "./is-current-context";
 import deleteClusterDialogStateInjectable from "./state.injectable";
+
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export type OpenDeleteClusterDialog = (config: KubeConfig, cluster: Cluster) => void;
 

@@ -18,10 +18,11 @@ import normalizedPlatformInjectable from "../../common/vars/normalized-platform.
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import kubectlBinaryNameInjectable from "./binary-name.injectable";
 import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
-import type { KubectlDependencies } from "./kubectl";
 import { Kubectl } from "./kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
 import kubectlVersionMapInjectable from "./version-map.injectable";
+
+import type { KubectlDependencies } from "./kubectl";
 
 export type CreateKubectl = (version: string) => Kubectl;
 

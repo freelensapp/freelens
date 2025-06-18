@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
 import type { ClusterId } from "../../../../common/cluster-types";
 
 const currentClusterFrameClusterIdStateInjectable = getInjectable({

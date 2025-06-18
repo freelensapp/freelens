@@ -6,36 +6,39 @@
 
 import "./item-list-layout.scss";
 
-import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
 import { Spinner } from "@freelensapp/spinner";
-import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isDefined, isReactNode, noop, prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import { Observer, observer } from "mobx-react";
 import React from "react";
-import type { IsTableColumnHidden } from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
-import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
-import type { AddRemoveButtonsProps } from "../add-remove-buttons";
 import { AddRemoveButtons } from "../add-remove-buttons";
 import { Checkbox } from "../checkbox";
-import type { ConfirmDialogParams } from "../confirm-dialog";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
 import { NoItems } from "../no-items";
-import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import pageFiltersStoreInjectable from "./page-filters/store.injectable";
+
+import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
+
+import type { IsTableColumnHidden } from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
+import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { AddRemoveButtonsProps } from "../add-remove-buttons";
+import type { ConfirmDialogParams } from "../confirm-dialog";
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { ItemListStore } from "./list-layout";
 import type { Filter, PageFiltersStore } from "./page-filters/store";
-import pageFiltersStoreInjectable from "./page-filters/store.injectable";
 
 export interface ItemListLayoutContentProps<Item extends ItemObject, PreLoadStores extends boolean> {
   getFilters: () => Filter[];

@@ -5,15 +5,18 @@
  */
 
 import { Namespace } from "@freelensapp/kube-object";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { fireEvent } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import { NamespaceTreeView } from "./namespace-tree-view";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { DiRender } from "../test-utils/renderFor";
 import type { NamespaceTree } from "./store";
 
 jest.mock("react-router-dom", () => ({

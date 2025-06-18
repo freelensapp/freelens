@@ -5,18 +5,20 @@
  */
 
 import { screen } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { SearchStore } from "../../../../search-store/search-store";
-import type { DiRender } from "../../../test-utils/renderFor";
 import { renderFor } from "../../../test-utils/renderFor";
-import type { TabId } from "../../dock/store";
-import type { LogTabViewModelDependencies } from "../logs-view-model";
 import { LogTabViewModel } from "../logs-view-model";
 import { LogSearch } from "../search";
 import { dockerPod } from "./pod.mock";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { DiRender } from "../../../test-utils/renderFor";
+import type { TabId } from "../../dock/store";
+import type { LogTabViewModelDependencies } from "../logs-view-model";
 
 function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependencies>): LogTabViewModel {
   return new LogTabViewModel(tabId, {

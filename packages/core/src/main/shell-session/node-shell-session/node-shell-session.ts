@@ -5,18 +5,20 @@
  */
 
 import { NodeApi } from "@freelensapp/kube-api";
-import type { Pod } from "@freelensapp/kube-object";
 import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { get, once } from "lodash";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
+import { TerminalChannels } from "../../../common/terminal/channels";
+import { ShellOpenError, ShellSession } from "../shell-session";
+
+import type { Pod } from "@freelensapp/kube-object";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
-import { TerminalChannels } from "../../../common/terminal/channels";
 import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
-import { ShellOpenError, ShellSession } from "../shell-session";
 
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;

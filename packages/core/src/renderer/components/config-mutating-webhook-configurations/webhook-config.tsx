@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Webhook } from "@freelensapp/kube-object";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import styles from "./webhook-config.module.css";
+
+import type { Webhook } from "@freelensapp/kube-object";
 
 interface WebhookProps {
   webhook: Webhook;

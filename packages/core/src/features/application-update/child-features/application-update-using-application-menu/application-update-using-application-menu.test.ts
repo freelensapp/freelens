@@ -4,17 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
 import electronUpdaterIsActiveInjectable from "../../../../main/electron-app/features/electron-updater-is-active.injectable";
 import showMessagePopupInjectable from "../../../../main/electron-app/features/show-message-popup.injectable";
-import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import publishIsConfiguredInjectable from "../../child-features/updating-is-enabled/main/publish-is-configured.injectable";
-import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { ShowMessagePopup } from "../../../../main/electron-app/features/show-message-popup.injectable";
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
+import type { CheckForPlatformUpdates } from "../../main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 
 describe("installing update using application menu", () => {
   let applicationBuilder: ApplicationBuilder;

@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import requestHelmChartsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 import requestVersionsOfHelmChartInjectable from "./request-versions-of-chart-for-release.injectable";
+
+import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 import type { HelmChartVersion } from "./versions";
 
 export type RequestVersionsOfHelmChartFor = (release: HelmRelease) => Promise<HelmChartVersion[]>;

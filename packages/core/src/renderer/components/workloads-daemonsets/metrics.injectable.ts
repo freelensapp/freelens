@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DaemonSet } from "@freelensapp/kube-object";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestPodMetricsForDaemonSetsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-daemon-sets.injectable";
+
+import type { DaemonSet } from "@freelensapp/kube-object";
 
 const daemonSetMetricsInjectable = getInjectable({
   id: "daemon-set-metrics",

@@ -6,17 +6,19 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";
 import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
 import { KubeObjectStatusLevel } from "../../../../common/k8s-api/kube-object-status";
 import { KubeObjectStatusIcon } from "../../../../renderer/components/kube-object-status-icon";
-import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+
+import type { ApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 
 describe("reactively hide kube object status", () => {
   let builder: ApplicationBuilder;

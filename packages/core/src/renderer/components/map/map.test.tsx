@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import React from "react";
 import { Map } from "./map";
+
+import type { RenderResult } from "@testing-library/react";
 
 describe("Map", () => {
   describe("given no items and placeholder", () => {

@@ -4,12 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { flushPromises, getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { runManyFor } from "./run-many-for";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+
 import type { Runnable } from "./types";
 
 describe("runManyFor", () => {

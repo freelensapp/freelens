@@ -5,6 +5,7 @@
  */
 
 import { hasOptionalTypedProperty, hasTypedProperty, isNumber, isObject, isString } from "@freelensapp/utilities";
+
 import type { KubeStatusData } from "./api-types";
 
 /**

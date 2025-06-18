@@ -6,18 +6,20 @@
 
 import "./terminal-window.scss";
 
-import assert from "assert";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
+import assert from "assert";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import activeThemeInjectable from "../../../themes/active.injectable";
+import dockStoreInjectable from "../dock/store.injectable";
+import terminalStoreInjectable from "./store.injectable";
+
+import type { IComputedValue } from "mobx";
+
 import type { LensTheme } from "../../../themes/lens-theme";
 import type { DockStore, DockTab } from "../dock/store";
-import dockStoreInjectable from "../dock/store.injectable";
 import type { TerminalStore } from "./store";
-import terminalStoreInjectable from "./store.injectable";
 import type { Terminal } from "./terminal";
 
 export interface TerminalWindowProps {

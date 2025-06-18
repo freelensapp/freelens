@@ -6,6 +6,7 @@
 
 import React from "react";
 import { SubTitle } from "../../../../renderer/components/layout/sub-title";
+
 import type { AppPreferenceRegistration } from "./app-preference-registration";
 
 export interface ExtensionSettingsProps {

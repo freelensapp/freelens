@@ -5,11 +5,12 @@
  */
 
 import Joi from "joi";
-import type { Patch } from "rfc6902";
 import { apiPrefix } from "../../../common/vars";
 import resourceApplierInjectable from "../../resource-applier/create-resource-applier.injectable";
 import { payloadValidatedClusterRoute } from "../../router/route";
 import { getRouteInjectable } from "../../router/router.injectable";
+
+import type { Patch } from "rfc6902";
 
 interface PatchResourcePayload {
   name: string;

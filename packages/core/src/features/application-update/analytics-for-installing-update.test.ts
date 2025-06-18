@@ -4,23 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { DiContainer } from "@ogre-tools/injectable";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import electronUpdaterIsActiveInjectable from "../../main/electron-app/features/electron-updater-is-active.injectable";
 import getBuildVersionInjectable from "../../main/electron-app/features/get-build-version.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import periodicalCheckForUpdatesInjectable from "./child-features/periodical-checking-of-updates/main/periodical-check-for-updates.injectable";
 import publishIsConfiguredInjectable from "./child-features/updating-is-enabled/main/publish-is-configured.injectable";
-import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
 import checkForPlatformUpdatesInjectable from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
-import type { DownloadPlatformUpdate } from "./main/download-update/download-platform-update/download-platform-update.injectable";
 import downloadPlatformUpdateInjectable from "./main/download-update/download-platform-update/download-platform-update.injectable";
 import processCheckingForUpdatesInjectable from "./main/process-checking-for-updates.injectable";
 import quitAndInstallUpdateInjectable from "./main/quit-and-install-update.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import type { CheckForPlatformUpdates } from "./main/check-for-updates/check-for-platform-updates/check-for-platform-updates.injectable";
+import type { DownloadPlatformUpdate } from "./main/download-update/download-platform-update/download-platform-update.injectable";
 
 describe.skip("analytics for installing update", () => {
   let builder: ApplicationBuilder;

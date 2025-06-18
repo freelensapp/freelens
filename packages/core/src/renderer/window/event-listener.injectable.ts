@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
 
 export type AddWindowEventListener = typeof addWindowEventListener;
 export type WindowEventListener<K extends keyof WindowEventMap> = (this: Window, ev: WindowEventMap[K]) => any;

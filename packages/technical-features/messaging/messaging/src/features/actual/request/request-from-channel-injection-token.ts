@@ -1,4 +1,5 @@
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { RequestChannel } from "./request-channel-listener-injection-token";
 
 export interface RequestFromChannel {

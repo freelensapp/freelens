@@ -5,11 +5,12 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { Container, PodContainerStatus } from "@freelensapp/kube-object";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import React from "react";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
+
+import type { Container, PodContainerStatus } from "@freelensapp/kube-object";
 
 export interface NodePodMenuItemProps {
   material?: string;

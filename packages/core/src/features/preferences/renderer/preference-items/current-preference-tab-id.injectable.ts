@@ -7,8 +7,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import routePathParametersInjectable from "../../../../renderer/routes/route-path-parameters.injectable";
-import preferencesRouteForLegacyExtensionsInjectable from "../../common/preferences-route-for-legacy-extensions.injectable";
 import preferencesRouteInjectable from "../../common/preferences-route.injectable";
+import preferencesRouteForLegacyExtensionsInjectable from "../../common/preferences-route-for-legacy-extensions.injectable";
 
 const currentPreferenceTabIdInjectable = getInjectable({
   id: "current-preference-tab-id",

@@ -6,20 +6,23 @@
 
 import "./kube-object-details.scss";
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Drawer } from "../drawer";
-import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
-import type { CurrentKubeObject } from "./current-kube-object-in-details.injectable";
 import currentKubeObjectInDetailsInjectable from "./current-kube-object-in-details.injectable";
 import kubeObjectDetailItemsInjectable from "./kube-object-detail-items/kube-object-detail-items.injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
+
+import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
+import type { CurrentKubeObject } from "./current-kube-object-in-details.injectable";
 
 export interface KubeObjectDetailsProps<Kube extends KubeObject = KubeObject> {
   className?: string;

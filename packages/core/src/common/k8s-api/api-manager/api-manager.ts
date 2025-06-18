@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectStore } from "../kube-object.store";
+import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
+import { getOrInsertWith, iter } from "@freelensapp/utilities";
+import { action, autorun, observable } from "mobx";
 
 import type { KubeApi } from "@freelensapp/kube-api";
-import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeObject, ObjectReference } from "@freelensapp/kube-object";
-import { getOrInsertWith, iter } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import { action, autorun, observable } from "mobx";
+
+import type { KubeObjectStore } from "../kube-object.store";
 import type { CreateCustomResourceStore } from "./create-custom-resource-store.injectable";
 
 export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any> ? Store : never;

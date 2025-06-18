@@ -8,17 +8,7 @@ import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 
-export { Singleton } from "../../common/utils/singleton";
-
 export {
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  prevDefault,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  stopPropagation,
   /**
    * @deprecated Switch to using the `@freelensapp/utilities` package
    */
@@ -27,9 +17,30 @@ export {
    * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   disposer,
+  /**
+   * @deprecated Switch to using the `@freelensapp/utilities` package
+   */
+  prevDefault,
+  /**
+   * @deprecated Switch to using the `@freelensapp/utilities` package
+   */
+  stopPropagation,
 } from "@freelensapp/utilities";
+export { Singleton } from "../../common/utils/singleton";
 
 export type {
+  /**
+   * @deprecated Switch to using the `@freelensapp/utilities` package
+   */
+  Disposable,
+  /**
+   * @deprecated Switch to using the `@freelensapp/utilities` package
+   */
+  Disposer,
+  /**
+   * @deprecated Switch to using the `@freelensapp/utilities` package
+   */
+  ExtendableDisposer,
   /**
    * @deprecated Switch to using the `@freelensapp/utilities` package
    */
@@ -38,18 +49,6 @@ export type {
    * @deprecated Switch to using the `@freelensapp/utilities` package
    */
   IgnoredClassNames,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposer,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposable,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  ExtendableDisposer,
 } from "@freelensapp/utilities";
 
 export type { OpenLinkInBrowser } from "../../common/utils/open-link-in-browser.injectable";

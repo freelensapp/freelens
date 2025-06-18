@@ -8,13 +8,6 @@
 //       It is here to consolidate the common parts which are exported to `Main`
 //       and to `Renderer`
 
-import type { JsonApiConfig } from "@freelensapp/json-api";
-import type {
-  DerivedKubeApiOptions,
-  KubeJsonApi as InternalKubeJsonApi,
-  KubeApiDependencies,
-  KubeApiOptions,
-} from "@freelensapp/kube-api";
 import {
   DeploymentApi as InternalDeploymentApi,
   IngressApi as InternalIngressApi,
@@ -24,7 +17,6 @@ import {
   PodApi,
 } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import {
   asLegacyGlobalForExtensionApi,
   asLegacyGlobalFunctionForExtensionApi,
@@ -32,23 +24,33 @@ import {
 } from "@freelensapp/legacy-global-di";
 import {
   logErrorInjectionToken,
+  loggerInjectionToken,
   logInfoInjectionToken,
   logWarningInjectionToken,
-  loggerInjectionToken,
 } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
+import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import createKubeApiForClusterInjectable from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
-import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
-import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
-import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
-import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
-import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+
+import type { JsonApiConfig } from "@freelensapp/json-api";
+import type {
+  DerivedKubeApiOptions,
+  KubeJsonApi as InternalKubeJsonApi,
+  KubeApiDependencies,
+  KubeApiOptions,
+} from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import type { RequestInit } from "@freelensapp/node-fetch";
+
+import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
+import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { KubernetesCluster } from "./catalog";
 
 export const apiManager = asLegacyGlobalForExtensionApi(apiManagerInjectable);
@@ -137,12 +139,8 @@ export interface IKubeApiCluster {
   };
 }
 
-export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
-export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
-
 export {
-  KubeObject,
-  KubeStatus,
+  createKubeObject,
   isJsonApiData,
   isJsonApiDataList,
   isKubeJsonApiListMetadata,
@@ -151,20 +149,25 @@ export {
   isKubeStatusData,
   isPartialJsonApiData,
   isPartialJsonApiMetadata,
-  createKubeObject,
+  KubeObject,
+  KubeStatus,
   stringifyLabels,
 } from "@freelensapp/kube-object";
+
 export type {
-  OwnerReference,
-  KubeObjectMetadata,
-  NamespaceScopedMetadata,
-  ClusterScopedMetadata,
   BaseKubeJsonApiObjectMetadata,
-  KubeJsonApiObjectMetadata,
-  KubeStatusData,
-  KubeJsonApiDataFor,
+  ClusterScopedMetadata,
   KubeJsonApiData,
+  KubeJsonApiDataFor,
+  KubeJsonApiObjectMetadata,
+  KubeObjectMetadata,
+  KubeStatusData,
+  NamespaceScopedMetadata,
+  OwnerReference,
 } from "@freelensapp/kube-object";
+
+export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
+export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 
 function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: RequestInit) {
   const di = getLegacyGlobalDiForExtensionApi();
@@ -300,38 +303,38 @@ export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as
 ) => PersistentVolumeClaimApi;
 
 export {
-  type Container as IPodContainer,
-  type PodContainerStatus as IPodContainerStatus,
-  Pod,
-  Node,
-  Deployment,
-  DaemonSet,
-  StatefulSet,
-  Job,
-  CronJob,
-  ConfigMap,
-  type SecretReference as ISecretRef,
-  Secret,
-  ReplicaSet,
-  ResourceQuota,
-  LimitRange,
-  HorizontalPodAutoscaler,
-  PodDisruptionBudget,
-  PriorityClass,
-  Service,
-  Endpoints as Endpoint,
-  EndpointSlice,
-  Ingress,
-  NetworkPolicy,
-  PersistentVolume,
-  PersistentVolumeClaim,
-  StorageClass,
-  Namespace,
-  KubeEvent,
-  ServiceAccount,
-  Role,
-  RoleBinding,
   ClusterRole,
   ClusterRoleBinding,
+  ConfigMap,
+  type Container as IPodContainer,
+  CronJob,
   CustomResourceDefinition,
+  DaemonSet,
+  Deployment,
+  EndpointSlice,
+  Endpoints as Endpoint,
+  HorizontalPodAutoscaler,
+  Ingress,
+  Job,
+  KubeEvent,
+  LimitRange,
+  Namespace,
+  NetworkPolicy,
+  Node,
+  PersistentVolume,
+  PersistentVolumeClaim,
+  Pod,
+  type PodContainerStatus as IPodContainerStatus,
+  PodDisruptionBudget,
+  PriorityClass,
+  ReplicaSet,
+  ResourceQuota,
+  Role,
+  RoleBinding,
+  Secret,
+  type SecretReference as ISecretRef,
+  Service,
+  ServiceAccount,
+  StatefulSet,
+  StorageClass,
 } from "@freelensapp/kube-object";

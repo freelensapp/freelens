@@ -6,8 +6,9 @@
 
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HotbarDependencies } from "./hotbar";
 import { Hotbar } from "./hotbar";
+
+import type { HotbarDependencies } from "./hotbar";
 import type { CreateHotbarData } from "./types";
 
 export type CreateHotbar = (data: CreateHotbarData) => Hotbar;

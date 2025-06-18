@@ -4,14 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import clusterFramesInjectable from "../../../common/cluster-frames.injectable";
-import type { NavigateForExtensionArgs } from "../../../features/extensions/navigate/common/channel";
 import { navigateForExtensionChannel } from "../../../features/extensions/navigate/common/channel";
 import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
 import showApplicationWindowInjectable from "./show-application-window.injectable";
+
+import type { NavigateForExtensionArgs } from "../../../features/extensions/navigate/common/channel";
 
 export type NavigateForExtension = (
   extId: string,

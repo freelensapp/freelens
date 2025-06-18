@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { NamespaceScopedMetadata } from "../api-types";
 
 export type ResourceQuotaValues = Partial<Record<string, string>> & {
   // Compute Resource Quota

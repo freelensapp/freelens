@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CatalogEntity } from "../../catalog-entity";
 import catalogEntityRegistryInjectable from "./registry.injectable";
+
+import type { CatalogEntity } from "../../catalog-entity";
 
 export type GetEntityById = (id: string) => CatalogEntity | undefined;
 

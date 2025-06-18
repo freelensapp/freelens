@@ -4,12 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Disposer } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import { Disposers } from "../lens-extension";
-import type { LensRendererExtension } from "../lens-renderer-extension";
 import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
+
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { LensRendererExtension } from "../lens-renderer-extension";
 
 export abstract class IpcRenderer extends IpcRegistrar {
   constructor(extension: LensRendererExtension) {

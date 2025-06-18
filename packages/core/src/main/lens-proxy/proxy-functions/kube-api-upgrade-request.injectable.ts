@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ConnectionOptions } from "tls";
-import { connect } from "tls";
-import url from "url";
 import { getInjectable } from "@ogre-tools/injectable";
 import { chunk } from "lodash";
+import { connect } from "tls";
+import url from "url";
 import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.injectable";
 import kubeAuthProxyCertificateInjectable from "../../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+import type { ConnectionOptions } from "tls";
+
 import type { LensProxyApiRequest } from "../lens-proxy";
 
 const skipRawHeaders = new Set(["Host", "Authorization"]);

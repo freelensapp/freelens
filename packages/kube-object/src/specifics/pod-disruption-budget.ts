@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import type { Condition } from "../types/condition";
 
 export interface V1Beta1PodDisruptionBudgetSpec {

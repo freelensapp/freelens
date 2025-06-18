@@ -8,16 +8,19 @@ import "./tab-layout.scss";
 
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { ObservableHistory } from "mobx-observable-history";
 import { observer } from "mobx-react";
 import React from "react";
-import { Redirect, Route, Switch, matchPath } from "react-router";
-import type { Navigate } from "../../navigation/navigate.injectable";
+import { matchPath, Redirect, Route, Switch } from "react-router";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Tab, Tabs } from "../tabs";
+
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+
+import type { ObservableHistory } from "mobx-observable-history";
+
+import type { Navigate } from "../../navigation/navigate.injectable";
 
 export interface TabLayoutProps {
   className?: IClassName;

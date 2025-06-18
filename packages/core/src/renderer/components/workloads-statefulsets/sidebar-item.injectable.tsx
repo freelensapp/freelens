@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
-
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { getInjectable } from "@ogre-tools/injectable";
 import navigateToStatefulsetsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/statefulsets/navigate-to-statefulsets.injectable";
 import statefulsetsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/statefulsets/statefulsets-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";

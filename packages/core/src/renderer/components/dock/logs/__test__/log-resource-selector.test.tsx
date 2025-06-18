@@ -6,22 +6,24 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import assert from "assert";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
+import assert from "assert";
 import * as selectEvent from "react-select-event";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../../../common/fs/fs.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { SearchStore } from "../../../../search-store/search-store";
-import type { DiRender } from "../../../test-utils/renderFor";
 import { renderFor } from "../../../test-utils/renderFor";
-import type { TabId } from "../../dock/store";
 import callForLogsInjectable from "../call-for-logs.injectable";
-import type { LogTabViewModelDependencies } from "../logs-view-model";
 import { LogTabViewModel } from "../logs-view-model";
 import { LogResourceSelector } from "../resource-selector";
 import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { DiRender } from "../../../test-utils/renderFor";
+import type { TabId } from "../../dock/store";
+import type { LogTabViewModelDependencies } from "../logs-view-model";
 
 function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependencies>): LogTabViewModel {
   return new LogTabViewModel(tabId, {

@@ -6,15 +6,16 @@
 
 import "./file-picker.scss";
 
-import path from "path";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import fse from "fs-extra";
 import _ from "lodash";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import path from "path";
 import React from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface FileUploadProps {
   uploadDir: string;
@@ -94,10 +95,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
   }
 
   handleFileCount(files: File[]): File[] {
-    const {
-      limit: [minLimit, maxLimit] = [0, Infinity],
-      onOverLimit,
-    } = this.props;
+    const { limit: [minLimit, maxLimit] = [0, Infinity], onOverLimit } = this.props;
 
     if (files.length > maxLimit) {
       switch (onOverLimit) {

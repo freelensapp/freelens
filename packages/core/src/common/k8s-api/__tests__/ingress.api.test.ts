@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Ingress, computeRuleDeclarations } from "@freelensapp/kube-object";
+import { computeRuleDeclarations, Ingress } from "@freelensapp/kube-object";
 
 describe("Ingress", () => {
   it("given no loadbalancer ingresses in status property, loadbalancers should be an empty array", () => {

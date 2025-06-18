@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-
 import isMacInjectable from "../../../../../common/vars/is-mac.injectable";
 import showMessagePopupInjectable from "../../../../../main/electron-app/features/show-message-popup.injectable";
 import showApplicationWindowInjectable from "../../../../../main/start-main-application/lens-window/show-application-window.injectable";

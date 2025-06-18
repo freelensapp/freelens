@@ -5,20 +5,23 @@
  */
 
 import "@testing-library/jest-dom";
-import type { RenderResult } from "@testing-library/react";
+
 import { fireEvent } from "@testing-library/react";
-import type { IComputedValue } from "mobx";
 import React from "react";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { CreateHotbar } from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
 import createHotbarInjectable from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
-import type { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
 import hotbarsInjectable from "../../../../features/hotbar/storage/common/hotbars.injectable";
 import hotbarsStateInjectable from "../../../../features/hotbar/storage/common/state.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { ConfirmDialog } from "../../confirm-dialog";
 import { renderFor } from "../../test-utils/renderFor";
 import { HotbarRemoveCommand } from "../hotbar-remove-command";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IComputedValue } from "mobx";
+
+import type { CreateHotbar } from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
+import type { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
 
 describe("<HotbarRemoveCommand />", () => {
   let result: RenderResult;

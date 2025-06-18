@@ -1,9 +1,10 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import { fireEvent, screen, within } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import PodMenuItem from "../pod-menu-item";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 jest.mock("../../menu", () => {
   const actualMenu = jest.requireActual("../../menu");

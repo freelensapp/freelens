@@ -14,8 +14,9 @@ import createPageParamInjectable from "../../renderer/navigation/create-page-par
 import isActiveRouteInjectable from "../../renderer/navigation/is-route-active.injectable";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
 
-export type { PageParamInit, PageParam } from "../../renderer/navigation/page-param";
 export type { URLParams } from "@freelensapp/utilities";
+
+export type { PageParam, PageParamInit } from "../../renderer/navigation/page-param";
 
 export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);
 export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);

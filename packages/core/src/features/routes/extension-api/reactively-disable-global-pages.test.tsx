@@ -4,12 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
-import type { IObservableValue } from "mobx";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+
+import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
+
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { TestExtensionRenderer } from "../../../renderer/components/test-utils/get-extension-fake";
 
 describe("reactively disable global pages", () => {

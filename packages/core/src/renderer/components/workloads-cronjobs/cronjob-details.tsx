@@ -6,26 +6,28 @@
 
 import "./cronjob-details.scss";
 
-import type { Job } from "@freelensapp/kube-object";
 import { CronJob } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import jobStoreInjectable from "../workloads-jobs/store.injectable";
+import cronJobStoreInjectable from "./store.injectable";
+
+import type { Job } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { JobStore } from "../workloads-jobs/store";
-import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import type { CronJobStore } from "./store";
-import cronJobStoreInjectable from "./store.injectable";
 
 export interface CronJobDetailsProps extends KubeObjectDetailsProps<CronJob> {}
 

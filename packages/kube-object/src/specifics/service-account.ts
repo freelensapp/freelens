@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObject } from "../kube-object";
+
 import type {
   KubeJsonApiData,
   KubeObjectMetadata,
@@ -12,7 +14,6 @@ import type {
   NamespaceScopedMetadata,
   ObjectReference,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
 
 export interface ServiceAccountData extends KubeJsonApiData<KubeObjectMetadata<KubeObjectScope.Namespace>, void, void> {
   automountServiceAccountToken?: boolean;

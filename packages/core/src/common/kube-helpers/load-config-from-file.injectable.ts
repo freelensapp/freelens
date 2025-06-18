@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import readFileInjectable from "../fs/read-file.injectable";
-import type { ConfigResult } from "../kube-helpers";
 import { loadConfigFromString } from "../kube-helpers";
 import resolveTildeInjectable from "../path/resolve-tilde.injectable";
+
+import type { ConfigResult } from "../kube-helpers";
 
 export type LoadConfigFromFile = (filePath: string) => Promise<ConfigResult>;
 

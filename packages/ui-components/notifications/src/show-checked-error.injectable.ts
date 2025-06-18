@@ -6,10 +6,12 @@
 
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CreateNotificationOptions } from "./notifications.store";
 import { showErrorNotificationInjectable } from "./show-error-notification.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { CreateNotificationOptions } from "./notifications.store";
 
 export type ShowCheckedErrorNotification = (
   message: unknown,

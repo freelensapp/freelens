@@ -1,11 +1,8 @@
+import { getStartableStoppable, type StartableStoppable } from "@freelensapp/startable-stoppable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { enlistMessageChannelListenerInjectionToken } from "../message/enlist-message-channel-listener-injection-token";
-
-import { type StartableStoppable, getStartableStoppable } from "@freelensapp/startable-stoppable";
-
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { type IComputedValue, reaction } from "mobx";
-
+import { enlistMessageChannelListenerInjectionToken } from "../message/enlist-message-channel-listener-injection-token";
 import {
   type MessageChannel,
   messageChannelListenerInjectionToken,

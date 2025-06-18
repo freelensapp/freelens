@@ -8,6 +8,7 @@ import autoBind from "auto-bind";
 import throttle from "lodash/throttle";
 import { action, comparer, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import * as uuid from "uuid";
+
 import type { StorageLayer } from "../../../utils/storage-helper";
 
 export type TabId = string;

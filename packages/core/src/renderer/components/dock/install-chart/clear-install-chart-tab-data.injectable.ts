@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import installChartTabStoreInjectable from "./store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const clearInstallChartTabDataInjectable = getInjectable({
   id: "clear-install-chart-tab-data",

@@ -7,7 +7,6 @@
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -19,6 +18,8 @@ import currentPathInjectable from "../../routes/current-path.injectable";
 import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
 import styles from "./cluster-frame.module.css";
 import startUrlInjectable from "./start-url.injectable";
+
+import type { IComputedValue } from "mobx";
 
 interface Dependencies {
   currentRouteComponent: IComputedValue<React.ElementType<any> | undefined>;

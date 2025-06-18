@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type Config from "conf";
 
 export type PersistStateToConfig = <T extends object>(config: Config<T>, state: T) => void;

@@ -6,11 +6,12 @@
 
 import React, { useState } from "react";
 import { SearchInput } from "../input";
+import { ReactTable } from "../table/react-table";
 import styles from "./list.module.scss";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { UseTableOptions } from "react-table";
-import { ReactTable } from "../table/react-table";
 
 export type SearchFilter<T> = (item: T) => string | number;
 

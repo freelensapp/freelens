@@ -7,17 +7,19 @@
 import "./menu.scss";
 
 import { Animate, requestAnimationFrameInjectable } from "@freelensapp/animate";
-import type { RequestAnimationFrame } from "@freelensapp/animate";
-import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import isEqual from "lodash/isEqual";
-import type { ReactElement } from "react";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
+
+import type { RequestAnimationFrame } from "@freelensapp/animate";
+import type { IconProps } from "@freelensapp/icon";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { ReactElement } from "react";
 
 export const MenuContext = React.createContext<MenuContextValue | null>(null);
 export interface MenuContextValue {

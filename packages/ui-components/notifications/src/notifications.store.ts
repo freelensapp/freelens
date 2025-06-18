@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { JsonApiErrorParsed } from "@freelensapp/json-api";
 import autoBind from "auto-bind";
 import uniqueId from "lodash/uniqueId";
 import { action, makeObservable, observable } from "mobx";
+
+import type { JsonApiErrorParsed } from "@freelensapp/json-api";
+
 import type React from "react";
 import type { SetRequired } from "type-fest";
 

@@ -4,8 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { EventEmitter } from "@freelensapp/event-emitter";
+import { isDefined, iter } from "@freelensapp/utilities";
+import assert from "assert";
+import { ipcMain, ipcRenderer } from "electron";
+import { isEqual } from "lodash";
+import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
+import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
+import {
+  extensionLoaderFromMainChannel,
+  extensionLoaderFromRendererChannel,
+} from "../../common/ipc/extension-handling";
+import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
+
 import type {
   BundledExtension,
   BundledInstalledExtension,
@@ -16,20 +27,12 @@ import type {
   LensExtensionId,
 } from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
-import { isDefined, iter } from "@freelensapp/utilities";
-import { ipcMain, ipcRenderer } from "electron";
-import { isEqual } from "lodash";
+
 import type { ObservableMap } from "mobx";
-import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
-import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
-import {
-  extensionLoaderFromMainChannel,
-  extensionLoaderFromRendererChannel,
-} from "../../common/ipc/extension-handling";
+
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
-import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
 import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
 

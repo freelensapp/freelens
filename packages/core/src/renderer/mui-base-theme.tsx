@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material";
+import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import React from "react";
 
 export const defaultMuiBaseTheme = createTheme({

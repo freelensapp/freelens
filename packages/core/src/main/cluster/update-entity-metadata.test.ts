@@ -4,16 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { KubernetesCluster } from "../../common/catalog-entities";
-import { ClusterMetadataKey } from "../../common/cluster-types";
 import { Cluster } from "../../common/cluster/cluster";
+import { ClusterMetadataKey } from "../../common/cluster-types";
 import { replaceObservableObject } from "../../common/utils/replace-observable-object";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { UpdateEntityMetadata } from "./update-entity-metadata.injectable";
 import updateEntityMetadataInjectable from "./update-entity-metadata.injectable";
+
+import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
+import type { UpdateEntityMetadata } from "./update-entity-metadata.injectable";
 
 describe("update-entity-metadata", () => {
   let cluster: Cluster;

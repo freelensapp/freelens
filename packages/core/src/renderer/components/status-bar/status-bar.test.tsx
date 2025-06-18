@@ -5,11 +5,13 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 
 describe("<StatusBar />", () => {
   let builder: ApplicationBuilder;

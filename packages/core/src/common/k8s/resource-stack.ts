@@ -5,18 +5,20 @@
  */
 
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { Logger } from "@freelensapp/logger";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { hasTypedProperty, isObject } from "@freelensapp/utilities";
 import hb from "handlebars";
 import yaml from "js-yaml";
+import { defaultYamlDumpOptions } from "../kube-helpers";
+import productNameInjectable from "../vars/product-name.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+import type { AsyncResult } from "@freelensapp/utilities";
+
 import type { KubernetesCluster } from "../catalog-entities";
 import type { ReadDirectory } from "../fs/read-directory.injectable";
 import type { ReadFile } from "../fs/read-file.injectable";
-import { defaultYamlDumpOptions } from "../kube-helpers";
 import type { KubectlApplyAll, KubectlDeleteAll } from "../kube-helpers/channels";
 import type { JoinPaths } from "../path/join-paths.injectable";
-import productNameInjectable from "../vars/product-name.injectable";
 
 export interface ResourceApplyingStack {
   kubectlApplyFolder(folderPath: string, templateContext?: any, extraArgs?: string[]): Promise<string>;

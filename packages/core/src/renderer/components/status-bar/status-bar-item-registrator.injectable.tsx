@@ -5,16 +5,19 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import React from "react";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { Injectable } from "@ogre-tools/injectable";
+
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import type { StatusBarItem } from "./status-bar-item-injection-token";
-import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
 import type { StatusBarRegistration } from "./status-bar-registration";
 
 const statusBarItemRegistratorInjectable = getInjectable({

@@ -11,7 +11,6 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reduce } from "lodash";
 import React from "react";
 import { SemVer } from "semver";
-import type { PackageJson } from "type-fest";
 import URLParse from "url-parse";
 import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
 import downloadJsonInjectable from "../../../common/fetch/download-json/normal.injectable";
@@ -21,6 +20,8 @@ import extensionInstallationStateStoreInjectable from "../../../extensions/exten
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
+
+import type { PackageJson } from "type-fest";
 
 export interface ExtensionInfo {
   name: string;

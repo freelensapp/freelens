@@ -5,25 +5,29 @@
  */
 
 import "./cluster-view.scss";
-import type { StrictReactNode } from "@freelensapp/utilities";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
-import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import type { RequestClusterActivation } from "../../../features/cluster/activation/common/request-token";
 import requestClusterActivationInjectable from "../../../features/cluster/activation/renderer/request-activation.injectable";
-import type { GetClusterById } from "../../../features/cluster/storage/common/get-by-id.injectable";
 import getClusterByIdInjectable from "../../../features/cluster/storage/common/get-by-id.injectable";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
-import type { ClusterFrameHandler } from "./cluster-frame-handler";
 import clusterFrameHandlerInjectable from "./cluster-frame-handler.injectable";
 import { ClusterStatus } from "./cluster-status";
 import clusterViewRouteParametersInjectable from "./cluster-view-route-parameters.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue } from "mobx";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { RequestClusterActivation } from "../../../features/cluster/activation/common/request-token";
+import type { GetClusterById } from "../../../features/cluster/storage/common/get-by-id.injectable";
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
+import type { ClusterFrameHandler } from "./cluster-frame-handler";
 
 interface Dependencies {
   clusterId: IComputedValue<string>;

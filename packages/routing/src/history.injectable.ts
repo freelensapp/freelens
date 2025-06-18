@@ -5,8 +5,9 @@
  */
 
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import type { History } from "history";
 import { createBrowserHistory } from "history";
+
+import type { History } from "history";
 
 export const historyInjectionToken = getInjectionToken<History<unknown>>({
   id: "history-injection-token",

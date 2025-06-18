@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToRouteInjectionToken } from "../../../navigate-to-route-injection-token";
-import type { CustomResourcesPathParameters } from "./custom-resources-route.injectable";
 import customResourcesRouteInjectable from "./custom-resources-route.injectable";
+
+import type { CustomResourcesPathParameters } from "./custom-resources-route.injectable";
 
 export type NavigateToCustomResources = (parameters: CustomResourcesPathParameters) => void;
 

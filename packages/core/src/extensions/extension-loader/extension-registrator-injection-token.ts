@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
-import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
+
+import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 
 export type Injectables = Injectable<any, any, any>[];

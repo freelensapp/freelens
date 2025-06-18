@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { Pod, PodSpecVolume, PodVolumeKind } from "@freelensapp/kube-object";
 import React from "react";
 import { DrawerItem } from "../../../drawer";
 import { AwsElasticBlockStore } from "./variants/aws-elastic-block-store";
@@ -38,6 +37,8 @@ import { ScaleIo } from "./variants/scale-io";
 import { Secret } from "./variants/secret";
 import { StorageOs } from "./variants/storage-os";
 import { VsphereVolume } from "./variants/vsphere-volume";
+
+import type { Pod, PodSpecVolume, PodVolumeKind } from "@freelensapp/kube-object";
 
 const deprecatedVolumeTypes = new Set<PodVolumeKind>(["flocker", "gitRepo", "quobyte", "storageos"]);
 

@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObject } from "../kube-object";
+
 import type {
   KubeJsonApiData,
   KubeObjectMetadata,
@@ -11,7 +13,6 @@ import type {
   LabelSelector,
   NamespaceScopedMetadata,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
 
 export interface WebhookClientConfig {
   /**

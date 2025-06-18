@@ -6,11 +6,8 @@
 
 import "./menu-actions.scss";
 
-import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
@@ -18,10 +15,15 @@ import isString from "lodash/isString";
 import { makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React, { isValidElement } from "react";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { MenuProps } from "./menu";
 import { Menu, MenuItem } from "./menu";
+
+import type { IconProps } from "@freelensapp/icon";
+import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import type { MenuProps } from "./menu";
 
 export interface MenuActionsProps extends Partial<MenuProps> {
   className?: string;

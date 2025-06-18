@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { computed } from "mobx";
+
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ObservableMap } from "mobx";
-import { computed } from "mobx";
+
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
 
 interface Dependencies {

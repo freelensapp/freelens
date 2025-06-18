@@ -5,8 +5,8 @@
  */
 
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
-import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
+import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
 
 const lensProxyCertificateRequestHandlerInjectable = getRequestChannelListenerInjectable({
   id: "lens-proxy-certificate-request-handler-listener",

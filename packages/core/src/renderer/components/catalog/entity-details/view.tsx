@@ -7,19 +7,21 @@
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
-import type { CatalogCategory, CatalogEntity } from "../../../../common/catalog";
 import isDevelopmentInjectable from "../../../../common/vars/is-development.injectable";
 import { Avatar } from "../../avatar";
 import { Drawer, DrawerItem } from "../../drawer";
 import { CatalogEntityDrawerMenu } from "../catalog-entity-drawer-menu";
-import type { GetLabelBadges } from "../get-label-badges.injectable";
 import getLabelBadgesInjectable from "../get-label-badges.injectable";
 import catalogEntityDetailItemsInjectable from "./detail-items.injectable";
-import type { CatalogEntityDetailsComponent } from "./token";
 import styles from "./view.module.scss";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogCategory, CatalogEntity } from "../../../../common/catalog";
+import type { GetLabelBadges } from "../get-label-badges.injectable";
+import type { CatalogEntityDetailsComponent } from "./token";
 
 export interface CatalogEntityDetailsProps<Entity extends CatalogEntity> {
   entity: Entity;

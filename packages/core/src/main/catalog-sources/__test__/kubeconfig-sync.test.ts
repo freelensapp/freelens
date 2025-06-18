@@ -4,38 +4,40 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
-import type { ReadStream, Stats } from "fs";
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { iter, strictGet } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
+import EventEmitter from "events";
 import { ObservableMap, observable, runInAction } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { CatalogEntity } from "../../../common/catalog";
-import type { Cluster } from "../../../common/cluster/cluster";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
-import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import pathExistsInjectable from "../../../common/fs/path-exists.injectable";
+import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.injectable";
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
-import type { Stat } from "../../../common/fs/stat.injectable";
 import statInjectable from "../../../common/fs/stat.injectable";
-import type { Watcher } from "../../../common/fs/watch/watch.injectable";
 import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import { loadFromOptions } from "../../../common/kube-helpers";
 import kubeconfigSyncsInjectable from "../../../features/user-preferences/common/kubeconfig-syncs.injectable";
-import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import type { ComputeKubeconfigDiff } from "../kubeconfig-sync/compute-diff.injectable";
 import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.injectable";
-import type { ConfigToModels } from "../kubeconfig-sync/config-to-models.injectable";
 import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
-import type { KubeconfigSyncManager } from "../kubeconfig-sync/manager";
 import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
+import type { ReadStream, Stats } from "fs";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { CatalogEntity } from "../../../common/catalog";
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { Stat } from "../../../common/fs/stat.injectable";
+import type { Watcher } from "../../../common/fs/watch/watch.injectable";
+import type { KubeconfigSyncValue } from "../../../features/user-preferences/common/preferences-helpers";
+import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
+import type { ComputeKubeconfigDiff } from "../kubeconfig-sync/compute-diff.injectable";
+import type { ConfigToModels } from "../kubeconfig-sync/config-to-models.injectable";
+import type { KubeconfigSyncManager } from "../kubeconfig-sync/manager";
 
 describe("kubeconfig-sync.source tests", () => {
   let computeKubeconfigDiff: ComputeKubeconfigDiff;

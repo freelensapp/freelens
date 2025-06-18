@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmReleaseRevision } from "../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+
+import type { HelmReleaseRevision } from "../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
 
 export interface GetHelmReleaseHistoryData {
   name: string;

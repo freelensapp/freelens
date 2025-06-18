@@ -9,19 +9,20 @@ import "./view.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { KubeObjectAge } from "../../kube-object/age";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
-import { KubeObjectAge } from "../../kube-object/age";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
-import type { ClusterRoleStore } from "../cluster-roles/store";
 import clusterRoleStoreInjectable from "../cluster-roles/store.injectable";
-import type { ServiceAccountStore } from "../service-accounts/store";
 import serviceAccountStoreInjectable from "../service-accounts/store.injectable";
-import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
 import openClusterRoleBindingDialogInjectable from "./dialog/open.injectable";
 import { ClusterRoleBindingDialog } from "./dialog/view";
-import type { ClusterRoleBindingStore } from "./store";
 import clusterRoleBindingStoreInjectable from "./store.injectable";
+
+import type { ClusterRoleStore } from "../cluster-roles/store";
+import type { ServiceAccountStore } from "../service-accounts/store";
+import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
+import type { ClusterRoleBindingStore } from "./store";
 
 enum columnId {
   name = "name",

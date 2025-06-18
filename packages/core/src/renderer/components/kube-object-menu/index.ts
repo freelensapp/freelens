@@ -4,5 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export type { KubeObjectMenuProps } from "./kube-object-menu";
 export { KubeObjectMenu } from "./kube-object-menu";
+
+export type { KubeObjectMenuProps } from "./kube-object-menu";

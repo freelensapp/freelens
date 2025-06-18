@@ -9,17 +9,19 @@ import "./namespace-select-filter.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import type { PlaceholderProps } from "react-select";
 import { components } from "react-select";
 import { Select } from "../select";
+import namespaceSelectFilterModelInjectable from "./namespace-select-filter-model/namespace-select-filter-model.injectable";
+import namespaceStoreInjectable from "./store.injectable";
+
+import type { PlaceholderProps } from "react-select";
+
 import type {
   NamespaceSelectFilterModel,
   NamespaceSelectFilterOption,
   SelectAllNamespaces,
 } from "./namespace-select-filter-model/namespace-select-filter-model";
-import namespaceSelectFilterModelInjectable from "./namespace-select-filter-model/namespace-select-filter-model.injectable";
 import type { NamespaceStore } from "./store";
-import namespaceStoreInjectable from "./store.injectable";
 
 interface NamespaceSelectFilterProps {
   id: string;

@@ -9,13 +9,15 @@ import "./notifications.scss";
 import { Animate } from "@freelensapp/animate";
 import { Icon } from "@freelensapp/icon";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
-import type { Disposer } from "@freelensapp/utilities";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { notificationsStoreInjectable } from "./notifications-store.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
+
 import type {
   CreateNotificationOptions,
   Notification,

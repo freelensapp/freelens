@@ -1,11 +1,13 @@
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
-import type { RequestChannel } from "@freelensapp/messaging";
-import { DiContainer, createContainer } from "@ogre-tools/injectable";
+import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { messagingFeatureForRenderer } from "../feature";
 import invokeIpcInjectable from "./invoke-ipc.injectable";
+
+import type { RequestChannel } from "@freelensapp/messaging";
+
+import type { AsyncFnMock } from "@async-fn/jest";
 
 describe("request-from-channel", () => {
   let di: DiContainer;

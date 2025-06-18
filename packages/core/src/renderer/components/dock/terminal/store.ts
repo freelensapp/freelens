@@ -5,9 +5,10 @@
  */
 
 import { action, observable } from "mobx";
+import { WebSocketApiState } from "../../../api/websocket-api";
+
 import type { CreateTerminalApi } from "../../../api/create-terminal-api.injectable";
 import type { TerminalApi } from "../../../api/terminal-api";
-import { WebSocketApiState } from "../../../api/websocket-api";
 import type { DockTab, TabId } from "../dock/store";
 import type { CreateTerminal } from "./create-terminal.injectable";
 import type { Terminal } from "./terminal";

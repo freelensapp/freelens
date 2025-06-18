@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import type webpack from "webpack";
-import type { WebpackPluginInstance } from "webpack";
+import path from "path";
 import { DefinePlugin, optimize } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { buildDir, isDevelopment } from "./vars";
+
+import type webpack from "webpack";
+import type { WebpackPluginInstance } from "webpack";
 
 export function webpackLensRenderer(): webpack.Configuration {
   return {

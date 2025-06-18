@@ -8,9 +8,10 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
-import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import { kubeObjectStatusTextInjectionToken } from "./kube-object-status-text-injection-token";
+
+import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 
 const kubeObjectStatusTextRegistratorInjectable = getInjectable({
   id: "kube-object-status-text-registrator",

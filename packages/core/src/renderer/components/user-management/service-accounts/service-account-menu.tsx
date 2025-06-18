@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-
 import { Icon } from "@freelensapp/icon";
-import type { ServiceAccount } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { KubeObjectMenuProps } from "../../kube-object-menu";
-import type { OpenServiceAccountKubeConfigDialog } from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
+import React from "react";
 import openServiceAccountKubeConfigDialogInjectable from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
 import { MenuItem } from "../../menu";
+
+import type { ServiceAccount } from "@freelensapp/kube-object";
+
+import type { KubeObjectMenuProps } from "../../kube-object-menu";
+import type { OpenServiceAccountKubeConfigDialog } from "../../kubeconfig-dialog/open-service-account-kube-config-dialog.injectable";
 
 interface Dependencies {
   openServiceAccountKubeConfigDialog: OpenServiceAccountKubeConfigDialog;

@@ -4,18 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import * as yaml from "js-yaml";
+import tempy from "tempy";
+import { defaultYamlDumpOptions } from "../../common/kube-helpers";
+
 import type { KubernetesObject } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
 import type { AsyncResult } from "@freelensapp/utilities";
-import * as yaml from "js-yaml";
+
 import type { Patch } from "rfc6902";
-import tempy from "tempy";
+
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
-import { defaultYamlDumpOptions } from "../../common/kube-helpers";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";

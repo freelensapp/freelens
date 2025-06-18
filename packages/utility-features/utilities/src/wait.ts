@@ -4,8 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IComputedValue } from "mobx";
 import { runInAction, when } from "mobx";
+
+import type { IComputedValue } from "mobx";
+
 import type { Disposer } from "./disposer";
 
 export async function waitUntilDefined<T>(

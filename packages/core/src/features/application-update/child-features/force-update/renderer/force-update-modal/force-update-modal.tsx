@@ -3,10 +3,14 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Button } from "@freelensapp/button";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Countdown } from "../../../../../../renderer/components/countdown/countdown";
@@ -14,6 +18,8 @@ import { Dialog } from "../../../../../../renderer/components/dialog";
 import restartAndInstallUpdateInjectable from "../../../../renderer/restart-and-install-update.injectable";
 import styles from "./force-update-modal.module.scss";
 import installUpdateCountdownInjectable from "./install-update-countdown.injectable";
+
+import type { IComputedValue } from "mobx";
 
 interface Dependencies {
   restartAndInstallUpdate: () => void;

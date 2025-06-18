@@ -11,12 +11,13 @@ import isMacInjectable from "../../../../common/vars/is-mac.injectable";
 import { terminalFontInjectionToken } from "../../../../features/terminal/renderer/fonts/token";
 import terminalConfigInjectable from "../../../../features/user-preferences/common/terminal-config.injectable";
 import terminalCopyOnSelectInjectable from "../../../../features/user-preferences/common/terminal-copy-on-select.injectable";
-import type { TerminalApi } from "../../../api/terminal-api";
 import xtermColorThemeInjectable from "../../../themes/terminal-colors.injectable";
-import type { TabId } from "../dock/store";
-import type { TerminalDependencies } from "./terminal";
 import { Terminal } from "./terminal";
 import terminalSpawningPoolInjectable from "./terminal-spawning-pool.injectable";
+
+import type { TerminalApi } from "../../../api/terminal-api";
+import type { TabId } from "../dock/store";
+import type { TerminalDependencies } from "./terminal";
 
 export type CreateTerminal = (tabId: TabId, api: TerminalApi) => Terminal;
 

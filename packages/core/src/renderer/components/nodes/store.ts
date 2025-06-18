@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { NodeApi } from "@freelensapp/kube-api";
-import type { Node } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import { sum } from "lodash";
 import { computed, makeObservable } from "mobx";
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
+import type { NodeApi } from "@freelensapp/kube-api";
+import type { Node } from "@freelensapp/kube-object";
+
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export class NodeStore extends KubeObjectStore<Node, NodeApi> {
   constructor(dependencies: KubeObjectStoreDependencies, api: NodeApi, opts?: KubeObjectStoreOptions) {

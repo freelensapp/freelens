@@ -5,27 +5,29 @@
  */
 
 import { Button } from "@freelensapp/button";
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
-import type { Disposer } from "@freelensapp/utilities";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
 import { remove as removeDir } from "fs-extra";
 import React from "react";
-import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import type { ExtensionLoader } from "../../../../extensions/extension-loader";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import uninstallExtensionInjectable from "../uninstall-extension.injectable";
-import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
-import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
-import type { UnpackExtension } from "./unpack-extension.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
+
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { ShowNotification } from "@freelensapp/notifications";
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
+import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
+import type { UnpackExtension } from "./unpack-extension.injectable";
 
 export interface InstallRequest {
   fileName: string;

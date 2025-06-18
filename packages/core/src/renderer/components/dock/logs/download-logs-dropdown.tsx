@@ -4,13 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./download-logs-dropdown.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import React, { useState } from "react";
 import { act } from "react-dom/test-utils";
 import { Dropdown } from "../../dropdown/dropdown";
 import { MenuItem } from "../../menu";
+import styles from "./download-logs-dropdown.module.scss";
 
 interface DownloadLogsDropdownProps {
   downloadVisibleLogs: () => void;

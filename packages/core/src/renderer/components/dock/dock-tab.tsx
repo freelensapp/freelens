@@ -4,11 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./dock-tab.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isMiddleClick, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
@@ -17,10 +14,14 @@ import { observer } from "mobx-react";
 import React from "react";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import { Menu, MenuItem } from "../menu";
-import type { TabProps } from "../tabs";
 import { Tab } from "../tabs";
-import type { DockStore, DockTab as DockTabModel } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
+import styles from "./dock-tab.module.scss";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { TabProps } from "../tabs";
+import type { DockStore, DockTab as DockTabModel } from "./dock/store";
 
 export interface DockTabProps extends TabProps<DockTabModel> {
   moreActions?: StrictReactNode;

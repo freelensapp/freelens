@@ -7,22 +7,24 @@
 import "./service-details.scss";
 
 import { Service } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { PortForwardStore } from "../../port-forward";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { EndpointSliceStore } from "../network-endpoint-slices/store";
 import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
 import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { PortForwardStore } from "../../port-forward";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { EndpointSliceStore } from "../network-endpoint-slices/store";
 
 export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {}
 

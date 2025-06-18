@@ -4,19 +4,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PodMetricsApi } from "@freelensapp/kube-api";
 import { podMetricsApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { PodMetrics, PodStatus } from "@freelensapp/kube-object";
 import { Pod } from "@freelensapp/kube-object";
-import type { RenderResult } from "@testing-library/react";
 import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
-import type { RequestMetrics } from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 import {
   type ApplicationBuilder,
   getApplicationBuilder,
 } from "../../../renderer/components/test-utils/get-application-builder";
 import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
+
+import type { PodMetricsApi } from "@freelensapp/kube-api";
+import type { PodMetrics, PodStatus } from "@freelensapp/kube-object";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { RequestMetrics } from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 
 describe("workloads / pods", () => {
   let rendered: RenderResult;

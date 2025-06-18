@@ -5,11 +5,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { SingleValue } from "react-select";
-import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
-import type { SelectOption } from "../../../../../../../renderer/components/select";
 import removeHelmRepositoryInjectable from "../../remove-helm-repository.injectable";
 import addHelmRepositoryInjectable from "./add-helm-repository.injectable";
+
+import type { SingleValue } from "react-select";
+
+import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
+import type { SelectOption } from "../../../../../../../renderer/components/select";
 
 const selectHelmRepositoryInjectable = getInjectable({
   id: "select-helm-repository",

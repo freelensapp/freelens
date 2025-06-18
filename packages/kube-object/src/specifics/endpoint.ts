@@ -5,6 +5,8 @@
  */
 
 import autoBind from "auto-bind";
+import { KubeObject } from "../kube-object";
+
 import type {
   KubeJsonApiData,
   KubeObjectMetadata,
@@ -12,7 +14,6 @@ import type {
   NamespaceScopedMetadata,
   ObjectReference,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
 
 export function formatEndpointSubset(subset: EndpointSubset): string {
   const { addresses, ports } = subset;

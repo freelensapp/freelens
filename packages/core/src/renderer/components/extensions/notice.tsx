@@ -5,9 +5,10 @@
  */
 
 import { cssNames } from "@freelensapp/utilities";
-import type { DOMAttributes } from "react";
 import React from "react";
 import styles from "./notice.module.scss";
+
+import type { DOMAttributes } from "react";
 
 export interface NoticeProps extends DOMAttributes<any> {
   className?: string;

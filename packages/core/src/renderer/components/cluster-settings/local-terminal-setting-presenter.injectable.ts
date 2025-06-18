@@ -6,8 +6,9 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import type { Cluster } from "../../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../../common/cluster/load-kubeconfig.injectable";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface LocalTerminalSettingPresenter {
   readonly directory: {

@@ -4,12 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
-import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import { computed, makeObservable } from "mobx";
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
+import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
+import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
+
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export class CustomResourceDefinitionStore extends KubeObjectStore<
   CustomResourceDefinition,

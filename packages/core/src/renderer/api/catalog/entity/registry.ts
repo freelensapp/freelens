@@ -5,6 +5,8 @@
  */
 
 import { action, computed, makeObservable, observable } from "mobx";
+import { ipcRendererOn } from "../../../../common/ipc";
+
 import type {
   CatalogCategory,
   CatalogCategoryRegistry,
@@ -15,16 +17,17 @@ import type {
   CatalogEntitySpec,
   CatalogEntityStatus,
 } from "../../../../common/catalog";
-import { ipcRendererOn } from "../../../../common/ipc";
 import "../../../../common/catalog-entities";
-import type { Logger } from "@freelensapp/logger";
 import { iter } from "@freelensapp/utilities";
-import type { Disposer } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import { isMainFrame } from "process";
 import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
 import { catalogEntityRunListener, catalogInitChannel, catalogItemsChannel } from "../../../../common/ipc/catalog";
+
+import type { Logger } from "@freelensapp/logger";
+import type { Disposer } from "@freelensapp/utilities";
+
 import type { Navigate } from "../../../navigation/navigate.injectable";
 
 export type EntityFilter = (entity: CatalogEntity) => any;

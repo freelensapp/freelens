@@ -5,6 +5,7 @@
  */
 
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
 
 /**

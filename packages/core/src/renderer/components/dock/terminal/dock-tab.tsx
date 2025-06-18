@@ -5,6 +5,7 @@
  */
 
 import "./terminal-dock-tab.scss";
+
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -12,12 +13,13 @@ import autoBindReact from "auto-bind/react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { DockTabProps } from "../dock-tab";
-import { DockTab } from "../dock-tab";
-import type { DockStore } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
-import type { TerminalStore } from "./store";
+import { DockTab } from "../dock-tab";
 import terminalStoreInjectable from "./store.injectable";
+
+import type { DockStore } from "../dock/store";
+import type { DockTabProps } from "../dock-tab";
+import type { TerminalStore } from "./store";
 
 export interface TerminalTabProps extends DockTabProps {}
 

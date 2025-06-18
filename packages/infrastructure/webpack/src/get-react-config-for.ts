@@ -1,6 +1,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { getNodeConfig, type Paths } from "./get-node-config";
+
 import type { Configuration } from "webpack";
-import { type Paths, getNodeConfig } from "./get-node-config";
 
 export const getReactConfigFor =
   ({ miniCssExtractPluginLoader = MiniCssExtractPlugin.loader } = {}) =>

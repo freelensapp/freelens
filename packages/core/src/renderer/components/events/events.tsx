@@ -7,10 +7,7 @@
 import "./events.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { KubeEventApi } from "@freelensapp/kube-api";
-import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
 import { Tooltip } from "@freelensapp/tooltip";
-import type { IClassName } from "@freelensapp/utilities";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "lodash";
@@ -19,20 +16,25 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { ReactiveDuration } from "../duration/reactive-duration";
-import type { HeaderCustomizer } from "../item-object-list";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import eventStoreInjectable from "./store.injectable";
+
+import type { KubeEventApi } from "@freelensapp/kube-api";
+import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
+import type { IClassName } from "@freelensapp/utilities";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { HeaderCustomizer } from "../item-object-list";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
 import type { TableSortCallbacks, TableSortParams } from "../table";
 import type { EventStore } from "./store";
-import eventStoreInjectable from "./store.injectable";
 
 enum columnId {
   message = "message",

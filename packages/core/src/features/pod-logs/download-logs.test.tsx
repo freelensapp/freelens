@@ -4,31 +4,34 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Container } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { act, waitFor } from "@testing-library/react";
 import dockStoreInjectable from "../../renderer/components/dock/dock/store.injectable";
 import { dockerPod } from "../../renderer/components/dock/logs/__test__/pod.mock";
 import areLogsPresentInjectable from "../../renderer/components/dock/logs/are-logs-present.injectable";
-import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import callForLogsInjectable from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
 import getLogTabDataInjectable from "../../renderer/components/dock/logs/get-log-tab-data.injectable";
-import getLogsWithoutTimestampsInjectable from "../../renderer/components/dock/logs/get-logs-without-timestamps.injectable";
 import getLogsInjectable from "../../renderer/components/dock/logs/get-logs.injectable";
+import getLogsWithoutTimestampsInjectable from "../../renderer/components/dock/logs/get-logs-without-timestamps.injectable";
 import getRandomIdForPodLogsTabInjectable from "../../renderer/components/dock/logs/get-random-id-for-pod-logs-tab.injectable";
 import getTimestampSplitLogsInjectable from "../../renderer/components/dock/logs/get-timestamp-split-logs.injectable";
 import loadLogsInjectable from "../../renderer/components/dock/logs/load-logs.injectable";
 import reloadLogsInjectable from "../../renderer/components/dock/logs/reload-logs.injectable";
 import setLogTabDataInjectable from "../../renderer/components/dock/logs/set-log-tab-data.injectable";
 import stopLoadingLogsInjectable from "../../renderer/components/dock/logs/stop-loading-logs.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import getPodByIdInjectable from "../../renderer/components/workloads-pods/get-pod-by-id.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
 import openSaveFileDialogInjectable from "../../renderer/utils/save-file.injectable";
+
+import type { Container } from "@freelensapp/kube-object";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("download logs options in logs dock tab", () => {
   let windowDi: DiContainer;

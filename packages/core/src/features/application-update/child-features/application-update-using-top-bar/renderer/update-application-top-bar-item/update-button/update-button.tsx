@@ -4,19 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./styles.module.scss";
-
-import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
-import type { HTMLAttributes } from "react";
 import React, { useState } from "react";
 import { Menu, MenuItem } from "../../../../../../../renderer/components/menu";
 import restartAndInstallUpdateInjectable from "../../../../../renderer/restart-and-install-update.injectable";
 import updateWarningLevelInjectable from "../update-warning-level.injectable";
+import styles from "./styles.module.scss";
+
+import type { IconProps } from "@freelensapp/icon";
+
+import type { IComputedValue } from "mobx";
+import type { HTMLAttributes } from "react";
 
 interface UpdateButtonProps extends HTMLAttributes<HTMLButtonElement> {}
 

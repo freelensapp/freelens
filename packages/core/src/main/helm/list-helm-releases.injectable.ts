@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult } from "@freelensapp/utilities";
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ListedHelmRelease } from "../../features/helm-releases/common/channels";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { ListedHelmRelease } from "../../features/helm-releases/common/channels";
 
 export type ListHelmReleases = (
   pathToKubeconfig: string,

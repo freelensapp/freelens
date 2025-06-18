@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { editor } from "monaco-editor";
 import React from "react";
-import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
 import { monacoValidators } from "../monaco-validators";
+
+import type { editor } from "monaco-editor";
+
+import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
 
 class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
   render() {

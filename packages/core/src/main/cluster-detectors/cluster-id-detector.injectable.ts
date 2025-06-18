@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { createHash } from "crypto";
 import { getInjectable } from "@ogre-tools/injectable";
+import { createHash } from "crypto";
 import { ClusterMetadataKey } from "../../common/cluster-types";
-import type { Cluster } from "../../common/cluster/cluster";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import k8SRequestInjectable from "../k8s-request.injectable";
 import { clusterMetadataDetectorInjectionToken } from "./token";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const clusterIdDetectorFactoryInjectable = getInjectable({
   id: "cluster-id-detector-factory",

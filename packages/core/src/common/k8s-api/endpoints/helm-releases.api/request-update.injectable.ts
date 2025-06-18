@@ -5,9 +5,10 @@
  */
 
 import { urlBuilderFor } from "@freelensapp/utilities";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 interface HelmReleaseUpdatePayload {
   repo: string;

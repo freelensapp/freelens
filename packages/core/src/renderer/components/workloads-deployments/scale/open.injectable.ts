@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Deployment } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import deploymentScaleDialogStateInjectable from "./dialog-state.injectable";
+
+import type { Deployment } from "@freelensapp/kube-object";
 
 export type OpenDeploymentScaleDialog = (obj: Deployment) => void;
 

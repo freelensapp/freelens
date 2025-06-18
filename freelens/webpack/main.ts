@@ -1,9 +1,10 @@
 import path from "path";
-import type webpack from "webpack";
 import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment, mainDir } from "./vars";
+
+import type webpack from "webpack";
 
 const main: webpack.Configuration = {
   name: "freelens-app-main",

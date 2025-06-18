@@ -6,8 +6,9 @@
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ClusterId } from "../../../../common/cluster-types";
 import { clearClusterAsDeletingChannel } from "../common/clear-as-deleting-channel";
+
+import type { ClusterId } from "../../../../common/cluster-types";
 
 export type RequestClearClusterAsDeleting = (clusterId: ClusterId) => Promise<void>;
 

@@ -4,14 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "https";
-import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
 import { getInjectable } from "@ogre-tools/injectable";
+import { Agent } from "https";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
 import fetchInjectable from "../fetch/fetch.injectable";
+
+import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
+import type { RequestInit } from "@freelensapp/node-fetch";
 
 export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: RequestInit) => KubeJsonApi;
 

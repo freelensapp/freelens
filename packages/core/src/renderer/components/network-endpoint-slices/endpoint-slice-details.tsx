@@ -7,7 +7,6 @@
 import "./endpoint-slice-details.scss";
 
 import { EndpointSlice } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
@@ -17,10 +16,13 @@ import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge, WithTooltip } from "../badge";
 import { DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface EndpointSliceDetailsProps extends KubeObjectDetailsProps<EndpointSlice> {}
 

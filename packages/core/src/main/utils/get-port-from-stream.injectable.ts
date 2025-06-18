@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Readable } from "stream";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import URLParse from "url-parse";
+import type { Readable } from "stream";
 
 export interface GetPortFromStreamArgs {
   /**

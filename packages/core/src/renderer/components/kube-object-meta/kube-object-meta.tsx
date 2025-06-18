@@ -4,24 +4,26 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { NamespaceApi } from "@freelensapp/kube-api";
 import { namespaceApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { KubeMetaField } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { DrawerItem, DrawerItemLabels } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
+
+import type { NamespaceApi } from "@freelensapp/kube-api";
+import type { KubeMetaField } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 
 export interface KubeObjectMetaProps {
   object: KubeObject;

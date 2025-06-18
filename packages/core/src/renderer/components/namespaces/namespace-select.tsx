@@ -12,10 +12,11 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import type { SelectProps } from "../select";
 import { Select } from "../select";
+
+import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
+import type { SelectProps } from "../select";
 
 export type NamespaceSelectSort = (left: string, right: string) => number;
 

@@ -5,8 +5,9 @@
  */
 
 import { PodSecurityPolicy } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class PodSecurityPolicyApi extends KubeApi<PodSecurityPolicy> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

@@ -6,8 +6,8 @@
 
 import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
-import kubeconfigSyncManagerInjectable from "../../../catalog-sources/kubeconfig-sync/manager.injectable";
 import catalogEntityRegistryInjectable from "../../../catalog/entity-registry.injectable";
+import kubeconfigSyncManagerInjectable from "../../../catalog-sources/kubeconfig-sync/manager.injectable";
 
 const addKubeconfigSyncAsEntitySourceInjectable = getInjectable({
   id: "add-kubeconfig-sync-as-entity-source",

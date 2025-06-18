@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
-
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { getInjectable } from "@ogre-tools/injectable";
 import navigateToPersistentVolumesInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volumes/navigate-to-persistent-volumes.injectable";
 import persistentVolumesRouteInjectable from "../../../common/front-end-routing/routes/cluster/storage/persistent-volumes/persistent-volumes-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";

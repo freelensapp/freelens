@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObject } from "../kube-object";
+
 import type {
   ClusterScopedMetadata,
   KubeJsonApiData,
@@ -11,7 +13,6 @@ import type {
   KubeObjectScope,
   Toleration,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
 
 export interface RuntimeClassData extends KubeJsonApiData<KubeObjectMetadata<KubeObjectScope.Cluster>, void, void> {
   handler: string;

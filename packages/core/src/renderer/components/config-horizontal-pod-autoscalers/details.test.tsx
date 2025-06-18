@@ -5,8 +5,6 @@
  */
 
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import type { StrictReactNode } from "@freelensapp/utilities";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -14,9 +12,14 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import { HorizontalPodAutoscalerDetails } from "./details";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { DiRender } from "../test-utils/renderFor";
 
 jest.mock("react-router-dom", () => ({
   Link: ({ children }: { children: StrictReactNode }) => children,

@@ -6,20 +6,22 @@
 
 import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { IComputedValue, IObservableArray } from "mobx";
 import { isObservableArray } from "mobx";
+import catalogEntityRegistryInjectable from "../main/catalog/entity-registry.injectable";
+import navigateForExtensionInjectable from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
+import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
+import { LensExtension } from "./lens-extension";
+
+import type { IComputedValue, IObservableArray } from "mobx";
+
 import type { CatalogEntity } from "../common/catalog";
 import type { MenuRegistration } from "../features/application-menu/main/menu-registration";
 import type { CatalogEntityRegistry } from "../main/catalog";
-import catalogEntityRegistryInjectable from "../main/catalog/entity-registry.injectable";
 import type { ShellEnvModifier } from "../main/shell-session/shell-env-modifier/shell-env-modifier-registration";
 import type { NavigateForExtension } from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
-import navigateForExtensionInjectable from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
 import type { TrayMenuRegistration } from "../main/tray/tray-menu-registration";
 import type { InstalledExtension } from "./common-api";
-import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
 import type { LensExtensionDependencies } from "./lens-extension";
-import { LensExtension } from "./lens-extension";
 
 interface LensMainExtensionDependencies extends LensExtensionDependencies {
   readonly entityRegistry: CatalogEntityRegistry;

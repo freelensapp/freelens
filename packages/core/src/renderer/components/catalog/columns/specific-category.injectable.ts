@@ -5,11 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CatalogCategory } from "../../../api/catalog-entity";
-import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 import categoryColumnsInjectable from "../custom-category-columns.injectable";
 import defaultCategoryColumnsInjectable from "./default-category.injectable";
 import namedCategoryColumnInjectable from "./named-category.injectable";
+
+import type { CatalogCategory } from "../../../api/catalog-entity";
+import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 
 export type GetColumnsForCategory = (activeCategory: CatalogCategory) => RegisteredAdditionalCategoryColumn[];
 

@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { cssNames } from "@freelensapp/utilities";
+import React from "react";
 import styles from "./switch.module.scss";
 
-import { cssNames } from "@freelensapp/utilities";
 import type { ChangeEvent, HTMLProps } from "react";
-import React from "react";
 
 export interface SwitchProps extends Omit<HTMLProps<HTMLInputElement>, "onChange"> {
   onChange?: (checked: boolean, event: ChangeEvent<HTMLInputElement>) => void;

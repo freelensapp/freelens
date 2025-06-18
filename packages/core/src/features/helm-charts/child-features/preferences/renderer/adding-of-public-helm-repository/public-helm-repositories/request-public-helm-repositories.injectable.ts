@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { sortBy } from "lodash/fp";
 import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/download-json/proxy.injectable";
 import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
+
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
 const artifactsHubSearchUrl = "https://hub.helm.sh/api/chartsvc/v1/charts/search?q=";

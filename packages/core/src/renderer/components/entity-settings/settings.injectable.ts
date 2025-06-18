@@ -8,8 +8,9 @@ import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import { entitySettingInjectionToken } from "./token";
+
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 const catalogEntitySettingItemsInjectable = getInjectable({
   id: "catalog-entity-setting-items",

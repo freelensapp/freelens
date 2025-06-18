@@ -5,9 +5,10 @@
  */
 
 import { DockTabStore } from "../dock-tab-store/dock-tab.store";
-import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
-import type { TabId } from "../dock/store";
 import { logTabDataValidator } from "./log-tab-data.validator";
+
+import type { TabId } from "../dock/store";
+import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
 
 export interface LogTabOwnerRef {
   /**

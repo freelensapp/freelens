@@ -6,12 +6,9 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import type { MessageChannel } from "@freelensapp/messaging";
 import { disposer, isPromiseLike } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Options } from "conf/dist/source";
 import { isEqual, kebabCase } from "lodash";
-import type { IEqualsComparer } from "mobx";
 import { reaction } from "mobx";
 import { nextTick } from "process";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -19,8 +16,14 @@ import getConfigurationFileModelInjectable from "../../../common/get-configurati
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import { persistentStorageIpcChannelPrefixesInjectionToken } from "./channel-prefix";
 import { shouldPersistentStorageDisableSyncInIpcListenerInjectionToken } from "./disable-sync";
-import type { Migrations } from "./migrations.injectable";
 import { persistStateToConfigInjectionToken } from "./save-to-file";
+
+import type { MessageChannel } from "@freelensapp/messaging";
+
+import type { Options } from "conf/dist/source";
+import type { IEqualsComparer } from "mobx";
+
+import type { Migrations } from "./migrations.injectable";
 
 export interface PersistentStorage {
   /**

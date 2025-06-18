@@ -11,11 +11,13 @@ import "./virtual-list.scss";
 import { cssNames, noop } from "@freelensapp/utilities";
 import isEqual from "lodash/isEqual";
 import { observer } from "mobx-react";
-import type { ForwardedRef } from "react";
 import React, { createRef, forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
-import type { Align, ListChildComponentProps, ListOnScrollProps } from "react-window";
 import { VariableSizeList } from "react-window";
+
+import type { ForwardedRef } from "react";
+import type { Align, ListChildComponentProps, ListOnScrollProps } from "react-window";
+
 import type { TableRowProps } from "../table/table-row";
 
 export interface VirtualListProps<T extends { getId(): string } | string> {

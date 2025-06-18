@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DeploymentApi } from "@freelensapp/kube-api";
 import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Deployment } from "@freelensapp/kube-object";
 import { fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { DeploymentScaleDialog } from "./dialog";
-import type { OpenDeploymentScaleDialog } from "./open.injectable";
 import openDeploymentScaleDialogInjectable from "./open.injectable";
+
+import type { DeploymentApi } from "@freelensapp/kube-api";
+
+import type { DiRender } from "../../test-utils/renderFor";
+import type { OpenDeploymentScaleDialog } from "./open.injectable";
 
 const dummyDeployment = new Deployment({
   apiVersion: "v1",

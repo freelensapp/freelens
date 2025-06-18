@@ -8,12 +8,10 @@ import "./cluster-manager.scss";
 
 import { buildURL } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Redirect } from "react-router";
 import welcomeRouteInjectable from "../../../common/front-end-routing/routes/welcome/welcome-route.injectable";
-import type { WatchForGeneralEntityNavigation } from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 import watchForGeneralEntityNavigationInjectable from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 import currentPathInjectable from "../../routes/current-path.injectable";
 import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
@@ -21,6 +19,10 @@ import { DeleteClusterDialog } from "../delete-cluster-dialog";
 import { HotbarMenu } from "../hotbar/hotbar-menu";
 import { TopBar } from "../layout/top-bar/top-bar";
 import { StatusBar } from "../status-bar/status-bar";
+
+import type { IComputedValue } from "mobx";
+
+import type { WatchForGeneralEntityNavigation } from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 
 interface Dependencies {
   currentRouteComponent: IComputedValue<React.ElementType | undefined>;

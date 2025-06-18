@@ -11,14 +11,15 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { FilterByNamespace } from "../namespaces/namespace-select-filter-model/filter-by-namespace.injectable";
 import filterByNamespaceInjectable from "../namespaces/namespace-select-filter-model/filter-by-namespace.injectable";
-import type { VerticalPodAutoscalerStore } from "./store";
 import verticalPodAutoscalerStoreInjectable from "./store.injectable";
+
+import type { FilterByNamespace } from "../namespaces/namespace-select-filter-model/filter-by-namespace.injectable";
+import type { VerticalPodAutoscalerStore } from "./store";
 
 enum columnId {
   name = "name",

@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import path from "path";
 import { getGlobalOverride } from "@freelensapp/test-utils";
-import type Config from "conf";
+import assert from "assert";
 import { get, has, set } from "lodash";
+import path from "path";
 import semver from "semver";
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
+
+import type Config from "conf";
 
 const MIGRATION_KEY = `__internal__.migrations.version`;
 

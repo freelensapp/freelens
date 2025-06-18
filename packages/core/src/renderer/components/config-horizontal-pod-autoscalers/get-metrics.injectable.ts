@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectable } from "@ogre-tools/injectable";
+import { getMetricName } from "./get-metric-name";
+import { HorizontalPodAutoscalerV1MetricParser } from "./metric-parser-v1";
+import { HorizontalPodAutoscalerV2MetricParser } from "./metric-parser-v2";
+
 import type {
   HorizontalPodAutoscaler,
   HorizontalPodAutoscalerMetricSpec,
   HorizontalPodAutoscalerMetricStatus,
 } from "@freelensapp/kube-object";
-import { getInjectable } from "@ogre-tools/injectable";
-import { getMetricName } from "./get-metric-name";
-import { HorizontalPodAutoscalerV1MetricParser } from "./metric-parser-v1";
-import { HorizontalPodAutoscalerV2MetricParser } from "./metric-parser-v2";
 
 type Parser = HorizontalPodAutoscalerV1MetricParser | HorizontalPodAutoscalerV2MetricParser;
 

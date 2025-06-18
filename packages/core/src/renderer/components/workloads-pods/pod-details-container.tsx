@@ -6,17 +6,13 @@
 
 import "./pod-details-container.scss";
 
-import type { Container, Pod, PodContainerStatus } from "@freelensapp/kube-object";
-import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
 import { podDetailsContainerMetricsInjectionToken } from "@freelensapp/metrics";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
-import type { PortForwardStore } from "../../port-forward";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
@@ -24,6 +20,13 @@ import { LocaleDate } from "../locale-date";
 import { StatusBrick } from "../status-brick";
 import { ContainerEnvironment } from "./pod-container-env";
 import { PodContainerPort } from "./pod-container-port";
+
+import type { Container, Pod, PodContainerStatus } from "@freelensapp/kube-object";
+import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
+
+import type { IComputedValue } from "mobx";
+
+import type { PortForwardStore } from "../../port-forward";
 
 export interface PodDetailsContainerProps {
   pod: Pod;

@@ -3,6 +3,11 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Icon } from "@freelensapp/icon";
 import { prevDefault } from "@freelensapp/utilities";
@@ -11,6 +16,7 @@ import React from "react";
 import activeHotbarInjectable from "../../../../features/hotbar/storage/common/active.injectable";
 import { Avatar } from "../../avatar";
 import styles from "../catalog.module.scss";
+
 import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 
 const renderNamedCategoryColumnCellInjectable = getInjectable({

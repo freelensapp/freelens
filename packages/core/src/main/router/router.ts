@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type http from "http";
 import Call from "@hapi/call";
+import type http from "http";
+
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ServerIncomingMessage } from "../lens-proxy/lens-proxy";
 import type { CreateHandlerForRoute, RouteHandler } from "./create-handler-for-route.injectable";

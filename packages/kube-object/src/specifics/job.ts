@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectStatus, LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { KubeObjectStatus, LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import type { Container } from "../types/container";
 import type { PodSpec } from "./pod";
 

@@ -5,6 +5,7 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+
 import type { KubernetesCluster } from "../../common/catalog-entities";
 import type { LensRendererExtension } from "../lens-renderer-extension";
 

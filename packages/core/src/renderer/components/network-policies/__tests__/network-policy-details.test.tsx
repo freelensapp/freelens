@@ -8,9 +8,10 @@ import { NetworkPolicy } from "@freelensapp/kube-object";
 import { findByTestId, findByText } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { NetworkPolicyDetails } from "../network-policy-details";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("NetworkPolicyDetails", () => {
   let render: DiRender;

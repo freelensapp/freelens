@@ -6,12 +6,13 @@
 
 import "./details-resources.scss";
 
-import type { Node } from "@freelensapp/kube-object";
 import React from "react";
 import { Table } from "../table/table";
 import { TableCell } from "../table/table-cell";
 import { TableHead } from "../table/table-head";
 import { TableRow } from "../table/table-row";
+
+import type { Node } from "@freelensapp/kube-object";
 
 export interface NodeDetailsResourcesProps {
   node: Node;

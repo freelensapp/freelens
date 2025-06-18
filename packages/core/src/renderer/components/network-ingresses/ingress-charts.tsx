@@ -7,11 +7,12 @@
 import { observer } from "mobx-react";
 import React, { useContext } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
-import type { ChartDataSets } from "../chart";
 import { BarChart } from "../chart";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
+
+import type { ChartDataSets } from "../chart";
 
 export const IngressCharts = observer(() => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};

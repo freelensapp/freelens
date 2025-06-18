@@ -6,7 +6,6 @@
 
 import "./volume-details-list.scss";
 
-import type { PersistentVolume } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -14,14 +13,17 @@ import kebabCase from "lodash/kebabCase";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer/drawer-title";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { Table } from "../table/table";
 import { TableCell } from "../table/table-cell";
 import { TableHead } from "../table/table-head";
 import { TableRow } from "../table/table-row";
-import type { PersistentVolumeStore } from "./store";
 import persistentVolumeStoreInjectable from "./store.injectable";
+
+import type { PersistentVolume } from "@freelensapp/kube-object";
+
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
+import type { PersistentVolumeStore } from "./store";
 
 export interface VolumeDetailsListProps {
   persistentVolumes: PersistentVolume[];

@@ -5,20 +5,23 @@
  */
 
 import assert from "assert";
-import type http from "http";
 import https from "https";
 import net from "net";
+import stoppable from "stoppable";
+import { apiKubePrefix, apiPrefix } from "../../common/vars";
+import { getBoolean } from "../utils/parse-query";
+import type http from "http";
+
 import type { Logger } from "@freelensapp/logger";
+
 import type httpProxy from "http-proxy-node16";
 import type { SelfSignedCert } from "selfsigned";
-import stoppable from "stoppable";
 import type { SetRequired } from "type-fest";
+
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
-import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
-import { getBoolean } from "../utils/parse-query";
 import type { ProxyApiRequestArgs } from "./proxy-functions";
 
 export type GetClusterForRequest = (req: http.IncomingMessage) => Cluster | undefined;

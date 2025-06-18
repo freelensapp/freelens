@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmRepo } from "../../../common/helm/helm-repo";
 import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 import getActiveHelmRepositoryInjectable from "../repositories/get-active-helm-repository.injectable";
+
+import type { HelmRepo } from "../../../common/helm/helm-repo";
 
 const getHelmChartVersionsInjectable = getInjectable({
   id: "get-helm-chart-versions",

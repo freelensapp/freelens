@@ -7,12 +7,13 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import type { AddHotbar } from "../../../features/hotbar/storage/common/add.injectable";
 import addHotbarInjectable from "../../../features/hotbar/storage/common/add.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
-import type { InputValidator } from "../input";
 import { Input } from "../input";
 import uniqueHotbarNameInjectable from "../input/validators/unique-hotbar-name.injectable";
+
+import type { AddHotbar } from "../../../features/hotbar/storage/common/add.injectable";
+import type { InputValidator } from "../input";
 
 interface Dependencies {
   closeCommandOverlay: () => void;

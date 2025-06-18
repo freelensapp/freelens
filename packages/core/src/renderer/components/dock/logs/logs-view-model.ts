@@ -4,12 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isDefined } from "@freelensapp/utilities";
 import assert from "assert";
+import { computed } from "mobx";
+
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
-import { isDefined } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import { computed } from "mobx";
+
 import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";

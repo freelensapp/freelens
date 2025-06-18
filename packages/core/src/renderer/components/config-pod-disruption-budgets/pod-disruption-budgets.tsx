@@ -6,18 +6,20 @@
 
 import "./pod-disruption-budgets.scss";
 
-import type { PodDisruptionBudget } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { PodDisruptionBudgetStore } from "./store";
 import podDisruptionBudgetStoreInjectable from "./store.injectable";
+
+import type { PodDisruptionBudget } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PodDisruptionBudgetStore } from "./store";
 
 enum columnId {
   name = "name",

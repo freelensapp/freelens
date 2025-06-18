@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 import { isRequestError } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { CoreV1Api } from "@freelensapp/kubernetes-client-node";
 
 export interface PrometheusService extends PrometheusServiceInfo {
   kind: string;

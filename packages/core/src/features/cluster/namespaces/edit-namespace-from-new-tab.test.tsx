@@ -4,15 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
-import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import type { ShowNotification } from "@freelensapp/notifications";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import React from "react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
@@ -22,12 +17,20 @@ import hostedClusterIdInjectable from "../../../renderer/cluster-frame-context/h
 import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
 import createEditResourceTabInjectable from "../../../renderer/components/dock/edit-resource/edit-resource-tab.injectable";
 import getRandomIdForEditResourceTabInjectable from "../../../renderer/components/dock/edit-resource/get-random-id-for-edit-resource-tab.injectable";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
 import apiKubeGetInjectable from "../../../renderer/k8s/api-kube-get.injectable";
-import type { ApiKubePatch } from "../../../renderer/k8s/api-kube-patch.injectable";
 import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injectable";
+
+import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
+import type { ApiKubePatch } from "../../../renderer/k8s/api-kube-patch.injectable";
 
 describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;

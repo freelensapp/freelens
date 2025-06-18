@@ -3,25 +3,33 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { clipboard } from "electron";
-import type { IObservableValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { saveFileDialog } from "../../utils/saveFile";
-import type { DialogProps } from "../dialog";
 import { Dialog } from "../dialog";
 import { MonacoEditor } from "../monaco-editor";
 import { Wizard, WizardStep } from "../wizard";
 import styles from "./kubeconfig-dialog.module.scss";
 import kubeconfigDialogStateInjectable from "./state.injectable";
+
+import type { ShowNotification } from "@freelensapp/notifications";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { IObservableValue } from "mobx";
+
+import type { DialogProps } from "../dialog";
 
 export interface KubeconfigDialogData {
   title?: StrictReactNode;

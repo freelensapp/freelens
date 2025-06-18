@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CronJob, Job } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import jobStoreInjectable from "./store.injectable";
+
+import type { CronJob, Job } from "@freelensapp/kube-object";
 
 export type GetJobsByOwner = (cronJob: CronJob) => Job[];
 

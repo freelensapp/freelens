@@ -52,7 +52,7 @@ lint:
       known_good_version: 0.16.0
   enabled:
     - actionlint@1.7.7
-    - biome@1.9.4! # datasource=npm depName=@biomejs/biome
+    - biome@2.0.0! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.45.0
     - shellcheck@0.10.0

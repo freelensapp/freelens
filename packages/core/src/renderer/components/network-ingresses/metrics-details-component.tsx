@@ -4,15 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Ingress } from "@freelensapp/kube-object";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { IngressMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-ingress-metrics.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";
 import { IngressCharts } from "./ingress-charts";
 import ingressMetricsInjectable from "./metrics.injectable";
+
+import type { Ingress } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { IngressMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-ingress-metrics.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<IngressMetricData>;

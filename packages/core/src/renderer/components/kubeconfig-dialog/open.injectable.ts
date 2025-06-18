@@ -6,9 +6,10 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import kubeconfigDialogStateInjectable from "./state.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface OpenKubeconfigDialogArgs {
   title?: StrictReactNode;

@@ -6,10 +6,8 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type WebSocket from "ws";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import directoryForBinariesInjectable from "../../../common/app-paths/directory-for-binaries/directory-for-binaries.injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
 import statInjectable from "../../../common/fs/stat.injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
@@ -28,8 +26,12 @@ import shellSessionProcessesInjectable from "../processes.injectable";
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
-import type { LocalShellSessionDependencies } from "./local-shell-session";
 import { LocalShellSession } from "./local-shell-session";
+
+import type WebSocket from "ws";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { LocalShellSessionDependencies } from "./local-shell-session";
 
 export interface OpenLocalShellSessionArgs {
   websocket: WebSocket;

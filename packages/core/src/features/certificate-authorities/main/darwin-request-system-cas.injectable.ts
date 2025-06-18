@@ -5,10 +5,11 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import { platformSpecificRequestSystemCAsInjectionToken } from "../common/request-system-cas-token";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet#other_assertions
 const certSplitPattern = /(?=-----BEGIN\sCERTIFICATE-----)/g;

@@ -6,22 +6,24 @@
 
 import "./deployments.scss";
 
-import type { Deployment } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import orderBy from "lodash/orderBy";
 import { observer } from "mobx-react";
 import React from "react";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { DeploymentStore } from "./store";
 import deploymentStoreInjectable from "./store.injectable";
+
+import type { Deployment } from "@freelensapp/kube-object";
+
+import type { EventStore } from "../events/store";
+import type { DeploymentStore } from "./store";
 
 enum columnId {
   name = "name",

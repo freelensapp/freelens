@@ -8,9 +8,10 @@ import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { action } from "mobx";
+import catalogEntitySettingItemsInjectable from "./settings.injectable";
+
 import type { CatalogEntity } from "../../api/catalog-entity";
 import type { RegisteredEntitySetting } from "./extension-registrator.injectable";
-import catalogEntitySettingItemsInjectable from "./settings.injectable";
 
 export interface SettingTabs {
   title: string;

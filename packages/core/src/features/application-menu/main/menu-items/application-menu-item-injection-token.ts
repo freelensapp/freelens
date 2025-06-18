@@ -4,8 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Orderable } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { Orderable } from "@freelensapp/utilities";
+
 import type {
   BaseWindow,
   BrowserWindow,
@@ -14,6 +16,7 @@ import type {
   MenuItemConstructorOptions,
 } from "electron";
 import type { SetOptional } from "type-fest";
+
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { MaybeShowable } from "../../../../common/utils/composable-responsibilities/showable/showable";
 import type { ChildOfParentComposite, ParentOfChildComposite } from "../../../../common/utils/composite/interfaces";

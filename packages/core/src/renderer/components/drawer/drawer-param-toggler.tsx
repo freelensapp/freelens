@@ -5,10 +5,12 @@
  */
 
 import "./drawer-param-toggler.scss";
+
 import { Icon } from "@freelensapp/icon";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import React from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface DrawerParamTogglerProps {
   label: string | number;

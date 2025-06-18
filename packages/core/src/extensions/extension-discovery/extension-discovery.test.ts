@@ -5,24 +5,26 @@
  */
 
 import { delay } from "@freelensapp/utilities";
-import type { FSWatcher } from "chokidar";
 import { observable, runInAction, when } from "mobx";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
+import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import extensionApiVersionInjectable from "../../common/vars/extension-api-version.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
-import type { ExtensionDiscovery } from "../extension-discovery/extension-discovery";
 import extensionDiscoveryInjectable from "../extension-discovery/extension-discovery.injectable";
 import installExtensionInjectable from "../install-extension/install-extension.injectable";
+
+import type { FSWatcher } from "chokidar";
+
+import type { JoinPaths } from "../../common/path/join-paths.injectable";
+import type { ExtensionDiscovery } from "../extension-discovery/extension-discovery";
 
 describe("ExtensionDiscovery", () => {
   let extensionDiscovery: ExtensionDiscovery;

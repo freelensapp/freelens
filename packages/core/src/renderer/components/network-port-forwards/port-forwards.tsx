@@ -7,13 +7,10 @@
 import "./port-forwards.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { NavigateToPortForwards } from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
-import type { PortForwardItem, PortForwardStore } from "../../port-forward";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -21,6 +18,11 @@ import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { PortForwardDetails } from "./port-forward-details";
 import { PortForwardMenu } from "./port-forward-menu";
 import portForwardsRouteParametersInjectable from "./port-forwards-route-parameters.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { NavigateToPortForwards } from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
+import type { PortForwardItem, PortForwardStore } from "../../port-forward";
 
 enum columnId {
   name = "name",

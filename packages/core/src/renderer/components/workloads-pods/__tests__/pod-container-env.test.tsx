@@ -4,17 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Container } from "@freelensapp/kube-object";
 import { ConfigMap, Pod, Secret, SecretType } from "@freelensapp/kube-object";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { ConfigMapStore } from "../../config-maps/store";
 import configMapStoreInjectable from "../../config-maps/store.injectable";
-import type { SecretStore } from "../../config-secrets/store";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { ContainerEnvironment } from "../pod-container-env";
+
+import type { Container } from "@freelensapp/kube-object";
+
+import type { ConfigMapStore } from "../../config-maps/store";
+import type { SecretStore } from "../../config-secrets/store";
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<ContainerEnv />", () => {
   let render: DiRender;

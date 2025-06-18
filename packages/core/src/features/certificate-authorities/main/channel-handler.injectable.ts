@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { globalAgent } from "https";
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { isString } from "@freelensapp/utilities";
+import { globalAgent } from "https";
 import { casChannel } from "../common/channel";
 
 const certificateAuthoritiesChannelListenerInjectable = getRequestChannelListenerInjectable({

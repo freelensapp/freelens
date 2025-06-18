@@ -6,19 +6,21 @@
 
 import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
-import type { AppEvent } from "../../common/app-event-bus/event-bus";
-import type { CatalogEntityActionContext } from "../../common/catalog";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
-import type { CatalogEntityOnBeforeRun, CatalogEntityRegistry } from "../../renderer/api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { AppEvent } from "../../common/app-event-bus/event-bus";
+import type { CatalogEntityActionContext } from "../../common/catalog";
+import type { CatalogEntityOnBeforeRun, CatalogEntityRegistry } from "../../renderer/api/catalog/entity/registry";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 class MockCatalogCategory extends CatalogCategory {
   apiVersion = "catalog.k8slens.dev/v1alpha1";

@@ -6,7 +6,6 @@
 
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
 import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
 import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
@@ -14,15 +13,17 @@ import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable"
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import broadcastConnectionUpdateInjectable from "../cluster/broadcast-connection-update.injectable";
-import type { ClusterConnection } from "../cluster/cluster-connection.injectable";
 import clusterConnectionInjectable from "../cluster/cluster-connection.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
+
+import type { Cluster } from "../../common/cluster/cluster";
+import type { ClusterConnection } from "../cluster/cluster-connection.injectable";
+import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 
 describe("create clusters", () => {
   let cluster: Cluster;

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import { computed } from "mobx";
 import moment from "moment";
 import { reactiveNow } from "../../../../../../common/utils/reactive-now/reactive-now";

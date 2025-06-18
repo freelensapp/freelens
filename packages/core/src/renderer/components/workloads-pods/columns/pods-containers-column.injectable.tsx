@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ContainerStateValues, Pod } from "@freelensapp/kube-object";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { cssNames } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -12,6 +11,8 @@ import startCase from "lodash/startCase";
 import React from "react";
 import { StatusBrick } from "../../status-brick";
 import { COLUMN_PRIORITY } from "./column-priority";
+
+import type { ContainerStateValues, Pod } from "@freelensapp/kube-object";
 
 const renderState = (name: string, ready: boolean, key: string, data?: ContainerStateValues) =>
   data && (

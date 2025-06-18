@@ -5,15 +5,17 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { broadcastMessage } from "../../../common/ipc";
 import { catalogEntityRunListener } from "../../../common/ipc/catalog";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import catalogEnitiesInjectable from "../../api/catalog/entity/entities.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import { Select } from "../select";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 interface Dependencies {
   closeCommandOverlay: () => void;

@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { JsonApi } from "@freelensapp/json-api";
-import type { Logger } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { waitUntilFree } from "tcp-port-used";
 import { ItemStore } from "../../../common/item.store";
+import { PortForwardItem } from "../port-forward-item";
+
+import type { JsonApi } from "@freelensapp/json-api";
+import type { Logger } from "@freelensapp/logger";
+
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { ForwardedPort } from "../port-forward-item";
-import { PortForwardItem } from "../port-forward-item";
 import type { RequestActivePortForward } from "./request-active-port-forward.injectable";
 
 interface Dependencies {

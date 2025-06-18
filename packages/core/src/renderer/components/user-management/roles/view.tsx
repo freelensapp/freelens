@@ -9,15 +9,16 @@ import "./view.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { KubeObjectAge } from "../../kube-object/age";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
-import { KubeObjectAge } from "../../kube-object/age";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
 import openAddRoleDialogInjectable from "./add-dialog/open.injectable";
 import { AddRoleDialog } from "./add-dialog/view";
-import type { RoleStore } from "./store";
 import roleStoreInjectable from "./store.injectable";
+
+import type { RoleStore } from "./store";
 
 enum columnId {
   name = "name",

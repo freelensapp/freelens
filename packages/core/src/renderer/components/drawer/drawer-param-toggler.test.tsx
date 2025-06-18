@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../test-utils/renderFor";
 import { DrawerParamToggler } from "./drawer-param-toggler";
+
+import type { RenderResult } from "@testing-library/react";
 
 describe("<DrawerParamToggler />", () => {
   let result: RenderResult;

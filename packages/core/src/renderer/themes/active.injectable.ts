@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import { computed } from "mobx";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";

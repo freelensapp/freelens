@@ -5,10 +5,12 @@
  */
 
 import "./line-progress.scss";
+
 import { withTooltip } from "@freelensapp/tooltip";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import React from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface LineProgressProps extends React.HTMLProps<HTMLDivElement> {
   value: number;

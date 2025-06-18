@@ -6,25 +6,27 @@
 
 import "./details.scss";
 
-import { Node, formatNodeTaint } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
+import { formatNodeTaint, Node } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import upperFirst from "lodash/upperFirst";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { DrawerTitle } from "../drawer/drawer-title";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import loadPodsFromAllNamespacesInjectable from "../workloads-pods/load-pods-from-all-namespaces.injectable";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
-import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { NodeDetailsResources } from "./details-resources";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PodStore } from "../workloads-pods/store";
 
 export interface NodeDetailsProps extends KubeObjectDetailsProps<Node> {}
 

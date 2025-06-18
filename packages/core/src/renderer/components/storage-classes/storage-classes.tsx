@@ -9,12 +9,13 @@ import "./storage-classes.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
-import { KubeObjectAge } from "../kube-object/age";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { StorageClassStore } from "./store";
 import storageClassStoreInjectable from "./store.injectable";
+
+import type { StorageClassStore } from "./store";
 
 enum columnId {
   name = "name",

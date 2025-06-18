@@ -5,10 +5,6 @@
  */
 
 import { asLegacyGlobalForExtensionApi, asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
-import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store.injectable";
-import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
-import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
-
 import {
   notificationsStoreInjectable,
   showCheckedErrorNotificationInjectable,
@@ -17,39 +13,40 @@ import {
   showShortInfoNotificationInjectable,
   showSuccessNotificationInjectable,
 } from "@freelensapp/notifications";
-
 import commandOverlayInjectable from "../../renderer/components/command-palette/command-overlay.injectable";
 import { ConfirmDialog as _ConfirmDialog } from "../../renderer/components/confirm-dialog";
-import type {
-  ConfirmDialogBooleanParams,
-  ConfirmDialogParams,
-  ConfirmDialogProps,
-} from "../../renderer/components/confirm-dialog";
 import confirmInjectable from "../../renderer/components/confirm-dialog/confirm.injectable";
 import openConfirmDialogInjectable from "../../renderer/components/confirm-dialog/open.injectable";
 import renameTabInjectable from "../../renderer/components/dock/dock/rename-tab.injectable";
 import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
 import createWorkloadLogsTabInjectable from "../../renderer/components/dock/logs/create-workload-logs-tab.injectable";
+import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store.injectable";
+import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../renderer/components/dock/terminal/send-command.injectable";
+import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
 import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
 import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
 import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
 
+import type {
+  ConfirmDialogBooleanParams,
+  ConfirmDialogParams,
+  ConfirmDialogProps,
+} from "../../renderer/components/confirm-dialog";
+
 export * from "@freelensapp/button";
 export * from "@freelensapp/icon";
-export * from "@freelensapp/spinner";
-export * from "@freelensapp/tooltip";
-
 export {
-  NotificationStatus,
   type CreateNotificationOptions,
   type Notification,
   type NotificationId,
   type NotificationMessage,
-  type ShowNotification,
+  NotificationStatus,
   type NotificationsStore,
+  type ShowNotification,
 } from "@freelensapp/notifications";
-
+export * from "@freelensapp/spinner";
+export * from "@freelensapp/tooltip";
 export * from "../../renderer/components/add-remove-buttons";
 export * from "../../renderer/components/avatar";
 export * from "../../renderer/components/badge";
@@ -67,11 +64,11 @@ export * from "../../renderer/components/file-picker";
 export * from "../../renderer/components/gutter";
 export * from "../../renderer/components/horizontal-line";
 export * from "../../renderer/components/input";
+export * from "../../renderer/components/kube-object";
 export * from "../../renderer/components/kube-object-details";
 export * from "../../renderer/components/kube-object-list-layout";
 export * from "../../renderer/components/kube-object-menu";
 export * from "../../renderer/components/kube-object-meta";
-export * from "../../renderer/components/kube-object";
 export * from "../../renderer/components/layout/main-layout";
 export * from "../../renderer/components/layout/page-layout";
 export * from "../../renderer/components/layout/setting-layout";
@@ -84,8 +81,15 @@ export * from "../../renderer/components/locale-date";
 export * from "../../renderer/components/map";
 export * from "../../renderer/components/markdown-viewer";
 export * from "../../renderer/components/menu";
-export * from "../../renderer/components/namespaces/namespace-select-filter";
+export {
+  type MonacoCustomTheme,
+  MonacoEditor,
+  type MonacoEditorId,
+  type MonacoEditorProps,
+  type MonacoTheme,
+} from "../../renderer/components/monaco-editor";
 export * from "../../renderer/components/namespaces/namespace-select";
+export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
 export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
@@ -105,17 +109,9 @@ export * from "../../renderer/components/workloads-pods/pod-charts";
 export * from "../../renderer/components/workloads-pods/pod-details-list";
 
 export type {
-  CategoryColumnRegistration,
   AdditionalCategoryColumnRegistration,
+  CategoryColumnRegistration,
 } from "../../renderer/components/catalog/custom-category-columns";
-
-export {
-  MonacoEditor,
-  type MonacoEditorProps,
-  type MonacoEditorId,
-  type MonacoTheme,
-  type MonacoCustomTheme,
-} from "../../renderer/components/monaco-editor";
 
 export const CommandOverlay = asLegacyGlobalForExtensionApi(commandOverlayInjectable);
 

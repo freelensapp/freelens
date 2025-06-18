@@ -12,8 +12,9 @@ import { Badge } from "../../badge";
 import { Notice } from "../../extensions/notice";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
-import type { EditResourceModel } from "./edit-resource-model/edit-resource-model.injectable";
 import editResourceModelInjectable from "./edit-resource-model/edit-resource-model.injectable";
+
+import type { EditResourceModel } from "./edit-resource-model/edit-resource-model.injectable";
 
 export interface EditResourceProps {
   tabId: string;

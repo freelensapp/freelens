@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Stats } from "fs";
 import { getInjectable } from "@ogre-tools/injectable";
 import fsInjectable from "./fs.injectable";
+import type { Stats } from "fs";
 
 export type LStat = (path: string) => Promise<Stats>;
 

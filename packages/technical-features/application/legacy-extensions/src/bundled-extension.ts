@@ -1,4 +1,5 @@
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { BundledLensExtensionConstructor, BundledLensExtensionManifest } from "./lens-extension";
 
 export type BundledExtensionResult = BundledLensExtensionConstructor | null;

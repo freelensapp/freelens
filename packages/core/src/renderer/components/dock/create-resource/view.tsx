@@ -4,34 +4,37 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { isObject, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import yaml, { dump } from "js-yaml";
-import type { IComputedValue } from "mobx";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { GroupBase } from "react-select";
-import type { ApiManager } from "../../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
-import type { RequestKubeObjectCreation } from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
 import requestKubeObjectCreationInjectable from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
-import type { Navigate } from "../../../navigation/navigate.injectable";
 import navigateInjectable from "../../../navigation/navigate.injectable";
-import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
-import type { SelectOption } from "../../select";
 import { Select } from "../../select";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
 import createResourceTemplatesInjectable from "./create-resource-templates.injectable";
-import type { CreateResourceTabStore } from "./store";
 import createResourceTabStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
+
+import type { IComputedValue } from "mobx";
+import type { GroupBase } from "react-select";
+
+import type { ApiManager } from "../../../../common/k8s-api/api-manager";
+import type { RequestKubeObjectCreation } from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
+import type { Navigate } from "../../../navigation/navigate.injectable";
+import type { GetDetailsUrl } from "../../kube-detail-params/get-details-url.injectable";
+import type { SelectOption } from "../../select";
+import type { CreateResourceTabStore } from "./store";
 
 export interface CreateResourceProps {
   tabId: string;

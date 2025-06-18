@@ -6,6 +6,7 @@
 
 // Monaco editor themes customization
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { editor } from "monaco-editor";
 
 export type MonacoTheme = "vs" | "vs-dark" | "hc-black" | MonacoCustomTheme;

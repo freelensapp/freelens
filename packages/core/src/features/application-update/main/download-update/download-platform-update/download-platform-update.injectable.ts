@@ -6,8 +6,10 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ProgressInfo } from "electron-updater";
 import electronUpdaterInjectable from "../../../../../main/electron-app/features/electron-updater.injectable";
+
+import type { ProgressInfo } from "electron-updater";
+
 import type { ProgressOfDownload } from "../../../common/progress-of-update-download.injectable";
 
 export type DownloadPlatformUpdate = (

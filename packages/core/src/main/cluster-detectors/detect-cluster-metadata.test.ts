@@ -4,20 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import { ClusterMetadataKey } from "../../common/cluster-types";
 import { Cluster } from "../../common/cluster/cluster";
+import { ClusterMetadataKey } from "../../common/cluster-types";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import clusterDistributionDetectorInjectable from "./cluster-distribution-detector.injectable";
 import clusterIdDetectorFactoryInjectable from "./cluster-id-detector.injectable";
 import clusterLastSeenDetectorInjectable from "./cluster-last-seen-detector.injectable";
 import clusterNodeCountDetectorInjectable from "./cluster-nodes-count-detector.injectable";
-import type { DetectClusterMetadata } from "./detect-cluster-metadata.injectable";
 import detectClusterMetadataInjectable from "./detect-cluster-metadata.injectable";
 import requestClusterVersionInjectable from "./request-cluster-version.injectable";
+
+import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
+import type { DetectClusterMetadata } from "./detect-cluster-metadata.injectable";
 
 describe("detect-cluster-metadata", () => {
   let detectClusterMetadata: DetectClusterMetadata;

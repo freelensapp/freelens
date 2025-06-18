@@ -4,16 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { runInAction } from "mobx";
 import React from "react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { preferenceItemInjectionToken } from "./renderer/preference-items/preference-item-injection-token";
+
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("preferences - hiding-of-empty-branches, given in preferences page", () => {
   let builder: ApplicationBuilder;

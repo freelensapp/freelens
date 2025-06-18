@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { disposer } from "@freelensapp/utilities";
 import { createHash } from "crypto";
+import { mkdirp, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
-import { setImmediate } from "timers";
-import { disposer } from "@freelensapp/utilities";
-import { mkdirp, remove } from "fs-extra";
-import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
+import { setImmediate } from "timers";
 import * as uuid from "uuid";
+
+import type { ElectronApplication, Frame, Page } from "playwright";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
   win32: "./dist/win-unpacked/Freelens.exe",

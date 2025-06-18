@@ -1,26 +1,20 @@
-import { type DiContainer, type Injectable, createContainer } from "@ogre-tools/injectable";
-
+import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
+import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
-
+import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import {
   type EnlistMessageChannelListener,
   enlistMessageChannelListenerInjectionToken,
 } from "./features/actual/message/enlist-message-channel-listener-injection-token";
-
-import { messagingFeatureForUnitTesting } from "./features/unit-testing";
-
+import { getMessageChannel } from "./features/actual/message/get-message-channel";
 import {
+  getMessageChannelListenerInjectable,
   type MessageChannel,
   type MessageChannelListener,
-  getMessageChannelListenerInjectable,
 } from "./features/actual/message/message-channel-listener-injection-token";
-
-import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
-
-import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
-import { getMessageChannel } from "./features/actual/message/get-message-channel";
+import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 describe("listening-of-messages", () => {
   let di: DiContainer;

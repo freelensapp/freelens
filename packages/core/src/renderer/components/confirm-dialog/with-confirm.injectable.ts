@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ConfirmDialogParams } from "./confirm-dialog";
 import openConfirmDialogInjectable from "./open.injectable";
+
+import type { ConfirmDialogParams } from "./confirm-dialog";
 
 export type WithConfirmation = (params: ConfirmDialogParams) => () => void;
 

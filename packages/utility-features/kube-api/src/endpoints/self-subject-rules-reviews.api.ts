@@ -5,8 +5,9 @@
  */
 
 import { SelfSubjectRulesReview } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class SelfSubjectRulesReviewApi extends KubeApi<SelfSubjectRulesReview> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

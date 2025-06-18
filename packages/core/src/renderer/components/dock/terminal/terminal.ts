@@ -4,18 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import type { Logger } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal as XTerm } from "@xterm/xterm";
+import assert from "assert";
 import { clipboard } from "electron";
 import { once } from "lodash";
 import debounce from "lodash/debounce";
-import type { IComputedValue } from "mobx";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { IComputedValue } from "mobx";
+
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";

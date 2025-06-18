@@ -6,18 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "lodash";
-import type { ObservableMap } from "mobx";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import { defaultThemeId } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
-import type {
-  EditorConfiguration,
-  ExtensionRegistry,
-  KubeconfigSyncEntry,
-  KubeconfigSyncValue,
-  TerminalConfig,
-} from "./preferences-helpers";
 import {
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
@@ -25,6 +17,16 @@ import {
   defaultTerminalConfig,
   getPreferenceDescriptor,
   packageMirrors,
+} from "./preferences-helpers";
+
+import type { ObservableMap } from "mobx";
+
+import type {
+  EditorConfiguration,
+  ExtensionRegistry,
+  KubeconfigSyncEntry,
+  KubeconfigSyncValue,
+  TerminalConfig,
 } from "./preferences-helpers";
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;

@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
+import type { ReplicaSet } from "@freelensapp/kube-object";
 
 const replicaSetScaleDialogStateInjectable = getInjectable({
   id: "replica-set-scale-dialog-state",
