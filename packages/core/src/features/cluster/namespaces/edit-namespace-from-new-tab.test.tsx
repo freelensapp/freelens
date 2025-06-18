@@ -422,7 +422,7 @@ metadata:
                 });
 
                 it("shows an error notification with a condensed message", () => {
-                  expect(showErrorNotificationMock).toBeCalledWith(
+                  expect(showErrorNotificationMock).toHaveBeenCalledWith(
                     <p>
                       {"Failed to save resource: "}
                       {

@@ -154,13 +154,13 @@ describe("encourage user to update when sufficient time passed since update was 
 
             act(() => updateMenuItem.click());
 
-            expect(quitAndInstallUpdateMock).toBeCalled();
+            expect(quitAndInstallUpdateMock).toHaveBeenCalled();
           });
 
           it("when dropdown closed without clicking update item, does not restart the application to update", () => {
             act(() => button.click());
 
-            expect(quitAndInstallUpdateMock).not.toBeCalled();
+            expect(quitAndInstallUpdateMock).not.toHaveBeenCalled();
           });
         });
 

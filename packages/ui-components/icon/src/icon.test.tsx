@@ -56,7 +56,7 @@ describe("<Icon> href technical tests", () => {
 
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("href", "http://localhost");
-    expect(logger.warn).not.toBeCalled();
+    expect(logger.warn).not.toHaveBeenCalled();
   });
 
   it("should render an <Icon> with https href", () => {
@@ -66,7 +66,7 @@ describe("<Icon> href technical tests", () => {
 
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("href", "https://localhost");
-    expect(logger.warn).not.toBeCalled();
+    expect(logger.warn).not.toHaveBeenCalled();
   });
 
   it("should warn about ws hrefs", () => {
@@ -76,7 +76,7 @@ describe("<Icon> href technical tests", () => {
 
     expect(icon).toBeInTheDocument();
     expect(icon).not.toHaveAttribute("href", "ws://localhost");
-    expect(logger.warn).toBeCalled();
+    expect(logger.warn).toHaveBeenCalled();
   });
 
   it("should warn about javascript: hrefs", () => {
@@ -86,6 +86,6 @@ describe("<Icon> href technical tests", () => {
 
     expect(icon).toBeInTheDocument();
     expect(icon).not.toHaveAttribute("href", "#");
-    expect(logger.warn).toBeCalled();
+    expect(logger.warn).toHaveBeenCalled();
   });
 });

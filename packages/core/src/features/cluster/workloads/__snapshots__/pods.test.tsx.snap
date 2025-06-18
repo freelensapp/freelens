@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`workloads / pods when navigating to workloads / pods view given a namespace has pods renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -984,7 +984,7 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1826,7 +1826,7 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>

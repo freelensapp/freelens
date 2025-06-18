@@ -39,7 +39,7 @@ describe("requestNonCoreApiVersions", () => {
     });
 
     it("should request all api groups", () => {
-      expect(k8sRequestMock).toBeCalledWith({ id: "some-cluster-id" }, "/apis");
+      expect(k8sRequestMock).toHaveBeenCalledWith({ id: "some-cluster-id" }, "/apis");
     });
 
     describe("when api groups request resolves to empty", () => {

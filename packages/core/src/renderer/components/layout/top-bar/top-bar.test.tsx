@@ -96,11 +96,11 @@ describe("<TopBar/>", () => {
 
       fireEvent.click(prevButton);
 
-      expect(goBack).toBeCalled();
+      expect(goBack).toHaveBeenCalled();
 
       fireEvent.click(nextButton);
 
-      expect(goForward).toBeCalled();
+      expect(goForward).toHaveBeenCalled();
     });
 
     describe("on macos", () => {
@@ -141,16 +141,16 @@ describe("<TopBar/>", () => {
         const close = getByTestId("window-close");
 
         fireEvent.click(menu);
-        expect(openAppContextMenu).toBeCalled();
+        expect(openAppContextMenu).toHaveBeenCalled();
 
         fireEvent.click(minimize);
-        expect(maximizeWindow).toBeCalled();
+        expect(maximizeWindow).toHaveBeenCalled();
 
         fireEvent.click(maximize);
-        expect(toggleMaximizeWindow).toBeCalled();
+        expect(toggleMaximizeWindow).toHaveBeenCalled();
 
         fireEvent.click(close);
-        expect(closeWindow).toBeCalled();
+        expect(closeWindow).toHaveBeenCalled();
       });
     });
 
@@ -177,16 +177,16 @@ describe("<TopBar/>", () => {
         const close = getByTestId("window-close");
 
         fireEvent.click(menu);
-        expect(openAppContextMenu).toBeCalled();
+        expect(openAppContextMenu).toHaveBeenCalled();
 
         fireEvent.click(minimize);
-        expect(maximizeWindow).toBeCalled();
+        expect(maximizeWindow).toHaveBeenCalled();
 
         fireEvent.click(maximize);
-        expect(toggleMaximizeWindow).toBeCalled();
+        expect(toggleMaximizeWindow).toHaveBeenCalled();
 
         fireEvent.click(close);
-        expect(closeWindow).toBeCalled();
+        expect(closeWindow).toHaveBeenCalled();
       });
     });
   });

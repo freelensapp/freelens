@@ -52,7 +52,7 @@ describe("getStartableStoppable", () => {
       });
 
       it("calls stop function", () => {
-        expect(stopMock).toBeCalled();
+        expect(stopMock).toHaveBeenCalled();
       });
 
       it("is stopped", () => {

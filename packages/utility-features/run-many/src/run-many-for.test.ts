@@ -398,15 +398,15 @@ describe("runManyFor", () => {
     });
 
     it("should run 'runnable-1'", () => {
-      expect(runMock).toBeCalledWith("runnable-1");
+      expect(runMock).toHaveBeenCalledWith("runnable-1");
     });
 
     it("should run 'runnable-2'", () => {
-      expect(runMock).toBeCalledWith("runnable-2");
+      expect(runMock).toHaveBeenCalledWith("runnable-2");
     });
 
     it("should not run 'runnable-3'", () => {
-      expect(runMock).not.toBeCalledWith("runnable-3");
+      expect(runMock).not.toHaveBeenCalledWith("runnable-3");
     });
 
     describe("when 'runnable-1' resolves", () => {
@@ -415,7 +415,7 @@ describe("runManyFor", () => {
       });
 
       it("should run 'runnable-3'", () => {
-        expect(runMock).toBeCalledWith("runnable-3");
+        expect(runMock).toHaveBeenCalledWith("runnable-3");
       });
 
       describe("when 'runnable-2' resolves", () => {
@@ -424,7 +424,7 @@ describe("runManyFor", () => {
         });
 
         it("shouldn't call any more runnables", () => {
-          expect(runMock).toBeCalledTimes(3);
+          expect(runMock).toHaveBeenCalledTimes(3);
         });
       });
 
@@ -434,11 +434,11 @@ describe("runManyFor", () => {
         });
 
         it("should run 'runnable-4'", () => {
-          expect(runMock).toBeCalledWith("runnable-4");
+          expect(runMock).toHaveBeenCalledWith("runnable-4");
         });
 
         it("should run 'runnable-5'", () => {
-          expect(runMock).toBeCalledWith("runnable-5");
+          expect(runMock).toHaveBeenCalledWith("runnable-5");
         });
 
         describe("when 'runnable-2' resolves", () => {
@@ -447,7 +447,7 @@ describe("runManyFor", () => {
           });
 
           it("shouldn't call any more runnables", () => {
-            expect(runMock).toBeCalledTimes(5);
+            expect(runMock).toHaveBeenCalledTimes(5);
           });
         });
 
@@ -457,7 +457,7 @@ describe("runManyFor", () => {
           });
 
           it("shouldn't call any more runnables", () => {
-            expect(runMock).toBeCalledTimes(5);
+            expect(runMock).toHaveBeenCalledTimes(5);
           });
 
           describe("when 'runnable-2' resolves", () => {
@@ -466,7 +466,7 @@ describe("runManyFor", () => {
             });
 
             it("shouldn't call any more runnables", () => {
-              expect(runMock).toBeCalledTimes(5);
+              expect(runMock).toHaveBeenCalledTimes(5);
             });
           });
 
@@ -476,7 +476,7 @@ describe("runManyFor", () => {
             });
 
             it("should run 'runnable-6'", () => {
-              expect(runMock).toBeCalledWith("runnable-6");
+              expect(runMock).toHaveBeenCalledWith("runnable-6");
             });
 
             describe("when 'runnable-2' resolves", () => {
@@ -485,7 +485,7 @@ describe("runManyFor", () => {
               });
 
               it("shouldn't call any more runnables", () => {
-                expect(runMock).toBeCalledTimes(6);
+                expect(runMock).toHaveBeenCalledTimes(6);
               });
             });
 
@@ -495,7 +495,7 @@ describe("runManyFor", () => {
               });
 
               it("should run 'runnable-7'", () => {
-                expect(runMock).toBeCalledWith("runnable-7");
+                expect(runMock).toHaveBeenCalledWith("runnable-7");
               });
 
               describe("when 'runnable-2' resolves", () => {
@@ -504,7 +504,7 @@ describe("runManyFor", () => {
                 });
 
                 it("shouldn't call any more runnables", () => {
-                  expect(runMock).toBeCalledTimes(7);
+                  expect(runMock).toHaveBeenCalledTimes(7);
                 });
 
                 describe("when 'runnable-7' resolves", () => {
@@ -527,7 +527,7 @@ describe("runManyFor", () => {
           });
 
           it("shouldn't call any more runnables", () => {
-            expect(runMock).toBeCalledTimes(5);
+            expect(runMock).toHaveBeenCalledTimes(5);
           });
 
           describe("when 'runnable-2' resolves", () => {
@@ -536,7 +536,7 @@ describe("runManyFor", () => {
             });
 
             it("shouldn't call any more runnables", () => {
-              expect(runMock).toBeCalledTimes(5);
+              expect(runMock).toHaveBeenCalledTimes(5);
             });
           });
 
@@ -546,7 +546,7 @@ describe("runManyFor", () => {
             });
 
             it("should run 'runnable-6'", () => {
-              expect(runMock).toBeCalledWith("runnable-6");
+              expect(runMock).toHaveBeenCalledWith("runnable-6");
             });
 
             describe("when 'runnable-2' resolves", () => {
@@ -555,7 +555,7 @@ describe("runManyFor", () => {
               });
 
               it("shouldn't call any more runnables", () => {
-                expect(runMock).toBeCalledTimes(6);
+                expect(runMock).toHaveBeenCalledTimes(6);
               });
             });
 
@@ -565,7 +565,7 @@ describe("runManyFor", () => {
               });
 
               it("should run 'runnable-7'", () => {
-                expect(runMock).toBeCalledWith("runnable-7");
+                expect(runMock).toHaveBeenCalledWith("runnable-7");
               });
 
               describe("when 'runnable-2' resolves", () => {
@@ -574,7 +574,7 @@ describe("runManyFor", () => {
                 });
 
                 it("shouldn't call any more runnables", () => {
-                  expect(runMock).toBeCalledTimes(7);
+                  expect(runMock).toHaveBeenCalledTimes(7);
                 });
 
                 describe("when 'runnable-7' resolves", () => {
@@ -599,7 +599,7 @@ describe("runManyFor", () => {
       });
 
       it("shouldn't call any more runnables", () => {
-        expect(runMock).toBeCalledTimes(2);
+        expect(runMock).toHaveBeenCalledTimes(2);
       });
     });
   });

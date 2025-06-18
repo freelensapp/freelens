@@ -47,6 +47,6 @@ describe("<ToBottom/>", () => {
     const { getByText } = render(<ToBottom onClick={callback} />);
 
     fireEvent.click(getByText("To bottom"));
-    expect(callback).toBeCalled();
+    expect(callback).toHaveBeenCalled();
   });
 });

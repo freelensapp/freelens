@@ -550,7 +550,7 @@ describe("KubeApi", () => {
           });
 
           it("calls the callback with the data", () => {
-            expect(callback).toBeCalledWith(
+            expect(callback).toHaveBeenCalledWith(
               {
                 type: "ADDED",
                 object: {
@@ -654,7 +654,7 @@ describe("KubeApi", () => {
           });
 
           it("calls the callback with the data", () => {
-            expect(callback).toBeCalledWith(
+            expect(callback).toHaveBeenCalledWith(
               {
                 type: "ADDED",
                 object: {
@@ -757,7 +757,7 @@ describe("KubeApi", () => {
           });
 
           it("calls the callback with the data", () => {
-            expect(callback).toBeCalledWith(
+            expect(callback).toHaveBeenCalledWith(
               {
                 type: "ADDED",
                 object: {

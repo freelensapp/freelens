@@ -8,7 +8,7 @@ import { HashSet, ObservableHashSet } from "./hash-set";
 
 describe("ObservableHashSet<T>", () => {
   it("should not throw on creation", () => {
-    expect(() => new ObservableHashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrowError();
+    expect(() => new ObservableHashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrow();
   });
 
   it("should be initialized", () => {
@@ -193,7 +193,7 @@ describe("ObservableHashSet<T>", () => {
 
 describe("HashSet<T>", () => {
   it("should not throw on creation", () => {
-    expect(() => new HashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrowError();
+    expect(() => new HashSet<{ a: number }>([], (item) => item.a.toString())).not.toThrow();
   });
 
   it("should be initialized", () => {

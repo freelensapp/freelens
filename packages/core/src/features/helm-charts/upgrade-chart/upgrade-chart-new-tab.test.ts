@@ -85,7 +85,10 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
       });
 
       it("requests helm releases for the selected namespace", () => {
-        expect(listClusterHelmReleasesMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "my-second-namespace");
+        expect(listClusterHelmReleasesMock).toHaveBeenCalledWith(
+          anyObject({ id: "some-cluster-id" }),
+          "my-second-namespace",
+        );
       });
 
       describe("when helm releases resolves", () => {
@@ -138,7 +141,7 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
             });
 
             it("requests all helm charts", () => {
-              expect(requestHelmChartsMock).toBeCalled();
+              expect(requestHelmChartsMock).toHaveBeenCalled();
             });
 
             describe("when request for all helm charts resolves", () => {
@@ -169,8 +172,8 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
               });
 
               it("requests versions of the helm charts", () => {
-                expect(requestHelmChartVersionsMock).toBeCalledWith("some-repo", "some-chart");
-                expect(requestHelmChartVersionsMock).toBeCalledWith("some-third-repo", "some-chart");
+                expect(requestHelmChartVersionsMock).toHaveBeenCalledWith("some-repo", "some-chart");
+                expect(requestHelmChartVersionsMock).toHaveBeenCalledWith("some-third-repo", "some-chart");
               });
 
               it("shows the dock tab of the upgrade chart tab", () => {
@@ -239,7 +242,11 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
                 });
 
                 it("requests the configuration for the specific helm release", () => {
-                  expect(requestHelmReleaseConfigurationMock).toBeCalledWith("some-name", "my-second-namespace", true);
+                  expect(requestHelmReleaseConfigurationMock).toHaveBeenCalledWith(
+                    "some-name",
+                    "my-second-namespace",
+                    true,
+                  );
                 });
 
                 describe("when the configuration request resolves", () => {

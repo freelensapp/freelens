@@ -116,9 +116,12 @@ describe("showing details for helm release", () => {
       });
 
       it("calls for releases for each selected namespace", () => {
-        expect(listClusterHelmReleasesMock).toBeCalledTimes(2);
-        expect(listClusterHelmReleasesMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "some-namespace");
-        expect(listClusterHelmReleasesMock).toBeCalledWith(
+        expect(listClusterHelmReleasesMock).toHaveBeenCalledTimes(2);
+        expect(listClusterHelmReleasesMock).toHaveBeenCalledWith(
+          anyObject({ id: "some-cluster-id" }),
+          "some-namespace",
+        );
+        expect(listClusterHelmReleasesMock).toHaveBeenCalledWith(
           anyObject({ id: "some-cluster-id" }),
           "some-other-namespace",
         );

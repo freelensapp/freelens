@@ -58,12 +58,12 @@ describe("protocol router tests", () => {
 
   it("should broadcast invalid protocol on non-lens URLs", async () => {
     await lpr.route("https://google.ca");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInvalid, "invalid protocol", "https://google.ca");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInvalid, "invalid protocol", "https://google.ca");
   });
 
   it("should broadcast invalid host on non internal or non extension URLs", async () => {
     await lpr.route("freelens://foobar");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInvalid, "invalid host", "freelens://foobar");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInvalid, "invalid host", "freelens://foobar");
   });
 
   it("should broadcast internal route when called with valid host", async () => {
@@ -139,7 +139,7 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe(true);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "freelens://app/page", "matched");
   });
 
   it("should call most exact handler", async () => {
@@ -159,7 +159,7 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe("foo");
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo", "matched");
   });
 
   it("should call most exact handler for an extension", async () => {
@@ -205,7 +205,7 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe("foob");
-    expect(broadcastMessageMock).toBeCalledWith(
+    expect(broadcastMessageMock).toHaveBeenCalledWith(
       ProtocolHandlerExtension,
       "freelens://extension/@foobar/icecream/page/foob",
       "matched",
@@ -276,7 +276,7 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe(1);
-    expect(broadcastMessageMock).toBeCalledWith(
+    expect(broadcastMessageMock).toHaveBeenCalledWith(
       ProtocolHandlerExtension,
       "freelens://extension/icecream/page",
       "matched",
@@ -284,7 +284,7 @@ describe("protocol router tests", () => {
   });
 
   it("should throw if urlSchema is invalid", () => {
-    expect(() => lpr.addInternalHandler("/:@", noop)).toThrowError();
+    expect(() => lpr.addInternalHandler("/:@", noop)).toThrow();
   });
 
   it("should call most exact handler with 3 found handlers", async () => {
@@ -310,7 +310,11 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe(3);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo/bar/bat", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(
+      ProtocolHandlerInternal,
+      "freelens://app/page/foo/bar/bat",
+      "matched",
+    );
   });
 
   it("should call most exact handler with 2 found handlers", async () => {
@@ -333,6 +337,10 @@ describe("protocol router tests", () => {
     }
 
     expect(called).toBe(1);
-    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInternal, "freelens://app/page/foo/bar/bat", "matched");
+    expect(broadcastMessageMock).toHaveBeenCalledWith(
+      ProtocolHandlerInternal,
+      "freelens://app/page/foo/bar/bat",
+      "matched",
+    );
   });
 });

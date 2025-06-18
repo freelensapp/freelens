@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`cluster - visibility of sidebar items given kube resource for route is not allowed renders 1`] = `
 <div>
@@ -21,7 +21,7 @@ exports[`cluster - visibility of sidebar items given kube resource for route is 
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -538,7 +538,7 @@ exports[`cluster - visibility of sidebar items given kube resource for route is 
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>

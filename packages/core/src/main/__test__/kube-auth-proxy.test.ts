@@ -213,7 +213,7 @@ describe("kube auth proxy tests", () => {
     it("should call spawn and broadcast errors", () => {
       listeners.emit("error", { message: "foobarbat" });
 
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "foobarbat",
         level: "error",
       });
@@ -222,7 +222,7 @@ describe("kube auth proxy tests", () => {
     it("should call spawn and broadcast exit as error when exitCode != 0", () => {
       listeners.emit("exit", 1);
 
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "proxy exited with code: 1",
         level: "error",
       });
@@ -231,7 +231,7 @@ describe("kube auth proxy tests", () => {
     it("should call spawn and broadcast exit as info when exitCode == 0", () => {
       listeners.emit("exit", 0);
 
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "proxy exited successfully",
         level: "info",
       });
@@ -240,14 +240,14 @@ describe("kube auth proxy tests", () => {
     it("should call spawn and broadcast errors from stderr", () => {
       listeners.emit("stderr/data", "an error");
 
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "an error",
         level: "error",
       });
     });
 
     it("should call spawn and broadcast stdout serving info", () => {
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "Authentication proxy started",
         level: "info",
       });
@@ -256,7 +256,7 @@ describe("kube auth proxy tests", () => {
     it("should call spawn and broadcast stdout other info", () => {
       listeners.emit("stdout/data", "some info");
 
-      expect(broadcastMessageMock).toBeCalledWith("cluster:foobar:connection-update", {
+      expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:foobar:connection-update", {
         message: "some info",
         level: "info",
       });

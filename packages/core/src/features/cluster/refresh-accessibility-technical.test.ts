@@ -143,7 +143,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
     });
 
     it("starts kubeAuthProxy", () => {
-      expect(kubeAuthProxyMock.run).toBeCalled();
+      expect(kubeAuthProxyMock.run).toHaveBeenCalled();
     });
 
     // TODO: Flaky test: sometimes works, sometimes doesn't
@@ -155,7 +155,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       });
 
       it("requests if cluster has admin permissions", async () => {
-        expect(createSelfSubjectAccessReviewMock).toBeCalledWith(
+        expect(createSelfSubjectAccessReviewMock).toHaveBeenCalledWith(
           anyObject({
             spec: {
               namespace: "kube-system",
@@ -179,7 +179,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
         });
 
         it("requests if cluster has global watch permissions", () => {
-          expect(createSelfSubjectAccessReviewMock).toBeCalledWith(
+          expect(createSelfSubjectAccessReviewMock).toHaveBeenCalledWith(
             anyObject({
               spec: {
                 verb: "watch",
@@ -201,7 +201,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
           });
 
           it("requests namespaces", () => {
-            expect(listNamespaceMock).toBeCalled();
+            expect(listNamespaceMock).toHaveBeenCalled();
           });
 
           describe("when list namespaces resolves", () => {
@@ -210,7 +210,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
             });
 
             it("requests core api versions", () => {
-              expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/api");
+              expect(k8sRequestMock).toHaveBeenCalledWith(anyObject({ id: "some-cluster-id" }), "/api");
             });
 
             describe("when core api versions request resolves", () => {
@@ -222,7 +222,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
               });
 
               it("requests non-core api resource kinds", () => {
-                expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/apis");
+                expect(k8sRequestMock).toHaveBeenCalledWith(anyObject({ id: "some-cluster-id" }), "/apis");
               });
 
               describe("when non-core api resource kinds request resolves", () => {
@@ -231,7 +231,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                 });
 
                 it("requests specific resource kinds in core", () => {
-                  expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/api/v1");
+                  expect(k8sRequestMock).toHaveBeenCalledWith(anyObject({ id: "some-cluster-id" }), "/api/v1");
                 });
 
                 describe("when core specific resource kinds request resolves", () => {
@@ -240,7 +240,10 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                   });
 
                   it("requests specific resources kinds from the first non-core response", () => {
-                    expect(k8sRequestMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }), "/apis/node.k8s.io/v1");
+                    expect(k8sRequestMock).toHaveBeenCalledWith(
+                      anyObject({ id: "some-cluster-id" }),
+                      "/apis/node.k8s.io/v1",
+                    );
                   });
 
                   describe("when first specific resource kinds request resolves", () => {
@@ -249,7 +252,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                     });
 
                     it("requests specific resources kinds from the second non-core response", () => {
-                      expect(k8sRequestMock).toBeCalledWith(
+                      expect(k8sRequestMock).toHaveBeenCalledWith(
                         anyObject({ id: "some-cluster-id" }),
                         "/apis/discovery.k8s.io/v1",
                       );
@@ -261,7 +264,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                       });
 
                       it("requests namespace list permissions for 'default' namespace", () => {
-                        expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                        expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
                           anyObject({
                             spec: {
                               namespace: "default",
@@ -276,7 +279,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                          expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
                             anyObject({
                               spec: {
                                 namespace: "my-namespace",
@@ -291,7 +294,9 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                           });
 
                           it("requests cluster metadata", () => {
-                            expect(detectClusterMetadataMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }));
+                            expect(detectClusterMetadataMock).toHaveBeenCalledWith(
+                              anyObject({ id: "some-cluster-id" }),
+                            );
                           });
 
                           describe("when cluster metadata request resolves", () => {
@@ -324,7 +329,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                          expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
                             anyObject({
                               spec: {
                                 namespace: "my-namespace",
@@ -339,7 +344,9 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                           });
 
                           it("requests cluster metadata", () => {
-                            expect(detectClusterMetadataMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }));
+                            expect(detectClusterMetadataMock).toHaveBeenCalledWith(
+                              anyObject({ id: "some-cluster-id" }),
+                            );
                           });
 
                           describe("when cluster metadata request resolves", () => {
@@ -372,7 +379,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                          expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
                             anyObject({
                               spec: {
                                 namespace: "my-namespace",
@@ -387,7 +394,9 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                           });
 
                           it("requests cluster metadata", () => {
-                            expect(detectClusterMetadataMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }));
+                            expect(detectClusterMetadataMock).toHaveBeenCalledWith(
+                              anyObject({ id: "some-cluster-id" }),
+                            );
                           });
 
                           describe("when cluster metadata request resolves", () => {
@@ -420,7 +429,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                         });
 
                         it("requests namespace list permissions for 'my-namespace' namespace", () => {
-                          expect(createSelfSubjectRulesReviewMock).toBeCalledWith(
+                          expect(createSelfSubjectRulesReviewMock).toHaveBeenCalledWith(
                             anyObject({
                               spec: {
                                 namespace: "my-namespace",
@@ -435,7 +444,9 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
                           });
 
                           it("requests cluster metadata", () => {
-                            expect(detectClusterMetadataMock).toBeCalledWith(anyObject({ id: "some-cluster-id" }));
+                            expect(detectClusterMetadataMock).toHaveBeenCalledWith(
+                              anyObject({ id: "some-cluster-id" }),
+                            );
                           });
 
                           describe("when cluster metadata request resolves", () => {

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`add custom helm repository in preferences when navigating to preferences containing helm repositories renders 1`] = `
 <body>
@@ -8469,7 +8469,7 @@ exports[`add custom helm repository in preferences when navigating to preference
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -9214,7 +9214,7 @@ exports[`add custom helm repository in preferences when navigating to preference
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div

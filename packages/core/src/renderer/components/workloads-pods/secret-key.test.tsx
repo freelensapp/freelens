@@ -52,7 +52,7 @@ describe("SecretKey technical tests", () => {
   });
 
   it("should not try to load secret", () => {
-    expect(loadSecretMock).not.toBeCalled();
+    expect(loadSecretMock).not.toHaveBeenCalled();
   });
 
   it("should show the 'show secret' button", () => {
@@ -69,7 +69,7 @@ describe("SecretKey technical tests", () => {
     });
 
     it("should try to load secret", () => {
-      expect(loadSecretMock).toBeCalledWith({
+      expect(loadSecretMock).toHaveBeenCalledWith({
         name: "some-secret-name",
         namespace: "some-namespace",
       });

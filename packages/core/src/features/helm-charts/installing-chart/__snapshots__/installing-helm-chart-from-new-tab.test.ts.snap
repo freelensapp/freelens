@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`installing helm chart from new tab given tab for installing chart was not previously opened and application is started renders 1`] = `
 <body>
@@ -22,7 +22,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1281,7 +1281,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1980,7 +1980,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -2932,7 +2932,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -3853,7 +3853,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -4769,7 +4769,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -5685,7 +5685,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -6623,7 +6623,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -7575,7 +7575,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -8491,7 +8491,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -9398,7 +9398,54 @@ exports[`installing helm chart from new tab given tab for installing chart was n
   <div>
     <div
       class="Notifications flex column align-flex-end"
-    />
+    >
+      <div
+        class="Animate opacity notification flex ok enter"
+        style="--enter-duration: 100ms; --leave-duration: 100ms;"
+      >
+        <div
+          class="box"
+        >
+          <i
+            class="Icon material focusable"
+          >
+            <span
+              class="icon"
+              data-icon-name="info_outline"
+            >
+              info_outline
+            </span>
+          </i>
+        </div>
+        <div
+          class="message box grow"
+        >
+          <p>
+            Chart Release 
+            <b>
+              some-release
+            </b>
+             successfully created.
+          </p>
+        </div>
+        <div
+          class="box"
+        >
+          <i
+            class="Icon close material interactive focusable"
+            data-testid="close-notification-for-notification_1"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+        </div>
+      </div>
+    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -9415,7 +9462,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -10194,7 +10241,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -10976,7 +11023,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -11768,7 +11815,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -12897,7 +12944,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -13648,7 +13695,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -14618,7 +14665,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -15586,7 +15633,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -16502,7 +16549,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -17418,7 +17465,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
