@@ -90,7 +90,7 @@ lint:
     - markdownlint@0.45.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
-    - yamlfmt@0.17.0
+    - yamlfmt@0.17.1
     - yamllint@1.37.1
   disabled:
     - checkov
