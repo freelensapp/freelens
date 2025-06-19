@@ -47,8 +47,7 @@ enum columnId {
   lastSeen = "last-seen",
 }
 
-export interface EventsProps
-  extends Partial<KubeObjectListLayoutProps<KubeEvent, KubeEventApi, KubeEventData>> {
+export interface EventsProps extends Partial<KubeObjectListLayoutProps<KubeEvent, KubeEventApi, KubeEventData>> {
   className?: IClassName;
   compact?: boolean;
   compactLimit?: number;
