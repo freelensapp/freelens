@@ -18,6 +18,7 @@ import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { SubHeader } from "../layout/sub-header";
+import namespaceStoreInjectable from "../namespaces/store.injectable";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import styles from "./cluster-issues.module.scss";
@@ -29,6 +30,7 @@ import type { PageParam } from "../../navigation/page-param";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { EventStore } from "../events/store";
 import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
+import type { NamespaceStore } from "../namespaces/store";
 import type { NodeStore } from "../nodes/store";
 
 export interface ClusterIssuesProps {
@@ -54,6 +56,7 @@ enum sortBy {
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
   nodeStore: NodeStore;
+  namespaceStore: NamespaceStore;
   eventStore: EventStore;
   apiManager: ApiManager;
   kubeSelectedUrlParam: PageParam<string>;
@@ -65,6 +68,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
     makeObservable(this);
+  }
+
+  async componentDidMount() {
+    // The explicit list of namespaces is required to avoid loading items only
+    // from the current namespace.
+    await this.props.namespaceStore.loadAll({ namespaces: [] });
+    const namespaces = this.props.namespaceStore.items.map((ns) => ns.getName());
+    this.props.eventStore.loadAll({ namespaces });
   }
 
   @computed get warnings(): Warning[] {
@@ -186,6 +197,7 @@ export const ClusterIssues = withInjectables<Dependencies, ClusterIssuesProps>(N
     activeTheme: di.inject(activeThemeInjectable),
     apiManager: di.inject(apiManagerInjectable),
     eventStore: di.inject(eventStoreInjectable),
+    namespaceStore: di.inject(namespaceStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
     kubeSelectedUrlParam: di.inject(kubeSelectedUrlParamInjectable),
     toggleKubeDetailsPane: di.inject(toggleKubeDetailsPaneInjectable),
