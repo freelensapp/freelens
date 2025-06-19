@@ -1,9 +1,27 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "type": false
+              },
+              ":NODE:",
+              ":BLANK_LINE:",
+              "@freelensapp/**",
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
   },
   "files": {
     "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "!**/package.json"]
@@ -19,67 +37,9 @@
     "lineWidth": 120,
     "useEditorconfig": true
   },
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": {
-          "level": "on",
-          "options": {
-            "groups": [
-              { "type": false },
-              ":NODE:",
-              ":BLANK_LINE:",
-              "@freelensapp/**",
-              ":BLANK_LINE:",
-              ":PACKAGE:",
-              ":BLANK_LINE:",
-              ":PATH:"
-            ]
-          }
-        }
-      }
-    }
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "a11y": {
-        "noRedundantRoles": "off"
-      },
-      "complexity": {
-        "noBannedTypes": "off", // should be error later
-        "noUselessConstructor": "off",
-        "noUselessThisAlias": "error",
-        "noUselessTypeConstraint": "error"
-      },
-      "correctness": {
-        "noInvalidUseBeforeDeclaration": "error",
-        "noUnusedVariables": "off", // should be error later
-        "useExhaustiveDependencies": "off"
-      },
-      "recommended": false,
-      "style": {
-        "noNamespace": "error",
-        "noParameterAssign": "off", // should be error later
-        "useAsConstAssertion": "error",
-        "useBlockStatements": "off",
-        "useNamingConvention": {
-          "level": "off",
-          "options": {
-            "strictCase": false
-          }
-        },
-        "useTemplate": "off", // should be error later
-        "useArrayLiterals": "off"
-      },
-      "suspicious": {
-        "noEmptyInterface": "off",
-        "noExplicitAny": "off", // should be error later
-        "noExtraNonNullAssertion": "error",
-        "noMisleadingInstantiator": "error",
-        "noUnsafeDeclarationMerging": "off", // should be error later
-        "useNamespaceKeyword": "error"
-      }
+  "html": {
+    "formatter": {
+      "enabled": true
     }
   },
   "javascript": {
@@ -94,5 +54,58 @@
       "semicolons": "always",
       "trailingCommas": "all"
     }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "noRedundantRoles": "off"
+      },
+      "complexity": {
+        // should be error later
+        "noBannedTypes": "off",
+        "noUselessConstructor": "off",
+        "noUselessThisAlias": "error",
+        "noUselessTypeConstraint": "error"
+      },
+      "correctness": {
+        "noInvalidUseBeforeDeclaration": "error",
+        // should be error later
+        "noUnusedVariables": "off",
+        "useExhaustiveDependencies": "off"
+      },
+      "recommended": false,
+      "style": {
+        "noNamespace": "error",
+        // should be error later
+        "noParameterAssign": "off",
+        "useArrayLiterals": "off",
+        "useAsConstAssertion": "error",
+        "useBlockStatements": "off",
+        "useNamingConvention": {
+          "level": "off",
+          "options": {
+            "strictCase": false
+          }
+        },
+        // should be error later
+        "useTemplate": "off"
+      },
+      "suspicious": {
+        "noEmptyInterface": "off",
+        // should be error later
+        "noExplicitAny": "off",
+        "noExtraNonNullAssertion": "error",
+        "noMisleadingInstantiator": "error",
+        // should be error later
+        "noUnsafeDeclarationMerging": "off",
+        "useNamespaceKeyword": "error"
+      }
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
   }
 }

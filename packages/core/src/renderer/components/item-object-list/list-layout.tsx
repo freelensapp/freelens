@@ -36,7 +36,9 @@ import type { SearchInputUrlProps } from "../input";
 import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { PageFiltersStore } from "./page-filters/store";
 
-export type ListLayoutSearchFilter<I extends ItemObject> = (item: I) => SingleOrMany<string | number | undefined | null>;
+export type ListLayoutSearchFilter<I extends ItemObject> = (
+  item: I,
+) => SingleOrMany<string | number | undefined | null>;
 export type ListLayoutSearchFilters<I extends ItemObject> = Record<string, ListLayoutSearchFilter<I>>;
 export type ListLayoutItemsFilter<I extends ItemObject> = (items: I[]) => I[];
 export type ListLayoutItemsFilters<I extends ItemObject> = Record<string, ListLayoutItemsFilter<I>>;

@@ -50,6 +50,39 @@ lint:
         parse_regex: ${semver}
         run: yamlfmt -version
       known_good_version: 0.16.0
+    - name: biome
+      files:
+        - astro
+        - css
+        - graphql
+        - html
+        - javascript
+        - json
+        - sass
+        - typescript
+      commands:
+        - output: regex
+          success_codes:
+            - 0
+            - 1
+          batch: true
+          cache_results: true
+          name: lint
+          parse_regex: " *(?P<path>.*?):(?P<line>\\d+):(?P<col>\\d+) (?P<code>[^ ]+)(?:[^×]*\\n).*× (?P<message>.*)\\n"
+          read_output_from: stderr
+          run: biome check ${target}
+          run_from: ${parent}
+        - output: rewrite
+          success_codes:
+            - 0
+            - 1
+          batch: true
+          cache_results: true
+          formatter: true
+          in_place: true
+          name: fmt
+          run: biome check --fix "${target}"
+          run_from: ${parent}
   enabled:
     - actionlint@1.7.7
     - biome@2.0.0! # datasource=npm depName=@biomejs/biome
