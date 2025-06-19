@@ -42,7 +42,15 @@
   .object {
     white-space: nowrap;
     text-overflow: ellipsis;
-    flex-grow: 2;
+    flex-grow: 1.5;
+  }
+
+  .kind {
+    flex-grow: 1;
+  }
+
+  .age {
+    flex-grow: 0.3;
   }
 
    .noIssues {
