@@ -5,3 +5,4 @@
  */
 
 export * from "./event-details";
+export * from "./events";

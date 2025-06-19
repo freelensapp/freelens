@@ -36,10 +36,10 @@ import type { SearchInputUrlProps } from "../input";
 import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { PageFiltersStore } from "./page-filters/store";
 
-export type SearchFilter<I extends ItemObject> = (item: I) => SingleOrMany<string | number | undefined | null>;
-export type SearchFilters<I extends ItemObject> = Record<string, SearchFilter<I>>;
-export type ItemsFilter<I extends ItemObject> = (items: I[]) => I[];
-export type ItemsFilters<I extends ItemObject> = Record<string, ItemsFilter<I>>;
+export type ListLayoutSearchFilter<I extends ItemObject> = (item: I) => SingleOrMany<string | number | undefined | null>;
+export type ListLayoutSearchFilters<I extends ItemObject> = Record<string, ListLayoutSearchFilter<I>>;
+export type ListLayoutItemsFilter<I extends ItemObject> = (items: I[]) => I[];
+export type ListLayoutItemsFilters<I extends ItemObject> = Record<string, ListLayoutItemsFilter<I>>;
 
 export interface HeaderPlaceholders {
   title?: StrictReactNode;
@@ -94,9 +94,8 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
   dependentStores?: SubscribableStore[];
   preloadStores?: boolean;
   hideFilters?: boolean;
-  searchFilters?: SearchFilter<Item>[];
-  /** @deprecated */
-  filterItems?: ItemsFilter<Item>[];
+  searchFilters?: ListLayoutSearchFilter<Item>[];
+  filterItems?: ListLayoutItemsFilter<Item>[];
 
   // header (title, filtering, searching, etc.)
   showHeader?: boolean;
@@ -136,7 +135,7 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
    */
   failedToLoadMessage?: StrictReactNode;
 
-  filterCallbacks?: ItemsFilters<Item>;
+  filterCallbacks?: ListLayoutItemsFilters<Item>;
   "data-testid"?: string;
 } & (PreLoadStores extends true
   ? {
@@ -238,7 +237,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     return <PageFiltersList filters={filters} />;
   }
 
-  private filterCallbacks: ItemsFilters<I> = {
+  private filterCallbacks: ListLayoutItemsFilters<I> = {
     [FilterType.SEARCH]: (items) => {
       const { searchFilters = [] } = this.props;
       const search = this.props.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
@@ -262,7 +261,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
 
   @computed get items() {
     const filterGroups = groupBy(this.filters, ({ type }) => type);
-    const filterItems: ItemsFilter<I>[] = [];
+    const filterItems: ListLayoutItemsFilter<I>[] = [];
 
     for (const [type, filtersGroup] of Object.entries(filterGroups)) {
       const filterCallback = this.filterCallbacks[type] ?? this.props.filterCallbacks?.[type];
@@ -349,7 +348,7 @@ export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<
   props: ItemListLayoutProps<I, PreLoadStores>,
 ) => React.ReactElement;
 
-function applyFilters<I extends ItemObject>(filters: ItemsFilter<I>[], items: I[]): I[] {
+function applyFilters<I extends ItemObject>(filters: ListLayoutItemsFilter<I>[], items: I[]): I[] {
   if (!filters || !filters.length) {
     return items;
   }
