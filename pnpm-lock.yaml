@@ -1125,8 +1125,8 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.0)(typescript@5.8.3)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       typed-emitter:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1401,8 +1401,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       webpack:
         specifier: ^5.99.9
         version: 5.99.9(webpack-cli@6.0.1)
@@ -2737,8 +2737,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -2987,8 +2987,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       webpack:
         specifier: ^5.99.9
         version: 5.99.9(webpack-cli@6.0.1)
@@ -3066,8 +3066,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -3183,8 +3183,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       typed-emitter:
         specifier: ^1.4.0
         version: 1.4.0
@@ -3353,8 +3353,8 @@ importers:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       type-fest:
-        specifier: ^2.19.0
-        version: 2.19.0
+        specifier: ^3.13.1
+        version: 3.13.1
       webpack:
         specifier: ^5.99.9
         version: 5.99.9(webpack-cli@6.0.1)
@@ -8924,9 +8924,9 @@ packages:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
     engines: {node: '>=10'}
 
-  type-fest@2.19.0:
-    resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
-    engines: {node: '>=12.20'}
+  type-fest@3.13.1:
+    resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
+    engines: {node: '>=14.16'}
 
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
@@ -15713,7 +15713,7 @@ snapshots:
 
   type-fest@0.21.3: {}
 
-  type-fest@2.19.0: {}
+  type-fest@3.13.1: {}
 
   type-fest@4.41.0: {}
 

@@ -55,7 +55,7 @@
     "react-router": "^5.3.4",
     "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
-    "type-fest": "^2.19.0",
+    "type-fest": "^3.13.1",
     "webpack": "^5.99.9"
   }
 }
