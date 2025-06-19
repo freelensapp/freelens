@@ -30,7 +30,7 @@ import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
 import type { IClassName } from "@freelensapp/utilities";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import type { HeaderCustomizer } from "../item-object-list";
+import type { HeaderCustomizer, ListLayoutItemsFilter } from "../item-object-list";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
 import type { TableSortCallbacks, TableSortParams } from "../table";
@@ -47,10 +47,12 @@ enum columnId {
   lastSeen = "last-seen",
 }
 
-export interface EventsProps extends Partial<KubeObjectListLayoutProps<KubeEvent, KubeEventApi, KubeEventData>> {
+export interface EventsProps
+  extends Partial<KubeObjectListLayoutProps<KubeEvent, KubeEventApi, KubeEventData>> {
   className?: IClassName;
   compact?: boolean;
   compactLimit?: number;
+  filterItems?: ListLayoutItemsFilter<KubeEvent>[];
 }
 
 const defaultProps: Partial<EventsProps> = {
