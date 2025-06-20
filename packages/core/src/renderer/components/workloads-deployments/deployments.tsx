@@ -12,6 +12,7 @@ import kebabCase from "lodash/kebabCase";
 import orderBy from "lodash/orderBy";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -28,8 +29,10 @@ import type { DeploymentStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
-  pods = "pods",
-  replicas = "replicas",
+  ready = "ready",
+  desired = "desired",
+  updated = "updated",
+  available = "available",
   age = "age",
   condition = "condition",
 }
@@ -41,12 +44,6 @@ interface Dependencies {
 
 @observer
 class NonInjectedDeployments extends React.Component<Dependencies> {
-  renderPods(deployment: Deployment) {
-    const { replicas, availableReplicas } = deployment.status ?? {};
-
-    return `${availableReplicas || 0}/${replicas || 0}`;
-  }
-
   renderConditions(deployment: Deployment) {
     const conditions = orderBy(deployment.getConditions(true), "type", "asc");
 
@@ -71,7 +68,10 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (deployment) => deployment.getName(),
             [columnId.namespace]: (deployment) => deployment.getNs(),
-            [columnId.replicas]: (deployment) => deployment.getReplicas(),
+            [columnId.ready]: (deployment) => deployment.status?.readyReplicas || 0,
+            [columnId.desired]: (deployment) => deployment.getReplicas(),
+            [columnId.updated]: (deployment) => deployment.status?.updatedReplicas || 0,
+            [columnId.available]: (deployment) => deployment.status?.availableReplicas || 0,
             [columnId.age]: (deployment) => -deployment.getCreationTimestamp(),
             [columnId.condition]: (deployment) => deployment.getConditionsText(),
           }}
@@ -86,13 +86,10 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
               sortBy: columnId.namespace,
               id: columnId.namespace,
             },
-            { title: "Pods", className: "pods", id: columnId.pods },
-            {
-              title: "Replicas",
-              className: "replicas",
-              sortBy: columnId.replicas,
-              id: columnId.replicas,
-            },
+            { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
+            { title: "Desired", className: "desired", sortBy: columnId.desired, id: columnId.desired },
+            { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
+            { title: "Available", className: "available", sortBy: columnId.available, id: columnId.available },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             {
               title: "Conditions",
@@ -102,11 +99,13 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
             },
           ]}
           renderTableContents={(deployment) => [
-            deployment.getName(),
+            <WithTooltip>{deployment.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={deployment} />,
             <NamespaceSelectBadge key="namespace" namespace={deployment.getNs()} />,
-            this.renderPods(deployment),
+            deployment.status?.readyReplicas || 0,
             deployment.getReplicas(),
+            deployment.status?.updatedReplicas || 0,
+            deployment.status?.availableReplicas || 0,
             <KubeObjectAge key="age" object={deployment} />,
             this.renderConditions(deployment),
           ]}
