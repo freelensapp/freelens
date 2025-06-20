@@ -122,16 +122,16 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         selected={selfLink === kubeSelectedUrlParam.get()}
         onClick={prevDefault(() => toggleDetails(selfLink))}
       >
-        <TableCell className={styles.message}>
+        <TableCell className={cssNames(styles.TableCell, styles.message)}>
           <WithTooltip>{message ?? "<unknown>"}</WithTooltip>
         </TableCell>
-        <TableCell className={styles.object}>
+        <TableCell className={cssNames(styles.TableCell, styles.object)}>
           <WithTooltip>{getName()}</WithTooltip>
         </TableCell>
-        <TableCell className={styles.kind}>
+        <TableCell className={cssNames(styles.TableCell, styles.kind)}>
           <WithTooltip>{kind}</WithTooltip>
         </TableCell>
-        <TableCell className={styles.age}>{renderAge()}</TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.age)}>{renderAge()}</TableCell>
       </TableRow>
     );
   };
@@ -175,14 +175,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           className={cssNames("box grow", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
-            <TableCell className={styles.message}>Message</TableCell>
-            <TableCell className={styles.object} sortBy={sortBy.object}>
+            <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
+            <TableCell className={cssNames(styles.TableCell, styles.object)} sortBy={sortBy.object}>
               Object
             </TableCell>
-            <TableCell className={styles.kind} sortBy={sortBy.type}>
+            <TableCell className={cssNames(styles.TableCell, styles.kind)} sortBy={sortBy.type}>
               Type
             </TableCell>
-            <TableCell className={styles.age} sortBy={sortBy.age}>
+            <TableCell className={cssNames(styles.TableCell, styles.age)} sortBy={sortBy.age}>
               Age
             </TableCell>
           </TableHead>
