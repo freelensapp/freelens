@@ -16,7 +16,7 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
-import { Badge } from "../badge/badge";
+import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -234,7 +234,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             const taints = node.getTaints();
 
             return [
-              <Badge flat key="name" label={node.getName()} tooltip={node.getName()} />,
+              <WithTooltip>{node.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={node} />,
               this.renderCpuUsage(node),
               this.renderMemoryUsage(node),
@@ -245,8 +245,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
                   {taints.map(formatNodeTaint).join("\n")}
                 </Tooltip>
               </>,
-              node.getRoleLabels(),
-              node.getKubeletVersion(),
+              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
+              <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
               this.renderConditions(node),
             ];

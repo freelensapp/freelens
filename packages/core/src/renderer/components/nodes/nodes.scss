@@ -54,6 +54,14 @@
       flex: 0.6;
     }
 
+    &.roles {
+      flex-grow: 1.5;
+    }
+
+    &.age {
+      flex-grow: 0.3;
+    }
+
     &.conditions {
       flex: 1.7;
 
