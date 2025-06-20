@@ -5,10 +5,10 @@
  */
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
-import { Tooltip } from "@freelensapp/tooltip";
 import { getConvertedParts } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
+import { WithTooltip } from "../../badge";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { Pod } from "@freelensapp/kube-object";
@@ -22,14 +22,7 @@ export const podsNameColumnInjectable = getInjectable({
     kind: "Pod",
     apiVersion: "v1",
     priority: COLUMN_PRIORITY.NAME,
-    content: (pod: Pod) => (
-      <>
-        <span id={`list-pod-name-${pod.getId()}`} data-testid={`list-pod-name-${pod.getId()}`}>
-          {pod.getName()}
-        </span>
-        <Tooltip targetId={`list-pod-name-${pod.getId()}`}>{pod.getName()}</Tooltip>
-      </>
-    ),
+    content: (pod: Pod) => <WithTooltip>{pod.getName()}</WithTooltip>,
     header: { title: "Name", className: "name", sortBy: columnId, id: columnId },
     sortingCallBack: (pod) => getConvertedParts(pod.getName()),
     searchFilter: (pod) => pod.getSearchFields(),
