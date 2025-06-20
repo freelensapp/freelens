@@ -12,14 +12,20 @@
       flex-grow: 2;
     }
 
-    &.pods {
-      flex-grow: 1;
+    &.ready {
+      flex-grow: 0.4;
+    }
+
+    &.desired {
+      flex-grow: 0.4;
     }
 
     &.warning {
       @include table.table-cell-warning;
     }
 
-
+    &.age {
+      flex-grow: 0.2;
+    }
   }
 }

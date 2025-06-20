@@ -7,20 +7,21 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import replicationControllerStoreInjectable from "./replication-controller-store.injectable";
-import styles from "./replication-controllers.module.scss";
+import "./replication-controllers.scss";
 
 import type { ReplicationControllerStore } from "./replication-controller-store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
-  replicas = "replicas",
-  replicasDesired = "replicasDesired",
+  desired = "desired",
+  current = "current",
+  ready = "ready",
   selector = "selector",
 }
 
@@ -33,14 +34,15 @@ const NonInjectedReplicationControllers = observer((props: Dependencies) => (
     <KubeObjectListLayout
       isConfigurable
       tableId="workload_replication_controllers"
-      className={styles.ReplicationControllers}
+      className="ReplicationControllers"
       store={props.store}
       sortingCallbacks={{
         [columnId.name]: (item) => item.getName(),
         [columnId.namespace]: (item) => item.getNs(),
         [columnId.selector]: (item) => item.getSelectorLabels(),
-        [columnId.replicas]: (item) => item.getReplicas(),
-        [columnId.replicasDesired]: (item) => item.getDesiredReplicas(),
+        [columnId.desired]: (item) => item.getDesiredReplicas(),
+        [columnId.current]: (item) => item.getReplicas(),
+        [columnId.ready]: (item) => item.status?.readyReplicas,
       }}
       searchFilters={[(item) => item.getSearchFields(), (item) => item.getSelectorLabels()]}
       renderHeaderTitle="Replication Controllers"
@@ -52,24 +54,23 @@ const NonInjectedReplicationControllers = observer((props: Dependencies) => (
           sortBy: columnId.namespace,
           id: columnId.namespace,
         },
-        { title: "Replicas", sortBy: columnId.replicas, id: columnId.replicas },
-        {
-          title: "Desired Replicas",
-          sortBy: columnId.replicasDesired,
-          id: columnId.replicasDesired,
-        },
+        { title: "Desired", className: "desired", sortBy: columnId.desired, id: columnId.desired },
+        { title: "Current", className: "current", sortBy: columnId.current, id: columnId.current },
+        { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
         {
           title: "Selector",
+          className: "selector",
           sortBy: columnId.selector,
           id: columnId.selector,
         },
       ]}
       renderTableContents={(item) => [
-        item.getName(),
+        <WithTooltip>{item.getName()}</WithTooltip>,
         <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
-        item.getReplicas(),
+        item.getReplicas() || 0,
         item.getDesiredReplicas(),
-        item.getSelectorLabels().map((label) => <Badge key={label} label={label} />),
+        item.status?.readyReplicas || 0,
+        item.getSelectorLabels().map((label) => <Badge key={label} label={label} tooltip={label} />),
       ]}
     />
   </SiblingsInTabLayout>

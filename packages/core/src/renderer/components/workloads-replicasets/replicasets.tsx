@@ -9,6 +9,7 @@ import "./replicasets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -80,7 +81,7 @@ const NonInjectedReplicaSets = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(replicaSet) => [
-          replicaSet.getName(),
+          <WithTooltip>{replicaSet.getName()}</WithTooltip>,
           <KubeObjectStatusIcon key="icon" object={replicaSet} />,
           <NamespaceSelectBadge key="namespace" namespace={replicaSet.getNs()} />,
           replicaSet.getDesired(),

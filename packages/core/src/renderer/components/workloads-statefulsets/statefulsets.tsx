@@ -9,6 +9,7 @@ import "./statefulsets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -17,29 +18,21 @@ import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import statefulSetStoreInjectable from "./store.injectable";
 
-import type { StatefulSet } from "@freelensapp/kube-object";
-
 import type { EventStore } from "../events/store";
 import type { StatefulSetStore } from "./store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
-  pods = "pods",
+  ready = "ready",
+  desired = "desired",
   age = "age",
-  replicas = "replicas",
 }
 
 interface Dependencies {
   statefulSetStore: StatefulSetStore;
   eventStore: EventStore;
 }
-
-const renderPodCounts = (statefulSet: StatefulSet) => {
-  const { readyReplicas, currentReplicas } = statefulSet.status ?? {};
-
-  return `${readyReplicas || 0}/${currentReplicas || 0}`;
-};
 
 const NonInjectedStatefulSets = observer((props: Dependencies) => {
   const { eventStore, statefulSetStore } = props;
@@ -55,8 +48,9 @@ const NonInjectedStatefulSets = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (statefulSet) => statefulSet.getName(),
           [columnId.namespace]: (statefulSet) => statefulSet.getNs(),
+          [columnId.ready]: (statefulSet) => statefulSet.status?.readyReplicas,
+          [columnId.desired]: (statefulSet) => statefulSet.getReplicas(),
           [columnId.age]: (statefulSet) => -statefulSet.getCreationTimestamp(),
-          [columnId.replicas]: (statefulSet) => statefulSet.getReplicas(),
         }}
         searchFilters={[(statefulSet) => statefulSet.getSearchFields()]}
         renderHeaderTitle="Stateful Sets"
@@ -68,20 +62,20 @@ const NonInjectedStatefulSets = observer((props: Dependencies) => {
             sortBy: columnId.namespace,
             id: columnId.namespace,
           },
-          { title: "Pods", className: "pods", id: columnId.pods },
+          { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
           {
-            title: "Replicas",
-            className: "replicas",
-            sortBy: columnId.replicas,
-            id: columnId.replicas,
+            title: "Desired",
+            className: "desired",
+            sortBy: columnId.desired,
+            id: columnId.desired,
           },
-          { className: "warning", showWithColumn: columnId.replicas },
+          { className: "warning", showWithColumn: columnId.ready },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(statefulSet) => [
-          statefulSet.getName(),
+          <WithTooltip>{statefulSet.getName()}</WithTooltip>,
           <NamespaceSelectBadge key="namespace" namespace={statefulSet.getNs()} />,
-          renderPodCounts(statefulSet),
+          statefulSet.status?.readyReplicas || 0,
           statefulSet.getReplicas(),
           <KubeObjectStatusIcon key="icon" object={statefulSet} />,
           <KubeObjectAge key="age" object={statefulSet} />,
