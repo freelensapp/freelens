@@ -44,6 +44,7 @@ enum columnId {
   roles = "roles",
   age = "age",
   version = "version",
+  internalIp = "internalIp",
   status = "status",
 }
 
@@ -207,14 +208,17 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.conditions]: (node) => node.getNodeConditionText(),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
-            [columnId.age]: (node) => -node.getCreationTimestamp(),
             [columnId.version]: (node) => node.getKubeletVersion(),
+            [columnId.internalIp]: (node) => node.getInternalIP(),
+            [columnId.age]: (node) => -node.getCreationTimestamp(),
           }}
           searchFilters={[
             (node) => node.getSearchFields(),
             (node) => node.getRoleLabels(),
             (node) => node.getKubeletVersion(),
             (node) => node.getNodeConditionText(),
+            (node) => node.getInternalIP(),
+            (node) => node.getExternalIP(),
           ]}
           renderHeaderTitle="Nodes"
           renderTableHeader={[
@@ -226,6 +230,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Conditions", className: "conditions", sortBy: columnId.conditions, id: columnId.conditions },
           ]}
@@ -247,6 +252,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               </>,
               <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
+              <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
               this.renderConditions(node),
             ];
