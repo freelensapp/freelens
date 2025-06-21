@@ -79,7 +79,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -304,11 +304,11 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             id="DndDescribedBy-0"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -597,7 +597,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -704,7 +704,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -966,11 +966,11 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             id="DndDescribedBy-30"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -1259,7 +1259,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -1366,7 +1366,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -1591,11 +1591,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             id="DndDescribedBy-3"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -1884,7 +1884,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -1991,7 +1991,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -2253,11 +2253,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             id="DndDescribedBy-20"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -2546,7 +2546,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -2653,7 +2653,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -2935,11 +2935,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             id="DndDescribedBy-25"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -3228,7 +3228,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -3335,7 +3335,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -3560,11 +3560,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             id="DndDescribedBy-5"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -3853,7 +3853,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
         <div
           class="drawer-title-text flex gaps align-center"
         >
-          
+
         </div>
         <i
           class="Icon material interactive focusable"
@@ -3960,7 +3960,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -4253,11 +4253,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             id="DndDescribedBy-10"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
@@ -4615,7 +4615,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                       width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      
+
 
                       <path
                         d="m12 7.47 4.25-2.47-4.25-2.44-4.25 2.44z"
@@ -4928,11 +4928,11 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             id="DndDescribedBy-15"
             style="display: none;"
           >
-            
+
     To pick up a draggable item, press the space bar.
     While dragging, use the arrow keys to move the item.
     Press space again to drop the item in its new position, or press escape to cancel.
-  
+
           </div>
           <div
             aria-atomic="true"
