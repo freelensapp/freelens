@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import moment from "moment";
 import { KubeObject } from "../kube-object";
 
 import type { KubeObjectStatus, LabelSelector, NamespaceScopedMetadata } from "../api-types";
@@ -74,6 +75,10 @@ export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec>
 
   static readonly apiBase = "/apis/batch/v1/jobs";
 
+  getSuspendFlag() {
+    return (this.spec.suspend ?? false).toString();
+  }
+
   getSelectors(): string[] {
     return KubeObject.stringifyLabels(this.spec.selector?.matchLabels);
   }
@@ -126,10 +131,10 @@ export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec>
     }
 
     if (!this.status?.completionTime) {
-      return Date.now() - new Date(this.status.startTime).getTime();
+      return moment().diff(this.status.startTime);
     }
 
-    return new Date(this.status.completionTime).getTime() - new Date(this.status.startTime).getTime();
+    return moment(this.status.completionTime).diff(this.status.startTime);
   }
 
   getConditions() {
@@ -138,5 +143,9 @@ export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec>
 
   hasCondition(type: string) {
     return this.getConditions().some((condition) => condition.type === type);
+  }
+
+  isSuspend() {
+    return this.spec.suspend;
   }
 }

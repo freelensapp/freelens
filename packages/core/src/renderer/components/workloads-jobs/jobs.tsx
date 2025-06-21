@@ -27,6 +27,7 @@ import type { JobStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
+  suspend = "suspend",
   status = "status",
   succeeded = "succeeded",
   completions = "completions",
@@ -92,6 +93,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (job) => job.getName(),
           [columnId.namespace]: (job) => job.getNs(),
+          [columnId.suspend]: (job) => job.getSuspendFlag(),
           [columnId.succeeded]: (job) => job.getCompletions(),
           [columnId.completions]: (job) => job.getDesiredCompletions(),
           [columnId.parallelism]: (job) => job.getParallelism(),
@@ -104,6 +106,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
+          { title: "Suspend", className: "suspend", sortBy: columnId.suspend, id: columnId.suspend },
           { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           { className: "warning", showWithColumn: columnId.succeeded },
           { title: "Succeeded", className: "succeeded", sortBy: columnId.succeeded, id: columnId.succeeded },
@@ -116,6 +119,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
           return [
             <WithTooltip>{job.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={job.getNs()} />,
+            job.getSuspendFlag(),
             <Badge className={getStatusClass(job)} label={getStatusText(job)} tooltip={getStatusText(job)} />,
             <KubeObjectStatusIcon key="icon" object={job} />,
             job.getCompletions(),

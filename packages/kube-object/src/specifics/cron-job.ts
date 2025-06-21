@@ -12,19 +12,20 @@ import type { NamespaceScopedMetadata, ObjectReference } from "../api-types";
 import type { JobTemplateSpec } from "../types/job-template-spec";
 
 export interface CronJobSpec {
-  concurrencyPolicy?: string;
-  failedJobsHistoryLimit?: number;
-  jobTemplate?: JobTemplateSpec;
   schedule: string;
+  timeZone?: string;
   startingDeadlineSeconds?: number;
-  successfulJobsHistoryLimit?: number;
+  concurrencyPolicy?: string;
   suspend?: boolean;
+  jobTemplate?: JobTemplateSpec;
+  successfulJobsHistoryLimit?: number;
+  failedJobsHistoryLimit?: number;
 }
 
 export interface CronJobStatus {
+  active?: ObjectReference[];
   lastScheduleTime?: string;
   lastSuccessfulTime?: string;
-  active?: ObjectReference[];
 }
 
 export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, CronJobSpec> {
@@ -43,6 +44,15 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
       return "-";
     }
     const diff = moment().diff(this.status.lastScheduleTime);
+
+    return formatDuration(diff, true);
+  }
+
+  getLastSuccessfulTime() {
+    if (!this.status?.lastSuccessfulTime) {
+      return "-";
+    }
+    const diff = moment().diff(this.status.lastSuccessfulTime);
 
     return formatDuration(diff, true);
   }

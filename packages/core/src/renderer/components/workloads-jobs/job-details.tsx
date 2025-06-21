@@ -15,6 +15,8 @@ import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
+import { ReactiveDuration } from "../duration";
+import { LocaleDate } from "../locale-date";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
@@ -86,7 +88,7 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
         <DrawerItem name="Completion Mode" hidden={!job.spec.completionMode}>
           {job.spec.completionMode}
         </DrawerItem>
-        <DrawerItem name="Suspend">{job.spec.suspend || false}</DrawerItem>
+        <DrawerItem name="Suspend">{job.getSuspendFlag()}</DrawerItem>
         <DrawerItem name="Backoff Limit" hidden={job.spec.backoffLimit !== undefined}>
           {job.spec.backoffLimit}
         </DrawerItem>
@@ -94,10 +96,14 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
           {formatDuration(job.spec.ttlSecondsAfterFinished || 0)}
         </DrawerItem>
         <DrawerItem name="Start Time" hidden={!job.status?.startTime}>
-          {job.status?.startTime}
+          <ReactiveDuration timestamp={job.status?.startTime} compact />
+          {" ago "}
+          {job.status?.startTime && <LocaleDate date={job.status?.startTime} />}
         </DrawerItem>
         <DrawerItem name="Completed At" hidden={!job.status?.completionTime}>
-          {job.status?.completionTime}
+          <ReactiveDuration timestamp={job.status?.completionTime} compact />
+          {" ago "}
+          {job.status?.completionTime && <LocaleDate date={job.status?.completionTime} />}
         </DrawerItem>
         <DrawerItem name="Duration" hidden={!job.status?.startTime || !job.status?.completionTime}>
           {formatDuration(job.getJobDuration())}
