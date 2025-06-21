@@ -121,6 +121,18 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -882,6 +894,18 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -1649,6 +1673,18 @@ exports[`preferences - closing-preferences given already in a page and then navi
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -2410,6 +2446,18 @@ exports[`preferences - closing-preferences given already in a page and then navi
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
