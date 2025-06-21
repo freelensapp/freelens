@@ -110,7 +110,9 @@ describe("cluster - custom resources in sidebar", () => {
       });
 
       it("does not show SomeResources sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+        ).not.toBeInTheDocument();
       });
 
       it("does not show Custom Resources Definitions sidebar", () => {
@@ -135,7 +137,9 @@ describe("cluster - custom resources in sidebar", () => {
         });
 
         it("shows some.group.com group sidebar item", () => {
-          expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument();
+          expect(
+            result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+          ).toBeInTheDocument();
         });
 
         it("does not show Custom Resources Definitions sidebar", () => {
@@ -144,7 +148,9 @@ describe("cluster - custom resources in sidebar", () => {
 
         describe("when custom resources group sidebar item is expanded", () => {
           beforeEach(() => {
-            result.getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some.group.com").click();
+            result
+              .getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some-resources.some.group.com")
+              .click();
           });
 
           it("renders", () => {
@@ -152,26 +158,29 @@ describe("cluster - custom resources in sidebar", () => {
           });
 
           it("shows some.group.com group sidebar item", () => {
-            expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument();
+            expect(
+              result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+            ).toBeInTheDocument();
           });
 
           it("formats the some.group.com sidebar item title correctly", () => {
             expect(
-              result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild,
-            ).toHaveTextContent("some\u200b.group\u200b.com", {
+              result.getByTestId("link-for-sidebar-item-custom-resource-group-some-resources.some.group.com")
+                .firstChild,
+            ).toHaveTextContent("some-resources\u200b.some\u200b.group\u200b.com", {
               normalizeWhitespace: false,
             });
           });
 
           it("shows some-resources group sidebar item", () => {
             expect(
-              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+              result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"),
             ).toBeInTheDocument();
           });
 
           it("formats the some-resources sidebar item title correctly", () => {
             expect(
-              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+              result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"),
             ).toHaveTextContent("Some Resource");
           });
         });
@@ -199,7 +208,9 @@ describe("cluster - custom resources in sidebar", () => {
       });
 
       it("does not show SomeResources sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+        expect(
+          result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+        ).not.toBeInTheDocument();
       });
 
       it("does not show Custom Resources Definitions sidebar", () => {
@@ -224,7 +235,9 @@ describe("cluster - custom resources in sidebar", () => {
         });
 
         it("does not show SomeResources sidebar", () => {
-          expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+          expect(
+            result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+          ).not.toBeInTheDocument();
         });
 
         it("shows Custom Resources Definitions sidebar", () => {
