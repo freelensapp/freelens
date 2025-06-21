@@ -252,6 +252,14 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
     return this.status?.nodeInfo?.osImage;
   }
 
+  getInternalIP(): string | undefined {
+    return this.status?.addresses?.find((address) => address.type === "InternalIP")?.address;
+  }
+
+  getExternalIP(): string | undefined {
+    return this.status?.addresses?.find((address) => address.type === "ExternalIP")?.address;
+  }
+
   isUnschedulable() {
     return this.spec.unschedulable;
   }

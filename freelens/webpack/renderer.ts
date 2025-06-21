@@ -49,14 +49,14 @@ const renderer: webpack.Configuration = {
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
-  async externals({ request }) {
+  async externals({ request }: { request?: string }) {
     const externalModulesRegex =
       /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
 
-    if (externalModulesRegex.test(request)) {
-      return Promise.resolve(`node-commonjs ${request}`);
+    if (typeof request === "string" && externalModulesRegex.test(request)) {
+      return `node-commonjs ${request}`;
     }
-    return Promise.resolve();
+    return;
   },
   optimization: {
     minimize: false,

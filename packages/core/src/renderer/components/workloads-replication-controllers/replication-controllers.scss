@@ -6,7 +6,7 @@
 
 @use "../table/table.mixins";
 
-.DaemonSets {
+.ReplicationControllers {
   .TableCell {
     &.name {
       flex-grow: 1.6;
@@ -24,19 +24,7 @@
       flex-grow: 0.4;
     }
 
-    &.updated {
-      flex-grow: 0.4;
-    }
-
-    &.available {
-      flex-grow: 0.4;
-    }
-
-    &.warning {
-      @include table.table-cell-warning;
-    }
-
-    &.labels {
+    &.selector {
       flex-grow: 1.5;
       @include table.table-cell-labels-offsets;
     }

@@ -13,14 +13,32 @@
       flex-grow: 2;
     }
 
+    &.status {
+      @include workloads-mixins.job-condition-colors;
+    }
+
+    &.succeeded {
+      flex-grow: 0.5;
+    }
+
+    &.completions {
+      flex-grow: 0.5;
+    }
+
+    &.parallelism {
+      flex-grow: 0.5;
+    }
+
     &.warning {
       @include table.table-cell-warning;
     }
 
-    &.conditions {
-      @include workloads-mixins.job-condition-colors;
+    &.duration {
+      flex-grow: 0.3;
     }
 
-
+    &.age {
+      flex-grow: 0.3;
+    }
   }
 }

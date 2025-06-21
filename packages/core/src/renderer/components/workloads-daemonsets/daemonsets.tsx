@@ -9,7 +9,7 @@ import "./daemonsets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -18,15 +18,17 @@ import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import daemonSetStoreInjectable from "./store.injectable";
 
-import type { DaemonSet } from "@freelensapp/kube-object";
-
 import type { EventStore } from "../events/store";
 import type { DaemonSetStore } from "./store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
-  pods = "pods",
+  desired = "desired",
+  current = "current",
+  ready = "ready",
+  updated = "updated",
+  available = "available",
   labels = "labels",
   age = "age",
 }
@@ -39,8 +41,6 @@ interface Dependencies {
 const NonInjectedDaemonSets = observer((props: Dependencies) => {
   const { daemonSetStore, eventStore } = props;
 
-  const getPodsLength = (daemonSet: DaemonSet) => daemonSetStore.getChildPods(daemonSet).length;
-
   return (
     <SiblingsInTabLayout>
       <KubeObjectListLayout
@@ -52,7 +52,11 @@ const NonInjectedDaemonSets = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (daemonSet) => daemonSet.getName(),
           [columnId.namespace]: (daemonSet) => daemonSet.getNs(),
-          [columnId.pods]: (daemonSet) => getPodsLength(daemonSet),
+          [columnId.desired]: (daemonSet) => daemonSet.status?.desiredNumberScheduled,
+          [columnId.current]: (daemonSet) => daemonSet.status?.currentNumberScheduled,
+          [columnId.ready]: (daemonSet) => daemonSet.status?.numberReady,
+          [columnId.updated]: (daemonSet) => daemonSet.status?.updatedNumberScheduled,
+          [columnId.available]: (daemonSet) => daemonSet.status?.numberAvailable,
           [columnId.age]: (daemonSet) => -daemonSet.getCreationTimestamp(),
         }}
         searchFilters={[(daemonSet) => daemonSet.getSearchFields(), (daemonSet) => daemonSet.getLabels()]}
@@ -65,17 +69,27 @@ const NonInjectedDaemonSets = observer((props: Dependencies) => {
             sortBy: columnId.namespace,
             id: columnId.namespace,
           },
-          { title: "Pods", className: "pods", sortBy: columnId.pods, id: columnId.pods },
-          { className: "warning", showWithColumn: columnId.pods },
+          { title: "Desired", className: "desired", sortBy: columnId.desired, id: columnId.desired },
+          { title: "Current", className: "current", sortBy: columnId.current, id: columnId.current },
+          { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
+          { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
+          { title: "Available", className: "available", sortBy: columnId.available, id: columnId.available },
+          { className: "warning", showWithColumn: columnId.current },
           { title: "Node Selector", className: "labels scrollable", id: columnId.labels },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(daemonSet) => [
-          daemonSet.getName(),
+          <WithTooltip>{daemonSet.getName()}</WithTooltip>,
           <NamespaceSelectBadge key="namespace" namespace={daemonSet.getNs()} />,
-          getPodsLength(daemonSet),
+          daemonSet.status?.desiredNumberScheduled || 0,
+          daemonSet.status?.currentNumberScheduled || 0,
+          daemonSet.status?.numberReady || 0,
+          daemonSet.status?.updatedNumberScheduled || 0,
+          daemonSet.status?.numberAvailable || 0,
           <KubeObjectStatusIcon key="icon" object={daemonSet} />,
-          daemonSet.getNodeSelectors().map((selector) => <Badge key={selector} label={selector} scrollable />),
+          daemonSet
+            .getNodeSelectors()
+            .map((selector) => <Badge key={selector} label={selector} tooltip={selector} scrollable />),
           <KubeObjectAge key="age" object={daemonSet} />,
         ]}
       />

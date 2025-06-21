@@ -13,6 +13,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
+import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
@@ -121,10 +122,16 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         selected={selfLink === kubeSelectedUrlParam.get()}
         onClick={prevDefault(() => toggleDetails(selfLink))}
       >
-        <TableCell className={styles.message}>{message ?? "<unknown>"}</TableCell>
-        <TableCell className={styles.object}>{getName()}</TableCell>
-        <TableCell className="kind">{kind}</TableCell>
-        <TableCell className="age">{renderAge()}</TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.message)}>
+          <WithTooltip>{message ?? "<unknown>"}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.object)}>
+          <WithTooltip>{getName()}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.kind)}>
+          <WithTooltip>{kind}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.age)}>{renderAge()}</TableCell>
       </TableRow>
     );
   };
@@ -168,14 +175,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           className={cssNames("box grow", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
-            <TableCell className="message">Message</TableCell>
-            <TableCell className="object" sortBy={sortBy.object}>
+            <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
+            <TableCell className={cssNames(styles.TableCell, styles.object)} sortBy={sortBy.object}>
               Object
             </TableCell>
-            <TableCell className="kind" sortBy={sortBy.type}>
+            <TableCell className={cssNames(styles.TableCell, styles.kind)} sortBy={sortBy.type}>
               Type
             </TableCell>
-            <TableCell className="timestamp" sortBy={sortBy.age}>
+            <TableCell className={cssNames(styles.TableCell, styles.age)} sortBy={sortBy.age}>
               Age
             </TableCell>
           </TableHead>

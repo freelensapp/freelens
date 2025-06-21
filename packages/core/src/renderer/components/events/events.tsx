@@ -17,6 +17,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { WithTooltip } from "../badge";
 import { ReactiveDuration } from "../duration/reactive-duration";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
@@ -205,9 +206,9 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
               to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
               onClick={stopPropagation}
             >
-              {`${involvedObject.kind}: ${involvedObject.name}`}
+              <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
             </Link>,
-            event.getSource(),
+            <WithTooltip>{event.getSource()}</WithTooltip>,
             event.count,
             <KubeObjectAge key="age" object={event} />,
             <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />,

@@ -24,7 +24,7 @@
     }
 
     &.cpu {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
 
       .LineProgress {
@@ -33,7 +33,7 @@
     }
 
     &.memory {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
 
       .LineProgress {
@@ -42,7 +42,7 @@
     }
 
     &.disk {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
 
       .LineProgress {
@@ -52,6 +52,14 @@
 
     &.taints {
       flex: 0.6;
+    }
+
+    &.roles {
+      flex-grow: 1.5;
+    }
+
+    &.internalIp {
+      flex-grow: 1.3;
     }
 
     &.conditions {

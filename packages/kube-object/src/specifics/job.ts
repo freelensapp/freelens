@@ -7,14 +7,35 @@
 import { KubeObject } from "../kube-object";
 
 import type { KubeObjectStatus, LabelSelector, NamespaceScopedMetadata } from "../api-types";
-import type { Container } from "../types/container";
 import type { PodSpec } from "./pod";
 
 export interface JobSpec {
   parallelism?: number;
   completions?: number;
+  activeDeadlineSeconds?: number;
+  podFailurePolicy?: {
+    action: string;
+    onExitCodes?: {
+      containerName?: string;
+      operator: string;
+      values: number[];
+    }[];
+    onPodConditions?: {
+      type: string;
+      status: string;
+    }[];
+  }[];
+  successPolicy?: {
+    rules: {
+      succeededIndexes: string;
+      succeededCount: number;
+    }[];
+  };
   backoffLimit?: number;
+  backoffLimitPerIndex?: number;
+  maxFailedIndexes?: number;
   selector?: LabelSelector;
+  manualSelector?: boolean;
   template: {
     metadata: {
       creationTimestamp?: string;
@@ -23,19 +44,27 @@ export interface JobSpec {
     };
     spec: PodSpec;
   };
-  containers?: Container[];
-  restartPolicy?: string;
-  terminationGracePeriodSeconds?: number;
-  dnsPolicy?: string;
-  serviceAccountName?: string;
-  serviceAccount?: string;
-  schedulerName?: string;
+  ttlSecondsAfterFinished?: number;
+  completionMode?: string;
+  suspend?: boolean;
+  podReplacementPolicy?: string;
+  managedBy?: string;
 }
 
 export interface JobStatus extends KubeObjectStatus {
-  startTime: string;
-  completionTime: string;
-  succeeded: number;
+  startTime?: string;
+  completionTime?: string;
+  active?: number;
+  succeeded?: number;
+  failed?: number;
+  terminating?: number;
+  completedIndexes?: string;
+  failedIndexes?: string;
+  uncountedTerminatedPods?: {
+    succeeded: string[];
+    failed: string[];
+  };
+  ready?: number;
 }
 
 export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec> {
@@ -89,5 +118,25 @@ export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec>
 
   getImages() {
     return this.spec.template.spec.containers?.map((container) => container.image) ?? [];
+  }
+
+  getJobDuration() {
+    if (!this.status?.startTime) {
+      return 0;
+    }
+
+    if (!this.status?.completionTime) {
+      return Date.now() - new Date(this.status.startTime).getTime();
+    }
+
+    return new Date(this.status.completionTime).getTime() - new Date(this.status.startTime).getTime();
+  }
+
+  getConditions() {
+    return this.status?.conditions ?? [];
+  }
+
+  hasCondition(type: string) {
+    return this.getConditions().some((condition) => condition.type === type);
   }
 }
