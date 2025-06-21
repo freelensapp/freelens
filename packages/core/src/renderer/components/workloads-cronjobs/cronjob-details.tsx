@@ -8,6 +8,7 @@ import "./cronjob-details.scss";
 
 import { CronJob } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
@@ -65,9 +66,35 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
         <DrawerItem name="Schedule">
           {cronJob.isNeverRun() ? `never (${cronJob.getSchedule()})` : cronJob.getSchedule()}
         </DrawerItem>
-        <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
+        <DrawerItem name="Timezone">{cronJob.spec.timeZone}</DrawerItem>
         <DrawerItem name="Suspend">{cronJob.getSuspendFlag()}</DrawerItem>
         <DrawerItem name="Last schedule">{cronJob.getLastScheduleTime()}</DrawerItem>
+        <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
+
+        {cronJob.spec.jobTemplate && (
+          <>
+            <DrawerTitle>Template</DrawerTitle>
+            <DrawerItem name="Parallelism">{cronJob.getJobParallelism()}</DrawerItem>
+            <DrawerItem name="Completions">{cronJob.getJobDesiredCompletions()}</DrawerItem>
+            <DrawerItem name="Completion Mode" hidden={!cronJob.spec.jobTemplate.spec?.completionMode}>
+              {cronJob.spec.jobTemplate.spec?.completionMode}
+            </DrawerItem>
+            <DrawerItem name="Suspend">{cronJob.getJobSuspendFlag()}</DrawerItem>
+            <DrawerItem name="Backoff Limit" hidden={cronJob.spec.jobTemplate.spec?.backoffLimit !== undefined}>
+              {cronJob.spec.jobTemplate.spec?.backoffLimit}
+            </DrawerItem>
+            <DrawerItem
+              name="TTL Seconds After Finished"
+              hidden={cronJob.spec.jobTemplate.spec?.ttlSecondsAfterFinished !== undefined}
+            >
+              {formatDuration(cronJob.spec.jobTemplate.spec?.ttlSecondsAfterFinished || 0)}
+            </DrawerItem>
+            <DrawerItem name="Active Deadline Seconds" hidden={!cronJob.spec.jobTemplate.spec?.activeDeadlineSeconds}>
+              {formatDuration(cronJob.spec.jobTemplate.spec?.activeDeadlineSeconds || 0)}
+            </DrawerItem>
+          </>
+        )}
+
         {childJobs.length > 0 && (
           <>
             <DrawerTitle>Jobs</DrawerTitle>
@@ -76,9 +103,9 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
               const condition = job.getCondition();
 
               return (
-                <div className="job" key={job.getId()}>
+                <div className="job" key={cronJob.getId()}>
                   <div className="title">
-                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{job.getName()}</Link>
+                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{cronJob.getName()}</Link>
                   </div>
                   <DrawerItem name="Condition" className="conditions" labelsOnly>
                     {condition && <Badge label={condition.type} className={kebabCase(condition.type)} />}

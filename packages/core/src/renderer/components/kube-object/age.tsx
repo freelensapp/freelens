@@ -4,7 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import moment from "moment-timezone";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { ReactiveDuration } from "../duration/reactive-duration";
 
 export interface KubeObjectAgeProps {
@@ -22,5 +24,7 @@ export interface KubeObjectAgeProps {
 }
 
 export const KubeObjectAge = ({ object, compact = true }: KubeObjectAgeProps) => (
-  <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
+  <WithTooltip tooltip={moment(object.metadata.creationTimestamp).toDate()}>
+    <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
+  </WithTooltip>
 );

@@ -16,6 +16,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { LocaleDate } from "../locale-date";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import jobStoreInjectable from "./store.injectable";
 
@@ -79,6 +80,24 @@ interface Dependencies {
   eventStore: EventStore;
 }
 
+const durationTooltip = (job: Job) => {
+  const startTime = job.status?.startTime;
+  const completionTime = job.status?.completionTime;
+  if (!startTime) {
+    return "";
+  }
+  if (!completionTime) {
+    return `Start time: ${startTime}`;
+  }
+  return (
+    <>
+      Start time: <LocaleDate date={startTime} />
+      <br />
+      Completion time: <LocaleDate date={completionTime} />
+    </>
+  );
+};
+
 const NonInjectedJobs = observer((props: Dependencies) => {
   const { eventStore, jobStore } = props;
 
@@ -106,9 +125,9 @@ const NonInjectedJobs = observer((props: Dependencies) => {
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
+          { className: "warning", showWithColumn: columnId.name },
           { title: "Suspend", className: "suspend", sortBy: columnId.suspend, id: columnId.suspend },
           { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
-          { className: "warning", showWithColumn: columnId.succeeded },
           { title: "Succeeded", className: "succeeded", sortBy: columnId.succeeded, id: columnId.succeeded },
           { title: "Completions", className: "completions", sortBy: columnId.completions, id: columnId.completions },
           { title: "Parallelism", className: "parallelism", sortBy: columnId.parallelism, id: columnId.parallelism },
@@ -119,13 +138,13 @@ const NonInjectedJobs = observer((props: Dependencies) => {
           return [
             <WithTooltip>{job.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={job.getNs()} />,
+            <KubeObjectStatusIcon key="icon" object={job} />,
             job.getSuspendFlag(),
             <Badge className={getStatusClass(job)} label={getStatusText(job)} tooltip={getStatusText(job)} />,
-            <KubeObjectStatusIcon key="icon" object={job} />,
             job.getCompletions(),
             job.getDesiredCompletions(),
             job.getParallelism(),
-            formatDuration(job.getJobDuration()),
+            <WithTooltip tooltip={durationTooltip(job)}>{formatDuration(job.getJobDuration())}</WithTooltip>,
             <KubeObjectAge key="age" object={job} />,
           ];
         }}

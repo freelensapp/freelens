@@ -39,6 +39,10 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     return (this.spec.suspend ?? false).toString();
   }
 
+  getJobSuspendFlag() {
+    return (this.spec.jobTemplate?.spec?.suspend ?? false).toString();
+  }
+
   getLastScheduleTime() {
     if (!this.status?.lastScheduleTime) {
       return "-";
@@ -61,6 +65,38 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     return this.spec.schedule;
   }
 
+  getJobSelectors(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.selector?.matchLabels);
+  }
+
+  getJobNodeSelectors(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.template.spec.nodeSelector);
+  }
+
+  getJobTemplateLabels(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.template.metadata.labels);
+  }
+
+  getJobTolerations() {
+    return this.spec.jobTemplate?.spec?.template.spec.tolerations ?? [];
+  }
+
+  getJobAffinity() {
+    return this.spec.jobTemplate?.spec?.template.spec.affinity;
+  }
+
+  getJobAffinityNumber() {
+    return Object.keys(this.getJobAffinity() ?? {}).length;
+  }
+
+  getJobDesiredCompletions() {
+    return this.spec.jobTemplate?.spec?.completions ?? 0;
+  }
+
+  getJobParallelism() {
+    return this.spec.jobTemplate?.spec?.parallelism;
+  }
+
   isNeverRun() {
     const schedule = this.getSchedule();
     const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -77,5 +113,9 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
 
   isSuspend() {
     return this.spec.suspend;
+  }
+
+  isJobSuspend() {
+    return this.spec.jobTemplate?.spec?.suspend;
   }
 }
