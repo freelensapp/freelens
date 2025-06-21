@@ -232,7 +232,7 @@ const getByNewGroup = (group: string, configData: OrderedGroupConfig): GroupInfo
     group,
     candidates.map(([pattern]) => pattern),
   );
-  if (bestPattern) {
+  if (bestPattern !== null) {
     const [topLevel, subLevel] = candidates.find(([pattern]) => pattern === bestPattern)![1];
     return { topLevel, subLevel };
   }
