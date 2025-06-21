@@ -121,6 +121,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -822,6 +834,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -1565,6 +1589,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -2364,6 +2400,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -3104,6 +3152,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -3850,6 +3910,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -4579,6 +4651,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -5356,6 +5440,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -6199,6 +6295,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -6973,6 +7081,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
