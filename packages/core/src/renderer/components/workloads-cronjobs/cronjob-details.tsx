@@ -17,7 +17,9 @@ import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
+import { ReactiveDuration } from "../duration";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import { LocaleDate } from "../locale-date";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import cronJobStoreInjectable from "./store.injectable";
 
@@ -67,8 +69,29 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
           {cronJob.isNeverRun() ? `never (${cronJob.getSchedule()})` : cronJob.getSchedule()}
         </DrawerItem>
         <DrawerItem name="Timezone">{cronJob.spec.timeZone}</DrawerItem>
+        <DrawerItem name="Starting Deadline Seconds" hidden={!cronJob.spec.startingDeadlineSeconds}>
+          {formatDuration(cronJob.spec.startingDeadlineSeconds || 0)}
+        </DrawerItem>
+        <DrawerItem name="Concurrency Policy" hidden={!cronJob.spec.concurrencyPolicy}>
+          {cronJob.spec.concurrencyPolicy}
+        </DrawerItem>
         <DrawerItem name="Suspend">{cronJob.getSuspendFlag()}</DrawerItem>
-        <DrawerItem name="Last schedule">{cronJob.getLastScheduleTime()}</DrawerItem>
+        <DrawerItem name="Successful Jobs History Limit" hidden={!cronJob.spec.successfulJobsHistoryLimit}>
+          {cronJob.spec.successfulJobsHistoryLimit}
+        </DrawerItem>
+        <DrawerItem name="Failed Jobs History Limit" hidden={!cronJob.spec.failedJobsHistoryLimit}>
+          {cronJob.spec.failedJobsHistoryLimit}
+        </DrawerItem>
+        <DrawerItem name="Last Schedule" hidden={!cronJob.status?.lastScheduleTime}>
+          <ReactiveDuration timestamp={cronJob.status?.lastScheduleTime} compact />
+          {" ago "}
+          {cronJob.status?.lastScheduleTime && <LocaleDate date={cronJob.status?.lastScheduleTime} />}
+        </DrawerItem>
+        <DrawerItem name="Last Successful Run" hidden={!cronJob.status?.lastSuccessfulTime}>
+          <ReactiveDuration timestamp={cronJob.status?.lastSuccessfulTime} compact />
+          {" ago "}
+          {cronJob.status?.lastSuccessfulTime && <LocaleDate date={cronJob.status?.lastSuccessfulTime} />}
+        </DrawerItem>
         <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
 
         {cronJob.spec.jobTemplate && (
