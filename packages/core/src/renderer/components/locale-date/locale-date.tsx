@@ -13,7 +13,7 @@ import userPreferencesStateInjectable from "../../../features/user-preferences/c
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 export interface LocaleDateProps {
-  date: string;
+  date: string | Date;
 }
 
 interface Dependencies {

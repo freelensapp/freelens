@@ -13,6 +13,7 @@ import { KubeObjectAge } from "../../kube-object/age";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../../with-tooltip";
 import openAddClusterRoleDialogInjectable from "./add-dialog/open.injectable";
 import { AddClusterRoleDialog } from "./add-dialog/view";
 import clusterRoleStoreInjectable from "./store.injectable";
@@ -55,7 +56,7 @@ class NonInjectedClusterRoles extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(clusterRole) => [
-            clusterRole.getName(),
+            <WithTooltip>{clusterRole.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={clusterRole} />,
             <KubeObjectAge key="age" object={clusterRole} />,
           ]}

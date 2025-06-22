@@ -13,6 +13,7 @@ import React, { Component } from "react";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import { HelmChartDetails } from "./helm-chart-details";
 import helmChartsInjectable from "./helm-charts/helm-charts.injectable";
 import selectedHelmChartInjectable from "./helm-charts/selected-helm-chart.injectable";
@@ -125,11 +126,14 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
             <figure key="image">
               <HelmChartIcon imageUrl={chart.getIcon()} />
             </figure>,
-            chart.getName(),
-            chart.getDescription(),
-            chart.getVersion(),
-            chart.getAppVersion(),
-            { title: chart.getRepository(), className: chart.getRepository().toLowerCase() },
+            <WithTooltip>{chart.getName()}</WithTooltip>,
+            <WithTooltip>{chart.getDescription()}</WithTooltip>,
+            <WithTooltip>{chart.getVersion()}</WithTooltip>,
+            <WithTooltip>{chart.getAppVersion()}</WithTooltip>,
+            {
+              title: <WithTooltip>{chart.getRepository()}</WithTooltip>,
+              className: chart.getRepository().toLowerCase(),
+            },
             { className: "menu" },
           ]}
           detailsItem={selectedChart}

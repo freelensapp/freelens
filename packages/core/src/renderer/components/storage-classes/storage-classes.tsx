@@ -13,6 +13,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import storageClassStoreInjectable from "./store.injectable";
 
 import type { StorageClassStore } from "./store";
@@ -61,10 +62,10 @@ class NonInjectedStorageClasses extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(storageClass) => [
-            storageClass.getName(),
+            <WithTooltip>{storageClass.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={storageClass} />,
-            storageClass.provisioner,
-            storageClass.getReclaimPolicy(),
+            <WithTooltip>{storageClass.provisioner}</WithTooltip>,
+            <WithTooltip>{storageClass.getReclaimPolicy()}</WithTooltip>,
             storageClass.isDefault() ? "Yes" : null,
             <KubeObjectAge key="age" object={storageClass} />,
           ]}

@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import podDisruptionBudgetStoreInjectable from "./store.injectable";
 
 import type { PodDisruptionBudget } from "@freelensapp/kube-object";
@@ -89,7 +90,7 @@ class NonInjectedPodDisruptionBudgets extends React.Component<PodDisruptionBudge
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(pdb) => [
-            pdb.getName(),
+            <WithTooltip>{pdb.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={pdb} />,
             <NamespaceSelectBadge key="namespace" namespace={pdb.getNs()} />,
             pdb.getMinAvailable(),

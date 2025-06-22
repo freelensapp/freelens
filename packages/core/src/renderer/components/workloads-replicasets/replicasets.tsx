@@ -15,6 +15,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import replicaSetStoreInjectable from "./store.injectable";
 
 import type { EventStore } from "../events/store";
@@ -80,7 +81,7 @@ const NonInjectedReplicaSets = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(replicaSet) => [
-          replicaSet.getName(),
+          <WithTooltip>{replicaSet.getName()}</WithTooltip>,
           <KubeObjectStatusIcon key="icon" object={replicaSet} />,
           <NamespaceSelectBadge key="namespace" namespace={replicaSet.getNs()} />,
           replicaSet.getDesired(),

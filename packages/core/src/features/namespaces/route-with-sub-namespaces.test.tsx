@@ -87,15 +87,19 @@ describe("namespaces route when viewed with some subNamespaces", () => {
     });
 
     it("shows the default namespace", () => {
-      expect(result.queryByText("default")).toBeInTheDocument();
+      expect(
+        result.queryByTestId("icon-for-menu-actions-for-kube-object-menu-for-namespace-default"),
+      ).toBeInTheDocument();
     });
 
     it("shows the foobar namespace", () => {
-      expect(result.queryByText("foobar")).toBeInTheDocument();
+      expect(
+        result.queryByTestId("icon-for-menu-actions-for-kube-object-menu-for-namespace-foobar"),
+      ).toBeInTheDocument();
     });
 
     it("shows the my-sub-namespace namespace", () => {
-      expect(result.queryByText("my-sub-namespace")).toBeInTheDocument();
+      expect(result.queryByTestId("namespace-list-badge-for-namespace-my-sub-namespace")).toBeInTheDocument();
     });
 
     describe("when clicking on the default namespace context menu button", () => {

@@ -461,18 +461,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                default
+                                <div
+                                  class="badge flat"
+                                >
+                                  default
+                                </div>
+                                <div>
+                                  default
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -523,18 +541,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                foobar
+                                <div
+                                  class="badge flat"
+                                >
+                                  foobar
+                                </div>
+                                <div>
+                                  foobar
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -585,7 +621,14 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                my-sub-namespace
+                                <div
+                                  class="badge flat"
+                                >
+                                  my-sub-namespace
+                                </div>
+                                <div>
+                                  my-sub-namespace
+                                </div>
                                 <span
                                   class="subnamespaceBadge"
                                   data-testid="namespace-list-badge-for-namespace-my-sub-namespace"
@@ -601,15 +644,29 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                                 class="TableCell labels scrollable"
                               >
                                 <div
-                                  class="badge scrollable"
+                                  class="badge flat"
                                 >
+                                  <div
+                                    class="badge scrollable"
+                                  >
+                                    default.tree.hnc.x-k8s.io/depth=1
+                                  </div>
+                                </div>
+                                <div>
                                   default.tree.hnc.x-k8s.io/depth=1
                                 </div>
                               </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -1301,18 +1358,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                default
+                                <div
+                                  class="badge flat"
+                                >
+                                  default
+                                </div>
+                                <div>
+                                  default
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -1363,18 +1438,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                foobar
+                                <div
+                                  class="badge flat"
+                                >
+                                  foobar
+                                </div>
+                                <div>
+                                  foobar
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -1425,7 +1518,14 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                my-sub-namespace
+                                <div
+                                  class="badge flat"
+                                >
+                                  my-sub-namespace
+                                </div>
+                                <div>
+                                  my-sub-namespace
+                                </div>
                                 <span
                                   class="subnamespaceBadge"
                                   data-testid="namespace-list-badge-for-namespace-my-sub-namespace"
@@ -1441,15 +1541,29 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                                 class="TableCell labels scrollable"
                               >
                                 <div
-                                  class="badge scrollable"
+                                  class="badge flat"
                                 >
+                                  <div
+                                    class="badge scrollable"
+                                  >
+                                    default.tree.hnc.x-k8s.io/depth=1
+                                  </div>
+                                </div>
+                                <div>
                                   default.tree.hnc.x-k8s.io/depth=1
                                 </div>
                               </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -2172,18 +2286,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                default
+                                <div
+                                  class="badge flat"
+                                >
+                                  default
+                                </div>
+                                <div>
+                                  default
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -2234,18 +2366,36 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                foobar
+                                <div
+                                  class="badge flat"
+                                >
+                                  foobar
+                                </div>
+                                <div>
+                                  foobar
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
                               />
                               <div
                                 class="TableCell labels scrollable"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"
@@ -2296,7 +2446,14 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                               <div
                                 class="TableCell name"
                               >
-                                my-sub-namespace
+                                <div
+                                  class="badge flat"
+                                >
+                                  my-sub-namespace
+                                </div>
+                                <div>
+                                  my-sub-namespace
+                                </div>
                                 <span
                                   class="subnamespaceBadge"
                                   data-testid="namespace-list-badge-for-namespace-my-sub-namespace"
@@ -2312,15 +2469,29 @@ exports[`namespaces route when viewed with some subNamespaces when navigating to
                                 class="TableCell labels scrollable"
                               >
                                 <div
-                                  class="badge scrollable"
+                                  class="badge flat"
                                 >
+                                  <div
+                                    class="badge scrollable"
+                                  >
+                                    default.tree.hnc.x-k8s.io/depth=1
+                                  </div>
+                                </div>
+                                <div>
                                   default.tree.hnc.x-k8s.io/depth=1
                                 </div>
                               </div>
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell - status"

@@ -13,17 +13,17 @@
 
   // Expanding value cell to cover 2 columns (whole Drawer width)
 
-  >.name {
+  > .name {
     grid-row-start: 1;
     grid-column-start: 1;
   }
 
-  >.value {
+  > .value {
     grid-row-start: 1;
     grid-column-start: 1;
   }
 
-  .DrawerParamToggler>.params {
+  .DrawerParamToggler > .params {
     margin-left: var(--drawer-item-title-width);
   }
 }

@@ -15,6 +15,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import ingressStoreInjectable from "./ingress-store.injectable";
 
 import type { IngressStore } from "./ingress-store";
@@ -57,10 +58,14 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(ingress) => [
-          ingress.getName(),
+          <WithTooltip>{ingress.getName()}</WithTooltip>,
           <KubeObjectStatusIcon key="icon" object={ingress} />,
           <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
-          ingress.getLoadBalancers().map((lb) => <p key={lb}>{lb}</p>),
+          <WithTooltip>
+            {ingress.getLoadBalancers().map((lb) => (
+              <p key={lb}>{lb}</p>
+            ))}
+          </WithTooltip>,
           computeRouteDeclarations(ingress).map((decl) =>
             decl.displayAsLink ? (
               <div key={decl.url} className="ingressRule">

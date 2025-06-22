@@ -14,6 +14,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import priorityClassStoreInjectable from "./store.injectable";
 
 import type { PriorityClass } from "@freelensapp/kube-object";
@@ -72,9 +73,9 @@ class NonInjectedPriorityClasses extends React.Component<PriorityClassesProps & 
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(pc) => [
-            pc.getName(),
+            <WithTooltip>{pc.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={pc} />,
-            pc.getValue(),
+            <WithTooltip>{pc.getValue()}</WithTooltip>,
             pc.getGlobalDefault(),
             <KubeObjectAge key="age" object={pc} />,
           ]}

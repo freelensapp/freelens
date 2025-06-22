@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import limitRangeStoreInjectable from "./store.injectable";
 
 import type { LimitRangeStore } from "./store";
@@ -52,7 +53,7 @@ class NonInjectedLimitRanges extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(limitRange) => [
-            limitRange.getName(),
+            <WithTooltip>{limitRange.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={limitRange} />,
             <NamespaceSelectBadge key="namespace" namespace={limitRange.getNs()} />,
             <KubeObjectAge key="age" object={limitRange} />,

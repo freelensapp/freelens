@@ -16,13 +16,13 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
-import { Badge } from "../badge/badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
 import { LineProgress } from "../line-progress";
+import { WithTooltip } from "../with-tooltip";
 import nodeStoreInjectable from "./store.injectable";
 
 import type { Node } from "@freelensapp/kube-object";
@@ -44,6 +44,7 @@ enum columnId {
   roles = "roles",
   age = "age",
   version = "version",
+  internalIp = "internalIp",
   status = "status",
 }
 
@@ -207,14 +208,17 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.conditions]: (node) => node.getNodeConditionText(),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
-            [columnId.age]: (node) => -node.getCreationTimestamp(),
             [columnId.version]: (node) => node.getKubeletVersion(),
+            [columnId.internalIp]: (node) => node.getInternalIP(),
+            [columnId.age]: (node) => -node.getCreationTimestamp(),
           }}
           searchFilters={[
             (node) => node.getSearchFields(),
             (node) => node.getRoleLabels(),
             (node) => node.getKubeletVersion(),
             (node) => node.getNodeConditionText(),
+            (node) => node.getInternalIP(),
+            (node) => node.getExternalIP(),
           ]}
           renderHeaderTitle="Nodes"
           renderTableHeader={[
@@ -226,6 +230,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Conditions", className: "conditions", sortBy: columnId.conditions, id: columnId.conditions },
           ]}
@@ -234,7 +239,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             const taints = node.getTaints();
 
             return [
-              <Badge flat key="name" label={node.getName()} tooltip={node.getName()} />,
+              <WithTooltip>{node.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={node} />,
               this.renderCpuUsage(node),
               this.renderMemoryUsage(node),
@@ -245,8 +250,9 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
                   {taints.map(formatNodeTaint).join("\n")}
                 </Tooltip>
               </>,
-              node.getRoleLabels(),
-              node.getKubeletVersion(),
+              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
+              <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
+              <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
               this.renderConditions(node),
             ];

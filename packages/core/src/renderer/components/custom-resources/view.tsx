@@ -17,6 +17,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
 
 import type { TableCellProps } from "@freelensapp/list-layout";
@@ -108,12 +109,12 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(customResource) => [
-            customResource.getName(),
+            <WithTooltip>{customResource.getName()}</WithTooltip>,
             isNamespaced && <NamespaceSelectBadge namespace={customResource.getNs() as string} />,
             ...extraColumns.map(
               (column): TableCellProps => ({
                 "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
-                title: formatJSONValue(safeJSONPathValue(customResource, column.jsonPath)),
+                title: <WithTooltip>{formatJSONValue(safeJSONPathValue(customResource, column.jsonPath))}</WithTooltip>,
               }),
             ),
             <KubeObjectAge key="age" object={customResource} />,

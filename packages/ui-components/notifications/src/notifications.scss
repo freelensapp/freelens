@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-$color-white: rgb(255,255,255);
+$color-white: rgb(255, 255, 255);
 
 @mixin hidden-scrollbar {
   overflow: auto;
@@ -25,7 +25,7 @@ $color-white: rgb(255,255,255);
   padding: 8px * 2;
   max-height: 100vh;
   z-index: 100000;
-  height: min-content!important;
+  height: min-content !important;
 
   &:empty {
     display: none;
@@ -54,7 +54,14 @@ $color-white: rgb(255,255,255);
       }
     }
 
-    @each $status, $color in (ok: var(--colorOk), error: var(--colorError), info: var(--colorInfo)) {
+    @each $status,
+      $color
+        in (
+          ok: var(--colorOk),
+          error: var(--colorError),
+          info: var(--colorInfo)
+        )
+    {
       &.#{$status} {
         background: $color;
         color: $color-white;

@@ -14,10 +14,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { Badge, WithTooltip } from "../badge";
+import { Badge } from "../badge";
 import { DrawerTitle } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 
 import type { Logger } from "@freelensapp/logger";
 

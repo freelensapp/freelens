@@ -69,7 +69,7 @@
       /* Support for Firefox. */
       -moz-osx-font-smoothing: grayscale;
       /* Support for IE. */
-      font-feature-settings: 'liga';
+      font-feature-settings: "liga";
     }
   }
 
@@ -98,7 +98,7 @@
   }
 
   &.disabled {
-    opacity: .5;
+    opacity: 0.5;
     color: inherit !important;
     cursor: not-allowed !important;
   }
@@ -119,7 +119,11 @@
 
   &.interactive {
     cursor: pointer;
-    transition: 250ms color, 250ms opacity, 150ms background-color, 150ms box-shadow;
+    transition:
+      250ms color,
+      250ms opacity,
+      150ms background-color,
+      150ms box-shadow;
     border-radius: var(--border-radius);
 
     &.focusable:focus-visible {

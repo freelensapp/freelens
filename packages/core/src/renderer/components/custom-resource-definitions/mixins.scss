@@ -10,7 +10,7 @@ $custom-resource-definitions-condition-colors: (
   NamesAccepted: var(--colorOk),
   NonStructuralSchema: var(--colorError),
   Terminating: var(--colorTerminated),
-  KubernetesAPIApprovalPolicyConformant: var(--colorWarning)
+  KubernetesAPIApprovalPolicyConformant: var(--colorWarning),
 );
 
 @mixin custom-resource-definitions-condition-colors {

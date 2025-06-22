@@ -1,0 +1,15 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../table/table.mixins";
+
+.ValidatingWebhookConfigurations {
+  .TableCell {
+    &.age {
+      flex: 0.3;
+    }
+  }
+}

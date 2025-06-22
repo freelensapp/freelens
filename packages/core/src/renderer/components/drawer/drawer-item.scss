@@ -10,7 +10,9 @@
   --drawer-item-title-width: 30%;
 
   display: grid;
-  grid-template-columns: minmax(var(--drawer-item-title-width), min-content) auto;
+  grid-template-columns:
+    minmax(var(--drawer-item-title-width), min-content)
+    auto;
   border-bottom: 1px solid var(--borderFaintColor);
   padding: $padding 0;
 
@@ -28,7 +30,7 @@
     min-width: 0;
 
     &:empty:after {
-      content: '—'
+      content: "—";
     }
 
     p {

@@ -4,6 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-.ReplicationControllers {
+@use "../table/table.mixins";
 
+.MutatingWebhookConfigurations {
+  .TableCell {
+    &.age {
+      flex: 0.3;
+    }
+  }
 }

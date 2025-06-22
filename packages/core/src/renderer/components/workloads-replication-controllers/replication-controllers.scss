@@ -1,0 +1,36 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../table/table.mixins";
+
+.ReplicationControllers {
+  .TableCell {
+    &.name {
+      flex-grow: 1.6;
+    }
+
+    &.desired {
+      flex-grow: 0.4;
+    }
+
+    &.current {
+      flex-grow: 0.4;
+    }
+
+    &.ready {
+      flex-grow: 0.4;
+    }
+
+    &.selector {
+      flex-grow: 1.5;
+      @include table.table-cell-labels-offsets;
+    }
+
+    &.age {
+      flex-grow: 0.3;
+    }
+  }
+}

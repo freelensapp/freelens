@@ -25,7 +25,7 @@
   padding: 0 var(--padding);
   padding-bottom: 0;
   padding-right: 24px; // + reserved space for .pinIcon
-  flex-grow: 2.5!important;
+  flex-grow: 2.5 !important;
 
   > span {
     overflow: hidden;
@@ -33,7 +33,7 @@
     padding-left: var(--padding);
   }
 
-  :global(.HotbarIcon){
+  :global(.HotbarIcon) {
     align-self: center;
 
     div {
@@ -71,11 +71,14 @@
   max-width: 100px;
 
   :global {
-    .connected, .available {
+    .connected,
+    .available {
       color: var(--colorSuccess);
     }
 
-    .disconnected, .deleting, .unavailable {
+    .disconnected,
+    .deleting,
+    .unavailable {
       color: var(--halfGray);
     }
   }
@@ -126,7 +129,8 @@
   display: none;
 }
 
-.activeTab, .activeTab:hover {
+.activeTab,
+.activeTab:hover {
   background-color: var(--blue);
   --color-active: white;
 }

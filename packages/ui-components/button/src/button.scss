@@ -6,7 +6,6 @@
 @use "sass:color";
 @use "sass:math";
 
-
 .Button {
   position: relative;
   overflow: hidden; // required for transition effect on hover
@@ -17,7 +16,7 @@
   cursor: pointer;
   border-radius: var(--border-radius);
   background: var(--buttonDefaultBackground);
-  padding: math.round(8px * .9) 8px * 1.5;
+  padding: math.round(8px * 0.9) 8px * 1.5;
   flex-shrink: 0;
   line-height: 1;
   font-size: var(--font-size);
@@ -47,7 +46,7 @@
 
     &:disabled {
       background: none;
-      opacity: .5;
+      opacity: 0.5;
     }
 
     &.active,
@@ -71,15 +70,15 @@
   &.big {
     font-size: 2.2 * 8px;
     border-radius: 50px;
-    padding: .75em 1em;
+    padding: 0.75em 1em;
   }
 
   &.round {
     border-radius: 50%;
-    padding: .7em;
+    padding: 0.7em;
   }
 
-  form:not([novalidate]):invalid &[type=submit]:not(.active),
+  form:not([novalidate]):invalid &[type="submit"]:not(.active),
   &:disabled {
     opacity: 50%;
     pointer-events: none;
@@ -94,7 +93,7 @@
       top: 0;
       width: 0;
       height: 100%;
-      background: color.adjust(white, $alpha: -.85);
+      background: color.adjust(white, $alpha: -0.85);
       animation: waiting 1.5s infinite linear;
     }
   }
@@ -105,7 +104,7 @@
 
   &:focus:not(:active) {
     transition: box-shadow 350ms;
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
   }
 
   &:active:before {
@@ -115,7 +114,7 @@
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background: color.adjust(white, $alpha: -.85);
+    background: color.adjust(white, $alpha: -0.85);
     transform-origin: left top;
     transition: transform 150ms;
     transform: rotate(0deg);

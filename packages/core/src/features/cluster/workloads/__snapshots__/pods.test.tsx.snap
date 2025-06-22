@@ -687,12 +687,14 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                               <div
                                 class="TableCell name"
                               >
-                                <span
-                                  data-testid="list-pod-name-uuid-1"
-                                  id="list-pod-name-uuid-1"
+                                <div
+                                  class="badge flat"
                                 >
                                   test-pod-1
-                                </span>
+                                </div>
+                                <div>
+                                  test-pod-1
+                                </div>
                               </div>
                               <div
                                 class="TableCell warning"
@@ -750,7 +752,14 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                               <div
                                 class="TableCell age"
                               >
-                                &lt;unknown&gt;
+                                <div
+                                  class="badge flat"
+                                >
+                                  &lt;unknown&gt;
+                                </div>
+                                <div>
+                                  2015-10-21T07:28:00Z
+                                </div>
                               </div>
                               <div
                                 class="TableCell waiting status"

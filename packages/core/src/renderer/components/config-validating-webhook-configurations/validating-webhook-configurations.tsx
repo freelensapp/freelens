@@ -4,12 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./validating-webhook-configurations.scss";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import validatingWebhookConfigurationsStoreInjectable from "./validating-webhook-configuration-store.injectable";
 
 import type { ValidatingWebhookConfigurationStore } from "./validating-webhook-configuration-store";
@@ -56,7 +59,7 @@ const NonInjectedValidatingWebhookConfigurations = observer((props: Dependencies
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(item) => [
-          item.getName(),
+          <WithTooltip>{item.getName()}</WithTooltip>,
           item.getWebhooks().length,
           <KubeObjectAge key="age" object={item} />,
         ]}

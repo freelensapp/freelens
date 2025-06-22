@@ -2106,7 +2106,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -2126,22 +2133,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -2151,7 +2183,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -2198,7 +2237,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -2218,22 +2264,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -2243,7 +2314,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3051,7 +3129,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -3071,22 +3156,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -3096,7 +3206,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3143,7 +3260,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -3163,22 +3287,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -3188,7 +3337,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -4057,7 +4213,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -4077,22 +4240,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -4102,7 +4290,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -4149,7 +4344,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -4169,22 +4371,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -4194,7 +4421,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -5063,7 +5297,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -5083,22 +5324,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -5108,7 +5374,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -5155,7 +5428,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -5175,22 +5455,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -5200,7 +5505,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -6314,7 +6626,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -6334,22 +6653,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -6359,7 +6703,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -6406,7 +6757,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -6426,22 +6784,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -6451,7 +6834,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -7565,7 +7955,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -7585,22 +7982,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -7610,7 +8032,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -7657,7 +8086,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -7677,22 +8113,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -7702,7 +8163,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -10930,7 +11398,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -10950,22 +11425,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -10975,7 +11475,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -11022,7 +11529,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -11042,22 +11556,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -11067,7 +11606,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -12181,7 +12727,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -12201,22 +12754,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -12226,7 +12804,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -12273,7 +12858,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -12293,22 +12885,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -12318,7 +12935,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -13187,7 +13811,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -13207,22 +13838,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -13232,7 +13888,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -13279,7 +13942,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -13299,22 +13969,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -13324,7 +14019,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -14195,7 +14897,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -14215,22 +14924,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -14240,7 +14974,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -14287,7 +15028,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -14307,22 +15055,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -14332,7 +15105,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -15140,7 +15920,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -15160,22 +15947,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -15185,7 +15997,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -15232,7 +16051,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -15252,22 +16078,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -15277,7 +16128,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -16146,7 +17004,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -16166,22 +17031,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -16191,7 +17081,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -16238,7 +17135,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -16258,22 +17162,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -16283,7 +17212,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -17152,7 +18088,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -17172,22 +18115,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -17197,7 +18165,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -17244,7 +18219,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -17264,22 +18246,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -17289,7 +18296,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -18158,7 +19172,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -18178,22 +19199,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -18203,7 +19249,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -18250,7 +19303,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -18270,22 +19330,47 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-other-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-chart
+                                </div>
+                                <div>
+                                  some-other-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                2.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  2.0.0
+                                </div>
+                                <div>
+                                  2.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-other-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-app-version
+                                </div>
+                                <div>
+                                  some-other-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-other-status status"
@@ -18295,7 +19380,14 @@ exports[`showing details for helm release given application is started when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"

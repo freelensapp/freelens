@@ -17,6 +17,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { Select } from "../select";
+import { WithTooltip } from "../with-tooltip";
 import selectedCustomResourceDefinitionGroupsUrlParamInjectable from "./selected-groups-url-param.injectable";
 import customResourceDefinitionStoreInjectable from "./store.injectable";
 
@@ -158,11 +159,11 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
           ]}
           renderTableContents={(crd) => [
             <Link key="link" to={crd.getResourceUrl()} onClick={stopPropagation}>
-              {crd.getResourceKind()}
+              <WithTooltip>{crd.getResourceKind()}</WithTooltip>
             </Link>,
-            crd.getGroup(),
-            crd.getVersion(),
-            crd.getScope(),
+            <WithTooltip>{crd.getGroup()}</WithTooltip>,
+            <WithTooltip>{crd.getVersion()}</WithTooltip>,
+            <WithTooltip>{crd.getScope()}</WithTooltip>,
             <KubeObjectAge key="age" object={crd} />,
           ]}
         />

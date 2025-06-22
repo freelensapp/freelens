@@ -12,7 +12,8 @@
     padding: 6px 8px 6px 10px;
     cursor: pointer;
 
-    &:global(.active), &:hover {
+    &:global(.active),
+    &:hover {
       background: var(--primary);
       color: var(--sidebarActiveColor);
 
@@ -41,7 +42,8 @@
         padding-top: 4px;
         padding-bottom: 4px;
 
-        &:global(.active), &:hover {
+        &:global(.active),
+        &:hover {
           color: var(--sidebarSubmenuActiveColor);
           background: none;
         }
@@ -49,7 +51,7 @@
     }
   }
 
-   // 3rd menu level
+  // 3rd menu level
   .subMenu .subMenu {
     &.active {
       border-color: transparent;

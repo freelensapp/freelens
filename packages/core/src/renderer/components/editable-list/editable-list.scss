@@ -37,8 +37,9 @@
         max-width: calc(100% - 29px);
         align-self: center;
 
-        &::before, &::after {
-          content: ' ';
+        &::before,
+        &::after {
+          content: " ";
           position: absolute;
           z-index: 20;
           display: block;
@@ -49,20 +50,28 @@
         &::before {
           left: 0px;
           top: 0px;
-          background: linear-gradient(to right, var(--gradientColor) 0px, transparent);
+          background: linear-gradient(
+            to right,
+            var(--gradientColor) 0px,
+            transparent
+          );
         }
 
         &::after {
           right: 0px;
           top: 0px;
-          background: linear-gradient(to left, var(--gradientColor) 0px, transparent);
+          background: linear-gradient(
+            to left,
+            var(--gradientColor) 0px,
+            transparent
+          );
         }
       }
 
       .el-value {
         white-space: nowrap;
-        overflow: scroll!important;
-        text-overflow: unset!important;
+        overflow: scroll !important;
+        text-overflow: unset !important;
         padding-left: 8px;
         padding-right: 8px;
 

@@ -17,6 +17,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import persistentVolumeStoreInjectable from "./store.injectable";
 
 import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
@@ -84,18 +85,18 @@ class NonInjectedPersistentVolumes extends React.Component<Dependencies> {
             );
 
             return [
-              volume.getName(),
+              <WithTooltip>{volume.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={volume} />,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              volume.getCapacity(),
+              <WithTooltip>{volume.getCapacity()}</WithTooltip>,
               claimRef && (
                 <Link
                   to={getDetailsUrl(persistentVolumeClaimApi.formatUrlForNotListing(claimRef))}
                   onClick={stopPropagation}
                 >
-                  {claimRef.name}
+                  <WithTooltip>{claimRef.name}</WithTooltip>
                 </Link>
               ),
               <KubeObjectAge key="age" object={volume} />,

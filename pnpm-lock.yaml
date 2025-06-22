@@ -132,6 +132,9 @@ importers:
       conf:
         specifier: ^10.2.0
         version: 10.2.0
+      cronstrue:
+        specifier: ^2.61.0
+        version: 2.61.0
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -322,6 +325,9 @@ importers:
       '@side/jest-runtime':
         specifier: ^1.1.0
         version: 1.1.0(@jest/transform@29.7.0)(jest-runtime@29.7.0)(jest@29.7.0(@types/node@22.15.32)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.15.32)(typescript@5.8.3)))
+      '@types/circular-dependency-plugin':
+        specifier: 5.0.8
+        version: 5.0.8(webpack-cli@6.0.1)
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -754,6 +760,9 @@ importers:
       conf:
         specifier: ^10.2.0
         version: 10.2.0
+      cronstrue:
+        specifier: ^2.61.0
+        version: 2.61.0
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5452,6 +5461,10 @@ packages:
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
+  cronstrue@2.61.0:
+    resolution: {integrity: sha512-ootN5bvXbIQI9rW94+QsXN5eROtXWwew6NkdGxIRpS/UFWRggL0G5Al7a9GTBFEsuvVhJ2K3CntIIVt7L2ILhA==}
+    hasBin: true
 
   cross-dirname@0.1.0:
     resolution: {integrity: sha512-+R08/oI0nl3vfPcqftZRpytksBXDzOUveBq/NBVx0sUp1axwzPQrKinNx5yd5sxPu8j1wIy8AfnVQ+5eFdha6Q==}
@@ -11812,6 +11825,8 @@ snapshots:
       - ts-node
 
   create-require@1.1.1: {}
+
+  cronstrue@2.61.0: {}
 
   cross-dirname@0.1.0:
     optional: true

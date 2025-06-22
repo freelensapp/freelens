@@ -70,7 +70,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
   return (
     <>
       <DrawerItem name="Created" hidden={isHidden("creationTimestamp") || !creationTimestamp}>
-        <KubeObjectAge object={object} compact={false} />
+        <KubeObjectAge object={object} compact={false} withTooltip={false} />
         {" ago "}
         {creationTimestamp && <LocaleDate date={creationTimestamp} />}
       </DrawerItem>

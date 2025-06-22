@@ -408,7 +408,14 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                             <div
                               class="TableCell name"
                             >
-                              some-resource
+                              <div
+                                class="badge flat"
+                              >
+                                some-resource
+                              </div>
+                              <div>
+                                some-resource
+                              </div>
                             </div>
                             <div
                               class="TableCell"
@@ -417,12 +424,26 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                               class="TableCell some-column"
                               data-testid="custom-resource-column-cell-some-column-for-some-resource"
                             >
-                              {"foo":"bar"}
+                              <div
+                                class="badge flat"
+                              >
+                                {"foo":"bar"}
+                              </div>
+                              <div>
+                                {"foo":"bar"}
+                              </div>
                             </div>
                             <div
                               class="TableCell age"
                             >
-                              &lt;unknown&gt;
+                              <div
+                                class="badge flat"
+                              >
+                                &lt;unknown&gt;
+                              </div>
+                              <div>
+                                2015-10-21T07:28:00Z
+                              </div>
                             </div>
                             <div
                               class="TableCell menu"

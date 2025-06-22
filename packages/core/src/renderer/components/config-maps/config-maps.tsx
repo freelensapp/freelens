@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import configMapStoreInjectable from "./store.injectable";
 
 import type { ConfigMapStore } from "./store";
@@ -55,10 +56,10 @@ class NonInjectedConfigMaps extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(configMap) => [
-            configMap.getName(),
+            <WithTooltip>{configMap.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={configMap} />,
             <NamespaceSelectBadge key="namespace" namespace={configMap.getNs()} />,
-            configMap.getKeys().join(", "),
+            <WithTooltip>{configMap.getKeys().join(", ")}</WithTooltip>,
             <KubeObjectAge key="age" object={configMap} />,
           ]}
         />

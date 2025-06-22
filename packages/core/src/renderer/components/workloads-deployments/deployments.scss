@@ -18,8 +18,24 @@
       flex-grow: 1.5;
     }
 
-    &.pods {
-      flex-grow: 1;
+    &.ready {
+      flex-grow: 0.3;
+    }
+
+    &.desired {
+      flex-grow: 0.3;
+    }
+
+    &.updated {
+      flex-grow: 0.3;
+    }
+
+    &.available {
+      flex-grow: 0.3;
+    }
+
+    &.age {
+      flex-grow: 0.3;
     }
 
     &.warning {
@@ -45,7 +61,5 @@
         }
       }
     }
-
-
   }
 }

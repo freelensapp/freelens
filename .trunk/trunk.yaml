@@ -58,7 +58,6 @@ lint:
         - html
         - javascript
         - json
-        - sass
         - typescript
       commands:
         - output: regex
@@ -83,11 +82,15 @@ lint:
           name: fmt
           run: biome check --fix "${target}"
           run_from: ${parent}
+    - name: prettier
+      files:
+        - sass
   enabled:
     - actionlint@1.7.7
     - biome@2.0.0! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.45.0
+    - prettier@3.5.3
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - yamlfmt@0.17.1
@@ -96,7 +99,6 @@ lint:
     - checkov
     - osv-scanner
     - oxipng
-    - prettier
     - renovate
     - svgo
     - trufflehog

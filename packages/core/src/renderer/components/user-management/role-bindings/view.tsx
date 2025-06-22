@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
+import { WithTooltip } from "../../with-tooltip";
 import clusterRoleStoreInjectable from "../cluster-roles/store.injectable";
 import roleStoreInjectable from "../roles/store.injectable";
 import serviceAccountStoreInjectable from "../service-accounts/store.injectable";
@@ -71,10 +72,10 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(binding) => [
-            binding.getName(),
+            <WithTooltip>{binding.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={binding} />,
             <NamespaceSelectBadge key="namespace" namespace={binding.getNs()} />,
-            binding.getSubjectNames(),
+            <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
             <KubeObjectAge key="age" object={binding} />,
           ]}
           addRemoveButtons={{

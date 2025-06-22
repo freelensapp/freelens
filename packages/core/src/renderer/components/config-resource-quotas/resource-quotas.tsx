@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import openAddQuotaDialogInjectable from "./add-dialog/open.injectable";
 import { AddQuotaDialog } from "./add-dialog/view";
 import resourceQuotaStoreInjectable from "./store.injectable";
@@ -58,7 +59,7 @@ class NonInjectedResourceQuotas extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(resourceQuota) => [
-            resourceQuota.getName(),
+            <WithTooltip>{resourceQuota.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={resourceQuota} />,
             <NamespaceSelectBadge key="namespace" namespace={resourceQuota.getNs()} />,
             <KubeObjectAge key="age" object={resourceQuota} />,

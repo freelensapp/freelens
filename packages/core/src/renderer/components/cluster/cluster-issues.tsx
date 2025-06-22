@@ -21,6 +21,7 @@ import { SubHeader } from "../layout/sub-header";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import styles from "./cluster-issues.module.scss";
 
 import type { IComputedValue } from "mobx";
@@ -121,10 +122,16 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         selected={selfLink === kubeSelectedUrlParam.get()}
         onClick={prevDefault(() => toggleDetails(selfLink))}
       >
-        <TableCell className={styles.message}>{message ?? "<unknown>"}</TableCell>
-        <TableCell className={styles.object}>{getName()}</TableCell>
-        <TableCell className="kind">{kind}</TableCell>
-        <TableCell className="age">{renderAge()}</TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.message)}>
+          <WithTooltip>{message ?? "<unknown>"}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.object)}>
+          <WithTooltip>{getName()}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.kind)}>
+          <WithTooltip>{kind}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.age)}>{renderAge()}</TableCell>
       </TableRow>
     );
   };
@@ -168,14 +175,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           className={cssNames("box grow", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
-            <TableCell className="message">Message</TableCell>
-            <TableCell className="object" sortBy={sortBy.object}>
+            <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
+            <TableCell className={cssNames(styles.TableCell, styles.object)} sortBy={sortBy.object}>
               Object
             </TableCell>
-            <TableCell className="kind" sortBy={sortBy.type}>
+            <TableCell className={cssNames(styles.TableCell, styles.kind)} sortBy={sortBy.type}>
               Type
             </TableCell>
-            <TableCell className="timestamp" sortBy={sortBy.age}>
+            <TableCell className={cssNames(styles.TableCell, styles.age)} sortBy={sortBy.age}>
               Age
             </TableCell>
           </TableHead>

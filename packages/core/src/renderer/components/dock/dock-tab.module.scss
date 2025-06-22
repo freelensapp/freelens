@@ -38,7 +38,7 @@
     background-color: var(--color-active);
     background-image: none;
     border-bottom: 1px solid var(--color-border-active);
-    color: var(--color-text-active)!important;
+    color: var(--color-text-active) !important;
 
     .close {
       opacity: 1;
@@ -56,7 +56,11 @@
     width: 8px;
     height: 100%;
     right: 0;
-    background: linear-gradient(90deg, transparent 0%, var(--dockHeadBackground) 65%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--dockHeadBackground) 65%
+    );
   }
 
   &::after {
@@ -70,7 +74,11 @@
 
     .close {
       opacity: 1;
-      background: linear-gradient(90deg, transparent 0%, var(--dockTabActiveBackground) 25%);
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--dockTabActiveBackground) 25%
+      );
     }
 
     &::before {

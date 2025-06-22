@@ -12,19 +12,20 @@ import type { NamespaceScopedMetadata, ObjectReference } from "../api-types";
 import type { JobTemplateSpec } from "../types/job-template-spec";
 
 export interface CronJobSpec {
-  concurrencyPolicy?: string;
-  failedJobsHistoryLimit?: number;
-  jobTemplate?: JobTemplateSpec;
   schedule: string;
+  timeZone?: string;
   startingDeadlineSeconds?: number;
-  successfulJobsHistoryLimit?: number;
+  concurrencyPolicy?: string;
   suspend?: boolean;
+  jobTemplate?: JobTemplateSpec;
+  successfulJobsHistoryLimit?: number;
+  failedJobsHistoryLimit?: number;
 }
 
 export interface CronJobStatus {
+  active?: ObjectReference[];
   lastScheduleTime?: string;
   lastSuccessfulTime?: string;
-  active?: ObjectReference[];
 }
 
 export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, CronJobSpec> {
@@ -38,6 +39,10 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     return (this.spec.suspend ?? false).toString();
   }
 
+  getJobSuspendFlag() {
+    return (this.spec.jobTemplate?.spec?.suspend ?? false).toString();
+  }
+
   getLastScheduleTime() {
     if (!this.status?.lastScheduleTime) {
       return "-";
@@ -47,8 +52,49 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     return formatDuration(diff, true);
   }
 
+  getLastSuccessfulTime() {
+    if (!this.status?.lastSuccessfulTime) {
+      return "-";
+    }
+    const diff = moment().diff(this.status.lastSuccessfulTime);
+
+    return formatDuration(diff, true);
+  }
+
   getSchedule() {
     return this.spec.schedule;
+  }
+
+  getJobSelectors(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.selector?.matchLabels);
+  }
+
+  getJobNodeSelectors(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.template.spec.nodeSelector);
+  }
+
+  getJobTemplateLabels(): string[] {
+    return KubeObject.stringifyLabels(this.spec.jobTemplate?.spec?.template.metadata.labels);
+  }
+
+  getJobTolerations() {
+    return this.spec.jobTemplate?.spec?.template.spec.tolerations ?? [];
+  }
+
+  getJobAffinity() {
+    return this.spec.jobTemplate?.spec?.template.spec.affinity;
+  }
+
+  getJobAffinityNumber() {
+    return Object.keys(this.getJobAffinity() ?? {}).length;
+  }
+
+  getJobDesiredCompletions() {
+    return this.spec.jobTemplate?.spec?.completions ?? 0;
+  }
+
+  getJobParallelism() {
+    return this.spec.jobTemplate?.spec?.parallelism;
   }
 
   isNeverRun() {
@@ -67,5 +113,9 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
 
   isSuspend() {
     return this.spec.suspend;
+  }
+
+  isJobSuspend() {
+    return this.spec.jobTemplate?.spec?.suspend;
   }
 }

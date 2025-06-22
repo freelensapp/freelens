@@ -23,8 +23,19 @@
   }
 }
 
-@mixin stripeLinesAnimation($color1: #ccc, $color2: transparent, $spacing: 1rem) {
-  background: repeating-linear-gradient(-45deg, $color2, $color2, $spacing, $color1 $spacing, $color1 $spacing * 2);
+@mixin stripeLinesAnimation(
+  $color1: #ccc,
+  $color2: transparent,
+  $spacing: 1rem
+) {
+  background: repeating-linear-gradient(
+    -45deg,
+    $color2,
+    $color2,
+    $spacing,
+    $color1 $spacing,
+    $color1 $spacing * 2
+  );
   background-size: 200% 200%;
   animation: stripeLines 10s linear infinite;
 

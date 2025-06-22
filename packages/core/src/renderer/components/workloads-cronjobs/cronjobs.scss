@@ -8,10 +8,28 @@
 
 .CronJobs {
   .TableCell {
+    &.suspend {
+      flex-grow: 0.4;
+    }
+
     &.warning {
       @include table.table-cell-warning;
     }
 
+    &.suspend {
+      flex-grow: 0.4;
+    }
 
+    &.active {
+      flex-grow: 0.4;
+    }
+
+    &.last-schedule {
+      flex-grow: 0.5;
+    }
+
+    &.age {
+      flex-grow: 0.3;
+    }
   }
 }

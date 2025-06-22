@@ -18,6 +18,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import persistentVolumeClaimStoreInjectable from "./store.injectable";
 
@@ -96,18 +97,20 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
             );
 
             return [
-              pvc.getName(),
+              <WithTooltip>{pvc.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={pvc} />,
               <NamespaceSelectBadge key="namespace" namespace={pvc.getNs()} />,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              pvc.getStorage(),
-              pods.map((pod) => (
-                <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
-                  {pod.getName()}
-                </Link>
-              )),
+              <WithTooltip>{pvc.getStorage()}</WithTooltip>,
+              <WithTooltip tooltip={pods.map((pod) => pod.getName()).join(", ")}>
+                {pods.map((pod) => (
+                  <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
+                    {pod.getName()}
+                  </Link>
+                ))}
+              </WithTooltip>,
               <KubeObjectAge key="age" object={pvc} />,
               { title: pvc.getStatus(), className: pvc.getStatus().toLowerCase() },
             ];

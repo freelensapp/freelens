@@ -14,6 +14,7 @@ import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
+import { WithTooltip } from "../../with-tooltip";
 import openCreateServiceAccountDialogInjectable from "./create-dialog/open.injectable";
 import { CreateServiceAccountDialog } from "./create-dialog/view";
 import serviceAccountStoreInjectable from "./store.injectable";
@@ -58,7 +59,7 @@ class NonInjectedServiceAccounts extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(account) => [
-            account.getName(),
+            <WithTooltip>{account.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={account} />,
             <NamespaceSelectBadge key="namespace" namespace={account.getNs()} />,
             <KubeObjectAge key="age" object={account} />,
