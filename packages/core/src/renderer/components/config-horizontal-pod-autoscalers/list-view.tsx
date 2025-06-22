@@ -10,12 +10,13 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge, WithTooltip } from "../badge";
+import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
 import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
 

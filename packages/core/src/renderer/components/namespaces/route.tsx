@@ -8,11 +8,12 @@ import "./namespaces.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Badge, WithTooltip } from "../badge";
+import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
+import { WithTooltip } from "../with-tooltip";
 import { AddNamespaceDialog } from "./add-dialog/dialog";
 import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";

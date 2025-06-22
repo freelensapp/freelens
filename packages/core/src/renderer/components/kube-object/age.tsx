@@ -6,8 +6,8 @@
 
 import moment from "moment-timezone";
 import React from "react";
-import { WithTooltip } from "../badge";
 import { ReactiveDuration } from "../duration/reactive-duration";
+import { WithTooltip } from "../with-tooltip";
 
 export interface KubeObjectAgeProps {
   object: {

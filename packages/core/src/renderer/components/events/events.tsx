@@ -17,13 +17,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { WithTooltip } from "../badge";
 import { ReactiveDuration } from "../duration/reactive-duration";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import eventStoreInjectable from "./store.injectable";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";

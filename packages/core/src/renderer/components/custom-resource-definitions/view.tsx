@@ -13,11 +13,11 @@ import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { Select } from "../select";
+import { WithTooltip } from "../with-tooltip";
 import selectedCustomResourceDefinitionGroupsUrlParamInjectable from "./selected-groups-url-param.injectable";
 import customResourceDefinitionStoreInjectable from "./store.injectable";
 

@@ -10,10 +10,10 @@ import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
 
 import type { IngressClass } from "@freelensapp/kube-object";

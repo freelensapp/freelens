@@ -7,12 +7,14 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge, WithTooltip } from "../badge";
+import { Badge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import replicationControllerStoreInjectable from "./replication-controller-store.injectable";
 import "./replication-controllers.scss";
+
+import { WithTooltip } from "../with-tooltip";
 
 import type { ReplicationControllerStore } from "./replication-controller-store";
 

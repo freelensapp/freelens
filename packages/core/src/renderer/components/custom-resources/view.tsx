@@ -12,12 +12,12 @@ import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { WithTooltip } from "../badge";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
 
 import type { TableCellProps } from "@freelensapp/list-layout";

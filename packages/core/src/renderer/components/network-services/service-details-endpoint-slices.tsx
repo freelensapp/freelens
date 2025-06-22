@@ -10,9 +10,9 @@ import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { WithTooltip } from "../badge";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 
 import type { Logger } from "@freelensapp/logger";
 

@@ -6,8 +6,8 @@
 
 import { StrictReactNode } from "@freelensapp/utilities/dist";
 import React from "react";
+import { Badge } from "../badge/badge";
 import { LocaleDate } from "../locale-date";
-import { Badge } from "./badge";
 
 export interface WithTooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   flat?: boolean;

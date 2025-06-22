@@ -9,12 +9,12 @@ import "./pod-disruption-budgets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import podDisruptionBudgetStoreInjectable from "./store.injectable";
 
 import type { PodDisruptionBudget } from "@freelensapp/kube-object";

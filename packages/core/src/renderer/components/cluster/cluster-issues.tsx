@@ -13,7 +13,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
-import { WithTooltip } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
@@ -22,6 +21,7 @@ import { SubHeader } from "../layout/sub-header";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import styles from "./cluster-issues.module.scss";
 
 import type { IComputedValue } from "mobx";

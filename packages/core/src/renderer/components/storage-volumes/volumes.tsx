@@ -12,12 +12,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { WithTooltip } from "../badge";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { WithTooltip } from "../with-tooltip";
 import persistentVolumeStoreInjectable from "./store.injectable";
 
 import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
