@@ -71,6 +71,7 @@
         "chalk",
         "chokidar",
         "conf",
+        "cronstrue",
         "crypto-js",
         "electron-updater",
         "electron-window-state",
