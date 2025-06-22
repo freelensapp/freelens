@@ -2402,8 +2402,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       openid-client:
-        specifier: ^6.5.1
-        version: 6.5.1
+        specifier: ^6.6.1
+        version: 6.6.1
       ts-loader:
         specifier: ^9.5.2
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
@@ -7533,8 +7533,8 @@ packages:
   nwsapi@2.2.18:
     resolution: {integrity: sha512-p1TRH/edngVEHVbwqWnxUViEmq5znDvyB+Sik5cmuLpGOIfDf/39zLiq3swPF8Vakqn+gvNiOQAZu8djYlQILA==}
 
-  oauth4webapi@3.5.2:
-    resolution: {integrity: sha512-VYz5BaP3izIrUc1GAVzIoz4JnljiW0YAUFObMBwsqDnfHxz2sjLu3W7/8vE8Ms9IbMewN9+1kcvhY3tMscAeGQ==}
+  oauth4webapi@3.5.3:
+    resolution: {integrity: sha512-2bnHosmBLAQpXNBLOvaJMyMkr4Yya5ohE5Q9jqyxiN+aa7GFCzvDN1RRRMrp0NkfqRR2MTaQNkcSUCCjILD9oQ==}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -7585,8 +7585,8 @@ packages:
     resolution: {integrity: sha512-mnkeQ1qP5Ue2wd+aivTD3NHd/lZ96Lu0jgf0pwktLPtx6cTZiH7tyeGRRHs0zX0rbrahXPnXlUnbeXyaBBuIaw==}
     engines: {node: '>=18'}
 
-  openid-client@6.5.1:
-    resolution: {integrity: sha512-DNq7s+Tm9wfMUTltl+kUJzwi+bsbeiZycDm1gJQbX6MTHwo1+Q0I3F+ccsxi1T3mYMaHATCSnWDridkZ3hnu1g==}
+  openid-client@6.6.1:
+    resolution: {integrity: sha512-GmqoICGMI3IyFFjhvXxad8of4QWk2D0tm4vdJkldGm9nw7J3p1f7LPLWgGeFuKuw8HjDVe8Dd8QLGBe0NFvSSg==}
 
   optionator@0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
@@ -10167,7 +10167,7 @@ snapshots:
       js-yaml: 4.1.0
       jsonpath-plus: 10.3.0
       node-fetch: 2.7.0(encoding@0.1.13)
-      openid-client: 6.5.1
+      openid-client: 6.6.1
       rfc4648: 1.5.4
       socks-proxy-agent: 8.0.5
       stream-buffers: 3.0.3
@@ -14223,7 +14223,7 @@ snapshots:
 
   nwsapi@2.2.18: {}
 
-  oauth4webapi@3.5.2: {}
+  oauth4webapi@3.5.3: {}
 
   object-assign@4.1.1: {}
 
@@ -14274,10 +14274,10 @@ snapshots:
       is-inside-container: 1.0.0
       is-wsl: 3.1.0
 
-  openid-client@6.5.1:
+  openid-client@6.6.1:
     dependencies:
       jose: 6.0.11
-      oauth4webapi: 3.5.2
+      oauth4webapi: 3.5.3
 
   optionator@0.8.3:
     dependencies:
