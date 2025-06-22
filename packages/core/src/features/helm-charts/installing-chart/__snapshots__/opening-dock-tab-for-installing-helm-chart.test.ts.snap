@@ -7,6 +7,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -462,6 +500,16 @@ exports[`opening dock tab for installing helm chart given application is started
         </div>
       </div>
     </div>
+  </div>
+</body>
+`;
+
+exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts when charts resolve renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -500,16 +548,6 @@ exports[`opening dock tab for installing helm chart given application is started
         class="ResizingAnchor horizontal leading"
       />
     </div>
-  </div>
-</body>
-`;
-
-exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts when charts resolve renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -938,25 +976,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -984,25 +1054,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -1070,6 +1172,16 @@ exports[`opening dock tab for installing helm chart given application is started
         </div>
       </div>
     </div>
+  </div>
+</body>
+`;
+
+exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts when charts resolve when opening details of a chart renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1108,16 +1220,6 @@ exports[`opening dock tab for installing helm chart given application is started
         class="ResizingAnchor horizontal leading"
       />
     </div>
-  </div>
-</body>
-`;
-
-exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts when charts resolve when opening details of a chart renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -1546,25 +1648,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -1592,25 +1726,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -1677,44 +1843,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -1784,6 +1912,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -2211,25 +2377,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -2257,25 +2455,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -2342,44 +2572,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -2599,6 +2791,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -3026,25 +3256,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3072,25 +3334,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3157,44 +3451,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -3424,6 +3680,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -3851,25 +4145,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3897,25 +4223,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3982,44 +4340,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -4239,6 +4559,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -4666,25 +5024,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -4712,25 +5102,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -4797,44 +5219,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -5058,6 +5442,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -5485,25 +5907,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -5531,25 +5985,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -5616,44 +6102,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
   <div
@@ -5883,6 +6331,44 @@ exports[`opening dock tab for installing helm chart given application is started
       class="Notifications flex column align-flex-end"
     />
     <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            
+          </div>
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        />
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
+    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -6310,25 +6796,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -6356,25 +6874,57 @@ exports[`opening dock tab for installing helm chart given application is started
                               <div
                                 class="TableCell name"
                               >
-                                some-other-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-other-name
+                                </div>
+                                <div>
+                                  some-other-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell description"
                               >
-                                some-description
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-description
+                                </div>
+                                <div>
+                                  some-description
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                some-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-version
+                                </div>
+                                <div>
+                                  some-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
-                              />
+                              >
+                                <div
+                                  class="badge flat"
+                                />
+                              </div>
                               <div
                                 class="TableCell some-repository repository"
                               >
-                                some-repository
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-repository
+                                </div>
+                                <div>
+                                  some-repository
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -6532,44 +7082,6 @@ exports[`opening dock tab for installing helm chart given application is started
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
 </body>

@@ -6,6 +6,44 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
     class="Notifications flex column align-flex-end"
   />
   <div
+    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex column"
+    >
+      <div
+        class="drawer-title flex align-center"
+      >
+        <div
+          class="drawer-title-text flex gaps align-center"
+        >
+          
+        </div>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex column box grow"
+      />
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
+  </div>
+  <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
   >
@@ -408,7 +446,14 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                             <div
                               class="TableCell name"
                             >
-                              some-resource
+                              <div
+                                class="badge flat"
+                              >
+                                some-resource
+                              </div>
+                              <div>
+                                some-resource
+                              </div>
                             </div>
                             <div
                               class="TableCell"
@@ -417,12 +462,26 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                               class="TableCell some-column"
                               data-testid="custom-resource-column-cell-some-column-for-some-resource"
                             >
-                              {"foo":"bar"}
+                              <div
+                                class="badge flat"
+                              >
+                                {"foo":"bar"}
+                              </div>
+                              <div>
+                                {"foo":"bar"}
+                              </div>
                             </div>
                             <div
                               class="TableCell age"
                             >
-                              &lt;unknown&gt;
+                              <div
+                                class="badge flat"
+                              >
+                                &lt;unknown&gt;
+                              </div>
+                              <div>
+                                2015-10-21T07:28:00Z
+                              </div>
                             </div>
                             <div
                               class="TableCell menu"
@@ -586,44 +645,6 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-  >
-    <div
-      class="drawer-wrapper flex column"
-    >
-      <div
-        class="drawer-title flex align-center"
-      >
-        <div
-          class="drawer-title-text flex gaps align-center"
-        >
-          
-        </div>
-        <i
-          class="Icon material interactive focusable"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="close"
-          >
-            close
-          </span>
-        </i>
-        <div>
-          Close
-        </div>
-      </div>
-      <div
-        class="drawer-content flex column box grow"
-      />
-    </div>
-    <div
-      class="ResizingAnchor horizontal leading"
-    />
   </div>
 </div>
 `;
