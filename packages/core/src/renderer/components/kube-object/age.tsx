@@ -21,10 +21,14 @@ export interface KubeObjectAgeProps {
    * @default true
    */
   compact?: boolean;
+  withTooltip?: boolean;
 }
 
-export const KubeObjectAge = ({ object, compact = true }: KubeObjectAgeProps) => (
-  <WithTooltip tooltip={moment(object.metadata.creationTimestamp).toDate()}>
+export const KubeObjectAge = ({ object, compact = true, withTooltip = true }: KubeObjectAgeProps) =>
+  withTooltip ? (
+    <WithTooltip tooltip={moment(object.metadata.creationTimestamp).toDate()}>
+      <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
+    </WithTooltip>
+  ) : (
     <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
-  </WithTooltip>
-);
+  );
