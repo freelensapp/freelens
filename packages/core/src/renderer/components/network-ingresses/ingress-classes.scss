@@ -15,17 +15,15 @@
     &.age {
       flex-grow: 0.3;
     }
-
   }
 
   .Icon {
     &.set_default_icon {
-      filter: brightness(.75);
+      filter: brightness(0.75);
 
       &:hover {
         filter: brightness(1.5);
       }
     }
   }
-
 }

@@ -12,10 +12,10 @@
 
   &:disabled {
     cursor: progress;
-    opacity: .7;
+    opacity: 0.7;
   }
 
-  &:hover::before{
+  &:hover::before {
     opacity: 0.25;
   }
 

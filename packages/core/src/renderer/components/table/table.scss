@@ -22,7 +22,8 @@
   }
 
   &.selectable {
-    .TableHead, .TableRow {
+    .TableHead,
+    .TableRow {
       padding: 0 $padding;
     }
 

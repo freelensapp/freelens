@@ -13,7 +13,7 @@
     }
 
     &.rules {
-      flex-grow: 3.0;
+      flex-grow: 3;
       overflow-x: scroll;
       flex-wrap: wrap;
 
@@ -34,9 +34,8 @@
       @include table.table-cell-warning;
     }
 
-      &.age {
-        flex-grow: 0.3;
-      }
-
+    &.age {
+      flex-grow: 0.3;
+    }
   }
 }

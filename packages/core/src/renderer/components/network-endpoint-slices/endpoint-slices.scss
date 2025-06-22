@@ -9,11 +9,11 @@
 .EndpointSlices {
   .TableCell {
     &.ports {
-      flex-grow: 2.0;
+      flex-grow: 2;
     }
 
     &.endpoints {
-      flex-grow: 3.0;
+      flex-grow: 3;
     }
 
     &.age {

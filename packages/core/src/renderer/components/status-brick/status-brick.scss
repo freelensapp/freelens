@@ -23,7 +23,7 @@
   }
 
   &.running:not(.ready) {
-    background-color: #ff9800a0;;
+    background-color: #ff9800a0;
     border: 1px solid var(--colorWarning);
   }
 
@@ -44,5 +44,4 @@
     background-color: #ff980090;
     border: 1px solid var(--colorWarning);
   }
-
 }

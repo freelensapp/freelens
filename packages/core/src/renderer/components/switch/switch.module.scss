@@ -17,7 +17,7 @@
   --track-color-active: hsl(110, 60%, 60%);
 
   --thumb-position: 0%;
-  --thumb-transition-duration: .25s;
+  --thumb-transition-duration: 0.25s;
 
   --hover-highlight-size: 0;
 
@@ -48,7 +48,7 @@
     align-items: center;
     grid: [track] 1fr / [track] 1fr;
 
-    transition: background-color .25s ease;
+    transition: background-color 0.25s ease;
 
     &::before {
       content: "";
@@ -63,11 +63,11 @@
       transform: translateX(var(--thumb-position));
       transition:
         transform var(--thumb-transition-duration) ease,
-        box-shadow .25s ease;
+        box-shadow 0.25s ease;
     }
 
     &:not(:disabled):hover::before {
-      --hover-highlight-size: .3rem;
+      --hover-highlight-size: 0.3rem;
     }
 
     &:checked {

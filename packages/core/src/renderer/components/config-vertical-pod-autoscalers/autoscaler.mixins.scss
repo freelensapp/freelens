@@ -14,9 +14,7 @@ $vpa-status-colors: (
 );
 
 @mixin vpa-status-bgc {
-
-  @each $status,
-  $color in $vpa-status-colors {
+  @each $status, $color in $vpa-status-colors {
     &.#{$status} {
       background: $color;
       color: white;

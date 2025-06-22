@@ -22,7 +22,7 @@
 
   &:global(.scrollable) {
     overflow: auto;
-    overflow-x: overlay;  /* Set scrollbar inside content area */
+    overflow-x: overlay; /* Set scrollbar inside content area */
 
     &::-webkit-scrollbar-thumb {
       background-color: transparent;
@@ -41,7 +41,8 @@
       }
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
       content: "\00A0";
       position: sticky;
       min-width: 8px;
@@ -50,12 +51,20 @@
 
     &::before {
       left: 0;
-      background: linear-gradient(270deg, transparent 0%, var(--dockHeadBackground) 65%);
+      background: linear-gradient(
+        270deg,
+        transparent 0%,
+        var(--dockHeadBackground) 65%
+      );
     }
 
     &::after {
       right: 0;
-      background: linear-gradient(90deg, transparent 0%, var(--dockHeadBackground) 65%);
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--dockHeadBackground) 65%
+      );
     }
   }
 }

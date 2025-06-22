@@ -81,14 +81,15 @@
     cursor: pointer;
   }
 
-  &.active, &:focus {
+  &.active,
+  &:focus {
     color: var(--color-active);
     background-color: var(--bgc-active);
   }
 
   &.disabled {
     pointer-events: none;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &.spacer {

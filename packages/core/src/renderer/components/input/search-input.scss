@@ -37,7 +37,8 @@
         margin: 0;
       }
 
-      &:focus, &:not(:placeholder-shown) {
+      &:focus,
+      &:not(:placeholder-shown) {
         width: var(--compact-focus-width);
       }
     }

@@ -9,7 +9,7 @@
 .Endpoints {
   .TableCell {
     &.endpoints {
-      flex-grow: 5.0;
+      flex-grow: 5;
     }
 
     &.warning {
@@ -19,6 +19,5 @@
     &.age {
       flex: 0.3;
     }
-
   }
 }

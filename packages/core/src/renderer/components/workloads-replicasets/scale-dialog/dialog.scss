@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
- @use "../../vars" as *;
+@use "../../vars" as *;
 
 .ReplicaSetScaleDialog {
   .Wizard {
@@ -24,7 +24,7 @@
     }
 
     .current-scale {
-      font-weight: bold
+      font-weight: bold;
     }
 
     .desired-scale {

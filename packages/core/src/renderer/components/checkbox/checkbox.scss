@@ -51,7 +51,7 @@
       }
 
       ~ * {
-        opacity: .5;
+        opacity: 0.5;
         pointer-events: none;
       }
     }
@@ -91,7 +91,7 @@
     }
 
     + * {
-      margin-left: .5em;
+      margin-left: 0.5em;
     }
   }
 }

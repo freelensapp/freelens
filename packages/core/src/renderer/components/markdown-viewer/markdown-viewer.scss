@@ -10,7 +10,8 @@
   line-height: 1.5;
   word-wrap: break-word;
 
-  pre, table {
+  pre,
+  table {
     overflow: auto;
   }
 
@@ -300,7 +301,12 @@
   pre {
     margin-top: 0;
     margin-bottom: 0;
-    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font:
+      12px Consolas,
+      "Liberation Mono",
+      Menlo,
+      Courier,
+      monospace;
   }
 
   .octicon {
@@ -525,7 +531,8 @@
     table-layout: fixed;
   }
 
-  th, td {
+  th,
+  td {
     padding: 6px 13px;
     border: 1px solid var(--helmDescriptionTdBorder);
     text-align: left;
@@ -552,7 +559,7 @@
   }
 
   code {
-    padding: .15em .35em;
+    padding: 0.15em 0.35em;
     margin: 0;
     font-size: 85%;
     background-color: var(--helmDescriptionCodeBackground);
@@ -646,7 +653,12 @@
   kbd {
     display: inline-block;
     padding: 3px 5px;
-    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font:
+      11px Consolas,
+      "Liberation Mono",
+      Menlo,
+      Courier,
+      monospace;
     line-height: 10px;
     color: #555;
     vertical-align: middle;

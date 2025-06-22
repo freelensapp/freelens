@@ -17,12 +17,12 @@
     height: 100%;
 
     .list {
-      overflow-x: scroll!important;
-      overflow-y: auto!important;
+      overflow-x: scroll !important;
+      overflow-y: auto !important;
 
       .LogRow {
         padding: 2px 16px;
-        height: 18px;  // Must be equal to lineHeight variable in pod-log-list.tsx
+        height: 18px; // Must be equal to lineHeight variable in pod-log-list.tsx
         font-family: var(--font-monospace);
         font-size: smaller;
         white-space: nowrap;
@@ -42,14 +42,18 @@
           background-color: var(--overlay-bg);
 
           span {
-            background-color: var(--overlay-bg)!important; // Rewriting inline styles from AnsiUp library
+            background-color: var(
+              --overlay-bg
+            ) !important; // Rewriting inline styles from AnsiUp library
           }
 
           &.active {
             background-color: var(--overlay-active-bg);
 
             span {
-              background-color: var(--overlay-active-bg)!important; // Rewriting inline styles from AnsiUp library
+              background-color: var(
+                --overlay-active-bg
+              ) !important; // Rewriting inline styles from AnsiUp library
             }
           }
         }
@@ -63,7 +67,7 @@
 
   &.isScrollHidden {
     .VirtualList .list {
-      overflow-x: hidden!important; // fixing scroll to bottom issues in PodLogs
+      overflow-x: hidden !important; // fixing scroll to bottom issues in PodLogs
     }
   }
 }
