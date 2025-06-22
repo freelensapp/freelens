@@ -9,12 +9,13 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { isObject, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import yaml, { dump } from "js-yaml";
+import yaml from "js-yaml";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import requestKubeObjectCreationInjectable from "../../../../common/k8s-api/endpoints/resource-applier.api/request-update.injectable";
+import { defaultYamlDumpOptions } from "../../../../common/kube-helpers";
 import navigateInjectable from "../../../navigation/navigate.injectable";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
 import { Select } from "../../select";
@@ -88,13 +89,15 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
 
     // skip empty documents
     const resources = yaml.loadAll(this.data).filter(isObject);
+    console.log("Resources to create", resources);
 
     if (resources.length === 0) {
       return this.props.logger.info("Nothing to create");
     }
 
     const creatingResources = resources.map(async (resource) => {
-      const result = await requestKubeObjectCreation(dump(resource));
+      const resourceYaml = yaml.dump(resource, { ...defaultYamlDumpOptions, sortKeys: false });
+      const result = await requestKubeObjectCreation(resourceYaml);
 
       if (!result.callWasSuccessful) {
         this.props.logger.warn("Failed to create resource", { resource }, result.error);

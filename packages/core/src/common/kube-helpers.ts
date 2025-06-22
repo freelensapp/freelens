@@ -152,7 +152,7 @@ export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
 
 export const defaultYamlDumpOptions: DumpOptions = {
   noArrayIndent: true,
-  noCompatMode: true,
+  noCompatMode: false,
   noRefs: true,
   quotingType: '"',
   sortKeys: true,
