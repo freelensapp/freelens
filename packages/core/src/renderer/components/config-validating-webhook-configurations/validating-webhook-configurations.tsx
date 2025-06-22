@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./validating-webhook-configurations.scss";
+
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
@@ -38,7 +40,7 @@ const NonInjectedValidatingWebhookConfigurations = observer((props: Dependencies
           },
         })}
         tableId="config_validating_webhook_configurations"
-        className="ValidatingWebhookConfigurations"
+        className={"ValidatingWebhookConfigurations"}
         store={props.store}
         sortingCallbacks={{
           [columnId.name]: (item) => item.getName(),

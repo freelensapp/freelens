@@ -9,6 +9,7 @@ import "./view.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../../badge";
 import { KubeObjectAge } from "../../kube-object/age";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
@@ -65,9 +66,9 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(binding) => [
-            binding.getName(),
+            <WithTooltip>{binding.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={binding} />,
-            binding.getSubjectNames(),
+            <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
             <KubeObjectAge key="age" object={binding} />,
           ]}
           addRemoveButtons={{

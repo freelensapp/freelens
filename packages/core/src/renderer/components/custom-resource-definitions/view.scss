@@ -15,6 +15,10 @@
     &.group {
       flex: 2;
     }
+
+    &.age {
+      flex-grow: 0.4;
+    }
   }
 
   .group-select {

@@ -8,7 +8,7 @@ import "./namespaces.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -92,13 +92,17 @@ const NonInjectedNamespacesRoute = ({
       ]}
       renderTableContents={(namespace) => [
         <>
-          {namespace.getName()}
+          <WithTooltip>{namespace.getName()}</WithTooltip>
           {namespace.isSubnamespace() && (
             <SubnamespaceBadge className="subnamespaceBadge" id={`namespace-list-badge-for-${namespace.getId()}`} />
           )}
         </>,
         <KubeObjectStatusIcon key="icon" object={namespace} />,
-        namespace.getLabels().map((label) => <Badge scrollable key={label} label={label} />),
+        <WithTooltip tooltip={namespace.getLabels().join(", ")} key="labels">
+          {namespace.getLabels().map((label) => (
+            <Badge scrollable key={label} label={label} />
+          ))}
+        </WithTooltip>,
         <KubeObjectAge key="age" object={namespace} />,
         { title: namespace.getStatus(), className: namespace.getStatus().toLowerCase() },
       ]}

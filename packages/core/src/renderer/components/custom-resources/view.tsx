@@ -12,6 +12,7 @@ import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { WithTooltip } from "../badge";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -108,12 +109,12 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(customResource) => [
-            customResource.getName(),
+            <WithTooltip>{customResource.getName()}</WithTooltip>,
             isNamespaced && <NamespaceSelectBadge namespace={customResource.getNs() as string} />,
             ...extraColumns.map(
               (column): TableCellProps => ({
                 "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
-                title: formatJSONValue(safeJSONPathValue(customResource, column.jsonPath)),
+                title: <WithTooltip>{formatJSONValue(safeJSONPathValue(customResource, column.jsonPath))}</WithTooltip>,
               }),
             ),
             <KubeObjectAge key="age" object={customResource} />,

@@ -13,6 +13,7 @@ import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
@@ -158,11 +159,11 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
           ]}
           renderTableContents={(crd) => [
             <Link key="link" to={crd.getResourceUrl()} onClick={stopPropagation}>
-              {crd.getResourceKind()}
+              <WithTooltip>{crd.getResourceKind()}</WithTooltip>
             </Link>,
-            crd.getGroup(),
-            crd.getVersion(),
-            crd.getScope(),
+            <WithTooltip>{crd.getGroup()}</WithTooltip>,
+            <WithTooltip>{crd.getVersion()}</WithTooltip>,
+            <WithTooltip>{crd.getScope()}</WithTooltip>,
             <KubeObjectAge key="age" object={crd} />,
           ]}
         />

@@ -9,8 +9,10 @@ import "./releases.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "lodash/fp";
+import moment from "moment-timezone";
 import React, { Component } from "react";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import { WithTooltip } from "../badge";
 import { ItemListLayout } from "../item-object-list";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
@@ -171,14 +173,16 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
             { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
           ]}
           renderTableContents={(release) => [
-            release.getName(),
+            <WithTooltip>{release.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={release.getNs()} />,
-            release.getChart(),
-            release.getRevision(),
-            release.getVersion(),
-            release.appVersion,
+            <WithTooltip>{release.getChart()}</WithTooltip>,
+            <WithTooltip>{release.getRevision()}</WithTooltip>,
+            <WithTooltip>{release.getVersion()}</WithTooltip>,
+            <WithTooltip>{release.appVersion}</WithTooltip>,
             { title: release.getStatus(), className: kebabCase(release.getStatus()) },
-            release.getUpdated(),
+            <WithTooltip tooltip={release.updated ? moment(release.updated.replace(/\s\w*$/, "")).toDate() : undefined}>
+              {release.getUpdated()}
+            </WithTooltip>,
           ]}
           renderItemMenu={(release) => (
             <HelmReleaseMenu release={release} removeConfirmationMessage={this.renderRemoveDialogMessage([release])} />

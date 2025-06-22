@@ -11,6 +11,7 @@ import { noop } from "lodash";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
+import { WithTooltip } from "../badge";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { HelmChartDetails } from "./helm-chart-details";
@@ -125,11 +126,14 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
             <figure key="image">
               <HelmChartIcon imageUrl={chart.getIcon()} />
             </figure>,
-            chart.getName(),
-            chart.getDescription(),
-            chart.getVersion(),
-            chart.getAppVersion(),
-            { title: chart.getRepository(), className: chart.getRepository().toLowerCase() },
+            <WithTooltip>{chart.getName()}</WithTooltip>,
+            <WithTooltip>{chart.getDescription()}</WithTooltip>,
+            <WithTooltip>{chart.getVersion()}</WithTooltip>,
+            <WithTooltip>{chart.getAppVersion()}</WithTooltip>,
+            {
+              title: <WithTooltip>{chart.getRepository()}</WithTooltip>,
+              className: chart.getRepository().toLowerCase(),
+            },
             { className: "menu" },
           ]}
           detailsItem={selectedChart}

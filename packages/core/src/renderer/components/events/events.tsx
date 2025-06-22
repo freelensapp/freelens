@@ -7,12 +7,12 @@
 import "./events.scss";
 
 import { Icon } from "@freelensapp/icon";
-import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "lodash";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import moment from "moment-timezone";
 import React from "react";
 import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
@@ -184,23 +184,15 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
         ]}
         renderTableContents={(event) => {
           const { involvedObject, type, message } = event;
-          const tooltipId = `message-${event.getId()}`;
           const isWarning = event.isWarning();
 
           return [
-            type, // type of event: "Normal" or "Warning"
+            <WithTooltip>{type}</WithTooltip>, // type of event: "Normal" or "Warning"
             {
               className: cssNames({ warning: isWarning }),
-              title: (
-                <>
-                  <span id={tooltipId}>{message}</span>
-                  <Tooltip targetId={tooltipId} formatters={{ narrow: true, warning: isWarning }}>
-                    {message}
-                  </Tooltip>
-                </>
-              ),
+              title: <WithTooltip>{message}</WithTooltip>,
             },
-            compact ? <NamespaceSelectBadge key="namespace" namespace={event.getNs()} /> : event.getNs(),
+            <NamespaceSelectBadge key="namespace" namespace={event.getNs()} />,
             <Link
               key="link"
               to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
@@ -211,7 +203,9 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             <WithTooltip>{event.getSource()}</WithTooltip>,
             event.count,
             <KubeObjectAge key="age" object={event} />,
-            <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />,
+            <WithTooltip tooltip={event.lastTimestamp ? moment(event.lastTimestamp).toDate() : undefined}>
+              <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />
+            </WithTooltip>,
           ];
         }}
       />
