@@ -926,127 +926,466 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
             class=""
           >
             <div
-              class="ErrorBoundary flex column gaps"
+              class="ItemListLayout flex column HelmReleases"
             >
-              <h5>
-                App crash at 
-                <span
-                  class="contrast"
-                >
-                  /
-                </span>
-              </h5>
-              <p>
-                To help us improve the product please report bugs on 
-                <a
-                  href="https://github.com/freelensapp/freelens/issues"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Github
-                </a>
-                 issues tracker.
-              </p>
               <div
-                class="wrapper"
+                class="header flex gaps align-center"
               >
-                <code
-                  class="block"
+                <h5
+                  class="title"
                 >
-                  <p
-                    class="contrast"
-                  >
-                    Component stack:
-                  </p>
-                  
-    at WithTooltip (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/badge/with-tooltip.tsx:21:13)
-    at div
-    at TableCell (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/table/table-cell.tsx:21:5)
-    at div
-    at TableRow (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/table/table-row.tsx:37:1)
-    at children (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/ObserverComponent.ts:8:30)
-    at div
-    at useObserver (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/observer.ts:104:16)
-    at div
-    at div
-    at List (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-window@1.8.11_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/react-window/src/createListComponent.js:187:7)
-    at div
-    at exports.default (/Users/dex4er/Sources/freelens/freelens/packages/core/__mocks__/react-virtualized-auto-sizer.tsx:11:19)
-    at div
-    at VirtualListInner (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/virtual-list/virtual-list.tsx:47:3)
-    at div
-    at NonInjectedTable (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/table/table.tsx:141:5)
-    at div
-    at NonInjectedItemListLayoutContent (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/item-object-list/content.tsx:93:5)
-    at div
-    at NonInjectedItemListLayout (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/item-object-list/list-layout.tsx:184:5)
-    at NonInjectedErrorBoundary (/Users/dex4er/Sources/freelens/freelens/packages/ui-components/error-boundary/dist/index.js:87:32)
-    at main
-    at div
-    at useObserver (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/observer.ts:104:16)
-    at useObserver (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/observer.ts:104:16)
-    at NonInjectedHelmReleases (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/helm-releases/releases.tsx:51:1)
-    at NonInjectedErrorBoundary (/Users/dex4er/Sources/freelens/freelens/packages/ui-components/error-boundary/dist/index.js:87:32)
-    at div
-    at div
-    at NonInjectedMainLayout (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/layout/main-layout.tsx:44:1)
-    at useObserver (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/observer.ts:104:16)
-    at children (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/ObserverComponent.ts:8:30)
-    at NonInjectedErrorBoundary (/Users/dex4er/Sources/freelens/freelens/packages/ui-components/error-boundary/dist/index.js:87:32)
-    at useObserver (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx-react-lite@3.4.3_mobx@6.13.7_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/mobx-react-lite/src/observer.ts:104:16)
-    at ClusterFrame
-    at Router (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-router@5.3.4_react@17.0.2/node_modules/react-router/cjs/react-router.js:283:30)
-                </code>
-                <code
-                  class="block"
+                  Releases
+                </h5>
+                <div
+                  class="info-panel box grow"
                 >
-                  <p
-                    class="contrast"
+                  1 item
+                </div>
+                <div
+                  class="NamespaceSelectFilterParent"
+                  data-testid="namespace-select-filter"
+                >
+                  <div
+                    class="Select theme-dark NamespaceSelect NamespaceSelectFilter css-b62m3t-container"
                   >
-                    Error stack:
-                  </p>
-                  RangeError: Invalid time value
-    at Date.toISOString (&lt;anonymous&gt;)
-    at WithTooltip (/Users/dex4er/Sources/freelens/freelens/packages/core/src/renderer/components/badge/with-tooltip.tsx:22:47)
-    at renderWithHooks (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:14985:18)
-    at mountIndeterminateComponent (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:17811:13)
-    at beginWork (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
-    at innerInvokeEventListeners (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
-    at invokeEventListeners (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
-    at HTMLUnknownElementImpl._dispatch (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
-    at HTMLUnknownElementImpl.dispatchEvent (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)
-    at HTMLUnknownElement.dispatchEvent (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/jsdom@20.0.3/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)
-    at Object.invokeGuardedCallbackDev (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:3994:16)
-    at invokeGuardedCallback (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:4056:31)
-    at beginWork$1 (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:23964:7)
-    at performUnitOfWork (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:22779:12)
-    at workLoopSync (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:22707:5)
-    at renderRootSync (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:22293:18)
-    at /Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:11327:26
-    at unstable_runWithPriority (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/scheduler@0.20.2/node_modules/scheduler/cjs/scheduler.development.js:468:12)
-    at runWithPriority$1 (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:11276:10)
-    at flushSyncCallbackQueueImpl (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:11322:9)
-    at flushSyncCallbackQueue (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:11309:3)
-    at batchedUpdates$1 (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/react-dom@17.0.2_react@17.0.2/node_modules/react-dom/cjs/react-dom.development.js:22387:7)
-    at fn (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/core/reaction.ts:312:30)
-    at reactionScheduler (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/core/reaction.ts:279:5)
-    at runReactions (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/core/observable.ts:112:9)
-    at endBatch (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/core/action.ts:143:5)
-    at _endAction (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/core/action.ts:75:9)
-    at executeAction (/Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/mobx@6.13.7/node_modules/mobx/src/api/action.ts:102:12)
-    at /Users/dex4er/Sources/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@17.11.1_@ogre-tools+fp@17.11.1_lodash@4.17.21__@ogre-tools_e5bf507872127bc45537d788c86be0ca/node_modules/@ogre-tools/injectable-react/build/index.js:1:2290
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-                </code>
+                    <span
+                      class="css-1f43avz-a11yText-A11yText"
+                      id="react-select-namespace-select-filter-live-region"
+                    />
+                    <span
+                      aria-atomic="false"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                      class="css-1f43avz-a11yText-A11yText"
+                      role="log"
+                    />
+                    <div
+                      class="Select__control css-13cymwt-control"
+                    >
+                      <div
+                        class="Select__value-container Select__value-container--is-multi css-hlgwow"
+                      >
+                        <div
+                          class="Select__placeholder css-1jqq78o-placeholder"
+                          id="react-select-namespace-select-filter-placeholder"
+                        >
+                          Namespace: my-second-namespace
+                        </div>
+                        <div
+                          class="Select__input-container css-19bb58m"
+                          data-value=""
+                        >
+                          <input
+                            aria-activedescendant=""
+                            aria-autocomplete="list"
+                            aria-describedby="react-select-namespace-select-filter-placeholder"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            class="Select__input"
+                            id="namespace-select-filter"
+                            role="combobox"
+                            spellcheck="false"
+                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="Select__indicators css-1wy0on6"
+                      >
+                        <span
+                          class="Select__indicator-separator css-1u9des2-indicatorSeparator"
+                        />
+                        <div
+                          aria-hidden="true"
+                          class="Select__indicator Select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="css-tj5bde-Svg"
+                            focusable="false"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            width="20"
+                          >
+                            <path
+                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="Input SearchInput focused"
+                >
+                  <label
+                    class="input-area flex gaps align-center"
+                    id=""
+                  >
+                    <input
+                      class="input box grow"
+                      placeholder="Search Releases..."
+                      spellcheck="false"
+                      value=""
+                    />
+                    <i
+                      class="Icon material focusable small"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="search"
+                      >
+                        search
+                      </span>
+                    </i>
+                  </label>
+                  <div
+                    class="input-info flex gaps"
+                  />
+                </div>
               </div>
-              <button
-                class="Button box self-flex-start primary"
-                type="button"
+              <div
+                class="items box grow flex column"
               >
-                Back
-              </button>
+                <div
+                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                >
+                  <div
+                    class="TableHead sticky nowrap topLine"
+                  >
+                    <div
+                      class="TableCell checkbox"
+                    >
+                      <label
+                        class="Checkbox flex align-center"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                      </label>
+                    </div>
+                    <div
+                      class="TableCell name nowrap sorting"
+                      id="name"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Name
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell namespace nowrap sorting"
+                      id="namespace"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Namespace
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell chart nowrap sorting"
+                      id="chart"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Chart
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell revision nowrap sorting"
+                      id="revision"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Revision
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell version nowrap"
+                      id="version"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Version
+                      </div>
+                    </div>
+                    <div
+                      class="TableCell app-version nowrap"
+                      id="app-version"
+                    >
+                      <div
+                        class="content"
+                      >
+                        App Version
+                      </div>
+                    </div>
+                    <div
+                      class="TableCell status nowrap sorting"
+                      id="status"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Status
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell updated nowrap sorting"
+                      id="update"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Updated
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                    </div>
+                    <div
+                      class="TableCell menu nowrap"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material interactive focusable"
+                          id="menu-actions-for-item-object-list-content"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="more_vert"
+                          >
+                            more_vert
+                          </span>
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="VirtualList HelmReleases box grow dark"
+                  >
+                    <div>
+                      <div
+                        class="list"
+                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                      >
+                        <div
+                          style="height: 33px; width: 100%;"
+                        >
+                          <div
+                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                          >
+                            <div
+                              class="TableRow nowrap"
+                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                            >
+                              <div
+                                class="TableCell checkbox"
+                              >
+                                <label
+                                  class="Checkbox flex align-center"
+                                >
+                                  <input
+                                    type="checkbox"
+                                  />
+                                  <i
+                                    class="box flex align-center"
+                                  />
+                                </label>
+                              </div>
+                              <div
+                                class="TableCell name"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell namespace"
+                              >
+                                <div
+                                  class="badge NamespaceSelectBadge flat clickable"
+                                >
+                                  my-second-namespace
+                                </div>
+                                <div>
+                                  Set global namespace filter to:
+                                  <b>
+                                    my-second-namespace
+                                  </b>
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell chart"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell revision"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell version"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell app-version"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell some-status status"
+                              >
+                                Some-status
+                              </div>
+                              <div
+                                class="TableCell updated"
+                              >
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
+                              </div>
+                              <div
+                                class="TableCell menu"
+                              >
+                                <div>
+                                  <i
+                                    class="Icon material interactive focusable"
+                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                    tabindex="0"
+                                  >
+                                    <span
+                                      class="icon"
+                                      data-icon-name="more_vert"
+                                    >
+                                      more_vert
+                                    </span>
+                                  </i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="AddRemoveButtons flex gaps"
+                />
+              </div>
             </div>
           </main>
         </div>
@@ -1742,7 +2081,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -1762,22 +2108,47 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -1787,7 +2158,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -2568,7 +2946,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -2588,22 +2973,47 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -2613,7 +3023,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -3392,7 +3809,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -3412,22 +3836,47 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -3437,7 +3886,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -4358,7 +4814,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -4378,22 +4841,47 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -4403,7 +4891,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -5326,7 +5821,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell name"
                               >
-                                some-name
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-name
+                                </div>
+                                <div>
+                                  some-name
+                                </div>
                               </div>
                               <div
                                 class="TableCell namespace"
@@ -5346,22 +5848,47 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell chart"
                               >
-                                some-chart
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-chart
+                                </div>
+                                <div>
+                                  some-chart
+                                </div>
                               </div>
                               <div
                                 class="TableCell revision"
                               >
-                                NaN
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaN
+                                </div>
                               </div>
                               <div
                                 class="TableCell version"
                               >
-                                1.0.0
+                                <div
+                                  class="badge flat"
+                                >
+                                  1.0.0
+                                </div>
+                                <div>
+                                  1.0.0
+                                </div>
                               </div>
                               <div
                                 class="TableCell app-version"
                               >
-                                some-app-version
+                                <div
+                                  class="badge flat"
+                                >
+                                  some-app-version
+                                </div>
+                                <div>
+                                  some-app-version
+                                </div>
                               </div>
                               <div
                                 class="TableCell some-status status"
@@ -5371,7 +5898,14 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                               <div
                                 class="TableCell updated"
                               >
-                                NaNy
+                                <div
+                                  class="badge flat"
+                                >
+                                  NaNy
+                                </div>
+                                <div>
+                                  Invalid date
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"

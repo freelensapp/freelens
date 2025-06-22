@@ -135,7 +135,9 @@ describe("workloads / pods", () => {
       });
 
       it("renders the pod list", async () => {
-        expect(await rendered.findByTestId(`list-pod-name-uuid-1`)).toBeInTheDocument();
+        expect(
+          await rendered.findByTestId(`icon-for-menu-actions-for-kube-object-menu-for-uuid-1`),
+        ).toBeInTheDocument();
       });
     });
   });

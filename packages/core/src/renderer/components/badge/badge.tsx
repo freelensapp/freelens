@@ -21,6 +21,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
   scrollable?: boolean;
   children?: StrictReactNode;
+  "data-testid"?: string;
 }
 
 // Common handler for all Badge instances
