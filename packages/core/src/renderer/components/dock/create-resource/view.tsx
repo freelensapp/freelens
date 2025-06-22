@@ -89,7 +89,6 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
 
     // skip empty documents
     const resources = yaml.loadAll(this.data).filter(isObject);
-    console.log("Resources to create", resources);
 
     if (resources.length === 0) {
       return this.props.logger.info("Nothing to create");
