@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { WithTooltip } from "../badge";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -84,18 +85,18 @@ class NonInjectedPersistentVolumes extends React.Component<Dependencies> {
             );
 
             return [
-              volume.getName(),
+              <WithTooltip>{volume.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={volume} />,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              volume.getCapacity(),
+              <WithTooltip>{volume.getCapacity()}</WithTooltip>,
               claimRef && (
                 <Link
                   to={getDetailsUrl(persistentVolumeClaimApi.formatUrlForNotListing(claimRef))}
                   onClick={stopPropagation}
                 >
-                  {claimRef.name}
+                  <WithTooltip>{claimRef.name}</WithTooltip>
                 </Link>
               ),
               <KubeObjectAge key="age" object={volume} />,

@@ -11,6 +11,10 @@
     &.warning {
       @include table.table-cell-warning;
     }
+
+    &.age {
+      flex-grow: 0.3;
+    }
   }
 
   a.filterNamespace {

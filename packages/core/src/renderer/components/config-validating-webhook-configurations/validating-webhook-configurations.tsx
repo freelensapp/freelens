@@ -7,6 +7,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -37,7 +38,7 @@ const NonInjectedValidatingWebhookConfigurations = observer((props: Dependencies
           },
         })}
         tableId="config_validating_webhook_configurations"
-        className={"ValidatingWebhookConfigurations"}
+        className="ValidatingWebhookConfigurations"
         store={props.store}
         sortingCallbacks={{
           [columnId.name]: (item) => item.getName(),
@@ -56,7 +57,7 @@ const NonInjectedValidatingWebhookConfigurations = observer((props: Dependencies
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(item) => [
-          item.getName(),
+          <WithTooltip>{item.getName()}</WithTooltip>,
           item.getWebhooks().length,
           <KubeObjectAge key="age" object={item} />,
         ]}

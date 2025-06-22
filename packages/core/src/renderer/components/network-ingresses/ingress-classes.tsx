@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./ingress-classes.scss";
+
 import { Icon } from "@freelensapp/icon";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
+import { KubeObjectAge } from "../kube-object";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
-import styles from "./ingress-classes.module.scss";
 
 import type { IngressClass } from "@freelensapp/kube-object";
 
@@ -25,6 +27,7 @@ enum columnId {
   apiGroup = "apiGroup",
   scope = "scope", // "Namespace" | "Cluster"
   kind = "kind", // "ClusterIngressParameter" | "IngressParameter"
+  age = "age",
 }
 
 interface Dependencies {
@@ -39,7 +42,7 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
       <KubeObjectListLayout
         isConfigurable
         tableId="network_ingress_classess"
-        className={styles.IngressClasses}
+        className="IngressClasses"
         store={store}
         sortingCallbacks={{
           [columnId.name]: (resource: IngressClass) => resource.getCtrlName(),
@@ -48,6 +51,7 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
           [columnId.apiGroup]: (resource: IngressClass) => resource.getCtrlApiGroup(),
           [columnId.scope]: (resource: IngressClass) => resource.getCtrlScope(),
           [columnId.kind]: (resource: IngressClass) => resource.getCtrlKind(),
+          [columnId.age]: (ingress) => -ingress.getCreationTimestamp(),
         }}
         searchFilters={[
           (resource: IngressClass) => resource.getSearchFields(),
@@ -58,45 +62,47 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
         ]}
         renderHeaderTitle="Ingress Classes"
         renderTableHeader={[
-          { title: "Name", className: styles.name, sortBy: columnId.name, id: columnId.name },
+          { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           {
             title: "Namespace",
-            className: styles.namespace,
+            className: "namespace",
             sortBy: columnId.namespace,
             id: columnId.namespace,
           },
           {
             title: "Controller",
-            className: styles.controller,
+            className: "controller",
             sortBy: columnId.controller,
             id: columnId.controller,
           },
           {
             title: "API Group",
-            className: styles.apiGroup,
+            className: "apiGroup",
             sortBy: columnId.apiGroup,
             id: columnId.apiGroup,
           },
-          { title: "Scope", className: styles.scope, sortBy: columnId.scope, id: columnId.scope },
-          { title: "Kind", className: styles.kind, sortBy: columnId.kind, id: columnId.kind },
+          { title: "Scope", className: "scope", sortBy: columnId.scope, id: columnId.scope },
+          { title: "Kind", className: "kind", sortBy: columnId.kind, id: columnId.kind },
+          { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(ingressClass: IngressClass) => [
-          <div key={ingressClass.getId()} className={cssNames(styles.name)}>
-            {ingressClass.getName()}{" "}
+          <div key={ingressClass.getId()} className="name">
+            <WithTooltip>{ingressClass.getName()}</WithTooltip>{" "}
             {ingressClass.isDefault && (
               <Icon
                 small
                 material="star"
                 tooltip="Is default class for ingresses (when not specified)"
-                className={styles.set_default_icon}
+                className="set_default_icon"
               />
             )}
           </div>,
           ingressClass.getCtrlNs(),
-          ingressClass.getController(),
-          ingressClass.getCtrlApiGroup(),
-          ingressClass.getCtrlScope(),
-          ingressClass.getCtrlKind(),
+          <WithTooltip>{ingressClass.getController()}</WithTooltip>,
+          <WithTooltip>{ingressClass.getCtrlApiGroup()}</WithTooltip>,
+          <WithTooltip>{ingressClass.getCtrlScope()}</WithTooltip>,
+          <WithTooltip>{ingressClass.getCtrlKind()}</WithTooltip>,
+          <KubeObjectAge key="age" object={ingressClass} />,
         ]}
       />
     </SiblingsInTabLayout>

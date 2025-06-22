@@ -5,33 +5,20 @@
  */
 
 .IngressClasses {
-  :global(.TableCell) {
+  .TableCell {
     &.is_default {
-      :global(.Checkbox) {
+      .Checkbox {
         align-items: flex-start;
       }
     }
 
-    &.name {
+    &.age {
+      flex-grow: 0.3;
     }
 
-    &.namespace {
-    }
-
-    &.controller {
-    }
-
-    &.apiGroup {
-    }
-
-    &.scope {
-    }
-
-    &.kind {
-    }
   }
 
-  :global(.Icon) {
+  .Icon {
     &.set_default_icon {
       filter: brightness(.75);
 

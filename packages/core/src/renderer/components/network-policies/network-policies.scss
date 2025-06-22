@@ -12,6 +12,8 @@
       @include table.table-cell-warning;
     }
 
-
+    &.age {
+      flex: 0.3;
+    }
   }
 }

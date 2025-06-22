@@ -9,6 +9,7 @@ import "./limit-ranges.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -52,7 +53,7 @@ class NonInjectedLimitRanges extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(limitRange) => [
-            limitRange.getName(),
+            <WithTooltip>{limitRange.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={limitRange} />,
             <NamespaceSelectBadge key="namespace" namespace={limitRange.getNs()} />,
             <KubeObjectAge key="age" object={limitRange} />,

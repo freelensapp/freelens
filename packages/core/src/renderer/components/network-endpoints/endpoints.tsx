@@ -9,6 +9,7 @@ import "./endpoints.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -54,10 +55,10 @@ class NonInjectedEndpoints extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(endpoint) => [
-            endpoint.getName(),
+            <WithTooltip>{endpoint.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={endpoint} />,
             <NamespaceSelectBadge key="namespace" namespace={endpoint.getNs()} />,
-            endpoint.toString(),
+            <WithTooltip>{endpoint.toString()}</WithTooltip>,
             <KubeObjectAge key="age" object={endpoint} />,
           ]}
           tableProps={{

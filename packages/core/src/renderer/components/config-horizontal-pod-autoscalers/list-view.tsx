@@ -10,7 +10,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -87,7 +87,7 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
             { title: "Status", className: "status scrollable", id: columnId.status },
           ]}
           renderTableContents={(hpa) => [
-            hpa.getName(),
+            <WithTooltip>{hpa.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={hpa} />,
             <NamespaceSelectBadge key="namespace" namespace={hpa.getNs()} />,
             this.getTargets(hpa),

@@ -9,6 +9,7 @@ import "./leases.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -62,10 +63,10 @@ class NonInjectedLease extends React.Component<LeaseProps & Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(lease) => [
-            lease.getName(),
+            <WithTooltip>{lease.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={lease} />,
             <NamespaceSelectBadge key="namespace" namespace={lease.getNs()} />,
-            lease.getHolderIdentity(),
+            <WithTooltip>{lease.getHolderIdentity()}</WithTooltip>,
             <KubeObjectAge key="age" object={lease} />,
           ]}
         />

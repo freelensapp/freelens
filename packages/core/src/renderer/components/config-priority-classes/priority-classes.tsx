@@ -10,6 +10,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import * as React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -72,9 +73,9 @@ class NonInjectedPriorityClasses extends React.Component<PriorityClassesProps & 
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(pc) => [
-            pc.getName(),
+            <WithTooltip>{pc.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={pc} />,
-            pc.getValue(),
+            <WithTooltip>{pc.getValue()}</WithTooltip>,
             pc.getGlobalDefault(),
             <KubeObjectAge key="age" object={pc} />,
           ]}

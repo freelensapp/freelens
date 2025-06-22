@@ -9,6 +9,7 @@ import "./pod-disruption-budgets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -89,7 +90,7 @@ class NonInjectedPodDisruptionBudgets extends React.Component<PodDisruptionBudge
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(pdb) => [
-            pdb.getName(),
+            <WithTooltip>{pdb.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={pdb} />,
             <NamespaceSelectBadge key="namespace" namespace={pdb.getNs()} />,
             pdb.getMinAvailable(),

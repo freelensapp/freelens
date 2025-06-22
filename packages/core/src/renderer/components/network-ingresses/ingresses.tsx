@@ -10,6 +10,7 @@ import { computeRouteDeclarations } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -57,10 +58,14 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(ingress) => [
-          ingress.getName(),
+          <WithTooltip>{ingress.getName()}</WithTooltip>,
           <KubeObjectStatusIcon key="icon" object={ingress} />,
           <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
-          ingress.getLoadBalancers().map((lb) => <p key={lb}>{lb}</p>),
+          <WithTooltip>
+            {ingress.getLoadBalancers().map((lb) => (
+              <p key={lb}>{lb}</p>
+            ))}
+          </WithTooltip>,
           computeRouteDeclarations(ingress).map((decl) =>
             decl.displayAsLink ? (
               <div key={decl.url} className="ingressRule">

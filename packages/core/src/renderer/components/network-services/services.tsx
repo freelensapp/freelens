@@ -9,7 +9,7 @@ import "./services.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -83,21 +83,25 @@ class NonInjectedServices extends React.Component<Dependencies> {
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Type", className: "type", sortBy: columnId.type, id: columnId.type },
             { title: "Cluster IP", className: "clusterIp", sortBy: columnId.clusterIp, id: columnId.clusterIp },
-            { title: "Ports", className: "ports", sortBy: columnId.ports, id: columnId.ports },
             { title: "External IP", className: "externalIp", id: columnId.externalIp },
+            { title: "Ports", className: "ports", sortBy: columnId.ports, id: columnId.ports },
             { title: "Selector", className: "selector", sortBy: columnId.selector, id: columnId.selector },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
           renderTableContents={(service) => [
-            service.getName(),
+            <WithTooltip>{service.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={service} />,
             <NamespaceSelectBadge key="namespace" namespace={service.getNs()} />,
             service.getType(),
-            service.getClusterIp(),
-            service.getPorts().join(", "),
-            formatExternalIps(service),
-            service.getSelector().map((label) => <Badge key={label} label={label} />),
+            <WithTooltip>{service.getClusterIp()}</WithTooltip>,
+            <WithTooltip>{formatExternalIps(service)}</WithTooltip>,
+            <WithTooltip>{service.getPorts().join(", ")}</WithTooltip>,
+            <WithTooltip>
+              {service.getSelector().map((label) => (
+                <Badge key={label} label={label} />
+              ))}
+            </WithTooltip>,
             <KubeObjectAge key="age" object={service} />,
             { title: service.getStatus(), className: service.getStatus().toLowerCase() },
           ]}

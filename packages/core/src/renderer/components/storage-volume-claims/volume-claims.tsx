@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { WithTooltip } from "../badge";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -96,18 +97,20 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
             );
 
             return [
-              pvc.getName(),
+              <WithTooltip>{pvc.getName()}</WithTooltip>,
               <KubeObjectStatusIcon key="icon" object={pvc} />,
               <NamespaceSelectBadge key="namespace" namespace={pvc.getNs()} />,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              pvc.getStorage(),
-              pods.map((pod) => (
-                <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
-                  {pod.getName()}
-                </Link>
-              )),
+              <WithTooltip>{pvc.getStorage()}</WithTooltip>,
+              <WithTooltip tooltip={pods.map((pod) => pod.getName()).join(", ")}>
+                {pods.map((pod) => (
+                  <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
+                    {pod.getName()}
+                  </Link>
+                ))}
+              </WithTooltip>,
               <KubeObjectAge key="age" object={pvc} />,
               { title: pvc.getStatus(), className: pvc.getStatus().toLowerCase() },
             ];

@@ -9,7 +9,7 @@ import "./secrets.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -65,12 +65,16 @@ class NonInjectedSecrets extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(secret) => [
-            secret.getName(),
+            <WithTooltip>{secret.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={secret} />,
             <NamespaceSelectBadge key="namespace" namespace={secret.getNs()} />,
-            secret.getLabels().map((label) => <Badge scrollable key={label} label={label} expandable={false} />),
-            secret.getKeys().join(", "),
-            secret.type,
+            <WithTooltip>
+              {secret.getLabels().map((label) => (
+                <Badge scrollable key={label} label={label} expandable={false} />
+              ))}
+            </WithTooltip>,
+            <WithTooltip>{secret.getKeys().join(", ")}</WithTooltip>,
+            <WithTooltip>{secret.type}</WithTooltip>,
             <KubeObjectAge key="age" object={secret} />,
           ]}
           addRemoveButtons={{

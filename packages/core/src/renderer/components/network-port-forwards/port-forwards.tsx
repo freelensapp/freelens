@@ -12,6 +12,7 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
+import { WithTooltip } from "../badge";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
@@ -126,14 +127,14 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
           renderTableContents={(item) => [
-            item.getName(),
+            <WithTooltip>{item.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
-            item.getKind(),
-            item.getPort(),
-            item.getForwardPort(),
-            item.getProtocol(),
-            item.getAddress(),
-            { title: item.getStatus(), className: item.getStatus().toLowerCase() },
+            <WithTooltip>{item.getKind()}</WithTooltip>,
+            <WithTooltip>{item.getPort()}</WithTooltip>,
+            <WithTooltip>{item.getForwardPort()}</WithTooltip>,
+            <WithTooltip>{item.getProtocol()}</WithTooltip>,
+            <WithTooltip>{item.getAddress()}</WithTooltip>,
+            { title: <WithTooltip>{item.getStatus()}</WithTooltip>, className: item.getStatus().toLowerCase() },
           ]}
           renderItemMenu={(pf) => (
             <PortForwardMenu portForward={pf} removeConfirmationMessage={this.renderRemoveDialogMessage([pf])} />

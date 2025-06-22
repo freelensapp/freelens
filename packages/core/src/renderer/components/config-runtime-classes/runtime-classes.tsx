@@ -10,6 +10,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import * as React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -64,9 +65,9 @@ class NonInjectedRuntimeClasses extends React.Component<RuntimeClassesProps & De
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(rc) => [
-            rc.getName(),
+            <WithTooltip>{rc.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={rc} />,
-            rc.getHandler(),
+            <WithTooltip>{rc.getHandler()}</WithTooltip>,
             <KubeObjectAge key="age" object={rc} />,
           ]}
         />

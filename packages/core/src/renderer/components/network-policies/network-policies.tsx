@@ -9,6 +9,7 @@ import "./network-policies.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { WithTooltip } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -54,10 +55,10 @@ class NonInjectedNetworkPolicies extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(networkPolicy) => [
-            networkPolicy.getName(),
+            <WithTooltip>{networkPolicy.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={networkPolicy} />,
             <NamespaceSelectBadge key="namespace" namespace={networkPolicy.getNs()} />,
-            networkPolicy.getTypes().join(", "),
+            <WithTooltip>{networkPolicy.getTypes().join(", ")}</WithTooltip>,
             <KubeObjectAge key="age" object={networkPolicy} />,
           ]}
         />
