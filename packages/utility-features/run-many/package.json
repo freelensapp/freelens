@@ -44,7 +44,7 @@
     "mobx": "^6.13.7",
     "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
-    "type-fest": "^3.13.1",
+    "type-fest": "^4.41.0",
     "typed-emitter": "^1.4.0",
     "webpack": "^5.99.9"
   }
