@@ -55,7 +55,7 @@ const showAboutInjectable = getInjectable({
           buttons.push("Open Release Notes");
         }
       } catch (error) {
-        logger.error("[SHOW-ABOUT]: Failed to check latest version", error);
+        logger.error(`[SHOW-ABOUT]: Failed to check latest version: ${error}`);
       }
 
       const returnValue = await showMessagePopup(
