@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger/dist";
 import { getInjectable } from "@ogre-tools/injectable";
-import latestVersion from "latest-version";
+import getLatestVersion from "get-latest-version";
 import * as semver from "semver";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
@@ -48,10 +48,10 @@ const showAboutInjectable = getInjectable({
       const buttons = ["Close"];
 
       try {
-        const latest = await latestVersion("@freelensapp/core");
-        if (semver.gt(latest, buildVersion)) {
-          newVersion = latest;
-          appInfo.push("", `Latest version: ${latest}`);
+        const latestVersion = await getLatestVersion("@freelensapp/core");
+        if (latestVersion && semver.gt(latestVersion, buildVersion)) {
+          newVersion = latestVersion;
+          appInfo.push("", `Latest version: ${latestVersion}`);
           buttons.push("Open Release Notes");
         }
       } catch (error) {
