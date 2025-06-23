@@ -39,8 +39,6 @@ const showMessagePopupInjectable = getInjectable({
       });
     };
   },
-
-  causesSideEffects: true,
 });
 
 export default showMessagePopupInjectable;
