@@ -75,6 +75,7 @@
         "crypto-js",
         "electron-updater",
         "electron-window-state",
+        "get-latest-version",
         "fs-extra",
         "glob-to-regexp",
         "got",

@@ -135,6 +135,7 @@
     "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^11.3.0",
+    "get-latest-version": "^5.1.0",
     "glob-to-regexp": "^0.4.1",
     "got": "^11.8.6",
     "grapheme-splitter": "^1.0.4",
