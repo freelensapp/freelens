@@ -84,6 +84,7 @@
         "http-proxy-node16",
         "immer",
         "joi",
+        "latest-version",
         "moment",
         "moment-timezone",
         "node-pty",
