@@ -56,7 +56,7 @@
     "rfc6902": "^5.1.2",
     "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
-    "type-fest": "^3.13.1",
+    "type-fest": "^4.41.0",
     "typescript": "^5.8.3",
     "webpack": "^5.99.9"
   }
