@@ -22,7 +22,7 @@ const openDocumentationMenuItemInjectable = getInjectable({
       parentId: "help",
       id: "open-documentation",
       orderNumber: 20,
-      label: "Documentation",
+      label: "Documentation...",
 
       // TODO: Convert to async/await
       onClick: () => {
