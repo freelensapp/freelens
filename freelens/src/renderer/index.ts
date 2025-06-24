@@ -79,6 +79,7 @@ export {
   MobxReact,
   React,
   ReactDOM,
+  ReactJsxRuntime,
   ReactRouter,
   ReactRouterDom,
 } from "@freelensapp/core/renderer";
