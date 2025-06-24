@@ -22,8 +22,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.12.2
-        version: 10.12.2
+        specifier: 10.12.3
+        version: 10.12.3
 
   freelens:
     dependencies:
@@ -199,8 +199,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.12.2
-        version: 10.12.2
+        specifier: ^10.12.3
+        version: 10.12.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -845,8 +845,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.12.2
-        version: 10.12.2
+        specifier: ^10.12.3
+        version: 10.12.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -7771,8 +7771,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.12.2:
-    resolution: {integrity: sha512-oyVAGFuWTuMLtOl55AWtxq9ZImtDjuTMGfnodzZnpm0wL1v+5go508rGnjXkuW5winHdACt+k1nEESoXIqwyPw==}
+  pnpm@10.12.3:
+    resolution: {integrity: sha512-Rn3yxYYFYWVYCtbftUzqrZTFow+AiT697FpExapzwgWuSlu51e1ruE6nwkns54ZkK7tJ0GowffIY0D2kHDF0Fw==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -11026,12 +11026,12 @@ snapshots:
   '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.9)':
     dependencies:
       webpack: 5.99.9(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.99.9)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)
 
   '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.9)':
     dependencies:
       webpack: 5.99.9(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.99.9)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)
 
   '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.2)(webpack@5.99.9)':
     dependencies:
@@ -14455,7 +14455,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.12.2: {}
+  pnpm@10.12.3: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -15968,7 +15968,7 @@ snapshots:
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 6.0.1(webpack@5.99.9)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
