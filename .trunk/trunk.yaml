@@ -90,10 +90,10 @@ lint:
     - biome@2.0.5! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.45.0
-    - prettier@3.5.3
+    - prettier@3.6.0
     - shellcheck@0.10.0
     - shfmt@3.6.0
-    - yamlfmt@0.17.1
+    - yamlfmt@0.17.2
     - yamllint@1.37.1
   disabled:
     - checkov
