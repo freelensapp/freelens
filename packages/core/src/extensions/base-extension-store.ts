@@ -25,35 +25,37 @@ export interface ExtensionStoreParams<T extends object>
   cwd?: string;
 }
 
-export abstract class BaseExtensionStore<T extends object> {
-  private static readonly instances = new WeakMap<object, any>();
+export abstract class BaseExtensionStore<M extends object = any> {
+  private static readonly instances = new WeakMap<typeof BaseExtensionStore, object>();
 
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
    */
-  static createInstance<S extends object, T extends BaseExtensionStore<S>, R extends any[]>(...args: R): T {
-    return getOrInsertWith<object, T>(BaseExtensionStore.instances, this, () => new (this as any)(...args));
+  static createInstance<S extends BaseExtensionStore<M>, M extends object = any, A extends any[] = []>(...args: A): S {
+    return getOrInsertWith(BaseExtensionStore.instances, this, () => new (this as any)(...args));
   }
 
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
    */
-  static getInstance<T, R extends any[]>(strict?: true): T;
-  static getInstance<T, R extends any[]>(strict: false): T | undefined;
-  static getInstance<T, R extends any[]>(strict = true): T | undefined {
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict?: true): S;
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict: false): S | undefined;
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict = true): S | undefined {
     if (!BaseExtensionStore.instances.has(this) && strict) {
       throw new TypeError(`instance of ${this.name} is not created`);
     }
 
-    return BaseExtensionStore.instances.get(this) as T | undefined;
+    return BaseExtensionStore.instances.get(this) as S | undefined;
   }
 
-  static getInstanceOrCreate<R extends any[]>(...args: R) {
+  static getInstanceOrCreate<S extends BaseExtensionStore<M>, M extends object = any, A extends any[] = []>(
+    ...args: A
+  ): S {
     try {
-      return this.getInstance();
+      return this.getInstance<S, M>();
     } catch (e) {
       if (e instanceof TypeError) {
-        return this.createInstance(...args);
+        return this.createInstance<S, M, A>(...args);
       } else {
         throw e;
       }
@@ -70,7 +72,7 @@ export abstract class BaseExtensionStore<T extends object> {
     } as const;
   })();
 
-  constructor(protected readonly rawParams: ExtensionStoreParams<T>) {}
+  constructor(protected readonly rawParams: ExtensionStoreParams<M>) {}
 
   /**
    * @deprecated This is a form of global shared state. Just call `new Store(...)`
@@ -118,6 +120,6 @@ export abstract class BaseExtensionStore<T extends object> {
     );
   }
 
-  abstract fromStore(data: Partial<T>): void;
-  abstract toJSON(): T;
+  abstract fromStore(data: Partial<M>): void;
+  abstract toJSON(): M;
 }

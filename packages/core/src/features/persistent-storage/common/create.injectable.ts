@@ -33,7 +33,7 @@ export interface PersistentStorage {
   loadAndStartSyncing: () => void;
 }
 
-export interface PersistentStorageParams<T extends object> extends Omit<Options<T>, "migrations"> {
+export interface PersistentStorageParams<T extends object = any> extends Omit<Options<T>, "migrations"> {
   readonly syncOptions?: {
     readonly fireImmediately?: boolean;
     equals?: IEqualsComparer<T>;
