@@ -6,8 +6,8 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger/dist";
 import { getInjectable } from "@ogre-tools/injectable";
-import getLatestVersion from "get-latest-version";
 import * as semver from "semver";
+import getLatestVersionInjectable from "../../../../../../common/utils/get-latest-version.injectable";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
@@ -30,6 +30,7 @@ const showAboutInjectable = getInjectable({
     const applicationCopyright = di.inject(applicationCopyrightInjectable);
     const openLinkInBrowser = di.inject(openLinkInBrowserInjectable);
     const logger = di.inject(loggerInjectionToken);
+    const getLatestVersion = di.inject(getLatestVersionInjectable);
 
     return async () => {
       let newVersion: string | undefined;
