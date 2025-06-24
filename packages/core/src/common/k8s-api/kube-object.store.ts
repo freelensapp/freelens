@@ -408,9 +408,7 @@ export class KubeObjectStore<
   }
 
   async remove(item: K) {
-    // Some k8s apis might implement special more fine-grained "delete" request for resources (e.g. pod.api.ts)
-    // See also: https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/
-    await this.api.evict({ name: item.getName(), namespace: item.getNs() });
+    await this.api.delete({ name: item.getName(), namespace: item.getNs() });
     this.selectedItemsIds.delete(item.getId());
   }
 
