@@ -188,7 +188,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       }
 
       const fileName = getBasenameOfPath(tarballUrl);
-      const { signal } = withTimeout(10 * 60 * 1000);
+      const { signal } = withTimeout(30 * 60 * 1000);
       const request = await downloadBinary(tarballUrl, { signal });
 
       if (!request.callWasSuccessful) {

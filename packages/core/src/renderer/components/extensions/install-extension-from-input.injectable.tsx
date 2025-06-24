@@ -43,7 +43,7 @@ const installExtensionFromInputInjectable = getInjectable({
         if (InputValidators.isUrl.validate(input)) {
           // install via url
           disposer = extensionInstallationStateStore.startPreInstall();
-          const { signal } = withTimeout(10 * 60 * 1000);
+          const { signal } = withTimeout(30 * 60 * 1000);
           const result = await downloadBinary(input, { signal });
 
           if (!result.callWasSuccessful) {
