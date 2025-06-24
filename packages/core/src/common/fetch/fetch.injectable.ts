@@ -11,7 +11,9 @@ export type Fetch = typeof fetch;
 
 const fetchInjectable: Injectable<typeof fetch, unknown, void> = getInjectable({
   id: "fetch",
-  instantiate: () => fetch,
+  instantiate: (di) => {
+    return fetch;
+  },
   causesSideEffects: true,
 });
 

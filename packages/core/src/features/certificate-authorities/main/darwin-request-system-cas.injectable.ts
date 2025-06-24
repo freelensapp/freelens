@@ -49,6 +49,8 @@ const darwinRequestSystemCAsInjectable = getInjectable({
         } else if (!rootCAResult.callWasSuccessful) {
           logger.warn(`[INJECT-CAS]: Error retrieving root CAs: ${rootCAResult.error}`);
         } else {
+          const certs = [...new Set([...trustedResult.response, ...rootCAResult.response])];
+          logger.info(`[INJECT-CAS]: ${certs.length} CAs retrieved from system.`);
           return [...new Set([...trustedResult.response, ...rootCAResult.response])];
         }
 

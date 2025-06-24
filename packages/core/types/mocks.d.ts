@@ -2,8 +2,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-declare module "win-ca"
-declare module "win-ca/api"
 
 // Support import for custom module extensions
 // https://www.typescriptlang.org/docs/handbook/modules.html#wildcard-module-declarations
