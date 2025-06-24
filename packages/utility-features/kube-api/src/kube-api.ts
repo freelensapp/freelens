@@ -720,15 +720,6 @@ export class KubeApi<
     return parsed;
   }
 
-  /**
-   * Some k8s resources might implement special "delete" (e.g. pod.api)
-   * See also: https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/
-   * By default should work same as delete()
-   */
-  async evict(desc: DeleteResourceDescriptor): Promise<KubeStatus | KubeObject | unknown> {
-    return this.delete(desc);
-  }
-
   async delete({ propagationPolicy = "Background", ...desc }: DeleteResourceDescriptor) {
     await this.checkPreferredVersion();
     const apiUrl = this.formatUrlForNotListing(desc);
