@@ -7,15 +7,13 @@
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import fetchInjectable from "./fetch.injectable";
+import fetchInjectable from "./node-fetch.injectable";
 
-import type fetch from "@freelensapp/node-fetch";
+import type { NodeFetch } from "./node-fetch.injectable";
 
-import type { Fetch } from "./fetch.injectable";
-
-const proxyFetchInjectable: Injectable<typeof fetch, unknown, void> = getInjectable({
+const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
-  instantiate: (di): Fetch => {
+  instantiate: (di): NodeFetch => {
     const fetch = di.inject(fetchInjectable);
     const { httpsProxy, allowUntrustedCAs } = di.inject(userPreferencesStateInjectable);
     const agent = httpsProxy

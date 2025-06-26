@@ -18,7 +18,7 @@ import { createMockResponseFromString } from "../../../test-utils/mock-responses
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
-import fetchInjectable from "../../fetch/fetch.injectable";
+import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 
 import type { IngressApi } from "@freelensapp/kube-api";
@@ -26,11 +26,11 @@ import type { IngressApi } from "@freelensapp/kube-api";
 import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { Fetch } from "../../fetch/fetch.injectable";
+import type { NodeFetch } from "../../fetch/node-fetch.injectable";
 import type { ApiManager } from "../api-manager";
 
 describe("KubeApi", () => {
-  let fetchMock: AsyncFnMock<Fetch>;
+  let fetchMock: AsyncFnMock<NodeFetch>;
   let apiManager: ApiManager;
   let di: DiContainer;
 
@@ -39,7 +39,7 @@ describe("KubeApi", () => {
       di = getDiForUnitTesting();
 
       fetchMock = asyncFn();
-      di.override(fetchInjectable, () => fetchMock);
+      di.override(nodeFetchInjectable, () => fetchMock);
 
       di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
       di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");

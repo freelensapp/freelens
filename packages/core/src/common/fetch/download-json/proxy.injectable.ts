@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import proxyFetchInjectable from "../proxy-fetch.injectable";
-import { downloadJsonWith } from "./impl";
+import { downloadJsonWith } from "./download-json-with";
 
 const proxyDownloadJsonInjectable = getInjectable({
   id: "proxy-download-json",

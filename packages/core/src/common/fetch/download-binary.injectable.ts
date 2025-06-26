@@ -7,7 +7,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "./fetch.injectable";
 
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { AsyncResult } from "@freelensapp/utilities";
 
 export interface DownloadBinaryOptions {
@@ -25,7 +24,7 @@ const downloadBinaryInjectable = getInjectable({
       let result: Response;
 
       try {
-        result = await fetch(url, opts as RequestInit);
+        result = await fetch(url, opts);
       } catch (error) {
         return {
           callWasSuccessful: false,
@@ -43,7 +42,7 @@ const downloadBinaryInjectable = getInjectable({
       try {
         return {
           callWasSuccessful: true,
-          response: await result.buffer(),
+          response: Buffer.from(await result.arrayBuffer()),
         };
       } catch (error) {
         return {

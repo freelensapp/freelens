@@ -4,16 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import fetch from "@freelensapp/node-fetch";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 
 export type Fetch = typeof fetch;
 
-const fetchInjectable: Injectable<typeof fetch, unknown, void> = getInjectable({
+const fetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
   id: "fetch",
-  instantiate: (di) => {
-    return fetch;
-  },
+  instantiate: (di) => fetch,
   causesSideEffects: true,
 });
 

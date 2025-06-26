@@ -9,10 +9,9 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import fetchInjectable from "../fetch/fetch.injectable";
+import nodeFetchInjectable, { type RequestInit } from "../fetch/node-fetch.injectable";
 
 import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
-import type { RequestInit } from "@freelensapp/node-fetch";
 
 export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: RequestInit) => KubeJsonApi;
 
@@ -20,7 +19,7 @@ const createKubeJsonApiInjectable = getInjectable({
   id: "create-kube-json-api",
   instantiate: (di): CreateKubeJsonApi => {
     const dependencies: JsonApiDependencies = {
-      fetch: di.inject(fetchInjectable),
+      fetch: di.inject(nodeFetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
     const lensProxyCert = di.inject(lensProxyCertificateInjectable);

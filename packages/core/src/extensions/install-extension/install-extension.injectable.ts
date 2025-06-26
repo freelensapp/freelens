@@ -37,6 +37,7 @@ const installExtensionInjectable = getInjectable({
         const child = fork(pathToPnpmCli, args, {
           cwd: extensionPackageRootDirectory,
           silent: false,
+          env: process.env,
         });
         let stdout = "";
         let stderr = "";
