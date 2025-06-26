@@ -55,7 +55,7 @@ body:
       description: |
         e.g. Windows 11, MacOS 15.3 M1 Max, Linux Ubuntu 24.04
     validations:
-      required: true
+      required: false
 
   - type: input
     id: installation-method
@@ -64,7 +64,16 @@ body:
       description: |
         e.g. AppImage, DEB, DMG, EXE, MSI, PKG, source
     validations:
-      required: true
+      required: false
+
+  - type: input
+    id: kuernetes-version
+    attributes:
+      label: Kubernetes cluster version used with Freelens
+      description: |
+        e.g. 1.33.0
+    validations:
+      required: false
 
   - type: textarea
     id: logs
