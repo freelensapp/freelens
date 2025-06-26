@@ -150,9 +150,6 @@ importers:
       glob-to-regexp:
         specifier: ^0.4.1
         version: 0.4.1
-      got:
-        specifier: ^11.8.6
-        version: 11.8.6
       grapheme-splitter:
         specifier: ^1.0.4
         version: 1.0.4
@@ -784,9 +781,6 @@ importers:
       glob-to-regexp:
         specifier: ^0.4.1
         version: 0.4.1
-      got:
-        specifier: ^11.8.6
-        version: 11.8.6
       grapheme-splitter:
         specifier: ^1.0.4
         version: 1.0.4

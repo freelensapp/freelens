@@ -11,9 +11,11 @@ import fetchInjectable from "./node-fetch.injectable";
 
 import type { NodeFetch } from "./node-fetch.injectable";
 
+export type ProxyFetch = NodeFetch;
+
 const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
-  instantiate: (di): NodeFetch => {
+  instantiate: (di): ProxyFetch => {
     const fetch = di.inject(fetchInjectable);
     const { httpsProxy, allowUntrustedCAs } = di.inject(userPreferencesStateInjectable);
     const agent = httpsProxy

@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import directoryForKubectlBinariesInjectable from "../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
+import proxyFetchInjectable from "../../common/fetch/proxy-fetch.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import unlinkInjectable from "../../common/fs/unlink.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
@@ -45,6 +46,7 @@ const createKubectlInjectable = getInjectable({
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
       execFile: di.inject(execFileInjectable),
+      proxyFetch: di.inject(proxyFetchInjectable),
       unlink: di.inject(unlinkInjectable),
     };
 
