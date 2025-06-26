@@ -150,7 +150,7 @@ export class Kubectl {
 
       return this.dirname;
     } catch (err) {
-      this.dependencies.logger.error("Failed to get biniary directory", err);
+      this.dependencies.logger.error("Failed to get binary directory", err);
 
       return "";
     }
