@@ -9,7 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import fetchInjectable from "../fetch/fetch.injectable";
+import nodeFetchInjectable from "../fetch/node-fetch.injectable";
 
 import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelensapp/json-api";
 import type { RequestInit } from "@freelensapp/node-fetch";
@@ -23,7 +23,7 @@ const createJsonApiInjectable = getInjectable({
   id: "create-json-api",
   instantiate: (di): CreateJsonApi => {
     const deps: JsonApiDependencies = {
-      fetch: di.inject(fetchInjectable),
+      fetch: di.inject(nodeFetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
     const lensProxyCert = di.inject(lensProxyCertificateInjectable);
@@ -35,13 +35,15 @@ const createJsonApiInjectable = getInjectable({
             ca: lensProxyCert.get().cert,
           });
 
+          // MSD Agent and Node Agent are not compatible
           return {
             agent,
-          };
+          } as any;
         };
       }
 
-      return new JsonApi(deps, config, reqInit);
+      // MSD RequestInit and Node RequestInit are not compatible
+      return new JsonApi(deps, config, reqInit as any);
     };
   },
 });

@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "../fetch.injectable";
-import { downloadJsonWith } from "./impl";
+import { downloadJsonWith } from "./download-json-with";
 
 const downloadJsonInjectable = getInjectable({
   id: "download-json",

@@ -9,7 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
-import fetchInjectable from "../../../common/fetch/fetch.injectable";
+import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import { buildVersionInitializationInjectable } from "../../../features/vars/build-version/main/init.injectable";
@@ -31,7 +31,7 @@ const setupLensProxyInjectable = getInjectable({
       const showErrorPopup = di.inject(showErrorPopupInjectable);
       const buildVersion = di.inject(buildVersionInitializable.stateToken);
       const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
-      const fetch = di.inject(fetchInjectable);
+      const fetch = di.inject(nodeFetchInjectable);
 
       try {
         logger.info("🔌 Starting Freelens Proxy");

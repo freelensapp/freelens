@@ -46,8 +46,8 @@ import type {
   KubeApiOptions,
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { RequestInit } from "@freelensapp/node-fetch";
 
+import type { NodeFetchRequestInit } from "../../common/fetch/node-fetch.injectable";
 import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
 import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
@@ -169,7 +169,7 @@ export type {
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 
-function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: RequestInit) {
+function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: NodeFetchRequestInit) {
   const di = getLegacyGlobalDiForExtensionApi();
   const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 

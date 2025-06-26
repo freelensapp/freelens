@@ -81,9 +81,9 @@ const attemptInstallByInfoInjectable = getInjectable({
         }
 
         if (result.response.error || !isObject(result.response.versions)) {
-          const message = result.response.error ? `: ${result.response.error}` : "";
+          const message = result.response.error || "Incorrect response from registry";
 
-          showErrorNotification(`Failed to get registry information for extension${message}`);
+          showErrorNotification(`Failed to get registry information for extension: ${message}`);
 
           return disposer();
         }
@@ -197,7 +197,7 @@ const attemptInstallByInfoInjectable = getInjectable({
         return disposer();
       }
 
-      return attemptInstall({ fileName, data: request.response }, disposer);
+      return attemptInstall({ fileName, data: Buffer.from(request.response) }, disposer);
     };
   },
 });
