@@ -23,24 +23,26 @@ const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable
     const storage = di.inject(userPreferencesPersistentStorageInjectable);
     storage.loadAndStartSyncing();
     const userPreferencesState = di.inject(userPreferencesStateInjectable);
-    const { httpsProxy, allowUntrustedCAs } = userPreferencesState;
-    let agent: HttpsProxyAgent | undefined;
-    try {
-      agent = httpsProxy
-        ? new HttpsProxyAgent({
+
+    return (url, init = {}) => {
+      const { httpsProxy, allowUntrustedCAs } = userPreferencesState;
+      let agent: HttpsProxyAgent | undefined;
+      if (httpsProxy) {
+        try {
+          agent = new HttpsProxyAgent({
             proxy: httpsProxy,
             rejectUnauthorized: !allowUntrustedCAs,
-          })
-        : undefined;
-    } catch (error) {
-      logger.error(`[PROXY-FETCH]: Proxy agent error (${httpsProxy}): ${error}`);
-    }
+          });
+        } catch (error) {
+          logger.error(`[PROXY-FETCH]: Proxy agent error (${httpsProxy}): ${error}`);
+        }
+      }
 
-    return (url, init = {}) =>
-      fetch(url, {
+      return fetch(url, {
         agent,
         ...init,
       });
+    };
   },
 });
 
