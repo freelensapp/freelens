@@ -8,7 +8,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";
 import fetchInjectable from "./node-fetch.injectable";
 
 import type { NodeFetch } from "./node-fetch.injectable";
@@ -20,8 +19,6 @@ const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable
   instantiate: (di): ProxyFetch => {
     const fetch = di.inject(fetchInjectable);
     const logger = di.inject(loggerInjectionToken);
-    const storage = di.inject(userPreferencesPersistentStorageInjectable);
-    storage.loadAndStartSyncing();
     const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
     return (url, init = {}) => {
@@ -33,6 +30,7 @@ const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable
             proxy: httpsProxy,
             rejectUnauthorized: !allowUntrustedCAs,
           });
+          logger.debug(`[PROXY-FETCH]: Uses proxy agent (${httpsProxy})`);
         } catch (error) {
           logger.error(`[PROXY-FETCH]: Proxy agent error (${httpsProxy}): ${error}`);
         }
