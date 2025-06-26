@@ -77,7 +77,6 @@
         "electron-window-state",
         "fs-extra",
         "glob-to-regexp",
-        "got",
         "grapheme-splitter",
         "handlebars",
         "hpagent",
