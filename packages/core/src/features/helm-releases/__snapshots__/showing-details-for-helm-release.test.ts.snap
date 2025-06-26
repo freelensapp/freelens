@@ -2186,10 +2186,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -2317,10 +2317,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -3209,10 +3209,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -3340,10 +3340,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -4293,10 +4293,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -4424,10 +4424,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -5377,10 +5377,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -5508,10 +5508,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -5861,7 +5861,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -6706,10 +6706,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -6837,10 +6837,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -7190,7 +7190,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -8035,10 +8035,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -8166,10 +8166,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -8519,7 +8519,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -9575,7 +9575,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -10631,7 +10631,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -11478,10 +11478,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -11609,10 +11609,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -11962,7 +11962,7 @@ exports[`showing details for helm release given application is started when navi
             <span
               class="value"
             >
-              NaNy ago (some-updated)
+              0s ago (2025-01-01T00:00:00+0000)
             </span>
           </div>
           <div
@@ -12807,10 +12807,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -12938,10 +12938,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -13891,10 +13891,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -14022,10 +14022,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -14977,10 +14977,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -15108,10 +15108,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -16000,10 +16000,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -16131,10 +16131,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -17084,10 +17084,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -17215,10 +17215,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -18168,10 +18168,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -18299,10 +18299,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -19252,10 +19252,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div
@@ -19383,10 +19383,10 @@ exports[`showing details for helm release given application is started when navi
                                 <div
                                   class="badge flat"
                                 >
-                                  NaNy
+                                  0s
                                 </div>
                                 <div>
-                                  Invalid date
+                                  2025-01-01T00:00:00Z
                                 </div>
                               </div>
                               <div

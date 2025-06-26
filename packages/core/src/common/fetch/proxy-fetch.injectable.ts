@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
@@ -11,23 +12,35 @@ import fetchInjectable from "./node-fetch.injectable";
 
 import type { NodeFetch } from "./node-fetch.injectable";
 
+export type ProxyFetch = NodeFetch;
+
 const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
-  instantiate: (di): NodeFetch => {
+  instantiate: (di): ProxyFetch => {
     const fetch = di.inject(fetchInjectable);
-    const { httpsProxy, allowUntrustedCAs } = di.inject(userPreferencesStateInjectable);
-    const agent = httpsProxy
-      ? new HttpsProxyAgent({
-          proxy: httpsProxy,
-          rejectUnauthorized: !allowUntrustedCAs,
-        })
-      : undefined;
+    const logger = di.inject(loggerInjectionToken);
+    const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
-    return (url, init = {}) =>
-      fetch(url, {
+    return (url, init = {}) => {
+      const { httpsProxy, allowUntrustedCAs } = userPreferencesState;
+      let agent: HttpsProxyAgent | undefined;
+      if (httpsProxy) {
+        try {
+          agent = new HttpsProxyAgent({
+            proxy: httpsProxy,
+            rejectUnauthorized: !allowUntrustedCAs,
+          });
+          logger.debug(`[PROXY-FETCH]: Uses proxy agent (${httpsProxy})`);
+        } catch (error) {
+          logger.error(`[PROXY-FETCH]: Proxy agent error (${httpsProxy}): ${error}`);
+        }
+      }
+
+      return fetch(url, {
         agent,
         ...init,
       });
+    };
   },
 });
 
