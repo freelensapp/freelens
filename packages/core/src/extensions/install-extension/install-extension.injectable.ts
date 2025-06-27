@@ -34,14 +34,23 @@ const installExtensionInjectable = getInjectable({
     const joinPaths = di.inject(joinPathsInjectable);
     const logger = di.inject(prefixedLoggerInjectable, "EXTENSION-INSTALLER");
 
-    const pnpmHome = joinPaths(directoryForUserData, "pnpm");
+    const pnpmHome = joinPaths(directoryForUserData, "pnpm", "data");
+    const cacheDir = joinPaths(directoryForUserData, "cache");
+    const configDir = joinPaths(directoryForUserData, "config");
+    const stateDir = joinPaths(directoryForUserData, "state");
 
     const forkPnpm = (...args: string[]) =>
       new Promise<void>((resolve, reject) => {
         const child = fork(pathToPnpmCli, args, {
           cwd: extensionPackageRootDirectory,
           silent: false,
-          env: { ...process.env, PNPM_HOME: pnpmHome },
+          env: {
+            ...process.env,
+            PNPM_HOME: pnpmHome,
+            XDG_CACHE_HOME: cacheDir,
+            XDG_CONFIG_HOME: configDir,
+            XDG_STATE_HOME: stateDir,
+          },
         });
         let stdout = "";
         let stderr = "";
