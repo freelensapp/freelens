@@ -9,6 +9,8 @@ import { isObject } from "./type-narrowing";
 
 // ref: https://changelog.com/posts/the-react-reactnode-type-is-a-black-hole
 
+/** */
+
 export type StrictReactFragment = {
   key?: string | number | null;
   ref?: null;

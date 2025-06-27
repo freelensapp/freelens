@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Helper for working with time updates / data-polling callbacks
+/** */
 
 export interface IntervalFn {
   start(runImmediately?: boolean): void;
@@ -13,6 +13,9 @@ export interface IntervalFn {
   readonly isRunning: boolean;
 }
 
+/**
+ * Helper for working with time updates / data-polling callbacks
+ */
 export function interval(timeSec = 1, callback: (count: number) => void, autoRun = false): IntervalFn {
   let count = 0;
   let timer = -1;

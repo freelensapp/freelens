@@ -22,7 +22,6 @@ import type { IngressClassStore } from "./ingress-class-store";
 
 enum columnId {
   name = "name",
-  namespace = "namespace",
   controller = "controller",
   apiGroup = "apiGroup",
   scope = "scope", // "Namespace" | "Cluster"
@@ -46,7 +45,6 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
         store={store}
         sortingCallbacks={{
           [columnId.name]: (resource: IngressClass) => resource.getCtrlName(),
-          [columnId.namespace]: (resource: IngressClass) => resource.getCtrlNs(),
           [columnId.controller]: (resource: IngressClass) => resource.getController(),
           [columnId.apiGroup]: (resource: IngressClass) => resource.getCtrlApiGroup(),
           [columnId.scope]: (resource: IngressClass) => resource.getCtrlScope(),
@@ -63,12 +61,6 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
         renderHeaderTitle="Ingress Classes"
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-          {
-            title: "Namespace",
-            className: "namespace",
-            sortBy: columnId.namespace,
-            id: columnId.namespace,
-          },
           {
             title: "Controller",
             className: "controller",
@@ -97,7 +89,6 @@ const NonInjectedIngressClasses = observer((props: Dependencies) => {
               />
             )}
           </div>,
-          ingressClass.getCtrlNs(),
           <WithTooltip>{ingressClass.getController()}</WithTooltip>,
           <WithTooltip>{ingressClass.getCtrlApiGroup()}</WithTooltip>,
           <WithTooltip>{ingressClass.getCtrlScope()}</WithTooltip>,
