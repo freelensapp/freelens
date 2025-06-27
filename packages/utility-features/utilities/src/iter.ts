@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+/** */
 export type Falsy = false | 0 | "" | null | undefined;
 
 interface Iterator<T> extends Iterable<T> {
