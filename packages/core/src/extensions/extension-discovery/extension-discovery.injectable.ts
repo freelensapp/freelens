@@ -6,6 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import accessPathInjectable from "../../common/fs/access-path.injectable";
 import copyInjectable from "../../common/fs/copy.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -61,6 +62,7 @@ const extensionDiscoveryInjectable = getInjectable({
       getRelativePath: di.inject(getRelativePathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
       homeDirectoryPath: di.inject(homeDirectoryPathInjectable),
+      directoryForUserData: di.inject(directoryForUserDataInjectable),
       forkPnpm: di.inject(forkPnpmInjectable),
     }),
 });

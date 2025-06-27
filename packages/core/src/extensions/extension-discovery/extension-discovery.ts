@@ -5,6 +5,7 @@
  */
 
 import { isErrnoException } from "@freelensapp/utilities";
+import AwaitLock from "await-lock";
 import { ipcRenderer } from "electron";
 import { EventEmitter } from "events";
 import { makeObservable, observable, reaction, when } from "mobx";
@@ -51,6 +52,7 @@ interface Dependencies {
   readonly isProduction: boolean;
   readonly fileSystemSeparator: string;
   readonly homeDirectoryPath: string;
+  directoryForUserData: string;
   isExtensionEnabled: IsExtensionEnabled;
   isCompatibleExtension: (manifest: LensExtensionManifest) => boolean;
   installExtension: (name: string) => Promise<void>;
@@ -303,17 +305,26 @@ export class ExtensionDiscovery {
 
     this.dependencies.logger.info(`${logModule} Uninstalling ${manifest.name}`);
 
-    try {
-      await this.dependencies.forkPnpm("install", "--prefer-offline", "--prod", "--force");
-      await this.dependencies.forkPnpm("uninstall", "--force", manifest.name);
-    } catch (error) {
-      this.dependencies.logger.error(`${logModule}: pnpm failed: ${error}`);
+    const installLock = new AwaitLock();
+    await installLock.acquireAsync();
+
+    const packageLock = this.dependencies.joinPaths(this.dependencies.directoryForUserData, "package.json");
+
+    if (await this.dependencies.pathExists(packageLock)) {
+      try {
+        await this.dependencies.forkPnpm("install", "--prefer-offline", "--prod", "--force");
+        await this.dependencies.forkPnpm("uninstall", "--force", manifest.name);
+      } catch (error) {
+        this.dependencies.logger.error(`${logModule}: pnpm failed: ${error}`);
+      }
     }
 
     await this.removeSymlinkByPackageName(manifest.name);
 
     // fs.remove does nothing if the path doesn't exist anymore
     await this.dependencies.removePath(absolutePath);
+
+    installLock.release();
   }
 
   async load(): Promise<Map<LensExtensionId, InstalledExtension>> {
