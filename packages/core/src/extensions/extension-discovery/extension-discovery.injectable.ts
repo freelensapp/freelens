@@ -15,6 +15,7 @@ import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readDirectoryInjectable from "../../common/fs/read-directory.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
+import statInjectable from "../../common/fs/stat.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
@@ -55,6 +56,7 @@ const extensionDiscoveryInjectable = getInjectable({
       ensureDirectory: di.inject(ensureDirInjectable),
       isProduction: di.inject(isProductionInjectable),
       lstat: di.inject(lstatInjectable),
+      stat: di.inject(statInjectable),
       readDirectory: di.inject(readDirectoryInjectable),
       fileSystemSeparator: di.inject(fileSystemSeparatorInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
