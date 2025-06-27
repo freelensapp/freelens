@@ -40,6 +40,7 @@ import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
 import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../extension-loader";
+import type { ForkPnpm } from "../install-extension/fork-pnpm.injectable";
 
 interface Dependencies {
   readonly extensionLoader: ExtensionLoader;
@@ -66,6 +67,7 @@ interface Dependencies {
   getBasenameOfPath: GetBasenameOfPath;
   getDirnameOfPath: GetDirnameOfPath;
   getRelativePath: GetRelativePath;
+  forkPnpm: ForkPnpm;
 }
 
 const logModule = "[EXTENSION-DISCOVERY]";
@@ -300,6 +302,13 @@ export class ExtensionDiscovery {
     const { manifest, absolutePath } = extension;
 
     this.dependencies.logger.info(`${logModule} Uninstalling ${manifest.name}`);
+
+    try {
+      await this.dependencies.forkPnpm("install", "--prefer-offline", "--prod", "--force");
+      await this.dependencies.forkPnpm("uninstall", "--force", manifest.name);
+    } catch (error) {
+      this.dependencies.logger.error(`${logModule}: pnpm failed: ${error}`);
+    }
 
     await this.removeSymlinkByPackageName(manifest.name);
 

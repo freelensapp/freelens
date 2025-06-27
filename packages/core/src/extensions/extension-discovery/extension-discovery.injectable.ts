@@ -27,6 +27,7 @@ import isExtensionEnabledInjectable from "../../features/extensions/enabled/comm
 import extensionInstallationStateStoreInjectable from "../extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
 import extensionPackageRootDirectoryInjectable from "../install-extension/extension-package-root-directory.injectable";
+import forkPnpmInjectable from "../install-extension/fork-pnpm.injectable";
 import installExtensionInjectable from "../install-extension/install-extension.injectable";
 import { ExtensionDiscovery } from "./extension-discovery";
 import isCompatibleExtensionInjectable from "./is-compatible-extension/is-compatible-extension.injectable";
@@ -60,6 +61,7 @@ const extensionDiscoveryInjectable = getInjectable({
       getRelativePath: di.inject(getRelativePathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
       homeDirectoryPath: di.inject(homeDirectoryPathInjectable),
+      forkPnpm: di.inject(forkPnpmInjectable),
     }),
 });
 
