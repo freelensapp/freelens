@@ -83,6 +83,7 @@ async function attemptStart() {
     bypassCSP: true,
     env: {
       FREELENS_INTEGRATION_TESTING_DIR,
+      LOG_LEVEL: "debug",
       ...process.env,
     },
     timeout: 100_000,
