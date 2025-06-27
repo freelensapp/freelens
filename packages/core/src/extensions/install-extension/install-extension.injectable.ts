@@ -46,10 +46,9 @@ const installExtensionInjectable = getInjectable({
           } else if (s.size > 0) {
             await forkPnpm("install", "--prefer-offline", "--prod", "--force");
           }
-        } finally {
-          await forkPnpm("install", "--prefer-offline", "--prod", "--force", "--save-optional", name);
-          logger.info(`installed package for extension "${name}"`);
-        }
+        } catch (_) {}
+        await forkPnpm("install", "--prefer-offline", "--prod", "--force", "--save-optional", name);
+        logger.info(`installed package for extension "${name}"`);
       } catch (error) {
         logger.error(`pnpm failed: ${error}`);
       } finally {
