@@ -5,7 +5,7 @@
  */
 
 import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
-import { getOrInsertWith, iter } from "@freelensapp/utilities";
+import { getOrInsertWith, iter, lowerAndPluralize } from "@freelensapp/utilities";
 import { action, autorun, observable } from "mobx";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -182,7 +182,7 @@ export class ApiManager {
 
     // lookup api by generated resource link
     const apiPrefixes = ["/apis", "/api"];
-    const resource = kind.endsWith("s") ? `${kind.toLowerCase()}es` : `${kind.toLowerCase()}s`;
+    const resource = lowerAndPluralize(kind);
 
     for (const apiPrefix of apiPrefixes) {
       const apiLink = createKubeApiURL({ apiPrefix, apiVersion, name, namespace, resource });
