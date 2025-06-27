@@ -231,7 +231,7 @@
     "@types/win-ca": "^3.5.4",
     "@types/ws": "^8.18.1",
     "circular-dependency-plugin": "^5.2.2",
-    "css-loader": "^6.11.0",
+    "css-loader": "^7.1.2",
     "electron": "^35.5.1",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "identity-obj-proxy": "^3.0.0",
