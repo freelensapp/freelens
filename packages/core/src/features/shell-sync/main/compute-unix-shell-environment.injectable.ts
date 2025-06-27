@@ -161,7 +161,7 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
           try {
             const rawOutput = Buffer.concat(stdout).toString("utf-8");
 
-            logger.debug(`[UNIX-SHELL-ENV]: got the following output`, { rawOutput });
+            logger.silly(`[UNIX-SHELL-ENV]: got the following output`, { rawOutput });
 
             const matchedOutput = regex.exec(rawOutput)?.[1];
 

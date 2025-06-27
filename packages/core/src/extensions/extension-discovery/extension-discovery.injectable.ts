@@ -6,6 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import accessPathInjectable from "../../common/fs/access-path.injectable";
 import copyInjectable from "../../common/fs/copy.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -14,6 +15,7 @@ import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readDirectoryInjectable from "../../common/fs/read-directory.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
+import statInjectable from "../../common/fs/stat.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
@@ -27,6 +29,7 @@ import isExtensionEnabledInjectable from "../../features/extensions/enabled/comm
 import extensionInstallationStateStoreInjectable from "../extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
 import extensionPackageRootDirectoryInjectable from "../install-extension/extension-package-root-directory.injectable";
+import forkPnpmInjectable from "../install-extension/fork-pnpm.injectable";
 import installExtensionInjectable from "../install-extension/install-extension.injectable";
 import { ExtensionDiscovery } from "./extension-discovery";
 import isCompatibleExtensionInjectable from "./is-compatible-extension/is-compatible-extension.injectable";
@@ -53,6 +56,7 @@ const extensionDiscoveryInjectable = getInjectable({
       ensureDirectory: di.inject(ensureDirInjectable),
       isProduction: di.inject(isProductionInjectable),
       lstat: di.inject(lstatInjectable),
+      stat: di.inject(statInjectable),
       readDirectory: di.inject(readDirectoryInjectable),
       fileSystemSeparator: di.inject(fileSystemSeparatorInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
@@ -60,6 +64,8 @@ const extensionDiscoveryInjectable = getInjectable({
       getRelativePath: di.inject(getRelativePathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
       homeDirectoryPath: di.inject(homeDirectoryPathInjectable),
+      directoryForUserData: di.inject(directoryForUserDataInjectable),
+      forkPnpm: di.inject(forkPnpmInjectable),
     }),
 });
 
