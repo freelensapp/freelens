@@ -22,7 +22,6 @@ const downloadBinaryViaChannelInjectable: Injectable<DownloadBinaryViaChannel, u
       return await requestFromChannel(downloadBinaryChannel, { url, opts });
     };
   },
-  causesSideEffects: true,
 });
 
 export default downloadBinaryViaChannelInjectable;

@@ -15,7 +15,6 @@ import removePathInjectable from "../../../../common/fs/remove.injectable";
 import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import downloadBinaryInjectable from "../../../../main/fetch/download-binary.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
 import { ConfirmDialog } from "../../confirm-dialog";
@@ -59,7 +58,6 @@ describe("Extensions", () => {
       downloadBinary = jest.fn().mockImplementation((url) => {
         throw new Error(`Unexpected call to downloadJson for url=${url}`);
       });
-      di.override(downloadBinaryInjectable, () => downloadBinary);
 
       extensionLoader = di.inject(extensionLoaderInjectable);
       extensionDiscovery = di.inject(extensionDiscoveryInjectable);

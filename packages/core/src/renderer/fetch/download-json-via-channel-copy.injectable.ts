@@ -22,7 +22,6 @@ const downloadJsonViaChannelInjectable: Injectable<DownloadJsonViaChannel, unkno
       return await requestFromChannel(downloadJsonChannel, { url, opts });
     };
   },
-  causesSideEffects: true,
 });
 
 export default downloadJsonViaChannelInjectable;
