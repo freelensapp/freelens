@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import downloadJsonInjectable from "../fetch/download-json/normal.injectable";
+import proxyDownloadJsonInjectable from "../fetch/download-json/proxy.injectable";
 import { withTimeout } from "../fetch/timeout-controller";
 
 interface NpmRegistryPackageMetadata {
@@ -15,11 +15,11 @@ interface NpmRegistryPackageMetadata {
 const getLatestVersionInjectable = getInjectable({
   id: "get-latest-version",
   instantiate: (di) => {
-    const downloadJson = di.inject(downloadJsonInjectable);
+    const proxyDownloadJson = di.inject(proxyDownloadJsonInjectable);
 
     return async (name: string): Promise<string> => {
       const timeoutController = withTimeout(5000);
-      const result = await downloadJson(`https://registry.npmjs.org/${name}/latest`, {
+      const result = await proxyDownloadJson(`https://registry.npmjs.org/${name}/latest`, {
         signal: timeoutController.signal,
       });
       if (!result.callWasSuccessful) {
