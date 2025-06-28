@@ -51,7 +51,7 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
     const timeoutId = setTimeout(() => {
       cleanup();
       console.log(stdoutBuf);
-      reject(new Error(`Lens did not open the main window within ${timeout}ms`));
+      reject(new Error(`Freelens did not open the main window within ${timeout}ms`));
     }, timeout);
 
     cleanup.push(() => clearTimeout(timeoutId));

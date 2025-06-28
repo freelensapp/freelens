@@ -43,7 +43,6 @@ class NonInjectedIngressDetails extends React.Component<IngressClassDetailsProps
     const url =
       ingressClass.spec.parameters &&
       this.props.getDetailsUrl(this.props.apiManager.lookupApiLink(ingressClass.spec.parameters));
-    console.log({ url });
 
     return (
       <>
