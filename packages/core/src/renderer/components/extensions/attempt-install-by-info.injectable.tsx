@@ -65,7 +65,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       let json: NpmRegistryPackageDescriptor;
 
       try {
-        const result = await downloadJson(registryUrl, { timeout: 5_000 });
+        const result = await downloadJson(registryUrl, { timeout: 15_000 });
 
         if (!result.callWasSuccessful) {
           showErrorNotification(`Failed to get registry information for extension: ${result.error}`);
