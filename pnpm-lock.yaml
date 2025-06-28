@@ -167,7 +167,7 @@ importers:
         version: 10.1.1
       isomorphic-ws:
         specifier: ^5.0.0
-        version: 5.0.0(ws@8.18.2)
+        version: 5.0.0(ws@8.18.3)
       joi:
         specifier: ^17.13.3
         version: 17.13.3
@@ -253,8 +253,8 @@ importers:
         specifier: ^3.17.0
         version: 3.17.0
       ws:
-        specifier: ^8.18.2
-        version: 8.18.2
+        specifier: ^8.18.3
+        version: 8.18.3
       zod:
         specifier: ^3.25.67
         version: 3.25.67
@@ -923,8 +923,8 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5
       ws:
-        specifier: ^8.18.2
-        version: 8.18.2
+        specifier: ^8.18.3
+        version: 8.18.3
       zod:
         specifier: ^3.25.67
         version: 3.25.67
@@ -2342,7 +2342,7 @@ importers:
         version: 1.2.0
       isomorphic-ws:
         specifier: ^5.0.0
-        version: 5.0.0(ws@8.18.2)
+        version: 5.0.0(ws@8.18.3)
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -9212,8 +9212,8 @@ packages:
     resolution: {integrity: sha512-7KxauUdBmSdWnmpaGFg+ppNjKF8uNLry8LyzjauQDOVONfFLNKrKvQOxZ/VuTIcS/gge/YNahf5RIIQWTSarlg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
 
-  ws@8.18.2:
-    resolution: {integrity: sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==}
+  ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -10163,7 +10163,7 @@ snapshots:
       '@types/stream-buffers': 3.0.7
       form-data: 4.0.2
       hpagent: 1.2.0
-      isomorphic-ws: 5.0.0(ws@8.18.2)
+      isomorphic-ws: 5.0.0(ws@8.18.3)
       js-yaml: 4.1.0
       jsonpath-plus: 10.3.0
       node-fetch: 2.7.0(encoding@0.1.13)
@@ -10172,7 +10172,7 @@ snapshots:
       socks-proxy-agent: 8.0.5
       stream-buffers: 3.0.3
       tar-fs: 3.0.10
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - bare-buffer
       - bufferutil
@@ -13171,9 +13171,9 @@ snapshots:
 
   isobject@3.0.1: {}
 
-  isomorphic-ws@5.0.0(ws@8.18.2):
+  isomorphic-ws@5.0.0(ws@8.18.3):
     dependencies:
-      ws: 8.18.2
+      ws: 8.18.3
 
   istanbul-lib-coverage@3.2.0: {}
 
@@ -13626,7 +13626,7 @@ snapshots:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.18.2
+      ws: 8.18.3
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -13653,7 +13653,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.1.1
-      ws: 8.18.2
+      ws: 8.18.3
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -15916,7 +15916,7 @@ snapshots:
       sockjs: 0.3.24
       spdy: 4.0.2
       webpack-dev-middleware: 7.4.2(webpack@5.99.9)
-      ws: 8.18.2
+      ws: 8.18.3
     optionalDependencies:
       webpack: 5.99.9(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)
@@ -16092,7 +16092,7 @@ snapshots:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
 
-  ws@8.18.2: {}
+  ws@8.18.3: {}
 
   xml-name-validator@4.0.0: {}
 

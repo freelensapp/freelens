@@ -183,7 +183,7 @@
     "winston": "^3.17.0",
     "winston-transport": "^4.9.0",
     "winston-transport-browserconsole": "^1.0.5",
-    "ws": "^8.18.2",
+    "ws": "^8.18.3",
     "zod": "^3.25.67"
   },
   "devDependencies": {
