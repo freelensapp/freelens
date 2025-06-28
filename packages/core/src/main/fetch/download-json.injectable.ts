@@ -10,7 +10,7 @@ import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { NodeFetchRequestInit, NodeFetchResponse } from "./node-fetch.injectable";
+import type { NodeFetchRequestInit, NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
 
 export interface DownloadJsonOptions {
   timeout?: number;

@@ -11,7 +11,6 @@ import { Pod } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
 // NOTE: this is fine because we are testing something that only exported
 import { PodsApi } from "../../../extensions/common-api/k8s-api";
-import nodeFetchInjectable from "../../../main/fetch/node-fetch.injectable";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
@@ -21,6 +20,7 @@ import { createMockResponseFromString } from "../../../test-utils/mock-responses
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
+import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
 import createKubeApiForRemoteClusterInjectable from "../create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
 
@@ -29,7 +29,7 @@ import type { KubeStatusData } from "@freelensapp/kube-object";
 import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { NodeFetch } from "../../../main/fetch/node-fetch.injectable";
+import type { NodeFetch } from "../../fetch/node-fetch.injectable";
 import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remote-cluster.injectable";
 
 describe("createKubeApiForRemoteCluster", () => {

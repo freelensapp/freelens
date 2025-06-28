@@ -8,8 +8,8 @@ import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
-import nodeFetchInjectable, { type NodeFetchRequestInit } from "../../main/fetch/node-fetch.injectable";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
+import nodeFetchInjectable, { type NodeFetchRequestInit } from "../fetch/node-fetch.injectable";
 
 import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 

@@ -12,7 +12,7 @@ import React from "react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
-import nodeFetchInjectable from "../../../main/fetch/node-fetch.injectable";
+import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -28,7 +28,7 @@ import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
-import type { NodeFetch } from "../../../main/fetch/node-fetch.injectable";
+import type { NodeFetch } from "../../../common/fetch/node-fetch.injectable";
 import type { NamespaceStore } from "./store";
 
 function createNamespace(name: string): Namespace {
