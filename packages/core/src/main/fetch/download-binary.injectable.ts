@@ -5,28 +5,35 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { withTimeout } from "../../common/fetch/timeout-controller";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { Response } from "./node-fetch.injectable";
+import type { NodeFetchRequestInit, NodeFetchResponse } from "./node-fetch.injectable";
 
-export interface ProxyDownloadBinaryOptions {
-  signal?: AbortSignal | null | undefined;
+export interface DownloadBinaryOptions {
+  timeout?: number;
 }
 
-export type ProxyDownloadBinary = (url: string, opts?: ProxyDownloadBinaryOptions) => AsyncResult<Buffer, string>;
+export type DownloadBinary = (url: string, opts?: DownloadBinaryOptions) => AsyncResult<Buffer, string>;
 
-const proxyDownloadBinaryInjectable = getInjectable({
-  id: "proxy-download-binary",
-  instantiate: (di): ProxyDownloadBinary => {
+const downloadBinaryInjectable = getInjectable({
+  id: "download-binary",
+  instantiate: (di): DownloadBinary => {
     const fetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
-      let result: Response;
+      let result: NodeFetchResponse;
+      const fetchOpts = {} as NodeFetchRequestInit;
+
+      if (opts?.timeout) {
+        const controller = withTimeout(opts.timeout);
+        fetchOpts.signal = controller.signal;
+      }
 
       try {
-        result = await fetch(url, opts);
+        result = await fetch(url, fetchOpts);
       } catch (error) {
         return {
           callWasSuccessful: false,
@@ -56,4 +63,4 @@ const proxyDownloadBinaryInjectable = getInjectable({
   },
 });
 
-export default proxyDownloadBinaryInjectable;
+export default downloadBinaryInjectable;

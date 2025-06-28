@@ -47,9 +47,9 @@ import type {
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 
-import type { NodeFetchRequestInit } from "../../common/fetch/node-fetch.injectable";
 import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
 import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import type { NodeFetchRequestInit } from "../../main/fetch/node-fetch.injectable";
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { KubernetesCluster } from "./catalog";
 

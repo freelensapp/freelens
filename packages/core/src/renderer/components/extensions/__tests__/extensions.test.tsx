@@ -11,11 +11,11 @@ import { observable, when } from "mobx";
 import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import proxyDownloadBinaryInjectable from "../../../../common/fetch/proxy-download-binary.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";
 import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import downloadBinaryInjectable from "../../../../main/fetch/download-binary.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
 import { ConfirmDialog } from "../../confirm-dialog";
@@ -23,11 +23,11 @@ import { renderFor } from "../../test-utils/renderFor";
 import { Extensions } from "../extensions";
 import installExtensionFromInputInjectable from "../install-extension-from-input.injectable";
 
-import type { ProxyDownloadBinary } from "../../../../common/fetch/proxy-download-binary.injectable";
 import type { RemovePath } from "../../../../common/fs/remove.injectable";
 import type { ExtensionDiscovery } from "../../../../extensions/extension-discovery/extension-discovery";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import type { DownloadBinary } from "../../../../main/fetch/download-binary.injectable";
 import type { DiRender } from "../../test-utils/renderFor";
 import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
 
@@ -38,7 +38,7 @@ describe("Extensions", () => {
   let extensionInstallationStateStore: ExtensionInstallationStateStore;
   let render: DiRender;
   let deleteFileMock: jest.MockedFunction<RemovePath>;
-  let downloadBinary: jest.MockedFunction<ProxyDownloadBinary>;
+  let downloadBinary: jest.MockedFunction<DownloadBinary>;
 
   beforeEach(() => {
     try {
@@ -59,7 +59,7 @@ describe("Extensions", () => {
       downloadBinary = jest.fn().mockImplementation((url) => {
         throw new Error(`Unexpected call to downloadJson for url=${url}`);
       });
-      di.override(proxyDownloadBinaryInjectable, () => downloadBinary);
+      di.override(downloadBinaryInjectable, () => downloadBinary);
 
       extensionLoader = di.inject(extensionLoaderInjectable);
       extensionDiscovery = di.inject(extensionDiscoveryInjectable);

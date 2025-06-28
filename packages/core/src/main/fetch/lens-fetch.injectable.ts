@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
+import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injectable";
-import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
 import nodeFetchInjectable, { type NodeFetchRequestInit, type NodeFetchResponse } from "./node-fetch.injectable";
 
 export type LensRequestInit = Omit<NodeFetchRequestInit, "agent">;
