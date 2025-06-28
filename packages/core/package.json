@@ -109,7 +109,7 @@
     "@freelensapp/utilities": "workspace:^",
     "@hapi/call": "^9.0.1",
     "@hapi/subtext": "^8.1.0",
-    "@mui/lab": "5.0.0-alpha.142",
+    "@mui/lab": "5.0.0-alpha.176",
     "@mui/material": "^5.17.1",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
