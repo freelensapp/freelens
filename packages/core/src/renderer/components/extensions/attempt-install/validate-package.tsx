@@ -11,8 +11,6 @@ import { manifestFilename } from "../../../../extensions/extension-discovery/ext
 import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
-  console.log("validatePackage");
-  console.log({ filePath });
   const tarFiles = await listTarEntries(filePath);
 
   // tarball from npm contains single root folder "package/*"
@@ -35,8 +33,6 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
     filePath: manifestLocation,
     parseJson: true,
   });
-
-  console.log({ manifest });
 
   if (!isObject(manifest) || (!isString(manifest.main) && !isString(manifest.renderer))) {
     throw new Error(`${manifestFilename} must specify "main" and/or "renderer" field`);
