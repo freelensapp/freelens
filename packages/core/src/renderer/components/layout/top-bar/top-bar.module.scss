@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@reference "../../app.scss";
+
 .topBar {
   background-color: var(--layoutBackground);
   z-index: 2;

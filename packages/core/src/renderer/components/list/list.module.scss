@@ -1,3 +1,5 @@
+@reference "../app.scss";
+
 .notFound {
   @apply flex items-center justify-center h-24;
   color: var(--textColorDimmed);

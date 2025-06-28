@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@reference "../app.scss";
+
 .sidebarNav {
   @apply flex overflow-auto flex-col;
   width: var(--sidebar-width);

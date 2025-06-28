@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@reference "../app.scss";
+
 .Catalog {
   :global(.TableRow):hover .pinIcon {
     opacity: 1;

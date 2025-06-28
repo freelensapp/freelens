@@ -145,7 +145,7 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
               loader: 'postcss-loader',
               options: {
                 sourceMap: false,
-                postcssOptions: { plugins: [ 'tailwindcss' ] }
+                postcssOptions: { plugins: [ '@tailwindcss/postcss' ] }
               }
             },
             {

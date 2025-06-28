@@ -171,7 +171,7 @@ export class Chart extends React.Component<ChartProps> {
         className="LegendBadge flex gaps align-center"
         label={
           <div className="flex items-center">
-            <StatusBrick style={{ backgroundColor: color }} className="flex-shrink-0" />
+            <StatusBrick style={{ backgroundColor: color }} className="shrink-0" />
             <span>{title}</span>
           </div>
         }
