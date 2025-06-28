@@ -7,7 +7,6 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import directoryForKubectlBinariesInjectable from "../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
-import proxyFetchInjectable from "../../common/fetch/proxy-fetch.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import unlinkInjectable from "../../common/fs/unlink.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
@@ -17,6 +16,7 @@ import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundl
 import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import downloadBinaryInjectable from "../fetch/download-binary.injectable";
 import kubectlBinaryNameInjectable from "./binary-name.injectable";
 import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
 import { Kubectl } from "./kubectl";
@@ -42,11 +42,11 @@ const createKubectlInjectable = getInjectable({
       bundledKubectlVersion: di.inject(bundledKubectlVersionInjectable),
       kubectlVersionMap: di.inject(kubectlVersionMapInjectable),
       logger: di.inject(loggerInjectionToken),
+      downloadBinary: di.inject(downloadBinaryInjectable),
       getDirnameOfPath: di.inject(getDirnameOfPathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
       execFile: di.inject(execFileInjectable),
-      proxyFetch: di.inject(proxyFetchInjectable),
       unlink: di.inject(unlinkInjectable),
     };
 

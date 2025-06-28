@@ -10,18 +10,17 @@ import { ensureDir, pathExists } from "fs-extra";
 import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";
 import { coerce, SemVer } from "semver";
-import { pipeline } from "stream/promises";
 import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { ProxyFetch } from "../../common/fetch/proxy-fetch.injectable";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
+import type { DownloadBinary } from "../fetch/download-binary.injectable";
 
 const initScriptVersionString = "# freelens-initscript v3";
 
@@ -41,11 +40,11 @@ export interface KubectlDependencies {
   readonly bundledKubectlVersion: string;
   readonly kubectlVersionMap: Map<string, string>;
   readonly logger: Logger;
+  downloadBinary: DownloadBinary;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   getBasenameOfPath: GetBasenameOfPath;
   execFile: ExecFile;
-  proxyFetch: ProxyFetch;
   unlink: Unlink;
 }
 
@@ -296,17 +295,17 @@ export class Kubectl {
     this.dependencies.logger.info(`Downloading kubectl ${this.kubectlVersion} from ${this.url} to ${this.path}`);
 
     try {
-      const response = await this.dependencies.proxyFetch(this.url);
+      const response = await this.dependencies.downloadBinary(this.url);
 
-      if (!response.ok) {
-        throw new Error(`Failed to download kubectl binary: ${response.status}: ${response.statusText}`);
+      if (!response.callWasSuccessful) {
+        throw new Error(`Failed to download kubectl binary: ${response.error}`);
       }
-      if (!response.body) {
+      if (!response.response || response.response.length == 0) {
         throw new Error(`Empty content of kubectl binary`);
       }
 
-      const fileWriteStream = fs.createWriteStream(this.path, { mode: 0o755 });
-      await pipeline(response.body, fileWriteStream);
+      const file = await fs.promises.open(this.path, "w", 0o755);
+      await file.writeFile(response.response);
       await fs.promises.chmod(this.path, 0o755);
       this.dependencies.logger.debug("kubectl binary download finished");
     } catch (error) {

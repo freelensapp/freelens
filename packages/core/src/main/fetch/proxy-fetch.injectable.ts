@@ -7,10 +7,10 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
+import fetchInjectable from "../../common/fetch/node-fetch.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import fetchInjectable from "./node-fetch.injectable";
 
-import type { NodeFetch } from "./node-fetch.injectable";
+import type { NodeFetch } from "../../common/fetch/node-fetch.injectable";
 
 export type ProxyFetch = NodeFetch;
 

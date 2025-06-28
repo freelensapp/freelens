@@ -5,8 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import proxyDownloadJsonInjectable from "../fetch/download-json/proxy.injectable";
-import { withTimeout } from "../fetch/timeout-controller";
+import downloadJsonInjectable from "../../main/fetch/download-json.injectable";
 
 interface NpmRegistryPackageMetadata {
   version: string;
@@ -15,17 +14,16 @@ interface NpmRegistryPackageMetadata {
 const getLatestVersionInjectable = getInjectable({
   id: "get-latest-version",
   instantiate: (di) => {
-    const proxyDownloadJson = di.inject(proxyDownloadJsonInjectable);
+    const downloadJson = di.inject(downloadJsonInjectable);
 
     return async (name: string): Promise<string> => {
-      const timeoutController = withTimeout(5000);
-      const result = await proxyDownloadJson(`https://registry.npmjs.org/${name}/latest`, {
-        signal: timeoutController.signal,
+      const result = await downloadJson(`https://registry.npmjs.org/${name}/latest`, {
+        timeout: 5000,
       });
       if (!result.callWasSuccessful) {
         throw new Error(`Failed to fetch latest version: ${result}`);
       }
-      const data = (await result.response) as unknown as NpmRegistryPackageMetadata;
+      const data = (await result.response) as NpmRegistryPackageMetadata;
       if (typeof data !== "object" || typeof data.version !== "string") {
         throw new Error("Invalid response from npm registry");
       }

@@ -8,10 +8,9 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import proxyDownloadBinaryInjectable from "../../../common/fetch/proxy-download-binary.injectable";
-import { withTimeout } from "../../../common/fetch/timeout-controller";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
 import { InputValidators } from "../input";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import attemptInstallByInfoInjectable from "./attempt-install-by-info.injectable";
@@ -33,7 +32,7 @@ const installExtensionFromInputInjectable = getInjectable({
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
-    const downloadBinary = di.inject(proxyDownloadBinaryInjectable);
+    const downloadBinary = di.inject(downloadBinaryViaChannelInjectable);
 
     return async (input) => {
       let disposer: ExtendableDisposer | undefined = undefined;
@@ -43,8 +42,7 @@ const installExtensionFromInputInjectable = getInjectable({
         if (InputValidators.isUrl.validate(input)) {
           // install via url
           disposer = extensionInstallationStateStore.startPreInstall();
-          const { signal } = withTimeout(30 * 60 * 1000);
-          const result = await downloadBinary(input, { signal });
+          const result = await downloadBinary(input, { timeout: 30_0000 });
 
           if (!result.callWasSuccessful) {
             showErrorNotification(`Failed to download extension: ${result.error}`);
