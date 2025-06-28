@@ -38,12 +38,12 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
 
   console.log({ manifest });
 
-  if (!isObject(manifest) || !isString(manifest.main) || !isString(manifest.renderer) || !isObject(manifest.engines)) {
-    throw new Error(`${manifestFilename} must specify "main", "renderer" and "engines" fields`);
+  if (!isObject(manifest) || (!isString(manifest.main) && !isString(manifest.renderer))) {
+    throw new Error(`${manifestFilename} must specify "main" and/or "renderer" field`);
   }
 
-  if (!isString(manifest.engines.freelens)) {
-    throw new Error(`${manifestFilename} must "freelens" in "engines" field`);
+  if (!isObject(manifest.engines) || !isString(manifest.engines.freelens)) {
+    throw new Error(`${manifestFilename} must specify "freelens" in "engines" field`);
   }
 
   return manifest as unknown as LensExtensionManifest;
