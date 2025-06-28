@@ -18,7 +18,6 @@ const nodeFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable(
   instantiate: (di) => (url, init) => {
     return nodeFetch(url, init);
   },
-  causesSideEffects: true,
 });
 
 export default nodeFetchInjectable;
