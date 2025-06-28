@@ -8,7 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
+import proxyDownloadBinaryInjectable from "../../../common/fetch/proxy-download-binary.injectable";
 import { withTimeout } from "../../../common/fetch/timeout-controller";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
@@ -33,7 +33,7 @@ const installExtensionFromInputInjectable = getInjectable({
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
-    const downloadBinary = di.inject(downloadBinaryInjectable);
+    const downloadBinary = di.inject(proxyDownloadBinaryInjectable);
 
     return async (input) => {
       let disposer: ExtendableDisposer | undefined = undefined;

@@ -5,20 +5,22 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import fetchInjectable from "./fetch.injectable";
+import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-export interface DownloadBinaryOptions {
+import type { Response } from "./node-fetch.injectable";
+
+export interface ProxyDownloadBinaryOptions {
   signal?: AbortSignal | null | undefined;
 }
 
-export type DownloadBinary = (url: string, opts?: DownloadBinaryOptions) => AsyncResult<Buffer, string>;
+export type ProxyDownloadBinary = (url: string, opts?: ProxyDownloadBinaryOptions) => AsyncResult<Buffer, string>;
 
-const downloadBinaryInjectable = getInjectable({
-  id: "download-binary",
-  instantiate: (di): DownloadBinary => {
-    const fetch = di.inject(fetchInjectable);
+const proxyDownloadBinaryInjectable = getInjectable({
+  id: "proxy-download-binary",
+  instantiate: (di): ProxyDownloadBinary => {
+    const fetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
       let result: Response;
@@ -54,4 +56,4 @@ const downloadBinaryInjectable = getInjectable({
   },
 });
 
-export default downloadBinaryInjectable;
+export default proxyDownloadBinaryInjectable;
