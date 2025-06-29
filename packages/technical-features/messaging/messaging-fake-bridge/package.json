@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging-fake-bridge",
   "private": false,
-  "version": "1.4.0",
+  "version": "1.4.1-0",
   "description": "Fake implementation to bridge multiple dependency injection containers.",
   "type": "commonjs",
   "publishConfig": {
