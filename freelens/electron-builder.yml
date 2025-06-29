@@ -17,7 +17,6 @@ files:
   - "!node_modules/@freelensapp/core/build"
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
-  - "!node_modules/win-ca/pem"
 
 ## Extra files added to unpacked resources
 extraResources:
