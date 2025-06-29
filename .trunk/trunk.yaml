@@ -39,7 +39,7 @@ lint:
           parse_regex: " *(?P<path>.*?):(?P<line>\\d+):(?P<col>\\d+) (?P<code>[^ ]+)(?:[^×]*\\n).*× (?P<message>.*)\\n"
           read_output_from: stderr
           run: biome check ${target}
-          run_from: ${root_or_parent_with_any_config}
+          run_from: ${parent}
         - output: rewrite
           success_codes:
             - 0
@@ -50,7 +50,7 @@ lint:
           in_place: true
           name: fmt
           run: biome check --fix "${target}"
-          run_from: ${root_or_parent_with_any_config}
+          run_from: ${parent}
     # Prettier checks only *.scss files
     - name: prettier
       files:
