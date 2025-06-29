@@ -33,8 +33,6 @@
         "pnpm",
         // used by webpack and for dev-server
         "ts-node",
-        // // only for Windows
-        "win-ca",
         // all packages used in require() calls in webpacked files
         "@astronautlabs/jsonpath",
         "@freelensapp/animate",

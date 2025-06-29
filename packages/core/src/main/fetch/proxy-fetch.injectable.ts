@@ -12,46 +12,18 @@ export type NodeFetchResponse = Response;
 
 export type NodeFetch = (url: URL | NodeFetchRequestInfo, init?: NodeFetchRequestInit) => Promise<NodeFetchResponse>;
 
-import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
-import { HttpsProxyAgent } from "hpagent";
-import https from "https";
-import isWindowsInjectable from "../../common/vars/is-windows.injectable";
-import win32RequestSystemCAsInjectable from "../../features/certificate-authorities/main/win32-request-system-cas.injectable";
-import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import httpsAgentInjectable from "./https-agent.injectable";
 
 export type ProxyFetch = NodeFetch;
 
 const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
   instantiate: (di): ProxyFetch => {
-    const logger = di.inject(loggerInjectionToken);
-    const userPreferencesState = di.inject(userPreferencesStateInjectable);
-    const isWindows = di.inject(isWindowsInjectable);
-    const win32RequestSystemCAs = isWindows ? di.inject(win32RequestSystemCAsInjectable).instantiate() : undefined;
+    const httpsAgent = di.inject(httpsAgentInjectable);
 
     return async (url, init = {}) => {
-      const { httpsProxy, allowUntrustedCAs } = userPreferencesState;
-      let agent: HttpsProxyAgent | undefined;
-      const ca = win32RequestSystemCAs ? await win32RequestSystemCAs() : undefined;
-      if (httpsProxy) {
-        try {
-          agent = new HttpsProxyAgent({
-            proxy: httpsProxy,
-            ca,
-            rejectUnauthorized: !allowUntrustedCAs,
-          });
-          logger.debug(`[PROXY-FETCH]: Uses proxy agent (${httpsProxy})`);
-        } catch (error) {
-          logger.error(`[PROXY-FETCH]: Proxy agent error (${httpsProxy}): ${error}`);
-        }
-      }
-      if (!agent) {
-        agent = new https.Agent({
-          ca,
-        });
-      }
-      logger.debug(`[PROXY-FETCH]: Uses agent with ${ca ? ca.length : "no"} custom CAs`);
+      const agent = httpsAgent();
 
       return await nodeFetch(url, {
         agent,
