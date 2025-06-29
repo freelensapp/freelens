@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/test-utils",
-  "version": "1.4.0-0",
+  "version": "1.4.0",
   "description": "A collection of utilities for testing",
   "type": "commonjs",
   "main": "dist/index.js",
