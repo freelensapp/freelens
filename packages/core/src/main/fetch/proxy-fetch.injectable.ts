@@ -28,12 +28,12 @@ const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable
     const logger = di.inject(loggerInjectionToken);
     const userPreferencesState = di.inject(userPreferencesStateInjectable);
     const isWindows = di.inject(isWindowsInjectable);
-    const win32RequestSystemCAs = di.inject(win32RequestSystemCAsInjectable);
+    const win32RequestSystemCAs = isWindows ? di.inject(win32RequestSystemCAsInjectable).instantiate() : undefined;
 
     return async (url, init = {}) => {
       const { httpsProxy, allowUntrustedCAs } = userPreferencesState;
       let agent: HttpsProxyAgent | undefined;
-      const ca = isWindows ? await win32RequestSystemCAs.instantiate()() : undefined;
+      const ca = win32RequestSystemCAs ? await win32RequestSystemCAs() : undefined;
       if (httpsProxy) {
         try {
           agent = new HttpsProxyAgent({
