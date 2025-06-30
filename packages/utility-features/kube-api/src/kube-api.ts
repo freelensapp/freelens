@@ -604,7 +604,7 @@ export class KubeApi<
 
   async create(
     { name, namespace }: Partial<ResourceDescriptor>,
-    partialData?: PartialDeep<Object>,
+    partialData?: PartialDeep<Object, { recurseIntoArrays: true }>,
   ): Promise<Object | null> {
     await this.checkPreferredVersion();
 

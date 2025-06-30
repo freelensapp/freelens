@@ -52,7 +52,7 @@ export interface KubeJsonApiError {
 }
 
 export interface JsonApiParams<D> {
-  data?: PartialDeep<D>; // request body
+  data?: PartialDeep<D, { recurseIntoArrays: true }>; // request body
 }
 
 export interface JsonApiLog {
