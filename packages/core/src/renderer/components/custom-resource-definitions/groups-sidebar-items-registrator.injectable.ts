@@ -10,12 +10,17 @@ import { injectableDifferencingRegistratorWith } from "../../../common/utils/reg
 import { beforeClusterFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
 
+import type { Injectable } from "@ogre-tools/injectable";
+
 const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-registrator",
   instantiate: (di) => ({
     run: () => {
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
-      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(di);
+      const differencingRegistrator = injectableDifferencingRegistratorWith(di);
+
+      // This registrator manages its own previous state
+      let previousSidebarItems: Injectable<any, any, any>[] = [];
 
       reaction(
         // Data function - wrapped in try/catch to prevent error propagation
@@ -28,9 +33,10 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
           }
         },
         // Effect - also protected against errors
-        (items) => {
+        (currentItems) => {
           try {
-            injectableDifferencingRegistrator(items);
+            differencingRegistrator(currentItems, previousSidebarItems);
+            previousSidebarItems = currentItems;
           } catch (error) {
             console.error("Error registering sidebar items:", error);
           }
