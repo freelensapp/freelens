@@ -5,7 +5,6 @@
  */
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { computedAnd, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as yaml from "js-yaml";
@@ -21,6 +20,7 @@ import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-it
 import customResourceDefinitionsInjectable from "./definitions.injectable";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
+import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
@@ -401,92 +401,101 @@ function generateSidebarItems(
   const result: any[] = [];
 
   // Process each top level group using the order from config
-  (topLevelOrder.length > 0 ? topLevelOrder : Object.keys(structure)).forEach((topLevelName, topLevelIndex) => {
-    try {
-      // Create top level item
-      const topLevelItem = getInjectable({
-        id: `sidebar-item-custom-resource-group-${topLevelName}`,
-        instantiate: (): SidebarItemRegistration => ({
-          parentId: customResourcesSidebarItemInjectable.id,
-          onClick: noop,
-          title: topLevelName.replaceAll(".", "\u200b."), // Add zero-width spaces to allow breaks
-          orderNumber: topLevelIndex + 1,
-        }),
-        injectionToken: sidebarItemInjectionToken,
-      });
+  const effectiveTopLevelOrder = topLevelOrder.length > 0 ? topLevelOrder : Object.keys(structure);
 
-      result.push(topLevelItem);
+  effectiveTopLevelOrder
+    .filter((topLevelName) => structure[topLevelName]) // Only process groups that exist in structure
+    .forEach((topLevelName, topLevelIndex) => {
+      try {
+        // Create top level item
+        const topLevelItem = getInjectable({
+          id: `sidebar-item-custom-resource-group-${topLevelName}`,
+          instantiate: (): SidebarItemRegistration => ({
+            parentId: customResourcesSidebarItemInjectable.id,
+            onClick: noop,
+            title: topLevelName.replaceAll(".", "\u200b."), // Add zero-width spaces to allow breaks
+            orderNumber: topLevelIndex + 1,
+          }),
+          injectionToken: sidebarItemInjectionToken,
+        });
 
-      // Process direct CRDs (without sublevel)
-      const directCrds = structure[topLevelName]["direct"] || [];
-      if (directCrds.length > 0) {
-        try {
-          const directItems = directCrds.map((definition, itemIndex) =>
-            createCrdSidebarItem({
-              parentId: topLevelItem.id,
-              definition,
-              topLevelName,
-              itemIndex,
-              ...options,
-            }),
-          );
+        result.push(topLevelItem);
 
-          result.push(...directItems);
-        } catch (error) {
-          console.error("Error creating direct CRD items:", error);
+        // Process direct CRDs (without sublevel)
+        const directCrds = structure[topLevelName]["direct"] || [];
+        if (directCrds.length > 0) {
+          try {
+            const directItems = directCrds.map((definition, itemIndex) =>
+              createCrdSidebarItem({
+                parentId: topLevelItem.id,
+                definition,
+                topLevelName,
+                itemIndex,
+                ...options,
+              }),
+            );
+
+            result.push(...directItems);
+          } catch (error) {
+            console.error("Error creating direct CRD items:", error);
+          }
         }
+
+        // Process sublevels using the order from config
+        const availableSubLevels = Object.keys(structure[topLevelName]).filter((key) => key !== "direct");
+        const orderedSubLevels = subLevelOrder[topLevelName] || [];
+
+        // Use ordered sublevels if available, otherwise use default order
+        const subLevelsToProcess =
+          orderedSubLevels.length > 0
+            ? orderedSubLevels.filter((key) => availableSubLevels.includes(key))
+            : availableSubLevels;
+
+        subLevelsToProcess.forEach((subLevelKey, subLevelIndex) => {
+          try {
+            const subLevelName = subLevelKey;
+            const subLevelCrds = structure[topLevelName][subLevelKey];
+
+            // Skip if no CRDs in this sublevel
+            if (!subLevelCrds || subLevelCrds.length === 0) {
+              return;
+            }
+
+            // Create sublevel item
+            const subLevelItem = getInjectable({
+              id: `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`,
+              instantiate: (): SidebarItemRegistration => ({
+                parentId: topLevelItem.id,
+                onClick: noop,
+                title: subLevelName.replaceAll(".", "\u200b."),
+                orderNumber: subLevelIndex + 1,
+              }),
+              injectionToken: sidebarItemInjectionToken,
+            });
+
+            result.push(subLevelItem);
+
+            // Create items for CRDs in sublevel
+            const subLevelItems = subLevelCrds.map((definition, itemIndex) =>
+              createCrdSidebarItem({
+                parentId: subLevelItem.id,
+                definition,
+                topLevelName,
+                subLevelName,
+                itemIndex,
+                ...options,
+              }),
+            );
+
+            result.push(...subLevelItems);
+          } catch (error) {
+            console.error(`Error processing sublevel "${subLevelKey}":`, error);
+          }
+        });
+      } catch (error) {
+        console.error(`Error processing top level "${topLevelName}":`, error);
       }
-
-      // Process sublevels using the order from config
-      const availableSubLevels = Object.keys(structure[topLevelName]).filter((key) => key !== "direct");
-      const orderedSubLevels = subLevelOrder[topLevelName] || [];
-
-      // Use ordered sublevels if available, otherwise use default order
-      const subLevelsToProcess =
-        orderedSubLevels.length > 0
-          ? orderedSubLevels.filter((key) => availableSubLevels.includes(key))
-          : availableSubLevels;
-
-      subLevelsToProcess.forEach((subLevelKey, subLevelIndex) => {
-        try {
-          const subLevelName = subLevelKey;
-          const subLevelCrds = structure[topLevelName][subLevelKey];
-
-          // Create sublevel item
-          const subLevelItem = getInjectable({
-            id: `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`,
-            instantiate: (): SidebarItemRegistration => ({
-              parentId: topLevelItem.id,
-              onClick: noop,
-              title: subLevelName.replaceAll(".", "\u200b."),
-              orderNumber: subLevelIndex + 1,
-            }),
-            injectionToken: sidebarItemInjectionToken,
-          });
-
-          result.push(subLevelItem);
-
-          // Create items for CRDs in sublevel
-          const subLevelItems = subLevelCrds.map((definition, itemIndex) =>
-            createCrdSidebarItem({
-              parentId: subLevelItem.id,
-              definition,
-              topLevelName,
-              subLevelName,
-              itemIndex,
-              ...options,
-            }),
-          );
-
-          result.push(...subLevelItems);
-        } catch (error) {
-          console.error(`Error processing sublevel "${subLevelKey}":`, error);
-        }
-      });
-    } catch (error) {
-      console.error(`Error processing top level "${topLevelName}":`, error);
-    }
-  });
+    });
 
   return result;
 }

@@ -10,9 +10,10 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 import { DEFAULT_CONFIG_YAML } from "./default-config";
+
+import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
 /**
  * Parse a YAML string and return the parsed object and any error
@@ -63,7 +64,7 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     "- Objects with nested sublevels\n" +
     "- Null value to hide entries\n" +
     '- Empty string "" to capture all patterns\n' +
-    'Example:\nKEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh\nlinkerd.io:\n  - policy.linkerd.io\n  - ""\nignored: null';
+    'Example:\nKEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh\nlinkerd.io:\n  - policy.linkerd.io\nOther:\n  - ""';
 
   const [validationError, setValidationError] = React.useState<string | null>(null);
 
