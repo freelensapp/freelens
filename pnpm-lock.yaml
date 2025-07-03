@@ -350,8 +350,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.99.9)
       electron:
-        specifier: ^35.6.0
-        version: 35.6.0
+        specifier: ^35.7.0
+        version: 35.7.0
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
@@ -1056,8 +1056,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.99.9)
       electron:
-        specifier: ^35.6.0
-        version: 35.6.0
+        specifier: ^35.7.0
+        version: 35.7.0
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
         version: 9.1.0(typescript@5.8.3)(webpack@5.99.9)
@@ -1740,8 +1740,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       electron:
-        specifier: ^35.6.0
-        version: 35.6.0
+        specifier: ^35.7.0
+        version: 35.7.0
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -2082,8 +2082,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       electron:
-        specifier: ^35.6.0
-        version: 35.6.0
+        specifier: ^35.7.0
+        version: 35.7.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2143,8 +2143,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)
       electron:
-        specifier: ^35.6.0
-        version: 35.6.0
+        specifier: ^35.7.0
+        version: 35.7.0
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -5452,6 +5452,7 @@ packages:
 
   cronstrue@2.61.0:
     resolution: {integrity: sha512-ootN5bvXbIQI9rW94+QsXN5eROtXWwew6NkdGxIRpS/UFWRggL0G5Al7a9GTBFEsuvVhJ2K3CntIIVt7L2ILhA==}
+    deprecated: Non-backwards compatible Breaking changes
     hasBin: true
 
   cross-dirname@0.1.0:
@@ -5793,8 +5794,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@35.6.0:
-    resolution: {integrity: sha512-C+fzUIVkF6HzJjVeCjd6efL5Y01DwuQAnU6yqwh09grYvSQnlMJDC1qsQ8lSWl+sNYwtwUHAdZd7JtUi6Uyo/A==}
+  electron@35.7.0:
+    resolution: {integrity: sha512-ZnbVqFK40pr83Jzw6IQ9pQT+obCG0DepSMKtOEe8WP2TgZbjvCOO4GzrR+a7Ze62JMRmtNOHsS4hFss6qjtSrQ==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -12186,7 +12187,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@35.6.0:
+  electron@35.7.0:
     dependencies:
       '@electron/get': 2.0.2
       '@types/node': 22.15.34
