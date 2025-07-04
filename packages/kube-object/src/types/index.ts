@@ -6,6 +6,7 @@
 
 export * from "./aggregation-rule";
 export * from "./capabilities";
+export * from "./condition";
 export * from "./container";
 export * from "./container-port";
 export * from "./cross-version-object-reference";
