@@ -8,48 +8,10 @@ import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 
-export {
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  cssNames,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  disposer,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  prevDefault,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  stopPropagation,
-} from "@freelensapp/utilities";
+export * from "@freelensapp/utilities";
 export { Singleton } from "../../common/utils/singleton";
 
-export type {
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposable,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposer,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  ExtendableDisposer,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  IClassName,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  IgnoredClassNames,
-} from "@freelensapp/utilities";
+export type * from "@freelensapp/utilities";
 
 export type { OpenLinkInBrowser } from "../../common/utils/open-link-in-browser.injectable";
 
