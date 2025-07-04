@@ -148,7 +148,7 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -159,9 +159,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -172,7 +172,7 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -208,7 +208,7 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -219,9 +219,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -232,7 +232,7 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -843,7 +843,7 @@ exports[`entity running technical tests when navigated to catalog when details p
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -854,9 +854,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -867,7 +867,7 @@ exports[`entity running technical tests when navigated to catalog when details p
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -903,7 +903,7 @@ exports[`entity running technical tests when navigated to catalog when details p
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -914,9 +914,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -927,7 +927,7 @@ exports[`entity running technical tests when navigated to catalog when details p
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>

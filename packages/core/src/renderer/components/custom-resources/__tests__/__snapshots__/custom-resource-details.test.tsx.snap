@@ -16,7 +16,11 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
       <span
         class="value"
       >
-        false
+        <div
+          class="badge error"
+        >
+          False
+        </div>
       </span>
     </div>
   </div>
@@ -39,7 +43,11 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
       <span
         class="value"
       >
-        true
+        <div
+          class="badge success"
+        >
+          True
+        </div>
       </span>
     </div>
   </div>
