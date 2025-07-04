@@ -26,6 +26,18 @@ export interface CustomResourceDetailsProps extends KubeObjectDetailsProps<KubeO
   crd?: CustomResourceDefinition;
 }
 
+function getBooleanText(value?: boolean) {
+  if (value === true) return "True";
+  if (value === false) return "False";
+  return "-";
+}
+
+function getBooleanClass(value?: boolean) {
+  if (value === true) return "success";
+  if (value === false) return "error";
+  return "info";
+}
+
 function convertSpecValue(value: unknown): StrictReactNode {
   if (Array.isArray(value)) {
     return (
@@ -39,6 +51,10 @@ function convertSpecValue(value: unknown): StrictReactNode {
 
   if (typeof value === "object") {
     return <Input readOnly multiLine theme="round-black" className="box grow" value={JSON.stringify(value, null, 2)} />;
+  }
+
+  if (typeof value === "boolean") {
+    return <Badge className={getBooleanClass(value)} label={getBooleanText(value)} />;
   }
 
   if (typeof value === "boolean" || typeof value === "string" || typeof value === "number") {
@@ -116,7 +132,7 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       return null;
     }
 
-    const extraColumns = crd.getPrinterColumns();
+    const extraColumns = object.getPrinterColumns() ?? crd.getPrinterColumns();
 
     return (
       <div className={cssNames("CustomResourceDetails", crd.getResourceKind())}>
