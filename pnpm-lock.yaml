@@ -1385,9 +1385,6 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
-      rfc6902:
-        specifier: ^5.1.2
-        version: 5.1.2
       ts-jest:
         specifier: ^29.4.0
         version: 29.4.0(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
