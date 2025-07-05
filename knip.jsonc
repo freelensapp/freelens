@@ -5,6 +5,7 @@
 
   "workspaces": {
     ".": {
+      "ignoreBinaries": ["open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm"
@@ -33,8 +34,6 @@
         "pnpm",
         // used by webpack and for dev-server
         "ts-node",
-        // // only for Windows
-        "win-ca",
         // all packages used in require() calls in webpacked files
         "@astronautlabs/jsonpath",
         "@freelensapp/animate",

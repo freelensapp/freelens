@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/metrics",
   "private": false,
-  "version": "1.4.0-0",
+  "version": "1.5.0-0",
   "description": "Injection tokens for implementing metrics for Freelens",
   "type": "commonjs",
   "publishConfig": {

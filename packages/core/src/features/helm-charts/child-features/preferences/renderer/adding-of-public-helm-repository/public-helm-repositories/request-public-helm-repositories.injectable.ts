@@ -7,8 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { sortBy } from "lodash/fp";
-import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/download-json/proxy.injectable";
-import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
+import downloadJsonViaChannelInjectable from "../../../../../../../renderer/fetch/download-json-via-channel-copy.injectable";
 
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
@@ -44,13 +43,12 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
   id: "request-public-helm-repositories",
 
   instantiate: (di) => {
-    const downloadJson = di.inject(proxyDownloadJsonInjectable);
+    const downloadJson = di.inject(downloadJsonViaChannelInjectable);
     const logger = di.inject(loggerInjectionToken);
 
     return async (): Promise<HelmRepo[]> => {
-      const controller = withTimeout(10_000);
       const result = await downloadJson(artifactsHubSearchUrl, {
-        signal: controller.signal,
+        timeout: 10_000,
       });
 
       if (!result.callWasSuccessful) {

@@ -12,11 +12,10 @@ import { reduce } from "lodash";
 import React from "react";
 import { SemVer } from "semver";
 import URLParse from "url-parse";
-import proxyDownloadJsonInjectable from "../../../common/fetch/download-json/proxy.injectable";
-import proxyDownloadBinaryInjectable from "../../../common/fetch/proxy-download-binary.injectable";
-import { withTimeout } from "../../../common/fetch/timeout-controller";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
+import downloadJsonViaChannelInjectable from "../../../renderer/fetch/download-json-via-channel-copy.injectable";
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
@@ -53,8 +52,8 @@ const attemptInstallByInfoInjectable = getInjectable({
     const extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
     const confirm = di.inject(confirmInjectable);
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
-    const proxyDownloadJson = di.inject(proxyDownloadJsonInjectable);
-    const proxyDownloadBinary = di.inject(proxyDownloadBinaryInjectable);
+    const downloadJson = di.inject(downloadJsonViaChannelInjectable);
+    const downloadBinary = di.inject(downloadBinaryViaChannelInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
 
@@ -66,7 +65,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       let json: NpmRegistryPackageDescriptor;
 
       try {
-        const result = await proxyDownloadJson(registryUrl);
+        const result = await downloadJson(registryUrl, { timeout: 15_000 });
 
         if (!result.callWasSuccessful) {
           showErrorNotification(`Failed to get registry information for extension: ${result.error}`);
@@ -188,8 +187,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       }
 
       const fileName = getBasenameOfPath(tarballUrl);
-      const { signal } = withTimeout(30 * 60 * 1000);
-      const request = await proxyDownloadBinary(tarballUrl, { signal });
+      const request = await downloadBinary(tarballUrl, { timeout: 30_000 });
 
       if (!request.callWasSuccessful) {
         showErrorNotification(`Failed to download extension: ${request.error}`);

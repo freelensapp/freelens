@@ -51,7 +51,7 @@ const renderer: webpack.Configuration = {
   },
   async externals({ request }: { request?: string }) {
     const externalModulesRegex =
-      /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
+      /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib)/;
 
     if (typeof request === "string" && externalModulesRegex.test(request)) {
       return `node-commonjs ${request}`;

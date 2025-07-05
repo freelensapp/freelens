@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { hasTypedProperty, isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
+import { isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
 import path from "path";
 import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
 
@@ -34,12 +34,13 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
     parseJson: true,
   });
 
-  if (
-    isObject(manifest) &&
-    (hasTypedProperty(manifest, "main", isString) || hasTypedProperty(manifest, "renderer", isString))
-  ) {
-    return manifest as unknown as LensExtensionManifest;
+  if (!isObject(manifest) || (!isString(manifest.main) && !isString(manifest.renderer))) {
+    throw new Error(`${manifestFilename} must specify "main" and/or "renderer" field`);
   }
 
-  throw new Error(`${manifestFilename} must specify "main" and/or "renderer" fields`);
+  if (!isObject(manifest.engines) || !isString(manifest.engines.freelens)) {
+    throw new Error(`${manifestFilename} must specify "freelens" in "engines" field`);
+  }
+
+  return manifest as unknown as LensExtensionManifest;
 }

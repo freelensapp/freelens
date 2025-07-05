@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 35.6.0 # datasource=npm depName=electron
+electronVersion: 35.7.0 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
@@ -17,7 +17,6 @@ files:
   - "!node_modules/@freelensapp/core/build"
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
-  - "!node_modules/win-ca/pem"
 
 ## Extra files added to unpacked resources
 extraResources:

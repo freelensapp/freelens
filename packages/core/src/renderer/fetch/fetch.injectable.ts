@@ -6,7 +6,7 @@
 
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 
-export type Fetch = typeof fetch;
+export type Fetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 const fetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
   id: "fetch",
