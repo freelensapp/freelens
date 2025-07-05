@@ -2,8 +2,11 @@ packages:
   - freelens
   - packages/**
 
+nodeGyp: ../../../../node-gyp/bin/node-gyp.js
+
 onlyBuiltDependencies:
   - '@parcel/watcher'
+  - '@tailwindcss/oxide'
   - core-js-pure
   - electron
   - electron-winstaller
@@ -23,7 +26,5 @@ patchedDependencies:
 
 publicHoistPattern:
   - node-gyp
-
-nodeGyp: ../../../../node-gyp/bin/node-gyp.js
 
 shellEmulator: true

@@ -8,12 +8,12 @@
 @use "../components/mixins";
 @use "../components/vars" as *;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @include meta.load-css("flexbox");
 @include meta.load-css("fonts");
+
+@config "../../../tailwind.config.js";
 
 :root {
   --flex-gap: #{$padding};
@@ -191,7 +191,8 @@ a {
 }
 
 iframe {
-  color-scheme: auto; // Remove default white background on iframes
+  // Remove default white background on iframes
+  color-scheme: auto;
 }
 
 // colors
@@ -239,7 +240,7 @@ iframe {
   }
 }
 
-// app's common loading indicator, displaying on the route transitions
+/*app's common loading indicator, displaying on the route transitions*/
 #loading {
   position: absolute;
   left: 50%;
