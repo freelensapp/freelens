@@ -12,7 +12,7 @@ import { cssNames, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem } from "../drawer";
 import { Input } from "../input";
 
@@ -24,18 +24,6 @@ import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface CustomResourceDetailsProps extends KubeObjectDetailsProps<KubeObject> {
   crd?: CustomResourceDefinition;
-}
-
-function getBooleanText(value?: boolean) {
-  if (value === true) return "True";
-  if (value === false) return "False";
-  return "-";
-}
-
-function getBooleanClass(value?: boolean) {
-  if (value === true) return "success";
-  if (value === false) return "error";
-  return "info";
 }
 
 function convertSpecValue(value: unknown): StrictReactNode {
@@ -54,7 +42,7 @@ function convertSpecValue(value: unknown): StrictReactNode {
   }
 
   if (typeof value === "boolean") {
-    return <Badge className={getBooleanClass(value)} label={getBooleanText(value)} />;
+    return <BadgeBoolean value={value} />;
   }
 
   if (typeof value === "boolean" || typeof value === "string" || typeof value === "number") {
