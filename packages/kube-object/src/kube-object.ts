@@ -21,9 +21,8 @@ import {
   stringifyLabels,
 } from "./utils";
 
-import type { Patch } from "rfc6902";
-
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
+import type { AdditionalPrinterColumnsV1 } from "./specifics";
 
 export function createKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,
@@ -226,29 +225,10 @@ export class KubeObject<
   }
 
   /**
-   * @deprecated use KubeApi.patch instead
+   * Can override additional columns defined in CRD
    */
-  async patch(patch: Patch): Promise<KubeJsonApiData | null> {
-    void patch;
-
-    throw new Error("KubeObject.patch() has been deprecated since v5.3.0, please switch to using KubeApi.patch()");
-  }
-
-  /**
-   * @deprecated use KubeApi.patch instead
-   */
-  async update(data: Partial<this>): Promise<KubeJsonApiData | null> {
-    void data;
-
-    throw new Error("KubeObject.update() has been deprecated since v5.3.0, please switch to using KubeApi.patch()");
-  }
-
-  /**
-   * @deprecated use KubeApi.delete instead
-   */
-  delete(params?: object) {
-    void params;
-
-    throw new Error("KubeObject.delete() has been deprecated since v5.3.0, please switch to using KubeApi.delete()");
+  getPrinterColumns(ignorePriority?: boolean): AdditionalPrinterColumnsV1[] | undefined {
+    void ignorePriority;
+    return;
   }
 }

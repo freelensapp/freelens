@@ -5,6 +5,7 @@
 
   "workspaces": {
     ".": {
+      "ignoreBinaries": ["open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm"

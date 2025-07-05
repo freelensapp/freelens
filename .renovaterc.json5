@@ -40,12 +40,22 @@
     // non-major updates only
     {
       "matchDepNames": [
-        "@types/node",
         "electron",
         "npm"
       ],
       "matchUpdateTypes": [
         "major"
+      ],
+      "enabled": false
+    },
+    // patch updates only
+    {
+      "matchDepNames": [
+        "@types/node",
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
       ],
       "enabled": false
     },
