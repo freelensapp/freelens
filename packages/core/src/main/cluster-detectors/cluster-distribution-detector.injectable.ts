@@ -28,6 +28,7 @@ const isTke = (version: string) => version.includes("-tke.");
 const isCustom = (version: string) => version.includes("+");
 const isVMWare = (version: string) => version.includes("+vmware");
 const isRke = (version: string) => version.includes("-rancher");
+const isRke2 = (version: string) => version.includes("+rke2");
 const isRancherDesktop = (contextName: string) => contextName === "rancher-desktop";
 const isK3s = (version: string) => version.includes("+k3s");
 const isK0s = (version: string) => version.includes("-k0s") || version.includes("+k0s");
@@ -58,6 +59,10 @@ const clusterDistributionDetectorInjectable = getInjectable({
 
         if (isRke(version)) {
           return { value: "rke", accuracy: 80 };
+        }
+
+        if (isRke2(version)) {
+          return { value: "rke2", accuracy: 80 };
         }
 
         if (isRancherDesktop(contextName)) {
