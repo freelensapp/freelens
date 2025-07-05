@@ -148,7 +148,7 @@ exports[`custom category columns for catalog renders 1`] = `
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -159,9 +159,9 @@ exports[`custom category columns for catalog renders 1`] = `
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -172,7 +172,7 @@ exports[`custom category columns for catalog renders 1`] = `
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -208,7 +208,7 @@ exports[`custom category columns for catalog renders 1`] = `
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -219,9 +219,9 @@ exports[`custom category columns for catalog renders 1`] = `
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -232,7 +232,7 @@ exports[`custom category columns for catalog renders 1`] = `
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -718,7 +718,7 @@ exports[`custom category columns for catalog when category is added using defaul
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -729,9 +729,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -742,7 +742,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -778,7 +778,7 @@ exports[`custom category columns for catalog when category is added using defaul
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -789,9 +789,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -802,7 +802,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -1319,7 +1319,7 @@ exports[`custom category columns for catalog when category is added using defaul
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -1330,9 +1330,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -1343,7 +1343,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -1379,7 +1379,7 @@ exports[`custom category columns for catalog when category is added using defaul
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -1390,9 +1390,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -1403,7 +1403,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -1910,7 +1910,7 @@ exports[`custom category columns for catalog when category is added using defaul
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -1921,9 +1921,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -1934,7 +1934,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -1970,7 +1970,7 @@ exports[`custom category columns for catalog when category is added using defaul
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -1981,9 +1981,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -1994,7 +1994,7 @@ exports[`custom category columns for catalog when category is added using defaul
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -2490,7 +2490,7 @@ exports[`custom category columns for catalog when category is added with custom 
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -2501,9 +2501,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -2514,7 +2514,7 @@ exports[`custom category columns for catalog when category is added with custom 
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -2550,7 +2550,7 @@ exports[`custom category columns for catalog when category is added with custom 
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -2561,9 +2561,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -2574,7 +2574,7 @@ exports[`custom category columns for catalog when category is added with custom 
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -3091,7 +3091,7 @@ exports[`custom category columns for catalog when category is added with custom 
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -3102,9 +3102,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -3115,7 +3115,7 @@ exports[`custom category columns for catalog when category is added with custom 
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -3151,7 +3151,7 @@ exports[`custom category columns for catalog when category is added with custom 
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -3162,9 +3162,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -3175,7 +3175,7 @@ exports[`custom category columns for catalog when category is added with custom 
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -3629,7 +3629,7 @@ exports[`custom category columns for catalog when category is added without defa
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -3640,9 +3640,9 @@ exports[`custom category columns for catalog when category is added without defa
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -3653,7 +3653,7 @@ exports[`custom category columns for catalog when category is added without defa
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -3689,7 +3689,7 @@ exports[`custom category columns for catalog when category is added without defa
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -3700,9 +3700,9 @@ exports[`custom category columns for catalog when category is added without defa
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -3713,7 +3713,7 @@ exports[`custom category columns for catalog when category is added without defa
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
@@ -4230,7 +4230,7 @@ exports[`custom category columns for catalog when category is added without defa
                   >
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/General-tab"
+                      data-testid="entity.k8slens.dev/WebLink-tab"
                       role="treeitem"
                     >
                       <div
@@ -4241,9 +4241,9 @@ exports[`custom category columns for catalog when category is added without defa
                         >
                           <span
                             class="icon"
-                            data-icon-name="settings"
+                            data-icon-name="public"
                           >
-                            settings
+                            public
                           </span>
                         </i>
                       </div>
@@ -4254,7 +4254,7 @@ exports[`custom category columns for catalog when category is added without defa
                           class="flex"
                         >
                           <div>
-                            General
+                            Web Links
                           </div>
                         </div>
                       </div>
@@ -4290,7 +4290,7 @@ exports[`custom category columns for catalog when category is added without defa
                     </li>
                     <li
                       class="root treeItem"
-                      data-testid="entity.k8slens.dev/WebLink-tab"
+                      data-testid="entity.k8slens.dev/General-tab"
                       role="treeitem"
                     >
                       <div
@@ -4301,9 +4301,9 @@ exports[`custom category columns for catalog when category is added without defa
                         >
                           <span
                             class="icon"
-                            data-icon-name="public"
+                            data-icon-name="settings"
                           >
-                            public
+                            settings
                           </span>
                         </i>
                       </div>
@@ -4314,7 +4314,7 @@ exports[`custom category columns for catalog when category is added without defa
                           class="flex"
                         >
                           <div>
-                            Web Links
+                            General
                           </div>
                         </div>
                       </div>
