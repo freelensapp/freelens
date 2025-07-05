@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.4.1-0",
+  "version": "1.5.0-0",
   "description": "Kubernetes client for Freelens",
   "author": {
     "name": "Freelens Authors",
@@ -33,7 +33,7 @@
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",
-    "tar-fs": "^3.0.10"
+    "tar-fs": "^3.1.0"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

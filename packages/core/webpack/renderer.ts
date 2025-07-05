@@ -173,7 +173,7 @@ export function cssModulesWebpackRule({ styleLoader }: CssModulesWebpackRuleOpti
         options: {
           sourceMap: isDevelopment,
           postcssOptions: {
-            plugins: ["tailwindcss"],
+            plugins: ["@tailwindcss/postcss"],
           },
         },
       },

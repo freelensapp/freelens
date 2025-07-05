@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/test-utils",
-  "version": "1.4.1-0",
+  "version": "1.5.0-0",
   "description": "A collection of utilities for testing",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -38,7 +38,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.17",
-    "@types/node": "^22.15.34",
+    "@types/node": "~22.16.0",
     "@types/react": "^17.0.87",
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.2",

@@ -4,7 +4,7 @@
   "productName": "Freelens",
   "description": "Freelens - Free IDE for Kubernetes",
   "homepage": "https://freelens.app",
-  "version": "1.4.1-0",
+  "version": "1.5.0-0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
@@ -103,7 +103,7 @@
     "chalk": "^4.1.2",
     "chokidar": "^4.0.3",
     "conf": "^10.2.0",
-    "cronstrue": "^2.61.0",
+    "cronstrue": "^3.0.0",
     "crypto-js": "^4.2.0",
     "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
@@ -134,7 +134,7 @@
     "stoppable": "^1.1.0",
     "stream-buffers": "^3.0.3",
     "tar": "^7.4.3",
-    "tar-fs": "^3.0.10",
+    "tar-fs": "^3.1.0",
     "tcp-port-used": "^1.0.2",
     "tempy": "1.0.1",
     "triple-beam": "^1.4.1",
@@ -143,7 +143,7 @@
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "ws": "^8.18.3",
-    "zod": "^3.25.67"
+    "zod": "^3.25.74"
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.1",
@@ -171,13 +171,13 @@
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.17",
-    "@types/node": "^22.15.34",
+    "@types/node": "~22.16.0",
     "@types/webpack-env": "^1.18.8",
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^9.2.0",
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^6.11.0",
-    "electron": "^35.6.0",
+    "electron": "^35.7.0",
     "electron-builder": "^26.0.12",
     "electron-builder-squirrel-windows": "26.0.12",
     "fork-ts-checker-webpack-plugin": "^9.1.0",

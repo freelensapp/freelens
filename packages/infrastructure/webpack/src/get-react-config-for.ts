@@ -53,7 +53,7 @@ export const getReactConfigFor =
                 options: {
                   sourceMap: false,
                   postcssOptions: {
-                    plugins: ["tailwindcss"],
+                    plugins: ["@tailwindcss/postcss"],
                   },
                 },
               },

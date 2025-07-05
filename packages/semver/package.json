@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/semver",
-  "version": "1.4.1-0",
+  "version": "1.5.0-0",
   "description": "CLI over semver package for picking parts of a version",
   "license": "MIT",
   "private": true,
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.3",
-    "@types/node": "^22.15.34",
+    "@types/node": "~22.16.0",
     "@types/semver": "^7.7.0",
     "typescript": "^5.8.3"
   }

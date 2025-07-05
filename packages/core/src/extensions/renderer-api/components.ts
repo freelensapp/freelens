@@ -89,6 +89,7 @@ export {
   type MonacoTheme,
 } from "../../renderer/components/monaco-editor";
 export * from "../../renderer/components/namespaces/namespace-select";
+export * from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
 export * from "../../renderer/components/path-picker";

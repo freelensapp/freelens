@@ -28,16 +28,10 @@ export interface ExtensionStoreParams<T extends object>
 export abstract class BaseExtensionStore<M extends object = any> {
   private static readonly instances = new WeakMap<typeof BaseExtensionStore, object>();
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
   static createInstance<S extends BaseExtensionStore<M>, M extends object = any, A extends any[] = []>(...args: A): S {
     return getOrInsertWith(BaseExtensionStore.instances, this, () => new (this as any)(...args));
   }
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
   static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict?: true): S;
   static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict: false): S | undefined;
   static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict = true): S | undefined {
@@ -74,9 +68,6 @@ export abstract class BaseExtensionStore<M extends object = any> {
 
   constructor(protected readonly rawParams: ExtensionStoreParams<M>) {}
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
   static resetInstance() {
     BaseExtensionStore.instances.delete(this);
   }

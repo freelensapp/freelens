@@ -5,6 +5,7 @@
 
   "workspaces": {
     ".": {
+      "ignoreBinaries": ["open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm"
@@ -178,7 +179,10 @@
         // webpack dependencies are not handled by knip correctly
         "ts-loader",
         "ts-node",
-        "webpack"
+        "webpack",
+        // tailwind dependencies are not handled by knip correctly
+        "@tailwindcss/postcss",
+        "tailwindcss"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -242,6 +246,7 @@
       "project": ["*.js", "*.ts", "bin/*", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "static/build/**/*.js!"],
       "ignoreDependencies": [
         "@ogre-tools/injectable-extension-for-auto-registration",
+        "@tailwindcss/postcss",
         "@types/webpack-env",
         "css-loader",
         "sass",
@@ -428,7 +433,7 @@
     },
 
     "packages/ui-components/*": {
-      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "tailwind.config.js", "webpack.config.js"],
+      "entry": ["dist/index.js!", "index.ts", "jest.config.js", "webpack.config.js"],
       "project": ["*.js", "*.ts", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.{ts,tsx}"],
       "ignoreDependencies": [
         "@types/webpack-env",
