@@ -17,7 +17,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
         class="value"
       >
         <div
-          class="badge error"
+          class="badge false"
         >
           False
         </div>
@@ -44,7 +44,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
         class="value"
       >
         <div
-          class="badge success"
+          class="badge true"
         >
           True
         </div>
