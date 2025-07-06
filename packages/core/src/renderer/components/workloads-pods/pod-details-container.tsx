@@ -21,7 +21,7 @@ import { StatusBrick } from "../status-brick";
 import { ContainerEnvironment } from "./pod-container-env";
 import { PodContainerPort } from "./pod-container-port";
 
-import type { Container, Pod, PodContainerStatus } from "@freelensapp/kube-object";
+import type { Container, EphemeralContainer, Pod, PodContainerStatus } from "@freelensapp/kube-object";
 import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
 
 import type { IComputedValue } from "mobx";
@@ -30,7 +30,7 @@ import type { PortForwardStore } from "../../port-forward";
 
 export interface PodDetailsContainerProps {
   pod: Pod;
-  container: Container;
+  container: Container | EphemeralContainer;
 }
 
 interface Dependencies {
@@ -88,6 +88,8 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
 
     if (!pod || !container) return null;
     const { name, image, imagePullPolicy, ports, volumeMounts, command, args } = container;
+    const id = `pod-container-id-${pod}-${name}`;
+    const targetContainerName = "targetContainerName" in container ? container.targetContainerName : undefined;
     const status = pod.getContainerStatuses().find((status) => status.name === container.name);
     const state = status ? Object.keys(status?.state ?? {})[0] : "";
     const lastState = status ? Object.keys(status?.lastState ?? {})[0] : "";
@@ -101,7 +103,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
 
     return (
       <div className="PodDetailsContainer">
-        <div className="pod-container-title">
+        <div className="pod-container-title" id={id}>
           <StatusBrick className={cssNames(state, { ready })} />
           {name}
         </div>
@@ -111,6 +113,11 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
               <ContainerMetrics.Component key={ContainerMetrics.id} container={container} pod={pod} />
             ))}
           </>
+        )}
+        {targetContainerName && (
+          <DrawerItem name="Target Container">
+            <a href={`#pod-container-id-${pod}-${targetContainerName}`}>{targetContainerName}</a>
+          </DrawerItem>
         )}
         {status && <DrawerItem name="Status">{this.renderStatus(state, status)}</DrawerItem>}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}

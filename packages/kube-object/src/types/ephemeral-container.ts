@@ -15,37 +15,51 @@ import type { VolumeDevice } from "./volume-device";
 import type { VolumeMount } from "./volume-mount";
 
 /**
- * A single application container that you want to run within a pod.
+ * A single ephemeral container.
+ *
+ * Ephemeral containers may be run in an existing pod to perform
+ * user-initiated actions such as debugging. This list cannot be specified
+ * when creating a pod, and it cannot be modified by updating the pod spec. In
+ * order to add an ephemeral container to an existing pod, use the pod's
+ * ephemeralcontainers subresource.
+ *
+ * More info:
+ * https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/
  */
-export interface Container {
+export interface EphemeralContainer {
   /**
-   * Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable
-   * references `$(VAR_NAME)` are expanded using the container's environment.
+   * Arguments to the entrypoint. The image's CMD is used if this is not
+   * provided. Variable references `$(VAR_NAME)` are expanded using the
+   * container's environment.
    *
-   * If a variable cannot be resolved, the reference in the input string will be unchanged.
-   * Double `$$` are reduced to a single `$`, which allows for escaping the `$(VAR_NAME)` syntax:
-   * i.e. `"$$(VAR_NAME)"` will produce the string literal `"$(VAR_NAME)`".
+   * If a variable cannot be resolved, the reference in the input string will
+   * be unchanged. Double `$$` are reduced to a single `$`, which allows for
+   * escaping the `$(VAR_NAME)` syntax: i.e. `"$$(VAR_NAME)"` will produce the
+   * string literal `"$(VAR_NAME)"`.
    *
-   * Escaped references will never be expanded, regardless of whether the variable exists or not.
-   * Cannot be updated.
+   * Escaped references will never be expanded, regardless of whether the
+   * variable exists or not. Cannot be updated.
    *
-   * More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+   * More info:
+   * https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
    */
   args?: string[];
 
   /**
-   * Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this
-   * is not provided. Variable references `$(VAR_NAME)` are expanded using the container's
-   * environment.
+   * Entrypoint array. Not executed within a shell. The docker image's
+   * ENTRYPOINT is used if this is not provided. Variable references
+   * `$(VAR_NAME)` are expanded using the container's environment.
    *
-   * If a variable cannot be resolved, the reference in the input string will be unchanged.
-   * Double `$$` are reduced to a single `$`, which allows for escaping the `$(VAR_NAME)` syntax:
-   * i.e. `"$$(VAR_NAME)"` will produce the string literal `"$(VAR_NAME)`".
+   * If a variable cannot be resolved, the reference in the input string will
+   * be unchanged. Double `$$` are reduced to a single `$`, which allows for
+   * escaping the `$(VAR_NAME)` syntax: i.e. `"$$(VAR_NAME)"` will produce the
+   * string literal `"$(VAR_NAME)`".
    *
-   * Escaped references will never be expanded, regardless of whether the variable exists or not.
-   * Cannot be updated.
+   * Escaped references will never be expanded, regardless of whether the
+   * variable exists or not. Cannot be updated.
    *
-   * More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+   * More info:
+   * https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
    */
   command?: string[];
 
@@ -97,8 +111,8 @@ export interface Container {
   livenessProbe?: Probe;
 
   /**
-   * Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique
-   * name. Cannot be updated.
+   * Name of the ephemeral container specified as a DNS_LABEL. This name must
+   * be unique among all containers, init containers and ephemeral containers.
    */
   name: string;
 
@@ -167,6 +181,18 @@ export interface Container {
    * @default false
    */
   stdinOnce?: boolean;
+
+  /**
+   * If set, the name of the container from PodSpec that this ephemeral
+   * container targets. The ephemeral container will be run in the namespaces
+   * (IPC, PID, etc) of this container. If not set then the ephemeral
+   * container uses the namespaces configured in the Pod spec.
+   *
+   * The container runtime must implement support for this feature. If the
+   * runtime does not support namespace targeting then the result of setting
+   * this field is undefined.
+   */
+  targetContainerName?: string;
 
   /**
    * Path at which the file to which the container's termination message will be written

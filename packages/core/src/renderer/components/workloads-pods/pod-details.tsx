@@ -24,6 +24,7 @@ import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { PodDetailsContainers } from "./details/containers/pod-details-containers";
+import { PodDetailsEphemeralContainers } from "./details/containers/pod-details-ephemeral-containers";
 import { PodDetailsInitContainers } from "./details/containers/pod-details-init-containers";
 import { PodVolumes } from "./details/volumes/view";
 import { PodDetailsAffinities } from "./pod-details-affinities";
@@ -148,6 +149,8 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         <PodDetailsInitContainers pod={pod} />
 
         <PodDetailsContainers pod={pod} />
+
+        <PodDetailsEphemeralContainers pod={pod} />
 
         <PodVolumes pod={pod} />
       </div>

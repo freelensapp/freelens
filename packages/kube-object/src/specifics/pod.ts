@@ -16,7 +16,14 @@ import type {
   NamespaceScopedMetadata,
   Toleration,
 } from "../api-types";
-import type { Container, ObjectFieldSelector, PodSecurityContext, Probe, ResourceFieldSelector } from "../types";
+import type {
+  Container,
+  EphemeralContainer,
+  ObjectFieldSelector,
+  PodSecurityContext,
+  Probe,
+  ResourceFieldSelector,
+} from "../types";
 import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type { SecretReference } from "./secret";
 
@@ -547,7 +554,7 @@ export interface PodSpec {
   containers?: Container[];
   dnsPolicy?: string;
   enableServiceLinks?: boolean;
-  ephemeralContainers?: unknown[];
+  ephemeralContainers?: EphemeralContainer[];
   hostAliases?: HostAlias[];
   hostIPC?: boolean;
   hostname?: string;
@@ -562,7 +569,7 @@ export interface PodSpec {
   priority?: number;
   priorityClassName?: string;
   readinessGates?: unknown[];
-  restartPolicy?: string;
+  restartPolicy?: "Always" | "OnFailure" | "Never";
   runtimeClassName?: string;
   schedulerName?: string;
   securityContext?: PodSecurityContext;
@@ -598,6 +605,7 @@ export interface PodStatus {
   initContainerStatuses?: PodContainerStatus[];
   containerStatuses?: PodContainerStatus[];
   qosClass?: string;
+  ephemeralContainerStatuses?: PodContainerStatus[];
   reason?: string;
 }
 
@@ -616,12 +624,16 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return this.spec?.initContainers ?? [];
   }
 
+  getEphemeralContainers() {
+    return this.spec?.ephemeralContainers ?? [];
+  }
+
   getContainers() {
     return this.spec?.containers ?? [];
   }
 
   getAllContainers() {
-    return [...this.getContainers(), ...this.getInitContainers()];
+    return [...this.getContainers(), ...this.getInitContainers(), ...this.getEphemeralContainers()];
   }
 
   getRunningContainers() {
@@ -634,14 +646,20 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return this.getAllContainers().filter(({ name }) => runningContainerNames.has(name));
   }
 
-  getContainerStatuses(includeInitContainers = true): PodContainerStatus[] {
-    const { containerStatuses = [], initContainerStatuses = [] } = this.status ?? {};
+  getContainerStatuses(includeInitContainers = true, includeEphemeralContainers = true): PodContainerStatus[] {
+    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
+
+    let statuses = [...containerStatuses];
 
     if (includeInitContainers) {
-      return [...containerStatuses, ...initContainerStatuses];
+      statuses = statuses.concat(...initContainerStatuses);
     }
 
-    return [...containerStatuses];
+    if (includeEphemeralContainers) {
+      statuses = statuses.concat(...ephemeralContainerStatuses);
+    }
+
+    return statuses;
   }
 
   getRestartsCount(): number {
