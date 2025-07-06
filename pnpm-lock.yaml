@@ -329,8 +329,8 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/node':
         specifier: ~22.16.0
         version: 22.16.0
@@ -557,8 +557,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -990,8 +990,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/memorystream':
         specifier: ^0.3.4
         version: 0.3.4
@@ -1337,8 +1337,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1383,8 +1383,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1514,8 +1514,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2043,8 +2043,8 @@ importers:
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2622,8 +2622,8 @@ importers:
         specifier: ^4.7.11
         version: 4.7.11
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/react':
         specifier: ^17.0.87
         version: 17.0.87
@@ -2716,8 +2716,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/react':
         specifier: ^17.0.87
         version: 17.0.87
@@ -2774,8 +2774,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/react':
         specifier: ^17.0.87
         version: 17.0.87
@@ -2881,8 +2881,8 @@ importers:
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.0)
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/react':
         specifier: ^17.0.87
         version: 17.0.87
@@ -2975,8 +2975,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/node':
         specifier: ~22.16.0
         version: 22.16.0
@@ -3048,8 +3048,8 @@ importers:
         specifier: ^4.2.36
         version: 4.2.36
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -3256,8 +3256,8 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/node':
         specifier: ~22.16.0
         version: 22.16.0
@@ -3323,8 +3323,8 @@ importers:
         specifier: ^4.2.2
         version: 4.2.2
       '@types/lodash':
-        specifier: ^4.17.17
-        version: 4.17.17
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/react':
         specifier: ^17.0.87
         version: 17.0.87
@@ -4624,8 +4624,8 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
-  '@types/lodash@4.17.17':
-    resolution: {integrity: sha512-RRVJ+J3J+WmyOTqnz3PiBLA501eKwXl2noseKOrNo/6+XEHjTAxO4xHvxQB6QuNm+s4WRbn6rSiap8+EA+ykFQ==}
+  '@types/lodash@4.17.20':
+    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/memorystream@0.3.4':
     resolution: {integrity: sha512-AVVe8unTnhTecg9GmRVddQFvi5K7+QcvLTfUstT+5dhQ633+JX4bK/sKaHTj8Z5RUOoVNS6u1gfby29ArDj4Gw==}
@@ -10855,7 +10855,7 @@ snapshots:
     dependencies:
       '@types/node': 22.16.0
 
-  '@types/lodash@4.17.17': {}
+  '@types/lodash@4.17.20': {}
 
   '@types/memorystream@0.3.4':
     dependencies:

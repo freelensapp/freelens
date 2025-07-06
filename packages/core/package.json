@@ -208,7 +208,7 @@
     "@types/history": "^4.7.11",
     "@types/jest": "^29.5.14",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.17.17",
+    "@types/lodash": "^4.17.20",
     "@types/memorystream": "^0.3.4",
     "@types/node": "~22.16.0",
     "@types/proper-lockfile": "^4.1.4",
