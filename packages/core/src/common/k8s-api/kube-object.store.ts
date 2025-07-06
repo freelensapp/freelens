@@ -12,7 +12,13 @@ import autoBind from "auto-bind";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
-import type { IKubeWatchEvent, KubeApi, KubeApiQueryParams, KubeApiWatchCallback } from "@freelensapp/kube-api";
+import type {
+  IKubeWatchEvent,
+  KubeApi,
+  KubeApiPatchType,
+  KubeApiQueryParams,
+  KubeApiWatchCallback,
+} from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type { RequestInit } from "@freelensapp/node-fetch";
@@ -384,15 +390,36 @@ export class KubeObjectStore<
     return newItem;
   }
 
-  async patch(item: K, patch: JsonPatch): Promise<K> {
-    const rawItem = await this.api.patch(
-      {
-        name: item.getName(),
-        namespace: item.getNs(),
-      },
-      patch,
-      "json",
-    );
+  async patch(item: K, patch: PartialDeep<Object>, strategy: "strategic" | "merge"): Promise<K>;
+  async patch(item: K, patch: JsonPatch, strategy: "json"): Promise<K>;
+  async patch(item: K, patch: PartialDeep<Object> | JsonPatch, strategy: KubeApiPatchType = "json"): Promise<K> {
+    let rawItem: K | null;
+
+    if (strategy === "json") {
+      if (!Array.isArray(patch)) {
+        throw new Error("For 'json' patch strategy, patch must be a JsonPatch array");
+      }
+      rawItem = await this.api.patch(
+        {
+          name: item.getName(),
+          namespace: item.getNs(),
+        },
+        patch as JsonPatch,
+        strategy,
+      );
+    } else {
+      if (Array.isArray(patch)) {
+        throw new Error("For 'strategic' or 'merge' patch strategy, patch must be a PartialDeep<Object>");
+      }
+      rawItem = await this.api.patch(
+        {
+          name: item.getName(),
+          namespace: item.getNs(),
+        },
+        patch as PartialDeep<K>,
+        strategy,
+      );
+    }
 
     assert(rawItem, `Failed to patch ${item.getScopedName()} of ${item.kind} ${item.apiVersion}`);
 
