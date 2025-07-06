@@ -53,7 +53,7 @@ const dummyDeployment = new Deployment({
             imagePullPolicy: "Always",
           },
         ],
-        restartPolicy: "dummy",
+        restartPolicy: "Never",
         terminationGracePeriodSeconds: 10,
         dnsPolicy: "dummy",
         serviceAccountName: "dummy",
