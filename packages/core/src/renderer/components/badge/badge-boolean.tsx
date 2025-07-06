@@ -13,9 +13,9 @@ export function getBooleanText(value?: boolean) {
 }
 
 export function getBooleanClass(value?: boolean) {
-  if (value === true) return styles.success;
-  if (value === false) return styles.error;
-  return styles.info;
+  if (value === true) return styles.true;
+  if (value === false) return styles.false;
+  return styles.undefined;
 }
 
 export function BadgeBoolean({ value }: BadgeBooleanProps) {
