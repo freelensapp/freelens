@@ -23,6 +23,7 @@ overrides:
 patchedDependencies:
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
   monaco-editor: patches/monaco-editor.patch
+  '@async-fn/jest': patches/@async-fn__jest.patch
 
 publicHoistPattern:
   - node-gyp
