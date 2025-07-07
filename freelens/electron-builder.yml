@@ -46,6 +46,7 @@ linux:
       to: ./${arch}/freelens-k8s-proxy
     - from: binaries/client/linux/${arch}/helm
       to: ./${arch}/helm
+  publish: null
 
 appImage:
   executableArgs:
@@ -131,6 +132,7 @@ mac:
       to: ./${arch}/freelens-k8s-proxy
     - from: binaries/client/darwin/${arch}/helm
       to: ./${arch}/helm
+  publish: null
 
 pkg:
   license: build/license.txt
@@ -147,6 +149,7 @@ win:
       to: ./${arch}/freelens-k8s-proxy.exe
     - from: binaries/client/windows/${arch}/helm.exe
       to: ./${arch}/helm.exe
+  publish: null
 
 nsis:
   include: build/installer.nsh
