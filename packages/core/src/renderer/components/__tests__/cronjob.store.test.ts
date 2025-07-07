@@ -36,7 +36,7 @@ const scheduledCronJob = new CronJob({
           metadata: {},
           spec: {
             containers: [],
-            restartPolicy: "restart",
+            restartPolicy: "Always",
             terminationGracePeriodSeconds: 1,
             dnsPolicy: "no",
             hostPID: true,
@@ -71,7 +71,7 @@ const suspendedCronJob = new CronJob({
           metadata: {},
           spec: {
             containers: [],
-            restartPolicy: "restart",
+            restartPolicy: "Always",
             terminationGracePeriodSeconds: 1,
             dnsPolicy: "no",
             hostPID: true,
@@ -106,7 +106,7 @@ const otherSuspendedCronJob = new CronJob({
           metadata: {},
           spec: {
             containers: [],
-            restartPolicy: "restart",
+            restartPolicy: "Always",
             terminationGracePeriodSeconds: 1,
             dnsPolicy: "no",
             hostPID: true,

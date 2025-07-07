@@ -35,7 +35,7 @@ const spec: PodSpec = {
       imagePullPolicy: "Always",
     },
   ],
-  restartPolicy: "restart",
+  restartPolicy: "Always",
   terminationGracePeriodSeconds: 1200,
   dnsPolicy: "dns",
   serviceAccountName: "test",
