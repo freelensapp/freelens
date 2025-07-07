@@ -716,7 +716,16 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                               </div>
                               <div
                                 class="TableCell containers"
-                              />
+                              >
+                                <div
+                                  class="StatusBrick"
+                                />
+                                <div />
+                                <div
+                                  class="StatusBrick"
+                                />
+                                <div />
+                              </div>
                               <div
                                 class="TableCell cpu"
                               >

@@ -12,17 +12,18 @@ import { StatusBrick } from "../../status-brick";
 import { containerStatusClassName } from "../container-status-class-name";
 import { COLUMN_PRIORITY } from "./column-priority";
 
-import type { ContainerStateValues, Pod } from "@freelensapp/kube-object";
+import type { ContainerStateValues, ContainersType, Pod } from "@freelensapp/kube-object";
 
-const renderState = (name: string, ready: boolean, ephemeral: boolean, key: string, data?: ContainerStateValues) =>
+const renderState = (name: string, ready: boolean, type: ContainersType, key: string, data?: ContainerStateValues) =>
   data && (
     <>
       <div className="title">
         {name}{" "}
         <span className="text-secondary">
           {key}
+          {type === "initContainers" ? ", init" : ""}
+          {type === "ephemeralContainers" ? ", ephemeral" : ""}
           {ready ? ", ready" : ""}
-          {ephemeral ? ", ephemeral" : ""}
         </span>
       </div>
       {Object.entries(data).map(([name, value]) => (
@@ -39,11 +40,10 @@ const renderContainersStatus = (pod: Pod) => {
   return (
     <>
       {pod.getAllContainersWithType().map((container) => {
-        const { name } = container;
+        const { name, type } = container;
         const status = statuses.find((status) => status.name === container.name);
         const state = status?.state;
         const ready = status?.ready ?? false;
-        const ephemeral = container.type === "ephemeralContainers";
         return (
           <StatusBrick
             key={container.name}
@@ -55,9 +55,9 @@ const renderContainersStatus = (pod: Pod) => {
               },
               children: (
                 <>
-                  {renderState(name, ready, ephemeral, "running", state?.running)}
-                  {renderState(name, ready, ephemeral, "waiting", state?.waiting)}
-                  {renderState(name, ready, ephemeral, "terminated", state?.terminated)}
+                  {renderState(name, ready, type, "running", state?.running)}
+                  {renderState(name, ready, type, "waiting", state?.waiting)}
+                  {renderState(name, ready, type, "terminated", state?.terminated)}
                 </>
               ),
             }}
