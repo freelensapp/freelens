@@ -16,7 +16,7 @@ interface PodDetailsContainersProps {
 }
 
 const PodDetailsContainers = observer(({ pod }: PodDetailsContainersProps) => {
-  const containers = pod.getContainers();
+  const containers = pod.getContainersWithType();
 
   return (
     <>

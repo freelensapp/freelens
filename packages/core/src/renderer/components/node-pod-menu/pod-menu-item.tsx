@@ -5,12 +5,18 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { cssNames, prevDefault } from "@freelensapp/utilities";
+import { prevDefault } from "@freelensapp/utilities";
 import React from "react";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
+import { containerStatusClassName } from "../workloads-pods/container-status-class-name";
 
-import type { Container, PodContainerStatus } from "@freelensapp/kube-object";
+import type {
+  Container,
+  ContainerWithType,
+  EphemeralContainerWithType,
+  PodContainerStatus,
+} from "@freelensapp/kube-object";
 
 export interface NodePodMenuItemProps {
   material?: string;
@@ -18,7 +24,7 @@ export interface NodePodMenuItemProps {
   title: string;
   tooltip: string;
   toolbar: boolean;
-  containers: Container[];
+  containers: (ContainerWithType | EphemeralContainerWithType)[];
   statuses: PodContainerStatus[];
   onMenuItemClick: (container: Container) => any;
 }
@@ -33,35 +39,25 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
       <MenuItem onClick={prevDefault(() => onMenuItemClick(containers[0]))}>
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
-        {containers.length > 1 && (
-          <>
-            <Icon className="arrow" material="keyboard_arrow_right" />
-            <SubMenu>
-              {containers.map((container) => {
-                const { name } = container;
-                const status = statuses.find((status) => status.name === name);
-                const brick = status ? (
-                  <StatusBrick
-                    className={cssNames(Object.keys(status.state ? status.state : {})[0], {
-                      ready: status.ready,
-                    })}
-                  />
-                ) : null;
+        <Icon className="arrow" material="keyboard_arrow_right" />
+        <SubMenu>
+          {containers.map((container) => {
+            const { name } = container;
+            const status = statuses.find((status) => status.name === name);
+            const brick = status ? <StatusBrick className={containerStatusClassName(container, status)} /> : null;
 
-                return (
-                  <MenuItem
-                    key={name}
-                    onClick={prevDefault(() => onMenuItemClick(container))}
-                    className="flex align-center"
-                  >
-                    {brick}
-                    <span>{name}</span>
-                  </MenuItem>
-                );
-              })}
-            </SubMenu>
-          </>
-        )}
+            return (
+              <MenuItem
+                key={name}
+                onClick={prevDefault(() => onMenuItemClick(container))}
+                className="flex align-center"
+              >
+                {brick}
+                <span>{name}</span>
+              </MenuItem>
+            );
+          })}
+        </SubMenu>
       </MenuItem>
     </>
   );

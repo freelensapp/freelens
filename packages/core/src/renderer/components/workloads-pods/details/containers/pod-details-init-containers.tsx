@@ -16,7 +16,7 @@ interface PodDetailsContainersProps {
 }
 
 const PodDetailsInitContainers = observer(({ pod }: PodDetailsContainersProps) => {
-  const initContainers = pod.getInitContainers();
+  const initContainers = pod.getInitContainersWithType();
 
   if (initContainers.length === 0) {
     return null;

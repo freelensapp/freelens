@@ -18,10 +18,11 @@ import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { LocaleDate } from "../locale-date";
 import { StatusBrick } from "../status-brick";
+import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
 import { PodContainerPort } from "./pod-container-port";
 
-import type { Container, EphemeralContainer, Pod, PodContainerStatus } from "@freelensapp/kube-object";
+import type { ContainerWithType, EphemeralContainerWithType, Pod, PodContainerStatus } from "@freelensapp/kube-object";
 import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
 
 import type { IComputedValue } from "mobx";
@@ -30,7 +31,7 @@ import type { PortForwardStore } from "../../port-forward";
 
 export interface PodDetailsContainerProps {
   pod: Pod;
-  container: Container | EphemeralContainer;
+  container: ContainerWithType | EphemeralContainerWithType;
 }
 
 interface Dependencies {
@@ -45,12 +46,13 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
   }
 
-  renderStatus(state: string, status: PodContainerStatus | null | undefined) {
-    const { ready = false, state: containerState = {} } = status ?? {};
-    const { terminated } = containerState;
+  renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {
+    const state = status ? Object.keys(status?.state ?? {})[0] : "";
+    const ready = status ? status.ready : "";
+    const terminated = status?.state ? (status?.state.terminated ?? "") : "";
 
     return (
-      <span className={cssNames("status", state)}>
+      <span className={cssNames("status", status)}>
         {state}
         {ready ? ", ready" : ""}
         {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
@@ -62,7 +64,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const { lastState: lastContainerState = {} } = status ?? {};
     const { terminated } = lastContainerState;
 
-    if (lastState === "terminated" && terminated) {
+    if (terminated) {
       return (
         <span>
           {lastState}
@@ -91,23 +93,21 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const id = `pod-container-id-${pod}-${name}`;
     const targetContainerName = "targetContainerName" in container ? container.targetContainerName : undefined;
     const status = pod.getContainerStatuses().find((status) => status.name === container.name);
-    const state = status ? Object.keys(status?.state ?? {})[0] : "";
     const lastState = status ? Object.keys(status?.lastState ?? {})[0] : "";
-    const ready = status ? status.ready : "";
     const imageId = status ? status.imageID : "";
     const liveness = pod.getLivenessProbe(container);
     const readiness = pod.getReadinessProbe(container);
     const startup = pod.getStartupProbe(container);
-    const isInitContainer = !!pod.getInitContainers().find((c) => c.name == name);
+    const containersType = container.type;
     const isMetricVisible = containerMetricsVisible.get();
 
     return (
       <div className="PodDetailsContainer">
         <div className="pod-container-title" id={id}>
-          <StatusBrick className={cssNames(state, { ready })} />
+          <StatusBrick className={containerStatusClassName(container, status)} />
           {name}
         </div>
-        {isMetricVisible && !isInitContainer && (
+        {isMetricVisible && containersType === "containers" && (
           <>
             {containerMetrics.map((ContainerMetrics) => (
               <ContainerMetrics.Component key={ContainerMetrics.id} container={container} pod={pod} />
@@ -119,7 +119,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
             <a href={`#pod-container-id-${pod}-${targetContainerName}`}>{targetContainerName}</a>
           </DrawerItem>
         )}
-        {status && <DrawerItem name="Status">{this.renderStatus(state, status)}</DrawerItem>}
+        {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}
         <DrawerItem name="Image">
           <Badge label={image} tooltip={imageId} />

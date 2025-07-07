@@ -44,7 +44,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
     return null;
   }
 
-  const containers = pod.getRunningContainers();
+  const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
 
   const attachToPod = async (container: Container) => {

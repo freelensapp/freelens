@@ -22,6 +22,7 @@ $pod-unschedulable: var(--colorError);
 $pod-containers-ready: var(--colorInfo);
 $pod-error: var(--colorError);
 $pod-container-creating: var(--colorInfo);
+$pod-container-ephemeral: var(--colorInfo);
 
 // Deployments
 $deployment-available: var(--colorOk);
@@ -50,6 +51,7 @@ $pod-status-color-list: (
   crash-loop-back-off: $pod-status-crash-loop-color,
   error: $pod-error,
   container-creating: $pod-container-creating,
+  container-ephemeral: $pod-container-ephemeral,
 );
 
 // Job Conditions

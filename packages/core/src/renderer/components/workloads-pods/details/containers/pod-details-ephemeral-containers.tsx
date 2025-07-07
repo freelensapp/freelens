@@ -16,7 +16,7 @@ interface PodDetailsContainersProps {
 }
 
 const PodDetailsEphemeralContainers = observer(({ pod }: PodDetailsContainersProps) => {
-  const ephemeralContainers = pod.getEphemeralContainers();
+  const ephemeralContainers = pod.getEphemeralContainersWithType();
 
   if (ephemeralContainers.length === 0) {
     return null;

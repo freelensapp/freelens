@@ -37,7 +37,7 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
     return null;
   }
 
-  const containers = pod.getAllContainers();
+  const containers = pod.getAllContainersWithType();
   const statuses = pod.getContainerStatuses();
 
   const showLogs = (container: Container) => {

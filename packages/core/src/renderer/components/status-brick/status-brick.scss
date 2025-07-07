@@ -22,9 +22,8 @@
     margin-right: 0;
   }
 
-  &.running:not(.ready) {
-    background-color: #ff9800a0;
-    border: 1px solid var(--colorWarning);
+  &.container-ephemeral {
+    background-color: var(--colorInfo);
   }
 
   &.running {

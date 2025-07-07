@@ -15,7 +15,7 @@ import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-c
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
 
-import type { Container } from "@freelensapp/kube-object";
+import type { Container, EphemeralContainer } from "@freelensapp/kube-object";
 
 import type { DockTabCreateSpecific } from "../dock/dock/store";
 
@@ -44,10 +44,10 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
     return null;
   }
 
-  const containers = pod.getRunningContainers();
+  const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
 
-  const execShell = async (container: Container) => {
+  const execShell = async (container: Container | EphemeralContainer) => {
     const containerName = container.name;
     const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
     const commandParts = [kubectlPath, "exec", "-i", "-t", "-n", pod.getNs(), pod.getName()];

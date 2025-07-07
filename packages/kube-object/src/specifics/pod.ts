@@ -18,7 +18,9 @@ import type {
 } from "../api-types";
 import type {
   Container,
+  ContainerWithType,
   EphemeralContainer,
+  EphemeralContainerWithType,
   ObjectFieldSelector,
   PodSecurityContext,
   Probe,
@@ -609,6 +611,8 @@ export interface PodStatus {
   reason?: string;
 }
 
+export type ContainersType = "containers" | "initContainers" | "ephemeralContainers";
+
 export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec> {
   static kind = "Pod";
 
@@ -620,30 +624,60 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return Object.keys(this.getAffinity()).length;
   }
 
-  getInitContainers() {
+  getInitContainers(): Container[] {
     return this.spec?.initContainers ?? [];
   }
 
-  getEphemeralContainers() {
+  getInitContainersWithType(): ContainerWithType[] {
+    return (this.spec?.initContainers ?? []).map((c) => ({ ...c, type: "initContainers" }));
+  }
+
+  getEphemeralContainers(): Container[] {
     return this.spec?.ephemeralContainers ?? [];
   }
 
-  getContainers() {
+  getEphemeralContainersWithType(): EphemeralContainerWithType[] {
+    return (this.spec?.ephemeralContainers ?? []).map((c) => ({ ...c, type: "ephemeralContainers" }));
+  }
+
+  getContainers(): Container[] {
     return this.spec?.containers ?? [];
   }
 
-  getAllContainers() {
+  getContainersWithType(): ContainerWithType[] {
+    return (this.spec?.containers ?? []).map((c) => ({ ...c, type: "containers" }));
+  }
+
+  getAllContainers(): (Container | EphemeralContainer)[] {
     return [...this.getContainers(), ...this.getInitContainers(), ...this.getEphemeralContainers()];
   }
 
-  getRunningContainers() {
+  getAllContainersWithType(): (ContainerWithType | EphemeralContainerWithType)[] {
+    return [
+      ...this.getContainersWithType(),
+      ...this.getInitContainersWithType(),
+      ...this.getEphemeralContainersWithType(),
+    ];
+  }
+
+  getRunningContainers(): (Container | EphemeralContainer)[] {
     const runningContainerNames = new Set(
       this.getContainerStatuses()
-        .filter(({ state }) => state?.running)
+        .filter(({ lastState, state }) => state?.running && !lastState?.terminated)
         .map(({ name }) => name),
     );
 
     return this.getAllContainers().filter(({ name }) => runningContainerNames.has(name));
+  }
+
+  getRunningContainersWithType(): (ContainerWithType | EphemeralContainerWithType)[] {
+    const runningContainerNames = new Set(
+      this.getContainerStatuses()
+        .filter(({ lastState, state }) => state?.running && !lastState?.terminated)
+        .map(({ name }) => name),
+    );
+
+    return this.getAllContainersWithType().filter(({ name }) => runningContainerNames.has(name));
   }
 
   getContainerStatuses(includeInitContainers = true, includeEphemeralContainers = true): PodContainerStatus[] {

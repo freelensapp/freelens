@@ -218,3 +218,5 @@ export interface Container {
    */
   workingDir?: string;
 }
+
+export type ContainerWithType = Container & { type: "containers" | "initContainers" };

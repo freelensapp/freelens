@@ -4,6 +4,8 @@ import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import PodMenuItem from "../pod-menu-item";
 
+import type { ContainerWithType } from "@freelensapp/kube-object/dist";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 
 jest.mock("../../menu", () => {
@@ -72,7 +74,7 @@ describe("pod-menu-item", () => {
   it("given containers with one element should render only main MenuItem", () => {
     // GIVEN
     const title = "title";
-    const containers = [{ name: "container-name-1" }];
+    const containers: ContainerWithType[] = [{ name: "container-name-1", type: "containers" }];
 
     // WHEN
     const { container } = render(
@@ -105,7 +107,7 @@ describe("pod-menu-item", () => {
   it("click on main MenuItem should execute onMenuItemClick", () => {
     // GIVEN
     const title = "title";
-    const containers = [{ name: "container-name-1" }];
+    const containers: ContainerWithType[] = [{ name: "container-name-1", type: "containers" }];
 
     // WHEN
     expect(() => {
@@ -132,7 +134,11 @@ describe("pod-menu-item", () => {
   it("given containers with more elements should render SubMenu", () => {
     // GIVEN
     const title = "title";
-    const containers = [{ name: "container-name-1" }, { name: "container-name-2" }, { name: "container-name-3" }];
+    const containers: ContainerWithType[] = [
+      { name: "container-name-1", type: "containers" },
+      { name: "container-name-2", type: "containers" },
+      { name: "container-name-3", type: "containers" },
+    ];
     const statuses = [
       { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
       { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
@@ -184,7 +190,11 @@ describe("pod-menu-item", () => {
   it("click on first submenu should execute onMenuItemClick", () => {
     // GIVEN
     const title = "title";
-    const containers = [{ name: "container-name-1" }, { name: "container-name-2" }, { name: "container-name-3" }];
+    const containers: ContainerWithType[] = [
+      { name: "container-name-1", type: "containers" },
+      { name: "container-name-2", type: "containers" },
+      { name: "container-name-3", type: "containers" },
+    ];
     const statuses = [
       { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
       { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
