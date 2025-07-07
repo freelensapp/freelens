@@ -71,39 +71,6 @@ describe("pod-menu-item", () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it("given containers with one element should render only main MenuItem", () => {
-    // GIVEN
-    const title = "title";
-    const containers: ContainerWithType[] = [{ name: "container-name-1", type: "containers" }];
-
-    // WHEN
-    const { container } = render(
-      <PodMenuItem
-        material="pageview"
-        title={title}
-        tooltip="tooltip"
-        toolbar={true}
-        containers={containers}
-        statuses={[]}
-        onMenuItemClick={callback}
-      />,
-    );
-
-    // THEN
-    const menuItem = screen.getAllByTestId("menu-item-testid");
-
-    expect(menuItem).toHaveLength(1);
-    expect(container.querySelector(".Icon")).toBeInTheDocument();
-
-    const titleSpan = container.querySelector(".title");
-
-    expect(titleSpan).toBeInTheDocument();
-    expect(titleSpan).toHaveTextContent(title);
-
-    expect(container.querySelector(".SubMenu")).toBeNull();
-    expect(container.querySelector(".StatusBrick")).toBeNull();
-  });
-
   it("click on main MenuItem should execute onMenuItemClick", () => {
     // GIVEN
     const title = "title";
@@ -125,9 +92,11 @@ describe("pod-menu-item", () => {
     }).not.toThrow();
 
     // THEN
-    const menuItem = screen.getByTestId("menu-item-testid");
+    const menuItem = screen.getAllByTestId("menu-item-testid");
 
-    fireEvent.click(menuItem);
+    expect(menuItem).toHaveLength(2);
+
+    fireEvent.click(menuItem[0]);
     expect(callback).toBeCalledWith(containers[0]);
   });
 
@@ -140,8 +109,8 @@ describe("pod-menu-item", () => {
       { name: "container-name-3", type: "containers" },
     ];
     const statuses = [
-      { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
-      { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
+      { name: "container-name-1", state: { running: { startedAt: "" } } },
+      { name: "container-name-2", state: { running: { startedAt: "" } }, ready: true },
       { name: "container-name-3", state: { terminated: { startedAt: "" } }, ready: true },
     ];
 
@@ -174,8 +143,8 @@ describe("pod-menu-item", () => {
     const statusBricks = container.querySelectorAll(".StatusBrick");
 
     expect(statusBricks).toHaveLength(3);
-    expect(statusBricks[0].classList.contains("running")).toBe(true);
-    expect(statusBricks[1].classList.contains("pending")).toBe(true);
+    expect(statusBricks[0].classList.contains("waiting")).toBe(true);
+    expect(statusBricks[1].classList.contains("running")).toBe(true);
     expect(statusBricks[2].classList.contains("terminated")).toBe(true);
     const menuItems = within(subMenu).getAllByTestId("menu-item-testid");
 
@@ -197,7 +166,7 @@ describe("pod-menu-item", () => {
     ];
     const statuses = [
       { name: "container-name-1", state: { running: { startedAt: "" } }, ready: true },
-      { name: "container-name-2", state: { pending: { startedAt: "" } }, ready: true },
+      { name: "container-name-2", state: { waiting: { startedAt: "" } }, ready: true },
       { name: "container-name-3", state: { terminated: { startedAt: "" } }, ready: true },
     ];
 
