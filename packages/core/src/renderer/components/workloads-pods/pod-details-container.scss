@@ -34,10 +34,6 @@
       margin-right: $margin;
 
       @include workloads-mixins.pod-status-bgs;
-
-      &.running:not(.ready) {
-        background-color: workloads-mixins.$pod-status-pending-color;
-      }
     }
   }
 
