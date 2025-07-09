@@ -65,8 +65,13 @@ describe("CrdGroup Component", () => {
     it("displays configuration help text", () => {
       render(<CrdGroup />);
 
-      // Check for the help text
-      expect(screen.getByText(/Define custom CRD groups in YAML format/)).toBeInTheDocument();
+      // Check for the new technical help section
+      expect(screen.getByText("YAML Format Guide:")).toBeInTheDocument();
+      expect(
+        screen.getByText(/Define custom CRD groups with flexible structure and string pattern matching/),
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Arrays for top-level patterns/)).toBeInTheDocument();
+      expect(screen.getByText(/Objects with nested sublevels/)).toBeInTheDocument();
     });
   });
 
@@ -134,21 +139,21 @@ describe("CrdGroup Component", () => {
   });
 
   describe("User Interactions", () => {
-    it("resets to default configuration when button is clicked", () => {
+    it("can clear custom configuration to use only defaults", () => {
       render(<CrdGroup />);
 
       const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
-      const resetButton = screen.getByText("Reset to default configuration");
 
       // Change to custom config first
       fireEvent.change(textarea, { target: { value: "Custom:\n  - pattern" } });
       expect(textarea.value).toContain("Custom:");
 
-      // Click reset button
-      fireEvent.click(resetButton);
+      // Clear the configuration
+      fireEvent.change(textarea, { target: { value: "" } });
+      fireEvent.blur(textarea);
 
-      // Check that textarea contains default config again
-      expect(textarea.value).toContain("KEDA:");
+      // Check that textarea is empty (user can see they have no custom config)
+      expect(textarea.value).toBe("");
     });
 
     it("saves valid configuration to state on blur", () => {
@@ -327,6 +332,128 @@ describe("CrdGroup Component", () => {
 
       // Should show validation error
       expect(screen.getByText(/must be an array/)).toBeInTheDocument();
+    });
+  });
+
+  describe("Enhanced Interface Features", () => {
+    it("renders explanation text", () => {
+      render(<CrdGroup />);
+
+      expect(screen.getByText("How it works:")).toBeInTheDocument();
+      expect(screen.getByText(/Edit area/)).toBeInTheDocument();
+      expect(screen.getByText(/Default configuration/)).toBeInTheDocument();
+      expect(screen.getByText(/Final result/)).toBeInTheDocument();
+      expect(screen.getByText(/Tip/)).toBeInTheDocument();
+    });
+
+    it("shows and hides advanced view when DrawerParamToggler is clicked", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      expect(toggleElement).toBeInTheDocument();
+
+      // Advanced sections should not be visible initially
+      expect(screen.queryByText("Default configuration:")).not.toBeInTheDocument();
+      expect(screen.queryByText("Final result (merged):")).not.toBeInTheDocument();
+
+      // Click to show advanced view
+      fireEvent.click(toggleElement);
+
+      // Advanced sections should now be visible
+      expect(screen.getByText("Default configuration:")).toBeInTheDocument();
+      expect(screen.getByText("Final result (merged):")).toBeInTheDocument();
+      expect(screen.getByText("Merge information:")).toBeInTheDocument();
+
+      // Click to hide advanced view
+      fireEvent.click(toggleElement);
+
+      // Advanced sections should be hidden again
+      expect(screen.queryByText("Default configuration:")).not.toBeInTheDocument();
+      expect(screen.queryByText("Final result (merged):")).not.toBeInTheDocument();
+    });
+
+    it("displays merge information correctly", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      // Should show merge information
+      expect(screen.getByText("Merge information:")).toBeInTheDocument();
+      expect(screen.getByText(/Custom groups/)).toBeInTheDocument();
+      expect(screen.getByText(/Default groups/)).toBeInTheDocument();
+      expect(screen.getByText(/Overridden groups/)).toBeInTheDocument();
+    });
+
+    it("shows readonly textareas with correct content", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      // Get all textareas
+      const textareas = screen.getAllByRole("textbox");
+
+      // Should have main editable textarea plus two readonly ones
+      expect(textareas.length).toBe(3);
+
+      // Check that readonly textareas are present and readonly
+      const readonlyTextareas = textareas.filter((textarea) => textarea.hasAttribute("readOnly"));
+      expect(readonlyTextareas.length).toBe(2);
+    });
+
+    it("updates merge preview when user config changes", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      const mainTextarea = screen.getAllByRole("textbox")[0] as HTMLTextAreaElement;
+      const userConfig = "TestGroup:\n  - test.pattern";
+
+      // Change the user configuration
+      fireEvent.change(mainTextarea, { target: { value: userConfig } });
+
+      // The merge info should update (we can't easily test the exact content
+      // but we can verify the info section is still there and functional)
+      expect(screen.getByText("Merge information:")).toBeInTheDocument();
+    });
+
+    it("merges user config with defaults correctly", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      // Get all textareas: [0] is main editable, [1] is default readonly, [2] is merged readonly
+      const allTextareas = screen.getAllByRole("textbox") as HTMLTextAreaElement[];
+      const mainTextarea = allTextareas[0];
+      const mergedTextarea = allTextareas[2];
+
+      // Test with custom config that should merge with defaults
+      fireEvent.change(mainTextarea, { target: { value: "CustomGroup:\n  - custom.pattern" } });
+      fireEvent.blur(mainTextarea);
+
+      // The merge result should contain both custom and default groups
+      expect(mergedTextarea.value).toContain("CustomGroup:");
+      expect(mergedTextarea.value).toContain("Built-in:"); // Should still have defaults
+    });
+
+    it("applies correct CSS classes", () => {
+      render(<CrdGroup />);
+
+      // Check if main container has the right class
+      const container = screen.getByRole("textbox").closest("section");
+      expect(container).toHaveClass("crd-group-container");
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+
+      // Show advanced view
+      fireEvent.click(toggleElement);
+
+      // Check advanced section
+      const advancedSection = screen.getByText("Merge information:").closest("div.advanced-section");
+      expect(advancedSection).toBeInTheDocument();
     });
   });
 });

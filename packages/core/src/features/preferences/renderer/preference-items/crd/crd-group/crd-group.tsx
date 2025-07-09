@@ -8,10 +8,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
 import React from "react";
+import { DrawerParamToggler } from "../../../../../../renderer/components/drawer/drawer-param-toggler";
 import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 import { DEFAULT_CONFIG_YAML } from "./default-config";
+import "./crd-group.scss";
 
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
@@ -57,16 +59,91 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     }
   }, []);
 
-  // Help message for YAML format
-  const hint =
-    "Define custom CRD groups in YAML format. Flexible structure with string pattern matching:\n" +
-    "- Arrays for top-level patterns\n" +
-    "- Objects with nested sublevels\n" +
-    "- Null value to hide entries\n" +
-    '- Empty string "" to capture all patterns\n' +
-    'Example:\nKEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh\nlinkerd.io:\n  - policy.linkerd.io\nOther:\n  - ""';
-
   const [validationError, setValidationError] = React.useState<string | null>(null);
+
+  // Function to merge user config with default config
+  const getMergedConfig = React.useCallback(() => {
+    try {
+      // Parse default config
+      const [defaultParsed] = tryParseYaml(DEFAULT_CONFIG_YAML);
+
+      // Parse user config
+      const userConfig = crdGroup.trim();
+      if (!userConfig) {
+        return DEFAULT_CONFIG_YAML;
+      }
+
+      const [userParsed, error] = tryParseYaml(userConfig);
+      if (error || !userParsed) {
+        return DEFAULT_CONFIG_YAML; // Fallback to default if user config is invalid
+      }
+
+      // Smart merge: user config takes precedence, but preserve structure
+      const mergedConfig: Record<string, any> = {};
+
+      // First, add all user-defined groups
+      Object.keys(userParsed).forEach((key) => {
+        mergedConfig[key] = userParsed[key];
+      });
+
+      // Then, add default groups that are not overridden by user
+      Object.keys(defaultParsed).forEach((key) => {
+        if (!(key in mergedConfig)) {
+          mergedConfig[key] = defaultParsed[key];
+        }
+      });
+
+      return yaml.dump(mergedConfig, {
+        indent: 2,
+        lineWidth: -1,
+        noRefs: true,
+        sortKeys: false,
+      });
+    } catch (error) {
+      return DEFAULT_CONFIG_YAML;
+    }
+  }, [crdGroup]);
+
+  // Function to get preview info about the merge
+  const getMergeInfo = React.useCallback(() => {
+    try {
+      const [defaultParsed] = tryParseYaml(DEFAULT_CONFIG_YAML);
+      const userConfig = crdGroup.trim();
+
+      if (!userConfig) {
+        return {
+          userGroups: 0,
+          defaultGroups: Object.keys(defaultParsed).length,
+          overriddenGroups: 0,
+        };
+      }
+
+      const [userParsed, error] = tryParseYaml(userConfig);
+      if (error || !userParsed) {
+        return {
+          userGroups: 0,
+          defaultGroups: Object.keys(defaultParsed).length,
+          overriddenGroups: 0,
+        };
+      }
+
+      const userGroupKeys = Object.keys(userParsed);
+      const defaultGroupKeys = Object.keys(defaultParsed);
+      const overriddenGroups = userGroupKeys.filter((key) => defaultGroupKeys.includes(key));
+
+      return {
+        userGroups: userGroupKeys.length,
+        defaultGroups: defaultGroupKeys.length,
+        overriddenGroups: overriddenGroups.length,
+      };
+    } catch (error) {
+      return {
+        userGroups: 0,
+        defaultGroups: 0,
+        overriddenGroups: 0,
+      };
+    }
+  }, [crdGroup]);
 
   const validateConfiguration = (value: string): boolean => {
     if (!value.trim()) {
@@ -141,55 +218,107 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     'KEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh\nlinkerd.io:\n  - policy.linkerd.io\n  - ""\nignored: null';
 
   return (
-    <section>
+    <section className="crd-group-container">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
         <SubTitle title="CRD Groups" />
       </div>
-      <Input
-        theme="round-black"
-        placeholder={yamlPlaceholder}
-        value={crdGroup}
-        onChange={(v) => setCrdGroup(v)}
-        multiLine={true}
-        rows={20}
-        onBlur={() => {
-          if (validateConfiguration(crdGroup)) {
-            // Store YAML configuration directly
-            state.crdGroup = crdGroup;
-          }
-        }}
-        validators={[yamlValidator]}
-      />
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
-        <div>
-          <button
-            type="button"
-            style={{
-              padding: "4px 12px",
-              borderRadius: 4,
-              border: "1px solid #444",
-              background: "#222",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              try {
-                // Use the default YAML configuration
-                setCrdGroup(DEFAULT_CONFIG_YAML);
-                setValidationError(null);
-              } catch (error) {
-                setValidationError(`Initialization failed: ${error instanceof Error ? error.message : "Error"}`);
-              }
-            }}
-          >
-            Reset to default configuration
-          </button>
+
+      {/* Explanation text */}
+      <div className="explanation-box">
+        <h4>How it works:</h4>
+        <p>
+          • <strong>Edit area</strong>: Enter your custom YAML configuration (merges with defaults)
+        </p>
+        <p>
+          • <strong>Default configuration</strong>: View the base settings (optional display)
+        </p>
+        <p>
+          • <strong>Final result</strong>: View the automatic merge of your settings with defaults (optional display)
+        </p>
+        <p>
+          • <strong>Tip</strong>: Leave empty to use only default settings, or add custom groups that will be merged
+          automatically
+        </p>
+      </div>
+
+      {/* Technical help section */}
+      <div className="technical-help">
+        <h4>YAML Format Guide:</h4>
+        <div className="help-content">
+          Define custom CRD groups with flexible structure and string pattern matching:
+          <br />• Arrays for top-level patterns
+          <br />• Objects with nested sublevels
+          <br />• Null value to hide entries
+          <br />• Empty string "" to capture all patterns
         </div>
-      </div>{" "}
-      <pre className="hint" style={{ whiteSpace: "pre-wrap", margin: "8px 0", fontSize: "0.85em", color: "#888" }}>
-        {hint}
-      </pre>
-      {validationError && <div style={{ color: "red", marginTop: "8px" }}>{validationError}</div>}
+        <div className="help-example">
+          <strong>Example:</strong>
+          <pre>{`KEDA:
+  - keda.sh
+  - Eventing:
+    - eventing.keda.sh
+linkerd.io:
+  - policy.linkerd.io
+Other:
+  - ""`}</pre>
+        </div>
+      </div>
+
+      {/* User configuration section */}
+      <div className="user-config-section">
+        <label>Your custom configuration:</label>
+        <Input
+          theme="round-black"
+          placeholder={yamlPlaceholder}
+          value={crdGroup}
+          onChange={(v) => setCrdGroup(v)}
+          multiLine={true}
+          rows={15}
+          onBlur={() => {
+            if (validateConfiguration(crdGroup)) {
+              // Store YAML configuration directly
+              state.crdGroup = crdGroup;
+            }
+          }}
+          validators={[yamlValidator]}
+        />
+      </div>
+
+      {/* Advanced view with DrawerParamToggler */}
+      <DrawerParamToggler label="Configuration Details">
+        <div className="advanced-section">
+          {/* Merge info */}
+          <div className="merge-info">
+            <strong>Merge information:</strong>
+            {(() => {
+              const info = getMergeInfo();
+              return (
+                <div className="info-details">
+                  • Custom groups: {info.userGroups}
+                  <br />• Default groups: {info.defaultGroups}
+                  <br />• Overridden groups: {info.overriddenGroups}
+                </div>
+              );
+            })()}
+          </div>
+
+          <div className="config-grid">
+            {/* Default configuration */}
+            <div className="config-column">
+              <label>Default configuration:</label>
+              <textarea readOnly value={DEFAULT_CONFIG_YAML} className="readonly-textarea default-config" />
+            </div>
+
+            {/* Merged configuration */}
+            <div className="config-column">
+              <label>Final result (merged):</label>
+              <textarea readOnly value={getMergedConfig()} className="readonly-textarea merged-config" />
+            </div>
+          </div>
+        </div>
+      </DrawerParamToggler>
+
+      {validationError && <div className="validation-error">{validationError}</div>}
     </section>
   );
 });
