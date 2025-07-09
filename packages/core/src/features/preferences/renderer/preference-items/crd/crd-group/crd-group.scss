@@ -1,0 +1,200 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.crd-group-container {
+  .explanation-box {
+    margin: 16px 0;
+    padding: 12px;
+    background: var(--contentColor, #2a2d32);
+    border-radius: 6px;
+    border-left: 4px solid var(--textColorAccent, #4ac1c5);
+    font-size: 14px;
+    line-height: 1.5;
+
+    h4 {
+      margin: 0 0 8px 0;
+      color: var(--textColorPrimary, #fff);
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      color: var(--textColorSecondary, #ccc);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .user-config-section {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(
+        --textColorPrimary,
+        #fff
+      ); // Use CSS variable for theme compatibility, fallback to white
+    }
+
+    // Ensure the Input component and its textarea take full width
+    .Input {
+      width: 100%;
+
+      .input-area {
+        width: 100%;
+
+        textarea {
+          width: 100% !important;
+          min-width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  .advanced-section {
+    padding: 16px;
+    background: var(--backgroundColor, #1e1e1e);
+    border-radius: 8px;
+    border: 1px solid var(--borderColor, #404040);
+    margin-bottom: 16px;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .merge-info {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--contentColor, #2a2d32);
+      border-radius: 6px;
+      border: 1px solid var(--borderColor, #404040);
+      font-size: 14px;
+      color: var(--textColorPrimary, #fff);
+
+      .info-details {
+        margin-top: 8px;
+        line-height: 1.6;
+        color: var(--textColorSecondary, #ccc);
+      }
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .config-column {
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: var(--textColorPrimary, #fff);
+        font-size: 14px;
+      }
+
+      .readonly-textarea {
+        width: 100%;
+        height: 200px;
+        padding: 8px;
+        border: 1px solid var(--borderColor, #404040);
+        border-radius: 4px;
+        font-family: Monaco, "Courier New", monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        resize: none;
+        overflow: auto;
+        transition: border-color 0.2s ease;
+        background: var(--backgroundColor, #1e1e1e);
+        color: var(--textColorSecondary, #ccc);
+
+        &:focus {
+          outline: none;
+          border-color: var(--textColorAccent, #4ac1c5);
+        }
+
+        &.default-config {
+          background: var(--contentColor, #2a2d32);
+        }
+
+        &.merged-config {
+          background: var(--backgroundColor, #1e1e1e);
+          border-color: var(--textColorAccent, #4ac1c5);
+        }
+      }
+    }
+  }
+
+  .validation-error {
+    color: #ff6b6b;
+    background: var(--contentColor, #2a2d32);
+    border: 1px solid #ff6b6b;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  .technical-help {
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--contentColor, #2a2d32);
+    border-radius: 8px;
+    border: 1px solid var(--borderColor, #404040);
+    font-size: 14px;
+    line-height: 1.5;
+
+    h4 {
+      margin: 0 0 12px 0;
+      color: var(--textColorPrimary, #fff);
+      font-size: 15px;
+    }
+
+    .help-content {
+      color: var(--textColorSecondary, #ccc);
+      margin-bottom: 16px;
+    }
+
+    .help-example {
+      strong {
+        color: var(--textColorPrimary, #fff);
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      pre {
+        background: var(--backgroundColor, #1e1e1e);
+        border: 1px solid var(--borderColor, #404040);
+        border-radius: 4px;
+        padding: 12px;
+        margin: 8px 0 0 0;
+        font-family: "Monaco", "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--textColorSecondary, #ccc);
+        overflow: auto;
+        white-space: pre;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
