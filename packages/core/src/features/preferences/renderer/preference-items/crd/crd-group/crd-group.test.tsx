@@ -67,11 +67,13 @@ describe("CrdGroup Component", () => {
 
       // Check for the new technical help section
       expect(screen.getByText("YAML Format Guide:")).toBeInTheDocument();
-      expect(
-        screen.getByText(/Define custom CRD groups with flexible structure and string pattern matching/),
-      ).toBeInTheDocument();
-      expect(screen.getByText(/Arrays for top-level patterns/)).toBeInTheDocument();
-      expect(screen.getByText(/Objects with nested sublevels/)).toBeInTheDocument();
+      expect(screen.getByText(/Define custom CRD groups with/)).toBeInTheDocument();
+      expect(screen.getByText("flexible structure")).toBeInTheDocument();
+      expect(screen.getByText("string pattern matching")).toBeInTheDocument();
+      expect(screen.getByText(/Arrays/)).toBeInTheDocument();
+      expect(screen.getByText(/Objects/)).toBeInTheDocument();
+      expect(screen.getByText(/Null value/)).toBeInTheDocument();
+      expect(screen.getByText(/Empty string ""/)).toBeInTheDocument();
     });
   });
 
