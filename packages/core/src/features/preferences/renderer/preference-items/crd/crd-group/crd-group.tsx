@@ -227,13 +227,16 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
       <div className="explanation-box">
         <h4>How it works:</h4>
         <p>
-          • <strong>Edit area</strong>: Enter your custom YAML configuration (merges with defaults)
+          • <strong>Edit area</strong>: Enter your custom YAML configuration (
+          <span className="text-accent">merges with defaults</span>)
         </p>
         <p>
-          • <strong>Default configuration</strong>: View the base settings (optional display)
+          • <strong>Default configuration</strong>: View the base settings (
+          <span className="text-accent">optional display</span>)
         </p>
         <p>
-          • <strong>Final result</strong>: View the automatic merge of your settings with defaults (optional display)
+          • <strong>Final result</strong>: View the automatic merge of your settings with defaults (
+          <span className="text-accent">optional display</span>)
         </p>
         <p>
           • <strong>Tip</strong>: Leave empty to use only default settings, or add custom groups that will be merged
@@ -245,11 +248,12 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
       <div className="technical-help">
         <h4>YAML Format Guide:</h4>
         <div className="help-content">
-          Define custom CRD groups with flexible structure and string pattern matching:
-          <br />• Arrays for top-level patterns
-          <br />• Objects with nested sublevels
-          <br />• Null value to hide entries
-          <br />• Empty string "" to capture all patterns
+          Define custom CRD groups with <span className="text-highlight">flexible structure</span> and{" "}
+          <span className="text-highlight">string pattern matching</span>:
+          <br />• <strong>Arrays</strong> for top-level patterns
+          <br />• <strong>Objects</strong> with nested sublevels
+          <br />• <strong>Null value</strong> to hide entries
+          <br />• <strong>Empty string ""</strong> to capture all patterns
         </div>
         <div className="help-example">
           <strong>Example:</strong>
