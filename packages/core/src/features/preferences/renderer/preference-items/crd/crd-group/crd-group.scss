@@ -16,12 +16,19 @@
 
     h4 {
       margin: 0 0 8px 0;
-      color: var(--textColorPrimary, #fff);
+      color: #ffffff; // Blanc pur pour les titres principaux
+      font-weight: bold;
+      font-size: 16px; // Légèrement plus grand pour l'importance
     }
 
     p {
       margin: 0 0 8px 0;
       color: var(--textColorSecondary, #ccc);
+
+      strong {
+        color: #ffffff; // Blanc pur pour les mots-clés importants
+        font-weight: 600;
+      }
 
       &:last-child {
         margin-bottom: 0;
@@ -36,10 +43,8 @@
       display: block;
       margin-bottom: 8px;
       font-weight: bold;
-      color: var(
-        --textColorPrimary,
-        #fff
-      ); // Use CSS variable for theme compatibility, fallback to white
+      color: #ffffff; // Blanc pur pour les labels principaux
+      font-size: 15px; // Légèrement plus grand
     }
 
     // Ensure the Input component and its textarea take full width
@@ -74,7 +79,7 @@
       border-radius: 6px;
       border: 1px solid var(--borderColor, #404040);
       font-size: 14px;
-      color: var(--textColorPrimary, #fff);
+      color: #ffffff; // Blanc pur pour "Merge information:"
 
       .info-details {
         margin-top: 8px;
@@ -98,7 +103,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: bold;
-        color: var(--textColorPrimary, #fff);
+        color: #ffffff; // Blanc pur pour les labels des colonnes
         font-size: 14px;
       }
 
@@ -155,8 +160,9 @@
 
     h4 {
       margin: 0 0 12px 0;
-      color: var(--textColorPrimary, #fff);
-      font-size: 15px;
+      color: #ffffff; // Blanc pur pour "YAML Format Guide:"
+      font-size: 16px;
+      font-weight: bold;
     }
 
     .help-content {
@@ -166,9 +172,10 @@
 
     .help-example {
       strong {
-        color: var(--textColorPrimary, #fff);
+        color: #ffffff; // Blanc pur pour "Example:"
         margin-bottom: 8px;
         display: block;
+        font-weight: bold;
       }
 
       pre {
@@ -185,6 +192,22 @@
         white-space: pre;
       }
     }
+  }
+
+  // Classes utilitaires pour la hiérarchie visuelle
+  .title-primary {
+    color: #ffffff !important;
+    font-weight: bold;
+  }
+
+  .text-highlight {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .text-accent {
+    color: var(--textColorAccent, #4ac1c5);
+    font-weight: 500;
   }
 }
 
