@@ -183,7 +183,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         {requests.length > 0 && (
           <DrawerItem name="Requests" labelsOnly>
             {requests.map(([key, value], index) => (
-              <Badge key={index} label={`${key}: ${value}`} />
+              <Badge key={index} label={`${key}=${value}`} />
             ))}
           </DrawerItem>
         )}
@@ -191,7 +191,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         {limits.length > 0 && (
           <DrawerItem name="Limits" labelsOnly>
             {limits.map(([key, value], index) => (
-              <Badge key={index} label={`${key}: ${value}`} />
+              <Badge key={index} label={`${key}=${value}`} />
             ))}
           </DrawerItem>
         )}
