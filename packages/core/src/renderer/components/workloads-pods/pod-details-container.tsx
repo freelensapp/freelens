@@ -89,7 +89,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const { pod, container, containerMetricsVisible, containerMetrics } = this.props;
 
     if (!pod || !container) return null;
-    const { name, image, imagePullPolicy, ports, volumeMounts, command, args } = container;
+    const { name, image, imagePullPolicy, ports, volumeMounts, command, args, resources } = container;
     const id = `pod-container-id-${pod}-${name}`;
     const targetContainerName = "targetContainerName" in container ? container.targetContainerName : undefined;
     const status = pod.getContainerStatuses().find((status) => status.name === container.name);
@@ -100,6 +100,8 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const startup = pod.getStartupProbe(container);
     const containersType = container.type;
     const isMetricVisible = containerMetricsVisible.get();
+    const requests = Object.entries(resources?.requests ?? {});
+    const limits = Object.entries(resources?.limits ?? {});
 
     return (
       <div className="PodDetailsContainer">
@@ -177,6 +179,22 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         {command && <DrawerItem name="Command">{command.join(" ")}</DrawerItem>}
 
         {args && <DrawerItem name="Arguments">{args.join(" ")}</DrawerItem>}
+
+        {requests.length > 0 && (
+          <DrawerItem name="Requests" labelsOnly>
+            {requests.map(([key, value], index) => (
+              <Badge key={index} label={`${key}: ${value}`} />
+            ))}
+          </DrawerItem>
+        )}
+
+        {limits.length > 0 && (
+          <DrawerItem name="Limits" labelsOnly>
+            {limits.map(([key, value], index) => (
+              <Badge key={index} label={`${key}: ${value}`} />
+            ))}
+          </DrawerItem>
+        )}
       </div>
     );
   }
