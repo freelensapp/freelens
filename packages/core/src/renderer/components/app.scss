@@ -8,12 +8,8 @@
 @use "../components/mixins";
 @use "../components/vars" as *;
 
-@import "tailwindcss";
-
 @include meta.load-css("flexbox");
 @include meta.load-css("fonts");
-
-@config "../../../tailwind.config.js";
 
 :root {
   --flex-gap: #{$padding};
