@@ -1064,6 +1064,9 @@ importers:
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
         version: 9.1.0(typescript@5.8.3)(webpack@5.100.1)
+      glob:
+        specifier: ^11.0.3
+        version: 11.0.3
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
