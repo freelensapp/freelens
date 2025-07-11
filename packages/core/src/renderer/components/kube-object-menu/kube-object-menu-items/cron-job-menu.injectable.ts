@@ -16,7 +16,7 @@ const cronJobMenuInjectable = getInjectable({
 
   instantiate: () => ({
     kind: "CronJob",
-    apiVersions: ["batch/v1beta1", "batch/v1"],
+    apiVersions: ["batch/v1"],
     Component: CronJobMenu as KubeObjectMenuItemComponent,
     enabled: computed(() => true),
     orderNumber: 20,
