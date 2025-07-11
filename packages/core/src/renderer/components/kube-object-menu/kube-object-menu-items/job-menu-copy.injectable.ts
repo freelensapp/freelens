@@ -16,7 +16,7 @@ const jobMenuInjectable = getInjectable({
 
   instantiate: () => ({
     kind: "Job",
-    apiVersions: ["batch/v1beta1", "batch/v1"],
+    apiVersions: ["batch/v1"],
     Component: JobMenu as KubeObjectMenuItemComponent,
     enabled: computed(() => true),
     orderNumber: 20,
