@@ -176,9 +176,9 @@ class NonInjectedServicePortComponent extends React.Component<ServicePortCompone
     const name = port.name ? `${port.name}: ` : "";
     const nodeAddr = port.nodePort ? `${port.nodePort} → ` : "";
     const appProtocol = port.appProtocol ? `/${port.appProtocol}` : "";
-    const servicePort = `${port.port}${appProtocol}`;
+    const servicePort = `${port.port}${appProtocol} → `;
     const targetPort = `${port.targetPort ?? port.port}/${port.protocol ?? "TCP"}`;
-    const text = `${name}${nodeAddr}${servicePort} → ${targetPort}`;
+    const text = `${name}${nodeAddr}${servicePort}${targetPort}`;
 
     const portForwardAction = action(async () => {
       if (this.isPortForwarded) {

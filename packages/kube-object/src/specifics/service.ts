@@ -31,20 +31,11 @@ export interface ServicePortSpec {
   nodePort?: number;
 }
 
-export class ServicePort {
-  name?: string;
-  protocol?: Protocol;
-  appProtocol?: string;
-  port: number;
-  targetPort?: number | string;
-  nodePort?: number;
+export interface ServicePort extends ServicePortSpec {}
 
+export class ServicePort {
   constructor(data: ServicePortSpec) {
-    this.name = data.name;
-    this.protocol = data.protocol;
-    this.port = data.port;
-    this.targetPort = data.targetPort;
-    this.nodePort = data.nodePort;
+    Object.assign(this, data);
   }
 
   toString() {
