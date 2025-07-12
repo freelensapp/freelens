@@ -8,31 +8,34 @@ import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
 
+export type ServiceType = "ClusterIP" | "NodePort" | "LoadBalancer" | "ExternalName";
+
+export type Protocol = "TCP" | "UDP" | "SCTP";
+
+export type IPFamily = "IPv4" | "IPv6" | "";
+
+export type ServiceAffinity = "ClientIP" | "None";
+
+export type ServiceExternalTrafficPolicy = "Cluster" | "Local";
+
+export type ServiceInternalTrafficPolicy = "Cluster" | "Local";
+
+export type TrafficDistribution = "PreferClose" | "PreferSameZone" | "PreferSameNode";
+
 export interface ServicePortSpec {
   name?: string;
-  protocol: string;
+  protocol?: Protocol;
+  appProtocol?: string;
   port: number;
-  targetPort: number;
+  targetPort?: number | string;
   nodePort?: number;
 }
 
+export interface ServicePort extends ServicePortSpec {}
+
 export class ServicePort {
-  name?: string;
-
-  protocol: string;
-
-  port: number;
-
-  targetPort: number;
-
-  nodePort?: number;
-
   constructor(data: ServicePortSpec) {
-    this.name = data.name;
-    this.protocol = data.protocol;
-    this.port = data.port;
-    this.targetPort = data.targetPort;
-    this.nodePort = data.nodePort;
+    Object.assign(this, data);
   }
 
   toString() {
@@ -42,25 +45,36 @@ export class ServicePort {
   }
 }
 
+export interface ClientIPConfigApplyConfiguration {
+  timeoutSeconds?: number;
+}
+
+export interface SessionAffinityConfigApplyConfiguration {
+  clientIP?: ClientIPConfigApplyConfiguration;
+}
+
 export interface ServiceSpec {
-  type: string;
+  ports?: ServicePort[];
+  selector?: Partial<Record<string, string>>;
   clusterIP: string;
   clusterIPs?: string[];
-  externalTrafficPolicy?: string;
-  externalName?: string;
+  type?: ServiceType;
+  externalIPs?: string[];
+  sessionAffinity: ServiceAffinity;
   loadBalancerIP?: string;
   loadBalancerSourceRanges?: string[];
-  sessionAffinity: string;
-  selector: Partial<Record<string, string>>;
-  ports: ServicePortSpec[];
+  externalName?: string;
+  externalTrafficPolicy?: ServiceExternalTrafficPolicy;
   healthCheckNodePort?: number;
-  externalIPs?: string[]; // https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  publishNotReadyAddresses?: boolean;
+  sessionAffinityConfig?: SessionAffinityConfigApplyConfiguration;
   topologyKeys?: string[];
-  ipFamilies?: string[];
+  ipFamilies?: IPFamily[];
   ipFamilyPolicy?: string;
   allocateLoadBalancerNodePorts?: boolean;
   loadBalancerClass?: string;
-  internalTrafficPolicy?: string;
+  internalTrafficPolicy?: ServiceInternalTrafficPolicy;
+  trafficDistribution?: TrafficDistribution;
 }
 
 export interface ServiceStatus {

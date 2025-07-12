@@ -9,7 +9,6 @@ import "./services.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -25,12 +24,11 @@ import type { ServiceStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
-  selector = "selector",
-  ports = "port",
+  type = "type",
   clusterIp = "cluster-ip",
   externalIp = "external-ip",
+  ports = "port",
   age = "age",
-  type = "type",
   status = "status",
 }
 
@@ -65,7 +63,6 @@ class NonInjectedServices extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (service) => service.getName(),
             [columnId.namespace]: (service) => service.getNs(),
-            [columnId.selector]: (service) => service.getSelector(),
             [columnId.ports]: (service) => (service.spec.ports || []).map(({ port }) => port)[0],
             [columnId.clusterIp]: (service) => service.getClusterIp(),
             [columnId.type]: (service) => service.getType(),
@@ -86,7 +83,6 @@ class NonInjectedServices extends React.Component<Dependencies> {
             { title: "Cluster IP", className: "clusterIp", sortBy: columnId.clusterIp, id: columnId.clusterIp },
             { title: "External IP", className: "externalIp", id: columnId.externalIp },
             { title: "Ports", className: "ports", sortBy: columnId.ports, id: columnId.ports },
-            { title: "Selector", className: "selector", sortBy: columnId.selector, id: columnId.selector },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
@@ -98,11 +94,6 @@ class NonInjectedServices extends React.Component<Dependencies> {
             <WithTooltip>{service.getClusterIp()}</WithTooltip>,
             <WithTooltip>{formatExternalIps(service)}</WithTooltip>,
             <WithTooltip>{service.getPorts().join(", ")}</WithTooltip>,
-            <WithTooltip>
-              {service.getSelector().map((label) => (
-                <Badge key={label} label={label} />
-              ))}
-            </WithTooltip>,
             <KubeObjectAge key="age" object={service} />,
             { title: service.getStatus(), className: service.getStatus().toLowerCase() },
           ]}
