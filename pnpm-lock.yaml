@@ -3600,7 +3600,7 @@ packages:
     engines: {node: '>=12'}
 
   '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2':
-    resolution: {tarball: 'https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2'}
+    resolution: {tarball: https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2}
     version: 10.2.0-electron.1
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -6548,8 +6548,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
-    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and
-      tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.3:
     resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
@@ -9366,8 +9365,8 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  ? '@async-fn/jest@1.6.4(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))'
-  : dependencies:
+  '@async-fn/jest@1.6.4(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))':
+    dependencies:
       jest: 29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3))
 
   '@babel/code-frame@7.26.2':
@@ -9559,8 +9558,8 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
 
-  ? '@csstools/css-color-parser@3.0.8(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)'
-  : dependencies:
+  '@csstools/css-color-parser@3.0.8(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
+    dependencies:
       '@csstools/color-helpers': 5.0.2
       '@csstools/css-calc': 2.1.2(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
@@ -10266,8 +10265,8 @@ snapshots:
 
   '@mui/core-downloads-tracker@5.17.1': {}
 
-  ? '@mui/lab@5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)'
-  : dependencies:
+  '@mui/lab@5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+    dependencies:
       '@babel/runtime': 7.26.10
       '@mui/base': 5.0.0-beta.13(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@mui/material': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -10284,8 +10283,8 @@ snapshots:
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2)
       '@types/react': 17.0.87
 
-  ? '@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)'
-  : dependencies:
+  '@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+    dependencies:
       '@babel/runtime': 7.26.10
       '@mui/core-downloads-tracker': 5.17.1
       '@mui/system': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2)
@@ -10314,8 +10313,8 @@ snapshots:
     optionalDependencies:
       '@types/react': 17.0.87
 
-  ? '@mui/styled-engine@5.16.14(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(react@17.0.2)'
-  : dependencies:
+  '@mui/styled-engine@5.16.14(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(react@17.0.2)':
+    dependencies:
       '@babel/runtime': 7.26.10
       '@emotion/cache': 11.14.0
       csstype: 3.1.3
@@ -10325,8 +10324,8 @@ snapshots:
       '@emotion/react': 11.14.0(@types/react@17.0.87)(react@17.0.2)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2)
 
-  ? '@mui/system@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2)'
-  : dependencies:
+  '@mui/system@5.17.1(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2)':
+    dependencies:
       '@babel/runtime': 7.26.10
       '@mui/private-theming': 5.17.1(@types/react@17.0.87)(react@17.0.2)
       '@mui/styled-engine': 5.16.14(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.87)(react@17.0.2))(@types/react@17.0.87)(react@17.0.2))(react@17.0.2)
@@ -10397,21 +10396,21 @@ snapshots:
     dependencies:
       lodash: 4.17.21
 
-  ? '@ogre-tools/injectable-extension-for-auto-registration@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)'
-  : dependencies:
+  '@ogre-tools/injectable-extension-for-auto-registration@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)':
+    dependencies:
       '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
       '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       lodash: 4.17.21
 
-  ? '@ogre-tools/injectable-extension-for-mobx@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)'
-  : dependencies:
+  '@ogre-tools/injectable-extension-for-mobx@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.13.7)':
+    dependencies:
       '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
       '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       lodash: 4.17.21
       mobx: 6.13.7
 
-  ? '@ogre-tools/injectable-react@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)'
-  : dependencies:
+  '@ogre-tools/injectable-react@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.13.7)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+    dependencies:
       '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
       '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       lodash: 4.17.21
@@ -10493,8 +10492,8 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  ? '@pmmmwh/react-refresh-webpack-plugin@0.6.1(@types/webpack@5.28.5(webpack-cli@6.0.1))(react-refresh@0.17.0)(type-fest@4.41.0)(webpack-dev-server@5.2.2)(webpack@5.100.1)'
-  : dependencies:
+  '@pmmmwh/react-refresh-webpack-plugin@0.6.1(@types/webpack@5.28.5(webpack-cli@6.0.1))(react-refresh@0.17.0)(type-fest@4.41.0)(webpack-dev-server@5.2.2)(webpack@5.100.1)':
+    dependencies:
       anser: 2.3.2
       core-js-pure: 3.41.0
       error-stack-parser: 2.1.4
@@ -10510,8 +10509,8 @@ snapshots:
 
   '@popperjs/core@2.11.8': {}
 
-  ? '@side/jest-runtime@1.1.0(@jest/transform@29.7.0)(jest-runtime@29.7.0)(jest@29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3)))'
-  : dependencies:
+  '@side/jest-runtime@1.1.0(@jest/transform@29.7.0)(jest-runtime@29.7.0)(jest@29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3)))':
+    dependencies:
       '@jest/transform': 29.7.0
       jest: 29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3))
       jest-runtime: 29.7.0
@@ -13510,8 +13509,8 @@ snapshots:
       slash: 3.0.0
       stack-utils: 2.0.6
 
-  ? jest-mock-extended@4.0.0(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3)))(typescript@5.8.3)
-  : dependencies:
+  jest-mock-extended@4.0.0(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3)))(typescript@5.8.3):
+    dependencies:
       '@jest/globals': 29.7.0
       jest: 29.7.0(@types/node@22.16.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.3)(typescript@5.8.3))
       ts-essentials: 10.0.4(typescript@5.8.3)
@@ -14223,8 +14222,8 @@ snapshots:
 
   moment@2.30.1: {}
 
-  ? monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.100.1)
-  : dependencies:
+  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.100.1):
+    dependencies:
       loader-utils: 2.0.4
       monaco-editor: 0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
       webpack: 5.100.1(webpack-cli@6.0.1)
@@ -15653,8 +15652,8 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.3
 
-  ? ts-jest@29.4.0(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3)
-  : dependencies:
+  ts-jest@29.4.0(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.8.3):
+    dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
       fast-json-stable-stringify: 2.1.0
