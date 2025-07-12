@@ -8,13 +8,15 @@ import "./service-details.scss";
 
 import { Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
+import { MaybeLink } from "../maybe-link";
 import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
 import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
@@ -33,6 +35,16 @@ interface Dependencies {
   portForwardStore: PortForwardStore;
   endpointSliceStore: EndpointSliceStore;
   logger: Logger;
+}
+
+function getExternalProtocol(service: Service): string | undefined {
+  if (service.getPorts().find((s) => s.port === 443)) {
+    return "https";
+  }
+  if (service.getPorts().find((s) => s.port === 80)) {
+    return "http";
+  }
+  return;
 }
 
 @observer
@@ -64,6 +76,8 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
       service.getNs(),
     );
     const externalIps = service.getExternalIps();
+    const selector = service.getSelector();
+    const externalProtocol = getExternalProtocol(service);
 
     if (externalIps.length === 0 && spec?.externalName) {
       externalIps.push(spec.externalName);
@@ -71,15 +85,58 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
 
     return (
       <div className="ServicesDetails">
-        <DrawerItem name="Selector" labelsOnly>
-          {service.getSelector().map((selector) => (
-            <Badge key={selector} label={selector} />
-          ))}
-        </DrawerItem>
+        {selector && (
+          <DrawerItem name="Selector" labelsOnly>
+            {selector.map((selector) => (
+              <Badge key={selector} label={selector} />
+            ))}
+          </DrawerItem>
+        )}
 
         <DrawerItem name="Type">{spec.type}</DrawerItem>
-
         <DrawerItem name="Session Affinity">{spec.sessionAffinity}</DrawerItem>
+        <DrawerItem name="Internal Traffic Policy">{spec.internalTrafficPolicy}</DrawerItem>
+        <DrawerItem name="Traffic Distribution" hidden={!spec.trafficDistribution}>
+          {spec.trafficDistribution}
+        </DrawerItem>
+        <DrawerItem name="Topology Keys" hidden={!spec.topologyKeys}>
+          {spec.topologyKeys?.map((key) => (
+            <Badge key={key} label={key} />
+          ))}
+        </DrawerItem>
+        <DrawerItem name="Publish Not Ready Address">
+          <BadgeBoolean value={spec.publishNotReadyAddresses ?? false} />
+        </DrawerItem>
+
+        {spec.sessionAffinityConfig && (
+          <>
+            <DrawerTitle>Session Affinity Config</DrawerTitle>
+            <DrawerItem name="Client IP Timeout" hidden={!spec.sessionAffinityConfig.clientIP}>
+              {formatDuration((spec.sessionAffinityConfig.clientIP?.timeoutSeconds ?? 0) * 1000, false)}
+            </DrawerItem>
+          </>
+        )}
+
+        {spec.type === "LoadBalancer" && (
+          <>
+            <DrawerTitle>Load Balancer</DrawerTitle>
+            <DrawerItem name="Allocate Load Balancer Node Ports">
+              <BadgeBoolean value={spec.allocateLoadBalancerNodePorts ?? true} />
+            </DrawerItem>
+            <DrawerItem name="Load Balancer IP" hidden={!spec.loadBalancerIP}>
+              {spec.loadBalancerIP}
+            </DrawerItem>
+            <DrawerItem name="Load Balancer Class" hidden={!spec.loadBalancerClass}>
+              {spec.loadBalancerClass}
+            </DrawerItem>
+            <DrawerItem name="External Traffic Policy" hidden={!spec.externalTrafficPolicy}>
+              {spec.externalTrafficPolicy}
+            </DrawerItem>
+            <DrawerItem name="Health Check Node Port" hidden={!spec.healthCheckNodePort}>
+              {spec.healthCheckNodePort}
+            </DrawerItem>
+          </>
+        )}
 
         <DrawerTitle>Connection</DrawerTitle>
 
@@ -91,18 +148,20 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
           ))}
         </DrawerItem>
 
-        <DrawerItem name="IP families" hidden={!service.getIpFamilies().length}>
-          {service.getIpFamilies().join(", ")}
-        </DrawerItem>
-
         <DrawerItem name="IP family policy" hidden={!service.getIpFamilyPolicy()}>
           {service.getIpFamilyPolicy()}
+        </DrawerItem>
+
+        <DrawerItem name="IP families" hidden={!service.getIpFamilies().length}>
+          {service.getIpFamilies().join(", ")}
         </DrawerItem>
 
         {externalIps.length > 0 && (
           <DrawerItem name="External IPs">
             {externalIps.map((ip) => (
-              <div key={ip}>{ip}</div>
+              <div key={ip}>
+                <MaybeLink to={externalProtocol ? `${externalProtocol}://${ip}` : undefined}>{ip}</MaybeLink>
+              </div>
             ))}
           </DrawerItem>
         )}
@@ -114,10 +173,6 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             ))}
           </div>
         </DrawerItem>
-
-        {spec.type === "LoadBalancer" && spec.loadBalancerIP && (
-          <DrawerItem name="Load Balancer IP">{spec.loadBalancerIP}</DrawerItem>
-        )}
 
         {endpointSlices && (
           <>

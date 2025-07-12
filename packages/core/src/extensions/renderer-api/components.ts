@@ -80,6 +80,7 @@ export * from "../../renderer/components/list";
 export * from "../../renderer/components/locale-date";
 export * from "../../renderer/components/map";
 export * from "../../renderer/components/markdown-viewer";
+export * from "../../renderer/components/maybe-link";
 export * from "../../renderer/components/menu";
 export {
   type MonacoCustomTheme,
