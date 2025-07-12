@@ -16,7 +16,6 @@ import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.inj
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { MaybeLink } from "../maybe-link";
 import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
 import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
@@ -50,13 +49,13 @@ function getExternalProtocol(service: Service): string | undefined {
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
   componentDidMount() {
-    const { subscribeStores, endpointSliceStore: endpointSliceStore, portForwardStore } = this.props;
+    const { subscribeStores, endpointSliceStore, portForwardStore } = this.props;
 
     disposeOnUnmount(this, [subscribeStores([endpointSliceStore], {}), portForwardStore.watch()]);
   }
 
   render() {
-    const { object: service, endpointSliceStore: endpointSliceStore } = this.props;
+    const { object: service, endpointSliceStore } = this.props;
 
     if (!service) {
       return null;
@@ -78,6 +77,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     const externalIps = service.getExternalIps();
     const selector = service.getSelector();
     const externalProtocol = getExternalProtocol(service);
+    const ports = service.getPorts();
 
     if (externalIps.length === 0 && spec?.externalName) {
       externalIps.push(spec.externalName);
@@ -160,21 +160,29 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
           <DrawerItem name="External IPs">
             {externalIps.map((ip) => (
               <div key={ip}>
-                <MaybeLink to={externalProtocol ? `${externalProtocol}://${ip}` : undefined}>{ip}</MaybeLink>
+                {externalProtocol ? (
+                  <a href={`${externalProtocol}://${ip}`} rel="noreferrer" target="_blank">
+                    {ip}
+                  </a>
+                ) : (
+                  ip
+                )}
               </div>
             ))}
           </DrawerItem>
         )}
 
-        <DrawerItem name="Ports">
-          <div>
-            {service.getPorts().map((port) => (
-              <ServicePortComponent service={service} port={port} key={port.toString()} />
-            ))}
-          </div>
-        </DrawerItem>
+        {ports && ports.length > 0 && (
+          <DrawerItem name="Ports">
+            <div>
+              {service.getPorts().map((port) => (
+                <ServicePortComponent service={service} port={port} key={port.toString()} />
+              ))}
+            </div>
+          </DrawerItem>
+        )}
 
-        {endpointSlices && (
+        {endpointSlices.length > 0 && (
           <>
             <DrawerTitle>Endpoint Slices</DrawerTitle>
             <ServiceDetailsEndpointSlices endpointSlices={endpointSlices} />
