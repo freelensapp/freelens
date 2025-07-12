@@ -38,10 +38,10 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.20",
-    "@types/node": "~22.16.0",
+    "@types/node": "~22.16.3",
     "@types/react": "^17.0.87",
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.2",
-    "webpack": "^5.99.9"
+    "webpack": "^5.100.1"
   }
 }

@@ -11,7 +11,7 @@
   },
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.0.0",
-    "biome": "pnpm dlx @biomejs/biome@2.0.6",
+    "biome": "pnpm dlx @biomejs/biome@2.1.1",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "build": "NODE_ENV=production pnpm -r build",
@@ -52,8 +52,8 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.13.1",
   "devDependencies": {
-    "pnpm": "10.12.4"
+    "pnpm": "10.13.1"
   }
 }
