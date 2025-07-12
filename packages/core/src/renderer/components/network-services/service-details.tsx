@@ -95,7 +95,9 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
 
         <DrawerItem name="Type">{spec.type}</DrawerItem>
         <DrawerItem name="Session Affinity">{spec.sessionAffinity}</DrawerItem>
-        <DrawerItem name="Internal Traffic Policy">{spec.internalTrafficPolicy}</DrawerItem>
+        <DrawerItem name="Internal Traffic Policy" hidden={!spec.internalTrafficPolicy}>
+          {spec.internalTrafficPolicy}
+        </DrawerItem>
         <DrawerItem name="Traffic Distribution" hidden={!spec.trafficDistribution}>
           {spec.trafficDistribution}
         </DrawerItem>
@@ -104,8 +106,8 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <Badge key={key} label={key} />
           ))}
         </DrawerItem>
-        <DrawerItem name="Publish Not Ready Address">
-          <BadgeBoolean value={spec.publishNotReadyAddresses ?? false} />
+        <DrawerItem name="Publish Not Ready Address" hidden={spec.publishNotReadyAddresses === undefined}>
+          <BadgeBoolean value={spec.publishNotReadyAddresses} />
         </DrawerItem>
 
         {spec.sessionAffinityConfig && (
@@ -120,8 +122,11 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
         {spec.type === "LoadBalancer" && (
           <>
             <DrawerTitle>Load Balancer</DrawerTitle>
-            <DrawerItem name="Allocate Load Balancer Node Ports">
-              <BadgeBoolean value={spec.allocateLoadBalancerNodePorts ?? true} />
+            <DrawerItem
+              name="Allocate Load Balancer Node Ports"
+              hidden={spec.allocateLoadBalancerNodePorts === undefined}
+            >
+              <BadgeBoolean value={spec.allocateLoadBalancerNodePorts} />
             </DrawerItem>
             <DrawerItem name="Load Balancer IP" hidden={!spec.loadBalancerIP}>
               {spec.loadBalancerIP}
@@ -140,7 +145,9 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
 
         <DrawerTitle>Connection</DrawerTitle>
 
-        <DrawerItem name="Cluster IP">{spec.clusterIP}</DrawerItem>
+        <DrawerItem name="Cluster IP" hidden={!spec.clusterIP}>
+          {spec.clusterIP}
+        </DrawerItem>
 
         <DrawerItem name="Cluster IPs" hidden={!service.getClusterIps().length} labelsOnly>
           {service.getClusterIps().map((label) => (
