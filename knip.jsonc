@@ -72,7 +72,6 @@
         "conf",
         "cronstrue",
         "crypto-js",
-        "electron-updater",
         "electron-window-state",
         "fs-extra",
         "glob-to-regexp",

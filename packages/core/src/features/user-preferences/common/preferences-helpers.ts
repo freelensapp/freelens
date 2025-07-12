@@ -107,4 +107,4 @@ export type UserStoreFlatModel = {
 
 export type UserPreferencesModel = {
   [field in keyof PreferenceDescriptors]?: PreferencesModelType<field>;
-} & { updateChannel: string };
+};

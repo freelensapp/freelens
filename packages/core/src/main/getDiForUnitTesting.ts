@@ -20,9 +20,6 @@ import setupSyncingOfWeblinksInjectable from "../features/weblinks/main/setup-sy
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import spawnInjectable from "./child-process/spawn.injectable";
 import initializeClusterManagerInjectable from "./cluster/initialize-manager.injectable";
-import electronQuitAndInstallUpdateInjectable from "./electron-app/features/electron-quit-and-install-update.injectable";
-import electronUpdaterIsActiveInjectable from "./electron-app/features/electron-updater-is-active.injectable";
-import setUpdateOnQuitInjectable from "./electron-app/features/set-update-on-quit.injectable";
 import setupApplicationNameInjectable from "./electron-app/runnables/setup-application-name.injectable";
 import setupDeepLinkingInjectable from "./electron-app/runnables/setup-deep-linking.injectable";
 import setupDeviceShutdownInjectable from "./electron-app/runnables/setup-device-shutdown.injectable";
@@ -124,8 +121,4 @@ const overrideElectronFeatures = (di: DiContainer) => {
       run: () => {},
     }));
   });
-
-  di.override(electronQuitAndInstallUpdateInjectable, () => () => {});
-  di.override(setUpdateOnQuitInjectable, () => () => {});
-  di.override(electronUpdaterIsActiveInjectable, () => false);
 };
