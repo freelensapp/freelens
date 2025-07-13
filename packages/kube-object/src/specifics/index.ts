@@ -26,6 +26,7 @@ export * from "./mutating-webhook-configuration";
 export * from "./namespace";
 export * from "./network-policy";
 export * from "./node";
+export * from "./node-metrics";
 export * from "./persistent-volume";
 export * from "./persistent-volume-claim";
 export * from "./pod";
