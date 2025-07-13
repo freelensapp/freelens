@@ -4,7 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { nodeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import {
+  nodeApiInjectable,
+  nodeMetricsApiInjectable,
+  storesAndApisCanBeCreatedInjectionToken,
+} from "@freelensapp/kube-api-specifics";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
@@ -23,6 +27,7 @@ const nodeStoreInjectable = getInjectable({
       {
         context: di.inject(clusterFrameContextForClusterScopedResourcesInjectable),
         logger: di.inject(loggerInjectionToken),
+        nodeMetricsApi: di.inject(nodeMetricsApiInjectable),
       },
       api,
     );
