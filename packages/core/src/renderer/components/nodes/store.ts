@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities/dist";
 import autoBind from "auto-bind";
 import { sum } from "lodash";
 import { computed, makeObservable, observable } from "mobx";
@@ -32,7 +33,7 @@ export class NodeStore extends KubeObjectStore<Node, NodeApi> {
 
   readonly kubeMetrics = observable.array<NodeMetrics>([]);
 
-  async loadKubeMetrics(namespace?: string) {
+  async loadKubeMetrics() {
     try {
       const metrics = await this.dependencies.nodeMetricsApi.list();
 
@@ -63,8 +64,8 @@ export class NodeStore extends KubeObjectStore<Node, NodeApi> {
 
     if (metrics && metrics.usage) {
       return {
-        cpu: Number(metrics.usage.cpu) || 0,
-        memory: Number(metrics.usage.memory) || 0,
+        cpu: Number(cpuUnitsToNumber(metrics.usage.cpu)) || 0,
+        memory: Number(unitsToBytes(metrics.usage.memory)) || 0,
       };
     }
 

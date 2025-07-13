@@ -77,6 +77,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
   private metricsWatcher = interval(30, () => {
     void (async () => {
+      await this.props.nodeStore.loadKubeMetrics();
       this.metrics = await this.props.requestAllNodeMetrics();
     })();
   });
@@ -132,7 +133,11 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     const metrics = this.getLastMetricValues(node, metricNames);
 
     if (!metrics || metrics.length < 2) {
-      return <LineProgress value={0}>{usageText ?? ""}</LineProgress>;
+      return (
+        <LineProgress value={0}>
+          <span className="usageText">{usageText ?? ""}</span>
+        </LineProgress>
+      );
     }
 
     const [usage, capacity] = metrics;
@@ -143,11 +148,11 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         value={usage}
         tooltip={{
           preferredPositions: TooltipPosition.BOTTOM,
-          children: `${title}: ${formatters.map((formatter) => formatter([usage, capacity])).join(", ")}`,
+          children: `${title}: ${(usageText ? [usageText] : [])
+            .concat(formatters.map((formatter) => formatter([usage, capacity])))
+            .join(", ")}`,
         }}
-      >
-        {usageText ?? ""}
-      </LineProgress>
+      />
     );
   }
 
