@@ -53,7 +53,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (cronJob) => cronJob.getName(),
           [columnId.namespace]: (cronJob) => cronJob.getNs(),
-          [columnId.timezone]: (cronJob) => cronJob.spec.timeZone,
+          [columnId.timezone]: (cronJob) => cronJob.spec.timeZone ?? "",
           [columnId.suspend]: (cronJob) => cronJob.getSuspendFlag(),
           [columnId.active]: (cronJob) => cronJobStore.getActiveJobsNum(cronJob),
           [columnId.lastSchedule]: (cronJob) =>
