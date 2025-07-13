@@ -148,7 +148,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         value={usage}
         tooltip={{
           preferredPositions: TooltipPosition.BOTTOM,
-          children: `${title}: ${(usageText ? [usageText] : [])
+          children: `${title}: ${(title === "CPU" && usageText ? [usageText] : [])
             .concat(formatters.map((formatter) => formatter([usage, capacity])))
             .join(", ")}`,
         }}
