@@ -6,6 +6,7 @@
 
 import "./service-details.scss";
 
+import { Icon } from "@freelensapp/icon";
 import { Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities/dist";
@@ -78,6 +79,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     const selector = service.getSelector();
     const externalProtocol = getExternalProtocol(service);
     const ports = service.getPorts();
+    const loadBalancerStatus = service.getLoadBalancer();
 
     if (externalIps.length === 0 && spec?.externalName) {
       externalIps.push(spec.externalName);
@@ -140,6 +142,29 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerItem name="Health Check Node Port" hidden={!spec.healthCheckNodePort}>
               {spec.healthCheckNodePort}
             </DrawerItem>
+
+            {loadBalancerStatus &&
+              loadBalancerStatus.ingress?.map((lb) => {
+                return (
+                  <>
+                    <div className="title flex gaps">
+                      <Icon small material="list" />
+                    </div>
+                    <DrawerItem name="Hostname" hidden={!lb.hostname}>
+                      {lb.hostname}
+                    </DrawerItem>
+                    <DrawerItem name="Hostname" hidden={!lb.ip}>
+                      {lb.ip}
+                    </DrawerItem>
+                    <DrawerItem name="Hostname" hidden={!lb.ipMode}>
+                      {lb.ipMode}
+                    </DrawerItem>
+                    <DrawerItem name="Hostname" hidden={!lb.ports}>
+                      {lb.ports}
+                    </DrawerItem>
+                  </>
+                );
+              })}
           </>
         )}
 
@@ -194,6 +219,26 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerTitle>Endpoint Slices</DrawerTitle>
             <ServiceDetailsEndpointSlices endpointSlices={endpointSlices} />
           </>
+        )}
+
+        {loadBalancerStatus?.conditions && (
+          <div className="ServiceConditions">
+            <DrawerTitle>Conditions</DrawerTitle>
+            {loadBalancerStatus?.conditions?.map((condition, idx) => (
+              <div className="condition" key={idx}>
+                <div className="title flex gaps">
+                  <Icon small material="list" />
+                </div>
+                <DrawerItem name="Last Transition Time">{condition.lastTransitionTime}</DrawerItem>
+                <DrawerItem name="Reason">{condition.reason}</DrawerItem>
+                <DrawerItem name="Status">{condition.status}</DrawerItem>
+                <DrawerItem name="Type" hidden={!condition.type}>
+                  {condition.type}
+                </DrawerItem>
+                <DrawerItem name="Message">{condition.message}</DrawerItem>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     );
