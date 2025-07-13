@@ -7,7 +7,7 @@
 import "./service-details.scss";
 
 import { Icon } from "@freelensapp/icon";
-import { Service } from "@freelensapp/kube-object";
+import { type PortStatus, Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -18,6 +18,8 @@ import portForwardStoreInjectable from "../../port-forward/port-forward-store/po
 import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
+import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
 
@@ -153,14 +155,44 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
                     <DrawerItem name="Hostname" hidden={!lb.hostname}>
                       {lb.hostname}
                     </DrawerItem>
-                    <DrawerItem name="Hostname" hidden={!lb.ip}>
+                    <DrawerItem name="IP" hidden={!lb.ip}>
                       {lb.ip}
                     </DrawerItem>
-                    <DrawerItem name="Hostname" hidden={!lb.ipMode}>
+                    <DrawerItem name="IP Mode" hidden={!lb.ipMode}>
                       {lb.ipMode}
                     </DrawerItem>
-                    <DrawerItem name="Hostname" hidden={!lb.ports}>
-                      {lb.ports}
+                    <DrawerItem name="Ports" hidden={!lb.ports}>
+                      <Table
+                        selectable
+                        tableId="loadBalancerStatusPorts"
+                        scrollable={false}
+                        sortable={{
+                          port: (portStatus: PortStatus) => portStatus.port,
+                          protocol: (portStatus: PortStatus) => portStatus.protocol,
+                        }}
+                        sortByDefault={{ sortBy: "port", orderBy: "asc" }}
+                        sortSyncWithUrl={false}
+                        className="box grow LoadBalancerStatusPorts"
+                      >
+                        <TableHead flat sticky={false}>
+                          <TableCell className="port" sortBy="port">
+                            Port
+                          </TableCell>
+                          <TableCell className="protocol" sortBy="protocol">
+                            Protocol
+                          </TableCell>
+                          <TableCell className="errorStatus">Error</TableCell>
+                        </TableHead>
+                        {lb.ports?.map((portStatus) => (
+                          <TableRow key={`${portStatus.port}-${portStatus.protocol}`} sortItem={portStatus} nowrap>
+                            <TableCell className="port">{portStatus.port}</TableCell>
+                            <TableCell className="protocol">{portStatus.protocol ?? "TCP"}</TableCell>
+                            <TableCell className="errorStatus">
+                              <WithTooltip>{portStatus.error}</WithTooltip>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </Table>
                     </DrawerItem>
                   </>
                 );

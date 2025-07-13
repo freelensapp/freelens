@@ -23,4 +23,16 @@
       }
     }
   }
+
+  .LoadBalancerStatusPorts {
+    .TableCell {
+      &.port {
+        flex-grow: 0.2;
+      }
+
+      &.protocol {
+        flex-grow: 0.2;
+      }
+    }
+  }
 }

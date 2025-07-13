@@ -60,7 +60,7 @@ export interface LoadBalancerIngress {
   ip?: string;
   hostname?: string;
   ipMode?: LoadBalancerIPMode;
-  ports?: PortStatus;
+  ports?: PortStatus[];
 }
 
 export interface LoadBalancerStatus {
