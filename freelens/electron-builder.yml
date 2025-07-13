@@ -151,6 +151,9 @@ win:
       to: ./${arch}/helm.exe
   publish: null
 
+msi:
+  perMachine: false
+
 nsis:
   include: build/installer.nsh
   oneClick: false
