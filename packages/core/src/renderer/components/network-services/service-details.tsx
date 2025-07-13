@@ -6,7 +6,8 @@
 
 import "./service-details.scss";
 
-import { Service } from "@freelensapp/kube-object";
+import { Icon } from "@freelensapp/icon";
+import { type PortStatus, Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -17,6 +18,8 @@ import portForwardStoreInjectable from "../../port-forward/port-forward-store/po
 import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
+import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
 
@@ -78,6 +81,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     const selector = service.getSelector();
     const externalProtocol = getExternalProtocol(service);
     const ports = service.getPorts();
+    const loadBalancerStatus = service.getLoadBalancer();
 
     if (externalIps.length === 0 && spec?.externalName) {
       externalIps.push(spec.externalName);
@@ -140,6 +144,59 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerItem name="Health Check Node Port" hidden={!spec.healthCheckNodePort}>
               {spec.healthCheckNodePort}
             </DrawerItem>
+
+            {loadBalancerStatus &&
+              loadBalancerStatus.ingress?.map((lb) => {
+                return (
+                  <>
+                    <div className="title flex gaps">
+                      <Icon small material="list" />
+                    </div>
+                    <DrawerItem name="Hostname" hidden={!lb.hostname}>
+                      {lb.hostname}
+                    </DrawerItem>
+                    <DrawerItem name="IP" hidden={!lb.ip}>
+                      {lb.ip}
+                    </DrawerItem>
+                    <DrawerItem name="IP Mode" hidden={!lb.ipMode}>
+                      {lb.ipMode}
+                    </DrawerItem>
+                    <DrawerItem name="Ports" hidden={!lb.ports}>
+                      <Table
+                        selectable
+                        tableId="loadBalancerStatusPorts"
+                        scrollable={false}
+                        sortable={{
+                          port: (portStatus: PortStatus) => portStatus.port,
+                          protocol: (portStatus: PortStatus) => portStatus.protocol,
+                        }}
+                        sortByDefault={{ sortBy: "port", orderBy: "asc" }}
+                        sortSyncWithUrl={false}
+                        className="box grow LoadBalancerStatusPorts"
+                      >
+                        <TableHead flat sticky={false}>
+                          <TableCell className="port" sortBy="port">
+                            Port
+                          </TableCell>
+                          <TableCell className="protocol" sortBy="protocol">
+                            Protocol
+                          </TableCell>
+                          <TableCell className="errorStatus">Error</TableCell>
+                        </TableHead>
+                        {lb.ports?.map((portStatus) => (
+                          <TableRow key={`${portStatus.port}-${portStatus.protocol}`} sortItem={portStatus} nowrap>
+                            <TableCell className="port">{portStatus.port}</TableCell>
+                            <TableCell className="protocol">{portStatus.protocol ?? "TCP"}</TableCell>
+                            <TableCell className="errorStatus">
+                              <WithTooltip>{portStatus.error}</WithTooltip>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </Table>
+                    </DrawerItem>
+                  </>
+                );
+              })}
           </>
         )}
 
@@ -194,6 +251,26 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerTitle>Endpoint Slices</DrawerTitle>
             <ServiceDetailsEndpointSlices endpointSlices={endpointSlices} />
           </>
+        )}
+
+        {loadBalancerStatus?.conditions && (
+          <div className="ServiceConditions">
+            <DrawerTitle>Conditions</DrawerTitle>
+            {loadBalancerStatus?.conditions?.map((condition, idx) => (
+              <div className="condition" key={idx}>
+                <div className="title flex gaps">
+                  <Icon small material="list" />
+                </div>
+                <DrawerItem name="Last Transition Time">{condition.lastTransitionTime}</DrawerItem>
+                <DrawerItem name="Reason">{condition.reason}</DrawerItem>
+                <DrawerItem name="Status">{condition.status}</DrawerItem>
+                <DrawerItem name="Type" hidden={!condition.type}>
+                  {condition.type}
+                </DrawerItem>
+                <DrawerItem name="Message">{condition.message}</DrawerItem>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     );

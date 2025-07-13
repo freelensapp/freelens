@@ -7,19 +7,14 @@
 import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
+import type { Condition } from "../types";
 
 export type ServiceType = "ClusterIP" | "NodePort" | "LoadBalancer" | "ExternalName";
-
 export type Protocol = "TCP" | "UDP" | "SCTP";
-
 export type IPFamily = "IPv4" | "IPv6" | "";
-
 export type ServiceAffinity = "ClientIP" | "None";
-
 export type ServiceExternalTrafficPolicy = "Cluster" | "Local";
-
 export type ServiceInternalTrafficPolicy = "Cluster" | "Local";
-
 export type TrafficDistribution = "PreferClose" | "PreferSameZone" | "PreferSameNode";
 
 export interface ServicePortSpec {
@@ -53,6 +48,26 @@ export interface SessionAffinityConfigApplyConfiguration {
   clientIP?: ClientIPConfigApplyConfiguration;
 }
 
+export type LoadBalancerIPMode = "VIP" | "Proxy";
+
+export interface PortStatus {
+  port?: number;
+  protocol?: Protocol;
+  error?: string;
+}
+
+export interface LoadBalancerIngress {
+  ip?: string;
+  hostname?: string;
+  ipMode?: LoadBalancerIPMode;
+  ports?: PortStatus[];
+}
+
+export interface LoadBalancerStatus {
+  ingress?: LoadBalancerIngress[];
+  conditions?: Condition[];
+}
+
 export interface ServiceSpec {
   ports?: ServicePort[];
   selector?: Partial<Record<string, string>>;
@@ -78,12 +93,7 @@ export interface ServiceSpec {
 }
 
 export interface ServiceStatus {
-  loadBalancer?: {
-    ingress?: {
-      ip?: string;
-      hostname?: string;
-    }[];
-  };
+  loadBalancer?: LoadBalancerStatus;
 }
 
 export class Service extends KubeObject<NamespaceScopedMetadata, ServiceStatus, ServiceSpec> {

@@ -4,7 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars.scss";
+
 .ServicesDetails {
+  .title {
+    margin-top: vars.$margin * 2;
+    margin-bottom: vars.$margin;
+  }
+
   .EndpointSlicesList {
     .TableCell {
       &.ports {
@@ -13,6 +20,18 @@
 
       &.endpoints {
         flex-grow: 3;
+      }
+    }
+  }
+
+  .LoadBalancerStatusPorts {
+    .TableCell {
+      &.port {
+        flex-grow: 0.2;
+      }
+
+      &.protocol {
+        flex-grow: 0.2;
       }
     }
   }
