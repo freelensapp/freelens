@@ -357,18 +357,18 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
-   * const api = Example.getApi();
+   * const api = Example.getApi<Example>();
    * const url = api.formatUrlForNotListing({ name: "foo" });
    * ```
    */
-  static getApi<Api extends KubeApi>(): Api {
+  static getApi<K extends KubeObject<any, any, any>, Api extends KubeApi<K> = KubeApi<K>>(): Api {
     if (!this.crd) {
       throw new Error(`API for ${this.name} is not for CRD and misses metainfo. Extension won't work correctly.`);
     }
     if (this.kind) {
       for (let apiVersion of this.crd.apiVersions) {
         const api = apiManager.getApiByKind(this.kind, apiVersion);
-        if (api) return api as Api;
+        if (api) return api as unknown as Api;
       }
     }
     throw new Error(`API for ${this.name} is not registered. Extension won't work correctly.`);
@@ -381,11 +381,14 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
-   * const api = Example.getStore();
+   * const api = Example.getStore<Example>();
    * await store.loadAll({ namespaces });
    * ```
    */
-  static getStore<Store extends KubeObjectStore<any, any, any>>(): Store {
+  static getStore<
+    K extends KubeObject<any, any, any>,
+    Store extends KubeObjectStore<any, any, any> = KubeObjectStore<K, any, any>,
+  >(): Store {
     const api = this.getApi();
     if (api) {
       const store = apiManager.getStore(api);
