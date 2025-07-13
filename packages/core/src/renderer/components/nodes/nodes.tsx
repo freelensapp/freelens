@@ -55,12 +55,20 @@ interface UsageArgs {
   title: string;
   metricNames: [keyof NodeMetricData, keyof NodeMetricData];
   formatters: MetricsTooltipFormatter[];
+  usageText?: string;
 }
 
 interface Dependencies {
   requestAllNodeMetrics: RequestAllNodeMetrics;
   nodeStore: NodeStore;
   eventStore: EventStore;
+}
+
+function bytesToUnitsAligned(bytes: number): string {
+  if (bytes < 1024) {
+    return `${(bytes / 1024).toFixed(1)}Ki`;
+  }
+  return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
 }
 
 @observer
@@ -108,11 +116,23 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     });
   }
 
-  private renderUsage({ node, title, metricNames, formatters }: UsageArgs) {
+  getNodeCpuUsage(node: Node) {
+    const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
+
+    return bytesToUnitsAligned(metrics.cpu);
+  }
+
+  getNodeMemoryUsage(node: Node) {
+    const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
+
+    return bytesToUnitsAligned(metrics.memory);
+  }
+
+  private renderUsage({ node, title, metricNames, formatters, usageText }: UsageArgs) {
     const metrics = this.getLastMetricValues(node, metricNames);
 
     if (!metrics || metrics.length < 2) {
-      return <LineProgress value={0} />;
+      return <LineProgress value={0}>{usageText ?? ""}</LineProgress>;
     }
 
     const [usage, capacity] = metrics;
@@ -125,7 +145,9 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
           preferredPositions: TooltipPosition.BOTTOM,
           children: `${title}: ${formatters.map((formatter) => formatter([usage, capacity])).join(", ")}`,
         }}
-      />
+      >
+        {usageText ?? ""}
+      </LineProgress>
     );
   }
 
@@ -135,6 +157,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       title: "CPU",
       metricNames: ["cpuUsage", "cpuCapacity"],
       formatters: [([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`, ([, cap]) => `cores: ${cap}`],
+      usageText: this.getNodeCpuUsage(node),
     });
   }
 
@@ -147,6 +170,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         ([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`,
         ([usage]) => bytesToUnits(usage, { precision: 3 }),
       ],
+      usageText: this.getNodeMemoryUsage(node),
     });
   }
 
