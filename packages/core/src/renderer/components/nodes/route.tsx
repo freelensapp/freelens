@@ -132,12 +132,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   private renderUsage({ node, title, metricNames, formatters, usageText }: UsageArgs) {
     const metrics = this.getLastMetricValues(node, metricNames);
 
-    if (!metrics || metrics.length < 2) {
-      return (
-        <LineProgress value={0}>
-          <span className="usageText">{usageText ?? ""}</span>
-        </LineProgress>
-      );
+    if (!metrics || metrics.length < 2 || metrics[1] == 0) {
+      return <span className="usageText">{usageText ?? "N/A"}</span>;
     }
 
     const [usage, capacity] = metrics;
