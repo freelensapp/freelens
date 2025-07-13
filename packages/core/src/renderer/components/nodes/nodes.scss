@@ -26,6 +26,11 @@
     &.cpu {
       flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--blue);
@@ -35,6 +40,11 @@
     &.memory {
       flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--magenta);
@@ -44,6 +54,11 @@
     &.disk {
       flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--golden);
