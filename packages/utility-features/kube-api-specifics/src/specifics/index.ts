@@ -22,6 +22,7 @@ export * from "./mutating-webhook-configuration-api.injectable";
 export * from "./namespace.api.injectable";
 export * from "./network-policy.api.injectable";
 export * from "./node.api.injectable";
+export * from "./node-metrics.api.injectable";
 export * from "./persistent-volume.api.injectable";
 export * from "./persistent-volume-claim.api.injectable";
 export * from "./pod.api.injectable";

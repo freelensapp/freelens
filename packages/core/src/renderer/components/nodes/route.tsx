@@ -55,6 +55,7 @@ interface UsageArgs {
   title: string;
   metricNames: [keyof NodeMetricData, keyof NodeMetricData];
   formatters: MetricsTooltipFormatter[];
+  usageText?: string;
 }
 
 interface Dependencies {
@@ -63,12 +64,20 @@ interface Dependencies {
   eventStore: EventStore;
 }
 
+function bytesToUnitsAligned(bytes: number): string {
+  if (bytes < 1024) {
+    return `${(bytes / 1024).toFixed(1)}Ki`;
+  }
+  return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
+}
+
 @observer
 class NonInjectedNodesRoute extends React.Component<Dependencies> {
   @observable metrics: NodeMetricData | null = null;
 
   private metricsWatcher = interval(30, () => {
     void (async () => {
+      await this.props.nodeStore.loadKubeMetrics();
       this.metrics = await this.props.requestAllNodeMetrics();
     })();
   });
@@ -108,11 +117,23 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     });
   }
 
-  private renderUsage({ node, title, metricNames, formatters }: UsageArgs) {
+  getNodeCpuUsage(node: Node) {
+    const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
+
+    return bytesToUnitsAligned(metrics.cpu);
+  }
+
+  getNodeMemoryUsage(node: Node) {
+    const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
+
+    return bytesToUnitsAligned(metrics.memory);
+  }
+
+  private renderUsage({ node, title, metricNames, formatters, usageText }: UsageArgs) {
     const metrics = this.getLastMetricValues(node, metricNames);
 
-    if (!metrics || metrics.length < 2) {
-      return <LineProgress value={0} />;
+    if (!metrics || metrics.length < 2 || metrics[1] == 0) {
+      return <span className="usageText">{usageText ?? "N/A"}</span>;
     }
 
     const [usage, capacity] = metrics;
@@ -123,7 +144,9 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         value={usage}
         tooltip={{
           preferredPositions: TooltipPosition.BOTTOM,
-          children: `${title}: ${formatters.map((formatter) => formatter([usage, capacity])).join(", ")}`,
+          children: `${title}: ${(title === "CPU" && usageText ? [usageText] : [])
+            .concat(formatters.map((formatter) => formatter([usage, capacity])))
+            .join(", ")}`,
         }}
       />
     );
@@ -135,6 +158,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       title: "CPU",
       metricNames: ["cpuUsage", "cpuCapacity"],
       formatters: [([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`, ([, cap]) => `cores: ${cap}`],
+      usageText: this.getNodeCpuUsage(node),
     });
   }
 
@@ -147,6 +171,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         ([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`,
         ([usage]) => bytesToUnits(usage, { precision: 3 }),
       ],
+      usageText: this.getNodeMemoryUsage(node),
     });
   }
 
