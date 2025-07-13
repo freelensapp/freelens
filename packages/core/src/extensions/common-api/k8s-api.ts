@@ -17,6 +17,7 @@ import {
   PodApi,
 } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import { KubeJsonApiDataFor, KubeObject, KubeObjectMetadata } from "@freelensapp/kube-object";
 import {
   asLegacyGlobalForExtensionApi,
   asLegacyGlobalFunctionForExtensionApi,
@@ -45,7 +46,6 @@ import type {
   KubeApiDependencies,
   KubeApiOptions,
 } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 
 import type { NodeFetchRequestInit } from "../../common/fetch/node-fetch.injectable";
 import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
@@ -338,3 +338,69 @@ export {
   StatefulSet,
   StorageClass,
 } from "@freelensapp/kube-object";
+
+/**
+ * The `KubeObject` that can be used in extensions with additional property to
+ * get CRD metainfo and the API and Store objects.
+ */
+export class LensExtensionKubeObject<
+  Metadata extends KubeObjectMetadata = KubeObjectMetadata,
+  Status = unknown,
+  Spec = unknown,
+> extends KubeObject<Metadata, Status, Spec> {
+  /** Metadata about this CRD object */
+  static readonly crd?: LensExtensionKubeObjectCRD;
+
+  /**
+   * Returns `KubeApi` object for this kind of resource or throws an error.
+   *
+   * @example
+   *
+   * ```ts
+   * const api = Example.getApi<Example>();
+   * const url = api.formatUrlForNotListing({ name: "foo" });
+   * ```
+   */
+  static getApi<K extends KubeObject<any, any, any>, Api extends KubeApi<K> = KubeApi<K>>(): Api {
+    if (!this.crd) {
+      throw new Error(`API for ${this.name} is not for CRD and misses metainfo. Extension won't work correctly.`);
+    }
+    if (this.kind) {
+      for (let apiVersion of this.crd.apiVersions) {
+        const api = apiManager.getApiByKind(this.kind, apiVersion);
+        if (api) return api as unknown as Api;
+      }
+    }
+    throw new Error(`API for ${this.name} is not registered. Extension won't work correctly.`);
+  }
+
+  /**
+   * Returns `KubeObjectStore` object for this kind of resource or throws and
+   * error.
+   *
+   * @example
+   *
+   * ```ts
+   * const api = Example.getStore<Example>();
+   * await store.loadAll({ namespaces });
+   * ```
+   */
+  static getStore<
+    K extends KubeObject<any, any, any>,
+    Store extends KubeObjectStore<any, any, any> = KubeObjectStore<K, any, any>,
+  >(): Store {
+    const api = this.getApi();
+    if (api) {
+      const store = apiManager.getStore(api);
+      if (store) return store as Store;
+    }
+    throw new Error(`Store for ${this.name} is not registered. Extension won't work correctly.`);
+  }
+}
+
+export interface LensExtensionKubeObjectCRD {
+  apiVersions: string[];
+  plural: string;
+  singular: string;
+  shortNames?: string[];
+}
