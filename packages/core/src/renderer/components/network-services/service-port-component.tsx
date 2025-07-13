@@ -202,14 +202,20 @@ class NonInjectedServicePortComponent extends React.Component<ServicePortCompone
 
     return (
       <div className={cssNames("ServicePortComponent", { waiting: this.waiting })}>
-        <span title="Open in a browser" onClick={() => this.portForward()}>
-          {text}
-        </span>
-        <Button primary onClick={portForwardAction}>
-          {" "}
-          {this.isPortForwarded ? (this.isActive ? "Stop/Remove" : "Remove") : "Forward..."}{" "}
-        </Button>
-        {this.waiting && <Spinner />}
+        {service.getSelector().length ? (
+          <>
+            <span title="Open in a browser" onClick={() => this.portForward()}>
+              {text}
+            </span>
+            <Button primary onClick={portForwardAction}>
+              {" "}
+              {this.isPortForwarded ? (this.isActive ? "Stop/Remove" : "Remove") : "Forward..."}{" "}
+            </Button>
+            {this.waiting && <Spinner />}
+          </>
+        ) : (
+          text
+        )}
       </div>
     );
   }

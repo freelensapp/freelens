@@ -170,8 +170,8 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
     const { pod, port } = this.props;
 
     const name = port.name ? `${port.name}: ` : "";
-    const hostAddr = port.hostPort? `${port.hostIP ?? "0.0.0.0"}:${port.hostPort} → ` : "";
-    const containerPort = `${port.containerPort}/${port.protocol ?? "TCP"}`
+    const hostAddr = port.hostPort ? `${port.hostIP ?? "0.0.0.0"}:${port.hostPort} → ` : "";
+    const containerPort = `${port.containerPort}/${port.protocol ?? "TCP"}`;
     const text = `${name}${hostAddr}${containerPort}`;
 
     const portForwardAction = action(async () => {

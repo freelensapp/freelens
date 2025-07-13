@@ -14,7 +14,7 @@ import {
 } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { cssNames, stopPropagation } from "@freelensapp/utilities";
+import { cssNames, formatDuration, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { observer } from "mobx-react";
@@ -120,6 +120,9 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
           <Link key="link" to={runtimeClassDetailsUrl} onClick={stopPropagation}>
             {runtimeClassName}
           </Link>
+        </DrawerItem>
+        <DrawerItem name="Termination Grace Period">
+          {formatDuration((pod.spec.terminationGracePeriodSeconds ?? 30) * 1000, false)}
         </DrawerItem>
 
         <DrawerItem name="Conditions" className="conditions" hidden={conditions.length === 0} labelsOnly>

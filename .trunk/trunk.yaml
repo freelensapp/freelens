@@ -34,23 +34,22 @@ lint:
             - 0
             - 1
           batch: true
-          cache_results: true
+          cache_results: false
           name: lint
           parse_regex: " *(?P<path>.*?):(?P<line>\\d+):(?P<col>\\d+) (?P<code>[^ ]+)(?:[^×]*\\n).*× (?P<message>.*)\\n"
           read_output_from: stderr
-          run: biome check ${target}
-          run_from: ${parent}
+          run: biome check --config-path=${workspace}/biome.jsonc ${target}
+          run_from: ${root_or_parent_with(biome.jsonc)}
         - output: rewrite
           success_codes:
             - 0
-            - 1
           batch: true
-          cache_results: true
+          cache_results: false
           formatter: true
-          in_place: true
           name: fmt
-          run: biome check --fix "${target}"
-          run_from: ${parent}
+          run: biome format --config-path=${workspace}/biome.jsonc --write ${target}
+          run_from: ${root_or_parent_with(biome.jsonc)}
+
     # Prettier checks only *.scss files
     - name: prettier
       files:
