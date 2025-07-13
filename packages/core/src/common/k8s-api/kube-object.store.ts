@@ -391,7 +391,7 @@ export class KubeObjectStore<
   }
 
   async patch(item: K, patch: PartialDeep<Object>, strategy: "strategic" | "merge"): Promise<K>;
-  async patch(item: K, patch: JsonPatch, strategy: "json"): Promise<K>;
+  async patch(item: K, patch: JsonPatch, strategy?: "json"): Promise<K>;
   async patch(item: K, patch: PartialDeep<Object> | JsonPatch, strategy: KubeApiPatchType = "json"): Promise<K> {
     let rawItem: K | null;
 
