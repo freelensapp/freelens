@@ -15,7 +15,7 @@ import validateDirectoryInjectable from "../../../common/fs/validate-directory.i
 import resolveTildeInjectable from "../../../common/path/resolve-tilde.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
-import Gutter from "../gutter/gutter";
+import { Gutter } from "../gutter";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
 import localTerminalSettingPresenterInjectable from "./local-terminal-setting-presenter.injectable";
