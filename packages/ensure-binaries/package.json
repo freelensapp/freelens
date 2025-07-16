@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
     "@types/gunzip-maybe": "^1.4.2",
-    "@types/node": "~22.16.3",
+    "@types/node": "~22.16.4",
     "@types/tar-stream": "^3.1.4",
     "typescript": "^5.8.3"
   },
