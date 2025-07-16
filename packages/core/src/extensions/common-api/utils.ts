@@ -5,21 +5,21 @@
  */
 
 import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import * as utilities from "@freelensapp/utilities";
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 
-export * from "@freelensapp/utilities";
-export { Singleton } from "../../common/utils/singleton";
+const Util = {
+  ...utilities,
 
-export type * from "@freelensapp/utilities";
+  openExternal: asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable),
+  openBrowser: asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable),
 
-export type { OpenLinkInBrowser } from "../../common/utils/open-link-in-browser.injectable";
+  getAppVersion: () => {
+    const di = getLegacyGlobalDiForExtensionApi();
 
-export const openExternal = asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable);
-export const openBrowser = asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable);
-
-export const getAppVersion = () => {
-  const di = getLegacyGlobalDiForExtensionApi();
-
-  return di.inject(buildVersionInitializable.stateToken);
+    return di.inject(buildVersionInitializable.stateToken);
+  },
 };
+
+export { Util };
