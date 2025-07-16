@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import Gutter from "../../../../../../renderer/components/gutter/gutter";
+import { Gutter } from "../../../../../../renderer/components/gutter";
 import { preferenceItemInjectionToken } from "../../preference-item-injection-token";
 
 import type { PreferenceItemTypes } from "../../preference-item-injection-token";

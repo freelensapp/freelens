@@ -11,7 +11,7 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import Gutter from "../gutter/gutter";
+import { Gutter } from "../gutter";
 import { DropFileInput } from "../input";
 import { SettingLayout } from "../layout/setting-layout";
 import styles from "./extensions.module.scss";

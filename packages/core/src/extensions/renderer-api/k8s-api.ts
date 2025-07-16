@@ -91,6 +91,7 @@ export const pdbApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podDisrupti
 export const persistentVolumeApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.persistentVolumeApiInjectable);
 export const podsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podApiInjectable);
 export const podsMetricsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podMetricsApiInjectable);
+export const priorityClassApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.priorityClassApiInjectable);
 export const pvcApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.persistentVolumeClaimApiInjectable);
 export const replicaSetApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.replicaSetApiInjectable);
 export const resourceQuotaApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.resourceQuotaApiInjectable);
@@ -193,6 +194,8 @@ export {
   PersistentVolumeStore,
   PersistentVolumeStore as PersistentVolumesStore,
 } from "../../renderer/components/storage-volumes/store";
+export { ClusterRoleBindingStore } from "../../renderer/components/user-management/cluster-role-bindings/store";
+export { ClusterRoleStore } from "../../renderer/components/user-management/cluster-roles/store";
 export {
   RoleBindingStore,
   RoleBindingStore as RoleBindingsStore,

@@ -7,7 +7,7 @@
 /** */
 export type Falsy = false | 0 | "" | null | undefined;
 
-interface Iterator<T> extends Iterable<T> {
+export interface Iterator<T> extends Iterable<T> {
   filter(fn: (val: T) => unknown): Iterator<T>;
   filterMap<U>(fn: (val: T) => Falsy | U): Iterator<U>;
   find(fn: (val: T) => unknown): T | undefined;

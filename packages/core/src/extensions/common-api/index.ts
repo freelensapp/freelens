@@ -14,7 +14,7 @@ export * as EventBus from "./event-bus";
 export * as Proxy from "./proxy";
 export * as Store from "./stores";
 export * as Types from "./types";
-export * as Util from "./utils";
+export { Util } from "./utils";
 
 export type { InstalledExtension, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 export type { Logger } from "@freelensapp/logger";
