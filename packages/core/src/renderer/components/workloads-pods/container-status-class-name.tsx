@@ -7,10 +7,14 @@ export function containerStatusClassName(
   const state = status ? Object.keys(status?.state ?? {})[0] : "";
   const lastState = status ? Object.keys(status?.lastState ?? {})[0] : "";
 
-  if (lastState === "terminated" || state === "terminated") {
+  if (state === "terminated") {
+    return "terminated";
+  } else if (container.type === "ephemeralContainers" && lastState === "terminated") {
     return "terminated";
   } else if (container.type === "ephemeralContainers") {
     return "container-ephemeral";
+  } else if (status?.ready && status?.restartCount > 0) {
+    return "restarted";
   } else if (status?.ready) {
     return "running";
   } else if (state === "running") {

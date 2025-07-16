@@ -30,6 +30,11 @@
     background-color: var(--colorOk);
   }
 
+  &.restarted {
+    background-color: var(--colorOk);
+    border: 1px solid var(--colorWarning);
+  }
+
   &.terminated {
     background-color: transparent;
     border: 1px solid var(--colorTerminated);
