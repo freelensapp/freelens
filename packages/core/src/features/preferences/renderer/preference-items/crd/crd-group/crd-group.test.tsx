@@ -48,7 +48,7 @@ describe("CrdGroup Component", () => {
       expect(screen.getByText("CRD Groups")).toBeInTheDocument();
 
       // Check if the textarea contains some default config
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       expect(textarea.value).toContain("KEDA:");
     });
 
@@ -58,7 +58,7 @@ describe("CrdGroup Component", () => {
 
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       expect(textarea.value).toContain("CustomGroup:");
     });
 
@@ -81,7 +81,7 @@ describe("CrdGroup Component", () => {
     it("validates proper YAML configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       // Valid configuration examples
       const validConfigs = [
@@ -105,7 +105,7 @@ describe("CrdGroup Component", () => {
     it("shows error for invalid YAML syntax", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       // Invalid YAML syntax
       const invalidConfig = "Group1:\n  - item1\n  This is not valid YAML\n  - nested";
@@ -114,13 +114,13 @@ describe("CrdGroup Component", () => {
       fireEvent.blur(textarea);
 
       // Check that error message is displayed
-      expect(screen.getByText(/YAML Error/)).toBeInTheDocument();
+      expect(screen.getByText(/YAML syntax error/)).toBeInTheDocument();
     });
 
     it("validates structure of YAML configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       // Invalid structure examples
       const invalidStructureConfigs = [
@@ -144,7 +144,7 @@ describe("CrdGroup Component", () => {
     it("can clear custom configuration to use only defaults", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       // Change to custom config first
       fireEvent.change(textarea, { target: { value: "Custom:\n  - pattern" } });
@@ -161,7 +161,7 @@ describe("CrdGroup Component", () => {
     it("saves valid configuration to state on blur", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const testConfig = "TestGroup:\n  - test.pattern";
 
       // Change config and trigger blur
@@ -178,7 +178,7 @@ describe("CrdGroup Component", () => {
 
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const invalidConfig = "Invalid: [ This is not valid YAML";
 
       // Change config to invalid and trigger blur
@@ -192,7 +192,7 @@ describe("CrdGroup Component", () => {
     it("updates textarea value when typing", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const newValue = "NewGroup:\n  - new.pattern";
 
       fireEvent.change(textarea, { target: { value: newValue } });
@@ -205,7 +205,7 @@ describe("CrdGroup Component", () => {
     it("handles KEDA configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const kedaConfig = "KEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh";
 
       fireEvent.change(textarea, { target: { value: kedaConfig } });
@@ -222,7 +222,7 @@ describe("CrdGroup Component", () => {
     it("handles FluxCD configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const fluxConfig = "FluxCD:\n  - toolkit.fluxcd.io\n  - Image:\n    - image.toolkit.fluxcd.io";
 
       fireEvent.change(textarea, { target: { value: fluxConfig } });
@@ -239,7 +239,7 @@ describe("CrdGroup Component", () => {
     it("handles mixed configuration with null values", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const mixedConfig =
         "Applications:\n  - app.example.com\n  - Operators:\n    - operator.example.com\nHidden: null";
 
@@ -259,7 +259,7 @@ describe("CrdGroup Component", () => {
     it("handles empty configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       fireEvent.change(textarea, { target: { value: "" } });
       fireEvent.blur(textarea);
@@ -272,7 +272,7 @@ describe("CrdGroup Component", () => {
     it("handles whitespace-only configuration", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       fireEvent.change(textarea, { target: { value: "   \n  \n   " } });
       fireEvent.blur(textarea);
@@ -285,7 +285,7 @@ describe("CrdGroup Component", () => {
     it("handles catch-all pattern", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       const catchAllConfig = 'All:\n  - ""';
 
       fireEvent.change(textarea, { target: { value: catchAllConfig } });
@@ -304,14 +304,14 @@ describe("CrdGroup Component", () => {
     it("clears error when valid configuration is entered after invalid", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       // First enter invalid config
       fireEvent.change(textarea, { target: { value: "Invalid: [ YAML" } });
       fireEvent.blur(textarea);
 
       // Should show error
-      expect(screen.getByText(/YAML Error/)).toBeInTheDocument();
+      expect(screen.getByText(/YAML syntax error/)).toBeInTheDocument();
 
       // Then enter valid config
       fireEvent.change(textarea, { target: { value: "Valid:\n  - pattern" } });
@@ -325,7 +325,7 @@ describe("CrdGroup Component", () => {
     it("shows validation error for invalid nested structure", () => {
       render(<CrdGroup />);
 
-      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
 
       const invalidNestedConfig = "Group:\n  - pattern\n  - SubGroup: not-an-array";
 
@@ -393,15 +393,19 @@ describe("CrdGroup Component", () => {
       const toggleElement = screen.getByTestId("drawer-param-toggler");
       fireEvent.click(toggleElement);
 
-      // Get all textareas
-      const textareas = screen.getAllByRole("textbox");
+      // Get all Monaco editors
+      const mainEditor = screen.getByTestId("monaco-editor-for-crd-group-config");
+      const defaultEditor = screen.getByTestId("monaco-editor-for-crd-group-default");
+      const mergedEditor = screen.getByTestId("monaco-editor-for-crd-group-merged");
 
-      // Should have main editable textarea plus two readonly ones
-      expect(textareas.length).toBe(3);
+      // Should have all three editors
+      expect(mainEditor).toBeInTheDocument();
+      expect(defaultEditor).toBeInTheDocument();
+      expect(mergedEditor).toBeInTheDocument();
 
-      // Check that readonly textareas are present and readonly
-      const readonlyTextareas = textareas.filter((textarea) => textarea.hasAttribute("readOnly"));
-      expect(readonlyTextareas.length).toBe(2);
+      // Check that readonly editors are present and readonly
+      expect(defaultEditor.hasAttribute("readOnly")).toBe(true);
+      expect(mergedEditor.hasAttribute("readOnly")).toBe(true);
     });
 
     it("updates merge preview when user config changes", () => {
@@ -445,7 +449,7 @@ describe("CrdGroup Component", () => {
       render(<CrdGroup />);
 
       // Check if main container has the right class
-      const container = screen.getByRole("textbox").closest("section");
+      const container = screen.getByTestId("monaco-editor-for-crd-group-config").closest("section");
       expect(container).toHaveClass("crd-group-container");
 
       const toggleElement = screen.getByTestId("drawer-param-toggler");
