@@ -9,8 +9,8 @@ import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerParamToggler } from "../../../../../../renderer/components/drawer/drawer-param-toggler";
-import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
+import { MonacoEditor } from "../../../../../../renderer/components/monaco-editor";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 import { DEFAULT_CONFIG_YAML } from "./default-config";
 import "./crd-group.scss";
@@ -59,7 +59,89 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     }
   }, []);
 
+  // Pure validation function that doesn't modify state
+  const isValidConfiguration = (value: string): boolean => {
+    if (!value.trim()) {
+      return true;
+    }
+
+    const [parsed, parseError] = tryParseYaml(value);
+
+    if (parseError) {
+      return false;
+    }
+
+    // Parse succeeded, now validate the structure more deeply
+    try {
+      // Check the structure
+      let valid = true;
+      Object.entries(parsed).forEach(([key, val]) => {
+        // Value can be null (to hide), an array of strings, or an object of sub-levels
+        if (val === null) {
+          // Valid - null is allowed
+        } else if (Array.isArray(val)) {
+          // Check that each element is either a string or an object of sub-levels
+          for (const item of val) {
+            if (typeof item === "string") {
+              // Valid - strings are allowed
+            } else if (typeof item === "object" && item !== null) {
+              // Check the structure of sub-levels
+              Object.entries(item).forEach(([subKey, subVal]) => {
+                if (subVal !== null && !Array.isArray(subVal)) {
+                  valid = false;
+                }
+              });
+            } else {
+              valid = false;
+            }
+          }
+        } else if (typeof val === "object") {
+          // Check the structure of sub-levels
+          Object.entries(val).forEach(([subKey, subVal]) => {
+            if (subVal !== null && !Array.isArray(subVal)) {
+              valid = false;
+            }
+          });
+        } else {
+          valid = false;
+        }
+      });
+
+      return valid;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  // Auto-save effect - only save valid configurations
+  React.useEffect(() => {
+    if (isValidConfiguration(crdGroup)) {
+      state.crdGroup = crdGroup;
+    }
+  }, [crdGroup, state]);
+
   const [validationError, setValidationError] = React.useState<string | null>(null);
+
+  // Common options for read-only Monaco editors
+  const readOnlyEditorOptions = {
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    automaticLayout: true,
+    fontSize: 13,
+    lineNumbers: "on" as const,
+    folding: true,
+    tabSize: 2,
+    wordWrap: "on" as const,
+    renderWhitespace: "selection" as const,
+    bracketPairColorization: { enabled: true },
+    readOnly: true,
+    contextmenu: false,
+    cursorStyle: "line-thin" as const,
+    selectionHighlight: false,
+    occurrencesHighlight: "off" as const,
+    domReadOnly: true,
+    selectOnLineNumbers: false,
+  };
 
   // Function to merge user config with default config
   const getMergedConfig = React.useCallback(() => {
@@ -209,14 +291,6 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     }
   };
 
-  const yamlValidator = {
-    validate: validateConfiguration,
-    message: `Format must be valid YAML.`,
-  };
-
-  const yamlPlaceholder =
-    'KEDA:\n  - keda.sh\n  - Eventing:\n    - eventing.keda.sh\nlinkerd.io:\n  - policy.linkerd.io\n  - ""\nignored: null';
-
   return (
     <section className="crd-group-container">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
@@ -271,21 +345,49 @@ Other:
       {/* User configuration section */}
       <div className="user-config-section">
         <label>Your custom configuration:</label>
-        <Input
-          theme="round-black"
-          placeholder={yamlPlaceholder}
-          value={crdGroup}
-          onChange={(v) => setCrdGroup(v)}
-          multiLine={true}
-          rows={15}
-          onBlur={() => {
-            if (validateConfiguration(crdGroup)) {
-              // Store YAML configuration directly
-              state.crdGroup = crdGroup;
-            }
-          }}
-          validators={[yamlValidator]}
-        />
+        <div className="monaco-editor-container">
+          <MonacoEditor
+            id="crd-group-config"
+            language="yaml"
+            value={crdGroup}
+            onChange={(value) => {
+              setCrdGroup(value);
+              // Validate the configuration on change
+              validateConfiguration(value);
+            }}
+            onError={(error) => {
+              if (error) {
+                setValidationError(`YAML syntax error: ${String(error)}`);
+              }
+            }}
+            style={{
+              height: 300,
+              border: "1px solid var(--borderColor, #404040)",
+              borderRadius: "4px",
+            }}
+            options={{
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              fontSize: 13,
+              lineNumbers: "on",
+              folding: true,
+              tabSize: 2,
+              insertSpaces: true,
+              wordWrap: "on",
+              renderWhitespace: "selection",
+              bracketPairColorization: { enabled: true },
+              suggest: {
+                showKeywords: true,
+                showSnippets: true,
+              },
+              acceptSuggestionOnEnter: "on",
+              quickSuggestions: true,
+              formatOnPaste: true,
+              formatOnType: true,
+            }}
+          />
+        </div>
       </div>
 
       {/* Advanced view with DrawerParamToggler */}
@@ -310,13 +412,35 @@ Other:
             {/* Default configuration */}
             <div className="config-column">
               <label>Default configuration:</label>
-              <textarea readOnly value={DEFAULT_CONFIG_YAML} className="readonly-textarea default-config" />
+              <MonacoEditor
+                id="crd-group-default"
+                language="yaml"
+                value={DEFAULT_CONFIG_YAML}
+                readOnly
+                style={{
+                  height: 200,
+                  border: "1px solid var(--borderColor, #404040)",
+                  borderRadius: "4px",
+                }}
+                options={readOnlyEditorOptions}
+              />
             </div>
 
             {/* Merged configuration */}
             <div className="config-column">
               <label>Final result (merged):</label>
-              <textarea readOnly value={getMergedConfig()} className="readonly-textarea merged-config" />
+              <MonacoEditor
+                id="crd-group-merged"
+                language="yaml"
+                value={getMergedConfig()}
+                readOnly
+                style={{
+                  height: 200,
+                  border: "1px solid var(--borderColor, #404040)",
+                  borderRadius: "4px",
+                }}
+                options={readOnlyEditorOptions}
+              />
             </div>
           </div>
         </div>
