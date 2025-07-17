@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/legacy-global-di",
   "private": false,
-  "version": "1.5.1",
+  "version": "1.5.2-0",
   "description": "Injection tokens for implementing metrics for Freelens",
   "type": "commonjs",
   "publishConfig": {
