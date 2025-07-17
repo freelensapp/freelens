@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/routing",
   "private": false,
-  "version": "1.5.1-0",
+  "version": "1.5.1",
   "description": "Highly extendable routing in the Freelens.",
   "type": "commonjs",
   "files": [
