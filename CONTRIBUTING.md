@@ -37,6 +37,9 @@ Please ensure your pull request adheres to the following guidelines:
 Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
 wiki page to see how to build the application from source.
 
+Learn about the project from the
+[DeepWiki](https://deepwiki.com/freelensapp/freelens) documentation.
+
 ## Style Guides
 
 ### Code Style
