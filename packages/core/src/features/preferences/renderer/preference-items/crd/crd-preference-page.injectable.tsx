@@ -9,6 +9,7 @@ import React from "react";
 import { HorizontalLine } from "../../../../../renderer/components/horizontal-line/horizontal-line";
 import { PreferencePageComponent } from "../../preference-page-component";
 import { preferenceItemInjectionToken } from "../preference-item-injection-token";
+
 import type { PreferenceItemComponent, PreferencePage } from "../preference-item-injection-token";
 
 const CrdPage: PreferenceItemComponent<PreferencePage> = ({ children, item }) => (
