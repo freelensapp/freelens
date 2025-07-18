@@ -30,7 +30,6 @@
     margin-bottom: $margin;
 
     .StatusBrick {
-      background: var(--colorTerminated);
       margin-right: $margin;
 
       @include workloads-mixins.pod-status-bgs;

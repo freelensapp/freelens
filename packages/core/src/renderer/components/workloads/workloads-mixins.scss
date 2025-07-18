@@ -7,6 +7,7 @@
 // Pods
 $pod-status-running-color: var(--colorOk);
 $pod-status-pending-color: var(--colorWarning);
+$pod-status-restarted-color: var(--colorOk);
 $pod-status-evicted-color: var(--colorError);
 $pod-status-succeeded-color: var(--colorSuccess);
 $pod-status-failed-color: var(--colorError);
@@ -41,6 +42,7 @@ $cronjob-suspended: var(--colorTerminated);
 $pod-status-color-list: (
   running: $pod-status-running-color,
   pending: $pod-status-pending-color,
+  restarted: $pod-status-restarted-color,
   evicted: $pod-status-evicted-color,
   waiting: $pod-status-pending-color,
   succeeded: $pod-status-succeeded-color,
