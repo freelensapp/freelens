@@ -661,9 +661,13 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   getRunningContainers(): (Container | EphemeralContainer)[] {
+    const ephemeralContainers = this.getEphemeralContainers();
     const runningContainerNames = new Set(
       this.getContainerStatuses()
-        .filter(({ lastState, state }) => state?.running && !lastState?.terminated)
+        .filter(
+          ({ name, lastState, state }) =>
+            state?.running && !(ephemeralContainers.find((c) => c.name === name) && lastState?.terminated),
+        )
         .map(({ name }) => name),
     );
 
@@ -671,9 +675,13 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   getRunningContainersWithType(): (ContainerWithType | EphemeralContainerWithType)[] {
+    const ephemeralContainers = this.getEphemeralContainers();
     const runningContainerNames = new Set(
       this.getContainerStatuses()
-        .filter(({ lastState, state }) => state?.running && !lastState?.terminated)
+        .filter(
+          ({ name, lastState, state }) =>
+            state?.running && !(ephemeralContainers.find((c) => c.name === name) && lastState?.terminated),
+        )
         .map(({ name }) => name),
     );
 
