@@ -139,6 +139,43 @@ export const vpaStore = asLegacyGlobalForExtensionApi(verticalPodAutoscalerStore
 
 export * from "../common-api/k8s-api";
 
+export type {
+  ClusterRoleApi,
+  ClusterRoleBindingApi,
+  ConfigMapApi,
+  CronJobApi,
+  CustomResourceDefinitionApi,
+  DaemonSetApi,
+  DeploymentApi,
+  EndpointSliceApi,
+  EndpointsApi,
+  HorizontalPodAutoscalerApi,
+  IngressApi,
+  JobApi,
+  KubeEventApi,
+  LimitRangeApi,
+  NamespaceApi,
+  NetworkPolicyApi,
+  NodeApi,
+  NodeMetricsApi,
+  PersistentVolumeApi,
+  PersistentVolumeClaimApi,
+  PodApi,
+  PodDisruptionBudgetApi,
+  PodMetricsApi,
+  PriorityClassApi,
+  ReplicaSetApi,
+  ResourceQuotaApi,
+  RoleApi,
+  RoleBindingApi,
+  SecretApi,
+  ServiceAccountApi,
+  ServiceApi,
+  StatefulSetApi,
+  StorageClassApi,
+  VerticalPodAutoscalerApi,
+} from "@freelensapp/kube-api";
+
 export const requestMetrics = asLegacyGlobalFunctionForExtensionApi(requestMetricsInjectable);
 
 export {
@@ -166,7 +203,10 @@ export {
   PriorityClassStore,
   PriorityClassStore as PriorityClassStoreStore,
 } from "../../renderer/components/config-priority-classes/store";
-export { ResourceQuotaStore as ResourceQuotasStore } from "../../renderer/components/config-resource-quotas/store";
+export {
+  ResourceQuotaStore as ResourceQuotasStore,
+  ResourceQuotaStore,
+} from "../../renderer/components/config-resource-quotas/store";
 export { SecretStore, SecretStore as SecretsStore } from "../../renderer/components/config-secrets/store";
 export { VerticalPodAutoscalerStore } from "../../renderer/components/config-vertical-pod-autoscalers/store";
 export {
