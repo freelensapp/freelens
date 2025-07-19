@@ -47,16 +47,16 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
   }
 
   renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {
-    const state = status ? Object.keys(status?.state ?? {})[0] : "";
+    const state = status ? Object.keys(status?.state ?? {})[0] : "unknown";
     const terminated = status?.state ? (status?.state.terminated ?? "") : "";
 
     return (
       <span className={cssNames("status", containerStatusClassName(container, status))}>
         {state}
+        {status?.ready ? ", ready" : ""}
         {container.type === "initContainers" ? ", init" : ""}
         {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
         {status?.restartCount ? ", restarted" : ""}
-        {status?.ready ? ", ready" : ""}
         {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
       </span>
     );
