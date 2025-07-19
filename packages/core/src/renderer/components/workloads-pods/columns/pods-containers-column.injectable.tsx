@@ -5,6 +5,7 @@
  */
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import startCase from "lodash/startCase";
 import React from "react";
@@ -13,38 +14,64 @@ import { containerStatusClassName } from "../container-status-class-name";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type {
-  ContainerState,
+  ContainerStateRunning,
+  ContainerStateTerminated,
+  ContainerStateWaiting,
   ContainerWithType,
   EphemeralContainerWithType,
   Pod,
   PodContainerStatus,
 } from "@freelensapp/kube-object";
 
-const renderState = (
-  container: ContainerWithType | EphemeralContainerWithType,
-  key: keyof ContainerState,
-  status?: PodContainerStatus,
-) => {
-  const state = status?.state;
+const renderState = (container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) => {
+  const state = status ? Object.keys(status?.state ?? {})[0] : "";
+  const terminated = status?.state ? (status?.state.terminated ?? "") : "";
+
   if (!state) return;
+  const statusState = status?.state ?? {};
+  let stateDetails: ContainerStateRunning | ContainerStateWaiting | ContainerStateTerminated | undefined;
+  if (state === "running" || state === "waiting" || state === "terminated") {
+    stateDetails = statusState[state];
+  }
+
   return (
     <>
       <div className="title">
         {container.name}{" "}
         <span className="text-secondary">
-          {key}
+          {state}
           {container.type === "initContainers" ? ", init" : ""}
           {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
-          {status?.restartCount > 0 ? ", restarted" : ""}
+          {status?.restartCount ? ", restarted" : ""}
           {status?.ready ? ", ready" : ""}
+          {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
         </span>
       </div>
-      {Object.entries(state[key] ?? {}).map(([name, value]) => (
-        <React.Fragment key={name}>
-          <div className="name">{startCase(name)}</div>
-          <div className="value">{value}</div>
-        </React.Fragment>
-      ))}
+      {stateDetails && (
+        <>
+          {state === "running" &&
+            object.entries(stateDetails as ContainerStateRunning).map(([name, value]) => (
+              <React.Fragment key={name}>
+                <div className="name">{startCase(name)}</div>
+                <div className="value">{value}</div>
+              </React.Fragment>
+            ))}
+          {state === "waiting" &&
+            object.entries(stateDetails as ContainerStateWaiting).map(([name, value]) => (
+              <React.Fragment key={name}>
+                <div className="name">{startCase(name)}</div>
+                <div className="value">{value}</div>
+              </React.Fragment>
+            ))}
+          {state === "terminated" &&
+            object.entries(stateDetails as ContainerStateTerminated).map(([name, value]) => (
+              <React.Fragment key={name}>
+                <div className="name">{startCase(name)}</div>
+                <div className="value">{value ?? ""}</div>
+              </React.Fragment>
+            ))}
+        </>
+      )}
     </>
   );
 };
@@ -64,13 +91,7 @@ const renderContainersStatus = (pod: Pod) => {
                 tableView: true,
                 nowrap: true,
               },
-              children: (
-                <>
-                  {renderState(container, "running", status)}
-                  {renderState(container, "waiting", status)}
-                  {renderState(container, "terminated", status)}
-                </>
-              ),
+              children: renderState(container, status) ?? <></>,
             }}
           />
         );
