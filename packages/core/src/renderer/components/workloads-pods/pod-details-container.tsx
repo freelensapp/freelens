@@ -53,10 +53,10 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     return (
       <span className={cssNames("status", containerStatusClassName(container, status))}>
         {state}
-        {status?.ready ? ", ready" : ""}
         {container.type === "initContainers" ? ", init" : ""}
         {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
         {status?.restartCount ? ", restarted" : ""}
+        {status?.ready ? ", ready" : ""}
         {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
       </span>
     );
