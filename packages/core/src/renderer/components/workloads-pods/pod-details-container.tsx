@@ -48,13 +48,15 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
 
   renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {
     const state = status ? Object.keys(status?.state ?? {})[0] : "";
-    const ready = status ? status.ready : "";
     const terminated = status?.state ? (status?.state.terminated ?? "") : "";
 
     return (
-      <span className={cssNames("status", status)}>
+      <span className={cssNames("status", containerStatusClassName(container, status))}>
         {state}
-        {ready ? ", ready" : ""}
+        {status?.ready ? ", ready" : ""}
+        {container.type === "initContainers" ? ", init" : ""}
+        {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
+        {status?.restartCount ? ", restarted" : ""}
         {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
       </span>
     );
@@ -118,7 +120,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         )}
         {targetContainerName && (
           <DrawerItem name="Target Container">
-            <a href={`#pod-container-id-${pod}-${targetContainerName}`}>{targetContainerName}</a>
+            <a href={`#pod-container-id-${pod.getName()}-${targetContainerName}`}>{targetContainerName}</a>
           </DrawerItem>
         )}
         {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
