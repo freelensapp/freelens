@@ -5,7 +5,12 @@
  */
 
 import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
-import { resolveSystemProxyInjectionToken } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
+import {
+  type ResolveSystemProxy,
+  resolveSystemProxyInjectionToken,
+} from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
+
+export type { ResolveSystemProxy };
 
 /**
  * Resolves URL-specific proxy information from system. See more here: https://www.electronjs.org/docs/latest/api/session#sesresolveproxyurl

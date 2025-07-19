@@ -68,76 +68,44 @@ export function isAllowedResource(resources: KubeResource | KubeResource[]) {
   });
 }
 
-export const clusterRoleApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.clusterRoleApiInjectable);
-export const clusterRoleBindingApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.clusterRoleBindingApiInjectable);
-export const configMapApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.configMapApiInjectable);
-export const crdApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.customResourceDefinitionApiInjectable);
-export const cronJobApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.cronJobApiInjectable);
-export const daemonSetApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.daemonSetApiInjectable);
-export const deploymentApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.deploymentApiInjectable);
-export const endpointApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.endpointsApiInjectable);
-export const endpointSliceApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.endpointSliceApiInjectable);
-export const eventApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.kubeEventApiInjectable);
-export const hpaApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.horizontalPodAutoscalerApiInjectable);
-export const ingressApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.ingressApiInjectable);
-export const jobApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.jobApiInjectable);
-export const limitRangeApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.limitRangeApiInjectable);
-export const namespacesApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.namespaceApiInjectable);
-export const networkPolicyApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.networkPolicyApiInjectable);
-export const nodesApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.nodeApiInjectable);
-export const nodesMetricsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.nodeMetricsApiInjectable);
-export const pcApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.priorityClassApiInjectable);
-export const pdbApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podDisruptionBudgetApiInjectable);
-export const persistentVolumeApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.persistentVolumeApiInjectable);
-export const podsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podApiInjectable);
-export const podsMetricsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.podMetricsApiInjectable);
-export const priorityClassApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.priorityClassApiInjectable);
-export const pvcApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.persistentVolumeClaimApiInjectable);
-export const replicaSetApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.replicaSetApiInjectable);
-export const resourceQuotaApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.resourceQuotaApiInjectable);
-export const roleApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.roleApiInjectable);
-export const roleBindingApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.roleBindingApiInjectable);
-export const secretsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.secretApiInjectable);
-export const serviceAccountsApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.serviceAccountApiInjectable);
-export const serviceApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.serviceApiInjectable);
-export const statefulSetApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.statefulSetApiInjectable);
-export const storageClassApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.storageClassApiInjectable);
-export const vpaApi = asLegacyGlobalForExtensionApi(kubeApiSpecifics.verticalPodAutoscalerApiInjectable);
-
-export const clusterRoleStore = asLegacyGlobalForExtensionApi(clusterRoleStoreInjectable);
-export const clusterRoleBindingStore = asLegacyGlobalForExtensionApi(clusterRoleBindingStoreInjectable);
-export const configMapStore = asLegacyGlobalForExtensionApi(configMapStoreInjectable);
-export const crdStore = asLegacyGlobalForExtensionApi(customResourceDefinitionStoreInjectable);
-export const cronJobStore = asLegacyGlobalForExtensionApi(cronJobStoreInjectable);
-export const daemonSetStore = asLegacyGlobalForExtensionApi(daemonSetStoreInjectable);
-export const deploymentStore = asLegacyGlobalForExtensionApi(deploymentStoreInjectable);
-export const endpointStore = asLegacyGlobalForExtensionApi(endpointsStoreInjectable);
-export const endpointSliceStore = asLegacyGlobalForExtensionApi(endpointSliceStoreInjectable);
-export const eventStore = asLegacyGlobalForExtensionApi(eventStoreInjectable);
-export const hpaStore = asLegacyGlobalForExtensionApi(horizontalPodAutoscalerStoreInjectable);
-export const ingressStore = asLegacyGlobalForExtensionApi(ingressStoreInjectable);
-export const jobStore = asLegacyGlobalForExtensionApi(jobStoreInjectable);
-export const limitRangeStore = asLegacyGlobalForExtensionApi(limitRangeStoreInjectable);
-export const namespaceStore = asLegacyGlobalForExtensionApi(namespaceStoreInjectable);
-export const networkPolicyStore = asLegacyGlobalForExtensionApi(networkPolicyStoreInjectable);
-export const nodesStore = asLegacyGlobalForExtensionApi(nodeStoreInjectable);
-export const pcStore = asLegacyGlobalForExtensionApi(priorityClassStoreInjectable);
-export const pdbStore = asLegacyGlobalForExtensionApi(podDisruptionBudgetStoreInjectable);
-export const persistentVolumeStore = asLegacyGlobalForExtensionApi(persistentVolumeStoreInjectable);
-export const podsStore = asLegacyGlobalForExtensionApi(podStoreInjectable);
-export const pvcStore = asLegacyGlobalForExtensionApi(persistentVolumeClaimStoreInjectable);
-export const replicaSetStore = asLegacyGlobalForExtensionApi(replicaSetStoreInjectable);
-export const resourceQuotaStore = asLegacyGlobalForExtensionApi(resourceQuotaStoreInjectable);
-export const roleStore = asLegacyGlobalForExtensionApi(roleStoreInjectable);
-export const roleBindingStore = asLegacyGlobalForExtensionApi(roleBindingStoreInjectable);
-export const secretsStore = asLegacyGlobalForExtensionApi(secretStoreInjectable);
-export const serviceAccountsStore = asLegacyGlobalForExtensionApi(serviceAccountStoreInjectable);
-export const serviceStore = asLegacyGlobalForExtensionApi(serviceStoreInjectable);
-export const statefulSetStore = asLegacyGlobalForExtensionApi(statefulSetStoreInjectable);
-export const storageClassStore = asLegacyGlobalForExtensionApi(storageClassStoreInjectable);
-export const vpaStore = asLegacyGlobalForExtensionApi(verticalPodAutoscalerStoreInjectable);
-
 export * from "../common-api/k8s-api";
+
+export type {
+  ClusterRoleApi,
+  ClusterRoleBindingApi,
+  ConfigMapApi,
+  CronJobApi,
+  CustomResourceDefinitionApi,
+  DaemonSetApi,
+  DeploymentApi,
+  EndpointSliceApi,
+  EndpointsApi,
+  HorizontalPodAutoscalerApi,
+  IngressApi,
+  JobApi,
+  KubeEventApi,
+  LimitRangeApi,
+  NamespaceApi,
+  NetworkPolicyApi,
+  NodeApi,
+  NodeMetricsApi,
+  PersistentVolumeApi,
+  PersistentVolumeClaimApi,
+  PodApi,
+  PodDisruptionBudgetApi,
+  PodMetricsApi,
+  PriorityClassApi,
+  ReplicaSetApi,
+  ResourceQuotaApi,
+  RoleApi,
+  RoleBindingApi,
+  SecretApi,
+  ServiceAccountApi,
+  ServiceApi,
+  StatefulSetApi,
+  StorageClassApi,
+  VerticalPodAutoscalerApi,
+} from "@freelensapp/kube-api";
 
 export const requestMetrics = asLegacyGlobalFunctionForExtensionApi(requestMetricsInjectable);
 
@@ -166,7 +134,10 @@ export {
   PriorityClassStore,
   PriorityClassStore as PriorityClassStoreStore,
 } from "../../renderer/components/config-priority-classes/store";
-export { ResourceQuotaStore as ResourceQuotasStore } from "../../renderer/components/config-resource-quotas/store";
+export {
+  ResourceQuotaStore as ResourceQuotasStore,
+  ResourceQuotaStore,
+} from "../../renderer/components/config-resource-quotas/store";
 export { SecretStore, SecretStore as SecretsStore } from "../../renderer/components/config-secrets/store";
 export { VerticalPodAutoscalerStore } from "../../renderer/components/config-vertical-pod-autoscalers/store";
 export {
