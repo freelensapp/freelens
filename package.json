@@ -14,6 +14,7 @@
     "biome": "pnpm dlx @biomejs/biome@2.1.1",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
+    "biome:migrate": "corepack pnpm biome migrate --write",
     "build": "NODE_ENV=production pnpm -r build",
     "build:app": "cd freelens && pnpm build:app",
     "build:core": "cd packages/core && pnpm build",
