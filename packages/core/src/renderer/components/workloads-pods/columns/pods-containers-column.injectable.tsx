@@ -91,7 +91,7 @@ const renderContainersStatus = (pod: Pod) => {
                 tableView: true,
                 nowrap: true,
               },
-              children: renderState(container, status),
+              children: renderState(container, status) ?? <></>,
             }}
           />
         );
