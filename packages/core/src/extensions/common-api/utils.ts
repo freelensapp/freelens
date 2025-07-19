@@ -6,8 +6,12 @@
 
 import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import * as utilities from "@freelensapp/utilities";
-import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
+import openLinkInBrowserInjectable, {
+  type OpenLinkInBrowser,
+} from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
+
+export type { OpenLinkInBrowser };
 
 const Util = {
   ...utilities,
