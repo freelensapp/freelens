@@ -36,19 +36,22 @@ lint:
           batch: true
           cache_results: false
           name: lint
-          parse_regex: " *(?P<path>.*?):(?P<line>\\d+):(?P<col>\\d+) (?P<code>[^ ]+)(?:[^×]*\\n).*× (?P<message>.*)\\n"
-          read_output_from: stderr
-          run: biome check --config-path=${workspace}/biome.jsonc ${target}
+          parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
+          read_output_from: stdout
+          run: biome check --config-path=${workspace}/biome.jsonc --reporter=github ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
-        - output: rewrite
+        - output: regex
           success_codes:
             - 0
           batch: true
           cache_results: false
           formatter: true
           name: fmt
-          run: biome format --config-path=${workspace}/biome.jsonc --write ${target}
+          parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
+          read_output_from: stdout
+          run: biome format --config-path=${workspace}/biome.jsonc --reporter=github --write ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
+      run_timeout: 1m
 
     # Prettier checks only *.scss files
     - name: prettier
@@ -56,7 +59,7 @@ lint:
         - sass
   enabled:
     - actionlint@1.7.7
-    - biome@2.1.1! # datasource=npm depName=@biomejs/biome
+    - biome@2.1.2! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.45.0
     - prettier@3.6.2! # datasource=npm depName=prettier
