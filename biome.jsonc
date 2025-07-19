@@ -24,7 +24,7 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "!**/package.json"]
+    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**"]
   },
   "formatter": {
     "attributePosition": "auto",
