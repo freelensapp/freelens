@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-api",
   "private": false,
-  "version": "1.5.2-0",
+  "version": "1.5.2",
   "description": "Kube api",
   "type": "commonjs",
   "publishConfig": {

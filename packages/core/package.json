@@ -3,7 +3,7 @@
   "productName": "",
   "description": "Freelens Core",
   "homepage": "https://freelens.app",
-  "version": "1.5.2-0",
+  "version": "1.5.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
