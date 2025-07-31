@@ -408,8 +408,8 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-plugin-css-modules:
-        specifier: ^5.1.0
-        version: 5.1.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^5.2.0
+        version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
       webpack:
         specifier: ^5.100.2
         version: 5.100.2(webpack-cli@6.0.1)
@@ -1132,8 +1132,8 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-plugin-css-modules:
-        specifier: ^5.1.0
-        version: 5.1.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^5.2.0
+        version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
       webpack:
         specifier: ^5.100.2
         version: 5.100.2(webpack-cli@6.0.1)
@@ -1200,8 +1200,8 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-plugin-css-modules:
-        specifier: ^5.1.0
-        version: 5.1.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^5.2.0
+        version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
       webpack:
         specifier: ^5.100.2
         version: 5.100.2(webpack-cli@6.0.1)
@@ -1259,8 +1259,8 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-plugin-css-modules:
-        specifier: ^5.1.0
-        version: 5.1.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^5.2.0
+        version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3)
 
   packages/infrastructure/webpack:
     dependencies:
@@ -8929,8 +8929,8 @@ packages:
   typed-regex@0.0.8:
     resolution: {integrity: sha512-1XkGm1T/rUngbFROIOw9wPnMAKeMsRoc+c9O6GwOHz6aH/FrJFtcyd2sHASbT0OXeGLot5N1shPNpwHGTv9RdQ==}
 
-  typescript-plugin-css-modules@5.1.0:
-    resolution: {integrity: sha512-6h+sLBa4l+XYSTn/31vZHd/1c3SvAbLpobY6FxDiUOHJQG1eD9Gh3eCs12+Eqc+TCOAdxcO+zAPvUq0jBfdciw==}
+  typescript-plugin-css-modules@5.2.0:
+    resolution: {integrity: sha512-c5pAU5d+m3GciDr/WhkFldz1NIEGBafuP/3xhFt9BEXS2gmn/LvjkoZ11vEBIuP8LkXfPNhOt1BUhM5efFuwOw==}
     peerDependencies:
       typescript: '>=4.0.0'
 
@@ -9324,7 +9324,8 @@ snapshots:
 
   7zip-bin@5.2.0: {}
 
-  '@adobe/css-tools@4.3.3': {}
+  '@adobe/css-tools@4.3.3':
+    optional: true
 
   '@adobe/css-tools@4.4.2': {}
 
@@ -15412,6 +15413,7 @@ snapshots:
       source-map: 0.7.4
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   sumchecker@3.0.1:
     dependencies:
@@ -15695,7 +15697,7 @@ snapshots:
 
   typed-regex@0.0.8: {}
 
-  typescript-plugin-css-modules@5.1.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3):
+  typescript-plugin-css-modules@5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
@@ -15711,9 +15713,10 @@ snapshots:
       reserved-words: 0.1.2
       sass: 1.89.2
       source-map-js: 1.2.1
-      stylus: 0.62.0
       tsconfig-paths: 4.2.0
       typescript: 5.8.3
+    optionalDependencies:
+      stylus: 0.62.0
     transitivePeerDependencies:
       - supports-color
       - ts-node
