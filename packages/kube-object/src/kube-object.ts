@@ -22,7 +22,6 @@ import {
 } from "./utils";
 
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
-import type { AdditionalPrinterColumnsV1 } from "./specifics";
 
 export function createKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,
