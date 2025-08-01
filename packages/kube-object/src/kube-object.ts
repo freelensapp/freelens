@@ -22,7 +22,6 @@ import {
 } from "./utils";
 
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "./api-types";
-import type { AdditionalPrinterColumnsV1 } from "./specifics";
 
 export function createKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,
@@ -222,13 +221,5 @@ export class KubeObject<
 
   toPlainObject(omitFields: string[] = ["metadata.managedFields"]) {
     return omit(JSON.parse(JSON.stringify(this)), omitFields) as Record<string, unknown>;
-  }
-
-  /**
-   * Can override additional columns defined in CRD
-   */
-  getPrinterColumns(ignorePriority?: boolean): AdditionalPrinterColumnsV1[] | undefined {
-    void ignorePriority;
-    return;
   }
 }
