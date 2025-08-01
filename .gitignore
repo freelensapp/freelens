@@ -5,6 +5,7 @@
 *.map
 *.out
 *.tgz
+*.tmp
 *~
 
 coverage/
