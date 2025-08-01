@@ -29,7 +29,7 @@
     "build": "lens-webpack-build"
   },
   "dependencies": {
-    "@testing-library/dom": "^10.4.0"
+    "@testing-library/dom": "^10.4.1"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
