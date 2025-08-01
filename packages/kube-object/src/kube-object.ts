@@ -223,12 +223,4 @@ export class KubeObject<
   toPlainObject(omitFields: string[] = ["metadata.managedFields"]) {
     return omit(JSON.parse(JSON.stringify(this)), omitFields) as Record<string, unknown>;
   }
-
-  /**
-   * Can override additional columns defined in CRD
-   */
-  getPrinterColumns(ignorePriority?: boolean): AdditionalPrinterColumnsV1[] | undefined {
-    void ignorePriority;
-    return;
-  }
 }
