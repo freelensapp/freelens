@@ -14,13 +14,10 @@ node_modules/
 out/
 icon.iconset/
 
-.cache/
+/.cache/
 
 .npmrc
 
 .DS_Store
 .idea/
 .vscode/
-
-docs/extensions/api
-site/
