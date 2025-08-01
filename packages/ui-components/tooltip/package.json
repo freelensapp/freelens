@@ -45,7 +45,7 @@
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.6.1",
     "@types/lodash": "^4.17.20",
