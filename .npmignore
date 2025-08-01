@@ -5,9 +5,9 @@
 *.map
 *.out
 *.tgz
+*.tmp
 *~
 
-tmp/
 coverage/
 dist/
 node_modules/
