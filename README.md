@@ -193,13 +193,14 @@ Scoop uses MSI package to install the application.
 ## Development
 
 Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
-wiki page to see how to build the application from source.
+wiki page to see how to build the application from source.  
+Check out the [Freelens Docs](https://freelensapp.github.io/docs/) to contribute to development or create your own extension.
 
 ## Extensions
 
 Anyone can develop extensions for Freelens and many extensions previously used
-with Open Lens have already been converted. Visit
-[Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
+with Open Lens have already been converted.  
+Visit [Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
 page to see them and write in the [appropriate
 discussion](https://github.com/freelensapp/freelens/discussions/117) if you
 also want to propose yours.
