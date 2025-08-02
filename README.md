@@ -212,6 +212,7 @@ Get updates about Freelens & keep in touch with our community
 - Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
 - Chat on [Discord](https://discord.gg/NjKZERK95Y)
 - Discuss on [Reddit](https://www.reddit.com/r/freelens/)
+- Watch us on [YouTube](https://www.youtube.com/@Freelensapp)
 - Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
 
