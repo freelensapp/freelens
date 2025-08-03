@@ -47,7 +47,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.101.0"

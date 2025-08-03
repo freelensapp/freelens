@@ -249,7 +249,7 @@
     "react-select-event": "^5.5.1",
     "sass-loader": "^16.0.5",
     "tailwindcss": "^4.1.11",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "type-fest": "^4.41.0",
