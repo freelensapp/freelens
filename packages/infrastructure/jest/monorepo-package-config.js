@@ -21,7 +21,6 @@ module.exports = (rootDir) => {
     collectCoverage: true,
     testMatch: ["**/?(*.)+(test).{js,ts,tsx}"],
     watchPathIgnorePatterns: ["/node_modules/", "/coverage/", "/build/"],
-    transformIgnorePatterns: ["/node_modules/(?!node-fetch)/"],
 
     collectCoverageFrom: [
       "<rootDir>/src/**/*.{ts,tsx}",
@@ -32,7 +31,6 @@ module.exports = (rootDir) => {
 
     moduleNameMapper: {
       "^electron$": "identity-obj-proxy",
-      "^@freelensapp/tooltip$": "identity-obj-proxy",
     },
 
     coverageThreshold: {
