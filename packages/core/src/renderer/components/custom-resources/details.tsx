@@ -45,7 +45,7 @@ function convertSpecValue(value: unknown): StrictReactNode {
     return <BadgeBoolean value={value} />;
   }
 
-  if (typeof value === "boolean" || typeof value === "string" || typeof value === "number") {
+  if (typeof value === "string" || typeof value === "number") {
     return value.toString();
   }
 
@@ -120,7 +120,7 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       return null;
     }
 
-    const extraColumns = object.getPrinterColumns() ?? crd.getPrinterColumns();
+    const extraColumns = crd.getPrinterColumns();
 
     return (
       <div className={cssNames("CustomResourceDetails", crd.getResourceKind())}>
