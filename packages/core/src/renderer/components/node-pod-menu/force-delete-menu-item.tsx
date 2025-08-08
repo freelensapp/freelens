@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
@@ -10,13 +9,10 @@ import { Pod } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { App } from "../../../extensions/common-api";
-import openConfirmDialogInjectable, { type OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
-import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
-import sendCommandInjectable, { type SendCommand } from "../../dock/terminal/send-command.injectable";
-import hideDetailsInjectable, { type HideDetails } from "../../kube-detail-params/hide-details.injectable";
-import { MenuItem } from "../../menu";
-
-import type { DockTabCreateSpecific } from "../../dock/dock/store";
+import openConfirmDialogInjectable, { type OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
+import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
+import { MenuItem } from "../menu";
 
 export interface ForceDeleteMenuItemProps {
   object: any;
@@ -24,14 +20,13 @@ export interface ForceDeleteMenuItemProps {
 }
 
 interface Dependencies {
-  createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
   sendCommand: SendCommand;
   openConfirmDialog: OpenConfirmDialog;
   hideDetails: HideDetails;
 }
 
 const NonInjectedForceDeleteMenuItem: React.FC<ForceDeleteMenuItemProps & Dependencies> = (props) => {
-  const { object, toolbar, createTerminalTab, sendCommand, openConfirmDialog, hideDetails } = props;
+  const { object, toolbar, sendCommand, openConfirmDialog, hideDetails } = props;
 
   if (!object) return null;
   let pod: Pod;
@@ -50,10 +45,11 @@ const NonInjectedForceDeleteMenuItem: React.FC<ForceDeleteMenuItemProps & Depend
     const command = `${kubectlPath} delete pod ${podName} -n ${namespace} --force --grace-period=0`;
 
     openConfirmDialog({
-      ok: () => sendCommand(command, {
-        enter: true,
-        newTab: true,
-      }).then(hideDetails),
+      ok: () =>
+        sendCommand(command, {
+          enter: true,
+          newTab: true,
+        }).then(hideDetails),
       labelOk: `Force Delete Pod`,
       message: (
         <p>
@@ -72,12 +68,14 @@ const NonInjectedForceDeleteMenuItem: React.FC<ForceDeleteMenuItemProps & Depend
   );
 };
 
-export const ForceDeleteMenuItem = withInjectables<Dependencies, ForceDeleteMenuItemProps>(NonInjectedForceDeleteMenuItem, {
-  getProps: (di, props) => ({
-    ...props,
-    createTerminalTab: di.inject(createTerminalTabInjectable),
-    sendCommand: di.inject(sendCommandInjectable),
-    openConfirmDialog: di.inject(openConfirmDialogInjectable),
-    hideDetails: di.inject(hideDetailsInjectable),
-  }),
-});
+export const ForceDeleteMenuItem = withInjectables<Dependencies, ForceDeleteMenuItemProps>(
+  NonInjectedForceDeleteMenuItem,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      sendCommand: di.inject(sendCommandInjectable),
+      openConfirmDialog: di.inject(openConfirmDialogInjectable),
+      hideDetails: di.inject(hideDetailsInjectable),
+    }),
+  },
+);

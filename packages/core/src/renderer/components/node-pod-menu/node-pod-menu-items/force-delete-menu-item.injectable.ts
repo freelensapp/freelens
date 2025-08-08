@@ -8,7 +8,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { kubeObjectMenuItemInjectionToken } from "../../kube-object-menu/kube-object-menu-item-injection-token";
-import { ForceDeleteMenuItem } from "./force-delete-menu-item";
+import { ForceDeleteMenuItem } from "../force-delete-menu-item";
 
 import type { KubeObjectMenuItemComponent } from "../../kube-object-menu/kube-object-menu-item-injection-token";
 
