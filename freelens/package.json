@@ -142,7 +142,7 @@
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "ws": "^8.18.3",
-    "zod": "^4.0.14"
+    "zod": "^4.0.16"
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.1",
