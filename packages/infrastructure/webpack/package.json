@@ -34,7 +34,7 @@
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "fs-extra": "^11.3.0",
     "lodash": "^4.17.21",
-    "mini-css-extract-plugin": "^2.9.2",
+    "mini-css-extract-plugin": "^2.9.3",
     "sass": "^1.90.0",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
