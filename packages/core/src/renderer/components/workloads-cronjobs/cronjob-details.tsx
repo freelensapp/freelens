@@ -62,7 +62,11 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
       return null;
     }
 
-    const childJobs = jobStore.getJobsByOwner(cronJob);
+    const childJobs = jobStore.getJobsByOwner(cronJob).sort((a, b) => {
+      const aTime = a.status?.startTime ? new Date(a.status.startTime).getTime() : 0;
+      const bTime = b.status?.startTime ? new Date(b.status.startTime).getTime() : 0;
+      return bTime - aTime;
+    });
 
     return (
       <div className="CronJobDetails">
@@ -129,7 +133,7 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
               return (
                 <div className="job" key={cronJob.getId()}>
                   <div className="title">
-                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{cronJob.getName()}</Link>
+                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{job.getName()}</Link>
                   </div>
                   <DrawerItem name="Condition" className="conditions" labelsOnly>
                     {condition && <Badge label={condition.type} className={kebabCase(condition.type)} />}
@@ -138,6 +142,12 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
                     {selectors.map((label) => (
                       <Badge key={label} label={label} />
                     ))}
+                  </DrawerItem>
+                  <DrawerItem name="Start Time" labelsOnly>
+                    {job.status?.startTime && <LocaleDate date={job.status?.startTime} />}
+                  </DrawerItem>
+                  <DrawerItem name="Duration" labelsOnly>
+                    {formatDuration(job.getJobDuration() || 0)}
                   </DrawerItem>
                 </div>
               );
