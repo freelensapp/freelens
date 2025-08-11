@@ -39,7 +39,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@kubernetes/client-node": "^1.3.0",
     "ts-loader": "^9.5.2",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "webpack": "^5.101.0"
   }
 }
