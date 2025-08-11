@@ -74,10 +74,10 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           Reason:
           {`Reason: ${terminated.reason} - exit code: ${terminated.exitCode}`}
           <br />
-          {"Started at: "}
+          {"Started: "}
           {<DurationAbsoluteTimestamp timestamp={terminated.startedAt} />}
           <br />
-          {"Finished at: "}
+          {"Finished: "}
           {<DurationAbsoluteTimestamp timestamp={terminated.finishedAt} />}
           <br />
         </span>
