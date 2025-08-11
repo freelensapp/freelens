@@ -13,6 +13,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { DrawerItem, DrawerItemLabels } from "../drawer";
+import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
@@ -61,7 +62,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
 
   const {
     selfLink,
-    metadata: { creationTimestamp },
+    metadata: { creationTimestamp, deletionTimestamp },
   } = object;
   const ownerRefs = object.getOwnerRefs();
   const namespace = object.getNs();
@@ -79,6 +80,9 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
             {")"}
           </>
         )}
+      </DrawerItem>
+      <DrawerItem name="Deleted" hidden={isHidden("deletionTimestamp") || !deletionTimestamp}>
+        <DurationAbsoluteTimestamp timestamp={deletionTimestamp} />
       </DrawerItem>
       <DrawerItem name="Name" hidden={isHidden("name")}>
         {object.getName()}
