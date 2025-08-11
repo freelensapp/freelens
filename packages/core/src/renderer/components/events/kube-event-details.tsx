@@ -18,6 +18,7 @@ import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { LocaleDate } from "../locale-date";
+import { DurationAbsoluteTimestamp } from "./duration-absolute";
 import styles from "./kube-event-details.module.scss";
 import eventStoreInjectable from "./store.injectable";
 
@@ -72,7 +73,7 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
                 <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
                 {event.lastTimestamp && (
                   <DrawerItem name="Last seen">
-                    <LocaleDate date={event.lastTimestamp} />
+                    <DurationAbsoluteTimestamp timestamp={event.lastTimestamp} />
                   </DrawerItem>
                 )}
               </div>
