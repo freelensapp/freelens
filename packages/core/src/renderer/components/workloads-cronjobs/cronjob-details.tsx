@@ -19,8 +19,8 @@ import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.inj
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { ReactiveDuration } from "../duration";
+import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { LocaleDate } from "../locale-date";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import cronJobStoreInjectable from "./store.injectable";
 
@@ -90,12 +90,16 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
         <DrawerItem name="Last Schedule" hidden={!cronJob.status?.lastScheduleTime}>
           <ReactiveDuration timestamp={cronJob.status?.lastScheduleTime} compact />
           {" ago "}
-          {cronJob.status?.lastScheduleTime && <LocaleDate date={cronJob.status?.lastScheduleTime} />}
+          {cronJob.status?.lastScheduleTime && (
+            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastScheduleTime} />
+          )}
         </DrawerItem>
         <DrawerItem name="Last Successful Run" hidden={!cronJob.status?.lastSuccessfulTime}>
           <ReactiveDuration timestamp={cronJob.status?.lastSuccessfulTime} compact />
           {" ago "}
-          {cronJob.status?.lastSuccessfulTime && <LocaleDate date={cronJob.status?.lastSuccessfulTime} />}
+          {cronJob.status?.lastSuccessfulTime && (
+            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastSuccessfulTime} />
+          )}
         </DrawerItem>
         <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
 
@@ -144,7 +148,7 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
                     ))}
                   </DrawerItem>
                   <DrawerItem name="Start Time" labelsOnly>
-                    {job.status?.startTime && <LocaleDate date={job.status?.startTime} />}
+                    {job.status?.startTime && <DurationAbsoluteTimestamp timestamp={job.status?.startTime} />}
                   </DrawerItem>
                   <DrawerItem name="Duration" labelsOnly>
                     {formatDuration(job.getJobDuration() || 0)}

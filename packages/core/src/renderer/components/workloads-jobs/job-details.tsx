@@ -16,7 +16,7 @@ import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.inj
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { ReactiveDuration } from "../duration";
-import { LocaleDate } from "../locale-date";
+import { DurationAbsoluteTimestamp } from "../events";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
@@ -98,12 +98,12 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
         <DrawerItem name="Start Time" hidden={!job.status?.startTime}>
           <ReactiveDuration timestamp={job.status?.startTime} compact />
           {" ago "}
-          {job.status?.startTime && <LocaleDate date={job.status?.startTime} />}
+          {job.status?.startTime && <DurationAbsoluteTimestamp timestamp={job.status?.startTime} />}
         </DrawerItem>
         <DrawerItem name="Completed At" hidden={!job.status?.completionTime}>
           <ReactiveDuration timestamp={job.status?.completionTime} compact />
           {" ago "}
-          {job.status?.completionTime && <LocaleDate date={job.status?.completionTime} />}
+          {job.status?.completionTime && <DurationAbsoluteTimestamp timestamp={job.status?.completionTime} />}
         </DrawerItem>
         <DrawerItem name="Duration" hidden={!job.status?.startTime || !job.status?.completionTime}>
           {formatDuration(job.getJobDuration())}

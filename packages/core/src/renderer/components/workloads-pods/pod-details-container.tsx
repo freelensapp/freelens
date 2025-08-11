@@ -16,7 +16,7 @@ import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.i
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import { LocaleDate } from "../locale-date";
+import { DurationAbsoluteTimestamp } from "../events";
 import { StatusBrick } from "../status-brick";
 import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
@@ -71,14 +71,13 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         <span>
           {lastState}
           <br />
-          Reason:
           {`Reason: ${terminated.reason} - exit code: ${terminated.exitCode}`}
           <br />
-          {"Started at: "}
-          {<LocaleDate date={terminated.startedAt} />}
+          {"Started: "}
+          {<DurationAbsoluteTimestamp timestamp={terminated.startedAt} />}
           <br />
-          {"Finished at: "}
-          {<LocaleDate date={terminated.finishedAt} />}
+          {"Finished: "}
+          {<DurationAbsoluteTimestamp timestamp={terminated.finishedAt} />}
           <br />
         </span>
       );

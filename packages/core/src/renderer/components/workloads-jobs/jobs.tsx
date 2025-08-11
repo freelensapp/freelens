@@ -11,12 +11,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
+import { DurationAbsoluteTimestamp } from "../events";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import { LocaleDate } from "../locale-date";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
 import jobStoreInjectable from "./store.injectable";
@@ -92,9 +92,9 @@ const durationTooltip = (job: Job) => {
   }
   return (
     <>
-      Start time: <LocaleDate date={startTime} />
+      Start time: <DurationAbsoluteTimestamp timestamp={startTime} />
       <br />
-      Completion time: <LocaleDate date={completionTime} />
+      Completion time: <DurationAbsoluteTimestamp timestamp={completionTime} />
     </>
   );
 };
