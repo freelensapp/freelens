@@ -260,6 +260,7 @@ describe("Extensions API", () => {
         expect(extensions.Renderer.Component).toHaveProperty("Dialog");
         expect(extensions.Renderer.Component).toHaveProperty("Drawer");
         expect(extensions.Renderer.Component).toHaveProperty("Dropdown");
+        expect(extensions.Renderer.Component).toHaveProperty("DurationAbsoluteTimestamp");
         expect(extensions.Renderer.Component).toHaveProperty("EditableList");
         expect(extensions.Renderer.Component).toHaveProperty("EventDetails");
         expect(extensions.Renderer.Component).toHaveProperty("Events");
