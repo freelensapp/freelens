@@ -71,7 +71,6 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         <span>
           {lastState}
           <br />
-          Reason:
           {`Reason: ${terminated.reason} - exit code: ${terminated.exitCode}`}
           <br />
           {"Started: "}
