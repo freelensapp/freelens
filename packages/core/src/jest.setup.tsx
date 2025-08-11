@@ -46,7 +46,7 @@ process.on("unhandledRejection", (err: any) => {
 
 global.fetch = freelensFetch as unknown as typeof fetch;
 
-global.TextEncoder = TextEncoder;
+global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder;
 global.TextDecoder = TextDecoderNode as unknown as typeof TextDecoder;
 
 global.ResizeObserver = class {
