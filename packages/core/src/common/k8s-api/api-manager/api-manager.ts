@@ -192,13 +192,6 @@ export class ApiManager {
       }
     }
 
-    // resolve by kind only (hpa's might use refs to older versions of resources for example)
-    const apiByKind = this.getApi((api) => api.kind === kind);
-
-    if (apiByKind) {
-      return apiByKind.formatUrlForNotListing({ name, namespace });
-    }
-
     // otherwise generate link with default prefix
     // resource still might exists in k8s, but api is not registered in the app
     return createKubeApiURL({ apiVersion, name, namespace, resource });
