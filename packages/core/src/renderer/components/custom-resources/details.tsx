@@ -15,6 +15,7 @@ import React from "react";
 import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem } from "../drawer";
 import { Input } from "../input";
+import { KubeObjectConditions } from "../kube-object-conditions/kube-object-conditions";
 
 import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
@@ -126,6 +127,7 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       <div className={cssNames("CustomResourceDetails", crd.getResourceKind())}>
         {this.renderAdditionalColumns(object, extraColumns)}
         {this.renderStatus(object, extraColumns)}
+        <KubeObjectConditions object={object as KubeObject<any, KubeObjectStatus, any>} />
       </div>
     );
   }

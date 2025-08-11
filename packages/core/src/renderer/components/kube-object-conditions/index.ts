@@ -4,11 +4,4 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export interface Condition {
-  lastTransitionTime?: string;
-  message?: string;
-  observedGeneration?: number;
-  reason?: string;
-  status: string;
-  type: string;
-}
+export * from "./kube-object-conditions";

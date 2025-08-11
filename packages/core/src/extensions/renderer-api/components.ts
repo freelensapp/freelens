@@ -65,6 +65,7 @@ export * from "../../renderer/components/horizontal-line";
 export * from "../../renderer/components/input";
 export * from "../../renderer/components/item-object-list";
 export * from "../../renderer/components/kube-object";
+export * from "../../renderer/components/kube-object-conditions";
 export * from "../../renderer/components/kube-object-details";
 export * from "../../renderer/components/kube-object-list-layout";
 export * from "../../renderer/components/kube-object-menu";
