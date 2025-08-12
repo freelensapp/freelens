@@ -62,7 +62,7 @@ export const KubeObjectConditionsDrawer = observer((props: KubeObjectConditionsD
   if (!conditions?.length) return null;
 
   return (
-    <DrawerItem name="Conditions" className="conditions" hidden={conditions.length === 0} labelsOnly>
+    <DrawerItem name="Conditions" className="conditions" hidden={!conditions?.length} labelsOnly>
       {sortConditions(conditions, conditionTypePriorities)?.map((condition) => {
         return (
           <Badge
