@@ -4,11 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+$custom-resource-condition-colors: (
+  Accepted: var(--colorOk),
+  Available: var(--colorOk),
+  Ready: var(--colorSuccess),
+  ReconcileSuccess: var(--colorOk),
+  Succeeded: var(--colorOk),
+  Success: var(--colorOk),
+  UpgradeSucceeded: var(--colorOk),
+);
+
 .CustomResourceDetails {
-  .status {
-    .ready {
-      color: white;
-      background-color: var(--colorOk);
+  .conditions {
+    @each $status, $color in $custom-resource-condition-colors {
+      .#{$status} {
+        background: $color;
+        color: white;
+      }
     }
   }
 }

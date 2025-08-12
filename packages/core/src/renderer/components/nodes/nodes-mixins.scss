@@ -5,15 +5,19 @@
  */
 
 $node-status-color-list: (
-  out-of-disk: #ce3933,
-  network-unavailable: #812727,
-  memory-pressure: #901995,
-  disk-pressure: #cc8d00,
-  pid-pressure: #068dbf,
-  ready: #4caf50,
-  scheduling-disabled: #ff9800,
-  invalid-license: #ce3933,
-  cordoned: var(--colorWarning),
+  OutOfDisk: #ce3933,
+  NetworkUnavailable: #812727,
+  MemoryPressure: #901995,
+  DiskPressure: #cc8d00,
+  PidPressure: #068dbf,
+  Ready: var(--colorSuccess),
+  SchedulingDisabled: #ff9800,
+  InvalidLicense: #ce3933,
+  Cordoned: var(--colorWarning),
+  KernelReady: var(--colorOk),
+  ContainerRuntimeReady: var(--colorOk),
+  StorageReady: var(--colorOk),
+  NetworkingReady: var(--colorOk),
 );
 
 @mixin node-status-bgs {

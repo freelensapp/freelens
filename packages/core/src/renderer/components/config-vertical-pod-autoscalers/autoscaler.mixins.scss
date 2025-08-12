@@ -5,12 +5,14 @@
  */
 
 $vpa-status-colors: (
-  recommendationprovided: var(--colorOk),
-  lowconfidence: var(--colorInfo),
-  fetchinghistory: var(--colorInfo),
-  nopodsmatched: var(--colorInfo),
-  configdeprecated: var(--colorSoftError),
-  configunsupported: var(--colorError),
+  RecommendationProvided: var(--colorOk),
+  LowConfidence: var(--colorInfo),
+  FetchingHistory: var(--colorInfo),
+  NoPodsMatched: var(--colorInfo),
+  RecommendationMissing: var(--colorInfo),
+  ConfigUnsupported: var(--colorError),
+  UpdateModeUnsupported: var(--colorError),
+  UpdateInProgress: var(--colorWarning),
 );
 
 @mixin vpa-status-bgc {

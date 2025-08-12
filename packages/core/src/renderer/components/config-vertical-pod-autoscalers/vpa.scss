@@ -6,6 +6,7 @@
 
 @use "autoscaler.mixins";
 @use "../table/table.mixins";
+@use "../vars" as *;
 
 .VerticalPodAutoscalers {
   .TableCell {
@@ -21,10 +22,38 @@
       flex: 1.5;
     }
 
-    &.status {
+    &.conditions {
       flex: 1.5;
-      @include table.table-cell-labels-offsets;
-      @include autoscaler.vpa-status-bgc;
+
+      .condition {
+        display: inline-block;
+        margin-right: $margin;
+
+        &.RecommendationProvided {
+          color: map-get(autoscaler.$vpa-status-colors, RecommendationProvided);
+        }
+        &.LowConfidence {
+          color: map-get(autoscaler.$vpa-status-colors, LowConfidence);
+        }
+        &.FetchingHistory {
+          color: map-get(autoscaler.$vpa-status-colors, FetchingHistory);
+        }
+        &.NoPodsMatched {
+          color: map-get(autoscaler.$vpa-status-colors, NoPodsMatched);
+        }
+        &.RecommendationMissing {
+          color: map-get(autoscaler.$vpa-status-colors, RecommendationMissing);
+        }
+        &.ConfigUnsupported {
+          color: map-get(autoscaler.$vpa-status-colors, ConfigUnsupported);
+        }
+        &.UpdateModeUnsupported {
+          color: map-get(autoscaler.$vpa-status-colors, UpdateModeUnsupported);
+        }
+        &.UpdateInProgress {
+          color: map-get(autoscaler.$vpa-status-colors, UpdateInProgress);
+        }
+      }
     }
 
     &.age {

@@ -17,6 +17,7 @@ import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { ReactiveDuration } from "../duration";
 import { DurationAbsoluteTimestamp } from "../events";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
@@ -124,6 +125,7 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
         <DrawerItem name="Pod Status" className="pod-status">
           <PodDetailsStatuses pods={childPods} />
         </DrawerItem>
+        <KubeObjectConditionsDrawer object={job} />
         <PodDetailsList pods={childPods} owner={job} />
       </div>
     );

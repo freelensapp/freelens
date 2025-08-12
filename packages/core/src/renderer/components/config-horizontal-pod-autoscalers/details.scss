@@ -8,7 +8,7 @@
 @use "../vars" as *;
 
 .HpaDetails {
-  .status {
+  .conditions {
     @include autoscaler.hpa-status-bgc;
   }
 

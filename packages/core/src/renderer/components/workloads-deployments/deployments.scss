@@ -46,17 +46,18 @@
       flex-grow: 1.5;
 
       .condition {
+        display: inline-block;
         margin-right: $margin;
 
-        &.available {
+        &.Available {
           color: workloads-mixins.$deployment-available;
         }
 
-        &.progressing {
+        &.Progressing {
           color: workloads-mixins.$deployment-progressing;
         }
 
-        &.replica-failure {
+        &.ReplicaFailure {
           color: workloads-mixins.$deployment-replicafailure;
         }
       }

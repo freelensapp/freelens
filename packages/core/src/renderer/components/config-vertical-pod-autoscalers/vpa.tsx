@@ -6,12 +6,12 @@
 
 import "./vpa.scss";
 
-import { cssNames, prevDefault } from "@freelensapp/utilities";
+import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectConditionsList } from "../kube-object-conditions";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -26,7 +26,7 @@ enum columnId {
   namespace = "namespace",
   mode = "mode",
   age = "age",
-  status = "status",
+  conditions = "conditions",
 }
 
 interface Dependencies {
@@ -57,7 +57,7 @@ class NonInjectedVerticalPodAutoscalers extends React.Component<Dependencies> {
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Mode", className: "mode", sortBy: columnId.mode, id: columnId.mode },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
-            { title: "Status", className: "status scrollable", id: columnId.status },
+            { title: "Conditions", className: "conditions scrollable", id: columnId.conditions },
           ]}
           renderTableContents={(vpa) => [
             vpa.getName(),
@@ -71,19 +71,7 @@ class NonInjectedVerticalPodAutoscalers extends React.Component<Dependencies> {
             </a>,
             vpa.getMode(),
             <KubeObjectAge key="age" object={vpa} />,
-            vpa
-              .getConditions()
-              .filter(({ isReady }) => isReady)
-              .map(({ type, tooltip }) => (
-                <Badge
-                  key={type}
-                  label={type}
-                  tooltip={tooltip}
-                  className={cssNames(type.toLowerCase())}
-                  expandable={false}
-                  scrollable={true}
-                />
-              )),
+            <KubeObjectConditionsList key="conditions" object={vpa} />,
           ]}
         />
       </SiblingsInTabLayout>

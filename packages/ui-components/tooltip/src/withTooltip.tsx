@@ -7,10 +7,11 @@
 import { isReactNode, type StrictReactNode } from "@freelensapp/utilities";
 import uniqueId from "lodash/uniqueId";
 import React, { useState } from "react";
-import { Tooltip, type TooltipProps } from "./tooltip";
+import { Tooltip, type TooltipContentFormatters, type TooltipProps } from "./tooltip";
 
 export interface TooltipDecoratorProps {
   tooltip?: StrictReactNode | Omit<TooltipProps, "targetId">;
+  tooltipFormatters?: TooltipContentFormatters;
   /**
    * forces tooltip to detect the target's parent for mouse events. This is
    * useful for displaying tooltips even when the target is "disabled"
@@ -30,13 +31,20 @@ export function withTooltip<TargetProps>(
     const [defaultTooltipId] = useState(uniqueId("tooltip_target_"));
 
     let { id: targetId, children: targetChildren } = props;
-    const { tooltip, tooltipOverrideDisabled, id: _unusedId, children: _unusedTargetChildren, ...targetProps } = props;
+    const {
+      tooltip,
+      tooltipOverrideDisabled,
+      tooltipFormatters = { narrow: true },
+      id: _unusedId,
+      children: _unusedTargetChildren,
+      ...targetProps
+    } = props;
 
     if (tooltip) {
       const tooltipProps: TooltipProps = {
         targetId: targetId || defaultTooltipId,
         tooltipOnParentHover: tooltipOverrideDisabled,
-        formatters: { narrow: true },
+        formatters: tooltipFormatters,
         ...(isReactNode(tooltip) ? { children: tooltip } : tooltip),
       };
 

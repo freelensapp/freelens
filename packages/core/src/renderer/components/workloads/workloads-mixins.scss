@@ -58,14 +58,14 @@ $pod-status-color-list: (
 
 // Job Conditions
 $job-condition-color-list: (
-  complete: $job-complete,
-  failed: $job-failed,
+  Complete: $job-complete,
+  Failed: $job-failed,
 );
 
 // Cronjob Conditions
 $cronjob-condition-color-list: (
-  scheduled: $cronjob-scheduled,
-  suspended: $cronjob-suspended,
+  Scheduled: $cronjob-scheduled,
+  Suspended: $cronjob-suspended,
 );
 
 @mixin pod-status-bgs {

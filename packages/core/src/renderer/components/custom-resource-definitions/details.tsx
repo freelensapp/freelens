@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { MonacoEditor } from "../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 
@@ -64,29 +65,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
         <DrawerItem name="Conversion" className="flex gaps align-flex-start">
           <Input multiLine theme="round-black" className="box grow" value={crd.getConversion()} readOnly />
         </DrawerItem>
-        <DrawerItem name="Conditions" className="conditions" labelsOnly>
-          {crd.getConditions().map((condition) => {
-            const { type, message, lastTransitionTime, status } = condition;
-
-            return (
-              <Badge
-                key={type}
-                label={type}
-                disabled={status === "False"}
-                className={type}
-                tooltip={
-                  <>
-                    <p>{message}</p>
-                    <p>
-                      Last transition time:
-                      {lastTransitionTime}
-                    </p>
-                  </>
-                }
-              />
-            );
-          })}
-        </DrawerItem>
+        <KubeObjectConditionsDrawer object={crd} />
         <DrawerTitle>Names</DrawerTitle>
         <Table selectable className="names box grow">
           <TableHead>

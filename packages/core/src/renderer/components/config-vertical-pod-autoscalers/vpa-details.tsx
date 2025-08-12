@@ -51,7 +51,7 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
         <DrawerTitle>Status</DrawerTitle>
         <DrawerItem name="Status" className="status" labelsOnly>
           {vpa.getReadyConditions().map(({ type, tooltip, isReady }) => (
-            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type.toLowerCase()]: isReady })} />
+            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type]: isReady })} />
           ))}
         </DrawerItem>
 

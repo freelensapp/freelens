@@ -6,6 +6,7 @@
 
 @use "autoscaler.mixins";
 @use "../table/table.mixins";
+@use "../vars" as *;
 
 .HorizontalPodAutoscalers {
   .TableCell {
@@ -21,10 +22,23 @@
       flex: 1.5;
     }
 
-    &.status {
+    &.conditions {
       flex: 1.5;
-      @include table.table-cell-labels-offsets;
-      @include autoscaler.hpa-status-bgc;
+
+      .condition {
+        display: inline-block;
+        margin-right: $margin;
+
+        &.AbleToScale {
+          color: map-get(autoscaler.$hpa-status-colors, AbleToScale);
+        }
+        &.ScalingActive {
+          color: map-get(autoscaler.$hpa-status-colors, ScalingActive);
+        }
+        &.ScalingLimited {
+          color: map-get(autoscaler.$hpa-status-colors, ScalingLimited);
+        }
+      }
     }
 
     &.age {
