@@ -12,11 +12,12 @@ import { cssNames, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge, BadgeBoolean } from "../badge";
+import { BadgeBoolean } from "../badge";
 import { DrawerItem } from "../drawer";
 import { Input } from "../input";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 
-import type { AdditionalPrinterColumnsV1, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
+import type { AdditionalPrinterColumnsV1 } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
@@ -66,39 +67,6 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
     ));
   }
 
-  renderStatus(cr: KubeObject, columns: AdditionalPrinterColumnsV1[]) {
-    const customResource = cr as KubeObject<KubeObjectMetadata, KubeObjectStatus, unknown>;
-    const showStatus =
-      !columns.find((column) => column.name == "Status") && Array.isArray(customResource.status?.conditions);
-
-    if (!showStatus) {
-      return null;
-    }
-
-    const conditions = customResource.status?.conditions
-      ?.filter(({ type, reason }) => type || reason)
-      .map(({ type, reason, message, status }) => ({
-        kind: type || reason || "<unknown>",
-        message,
-        status,
-      }))
-      .map(({ kind, message, status }, index) => (
-        <Badge
-          key={`${kind}${index}`}
-          label={kind}
-          disabled={status === "False"}
-          className={kind.toLowerCase()}
-          tooltip={message}
-        />
-      ));
-
-    return (
-      <DrawerItem name="Status" className="status" labelsOnly>
-        {conditions}
-      </DrawerItem>
-    );
-  }
-
   render() {
     const {
       props: { object, crd, logger },
@@ -125,7 +93,7 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
     return (
       <div className={cssNames("CustomResourceDetails", crd.getResourceKind())}>
         {this.renderAdditionalColumns(object, extraColumns)}
-        {this.renderStatus(object, extraColumns)}
+        <KubeObjectConditionsDrawer object={object} />
       </div>
     );
   }

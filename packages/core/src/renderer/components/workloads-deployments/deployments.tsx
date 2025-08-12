@@ -6,22 +6,18 @@
 
 import "./deployments.scss";
 
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
-import orderBy from "lodash/orderBy";
 import { observer } from "mobx-react";
 import React from "react";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectConditionsList } from "../kube-object-conditions";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
 import deploymentStoreInjectable from "./store.injectable";
-
-import type { Deployment } from "@freelensapp/kube-object";
 
 import type { EventStore } from "../events/store";
 import type { DeploymentStore } from "./store";
@@ -44,16 +40,6 @@ interface Dependencies {
 
 @observer
 class NonInjectedDeployments extends React.Component<Dependencies> {
-  renderConditions(deployment: Deployment) {
-    const conditions = orderBy(deployment.getConditions(true), "type", "asc");
-
-    return conditions.map(({ type, message }) => (
-      <span key={type} className={cssNames("condition", kebabCase(type))} title={message}>
-        {type}
-      </span>
-    ));
-  }
-
   render() {
     const { deploymentStore, eventStore } = this.props;
 
@@ -93,7 +79,7 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             {
               title: "Conditions",
-              className: "conditions",
+              className: "conditions scrollable",
               sortBy: columnId.condition,
               id: columnId.condition,
             },
@@ -107,7 +93,7 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
             deployment.status?.updatedReplicas || 0,
             deployment.status?.availableReplicas || 0,
             <KubeObjectAge key="age" object={deployment} />,
-            this.renderConditions(deployment),
+            <KubeObjectConditionsList key="conditions" object={deployment} />,
           ]}
         />
       </SiblingsInTabLayout>

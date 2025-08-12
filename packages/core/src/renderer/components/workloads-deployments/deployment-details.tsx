@@ -9,12 +9,12 @@ import "./deployment-details.scss";
 import { Deployment } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
@@ -85,22 +85,7 @@ class NonInjectedDeploymentDetails extends React.Component<DeploymentDetailsProp
           </DrawerItem>
         )}
         <DrawerItem name="Strategy Type">{spec.strategy.type}</DrawerItem>
-        <DrawerItem name="Conditions" className="conditions" labelsOnly>
-          {deployment.getConditions().map(({ type, message, lastTransitionTime, status }) => (
-            <Badge
-              key={type}
-              label={type}
-              disabled={status === "False"}
-              className={kebabCase(type)}
-              tooltip={
-                <>
-                  <p>{message}</p>
-                  <p>{`Last transition time: ${lastTransitionTime}`}</p>
-                </>
-              }
-            />
-          ))}
-        </DrawerItem>
+        <KubeObjectConditionsDrawer object={deployment} />
         <PodDetailsTolerations workload={deployment} />
         <PodDetailsAffinities workload={deployment} />
         <DeploymentReplicaSets replicaSets={replicaSets} />

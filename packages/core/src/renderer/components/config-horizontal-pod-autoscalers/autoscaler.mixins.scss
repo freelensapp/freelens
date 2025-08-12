@@ -5,14 +5,14 @@
  */
 
 $hpa-status-colors: (
-  abletoscale: var(--colorOk),
-  scalingactive: var(--colorInfo),
-  scalinglimited: var(--colorSoftError),
+  AbleToScale: var(--colorOk),
+  ScalingActive: var(--colorInfo),
+  ScalingLimited: var(--colorSoftError),
 );
 
 @mixin hpa-status-bgc {
   @each $status, $color in $hpa-status-colors {
-    &.#{$status} {
+    .#{$status} {
       background: $color;
       color: white;
     }

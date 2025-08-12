@@ -8,16 +8,15 @@ import "./nodes.scss";
 
 import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
-import { bytesToUnits, cssNames, interval } from "@freelensapp/utilities";
+import { bytesToUnits, interval } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
-import upperFirst from "lodash/upperFirst";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectConditionsList } from "../kube-object-conditions";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
@@ -187,31 +186,6 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     });
   }
 
-  renderConditions(node: Node) {
-    if (!node.status?.conditions) {
-      return null;
-    }
-
-    return node.getActiveConditions().map((condition) => {
-      const { type } = condition;
-      const tooltipId = `node-${node.getName()}-condition-${type}`;
-
-      return (
-        <div key={type} id={tooltipId} className={cssNames("condition", kebabCase(type))}>
-          {type}
-          <Tooltip targetId={tooltipId} formatters={{ tableView: true }}>
-            {Object.entries(condition).map(([key, value]) => (
-              <div key={key} className="flex gaps align-center">
-                <div className="name">{upperFirst(key)}</div>
-                <div className="value">{value}</div>
-              </div>
-            ))}
-          </Tooltip>
-        </div>
-      );
-    });
-  }
-
   render() {
     const { nodeStore, eventStore } = this.props;
 
@@ -257,7 +231,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
             { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
-            { title: "Conditions", className: "conditions", sortBy: columnId.conditions, id: columnId.conditions },
+            {
+              title: "Conditions",
+              className: "conditions scrollable",
+              sortBy: columnId.conditions,
+              id: columnId.conditions,
+            },
           ]}
           renderTableContents={(node) => {
             const tooltipId = `node-taints-${node.getId()}`;
@@ -279,7 +258,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
               <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
-              this.renderConditions(node),
+              <KubeObjectConditionsList key="conditions" object={node} />,
             ];
           }}
         />

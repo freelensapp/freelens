@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { PodDetailsContainers } from "./details/containers/pod-details-containers";
 import { PodDetailsEphemeralContainers } from "./details/containers/pod-details-ephemeral-containers";
 import { PodDetailsInitContainers } from "./details/containers/pod-details-init-containers";
@@ -64,7 +65,7 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     }
 
     const { status, spec } = pod;
-    const { conditions = [], podIP } = status ?? {};
+    const { podIP } = status ?? {};
     const podIPs = pod.getIPs();
     const { nodeName } = spec ?? {};
     const nodeSelector = pod.getNodeSelectors();
@@ -125,17 +126,6 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
           {formatDuration((pod.spec.terminationGracePeriodSeconds ?? 30) * 1000, false)}
         </DrawerItem>
 
-        <DrawerItem name="Conditions" className="conditions" hidden={conditions.length === 0} labelsOnly>
-          {conditions.map(({ type, status, lastTransitionTime }) => (
-            <Badge
-              key={type}
-              label={type}
-              disabled={status === "False"}
-              tooltip={`Last transition time: ${lastTransitionTime ?? "<unknown>"}`}
-            />
-          ))}
-        </DrawerItem>
-
         <DrawerItem name="Node Selector" hidden={nodeSelector.length === 0}>
           {nodeSelector.map((label) => (
             <Badge key={label} label={label} />
@@ -148,6 +138,8 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         <DrawerItem name="Secrets" hidden={pod.getSecrets().length === 0}>
           <PodDetailsSecrets pod={pod} />
         </DrawerItem>
+
+        <KubeObjectConditionsDrawer object={pod} />
 
         <PodDetailsInitContainers pod={pod} />
 

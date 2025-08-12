@@ -9,14 +9,13 @@ import "./details.scss";
 import { formatNodeTaint, Node } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
-import upperFirst from "lodash/upperFirst";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { DrawerTitle } from "../drawer/drawer-title";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import loadPodsFromAllNamespacesInjectable from "../workloads-pods/load-pods-from-all-namespaces.injectable";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import podStoreInjectable from "../workloads-pods/store.injectable";
@@ -59,7 +58,6 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
     }
 
     const { nodeInfo, addresses } = node.status ?? {};
-    const conditions = node.getActiveConditions();
     const taints = node.getTaints();
     const childPods = podStore.getPodsByNode(node.getName());
 
@@ -88,28 +86,8 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
             ))}
           </DrawerItem>
         )}
-        {conditions && (
-          <DrawerItem name="Conditions" className="conditions" labelsOnly>
-            {conditions.map((condition) => (
-              <Badge
-                key={condition.type}
-                label={condition.type}
-                className={kebabCase(condition.type)}
-                tooltip={{
-                  formatters: {
-                    tableView: true,
-                  },
-                  children: Object.entries(condition).map(([key, value]) => (
-                    <div key={key} className="flex gaps align-center">
-                      <div className="name">{upperFirst(key)}</div>
-                      <div className="value">{value}</div>
-                    </div>
-                  )),
-                }}
-              />
-            ))}
-          </DrawerItem>
-        )}
+        <KubeObjectConditionsDrawer object={node} />
+
         <DrawerTitle>Capacity</DrawerTitle>
         <NodeDetailsResources node={node} type="capacity" />
         <DrawerTitle>Allocatable</DrawerTitle>
