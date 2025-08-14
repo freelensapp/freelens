@@ -18,6 +18,7 @@ import { Input } from "../input";
 import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { MonacoEditor } from "../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -49,7 +50,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
       return null;
     }
 
-    const { plural, singular, kind, listKind } = crd.getNames();
+    const { plural, singular, kind, listKind, shortNames } = crd.getNames();
     const printerColumns = crd.getPrinterColumns();
     const validation = crd.getValidation();
 
@@ -73,12 +74,24 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
             <TableCell>singular</TableCell>
             <TableCell>kind</TableCell>
             <TableCell>listKind</TableCell>
+            <TableCell>shortNames</TableCell>
           </TableHead>
           <TableRow>
-            <TableCell>{plural}</TableCell>
-            <TableCell>{singular}</TableCell>
-            <TableCell>{kind}</TableCell>
-            <TableCell>{listKind}</TableCell>
+            <TableCell>
+              <WithTooltip>{plural}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{singular}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{kind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{listKind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{shortNames?.join(",")}</WithTooltip>
+            </TableCell>
           </TableRow>
         </Table>
         {printerColumns.length > 0 && (

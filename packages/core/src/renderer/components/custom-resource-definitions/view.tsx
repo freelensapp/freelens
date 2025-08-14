@@ -28,6 +28,7 @@ enum columnId {
   kind = "kind",
   group = "group",
   version = "version",
+  shortNames = "shortNames",
   scope = "scope",
   age = "age",
 }
@@ -113,6 +114,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             [columnId.kind]: (crd) => crd.getResourceKind(),
             [columnId.group]: (crd) => crd.getGroup(),
             [columnId.version]: (crd) => crd.getVersion(),
+            [columnId.shortNames]: (crd) => crd.getNames().shortNames?.join(" "),
             [columnId.scope]: (crd) => crd.getScope(),
             [columnId.age]: (crd) => -crd.getCreationTimestamp(),
           }}
@@ -154,6 +156,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             { title: "Resource", className: "kind", sortBy: columnId.kind, id: columnId.kind },
             { title: "Group", className: "group", sortBy: columnId.group, id: columnId.group },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            { title: "Short Names", className: "short-names", sortBy: columnId.shortNames, id: columnId.shortNames },
             { title: "Scope", className: "scope", sortBy: columnId.scope, id: columnId.scope },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
@@ -163,6 +166,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             </Link>,
             <WithTooltip>{crd.getGroup()}</WithTooltip>,
             <WithTooltip>{crd.getVersion()}</WithTooltip>,
+            <WithTooltip>{crd.getNames().shortNames?.join(",")}</WithTooltip>,
             <WithTooltip>{crd.getScope()}</WithTooltip>,
             <KubeObjectAge key="age" object={crd} />,
           ]}
