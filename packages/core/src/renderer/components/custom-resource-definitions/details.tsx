@@ -49,7 +49,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
       return null;
     }
 
-    const { plural, singular, kind, listKind } = crd.getNames();
+    const { plural, singular, kind, listKind, shortNames } = crd.getNames();
     const printerColumns = crd.getPrinterColumns();
     const validation = crd.getValidation();
 
@@ -73,12 +73,14 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
             <TableCell>singular</TableCell>
             <TableCell>kind</TableCell>
             <TableCell>listKind</TableCell>
+            <TableCell>shortNames</TableCell>
           </TableHead>
           <TableRow>
             <TableCell>{plural}</TableCell>
             <TableCell>{singular}</TableCell>
             <TableCell>{kind}</TableCell>
             <TableCell>{listKind}</TableCell>
+            <TableCell>{shortNames?.join(",")}</TableCell>
           </TableRow>
         </Table>
         {printerColumns.length > 0 && (
