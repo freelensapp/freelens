@@ -97,14 +97,10 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
           {formatDuration(job.spec.ttlSecondsAfterFinished || 0)}
         </DrawerItem>
         <DrawerItem name="Start Time" hidden={!job.status?.startTime}>
-          <ReactiveDuration timestamp={job.status?.startTime} compact />
-          {" ago "}
-          {job.status?.startTime && <DurationAbsoluteTimestamp timestamp={job.status?.startTime} />}
+          <DurationAbsoluteTimestamp timestamp={job.status?.startTime} />
         </DrawerItem>
         <DrawerItem name="Completed At" hidden={!job.status?.completionTime}>
-          <ReactiveDuration timestamp={job.status?.completionTime} compact />
-          {" ago "}
-          {job.status?.completionTime && <DurationAbsoluteTimestamp timestamp={job.status?.completionTime} />}
+          <DurationAbsoluteTimestamp timestamp={job.status?.completionTime} />
         </DrawerItem>
         <DrawerItem name="Duration" hidden={!job.status?.startTime || !job.status?.completionTime}>
           {formatDuration(job.getJobDuration())}

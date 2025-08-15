@@ -88,18 +88,10 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
           {cronJob.spec.failedJobsHistoryLimit}
         </DrawerItem>
         <DrawerItem name="Last Schedule" hidden={!cronJob.status?.lastScheduleTime}>
-          <ReactiveDuration timestamp={cronJob.status?.lastScheduleTime} compact />
-          {" ago "}
-          {cronJob.status?.lastScheduleTime && (
-            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastScheduleTime} />
-          )}
+          <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastScheduleTime} />
         </DrawerItem>
         <DrawerItem name="Last Successful Run" hidden={!cronJob.status?.lastSuccessfulTime}>
-          <ReactiveDuration timestamp={cronJob.status?.lastSuccessfulTime} compact />
-          {" ago "}
-          {cronJob.status?.lastSuccessfulTime && (
-            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastSuccessfulTime} />
-          )}
+          <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastSuccessfulTime} />
         </DrawerItem>
         <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
 
