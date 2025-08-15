@@ -7,9 +7,9 @@
 $custom-resource-condition-colors: (
   Accepted: var(--colorOk),
   Available: var(--colorOk),
-  Ready: var(--colorSuccess),
   Succeeded: var(--colorOk),
   Success: var(--colorOk),
+  Ready: var(--colorSuccess),
 );
 
 .CustomResourceDetails {
