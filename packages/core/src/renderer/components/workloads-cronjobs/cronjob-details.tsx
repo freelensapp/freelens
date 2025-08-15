@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { ReactiveDuration } from "../duration";
 import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
@@ -88,18 +87,10 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
           {cronJob.spec.failedJobsHistoryLimit}
         </DrawerItem>
         <DrawerItem name="Last Schedule" hidden={!cronJob.status?.lastScheduleTime}>
-          <ReactiveDuration timestamp={cronJob.status?.lastScheduleTime} compact />
-          {" ago "}
-          {cronJob.status?.lastScheduleTime && (
-            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastScheduleTime} />
-          )}
+          <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastScheduleTime} />
         </DrawerItem>
         <DrawerItem name="Last Successful Run" hidden={!cronJob.status?.lastSuccessfulTime}>
-          <ReactiveDuration timestamp={cronJob.status?.lastSuccessfulTime} compact />
-          {" ago "}
-          {cronJob.status?.lastSuccessfulTime && (
-            <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastSuccessfulTime} />
-          )}
+          <DurationAbsoluteTimestamp timestamp={cronJob.status?.lastSuccessfulTime} />
         </DrawerItem>
         <DrawerItem name="Active">{cronJobStore.getActiveJobsNum(cronJob)}</DrawerItem>
 

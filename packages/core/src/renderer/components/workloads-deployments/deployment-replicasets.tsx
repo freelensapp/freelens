@@ -17,6 +17,7 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectMenu } from "../kube-object-menu";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
 
 import type { ReplicaSet } from "@freelensapp/kube-object";
@@ -102,11 +103,15 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
               nowrap
               onClick={prevDefault(() => showDetails(replica.selfLink, false))}
             >
-              <TableCell className="name">{replica.getName()}</TableCell>
+              <TableCell className="name">
+                <WithTooltip>{replica.getName()}</WithTooltip>
+              </TableCell>
               <TableCell className="warning">
                 <KubeObjectStatusIcon key="icon" object={replica} />
               </TableCell>
-              <TableCell className="namespace">{replica.getNs()}</TableCell>
+              <TableCell className="namespace">
+                <WithTooltip>{replica.getNs()}</WithTooltip>
+              </TableCell>
               <TableCell className="pods">{this.getPodsLength(replica)}</TableCell>
               <TableCell className="age">
                 <KubeObjectAge key="age" object={replica} />

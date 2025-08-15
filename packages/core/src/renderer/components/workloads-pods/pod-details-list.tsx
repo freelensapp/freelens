@@ -19,6 +19,7 @@ import showDetailsInjectable from "../kube-detail-params/show-details.injectable
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
 import podStoreInjectable from "./store.injectable";
 
 import type { KubeObject, Pod } from "@freelensapp/kube-object";
@@ -120,12 +121,18 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
 
     return (
       <TableRow key={pod.getId()} sortItem={pod} nowrap onClick={prevDefault(() => showDetails(pod.selfLink, false))}>
-        <TableCell className="name">{pod.getName()}</TableCell>
+        <TableCell className="name">
+          <WithTooltip>{pod.getName()}</WithTooltip>
+        </TableCell>
         <TableCell className="warning">
           <KubeObjectStatusIcon key="icon" object={pod} />
         </TableCell>
-        <TableCell className="node">{pod.getNodeName()}</TableCell>
-        <TableCell className="namespace">{pod.getNs()}</TableCell>
+        <TableCell className="node">
+          <WithTooltip>{pod.getNodeName()}</WithTooltip>
+        </TableCell>
+        <TableCell className="namespace">
+          <WithTooltip>{pod.getNs()}</WithTooltip>
+        </TableCell>
         <TableCell className="ready">
           {`${pod.getRunningContainers().length} / ${pod.getContainers().length}`}
         </TableCell>
