@@ -70,7 +70,14 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
             </DrawerItem>
           ))}
         </DrawerItem>
-        <DrawerItem name="Stored versions">{crd.getStoredVersions()}</DrawerItem>
+        <DrawerItem name="Stored Versions">
+          {crd
+            .getStoredVersions()
+            .split(", ")
+            ?.map((version) => (
+              <DrawerItem name="">{version}</DrawerItem>
+            ))}
+        </DrawerItem>
         <DrawerItem name="Scope">{crd.getScope()}</DrawerItem>
         <DrawerItem name="Resource">
           <Link to={crd.getResourceUrl()}>{crd.getResourceTitle()}</Link>
