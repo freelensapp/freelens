@@ -7,6 +7,7 @@
 import { bytesToUnits, unitsToBytes } from "@freelensapp/utilities";
 import React from "react";
 import { DrawerItem } from "../drawer";
+import { WithTooltip } from "../with-tooltip";
 
 import type { Node } from "@freelensapp/kube-object";
 
@@ -25,17 +26,21 @@ export function NodeDetailsResources({ type, node: { status = {} } }: NodeDetail
   return (
     <div className="NodeDetailsResources">
       {Object.entries(resourceStatus).map(([key, value]) => {
+        let tooltip = null;
         if (value === undefined) return null;
         if (value === null) return null;
         if (key === "ephemeral-storage" || key === "memory") {
           const newValue = bytesToUnits(unitsToBytes(value));
           if (newValue !== "N/A") {
+            tooltip = value;
             value = newValue;
           }
         }
         return (
           <DrawerItem key={key} name={key}>
-            {value}
+            <WithTooltip tooltip={tooltip}>
+              <span>{value}</span>
+            </WithTooltip>
           </DrawerItem>
         );
       })}
