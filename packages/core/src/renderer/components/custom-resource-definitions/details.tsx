@@ -6,6 +6,7 @@
 
 import "./details.scss";
 
+import { Icon } from "@freelensapp/icon";
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -57,8 +58,27 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
     return (
       <div className="CustomResourceDefinitionDetails">
         <DrawerItem name="Group">{crd.getGroup()}</DrawerItem>
-        <DrawerItem name="Version">{crd.getVersion()}</DrawerItem>
-        <DrawerItem name="Stored versions">{crd.getStoredVersions()}</DrawerItem>
+        <DrawerItem name="Versions">
+          {crd.getVersions()?.map((version) => (
+            <DrawerItem name="">
+              {version}
+              {version === crd.getVersion() && (
+                <>
+                  {" "}
+                  <Icon small material="star" tooltip="Preferred Version" className="set_default_icon" />
+                </>
+              )}
+            </DrawerItem>
+          ))}
+        </DrawerItem>
+        <DrawerItem name="Stored Versions">
+          {crd
+            .getStoredVersions()
+            .split(", ")
+            ?.map((version) => (
+              <DrawerItem name="">{version}</DrawerItem>
+            ))}
+        </DrawerItem>
         <DrawerItem name="Scope">{crd.getScope()}</DrawerItem>
         <DrawerItem name="Resource">
           <Link to={crd.getResourceUrl()}>{crd.getResourceTitle()}</Link>
