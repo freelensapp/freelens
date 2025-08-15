@@ -11,7 +11,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
       <span
         class="name"
       >
-        MyField
+        My Field
       </span>
       <span
         class="value"
@@ -38,7 +38,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
       <span
         class="name"
       >
-        MyField
+        My Field
       </span>
       <span
         class="value"
@@ -65,7 +65,7 @@ exports[`<CustomResourceDetails /> with a CRD with a number field should display
       <span
         class="name"
       >
-        MyField
+        My Field
       </span>
       <span
         class="value"
@@ -88,7 +88,7 @@ exports[`<CustomResourceDetails /> with a CRD with a number field should display
       <span
         class="name"
       >
-        MyField
+        My Field
       </span>
       <span
         class="value"
