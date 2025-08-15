@@ -38,9 +38,7 @@ export function NodeDetailsResources({ type, node: { status = {} } }: NodeDetail
         }
         return (
           <DrawerItem key={key} name={key}>
-            <WithTooltip tooltip={tooltip}>
-              <span>{value}</span>
-            </WithTooltip>
+            <WithTooltip tooltip={tooltip}>{value}</WithTooltip>
           </DrawerItem>
         );
       })}
