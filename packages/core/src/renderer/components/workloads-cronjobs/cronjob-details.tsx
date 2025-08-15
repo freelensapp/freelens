@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { ReactiveDuration } from "../duration";
 import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";

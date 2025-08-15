@@ -15,7 +15,6 @@ import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import { ReactiveDuration } from "../duration";
 import { DurationAbsoluteTimestamp } from "../events";
 import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
