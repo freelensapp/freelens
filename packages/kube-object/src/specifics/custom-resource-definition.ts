@@ -184,6 +184,10 @@ export class CustomResourceDefinition extends KubeObject<
     return this.getPreferredVersion().name;
   }
 
+  getVersions() {
+    return this.spec.versions?.map((version) => version.name);
+  }
+
   isNamespaced() {
     return this.getScope() === "Namespaced";
   }
