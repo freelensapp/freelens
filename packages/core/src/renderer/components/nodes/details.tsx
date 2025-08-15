@@ -86,7 +86,6 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
             ))}
           </DrawerItem>
         )}
-        ń
         <KubeObjectConditionsDrawer object={node} />
         <DrawerTitle>Capacity</DrawerTitle>
         <NodeDetailsResources node={node} type="capacity" />
