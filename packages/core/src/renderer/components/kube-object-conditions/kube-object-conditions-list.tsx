@@ -6,20 +6,12 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { Tooltip } from "@freelensapp/tooltip";
-import { cssNames } from "@freelensapp/utilities/dist";
-import { upperFirst } from "lodash/fp";
 import { observer } from "mobx-react";
 import React from "react";
+import { getClassName, getTooltip } from "./components";
 import { sortConditions } from "./utils";
 
-import type { Condition, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
-
-function getClassName(condition: Condition) {
-  if (condition.status === "False") {
-    return cssNames("condition", "False");
-  }
-  return cssNames("condition", condition.type, condition.reason);
-}
+import type { KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
 
 export interface KubeObjectConditionsListProps {
   object: KubeObject;
@@ -50,21 +42,10 @@ export const KubeObjectConditionsList = observer((props: KubeObjectConditionsLis
           const id = `list-${object.getId()}-condition-${type}`;
 
           return (
-            <div key={type} id={id} className={getClassName(condition)}>
+            <div key={type} id={id} className={getClassName(condition, "condition")}>
               {type}
               <Tooltip targetId={id} formatters={{ tableView: true }}>
-                {Object.entries(condition)
-                  .sort((a, b) => a[0].localeCompare(b[0]))
-                  .map(
-                    ([key, value]) =>
-                      value !== undefined &&
-                      value !== null && (
-                        <div key={key} className="flex gaps align-center">
-                          <div className="name">{upperFirst(key)}</div>
-                          <div className="value">{value}</div>
-                        </div>
-                      ),
-                  )}
+                {getTooltip(condition, id)}
               </Tooltip>
             </div>
           );

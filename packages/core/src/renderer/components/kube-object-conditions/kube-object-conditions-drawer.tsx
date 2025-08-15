@@ -5,45 +5,18 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
-import { cssNames } from "@freelensapp/utilities/dist";
-import { upperFirst } from "lodash/fp";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
+import { getClassName, getTooltip } from "./components";
 import { sortConditions } from "./utils";
 
-import type { Condition, KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
+import type { KubeObjectMetadata, KubeObjectStatus } from "@freelensapp/kube-object";
 
 export interface KubeObjectConditionsDrawerProps {
   object: KubeObject;
   conditionTypePriorities?: Record<string, number>;
-}
-
-function getTooltip(condition: Condition, id: string) {
-  return (
-    <>
-      {Object.entries(condition)
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(
-          ([key, value]) =>
-            value !== undefined &&
-            value !== null && (
-              <div key={key} className="flex gaps align-center">
-                <div className="name">{upperFirst(key)}</div>
-                <div className="value">{value}</div>
-              </div>
-            ),
-        )}
-    </>
-  );
-}
-
-function getClassName(condition: Condition) {
-  if (condition.status === "False") {
-    return cssNames("False");
-  }
-  return cssNames(condition.type, condition.reason);
 }
 
 export const KubeObjectConditionsDrawer = observer((props: KubeObjectConditionsDrawerProps) => {
