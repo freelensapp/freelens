@@ -8,6 +8,7 @@ import "./view.scss";
 
 import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { startCase } from "lodash/fp";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -100,7 +101,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
               ? { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace }
               : undefined,
             ...extraColumns.map(({ name }) => ({
-              title: name,
+              title: startCase(name),
               className: name.toLowerCase().replace(/\s+/g, "-"),
               sortBy: name,
               id: name,
