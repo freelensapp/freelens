@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/button",
   "private": false,
-  "version": "1.5.2",
+  "version": "1.5.3-0",
   "description": "Highly extendable button in the Freelens.",
   "type": "commonjs",
   "files": [
