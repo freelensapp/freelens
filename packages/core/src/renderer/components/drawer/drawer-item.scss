@@ -16,6 +16,10 @@
   border-bottom: 1px solid var(--borderFaintColor);
   padding: $padding 0;
 
+  &.WithoutName {
+    grid-template-columns: auto;
+  }
+
   > .name {
     padding-right: $padding;
     overflow: hidden;
