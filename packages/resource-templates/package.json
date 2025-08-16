@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/resource-templates",
-  "version": "1.5.2",
+  "version": "1.5.3-0",
   "private": false,
   "publishConfig": {
     "access": "public",
