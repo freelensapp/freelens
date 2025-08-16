@@ -41,7 +41,7 @@ export function DrawerItem({
   return (
     <div
       {...elemProps}
-      className={cssNames("DrawerItem", className, name ? "WithName" : "WithoutName", { labelsOnly })}
+      className={cssNames("DrawerItem", className, name ? "" : "WithoutName", { labelsOnly })}
       title={title}
     >
       {name && <span className="name">{name}</span>}
