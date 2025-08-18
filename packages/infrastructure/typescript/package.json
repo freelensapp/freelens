@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/typescript",
   "private": false,
-  "version": "1.5.3-0",
+  "version": "1.5.3",
   "description": "Typescript configuration for Freelens packages.",
   "type": "commonjs",
   "publishConfig": {

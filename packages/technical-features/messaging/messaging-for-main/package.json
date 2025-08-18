@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging-for-main",
   "private": false,
-  "version": "1.5.3-0",
+  "version": "1.5.3",
   "description": "Implementations for 'messaging' in Electron main",
   "type": "commonjs",
   "publishConfig": {
