@@ -58,8 +58,8 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "test:unit": "jest",
     "test:watch": "jest --watch --testPathIgnorePatterns integration",
-    "knip": "pnpm dlx knip@5.62.0 --dependencies",
-    "knip:production": "pnpm dlx knip@5.62.0 --dependencies --production --strict"
+    "knip": "pnpm dlx knip@5.63.0 --dependencies",
+    "knip:production": "pnpm dlx knip@5.63.0 --dependencies --production --strict"
   },
   "config": {
     "k8sProxyVersion": "1.3.6",

@@ -54,8 +54,8 @@
     "dev:build:main": "NODE_ENV=development webpack --config webpack/main.ts --progress --watch",
     "dev:build:renderer": "NODE_ENV=development ts-node ./webpack/dev-server.ts",
     "test:integration": "jest -xyz --runInBand --detectOpenHandles --forceExit",
-    "knip": "pnpm dlx knip@5.62.0 --dependencies",
-    "knip:production": "pnpm dlx knip@5.62.0 --dependencies --production --strict"
+    "knip": "pnpm dlx knip@5.63.0 --dependencies",
+    "knip:production": "pnpm dlx knip@5.63.0 --dependencies --production --strict"
   },
   "config": {
     "k8sProxyVersion": "1.3.6",

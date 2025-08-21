@@ -24,8 +24,8 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand",
-    "knip": "pnpm dlx knip@5.62.0 --dependencies",
-    "knip:production": "pnpm dlx knip@5.62.0 --dependencies --production --strict"
+    "knip": "pnpm dlx knip@5.63.0 --dependencies",
+    "knip:production": "pnpm dlx knip@5.63.0 --dependencies --production --strict"
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
