@@ -170,8 +170,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(ws@8.18.3)
       joi:
-        specifier: ^18.0.0
-        version: 18.0.0
+        specifier: ^18.0.1
+        version: 18.0.1
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -795,8 +795,8 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1
       joi:
-        specifier: ^18.0.0
-        version: 18.0.0
+        specifier: ^18.0.1
+        version: 18.0.1
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -6972,8 +6972,8 @@ packages:
     resolution: {integrity: sha512-twQoecYPiVA5K/h6SxtORw/Bs3ar+mLUtoPSc7iMXzQzK8d7eJ/R09wmTwAjiamETn1cXYPGfNnu7DMoHgu12w==}
     hasBin: true
 
-  joi@18.0.0:
-    resolution: {integrity: sha512-fpbpXN/TD04Xz1/cCXzUR3ghDkhyiHjbzTILx3wNyKXIzQJ55uYAkUGWwhX72uHge/6MdFA/kp1ZUh35DlYmaA==}
+  joi@18.0.1:
+    resolution: {integrity: sha512-IiQpRyypSnLisQf3PwuN2eIHAsAIGZIrLZkd4zdvIar2bDyhM91ubRjy8a3eYablXsh9BeI/c7dmPYHca5qtoA==}
     engines: {node: '>= 20'}
 
   jose@6.0.12:
@@ -13661,7 +13661,7 @@ snapshots:
 
   jiti@2.5.1: {}
 
-  joi@18.0.0:
+  joi@18.0.1:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
