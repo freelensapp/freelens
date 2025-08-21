@@ -189,7 +189,7 @@
     "node-gyp": "^11.3.0",
     "node-loader": "^2.1.0",
     "nodemon": "^3.1.10",
-    "playwright": "^1.54.2",
+    "playwright": "^1.55.0",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.2",
