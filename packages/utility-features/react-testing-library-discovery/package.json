@@ -36,6 +36,6 @@
     "@freelensapp/webpack": "workspace:^",
     "@testing-library/react": "^12.1.5",
     "ts-loader": "^9.5.2",
-    "webpack": "^5.101.2"
+    "webpack": "^5.101.3"
   }
 }

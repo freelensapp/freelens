@@ -35,6 +35,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.2",
-    "webpack": "^5.101.2"
+    "webpack": "^5.101.3"
   }
 }

@@ -44,6 +44,6 @@
     "@types/webpack-env": "^1.18.8",
     "ts-loader": "^9.5.2",
     "typescript": "^5.9.2",
-    "webpack": "^5.101.2"
+    "webpack": "^5.101.3"
   }
 }
