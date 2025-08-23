@@ -39,7 +39,7 @@
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.20",
     "@types/node": "~22.16.5",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.2",
     "webpack": "^5.101.2"

@@ -25,7 +25,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "ts-loader": "^9.5.2",
     "webpack": "^5.101.2"
   }
