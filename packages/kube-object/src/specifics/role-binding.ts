@@ -41,4 +41,9 @@ export class RoleBinding extends KubeObject<NamespaceScopedMetadata, void, void>
       .map((subject) => subject.name)
       .join(", ");
   }
+
+  getSubjectTypes(): string {
+    const types = this.getSubjects().map((subject) => subject.kind);
+    return Array.from(new Set(types)).sort().join(", ");
+  }
 }
