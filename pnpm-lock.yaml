@@ -399,8 +399,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.2)
@@ -499,8 +499,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -521,8 +521,8 @@ importers:
         specifier: ^17.0.87
         version: 17.0.87
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -579,8 +579,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1117,8 +1117,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.2)
@@ -1191,8 +1191,8 @@ importers:
         specifier: ~22.16.5
         version: 22.16.5
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.2)
@@ -1304,8 +1304,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.2)
@@ -1396,8 +1396,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -1426,8 +1426,8 @@ importers:
         specifier: ^7.7.2
         version: 7.7.2
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -1450,8 +1450,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1475,8 +1475,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1530,8 +1530,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1561,8 +1561,8 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1592,8 +1592,8 @@ importers:
         specifier: ^1.18.8
         version: 1.18.8
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1640,8 +1640,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1717,8 +1717,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -1778,8 +1778,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -1812,8 +1812,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -1849,8 +1849,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -1925,8 +1925,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -1989,8 +1989,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2059,8 +2059,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2120,8 +2120,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2184,8 +2184,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2227,8 +2227,8 @@ importers:
         specifier: ^1.18.8
         version: 1.18.8
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2315,8 +2315,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2361,8 +2361,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(encoding@0.1.13)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2379,8 +2379,8 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2397,8 +2397,8 @@ importers:
         specifier: ^6.6.4
         version: 6.6.4
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2452,8 +2452,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2495,8 +2495,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2562,8 +2562,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2641,8 +2641,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2732,8 +2732,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -2787,8 +2787,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2827,8 +2827,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.5(sass@1.90.0)(webpack@5.101.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2909,8 +2909,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2942,8 +2942,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -2982,8 +2982,8 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -3061,8 +3061,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -3101,8 +3101,8 @@ importers:
         specifier: ^1.18.8
         version: 1.18.8
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -3123,8 +3123,8 @@ importers:
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.87)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -3178,8 +3178,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -3214,8 +3214,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -3266,8 +3266,8 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       webpack:
         specifier: ^5.101.2
         version: 5.101.2(webpack-cli@6.0.1)
@@ -3348,8 +3348,8 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.5.2
-        version: 9.5.2(typescript@5.9.2)(webpack@5.101.2)
+        specifier: ^9.5.4
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.2)
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -8876,8 +8876,8 @@ packages:
       jest-util:
         optional: true
 
-  ts-loader@9.5.2:
-    resolution: {integrity: sha512-Qo4piXvOTWcMGIgRiuFa6nHNm+54HbYaZCKqc9eeZCLRy3XqafQgwX2F7mofrbJG3g7EEb+lkiR+z2Lic2s3Zw==}
+  ts-loader@9.5.4:
+    resolution: {integrity: sha512-nCz0rEwunlTZiy6rXFByQU1kVVpCIgUpc/psFiKVrUwrizdnIbRFu8w7bxhUF0X613DYwT4XzrZHpVyMe758hQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       typescript: '*'
@@ -15653,7 +15653,7 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.26.9)
       jest-util: 29.7.0
 
-  ts-loader@9.5.2(typescript@5.9.2)(webpack@5.101.2):
+  ts-loader@9.5.4(typescript@5.9.2)(webpack@5.101.2):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.3

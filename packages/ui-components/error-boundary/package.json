@@ -52,7 +52,7 @@
     "mobx-observable-history": "^2.0.3",
     "postcss-loader": "^8.1.1",
     "sass-loader": "^16.0.5",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "typescript": "^5.9.2",
     "webpack": "^5.101.2"
   }
