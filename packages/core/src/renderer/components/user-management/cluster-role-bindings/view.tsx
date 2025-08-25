@@ -28,7 +28,7 @@ import type { ClusterRoleBindingStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
-  role = "role",
+  clusterRole = "cluster-role",
   bindings = "bindings",
   age = "age",
 }
@@ -55,7 +55,7 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           dependentStores={[clusterRoleStore, serviceAccountStore]}
           sortingCallbacks={{
             [columnId.name]: (binding) => binding.getName(),
-            [columnId.role]: (binding) => binding.roleRef.name,
+            [columnId.clusterRole]: (binding) => binding.roleRef.name,
             [columnId.bindings]: (binding) => binding.getSubjectNames(),
             [columnId.age]: (binding) => -binding.getCreationTimestamp(),
           }}
@@ -64,7 +64,12 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
             { className: "warning", showWithColumn: columnId.name },
-            { title: "Role", className: "role", sortBy: columnId.role, id: columnId.role },
+            {
+              title: "Cluster Role",
+              className: "cluster-role",
+              sortBy: columnId.clusterRole,
+              id: columnId.clusterRole,
+            },
             { title: "Bindings", className: "bindings", sortBy: columnId.bindings, id: columnId.bindings },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
