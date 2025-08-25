@@ -31,6 +31,7 @@ import type { RoleBindingStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
+  role = "role",
   bindings = "bindings",
   age = "age",
 }
@@ -59,6 +60,7 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (binding) => binding.getName(),
             [columnId.namespace]: (binding) => binding.getNs(),
+            [columnId.role]: (binding) => binding.roleRef.name,
             [columnId.bindings]: (binding) => binding.getSubjectNames(),
             [columnId.age]: (binding) => -binding.getCreationTimestamp(),
           }}
@@ -68,6 +70,7 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
             { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
+            { title: "Role", className: "role", sortBy: columnId.role, id: columnId.role },
             { title: "Bindings", className: "bindings", sortBy: columnId.bindings, id: columnId.bindings },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
@@ -75,6 +78,7 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
             <WithTooltip>{binding.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={binding} />,
             <NamespaceSelectBadge key="namespace" namespace={binding.getNs()} />,
+            <WithTooltip>{binding.roleRef.name}</WithTooltip>,
             <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
             <KubeObjectAge key="age" object={binding} />,
           ]}
