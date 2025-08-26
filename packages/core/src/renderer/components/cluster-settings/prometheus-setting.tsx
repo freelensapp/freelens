@@ -12,6 +12,7 @@ import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
+import { Checkbox } from "../checkbox";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
 import { Select } from "../select";
@@ -39,7 +40,9 @@ interface Dependencies {
 @observer
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
   @observable mountpoints = "";
-  @observable path = "";
+  @observable path = ""; // <namespace>/<service>:<port>
+  @observable customPrefix = ""; // e.g. "/prometheus"
+  @observable useHttps = false; // whether to use https scheme for service proxy
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
@@ -82,9 +85,13 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
         if (prometheus) {
           const prefix = prometheus.prefix || "";
 
-          this.path = `${prometheus.namespace}/${prometheus.service}:${prometheus.port}${prefix}`;
+          this.path = `${prometheus.namespace}/${prometheus.service}:${prometheus.port}`;
+          this.customPrefix = prefix;
+          this.useHttps = Boolean(prometheus.https);
         } else {
           this.path = "";
+          this.customPrefix = "";
+          this.useHttps = false;
         }
 
         if (prometheusProvider) {
@@ -106,12 +113,17 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     });
   }
 
+  private sanitizePrefix(prefix: string): string {
+    if (!prefix) return "";
+    return prefix.startsWith("/") ? prefix : `/${prefix}`;
+  }
+
   parsePrometheusPath = () => {
     if (!this.selectedOption || !this.path) {
       return undefined;
     }
+
     const parsed = this.path.split(/\/|:/, 3);
-    const apiPrefix = this.path.substring(parsed.join("/").length);
 
     if (!parsed[0] || !parsed[1] || !parsed[2]) {
       return undefined;
@@ -121,7 +133,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       namespace: parsed[0],
       service: parsed[1],
       port: parseInt(parsed[2]),
-      prefix: apiPrefix,
+      prefix: this.sanitizePrefix(this.customPrefix),
+      https: this.useHttps,
     };
   };
 
@@ -130,7 +143,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       typeof this.selectedOption === "string" ? { type: this.selectedOption } : undefined;
   };
 
-  onSavePath = () => {
+  onSaveAll = () => {
     this.props.cluster.preferences.prometheus = this.parsePrometheusPath();
   };
 
@@ -170,11 +183,41 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 theme="round-black"
                 value={this.path}
                 onChange={(value) => (this.path = value)}
-                onBlur={this.onSavePath}
+                onBlur={this.onSaveAll}
                 placeholder="<namespace>/<service>:<port>"
               />
               <small className="hint">
                 {`An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
+              </small>
+            </section>
+            <hr />
+            <section>
+              <SubTitle title="Prometheus HTTPS requests" />
+              <Checkbox
+                label={`Use HTTPS for Prometheus requests`}
+                value={this.useHttps}
+                onChange={(checked) => {
+                  this.useHttps = checked;
+                  this.onSaveAll();
+                }}
+              />
+              <small className="hint">
+                Externally hosted Prometheus might listen using HTTPS. Usually this is not needed.
+              </small>
+            </section>
+            <hr />
+            <section>
+              <SubTitle title="Custom path prefix" />
+              <Input
+                theme="round-black"
+                value={this.customPrefix}
+                onChange={(value) => (this.customPrefix = value)}
+                onBlur={this.onSaveAll}
+                placeholder="/prometheus"
+              />
+              <small className="hint">
+                An optional path prefix added to all Prometheus requests. Useful if Prometheus expects e.g. /prometheus
+                to be added to all requests.
               </small>
             </section>
           </>
