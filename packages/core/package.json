@@ -182,7 +182,7 @@
     "winston-transport": "^4.9.0",
     "winston-transport-browserconsole": "^1.0.5",
     "ws": "^8.18.3",
-    "zod": "^4.0.17"
+    "zod": "^4.1.4"
   },
   "devDependencies": {
     "@async-fn/jest": "1.6.4",
