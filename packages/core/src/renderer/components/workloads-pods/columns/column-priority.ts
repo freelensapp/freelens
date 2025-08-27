@@ -7,6 +7,7 @@ export const COLUMN_PRIORITY = {
   MEMORY_USAGE: 60,
   RESTARTS: 50,
   OWNERS: 40,
+  IP: 35,
   NODE: 30,
   QOS: 20,
   AGE: 10,

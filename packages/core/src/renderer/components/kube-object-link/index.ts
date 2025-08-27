@@ -6,7 +6,10 @@
 
 export * from "./link-to-cluster-role";
 export * from "./link-to-namespace";
+export * from "./link-to-node";
 export * from "./link-to-object";
+export * from "./link-to-priority-class";
 export * from "./link-to-role";
+export * from "./link-to-runtime-class";
 export * from "./link-to-secret";
 export * from "./link-to-service-account";
