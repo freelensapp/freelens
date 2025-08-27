@@ -29,6 +29,7 @@ export interface KubernetesClusterPrometheusMetrics {
     service: string;
     port: number;
     prefix: string;
+    https?: boolean;
   };
   type?: string;
 }

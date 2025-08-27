@@ -116,6 +116,8 @@ export interface ClusterPrometheusPreferences {
     service: string;
     port: number;
     prefix: string;
+    /** When true, add "https:" prefix to service proxy path */
+    https?: boolean;
   };
   prometheusProvider?: {
     type: string;
