@@ -7,6 +7,7 @@
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
+import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import getMaybeDetailsUrlInjectable, {
   type GetMaybeDetailsUrl,
 } from "../kube-detail-params/get-maybe-details-url.injectable";
@@ -15,8 +16,11 @@ import { WithTooltip } from "../with-tooltip";
 
 import type { KubeObject, LocalObjectReference, ObjectReference } from "@freelensapp/kube-object";
 
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+
 interface Dependencies {
   getMaybeDetailsUrl: GetMaybeDetailsUrl;
+  apiManager: ApiManager;
 }
 
 interface LinkToObjectProps {
@@ -26,18 +30,9 @@ interface LinkToObjectProps {
   content?: string | React.ReactNode;
 }
 
-function getRefUrl(objectRef: LocalObjectReference | ObjectReference, object: KubeObject): string {
-  // Implementation depends on the specific requirements
-  // For LocalObjectReference, we need to infer kind and namespace from the parent object
-  if ("kind" in objectRef && objectRef.kind) {
-    // ObjectReference with kind
-    if ("namespace" in objectRef && objectRef.namespace) {
-      return `/api/v1/namespaces/${objectRef.namespace}/${objectRef.kind.toLowerCase()}s/${objectRef.name}`;
-    }
-    return `/api/v1/${objectRef.kind.toLowerCase()}s/${objectRef.name}`;
-  }
-  // LocalObjectReference - use parent object's namespace and infer type
-  return `/api/v1/namespaces/${object.getNs()}/${object.kind.toLowerCase()}s/${objectRef.name}`;
+function getRefUrl(apiManager: ApiManager, ref: LocalObjectReference | ObjectReference, parentObject?: KubeObject) {
+  if (!ref) return;
+  return apiManager.lookupApiLink(ref, parentObject);
 }
 
 function NonInjectedLinkToObject({
@@ -46,11 +41,12 @@ function NonInjectedLinkToObject({
   tooltip,
   content,
   getMaybeDetailsUrl,
+  apiManager,
 }: LinkToObjectProps & Dependencies) {
   if (!objectRef || !object) return null;
 
   return (
-    <MaybeLink to={getMaybeDetailsUrl(getRefUrl(objectRef, object))} onClick={stopPropagation}>
+    <MaybeLink to={getMaybeDetailsUrl(getRefUrl(apiManager, objectRef, object))} onClick={stopPropagation}>
       <WithTooltip tooltip={tooltip}>{content ?? objectRef?.name}</WithTooltip>
     </MaybeLink>
   );
@@ -60,5 +56,6 @@ export const LinkToObject = withInjectables<Dependencies, LinkToObjectProps>(Non
   getProps: (di, props) => ({
     ...props,
     getMaybeDetailsUrl: di.inject(getMaybeDetailsUrlInjectable),
+    apiManager: di.inject(apiManagerInjectable),
   }),
 });
