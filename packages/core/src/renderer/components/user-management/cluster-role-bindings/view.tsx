@@ -10,6 +10,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
+import { LinkToClusterRole } from "../../kube-object-link";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
@@ -79,7 +80,7 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           renderTableContents={(binding) => [
             <WithTooltip>{binding.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={binding} />,
-            <WithTooltip>{binding.roleRef.name}</WithTooltip>,
+            <LinkToClusterRole name={binding.roleRef.name} />,
             <WithTooltip>{binding.getSubjectTypes()}</WithTooltip>,
             <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
             <KubeObjectAge key="age" object={binding} />,

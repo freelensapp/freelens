@@ -10,6 +10,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
+import { LinkToRole } from "../../kube-object-link";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
@@ -81,7 +82,7 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
             <WithTooltip>{binding.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={binding} />,
             <NamespaceSelectBadge key="namespace" namespace={binding.getNs()} />,
-            <WithTooltip>{binding.roleRef.name}</WithTooltip>,
+            <LinkToRole name={binding.roleRef.name} namespace={binding.getNs()} />,
             <WithTooltip>{binding.getSubjectTypes()}</WithTooltip>,
             <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
             <KubeObjectAge key="age" object={binding} />,

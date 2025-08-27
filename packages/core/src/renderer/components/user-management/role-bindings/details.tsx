@@ -14,7 +14,9 @@ import React from "react";
 import { AddRemoveButtons } from "../../add-remove-buttons";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import { DrawerTitle } from "../../drawer";
+import { LinkToNamespace, LinkToRole, LinkToServiceAccount } from "../../kube-object-link";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
+import { WithTooltip } from "../../with-tooltip";
 import { hashSubject } from "../hashers";
 import openRoleBindingDialogInjectable from "./dialog/open.injectable";
 import roleBindingStoreInjectable from "./store.injectable";
@@ -74,6 +76,7 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
     }
     const { roleRef } = roleBinding;
     const subjects = roleBinding.getSubjects();
+    const namespace = roleBinding.getNs();
 
     return (
       <div className="RoleBindingDetails">
@@ -85,9 +88,15 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
             <TableCell>API Group</TableCell>
           </TableHead>
           <TableRow>
-            <TableCell>{roleRef.kind}</TableCell>
-            <TableCell>{roleRef.name}</TableCell>
-            <TableCell>{roleRef.apiGroup}</TableCell>
+            <TableCell>
+              <WithTooltip>{roleRef.kind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <LinkToRole name={roleRef.name} namespace={namespace} />
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{roleRef.apiGroup}</WithTooltip>
+            </TableCell>
           </TableRow>
         </Table>
 
@@ -111,9 +120,15 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
                   onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
                 >
                   <TableCell checkbox isChecked={isSelected} />
-                  <TableCell className="type">{kind}</TableCell>
-                  <TableCell className="binding">{name}</TableCell>
-                  <TableCell className="ns">{namespace || "-"}</TableCell>
+                  <TableCell className="type">
+                    <WithTooltip>{kind}</WithTooltip>
+                  </TableCell>
+                  <TableCell className="binding">
+                    {kind === "ServiceAccount" ? <LinkToServiceAccount name={name} namespace={namespace} /> : name}
+                  </TableCell>
+                  <TableCell className="ns">
+                    <LinkToNamespace namespace={namespace} />
+                  </TableCell>
                 </TableRow>
               );
             })}
