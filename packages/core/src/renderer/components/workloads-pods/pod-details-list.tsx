@@ -109,7 +109,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     return <LineProgress max={maxMemory} value={usage} tooltip={usage != 0 ? tooltip : null} />;
   }
 
-  getTableRow(uid: string) {
+  getTableRow(uid: string, hideNode = false) {
     const { pods, podStore, showDetails } = this.props;
     const pod = pods.find((pod) => pod.getId() == uid);
 
@@ -127,9 +127,11 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
         <TableCell className="warning">
           <KubeObjectStatusIcon key="icon" object={pod} />
         </TableCell>
-        <TableCell className="node">
-          <WithTooltip>{pod.getNodeName()}</WithTooltip>
-        </TableCell>
+        {hideNode || (
+          <TableCell className="node">
+            <WithTooltip>{pod.getNodeName()}</WithTooltip>
+          </TableCell>
+        )}
         <TableCell className="namespace">
           <WithTooltip>{pod.getNs()}</WithTooltip>
         </TableCell>
@@ -146,7 +148,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   render() {
-    const { pods, podStore } = this.props;
+    const { owner, pods, podStore } = this.props;
+
+    const hideNode = owner.kind === "Node";
 
     if (!podStore.isLoaded) {
       return (
@@ -183,7 +187,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
           sortByDefault={{ sortBy: sortBy.cpu, orderBy: "desc" }}
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
-          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId())}
+          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId(), hideNode)}
           className="box grow"
         >
           <TableHead flat sticky={virtual}>
@@ -191,9 +195,11 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
               Name
             </TableCell>
             <TableCell className="warning" />
-            <TableCell className="node" sortBy={sortBy.node}>
-              Node
-            </TableCell>
+            {hideNode || (
+              <TableCell className="node" sortBy={sortBy.node}>
+                Node
+              </TableCell>
+            )}
             <TableCell className="namespace" sortBy={sortBy.namespace}>
               Namespace
             </TableCell>
