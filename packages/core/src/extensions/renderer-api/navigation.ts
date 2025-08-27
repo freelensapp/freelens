@@ -14,6 +14,9 @@ import showEntityDetailsInjectable, {
 import getDetailsUrlInjectable, {
   type GetDetailsUrl,
 } from "../../renderer/components/kube-detail-params/get-details-url.injectable";
+import getMaybeDetailsUrlInjectable, {
+  type GetMaybeDetailsUrl,
+} from "../../renderer/components/kube-detail-params/get-maybe-details-url.injectable";
 import hideDetailsInjectable, {
   type HideDetails,
 } from "../../renderer/components/kube-detail-params/hide-details.injectable";
@@ -36,12 +39,14 @@ export type {
   HideDetails,
   HideEntityDetails,
   IsRouteActive,
+  GetMaybeDetailsUrl,
   Navigate,
   ShowDetails,
   ShowEntityDetails,
 };
 
 export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);
+export const getMaybeDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getMaybeDetailsUrlInjectable);
 export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);
 export const hideDetails = asLegacyGlobalFunctionForExtensionApi(hideDetailsInjectable);
 export const createPageParam = asLegacyGlobalFunctionForExtensionApi(createPageParamInjectable);
