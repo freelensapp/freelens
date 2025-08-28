@@ -43,7 +43,7 @@
     "@types/webpack-env": "^1.18.8",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "webpack": "^5.101.2"
   }
 }

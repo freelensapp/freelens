@@ -42,7 +42,7 @@
     "@types/lodash": "^4.17.20",
     "@types/node": "~22.16.5",
     "rfc6902": "^5.1.2",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "type-fest": "^4.41.0",
     "webpack": "^5.101.2"
   }
