@@ -141,10 +141,10 @@ function kindEntityId(clusterName: string) {
 /**
  * From the catalog, click the kind entity and wait for it to connect, returning its frame
  */
-export async function launchKindClusterFromCatalog(clusterName: string, window: Page): Promise<Frame> {
-  await window.click(`div.TableCell >> text='kind-${clusterName}'`);
+export async function launchKindClusterFromCatalog(kindClusterName: string, window: Page): Promise<Frame> {
+  await window.click(`div.TableCell >> text='kind-${kindClusterName}'`);
 
-  const kindFrame = await window.waitForSelector(`#cluster-frame-${kindEntityId(clusterName)}`);
+  const kindFrame = await window.waitForSelector(`#cluster-frame-${kindEntityId(kindClusterName)}`);
 
   const frame = await kindFrame.contentFrame();
 

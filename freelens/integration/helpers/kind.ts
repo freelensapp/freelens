@@ -6,10 +6,10 @@
 
 import { spawnSync } from "child_process";
 
-export function kindReady(clusterName: string, testNamespace: string): boolean {
+export function kindReady(kindClusterName: string, testNamespace: string): boolean {
   // determine if kind is running
   {
-    const { status } = spawnSync(`kind get kubeconfig --name ${clusterName}`, { shell: true });
+    const { status } = spawnSync(`kind get kubeconfig --name ${kindClusterName}`, { shell: true });
 
     if (status !== 0) {
       console.warn("kind not running");
@@ -20,7 +20,7 @@ export function kindReady(clusterName: string, testNamespace: string): boolean {
 
   // Remove TEST_NAMESPACE if it already exists
   {
-    const { status } = spawnSync(`kubectl --context kind-${clusterName} get namespace ${testNamespace}`, {
+    const { status } = spawnSync(`kubectl --context kind-${kindClusterName} get namespace ${testNamespace}`, {
       shell: true,
     });
 
@@ -28,7 +28,7 @@ export function kindReady(clusterName: string, testNamespace: string): boolean {
       console.warn(`Removing existing ${testNamespace} namespace`);
 
       const { status, stdout, stderr } = spawnSync(
-        `kubectl --context kind-${clusterName} delete namespace ${testNamespace}`,
+        `kubectl --context kind-${kindClusterName} delete namespace ${testNamespace}`,
         {
           shell: true,
         },

@@ -18,10 +18,10 @@ import * as utils from "../helpers/utils";
 
 import type { Frame, Page } from "playwright";
 
-const TEST_CLUSTER_NAME = process.env.TEST_CLUSTER_NAME || "kind";
+const TEST_KIND_CLUSTER_NAME = process.env.TEST_KIND_CLUSTER_NAME || "kind";
 const TEST_NAMESPACE = process.env.TEST_NAMESPACE || "integration-tests";
 
-describeIf(kindReady(TEST_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests", () => {
+describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests", () => {
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
   let frame: Frame;
@@ -31,7 +31,7 @@ describeIf(kindReady(TEST_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests", () 
       ({ window, cleanup } = await utils.start());
       await utils.clickWelcomeButton(window);
 
-      frame = await utils.launchKindClusterFromCatalog(TEST_CLUSTER_NAME, window);
+      frame = await utils.launchKindClusterFromCatalog(TEST_KIND_CLUSTER_NAME, window);
     },
     10 * 60 * 1000,
   );
