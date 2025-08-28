@@ -381,8 +381,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.2)
       node-gyp:
-        specifier: ^11.3.0
-        version: 11.3.0
+        specifier: ^11.4.2
+        version: 11.4.2
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.101.2)
@@ -1096,8 +1096,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
       node-gyp:
-        specifier: ^11.3.0
-        version: 11.3.0
+        specifier: ^11.4.2
+        version: 11.4.2
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.101.2)
@@ -7597,8 +7597,8 @@ packages:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
     engines: {node: '>= 6.13.0'}
 
-  node-gyp@11.3.0:
-    resolution: {integrity: sha512-9J0+C+2nt3WFuui/mC46z2XCZ21/cKlFDuywULmseD/LlmnOrSeEAE4c/1jw6aybXLmpZnQY3/LmOJfgyHIcng==}
+  node-gyp@11.4.2:
+    resolution: {integrity: sha512-3gD+6zsrLQH7DyYOUIutaauuXrcyxeTPyQuZQCQoNPZMHMMS5m4y0xclNpvYzoK3VNzuyxT6eF4mkIL4WSZ1eQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
     hasBin: true
 
@@ -9674,7 +9674,7 @@ snapshots:
       graceful-fs: 4.2.11
       node-abi: 4.9.0
       node-api-version: 0.2.1
-      node-gyp: 11.3.0
+      node-gyp: 11.4.2
       ora: 5.4.1
       read-binary-file-arch: 1.0.6
       semver: 7.7.2
@@ -14282,7 +14282,7 @@ snapshots:
 
   node-forge@1.3.1: {}
 
-  node-gyp@11.3.0:
+  node-gyp@11.4.2:
     dependencies:
       env-paths: 2.2.1
       exponential-backoff: 3.1.2
