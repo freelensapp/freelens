@@ -243,7 +243,7 @@
     "mini-css-extract-plugin": "^2.9.4",
     "mobx-observable-history": "^2.0.3",
     "mock-http": "^1.1.1",
-    "node-gyp": "^11.3.0",
+    "node-gyp": "^11.4.2",
     "node-loader": "^2.1.0",
     "postcss-loader": "^8.1.1",
     "react-select-event": "^5.5.1",
