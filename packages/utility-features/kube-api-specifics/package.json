@@ -40,7 +40,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/webpack-env": "^1.18.8",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "webpack": "^5.101.2"
   }
 }
