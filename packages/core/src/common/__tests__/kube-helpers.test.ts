@@ -174,7 +174,7 @@ describe("kube helpers", () => {
         mockKubeConfig.contexts.push({ context: { cluster: "cluster-2", user: "cluster-2" }, name: "cluster-2" });
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("kind");
+        expect(config.getCurrentContext()).toBe("kind-kind");
         expect(config.contexts.length).toBe(2);
       });
     });
@@ -216,7 +216,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("kind");
+        expect(config.getCurrentContext()).toBe("kind-kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -225,7 +225,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("kind");
+        expect(config.getCurrentContext()).toBe("kind-kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -234,7 +234,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("kind");
+        expect(config.getCurrentContext()).toBe("kind-kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -244,9 +244,9 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(3);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("kind");
+        expect(config.getCurrentContext()).toBe("kind-kind");
         expect(config.contexts.length).toBe(2);
-        expect(config.contexts[0].name).toBe("kind");
+        expect(config.contexts[0].name).toBe("kind-kind");
         expect(config.contexts[1].name).toBe("cluster-3");
       });
     });
