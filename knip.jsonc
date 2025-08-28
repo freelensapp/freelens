@@ -101,13 +101,16 @@
         "winston",
         "zod"
       ],
-      "ignoreBinaries": ["distwin-unpackedFreelens.exe", "^start:"],
+      "ignoreBinaries": ["distwin-unpackedFreelens.exe", "npm:dev:build", "^start:"],
       "ignoreUnresolved": [
         // used by node-fetch
         "./request",
         "./response",
         // for testing
-        ".*/__mocks__/assetMock.t"
+        ".*/__mocks__/assetMock.t",
+        // webpack exceptions
+        "../../declarations/WebpackOptions",
+        "./Logger"
       ],
       "typescript": {
         "config": ["tsconfig.json"]

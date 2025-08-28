@@ -31,7 +31,7 @@
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
     "dev": "corepack pnpm --parallel dev",
-    "knip": "corepack pnpm dlx knip@5.62.0 --dependencies --no-gitignore",
+    "knip": "corepack pnpm dlx knip@5.63.0 --dependencies --no-gitignore",
     "knip:development": "corepack pnpm knip",
     "knip:production": "corepack pnpm knip --production --strict",
     "prettier": "corepack pnpm dlx prettier@3.6.2",
