@@ -134,6 +134,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: helm/kind-action@v1
         with:
+          cluster_name: kind
           version: v${{ env.kind_version }}
           node_image: kindest/node:v${{ env.kubernetes_version }}
           wait: 5m
