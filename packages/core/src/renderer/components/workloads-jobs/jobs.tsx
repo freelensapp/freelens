@@ -127,7 +127,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
           { className: "warning", showWithColumn: columnId.name },
-          { title: "resumed", className: "resumed", sortBy: columnId.resumed, id: columnId.resumed },
+          { title: "Resumed", className: "resumed", sortBy: columnId.resumed, id: columnId.resumed },
           { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           { title: "Succeeded", className: "succeeded", sortBy: columnId.succeeded, id: columnId.succeeded },
           { title: "Completions", className: "completions", sortBy: columnId.completions, id: columnId.completions },
