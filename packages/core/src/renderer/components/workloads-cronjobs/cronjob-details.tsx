@@ -16,6 +16,7 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { BadgeBoolean } from "../badge";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
@@ -79,7 +80,9 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
         <DrawerItem name="Concurrency Policy" hidden={!cronJob.spec.concurrencyPolicy}>
           {cronJob.spec.concurrencyPolicy}
         </DrawerItem>
-        <DrawerItem name="Suspend">{cronJob.getSuspendFlag()}</DrawerItem>
+        <DrawerItem name="Resumed">
+          <BadgeBoolean value={!cronJob.spec.suspend} />
+        </DrawerItem>
         <DrawerItem name="Successful Jobs History Limit" hidden={!cronJob.spec.successfulJobsHistoryLimit}>
           {cronJob.spec.successfulJobsHistoryLimit}
         </DrawerItem>

@@ -13,7 +13,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
 import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
@@ -88,7 +88,9 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
         <DrawerItem name="Completion Mode" hidden={!job.spec.completionMode}>
           {job.spec.completionMode}
         </DrawerItem>
-        <DrawerItem name="Suspend">{job.getSuspendFlag()}</DrawerItem>
+        <DrawerItem name="Resumed">
+          <BadgeBoolean value={!job.spec.suspend} />
+        </DrawerItem>
         <DrawerItem name="Backoff Limit" hidden={job.spec.backoffLimit !== undefined}>
           {job.spec.backoffLimit}
         </DrawerItem>

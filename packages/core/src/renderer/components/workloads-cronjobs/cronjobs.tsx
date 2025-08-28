@@ -11,6 +11,7 @@ import cronstrue from "cronstrue";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
+import { BadgeBoolean } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -28,7 +29,7 @@ enum columnId {
   namespace = "namespace",
   schedule = "schedule",
   timezone = "timezone",
-  suspend = "suspend",
+  resumed = "resumed",
   active = "active",
   lastSchedule = "last-schedule",
   age = "age",
@@ -54,7 +55,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
           [columnId.name]: (cronJob) => cronJob.getName(),
           [columnId.namespace]: (cronJob) => cronJob.getNs(),
           [columnId.timezone]: (cronJob) => cronJob.spec.timeZone ?? "",
-          [columnId.suspend]: (cronJob) => cronJob.getSuspendFlag(),
+          [columnId.resumed]: (cronJob) => String(!cronJob.spec.suspend),
           [columnId.active]: (cronJob) => cronJobStore.getActiveJobsNum(cronJob),
           [columnId.lastSchedule]: (cronJob) =>
             cronJob.status?.lastScheduleTime ? moment().diff(cronJob.status.lastScheduleTime) : 0,
@@ -68,7 +69,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
           { title: "Schedule", className: "schedule", id: columnId.schedule },
           { title: "Timezone", className: "timezone", id: columnId.timezone },
-          { title: "Suspend", className: "suspend", sortBy: columnId.suspend, id: columnId.suspend },
+          { title: "Resumed", className: "resumed", sortBy: columnId.resumed, id: columnId.resumed },
           { title: "Active", className: "active", sortBy: columnId.active, id: columnId.active },
           {
             title: "Last schedule",
@@ -88,7 +89,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
             {cronJob.isNeverRun() ? "never" : cronJob.getSchedule()}
           </WithTooltip>,
           <WithTooltip>{cronJob.spec.timeZone}</WithTooltip>,
-          cronJob.getSuspendFlag(),
+          <BadgeBoolean value={!cronJob.spec.suspend} />,
           cronJobStore.getActiveJobsNum(cronJob),
           <WithTooltip
             tooltip={cronJob.status?.lastScheduleTime ? moment(cronJob.status?.lastScheduleTime).toDate() : undefined}
