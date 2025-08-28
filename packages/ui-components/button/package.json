@@ -41,7 +41,7 @@
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "css-loader": "^6.11.0",
     "postcss-loader": "^8.1.1",
     "sass-loader": "^16.0.5",
