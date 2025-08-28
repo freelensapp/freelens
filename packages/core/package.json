@@ -192,7 +192,7 @@
     "@side/jest-runtime": "^1.1.0",
     "@tailwindcss/postcss": "^4.1.12",
     "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.7.0",
+    "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.6.1",
     "@types/chart.js": "^2.9.41",
