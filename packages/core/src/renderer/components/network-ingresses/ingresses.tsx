@@ -57,31 +57,42 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
           { title: "Rules", className: "rules", id: columnId.rules },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
-        renderTableContents={(ingress) => [
-          <WithTooltip>{ingress.getName()}</WithTooltip>,
-          <KubeObjectStatusIcon key="icon" object={ingress} />,
-          <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
-          <WithTooltip>
-            {ingress.getLoadBalancers().map((lb) => (
-              <p key={lb}>{lb}</p>
-            ))}
-          </WithTooltip>,
-          computeRouteDeclarations(ingress).map((decl) =>
-            decl.displayAsLink ? (
-              <div key={decl.url} className="ingressRule">
-                <a href={decl.url} rel="noreferrer" target="_blank" onClick={(e) => e.stopPropagation()}>
-                  {decl.url}
-                </a>
-                {` ⇢ ${decl.service}`}
-              </div>
-            ) : (
-              <div key={decl.url} className="ingressRule">
-                {`${decl.url} ⇢ ${decl.service}`}
-              </div>
-            ),
-          ),
-          <KubeObjectAge key="age" object={ingress} />,
-        ]}
+        renderTableContents={(ingress) => {
+          const loadBalancers = ingress.getLoadBalancers();
+          const routes = computeRouteDeclarations(ingress);
+
+          return [
+            <WithTooltip>{ingress.getName()}</WithTooltip>,
+            <KubeObjectStatusIcon key="icon" object={ingress} />,
+            <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
+            <WithTooltip>
+              {loadBalancers[0]}
+              {loadBalancers.length > 1 && ` +${loadBalancers.length - 1}`}
+            </WithTooltip>,
+            <WithTooltip>
+              {routes.slice(0, 1).map((decl) =>
+                decl.displayAsLink ? (
+                  <div key={decl.url} className="ingressRule">
+                    <a href={decl.url} rel="noreferrer" target="_blank" onClick={(e) => e.stopPropagation()}>
+                      {decl.url}
+                    </a>
+                    {` ⇢ ${decl.service}`}
+                  </div>
+                ) : (
+                  <div key={decl.url} className="ingressRule">
+                    {`${decl.url} ⇢ ${decl.service}`}
+                  </div>
+                ),
+              )}
+              {routes.length > 1 && (
+                <div key="ellipsis" className="ingressRule">
+                  {routes.length - 1} more...
+                </div>
+              )}
+            </WithTooltip>,
+            <KubeObjectAge key="age" object={ingress} />,
+          ];
+        }}
         tableProps={{
           customRowHeights: (item, lineHeight, paddings) => {
             const lines = item.getRoutes().length || 1;
