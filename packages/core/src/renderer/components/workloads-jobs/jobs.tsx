@@ -10,7 +10,7 @@ import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DurationAbsoluteTimestamp } from "../events";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
@@ -29,7 +29,7 @@ import type { JobStore } from "./store";
 enum columnId {
   name = "name",
   namespace = "namespace",
-  suspend = "suspend",
+  resumed = "resumed",
   status = "status",
   succeeded = "succeeded",
   completions = "completions",
@@ -113,7 +113,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (job) => job.getName(),
           [columnId.namespace]: (job) => job.getNs(),
-          [columnId.suspend]: (job) => job.getSuspendFlag(),
+          [columnId.resumed]: (job) => String(!job.spec.suspend),
           [columnId.succeeded]: (job) => job.getCompletions(),
           [columnId.completions]: (job) => job.getDesiredCompletions(),
           [columnId.parallelism]: (job) => job.getParallelism(),
@@ -127,7 +127,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
           { className: "warning", showWithColumn: columnId.name },
-          { title: "Suspend", className: "suspend", sortBy: columnId.suspend, id: columnId.suspend },
+          { title: "Resumed", className: "resumed", sortBy: columnId.resumed, id: columnId.resumed },
           { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           { title: "Succeeded", className: "succeeded", sortBy: columnId.succeeded, id: columnId.succeeded },
           { title: "Completions", className: "completions", sortBy: columnId.completions, id: columnId.completions },
@@ -140,7 +140,7 @@ const NonInjectedJobs = observer((props: Dependencies) => {
             <WithTooltip>{job.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={job.getNs()} />,
             <KubeObjectStatusIcon key="icon" object={job} />,
-            job.getSuspendFlag(),
+            <BadgeBoolean value={!job.spec.suspend} />,
             <Badge className={getStatusClass(job)} label={getStatusText(job)} tooltip={getStatusText(job)} />,
             job.getCompletions(),
             job.getDesiredCompletions(),

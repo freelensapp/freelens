@@ -5,6 +5,7 @@
  */
 
 export * from "./link-to-cluster-role";
+export * from "./link-to-job";
 export * from "./link-to-namespace";
 export * from "./link-to-node";
 export * from "./link-to-object";
