@@ -52,7 +52,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/history": "^4.7.11",
     "@types/lodash": "^4.17.20",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "@types/react-router-dom": "^5.3.3",
     "css-loader": "^6.11.0",
     "history": "^4.10.1",

@@ -46,7 +46,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.20",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "@types/react-router": "^5.1.20",
     "@types/semver": "^7.7.0",
     "identity-obj-proxy": "^3.0.0",

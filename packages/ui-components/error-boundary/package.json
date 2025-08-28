@@ -47,7 +47,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.87",
+    "@types/react": "^17.0.88",
     "css-loader": "^6.11.0",
     "mobx-observable-history": "^2.0.3",
     "postcss-loader": "^8.1.1",
