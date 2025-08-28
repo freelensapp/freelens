@@ -58,17 +58,16 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(ingress) => {
+          const loadBalancers = ingress.getLoadBalancers();
           const routes = computeRouteDeclarations(ingress);
-          const hasMoreRoutes = routes.length > 1;
 
           return [
             <WithTooltip>{ingress.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={ingress} />,
             <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
             <WithTooltip>
-              {ingress.getLoadBalancers().map((lb) => (
-                <p key={lb}>{lb}</p>
-              ))}
+              {loadBalancers[0]}
+              {loadBalancers.length > 1 && ` +${loadBalancers.length - 1}`}
             </WithTooltip>,
             <WithTooltip>
               {routes.slice(0, 1).map((decl) =>
@@ -85,9 +84,9 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
                   </div>
                 ),
               )}
-              {hasMoreRoutes && (
+              {routes.length > 1 && (
                 <div key="ellipsis" className="ingressRule">
-                  ...
+                  {routes.length - 1} more...
                 </div>
               )}
             </WithTooltip>,
