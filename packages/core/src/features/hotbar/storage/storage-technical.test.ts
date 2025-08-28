@@ -48,7 +48,7 @@ function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKi
 describe("Hotbars technical tests", () => {
   let di: DiContainer;
   let testCluster: CatalogEntity;
-  let minikubeCluster: CatalogEntity;
+  let kindCluster: CatalogEntity;
   let awsCluster: CatalogEntity;
   let loggerMock: jest.Mocked<Logger>;
   let setAsActiveHotbar: SetAsActiveHotbar;
@@ -72,15 +72,15 @@ describe("Hotbars technical tests", () => {
         labels: {},
       },
     });
-    minikubeCluster = getMockCatalogEntity({
+    kindCluster = getMockCatalogEntity({
       apiVersion: "v1",
       kind: "Cluster",
       status: {
         phase: "Running",
       },
       metadata: {
-        uid: "some-minikube-id",
-        name: "my-minikube-cluster",
+        uid: "some-kind-id",
+        name: "my-kind-cluster",
         source: "local",
         labels: {},
       },
@@ -118,7 +118,7 @@ describe("Hotbars technical tests", () => {
 
     catalogEntityRegistry.addComputedSource(
       "some-id",
-      computed(() => [testCluster, minikubeCluster, awsCluster, catalogCatalogEntity]),
+      computed(() => [testCluster, kindCluster, awsCluster, catalogCatalogEntity]),
     );
 
     setAsActiveHotbar = di.inject(setAsActiveHotbarInjectable);
@@ -188,7 +188,7 @@ describe("Hotbars technical tests", () => {
 
       it("moves item to empty cell", () => {
         activeHotbar.get()?.addEntity(testCluster);
-        activeHotbar.get()?.addEntity(minikubeCluster);
+        activeHotbar.get()?.addEntity(kindCluster);
         activeHotbar.get()?.addEntity(awsCluster);
 
         expect(activeHotbar.get()?.items[6]).toBeNull();
@@ -201,7 +201,7 @@ describe("Hotbars technical tests", () => {
 
       it("moves items down", () => {
         activeHotbar.get()?.addEntity(testCluster);
-        activeHotbar.get()?.addEntity(minikubeCluster);
+        activeHotbar.get()?.addEntity(kindCluster);
         activeHotbar.get()?.addEntity(awsCluster);
 
         // aws -> catalog
@@ -214,13 +214,13 @@ describe("Hotbars technical tests", () => {
           "welcome-page-entity",
           "catalog-entity",
           "some-test-id",
-          "some-minikube-id",
+          "some-kind-id",
         ]);
       });
 
       it("moves items up", () => {
         activeHotbar.get()?.addEntity(testCluster);
-        activeHotbar.get()?.addEntity(minikubeCluster);
+        activeHotbar.get()?.addEntity(kindCluster);
         activeHotbar.get()?.addEntity(awsCluster);
 
         // test -> aws
@@ -231,7 +231,7 @@ describe("Hotbars technical tests", () => {
         expect(items?.slice(0, 5)).toEqual([
           "welcome-page-entity",
           "catalog-entity",
-          "some-minikube-id",
+          "some-kind-id",
           "some-aws-id",
           "some-test-id",
         ]);
@@ -283,9 +283,9 @@ describe("Hotbars technical tests", () => {
         activeHotbar.get()?.addEntity(testCluster);
         activeHotbar.get()?.addEntity(awsCluster);
         activeHotbar.get()?.restack(0, 4);
-        activeHotbar.get()?.addEntity(minikubeCluster);
+        activeHotbar.get()?.addEntity(kindCluster);
 
-        expect(activeHotbar.get()?.items[0]?.entity.uid).toEqual("some-minikube-id");
+        expect(activeHotbar.get()?.items[0]?.entity.uid).toEqual("some-kind-id");
       });
 
       it("throws if invalid arguments provided", () => {

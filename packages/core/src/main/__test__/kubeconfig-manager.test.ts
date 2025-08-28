@@ -98,8 +98,8 @@ describe("kubeconfig manager tests", () => {
 
     clusterFake = new Cluster({
       id: "foo",
-      contextName: "minikube",
-      kubeConfigPath: "/minikube-config.yml",
+      contextName: "kind-kind",
+      kubeConfigPath: "/kind-config.yml",
     });
 
     kubeConfManager = di.inject(kubeconfigManagerInjectable, clusterFake);
@@ -143,12 +143,12 @@ describe("kubeconfig manager tests", () => {
       describe("when reading cluster's kubeconfig resolves", () => {
         beforeEach(async () => {
           await readFileMock.resolveSpecific(
-            ["/minikube-config.yml"],
+            ["/kind-config.yml"],
             JSON.stringify({
               apiVersion: "v1",
               clusters: [
                 {
-                  name: "minikube",
+                  name: "kind-kind",
                   cluster: {
                     server: clusterServerUrl,
                   },
@@ -157,15 +157,15 @@ describe("kubeconfig manager tests", () => {
               contexts: [
                 {
                   context: {
-                    cluster: "minikube",
-                    user: "minikube",
+                    cluster: "kind-kind",
+                    user: "kind-kind",
                   },
-                  name: "minikube",
+                  name: "kind-kind",
                 },
               ],
               users: [
                 {
-                  name: "minikube",
+                  name: "kind-kind",
                 },
               ],
               kind: "Config",
@@ -178,7 +178,7 @@ describe("kubeconfig manager tests", () => {
           beforeEach(async () => {
             await writeFileMock.resolveSpecific([
               "/some-directory-for-temp/kubeconfig-foo",
-              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: minikube\ncontexts:\n- context:\n    cluster: minikube\n    user: proxy\n  name: minikube\ncurrent-context: minikube\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
             ]);
           });
 
@@ -270,12 +270,12 @@ describe("kubeconfig manager tests", () => {
                 describe("when reading cluster's kubeconfig resolves", () => {
                   beforeEach(async () => {
                     await readFileMock.resolveSpecific(
-                      ["/minikube-config.yml"],
+                      ["/kind-config.yml"],
                       JSON.stringify({
                         apiVersion: "v1",
                         clusters: [
                           {
-                            name: "minikube",
+                            name: "kind-kind",
                             cluster: {
                               server: clusterServerUrl,
                             },
@@ -284,15 +284,15 @@ describe("kubeconfig manager tests", () => {
                         contexts: [
                           {
                             context: {
-                              cluster: "minikube",
-                              user: "minikube",
+                              cluster: "kind-kind",
+                              user: "kind-kind",
                             },
-                            name: "minikube",
+                            name: "kind-kind",
                           },
                         ],
                         users: [
                           {
-                            name: "minikube",
+                            name: "kind-kind",
                           },
                         ],
                         kind: "Config",
@@ -305,7 +305,7 @@ describe("kubeconfig manager tests", () => {
                     beforeEach(async () => {
                       await writeFileMock.resolveSpecific([
                         "/some-directory-for-temp/kubeconfig-foo",
-                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: minikube\ncontexts:\n- context:\n    cluster: minikube\n    user: proxy\n  name: minikube\ncurrent-context: minikube\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
                       ]);
                     });
 

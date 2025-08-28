@@ -138,7 +138,7 @@ describe("kube helpers", () => {
           apiVersion: "v1",
           clusters: [
             {
-              name: "minikube",
+              name: "kind-kind",
               cluster: {
                 server: "https://192.168.64.3:8443",
               },
@@ -147,19 +147,19 @@ describe("kube helpers", () => {
           contexts: [
             {
               context: {
-                cluster: "minikube",
-                user: "minikube",
+                cluster: "kind-kind",
+                user: "kind-kind",
               },
-              name: "minikube",
+              name: "kind-kind",
             },
           ],
           users: [
             {
-              name: "minikube",
+              name: "kind-kind",
             },
           ],
           kind: "Config",
-          "current-context": "minikube",
+          "current-context": "kind-kind",
           preferences: {},
         };
       });
@@ -167,14 +167,14 @@ describe("kube helpers", () => {
       it("single context is ok", async () => {
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind-kind");
       });
 
       it("multiple context is ok", async () => {
         mockKubeConfig.contexts.push({ context: { cluster: "cluster-2", user: "cluster-2" }, name: "cluster-2" });
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind");
         expect(config.contexts.length).toBe(2);
       });
     });
@@ -185,7 +185,7 @@ describe("kube helpers", () => {
           apiVersion: "v1",
           clusters: [
             {
-              name: "minikube",
+              name: "kind-kind",
               cluster: {
                 server: "https://192.168.64.3:8443",
               },
@@ -194,19 +194,19 @@ describe("kube helpers", () => {
           contexts: [
             {
               context: {
-                cluster: "minikube",
-                user: "minikube",
+                cluster: "kind-kind",
+                user: "kind-kind",
               },
-              name: "minikube",
+              name: "kind-kind",
             },
           ],
           users: [
             {
-              name: "minikube",
+              name: "kind-kind",
             },
           ],
           kind: "Config",
-          "current-context": "minikube",
+          "current-context": "kind-kind",
           preferences: {},
         };
       });
@@ -216,7 +216,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -225,7 +225,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -234,7 +234,7 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(2);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind");
         expect(config.contexts.length).toBe(1);
       });
 
@@ -244,9 +244,9 @@ describe("kube helpers", () => {
         expect(mockKubeConfig.contexts.length).toBe(3);
         const { config } = loadConfigFromString(JSON.stringify(mockKubeConfig));
 
-        expect(config.getCurrentContext()).toBe("minikube");
+        expect(config.getCurrentContext()).toBe("kind");
         expect(config.contexts.length).toBe(2);
-        expect(config.contexts[0].name).toBe("minikube");
+        expect(config.contexts[0].name).toBe("kind");
         expect(config.contexts[1].name).toBe("cluster-3");
       });
     });

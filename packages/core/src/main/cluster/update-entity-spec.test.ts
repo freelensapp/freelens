@@ -33,7 +33,7 @@ describe("update-entity-spec", () => {
     cluster = new Cluster({
       id: "some-id",
       contextName: "some-context",
-      kubeConfigPath: "minikube-config.yml",
+      kubeConfigPath: "kind-config.yml",
     });
 
     entity = new KubernetesCluster({

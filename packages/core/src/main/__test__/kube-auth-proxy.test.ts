@@ -49,29 +49,29 @@ describe("kube auth proxy tests", () => {
 
     getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
 
-    writeJsonSync("/minikube-config.yml", {
+    writeJsonSync("/kind-config.yml", {
       apiVersion: "v1",
       clusters: [
         {
-          name: "minikube",
+          name: "kind-kind",
           cluster: {
             server: "https://192.168.64.3:8443",
           },
         },
       ],
-      "current-context": "minikube",
+      "current-context": "kind-kind",
       contexts: [
         {
           context: {
-            cluster: "minikube",
-            user: "minikube",
+            cluster: "kind-kind",
+            user: "kind-kind",
           },
-          name: "minikube",
+          name: "kind-kind",
         },
       ],
       users: [
         {
-          name: "minikube",
+          name: "kind-kind",
         },
       ],
       kind: "Config",
@@ -96,8 +96,8 @@ describe("kube auth proxy tests", () => {
 
     cluster = addCluster({
       id: "foobar",
-      kubeConfigPath: "/minikube-config.yml",
-      contextName: "minikube",
+      kubeConfigPath: "/kind-config.yml",
+      contextName: "kind-kind",
     });
     kubeAuthProxy = di.inject(createKubeAuthProxyInjectable, cluster)({});
   });

@@ -73,7 +73,7 @@ async function attemptStart() {
 
   // Make sure that the directory is clear
   await remove(FREELENS_INTEGRATION_TESTING_DIR);
-  // We need original .kube/config with minikube context
+  // We need original .kube/config with kind context
   const testDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home", ".freelens", "extensions");
   await mkdirp(testDir);
 
@@ -132,24 +132,24 @@ export async function clickWelcomeButton(window: Page) {
   await window.click("[data-testid=welcome-menu-container] li a");
 }
 
-function minikubeEntityId() {
+function kindEntityId(clusterName: string) {
   return createHash("md5")
-    .update(`${path.join(os.homedir(), ".kube", "config")}:minikube`)
+    .update(`${path.join(os.homedir(), ".kube", "config")}:kind-${clusterName}`)
     .digest("hex");
 }
 
 /**
- * From the catalog, click the minikube entity and wait for it to connect, returning its frame
+ * From the catalog, click the kind entity and wait for it to connect, returning its frame
  */
-export async function launchMinikubeClusterFromCatalog(window: Page): Promise<Frame> {
-  await window.click("div.TableCell >> text='minikube'");
+export async function launchKindClusterFromCatalog(clusterName: string, window: Page): Promise<Frame> {
+  await window.click(`div.TableCell >> text='kind-${clusterName}'`);
 
-  const minikubeFrame = await window.waitForSelector(`#cluster-frame-${minikubeEntityId()}`);
+  const kindFrame = await window.waitForSelector(`#cluster-frame-${kindEntityId(clusterName)}`);
 
-  const frame = await minikubeFrame.contentFrame();
+  const frame = await kindFrame.contentFrame();
 
   if (!frame) {
-    throw new Error("No iframe for minikube found");
+    throw new Error("No iframe for kind cluster found");
   }
 
   await frame.waitForSelector("[data-testid=cluster-sidebar]");

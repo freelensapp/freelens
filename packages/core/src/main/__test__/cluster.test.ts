@@ -47,29 +47,29 @@ describe("create clusters", () => {
       setupPrometheus: jest.fn(),
     }));
 
-    writeJsonSync("/minikube-config.yml", {
+    writeJsonSync("/kind-config.yml", {
       apiVersion: "v1",
       clusters: [
         {
-          name: "minikube",
+          name: "kind",
           cluster: {
             server: "https://192.168.64.3:8443",
           },
         },
       ],
-      "current-context": "minikube",
+      "current-context": "kind",
       contexts: [
         {
           context: {
-            cluster: "minikube",
-            user: "minikube",
+            cluster: "kind",
+            user: "kind",
           },
-          name: "minikube",
+          name: "kind",
         },
       ],
       users: [
         {
-          name: "minikube",
+          name: "kind",
         },
       ],
       kind: "Config",
@@ -90,8 +90,8 @@ describe("create clusters", () => {
 
     cluster = addCluster({
       id: "foo",
-      contextName: "minikube",
-      kubeConfigPath: "/minikube-config.yml",
+      contextName: "kind",
+      kubeConfigPath: "/kind-config.yml",
     });
     clusterConnection = di.inject(clusterConnectionInjectable, cluster);
   });

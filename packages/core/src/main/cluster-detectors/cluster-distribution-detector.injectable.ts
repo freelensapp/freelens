@@ -22,7 +22,7 @@ const isMirantis = (version: string) => version.includes("-mirantis-") || versio
 const isDigitalOcean = (apiUrl: URL) => apiUrl.hostname.endsWith("k8s.ondigitalocean.com");
 const isMinikube = (contextName: string) => contextName.startsWith("minikube");
 const isMicrok8s = (contextName: string) => contextName.startsWith("microk8s");
-const isKind = (contextName: string) => contextName.startsWith("kubernetes-admin@kind-");
+const isKind = (contextName: string) => contextName.startsWith("kind-");
 const isDockerDesktop = (contextName: string) => contextName === "docker-desktop";
 const isTke = (version: string) => version.includes("-tke.");
 const isCustom = (version: string) => version.includes("+");

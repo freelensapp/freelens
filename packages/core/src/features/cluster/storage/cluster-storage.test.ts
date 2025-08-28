@@ -104,7 +104,7 @@ describe("cluster storage technical tests", () => {
           preferences: {
             terminalCWD: "/some-directory-for-user-data",
             icon: "data:image/jpeg;base64, iVBORw0KGgoAAAANSUhEUgAAA1wAAAKoCAYAAABjkf5",
-            clusterName: "minikube",
+            clusterName: "kind-kind",
           },
           kubeConfigPath: writeFileSyncAndReturnPath(getCustomKubeConfigFilePath("foo"), kubeconfig),
         });
