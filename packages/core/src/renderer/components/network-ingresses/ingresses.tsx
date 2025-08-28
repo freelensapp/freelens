@@ -70,7 +70,7 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
                 <p key={lb}>{lb}</p>
               ))}
             </WithTooltip>,
-            <>
+            <WithTooltip>
               {routes.slice(0, 1).map((decl) =>
                 decl.displayAsLink ? (
                   <div key={decl.url} className="ingressRule">
@@ -90,7 +90,7 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
                   ...
                 </div>
               )}
-            </>,
+            </WithTooltip>,
             <KubeObjectAge key="age" object={ingress} />,
           ];
         }}
