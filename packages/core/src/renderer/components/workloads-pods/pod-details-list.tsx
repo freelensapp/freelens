@@ -16,7 +16,7 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
-import { LinkToPod } from "../kube-object-link";
+import { LinkToNamespace, LinkToNode, LinkToPod } from "../kube-object-link";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
@@ -132,11 +132,15 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
         </TableCell>
         {hideNode || (
           <TableCell className="node">
-            <WithTooltip>{pod.getNodeName()}</WithTooltip>
+            <WithTooltip>
+              <LinkToNode name={pod.getNodeName()} />
+            </WithTooltip>
           </TableCell>
         )}
         <TableCell className="namespace">
-          <WithTooltip>{pod.getNs()}</WithTooltip>
+          <WithTooltip>
+            <LinkToNamespace namespace={pod.getNs()} />
+          </WithTooltip>
         </TableCell>
         <TableCell className="ready">
           {`${pod.getRunningContainers().length} / ${pod.getContainers().length}`}

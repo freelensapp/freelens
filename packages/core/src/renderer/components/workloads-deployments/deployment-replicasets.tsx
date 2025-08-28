@@ -14,6 +14,7 @@ import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { KubeObjectAge } from "../kube-object/age";
+import { LinkToNamespace, LinkToReplicaSet } from "../kube-object-link";
 import { KubeObjectMenu } from "../kube-object-menu";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { Table, TableCell, TableHead, TableRow } from "../table";
@@ -104,13 +105,17 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
               onClick={prevDefault(() => showDetails(replica.selfLink, false))}
             >
               <TableCell className="name">
-                <WithTooltip>{replica.getName()}</WithTooltip>
+                <WithTooltip>
+                  <LinkToReplicaSet name={replica.getName()} namespace={replica.getNs()} />
+                </WithTooltip>
               </TableCell>
               <TableCell className="warning">
                 <KubeObjectStatusIcon key="icon" object={replica} />
               </TableCell>
               <TableCell className="namespace">
-                <WithTooltip>{replica.getNs()}</WithTooltip>
+                <WithTooltip>
+                  <LinkToNamespace namespace={replica.getNs()} />
+                </WithTooltip>
               </TableCell>
               <TableCell className="pods">{this.getPodsLength(replica)}</TableCell>
               <TableCell className="age">
