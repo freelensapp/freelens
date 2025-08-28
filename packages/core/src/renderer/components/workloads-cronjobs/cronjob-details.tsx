@@ -6,6 +6,7 @@
 
 import "./cronjob-details.scss";
 
+import { Icon } from "@freelensapp/icon";
 import { CronJob } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities/dist";
@@ -14,13 +15,12 @@ import cronstrue from "cronstrue";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { BadgeBoolean } from "../badge";
 import { Badge } from "../badge/badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
-import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+import { LinkToJob } from "../kube-object-link";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import cronJobStoreInjectable from "./store.injectable";
 
@@ -28,7 +28,6 @@ import type { Job } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { JobStore } from "../workloads-jobs/store";
 import type { CronJobStore } from "./store";
@@ -40,7 +39,6 @@ interface Dependencies {
   jobStore: JobStore;
   cronJobStore: CronJobStore;
   logger: Logger;
-  getDetailsUrl: GetDetailsUrl;
 }
 
 @observer
@@ -50,7 +48,7 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
   }
 
   render() {
-    const { object: cronJob, jobStore, cronJobStore, getDetailsUrl } = this.props;
+    const { object: cronJob, jobStore, cronJobStore } = this.props;
 
     if (!cronJob) {
       return null;
@@ -105,7 +103,9 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
             <DrawerItem name="Completion Mode" hidden={!cronJob.spec.jobTemplate.spec?.completionMode}>
               {cronJob.spec.jobTemplate.spec?.completionMode}
             </DrawerItem>
-            <DrawerItem name="Suspend">{cronJob.getJobSuspendFlag()}</DrawerItem>
+            <DrawerItem name="Resumed">
+              <BadgeBoolean value={!cronJob.spec.jobTemplate.spec?.suspend} />
+            </DrawerItem>
             <DrawerItem name="Backoff Limit" hidden={cronJob.spec.jobTemplate.spec?.backoffLimit !== undefined}>
               {cronJob.spec.jobTemplate.spec?.backoffLimit}
             </DrawerItem>
@@ -130,8 +130,11 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
 
               return (
                 <div className="job" key={cronJob.getId()}>
-                  <div className="title">
-                    <Link to={() => (job.selfLink ? getDetailsUrl(job.selfLink) : "")}>{job.getName()}</Link>
+                  <div className="title flex gaps">
+                    <Icon small material="list" />
+                    <span>
+                      <LinkToJob name={job.getName()} namespace={job.getNs()} />
+                    </span>
                   </div>
                   <DrawerItem name="Condition" className="conditions" labelsOnly>
                     {condition && <Badge label={condition.type} className={kebabCase(condition.type)} />}
@@ -164,6 +167,5 @@ export const CronJobDetails = withInjectables<Dependencies, CronJobDetailsProps>
     cronJobStore: di.inject(cronJobStoreInjectable),
     jobStore: di.inject(jobStoreInjectable),
     logger: di.inject(loggerInjectionToken),
-    getDetailsUrl: di.inject(getDetailsUrlInjectable),
   }),
 });
