@@ -10,11 +10,15 @@
 .Pods {
   .TableCell {
     &.name {
-      flex-grow: 2;
+      flex-grow: 2.5;
     }
 
     &.age {
       flex-grow: 0.5;
+    }
+
+    &.ip {
+      flex-grow: 1;
     }
 
     &.qos {
@@ -22,7 +26,7 @@
     }
 
     &.cpu {
-      flex-grow: 0.5;
+      flex-grow: 0.4;
       justify-content: right;
 
       &.sorting {
@@ -31,7 +35,7 @@
     }
 
     &.memory {
-      flex-grow: 0.8;
+      flex-grow: 0.6;
       justify-content: right;
 
       &.sorting {
@@ -40,7 +44,7 @@
     }
 
     &.restarts {
-      flex-grow: 0.5;
+      flex-grow: 0.3;
     }
 
     &.warning {

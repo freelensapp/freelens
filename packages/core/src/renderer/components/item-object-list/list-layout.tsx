@@ -14,6 +14,9 @@ import { computed, makeObservable, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
+import userPreferencesStateInjectable, {
+  type UserPreferencesState,
+} from "../../../features/user-preferences/common/state.injectable";
 import { ItemListLayoutContent } from "./content";
 import { ItemListLayoutFilters } from "./filters";
 import { ItemListLayoutHeader } from "./header";
@@ -109,6 +112,7 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
   isReady?: boolean; // show loading indicator while not ready
   isSelectable?: boolean; // show checkbox in rows for selecting items
   isConfigurable?: boolean;
+  defaultHiddenTableColumns?: string[];
   copyClassNameFromHeadCells?: boolean;
   sortingCallbacks?: TableSortCallbacks<Item>;
   tableProps?: Partial<TableProps<Item>>; // low-level table configuration
@@ -172,6 +176,7 @@ interface Dependencies {
   selectedFilterNamespaces: IComputedValue<string[]>;
   itemListLayoutStorage: StorageLayer<ItemListLayoutStorage>;
   pageFiltersStore: PageFiltersStore;
+  userPreferencesState: UserPreferencesState;
 }
 
 @observer
@@ -189,8 +194,15 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   async componentDidMount() {
     const { isConfigurable, tableId, preloadStores } = this.props;
 
-    if (isConfigurable && !tableId) {
-      throw new Error("[ItemListLayout]: configurable list require props.tableId to be specified");
+    if (isConfigurable) {
+      if (!tableId) {
+        throw new Error("[ItemListLayout]: configurable list require props.tableId to be specified");
+      }
+
+      const config = this.props.userPreferencesState.hiddenTableColumns.get(tableId);
+      if (config === undefined && this.props.defaultHiddenTableColumns) {
+        this.props.userPreferencesState.hiddenTableColumns.set(tableId, new Set(this.props.defaultHiddenTableColumns));
+      }
     }
 
     if (preloadStores) {
@@ -344,6 +356,7 @@ export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<
       selectedFilterNamespaces: di.inject(selectedFilterNamespacesInjectable),
       itemListLayoutStorage: di.inject(itemListLayoutStorageInjectable),
       pageFiltersStore: di.inject(pageFiltersStoreInjectable),
+      userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
   },
 ) as <I extends ItemObject, PreLoadStores extends boolean = true>(

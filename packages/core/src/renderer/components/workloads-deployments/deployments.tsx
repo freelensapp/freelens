@@ -19,12 +19,15 @@ import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
 import deploymentStoreInjectable from "./store.injectable";
 
+import type { Deployment } from "@freelensapp/kube-object";
+
 import type { EventStore } from "../events/store";
 import type { DeploymentStore } from "./store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
+  replicas = "replicas",
   ready = "ready",
   desired = "desired",
   updated = "updated",
@@ -36,6 +39,12 @@ enum columnId {
 interface Dependencies {
   deploymentStore: DeploymentStore;
   eventStore: EventStore;
+}
+
+function getReplicas(deployment: Deployment) {
+  const replicas = deployment.status?.replicas || 0;
+  const availableReplicas = deployment.status?.availableReplicas || 0;
+  return `${availableReplicas}/${replicas}`;
 }
 
 @observer
@@ -54,6 +63,8 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (deployment) => deployment.getName(),
             [columnId.namespace]: (deployment) => deployment.getNs(),
+            [columnId.replicas]: (deployment) =>
+              (deployment.status?.availableReplicas || 0) * 1000000 + (deployment.status?.replicas || 0),
             [columnId.ready]: (deployment) => deployment.status?.readyReplicas || 0,
             [columnId.desired]: (deployment) => deployment.getReplicas(),
             [columnId.updated]: (deployment) => deployment.status?.updatedReplicas || 0,
@@ -63,6 +74,7 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
           }}
           searchFilters={[(deployment) => deployment.getSearchFields(), (deployment) => deployment.getConditionsText()]}
           renderHeaderTitle="Deployments"
+          defaultHiddenTableColumns={[columnId.replicas]}
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
             { className: "warning", showWithColumn: columnId.name },
@@ -72,6 +84,7 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
               sortBy: columnId.namespace,
               id: columnId.namespace,
             },
+            { title: "Replicas", className: "replicas", sortBy: columnId.replicas, id: columnId.replicas },
             { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
             { title: "Desired", className: "desired", sortBy: columnId.desired, id: columnId.desired },
             { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
@@ -88,6 +101,7 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
             <WithTooltip>{deployment.getName()}</WithTooltip>,
             <KubeObjectStatusIcon key="icon" object={deployment} />,
             <NamespaceSelectBadge key="namespace" namespace={deployment.getNs()} />,
+            getReplicas(deployment),
             deployment.status?.readyReplicas || 0,
             deployment.getReplicas(),
             deployment.status?.updatedReplicas || 0,

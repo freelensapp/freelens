@@ -16,6 +16,7 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
+import { LinkToNamespace, LinkToNode, LinkToPod } from "../kube-object-link";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
@@ -109,7 +110,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     return <LineProgress max={maxMemory} value={usage} tooltip={usage != 0 ? tooltip : null} />;
   }
 
-  getTableRow(uid: string, hideNode = false) {
+  getTableRow(uid: string, hideNode = false, linkToPod = false) {
     const { pods, podStore, showDetails } = this.props;
     const pod = pods.find((pod) => pod.getId() == uid);
 
@@ -122,18 +123,24 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     return (
       <TableRow key={pod.getId()} sortItem={pod} nowrap onClick={prevDefault(() => showDetails(pod.selfLink, false))}>
         <TableCell className="name">
-          <WithTooltip>{pod.getName()}</WithTooltip>
+          <WithTooltip>
+            {linkToPod ? <LinkToPod name={pod.getName()} namespace={pod.getNs()} /> : pod.getName()}
+          </WithTooltip>
         </TableCell>
         <TableCell className="warning">
           <KubeObjectStatusIcon key="icon" object={pod} />
         </TableCell>
         {hideNode || (
           <TableCell className="node">
-            <WithTooltip>{pod.getNodeName()}</WithTooltip>
+            <WithTooltip>
+              <LinkToNode name={pod.getNodeName()} />
+            </WithTooltip>
           </TableCell>
         )}
         <TableCell className="namespace">
-          <WithTooltip>{pod.getNs()}</WithTooltip>
+          <WithTooltip>
+            <LinkToNamespace namespace={pod.getNs()} />
+          </WithTooltip>
         </TableCell>
         <TableCell className="ready">
           {`${pod.getRunningContainers().length} / ${pod.getContainers().length}`}
@@ -151,6 +158,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     const { owner, pods, podStore } = this.props;
 
     const hideNode = owner.kind === "Node";
+    const linkToPod = owner.kind !== "Pod";
 
     if (!podStore.isLoaded) {
       return (
@@ -187,7 +195,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
           sortByDefault={{ sortBy: sortBy.cpu, orderBy: "desc" }}
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
-          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId(), hideNode)}
+          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId(), hideNode, linkToPod)}
           className="box grow"
         >
           <TableHead flat sticky={virtual}>

@@ -18,6 +18,10 @@
       flex-grow: 1.5;
     }
 
+    &.replicas {
+      flex-grow: 0.4;
+    }
+
     &.ready {
       flex-grow: 0.3;
     }
