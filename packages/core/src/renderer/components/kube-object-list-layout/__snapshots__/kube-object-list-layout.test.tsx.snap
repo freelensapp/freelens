@@ -273,6 +273,26 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 </i>
               </div>
               <div
+                class="TableCell ip nowrap sorting"
+                id="ip"
+              >
+                <div
+                  class="content"
+                >
+                  IP
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+              </div>
+              <div
                 class="TableCell node nowrap sorting"
                 id="node"
               >

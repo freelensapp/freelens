@@ -553,46 +553,6 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       </i>
                     </div>
                     <div
-                      class="TableCell node nowrap sorting"
-                      id="node"
-                    >
-                      <div
-                        class="content"
-                      >
-                        Node
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
-                      class="TableCell qos nowrap sorting"
-                      id="qos"
-                    >
-                      <div
-                        class="content"
-                      >
-                        QoS
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
                       class="TableCell age nowrap sorting"
                       id="age"
                     >
@@ -748,16 +708,6 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                               <div
                                 class="TableCell owners"
                               />
-                              <div
-                                class="TableCell node"
-                              >
-                                
-                              </div>
-                              <div
-                                class="TableCell qos"
-                              >
-                                
-                              </div>
                               <div
                                 class="TableCell age"
                               >
@@ -1520,46 +1470,6 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                         class="content"
                       >
                         Controlled By
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
-                      class="TableCell node nowrap sorting"
-                      id="node"
-                    >
-                      <div
-                        class="content"
-                      >
-                        Node
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
-                      class="TableCell qos nowrap sorting"
-                      id="qos"
-                    >
-                      <div
-                        class="content"
-                      >
-                        QoS
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
@@ -2362,46 +2272,6 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                         class="content"
                       >
                         Controlled By
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
-                      class="TableCell node nowrap sorting"
-                      id="node"
-                    >
-                      <div
-                        class="content"
-                      >
-                        Node
-                      </div>
-                      <i
-                        class="Icon sortIcon material focusable"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="arrow_drop_down"
-                        >
-                          arrow_drop_down
-                        </span>
-                      </i>
-                    </div>
-                    <div
-                      class="TableCell qos nowrap sorting"
-                      id="qos"
-                    >
-                      <div
-                        class="content"
-                      >
-                        QoS
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
