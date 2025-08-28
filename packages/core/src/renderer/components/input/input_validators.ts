@@ -235,6 +235,15 @@ export const systemName = inputValidator({
   validate: (value) => !!value.match(systemNameMatcher),
 });
 
+const systemNamesMatcher =
+  /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*(,[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)*$/;
+
+export const systemNames = inputValidator({
+  message: () =>
+    `A System Name must be lowercase DNS labels separated by dots. DNS labels are alphanumerics and dashes enclosed by alphanumerics.`,
+  validate: (value) => !!value.match(systemNamesMatcher),
+});
+
 export const accountId = inputValidator({
   message: () => `Invalid account ID`,
   validate: (value) => isEmail.validate(value) || systemName.validate(value),

@@ -226,7 +226,8 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
 
         <b>Users</b>
         <EditableList
-          placeholder="Bind to User Account ..."
+          placeholder="Bind to User Accounts (comma-separated) ..."
+          separator=","
           add={(newUser) => this.selectedUsers.add(newUser)}
           items={Array.from(this.selectedUsers)}
           remove={({ oldItem }) => this.selectedUsers.delete(oldItem)}
@@ -234,7 +235,8 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
 
         <b>Groups</b>
         <EditableList
-          placeholder="Bind to User Group ..."
+          placeholder="Bind to User Groups (comma-separated) ..."
+          separator=","
           add={(newGroup) => this.selectedGroups.add(newGroup)}
           items={Array.from(this.selectedGroups)}
           remove={({ oldItem }) => this.selectedGroups.delete(oldItem)}

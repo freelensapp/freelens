@@ -217,7 +217,8 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
 
         <b>Users</b>
         <EditableList
-          placeholder="Bind to User Account ..."
+          placeholder="Bind to User Accounts (comma-separated) ..."
+          separator=","
           add={(newUser) => this.selectedUsers.add(newUser)}
           items={Array.from(this.selectedUsers)}
           remove={({ oldItem }) => this.selectedUsers.delete(oldItem)}
@@ -225,7 +226,8 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
 
         <b>Groups</b>
         <EditableList
-          placeholder="Bind to User Group ..."
+          placeholder="Bind to User Groups (comma-separated) ..."
+          separator=","
           add={(newGroup) => this.selectedGroups.add(newGroup)}
           items={Array.from(this.selectedGroups)}
           remove={({ oldItem }) => this.selectedGroups.delete(oldItem)}
