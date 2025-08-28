@@ -11,7 +11,6 @@ import { CronJob } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities/dist";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import cronstrue from "cronstrue";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
@@ -23,6 +22,7 @@ import { DurationAbsoluteTimestamp } from "../events";
 import { LinkToJob } from "../kube-object-link";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import cronJobStoreInjectable from "./store.injectable";
+import { getScheduleFullDescription } from "./utils";
 
 import type { Job } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
@@ -68,9 +68,7 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
 
     return (
       <div className="CronJobDetails">
-        <DrawerItem name="Schedule">
-          {`${cronJob.getSchedule()} (${cronJob.isNeverRun() ? "never" : cronstrue.toString(cronJob.getSchedule())})`}
-        </DrawerItem>
+        <DrawerItem name="Schedule">{getScheduleFullDescription(cronJob)}</DrawerItem>
         <DrawerItem name="Timezone">{cronJob.spec.timeZone}</DrawerItem>
         <DrawerItem name="Starting Deadline Seconds" hidden={!cronJob.spec.startingDeadlineSeconds}>
           {formatDuration(cronJob.spec.startingDeadlineSeconds || 0)}
