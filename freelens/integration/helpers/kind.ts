@@ -6,13 +6,13 @@
 
 import { spawnSync } from "child_process";
 
-export function minikubeReady(testNamespace: string): boolean {
-  // determine if minikube is running
+export function kindReady(kindClusterName: string, testNamespace: string): boolean {
+  // determine if kind is running
   {
-    const { status } = spawnSync("minikube status", { shell: true });
+    const { status } = spawnSync(`kind get kubeconfig --name ${kindClusterName}`, { shell: true });
 
     if (status !== 0) {
-      console.warn("minikube not running");
+      console.warn("kind not running");
 
       return false;
     }
@@ -20,14 +20,19 @@ export function minikubeReady(testNamespace: string): boolean {
 
   // Remove TEST_NAMESPACE if it already exists
   {
-    const { status } = spawnSync(`minikube kubectl -- get namespace ${testNamespace}`, { shell: true });
+    const { status } = spawnSync(`kubectl --context kind-${kindClusterName} get namespace ${testNamespace}`, {
+      shell: true,
+    });
 
     if (status === 0) {
       console.warn(`Removing existing ${testNamespace} namespace`);
 
-      const { status, stdout, stderr } = spawnSync(`minikube kubectl -- delete namespace ${testNamespace}`, {
-        shell: true,
-      });
+      const { status, stdout, stderr } = spawnSync(
+        `kubectl --context kind-${kindClusterName} delete namespace ${testNamespace}`,
+        {
+          shell: true,
+        },
+      );
 
       if (status !== 0) {
         console.warn(`Error removing ${testNamespace} namespace: ${stderr.toString()}`);

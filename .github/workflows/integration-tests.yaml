@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  minikube_version: 1.36.0 # datasource=github-releases depName=kubernetes/minikube
+  kind_version: 0.30.0 # datasource=github-releases depName=kubernetes-sigs/kind
 
 jobs:
   test-integration:
@@ -130,14 +130,14 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
-      - name: Install minikube (Linux)
+      - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
-        uses: manusa/actions-setup-minikube@v2.14.0
+        uses: helm/kind-action@v1
         with:
-          minikube version: v${{ env.minikube_version }}
-          kubernetes version: v${{ env.kubernetes_version }}
-          github token: ${{ secrets.GITHUB_TOKEN }}
-          driver: docker
+          cluster_name: freelens
+          version: v${{ env.kind_version }}
+          node_image: kindest/node:v${{ env.kubernetes_version }}
+          wait: 5m
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -204,6 +204,7 @@ jobs:
           timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
+          TEST_KIND_CLUSTER_NAME: freelens
         continue-on-error: true
 
       - name: Run integration tests (Linux) (retry)

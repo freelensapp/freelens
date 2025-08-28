@@ -71,7 +71,7 @@ describe("detect-cluster-metadata", () => {
     cluster = new Cluster({
       id: "some-id",
       contextName: "some-context",
-      kubeConfigPath: "minikube-config.yml",
+      kubeConfigPath: "kind-config.yml",
     });
   });
 
