@@ -258,8 +258,8 @@ importers:
         version: 4.0.17
     devDependencies:
       '@electron/notarize':
-        specifier: ^3.0.1
-        version: 3.0.1
+        specifier: ^3.0.2
+        version: 3.0.2
       '@electron/rebuild':
         specifier: ^4.0.1
         version: 4.0.1
@@ -3604,8 +3604,8 @@ packages:
     resolution: {integrity: sha512-jNT8nwH1f9X5GEITXaQ8IF/KdskvIkOFfB2CvwumsveVidzpSc+mvhhTMdAGSYF3O+Nq49lJ7y+ssODRXu06+A==}
     engines: {node: '>= 10.0.0'}
 
-  '@electron/notarize@3.0.1':
-    resolution: {integrity: sha512-5xzcOwvMGNjkSk7s0sPx4XcKWei9FYk4f2S5NkSorWW0ce5yktTOtlPa0W5yQHcREILh+C3JdH+t+M637g9TmQ==}
+  '@electron/notarize@3.0.2':
+    resolution: {integrity: sha512-3LCARsJXOxEzzbmKFu/I2oq1eroyLdLBY2/J5ysCiPQ8i58TVIpQ7UdOZmthpppy1aBEiy+YGLUkxz5UMDRfgg==}
     engines: {node: '>= 22.12.0'}
 
   '@electron/osx-sign@1.3.1':
@@ -9626,7 +9626,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/notarize@3.0.1':
+  '@electron/notarize@3.0.2':
     dependencies:
       debug: 4.4.0(supports-color@5.5.0)
       promise-retry: 2.0.1
