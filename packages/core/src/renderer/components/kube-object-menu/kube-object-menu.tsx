@@ -8,7 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import identity from "lodash/identity";
-import { observable, runInAction, reaction } from "mobx";
+import { observable, reaction, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -18,9 +18,9 @@ import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
 import { MenuActions, MenuItem } from "../menu";
 import clusterNameInjectable from "./cluster-name.injectable";
+import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
 import kubeObjectMenuItemsInjectable from "./kube-object-menu-items.injectable";
 import onKubeObjectContextMenuOpenInjectable from "./on-context-menu-open.injectable";
-import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
@@ -32,8 +32,8 @@ import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
 import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import type { MenuActionsProps } from "../menu";
-import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 import type { KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
+import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 
 export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends MenuActionsProps {
   object: TKubeObject;
@@ -73,7 +73,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);
           }
-        }
+        },
       ),
       reaction(
         () => this.props.object?.getFinalizers(),
@@ -81,7 +81,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);
           }
-        }
+        },
       ),
     ]);
   }

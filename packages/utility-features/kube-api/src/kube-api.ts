@@ -784,13 +784,15 @@ export class KubeApi<
     const apiUrl = this.formatUrlForNotListing(desc);
 
     // Prepare the delete options data
-    const deleteData = deleteOptions ? {
-      kind: "DeleteOptions",
-      apiVersion: "v1",
-      ...deleteOptions,
-      // Override propagationPolicy if specified in deleteOptions
-      ...(deleteOptions.propagationPolicy !== undefined && { propagationPolicy: deleteOptions.propagationPolicy }),
-    } : undefined;
+    const deleteData = deleteOptions
+      ? {
+          kind: "DeleteOptions",
+          apiVersion: "v1",
+          ...deleteOptions,
+          // Override propagationPolicy if specified in deleteOptions
+          ...(deleteOptions.propagationPolicy !== undefined && { propagationPolicy: deleteOptions.propagationPolicy }),
+        }
+      : undefined;
 
     return this.request.del(apiUrl, {
       query: {
