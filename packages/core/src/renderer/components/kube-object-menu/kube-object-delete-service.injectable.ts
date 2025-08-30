@@ -8,7 +8,7 @@ import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 
-export type DeleteType = "normal" | "force" | "finalizers";
+export type DeleteType = "normal" | "force" | "terminate";
 
 export interface KubeObjectDeleteService {
   delete: (object: KubeObject, deleteType: DeleteType) => Promise<void>;
@@ -49,8 +49,8 @@ const kubeObjectDeleteServiceInjectable = getInjectable({
             } as any);
             break;
 
-          case "finalizers":
-            // For objects with finalizers, try to patch finalizers first, then force delete
+          case "terminate":
+            // For objects with finalizers in terminated state, try to patch finalizers first, then force delete
             try {
               await store.api.patch(resourceDescriptor, {
                 metadata: {

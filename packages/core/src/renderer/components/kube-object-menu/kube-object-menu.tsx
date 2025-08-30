@@ -134,22 +134,50 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
       this.menuItems.clear();
 
       if (isRemovable) {
-        // Determine the appropriate delete mode based on current object state
-        const getDeleteMode = (obj: KubeObject): "normal" | "force" | "finalizers" => {
-          // Check if object is in terminating state
-          if (obj.metadata.deletionTimestamp) {
-            return "finalizers";
-          }
+        // Determine the appropriate delete modes based on current object state
+        const getDeleteModes = (obj: KubeObject): ("normal" | "force" | "terminate")[] => {
+          const hasDeletionTimestamp = !!obj.metadata.deletionTimestamp;
+          const hasFinalizers = obj.getFinalizers().length > 0;
 
-          // Check if object has finalizers
-          if (obj.getFinalizers().length > 0) {
-            return "force";
-          }
+          if (!hasDeletionTimestamp) {
+            // Normal state - not terminating
+            if (hasFinalizers) {
+              return ["normal", "force"];
+            } else {
+              return ["normal"];
+            }
+          } else {
+            // Terminating state
+            if (obj.kind === "Pod") {
+              // For pods, check if containers are still running
+              const pod = obj as any; // Type assertion for Pod
+              const containerStatuses = pod.getContainerStatuses?.() || [];
+              const hasRunningContainers = containerStatuses.some(
+                (status: any) => status.state?.running || status.state?.waiting,
+              );
 
-          return "normal";
+              if (hasRunningContainers) {
+                // Still terminating - force delete to skip grace period
+                return ["force"];
+              } else if (hasFinalizers) {
+                // Containers terminated but finalizers exist - terminate (remove finalizers)
+                return ["terminate"];
+              } else {
+                // No finalizers, containers terminated - normal delete should work
+                return ["normal"];
+              }
+            } else {
+              // For non-pod resources
+              if (hasFinalizers) {
+                return ["terminate"];
+              } else {
+                return ["normal"];
+              }
+            }
+          }
         };
 
-        const getDeleteConfig = (mode: "normal" | "force" | "finalizers") => {
+        const getDeleteConfig = (mode: "normal" | "force" | "terminate") => {
           switch (mode) {
             case "normal":
               return {
@@ -163,31 +191,35 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
                 icon: "delete_forever",
                 labelOk: "Force Delete",
               };
-            case "finalizers":
+            case "terminate":
               return {
-                title: "Delete with Finalizers",
+                title: "Terminate",
                 icon: "delete_sweep",
-                labelOk: "Delete",
+                labelOk: "Terminate",
               };
           }
         };
 
-        const deleteMode = getDeleteMode(latestObject);
-        const config = getDeleteConfig(deleteMode);
+        const deleteModes = getDeleteModes(latestObject);
 
-        this.menuItems.push({
-          id: "delete-kube-object",
-          title: config.title,
-          icon: config.icon,
-          onClick: withConfirmation({
-            message: this.renderRemoveMessage(latestObject),
-            labelOk: config.labelOk,
-            ok: async () => {
-              hideDetails();
-              await kubeObjectDeleteService.delete(latestObject, deleteMode);
-            },
-          }),
-        });
+        // Add menu items for each available delete mode
+        for (const deleteMode of deleteModes) {
+          const config = getDeleteConfig(deleteMode);
+
+          this.menuItems.push({
+            id: `delete-kube-object-${deleteMode}`,
+            title: config.title,
+            icon: config.icon,
+            onClick: withConfirmation({
+              message: this.renderRemoveMessage(latestObject),
+              labelOk: config.labelOk,
+              ok: async () => {
+                hideDetails();
+                await kubeObjectDeleteService.delete(latestObject, deleteMode);
+              },
+            }),
+          });
+        }
       }
 
       if (isEditable) {
