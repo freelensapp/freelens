@@ -2394,8 +2394,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       openid-client:
-        specifier: ^6.7.0
-        version: 6.7.0
+        specifier: ^6.7.1
+        version: 6.7.1
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.2)(webpack@5.101.3)
@@ -7702,8 +7702,8 @@ packages:
     resolution: {integrity: sha512-mnkeQ1qP5Ue2wd+aivTD3NHd/lZ96Lu0jgf0pwktLPtx6cTZiH7tyeGRRHs0zX0rbrahXPnXlUnbeXyaBBuIaw==}
     engines: {node: '>=18'}
 
-  openid-client@6.7.0:
-    resolution: {integrity: sha512-mA8Cex9wGK6Jaqq4vd1sPDK/a+cQ6G+lExVJ9IRjwInN4NcEEntYqLAZsBhZOyHwDx7V1nmPKOvnxOcdLtSpoA==}
+  openid-client@6.7.1:
+    resolution: {integrity: sha512-kOiE4q0kNogr90hXsxPrKeEDuY+V0kkZazvZScOwZkYept9slsaQ3usXTaKkm6I04vLNuw5caBoX7UfrwC6x8w==}
 
   optionator@0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
@@ -10224,7 +10224,7 @@ snapshots:
       js-yaml: 4.1.0
       jsonpath-plus: 10.3.0
       node-fetch: 2.7.0(encoding@0.1.13)
-      openid-client: 6.7.0
+      openid-client: 6.7.1
       rfc4648: 1.5.4
       socks-proxy-agent: 8.0.5
       stream-buffers: 3.0.3
@@ -14398,7 +14398,7 @@ snapshots:
       is-inside-container: 1.0.0
       is-wsl: 3.1.0
 
-  openid-client@6.7.0:
+  openid-client@6.7.1:
     dependencies:
       jose: 6.1.0
       oauth4webapi: 3.8.0
