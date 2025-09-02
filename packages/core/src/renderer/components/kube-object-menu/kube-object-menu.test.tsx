@@ -28,8 +28,8 @@ import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
 import { renderFor } from "../test-utils/renderFor";
 import { KubeObjectMenu } from "./index";
-import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
+import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { UserEvent } from "@testing-library/user-event";
@@ -215,7 +215,7 @@ describe("kube-object-menu", () => {
                 selfLink: "/foo",
               }),
             }),
-            "normal"
+            "normal",
           );
         });
 
@@ -225,7 +225,7 @@ describe("kube-object-menu", () => {
 
         it("when removal resolves, closes the confirmation dialog", async () => {
           resolveDelete(); // Resolve the pending promise
-          
+
           await waitFor(() => {
             expect(screen.queryByTestId("confirmation-dialog")).toBeNull();
           });
