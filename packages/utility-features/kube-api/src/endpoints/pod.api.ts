@@ -56,6 +56,33 @@ export class PodApi extends KubeApi<Pod> {
     return response;
   }
 
+  async forceDelete(resource: DeleteResourceDescriptor) {
+    return this.delete({
+      ...resource,
+      deleteOptions: {
+        gracePeriodSeconds: 0,
+        propagationPolicy: "Background",
+      },
+    });
+  }
+
+  async deleteWithFinalizers(resource: DeleteResourceDescriptor) {
+    // First, try to patch the object to remove finalizers
+    try {
+      await this.patch(resource, {
+        metadata: {
+          finalizers: [],
+        },
+      });
+    } catch (error) {
+      // If patching fails, continue with force delete
+      console.warn("Failed to remove finalizers, proceeding with force delete", error);
+    }
+
+    // Then force delete
+    return this.forceDelete(resource);
+  }
+
   async getLogs(params: ResourceDescriptor, query?: PodLogsQuery): Promise<string> {
     const path = `${this.getUrl(params)}/log`;
 
