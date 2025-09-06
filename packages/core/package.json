@@ -245,7 +245,7 @@
     "mock-http": "^1.1.1",
     "node-gyp": "^11.4.2",
     "node-loader": "^2.1.0",
-    "postcss-loader": "^8.1.1",
+    "postcss-loader": "^8.2.0",
     "react-select-event": "^5.5.1",
     "sass-loader": "^16.0.5",
     "tailwindcss": "^4.1.12",
