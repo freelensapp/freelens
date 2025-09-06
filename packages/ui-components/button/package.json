@@ -43,7 +43,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/react": "^17.0.88",
     "css-loader": "^6.11.0",
-    "postcss-loader": "^8.1.1",
+    "postcss-loader": "^8.2.0",
     "sass-loader": "^16.0.5",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.2",
