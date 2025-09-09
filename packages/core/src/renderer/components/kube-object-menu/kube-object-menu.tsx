@@ -160,12 +160,13 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
                 (status) => status.state?.running || status.state?.waiting,
               );
 
+              if (hasFinalizers) {
+                // Can't force delete pods with finalizers, must finalize
+                return ["force_finalize"];
+              }
               if (hasRunningContainers) {
                 // Still terminating - force delete to skip grace period
                 return ["force_delete"];
-              } else if (hasFinalizers) {
-                // Containers terminated but finalizers exist - terminate (remove finalizers)
-                return ["force_finalize"];
               } else {
                 // No finalizers, containers terminated - normal delete should work
                 return ["delete"];
