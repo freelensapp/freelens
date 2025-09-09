@@ -215,7 +215,7 @@ describe("kube-object-menu", () => {
                 selfLink: "/foo",
               }),
             }),
-            "normal",
+            "delete",
           );
         });
 

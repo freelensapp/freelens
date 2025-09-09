@@ -5,6 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
+import { PodStatusPhase } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import identity from "lodash/identity";
@@ -100,6 +101,70 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
     );
   }
 
+  private getPodDeleteModes(pod: Pod): DeleteType[] {
+    const hasDeletionTimestamp = !!pod.metadata.deletionTimestamp;
+    const hasFinalizers = pod.getFinalizers().length > 0;
+    const podPhase = pod.getStatusPhase();
+
+    if (!hasDeletionTimestamp) {
+      // Pod not yet terminating
+      // Force delete should be skipped for terminal phases (Succeeded, Failed, Unknown)
+      const skipForceDelete =
+        podPhase === PodStatusPhase.SUCCEEDED || podPhase === PodStatusPhase.FAILED || podPhase === "Unknown"; // Unknown is not in the enum, using string
+
+      if (skipForceDelete) {
+        return ["delete"];
+      } else {
+        // For Running, Pending, or undefined phases, allow both options
+        if ((pod.spec.terminationGracePeriodSeconds ?? 30) > 0) {
+          return ["force_delete", "delete"];
+        } else {
+          return ["delete"];
+        }
+      }
+    } else {
+      // Pod is already terminating (has deletionTimestamp)
+      const containerStatuses = pod.getContainerStatuses?.() || [];
+      const hasRunningContainers = containerStatuses.some((status) => status.state?.running || status.state?.waiting);
+
+      if (hasFinalizers) {
+        // Can't force delete pods with finalizers, must finalize first
+        return ["force_finalize"];
+      }
+
+      // For terminated pods (Succeeded, Failed, etc), skip force delete as it won't work
+      const skipForceDelete =
+        podPhase === PodStatusPhase.SUCCEEDED || podPhase === PodStatusPhase.FAILED || podPhase === "Unknown"; // Unknown is not in the enum, using string
+
+      if (skipForceDelete) {
+        return ["delete"];
+      } else if (hasRunningContainers || podPhase === PodStatusPhase.RUNNING) {
+        // Still has running containers or in Running phase - force delete to skip grace period
+        return ["force_delete"];
+      } else {
+        // Containers terminated, normal delete should work
+        return ["delete"];
+      }
+    }
+  }
+
+  private getGenericResourceDeleteModes(obj: KubeObject): DeleteType[] {
+    const hasDeletionTimestamp = !!obj.metadata.deletionTimestamp;
+    const hasFinalizers = obj.getFinalizers().length > 0;
+
+    if (!hasDeletionTimestamp) {
+      // Resource not yet terminating
+      return ["delete"];
+    } else {
+      // Resource is terminating
+      if (hasFinalizers) {
+        return ["force_finalize"];
+      } else {
+        return ["delete"];
+      }
+    }
+  }
+
   private renderMenuItems() {
     const { object, toolbar } = this.props;
 
@@ -136,49 +201,10 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
       if (isRemovable) {
         // Determine the appropriate delete modes based on current object state
         const getDeleteModes = (obj: KubeObject): DeleteType[] => {
-          const hasDeletionTimestamp = !!obj.metadata.deletionTimestamp;
-          const hasFinalizers = obj.getFinalizers().length > 0;
-
-          if (!hasDeletionTimestamp) {
-            if (obj.kind === "Pod") {
-              const pod = obj as Pod; // Type assertion for Pod
-              if ((pod.spec.terminationGracePeriodSeconds ?? 30) > 0) {
-                return ["force_delete", "delete"];
-              } else {
-                return ["delete"];
-              }
-            } else {
-              return ["delete"];
-            }
+          if (obj.kind === "Pod") {
+            return this.getPodDeleteModes(obj as Pod);
           } else {
-            // Terminating state
-            if (obj.kind === "Pod") {
-              // For pods, check if containers are still running
-              const pod = obj as Pod; // Type assertion for Pod
-              const containerStatuses = pod.getContainerStatuses?.() || [];
-              const hasRunningContainers = containerStatuses.some(
-                (status) => status.state?.running || status.state?.waiting,
-              );
-
-              if (hasFinalizers) {
-                // Can't force delete pods with finalizers, must finalize
-                return ["force_finalize"];
-              }
-              if (hasRunningContainers) {
-                // Still terminating - force delete to skip grace period
-                return ["force_delete"];
-              } else {
-                // No finalizers, containers terminated - normal delete should work
-                return ["delete"];
-              }
-            } else {
-              // For non-pod resources
-              if (hasFinalizers) {
-                return ["force_finalize"];
-              } else {
-                return ["delete"];
-              }
-            }
+            return this.getGenericResourceDeleteModes(obj);
           }
         };
 
