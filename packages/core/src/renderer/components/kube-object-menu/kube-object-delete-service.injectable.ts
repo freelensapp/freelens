@@ -8,7 +8,7 @@ import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 
-export type DeleteType = "normal" | "force" | "terminate";
+export type DeleteType = "delete" | "force_delete" | "force_finalize";
 
 export interface KubeObjectDeleteService {
   delete: (object: KubeObject, deleteType: DeleteType) => Promise<void>;
@@ -28,46 +28,32 @@ const kubeObjectDeleteServiceInjectable = getInjectable({
           throw new Error(`No store found for object: ${object.selfLink}`);
         }
 
-        const resourceDescriptor = {
-          name: object.getName(),
-          namespace: object.getNs(),
-        };
-
         switch (deleteType) {
-          case "normal":
+          case "delete":
             await store.remove(object);
             break;
 
-          case "force":
-            // Use the generic KubeApi delete method with force options
-            await store.api.delete({
-              ...resourceDescriptor,
-              deleteOptions: {
-                gracePeriodSeconds: 0,
-                propagationPolicy: "Background",
-              },
-            } as any);
+          case "force_delete":
+            // Use the delete option with grace period 0s
+            console.log("Force deleting with grace period 0s", object);
+            await store.removeWithOptions(object, {
+              gracePeriodSeconds: 0,
+              propagationPolicy: "Background",
+            });
+            console.log("Deleted", object);
             break;
 
-          case "terminate":
-            // For objects with finalizers in terminated state, try to patch finalizers first, then force delete
-            try {
-              await store.api.patch(resourceDescriptor, {
+          case "force_finalize":
+            // For objects with finalizers in terminated state, patch finalizers
+            await store.patch(
+              object,
+              {
                 metadata: {
                   finalizers: [],
                 },
-              });
-            } catch (error) {
-              console.warn("Failed to remove finalizers, proceeding with force delete", error);
-            }
-
-            await store.api.delete({
-              ...resourceDescriptor,
-              deleteOptions: {
-                gracePeriodSeconds: 0,
-                propagationPolicy: "Background",
               },
-            } as any);
+              "merge",
+            );
             break;
 
           default:

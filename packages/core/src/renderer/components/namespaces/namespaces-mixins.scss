@@ -9,6 +9,9 @@
     color: var(--colorOk);
   }
   &.terminating {
-    color: var(--colorError);
+    color: var(--colorTerminated);
+  }
+  &.finalizing {
+    color: var(--colorTerminated);
   }
 }

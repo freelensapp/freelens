@@ -48,6 +48,9 @@ export function getStatusText(obj: Job) {
   } else if (obj.hasCondition("Failed")) {
     return "Failed";
   } else if (obj.metadata.deletionTimestamp) {
+    if (obj.metadata.finalizers?.length) {
+      return "Finalizing";
+    }
     return "Terminating";
   } else if (obj.hasCondition("Suspended")) {
     return "Suspended";

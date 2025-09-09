@@ -13,6 +13,7 @@ import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
 import type {
+  DeleteOptions,
   IKubeWatchEvent,
   KubeApi,
   KubeApiPatchType,
@@ -442,6 +443,11 @@ export class KubeObjectStore<
 
   async remove(item: K) {
     await this.api.delete({ name: item.getName(), namespace: item.getNs() });
+    this.selectedItemsIds.delete(item.getId());
+  }
+
+  async removeWithOptions(item: K, deleteOptions?: DeleteOptions) {
+    await this.api.delete({ name: item.getName(), namespace: item.getNs(), deleteOptions });
     this.selectedItemsIds.delete(item.getId());
   }
 

@@ -29,6 +29,9 @@ export class Namespace extends KubeObject<ClusterScopedMetadata, NamespaceStatus
   static readonly apiBase = "/api/v1/namespaces";
 
   getStatus() {
+    if (this.metadata.deletionTimestamp && this.metadata.finalizers?.length) {
+      return "Finalizing";
+    }
     return this.status?.phase ?? "-";
   }
 

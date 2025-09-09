@@ -22,7 +22,7 @@ import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.inje
 import kubeObjectMenuItemsInjectable from "./kube-object-menu-items.injectable";
 import onKubeObjectContextMenuOpenInjectable from "./on-context-menu-open.injectable";
 
-import type { KubeObject } from "@freelensapp/kube-object";
+import type { KubeObject, Pod } from "@freelensapp/kube-object";
 
 import type { IComputedValue } from "mobx";
 
@@ -32,7 +32,7 @@ import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
 import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import type { MenuActionsProps } from "../menu";
-import type { KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
+import type { DeleteType, KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
 import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 
 export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends MenuActionsProps {
@@ -86,13 +86,13 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
     ]);
   }
 
-  private renderRemoveMessage(object: KubeObject) {
+  private renderDeleteMessage(object: KubeObject, title: string) {
     const breadcrumbParts = [object.getNs(), object.getName()];
     const breadcrumb = breadcrumbParts.filter(identity).join("/");
 
     return (
       <p>
-        {`Remove ${object.kind} `}
+        {`${title} ${object.kind} `}
         <b>{breadcrumb}</b>
         {" from "}
         <b>{this.props.clusterName.get()}</b>?
@@ -135,67 +135,71 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
 
       if (isRemovable) {
         // Determine the appropriate delete modes based on current object state
-        const getDeleteModes = (obj: KubeObject): ("normal" | "force" | "terminate")[] => {
+        const getDeleteModes = (obj: KubeObject): DeleteType[] => {
           const hasDeletionTimestamp = !!obj.metadata.deletionTimestamp;
           const hasFinalizers = obj.getFinalizers().length > 0;
 
           if (!hasDeletionTimestamp) {
-            // Normal state - not terminating
-            if (hasFinalizers) {
-              return ["normal", "force"];
+            if (obj.kind === "Pod") {
+              const pod = obj as Pod; // Type assertion for Pod
+              if ((pod.spec.terminationGracePeriodSeconds ?? 30) > 0) {
+                return ["force_delete", "delete"];
+              } else {
+                return ["delete"];
+              }
             } else {
-              return ["normal"];
+              return ["delete"];
             }
           } else {
             // Terminating state
             if (obj.kind === "Pod") {
               // For pods, check if containers are still running
-              const pod = obj as any; // Type assertion for Pod
+              const pod = obj as Pod; // Type assertion for Pod
               const containerStatuses = pod.getContainerStatuses?.() || [];
               const hasRunningContainers = containerStatuses.some(
-                (status: any) => status.state?.running || status.state?.waiting,
+                (status) => status.state?.running || status.state?.waiting,
               );
 
               if (hasRunningContainers) {
                 // Still terminating - force delete to skip grace period
-                return ["force"];
+                return ["force_delete"];
               } else if (hasFinalizers) {
                 // Containers terminated but finalizers exist - terminate (remove finalizers)
-                return ["terminate"];
+                return ["force_finalize"];
               } else {
                 // No finalizers, containers terminated - normal delete should work
-                return ["normal"];
+                return ["delete"];
               }
             } else {
               // For non-pod resources
               if (hasFinalizers) {
-                return ["terminate"];
+                return ["force_finalize"];
               } else {
-                return ["normal"];
+                return ["delete"];
               }
             }
           }
         };
 
-        const getDeleteConfig = (mode: "normal" | "force" | "terminate") => {
+        const getDeleteConfig = (mode: DeleteType) => {
           switch (mode) {
-            case "normal":
+            case "delete":
               return {
                 title: "Delete",
                 icon: "delete",
                 labelOk: "Delete",
               };
-            case "force":
+            case "force_delete":
               return {
                 title: "Force Delete",
                 icon: "delete_forever",
                 labelOk: "Force Delete",
               };
-            case "terminate":
+            case "force_finalize":
               return {
-                title: "Terminate",
+                title: "Force Finalize",
                 icon: "delete_sweep",
-                labelOk: "Terminate",
+                labelOk: "Force Finalize",
               };
           }
         };
@@ -211,7 +215,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
             title: config.title,
             icon: config.icon,
             onClick: withConfirmation({
-              message: this.renderRemoveMessage(latestObject),
+              message: this.renderDeleteMessage(latestObject, config.title),
               labelOk: config.labelOk,
               ok: async () => {
                 hideDetails();

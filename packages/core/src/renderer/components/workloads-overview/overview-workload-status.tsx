@@ -45,8 +45,9 @@ const statusBackgroundColorMapping = {
   evicted: "colorError",
   succeeded: "colorSuccess",
   failed: "colorError",
-  terminated: "colorTerminated",
   terminating: "colorTerminated",
+  finalizing: "colorTerminated",
+  terminated: "colorTerminated",
   unknown: "colorVague",
   complete: "colorSuccess",
 } as const;
