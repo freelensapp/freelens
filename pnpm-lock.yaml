@@ -379,7 +379,7 @@ importers:
         version: 2.9.4(webpack@5.101.3)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
-        version: 7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3)
+        version: 7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3)
       node-gyp:
         specifier: ^11.4.2
         version: 11.4.2
@@ -825,8 +825,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0
       monaco-editor:
-        specifier: ^0.52.2
-        version: 0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+        specifier: ^0.53.0
+        version: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
       node-pty:
         specifier: 1.1.0-beta34
         version: 1.1.0-beta34
@@ -4757,6 +4757,9 @@ packages:
   '@types/triple-beam@1.3.5':
     resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
 
+  '@types/trusted-types@1.0.6':
+    resolution: {integrity: sha512-230RC8sFeHoT6sSUlRO6a8cAnclO06eeiq1QDfiv2FGCLWFvvERWgwIQD4FWqD9A69BN7Lzee4OXwoMVnnsWDw==}
+
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
@@ -7501,8 +7504,8 @@ packages:
       monaco-editor: '>= 0.31.0'
       webpack: ^4.5.0 || 5.x
 
-  monaco-editor@0.52.2:
-    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+  monaco-editor@0.53.0:
+    resolution: {integrity: sha512-0WNThgC6CMWNXXBxTbaYYcunj08iB5rnx4/G56UOPeL9UVIUGGHA1GR0EWIh9Ebabj7NpCRawQ5b0hfN1jQmYQ==}
 
   moo-color@1.0.3:
     resolution: {integrity: sha512-i/+ZKXMDf6aqYtBhuOcej71YSlbjT3wCO/4H1j8rPvxDJEifdwgg5MaFyu6iYAT8GBZJg2z0dkgK4YMzvURALQ==}
@@ -10999,6 +11002,8 @@ snapshots:
 
   '@types/triple-beam@1.3.5': {}
 
+  '@types/trusted-types@1.0.6': {}
+
   '@types/trusted-types@2.0.7':
     optional: true
 
@@ -14192,13 +14197,15 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3):
+  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3):
     dependencies:
       loader-utils: 2.0.4
-      monaco-editor: 0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+      monaco-editor: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
       webpack: 5.101.3(webpack-cli@6.0.1)
 
-  monaco-editor@0.52.2(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0): {}
+  monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0):
+    dependencies:
+      '@types/trusted-types': 1.0.6
 
   moo-color@1.0.3:
     dependencies:
