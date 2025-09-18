@@ -33,7 +33,7 @@ export const dockerPod = new Pod({
     phase: "Running",
     conditions: [
       {
-        type: "Running",
+        type: "Ready",
         status: "Running",
         lastProbeTime: 1,
         lastTransitionTime: "Some time",
@@ -98,7 +98,7 @@ export const deploymentPod1 = new Pod({
     phase: "Running",
     conditions: [
       {
-        type: "Running",
+        type: "Ready",
         status: "Running",
         lastProbeTime: 1,
         lastTransitionTime: "Some time",
@@ -163,7 +163,7 @@ export const deploymentPod2 = new Pod({
     phase: "Running",
     conditions: [
       {
-        type: "Running",
+        type: "Ready",
         status: "Running",
         lastProbeTime: 1,
         lastTransitionTime: "Some time",
@@ -216,7 +216,7 @@ export const deploymentPod3 = new Pod({
     phase: "Running",
     conditions: [
       {
-        type: "Running",
+        type: "Ready",
         status: "Running",
         lastProbeTime: 1,
         lastTransitionTime: "Some time",
