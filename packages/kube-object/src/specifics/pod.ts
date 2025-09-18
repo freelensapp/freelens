@@ -39,6 +39,9 @@ export interface PodLogsQuery {
   previous?: boolean;
 }
 
+/**
+ * The human-readable status of a Pod. Warning! This is not the same as Pod.status.phase.
+ */
 export enum PodStatusPhase {
   TERMINATED = "Terminated",
   FAILED = "Failed",
@@ -591,12 +594,19 @@ export interface PodCondition {
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type: string;
+  type:
+    | "PodScheduled"
+    | "Ready"
+    | "Initialized"
+    | "ContainersReady"
+    | "DisruptionTarget"
+    | "PodResizePending"
+    | "PodResizeInProgress";
   status: string;
 }
 
 export interface PodStatus {
-  phase: string;
+  phase: "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
   conditions: PodCondition[];
   hostIP: string;
   podIP: string;
@@ -766,12 +776,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     if (this.metadata.deletionTimestamp) {
-      const containerStatuses = this.getContainerStatuses?.() || [];
-      if (containerStatuses.some((status) => status.state?.running || status.state?.waiting)) {
-        return "Terminating";
-      } else if (this.metadata.finalizers?.length) {
-        return "Finalizing";
-      }
+      return "Terminating";
     }
 
     return this.getStatusPhase() || "Waiting";
