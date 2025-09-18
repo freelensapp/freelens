@@ -589,24 +589,28 @@ export interface PodSpec {
   volumes?: PodSpecVolume[];
 }
 
+export type PodConditionType =
+  | "PodScheduled"
+  | "Ready"
+  | "Initialized"
+  | "ContainersReady"
+  | "DisruptionTarget"
+  | "PodResizePending"
+  | "PodResizeInProgress";
+
 export interface PodCondition {
   lastProbeTime?: number;
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type:
-    | "PodScheduled"
-    | "Ready"
-    | "Initialized"
-    | "ContainersReady"
-    | "DisruptionTarget"
-    | "PodResizePending"
-    | "PodResizeInProgress";
+  type: PodConditionType;
   status: string;
 }
 
+export type PodPhase = "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
+
 export interface PodStatus {
-  phase: "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
+  phase: PodPhase;
   conditions: PodCondition[];
   hostIP: string;
   podIP: string;
@@ -748,7 +752,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
         .filter(({ status }) => status === "True")
         .map(({ type }) => type),
     );
-    const isInGoodCondition = ["Initialized", "Ready"].every((condition) => trueConditionTypes.has(condition));
+    const isInGoodCondition = trueConditionTypes.has("Ready");
 
     if (reason === PodStatusPhase.EVICTED) {
       return PodStatusPhase.EVICTED;
