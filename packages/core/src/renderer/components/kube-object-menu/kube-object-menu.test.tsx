@@ -10,7 +10,6 @@ import React from "react";
 import type { RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import asyncFn from "@async-fn/jest";
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import userEvent from "@testing-library/user-event";
@@ -29,14 +28,15 @@ import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
 import { renderFor } from "../test-utils/renderFor";
 import { KubeObjectMenu } from "./index";
+import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { UserEvent } from "@testing-library/user-event";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import type { DiRender } from "../test-utils/renderFor";
+import type { KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
 
 // TODO: make `animated={false}` not required to make tests deterministic
 describe("kube-object-menu", () => {
@@ -71,7 +71,10 @@ describe("kube-object-menu", () => {
       apiManagerInjectable,
       () =>
         ({
-          getStore: (api: any) => void api,
+          getStore: (api: any) => ({
+            getByPath: (path: string) => null, // Return null to use the original object
+            remove: jest.fn(),
+          }),
         }) as ApiManager,
     );
 
@@ -98,7 +101,9 @@ describe("kube-object-menu", () => {
 
   describe("given kube object", () => {
     let result: RenderResult;
-    let removeActionMock: AsyncFnMock<() => void>;
+    let kubeObjectDeleteServiceMock: jest.Mocked<KubeObjectDeleteService>;
+    let deletePendingPromise: Promise<void>;
+    let resolveDelete: () => void;
 
     beforeEach(async () => {
       const objectStub = KubeObject.create({
@@ -113,12 +118,22 @@ describe("kube-object-menu", () => {
         },
       });
 
-      removeActionMock = asyncFn();
+      // Create a pending promise that can be resolved manually
+      deletePendingPromise = new Promise<void>((resolve) => {
+        resolveDelete = resolve;
+      });
+
+      kubeObjectDeleteServiceMock = {
+        delete: jest.fn().mockReturnValue(deletePendingPromise),
+      };
+
+      di.override(kubeObjectDeleteServiceInjectable, () => kubeObjectDeleteServiceMock);
+
       result = render(
         <div>
           <ConfirmDialog animated={false} />
 
-          <KubeObjectMenu object={objectStub} toolbar={true} removeAction={removeActionMock} />
+          <KubeObjectMenu object={objectStub} toolbar={true} />
         </div>,
       );
     });
@@ -149,7 +164,7 @@ describe("kube-object-menu", () => {
           <div>
             <ConfirmDialog animated={false} />
 
-            <KubeObjectMenu object={newObjectStub} toolbar={true} removeAction={removeActionMock} />
+            <KubeObjectMenu object={newObjectStub} toolbar={true} />
           </div>,
         );
       });
@@ -192,7 +207,16 @@ describe("kube-object-menu", () => {
         });
 
         it("calls for removal of the kube object", () => {
-          expect(removeActionMock).toHaveBeenCalledWith();
+          expect(kubeObjectDeleteServiceMock.delete).toHaveBeenCalledWith(
+            expect.objectContaining({
+              metadata: expect.objectContaining({
+                name: "some-name",
+                namespace: "some-namespace",
+                selfLink: "/foo",
+              }),
+            }),
+            "delete",
+          );
         });
 
         it("does not close the confirmation dialog yet", async () => {
@@ -200,7 +224,8 @@ describe("kube-object-menu", () => {
         });
 
         it("when removal resolves, closes the confirmation dialog", async () => {
-          await removeActionMock.resolve();
+          resolveDelete(); // Resolve the pending promise
+
           await waitFor(() => {
             expect(screen.queryByTestId("confirmation-dialog")).toBeNull();
           });

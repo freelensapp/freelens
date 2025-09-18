@@ -39,6 +39,9 @@ export interface PodLogsQuery {
   previous?: boolean;
 }
 
+/**
+ * The human-readable status of a Pod. Warning! This is not the same as Pod.status.phase.
+ */
 export enum PodStatusPhase {
   TERMINATED = "Terminated",
   FAILED = "Failed",
@@ -586,17 +589,28 @@ export interface PodSpec {
   volumes?: PodSpecVolume[];
 }
 
+export type PodConditionType =
+  | "PodScheduled"
+  | "Ready"
+  | "Initialized"
+  | "ContainersReady"
+  | "DisruptionTarget"
+  | "PodResizePending"
+  | "PodResizeInProgress";
+
 export interface PodCondition {
   lastProbeTime?: number;
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type: string;
+  type: PodConditionType;
   status: string;
 }
 
+export type PodPhase = "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
+
 export interface PodStatus {
-  phase: string;
+  phase: PodPhase;
   conditions: PodCondition[];
   hostIP: string;
   podIP: string;
@@ -738,7 +752,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
         .filter(({ status }) => status === "True")
         .map(({ type }) => type),
     );
-    const isInGoodCondition = ["Initialized", "Ready"].every((condition) => trueConditionTypes.has(condition));
+    const isInGoodCondition = trueConditionTypes.has("Ready");
 
     if (reason === PodStatusPhase.EVICTED) {
       return PodStatusPhase.EVICTED;
@@ -766,7 +780,12 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     if (this.metadata.deletionTimestamp) {
-      return "Terminating";
+      const containerStatuses = this.getContainerStatuses?.() || [];
+      if (containerStatuses.some((status) => status.state?.running || status.state?.waiting)) {
+        return "Terminating";
+      } else if (this.metadata.finalizers?.length) {
+        return "Finalizing";
+      }
     }
 
     return this.getStatusPhase() || "Waiting";

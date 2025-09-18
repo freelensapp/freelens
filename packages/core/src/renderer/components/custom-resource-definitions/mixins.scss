@@ -7,6 +7,7 @@
 // ref: https://github.com/kubernetes/apiextensions-apiserver/blob/master/pkg/apis/apiextensions/types.go
 $custom-resource-definitions-condition-colors: (
   Established: var(--colorSuccess),
+  Finalizing: var(--colorTerminated),
   NamesAccepted: var(--colorOk),
   NonStructuralSchema: var(--colorError),
   Terminating: var(--colorTerminated),

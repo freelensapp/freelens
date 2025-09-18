@@ -105,7 +105,7 @@ exports[`kube-object-menu given kube object when removing kube object renders 1`
         </i>
          
         <p>
-          Remove some-kind 
+          Delete some-kind 
           <b>
             some-namespace/some-name
           </b>
@@ -131,7 +131,7 @@ exports[`kube-object-menu given kube object when removing kube object renders 1`
           data-waiting="false"
           type="button"
         >
-          Remove
+          Delete
         </button>
       </div>
     </div>
@@ -238,7 +238,7 @@ exports[`kube-object-menu given kube object when rerendered with different kube 
         </i>
          
         <p>
-          Remove some-other-kind 
+          Delete some-other-kind 
           <b>
             some-other-namespace/some-other-name
           </b>
@@ -264,7 +264,7 @@ exports[`kube-object-menu given kube object when rerendered with different kube 
           data-waiting="false"
           type="button"
         >
-          Remove
+          Delete
         </button>
       </div>
     </div>
@@ -334,7 +334,7 @@ exports[`kube-object-menu given kube object with namespace when removing kube ob
         </i>
          
         <p>
-          Remove some-kind 
+          Delete some-kind 
           <b>
             some-namespace/some-name
           </b>
@@ -360,7 +360,7 @@ exports[`kube-object-menu given kube object with namespace when removing kube ob
           data-waiting="false"
           type="button"
         >
-          Remove
+          Delete
         </button>
       </div>
     </div>
@@ -430,7 +430,7 @@ exports[`kube-object-menu given kube object without namespace when removing kube
         </i>
          
         <p>
-          Remove some-kind 
+          Delete some-kind 
           <b>
             some-name
           </b>
@@ -456,7 +456,7 @@ exports[`kube-object-menu given kube object without namespace when removing kube
           data-waiting="false"
           type="button"
         >
-          Remove
+          Delete
         </button>
       </div>
     </div>
