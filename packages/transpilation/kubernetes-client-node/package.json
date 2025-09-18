@@ -33,7 +33,7 @@
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",
-    "tar-fs": "^3.1.0"
+    "tar-fs": "^3.1.1"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
