@@ -137,8 +137,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       cronstrue:
-        specifier: ^3.2.0
-        version: 3.2.0
+        specifier: ^3.3.0
+        version: 3.3.0
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -756,8 +756,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       cronstrue:
-        specifier: ^3.2.0
-        version: 3.2.0
+        specifier: ^3.3.0
+        version: 3.3.0
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5541,8 +5541,8 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  cronstrue@3.2.0:
-    resolution: {integrity: sha512-CqpqV5bCei+jmKyIw2Wihz+npXDuSkeExWCItEn5hlpD8+QFMXUU2YW5W3Vh/hFxWwzWhguoGXm5gl1os+L2Hw==}
+  cronstrue@3.3.0:
+    resolution: {integrity: sha512-iwJytzJph1hosXC09zY8F5ACDJKerr0h3/2mOxg9+5uuFObYlgK0m35uUPk4GCvhHc2abK7NfnR9oMqY0qZFAg==}
     hasBin: true
 
   cross-dirname@0.1.0:
@@ -11934,7 +11934,7 @@ snapshots:
 
   create-require@1.1.1: {}
 
-  cronstrue@3.2.0: {}
+  cronstrue@3.3.0: {}
 
   cross-dirname@0.1.0:
     optional: true
