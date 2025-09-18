@@ -776,7 +776,12 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     if (this.metadata.deletionTimestamp) {
-      return "Terminating";
+      const containerStatuses = this.getContainerStatuses?.() || [];
+      if (containerStatuses.some((status) => status.state?.running || status.state?.waiting)) {
+        return "Terminating";
+      } else if (this.metadata.finalizers?.length) {
+        return "Finalizing";
+      }
     }
 
     return this.getStatusPhase() || "Waiting";
