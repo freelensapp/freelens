@@ -14,6 +14,7 @@ permissions:
 
 env:
   kind_version: 0.30.0 # datasource=github-releases depName=kubernetes-sigs/kind
+  kubernetes_version: 1.34.0 # datasource=docker depName=kindest/node
 
 jobs:
   test-integration:
@@ -89,10 +90,6 @@ jobs:
         shell: bash
         run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed
           's/(.*)//')" >> $GITHUB_ENV
-
-      - name: Get Kubernetes version (Linux)
-        if: runner.os == 'Linux'
-        run: echo "kubernetes_version=$(yq -r .config.bundledKubectlVersion freelens/package.json)" >> $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v4
