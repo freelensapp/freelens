@@ -252,7 +252,7 @@
     "ts-jest": "^29.4.4",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
-    "type-fest": "^4.41.0",
+    "type-fest": "^5.0.1",
     "typed-emitter": "^1.4.0",
     "typescript": "^5.9.2",
     "typescript-plugin-css-modules": "^5.2.0",
