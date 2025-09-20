@@ -67,7 +67,7 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   getPodKubeMetrics(pod: Pod) {
     const containers = pod.getContainers();
     const empty = { cpu: 0, memory: 0 };
-    const metrics = this.kubeMetrics.find((metric) => {
+    const metrics = this.kubeMetrics?.find((metric) => {
       return [metric.getName() === pod.getName(), metric.getNs() === pod.getNs()].every((v) => v);
     });
 
@@ -77,7 +77,7 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
       let cpu = "0";
       let memory = "0";
 
-      const metric = metrics.containers.find((item) => item.name == container.name);
+      const metric = metrics.containers?.find((item) => item.name == container.name);
 
       if (metric && metric.usage) {
         cpu = metric.usage.cpu || "0";
