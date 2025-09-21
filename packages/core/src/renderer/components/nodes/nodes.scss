@@ -65,6 +65,10 @@
       }
     }
 
+    &.schedulable {
+      flex: 0.6;
+    }
+
     &.taints {
       flex: 0.6;
     }
