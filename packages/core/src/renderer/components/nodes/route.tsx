@@ -14,6 +14,7 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
+import { BadgeBoolean } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectConditionsList } from "../kube-object-conditions";
@@ -38,12 +39,13 @@ enum columnId {
   cpu = "cpu",
   memory = "memory",
   disk = "disk",
-  conditions = "condition",
   taints = "taints",
   roles = "roles",
-  age = "age",
   version = "version",
   internalIp = "internalIp",
+  age = "age",
+  schedulable = "schedulable",
+  conditions = "condition",
   status = "status",
 }
 
@@ -204,12 +206,13 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.cpu]: (node) => this.getLastMetricValues(node, ["cpuUsage"]),
             [columnId.memory]: (node) => this.getLastMetricValues(node, ["memoryUsage"]),
             [columnId.disk]: (node) => this.getLastMetricValues(node, ["fsUsage"]),
-            [columnId.conditions]: (node) => node.getNodeConditionText(),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
             [columnId.version]: (node) => node.getKubeletVersion(),
             [columnId.internalIp]: (node) => node.getInternalIP(),
             [columnId.age]: (node) => -node.getCreationTimestamp(),
+            [columnId.schedulable]: (node) => (node.isUnschedulable() ? "False" : "True"),
+            [columnId.conditions]: (node) => node.getNodeConditionText(),
           }}
           searchFilters={[
             (node) => node.getSearchFields(),
@@ -226,11 +229,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "CPU", className: "cpu", sortBy: columnId.cpu, id: columnId.cpu },
             { title: "Memory", className: "memory", sortBy: columnId.memory, id: columnId.memory },
             { title: "Disk", className: "disk", sortBy: columnId.disk, id: columnId.disk },
-            { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
+            { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
             { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
+            { title: "Schedulable", className: "schedulable", sortBy: columnId.schedulable, id: columnId.schedulable },
             {
               title: "Conditions",
               className: "conditions scrollable",
@@ -248,16 +252,17 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               this.renderCpuUsage(node),
               this.renderMemoryUsage(node),
               this.renderDiskUsage(node),
+              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <>
                 <span id={tooltipId}>{taints.length}</span>
                 <Tooltip targetId={tooltipId} tooltipOnParentHover={true} style={{ whiteSpace: "pre-line" }}>
                   {taints.map(formatNodeTaint).join("\n")}
                 </Tooltip>
               </>,
-              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
               <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
+              <BadgeBoolean value={!node.isUnschedulable()} />,
               <KubeObjectConditionsList key="conditions" object={node} />,
             ];
           }}

@@ -36,14 +36,21 @@ export const KubeObjectConditionsList = observer((props: KubeObjectConditionsLis
   return (
     <>
       {sortConditions(conditions, conditionTypePriorities)
-        ?.filter((condition) => condition.status === "True")
+        ?.filter((condition) => condition.status === "True" || condition.type === "Ready")
+        ?.sort((a, b) => {
+          // Always put "Ready" type first
+          if (a.type === "Ready" && b.type !== "Ready") return -1;
+          if (b.type === "Ready" && a.type !== "Ready") return 1;
+          return 0;
+        })
         ?.map((condition) => {
           const { type } = condition;
           const id = `list-${object.getId()}-condition-${type}`;
+          const name = condition.status === "False" || condition.status === "Unknown" ? `Not${type}` : type;
 
           return (
             <div key={type} id={id} className={getClassName(condition, "condition")}>
-              {type}
+              {name}
               <Tooltip targetId={id} formatters={{ tableView: true }}>
                 {getTooltip(condition, id)}
               </Tooltip>
