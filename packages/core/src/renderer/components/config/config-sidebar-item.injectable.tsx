@@ -9,17 +9,24 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
+import getClusterPageMenuOrderInjectable
+  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 const configSidebarItemInjectable = getInjectable({
   id: "sidebar-item-config",
 
-  instantiate: () => ({
-    parentId: null,
-    title: "Config",
-    getIcon: () => <Icon material="list" />,
-    onClick: noop,
-    orderNumber: 40,
-  }),
+  instantiate: (di) => {
+    const title = "Config";
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
+
+    return {
+      parentId: null,
+      title: title,
+      getIcon: () => <Icon material="list"/>,
+      onClick: noop,
+      orderNumber: getClusterPageMenuOrder(title, 40),
+    }
+  },
 
   injectionToken: sidebarItemInjectionToken,
 });

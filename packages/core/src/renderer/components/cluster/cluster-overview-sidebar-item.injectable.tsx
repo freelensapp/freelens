@@ -11,21 +11,25 @@ import React from "react";
 import clusterOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/overview/cluster-overview-route.injectable";
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import getClusterPageMenuOrderInjectable
+  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 const clusterOverviewSidebarItemInjectable = getInjectable({
   id: "sidebar-item-cluster-overview",
 
   instantiate: (di) => {
+    const title = "Cluster";
     const route = di.inject(clusterOverviewRouteInjectable);
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
 
     return {
       parentId: null,
-      title: "Cluster",
+      title: title,
       getIcon: () => <Icon svg="kube" />,
       onClick: di.inject(navigateToClusterOverviewInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: 10,
+      orderNumber: getClusterPageMenuOrder(title, 10),
     };
   },
 
