@@ -252,13 +252,13 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               this.renderCpuUsage(node),
               this.renderMemoryUsage(node),
               this.renderDiskUsage(node),
+              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <>
                 <span id={tooltipId}>{taints.length}</span>
                 <Tooltip targetId={tooltipId} tooltipOnParentHover={true} style={{ whiteSpace: "pre-line" }}>
                   {taints.map(formatNodeTaint).join("\n")}
                 </Tooltip>
               </>,
-              <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
               <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
