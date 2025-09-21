@@ -36,8 +36,8 @@ export function getTooltip(condition: Condition, id: string) {
 }
 
 export function getClassName(condition: Condition, ...additionalClasses: string[]) {
-  if (condition.status === "False") {
-    return cssNames("False", ...additionalClasses);
+  if (condition.status === "False" || condition.status === "Unknown") {
+    return cssNames("error", ...additionalClasses);
   }
   return cssNames(condition.type, condition.reason, ...additionalClasses);
 }
