@@ -21,9 +21,6 @@ patchedDependencies:
   circular-dependency-plugin:
     hash: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
     path: patches/circular-dependency-plugin.patch
-  monaco-editor:
-    hash: 1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0
-    path: patches/monaco-editor.patch
 
 importers:
 
@@ -383,7 +380,7 @@ importers:
         version: 2.9.4(webpack@5.101.3)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
-        version: 7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3)
+        version: 7.1.0(monaco-editor@0.53.0)(webpack@5.101.3)
       node-gyp:
         specifier: ^11.4.2
         version: 11.4.2
@@ -830,7 +827,7 @@ importers:
         version: 0.6.0
       monaco-editor:
         specifier: ^0.53.0
-        version: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+        version: 0.53.0
       node-pty:
         specifier: 1.1.0-beta34
         version: 1.1.0-beta34
@@ -14253,13 +14250,13 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3):
+  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.53.0)(webpack@5.101.3):
     dependencies:
       loader-utils: 2.0.4
-      monaco-editor: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+      monaco-editor: 0.53.0
       webpack: 5.101.3(webpack-cli@6.0.1)
 
-  monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0):
+  monaco-editor@0.53.0:
     dependencies:
       '@types/trusted-types': 1.0.6
 

@@ -9,6 +9,7 @@ import { runManyFor } from "@freelensapp/run-many";
 import { getInjectable } from "@ogre-tools/injectable";
 import { afterWindowIsOpenedInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
+import setupPasteHandlerInjectable from "./setup-paste-handler.injectable";
 
 const setupRunnablesAfterWindowIsOpenedInjectable = getInjectable({
   id: "setup-runnables-after-window-is-opened",
@@ -17,9 +18,11 @@ const setupRunnablesAfterWindowIsOpenedInjectable = getInjectable({
     run: () => {
       const afterWindowIsOpened = runManyFor(di)(afterWindowIsOpenedInjectionToken);
       const app = di.inject(electronAppInjectable);
+      const setupPasteHandler = di.inject(setupPasteHandlerInjectable);
 
-      app.on("browser-window-created", () => {
+      app.on("browser-window-created", (_, win) => {
         afterWindowIsOpened();
+        setupPasteHandler(win);
       });
 
       return undefined;
