@@ -21,6 +21,7 @@ overrides:
   form-data: ^4.0.4
   http-proxy-middleware: ^3.0.0
   http-proxy: npm:http-proxy-node16@^1.0.0
+  tmp@^0.2.0: ^0.2.5
 
 patchedDependencies:
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
