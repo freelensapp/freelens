@@ -17,6 +17,7 @@ onlyBuiltDependencies:
 
 overrides:
   '@types/http-proxy': '-'
+  brace-expansion@^2.0.1: ^2.0.2
   compression: ^1.8.1
   form-data: ^4.0.4
   http-proxy-middleware: ^3.0.0
