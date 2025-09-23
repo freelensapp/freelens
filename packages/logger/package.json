@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/logger",
   "private": false,
-  "version": "1.5.4-0",
+  "version": "1.6.0-0",
   "description": "Highly extendable logger in the Freelens.",
   "type": "commonjs",
   "files": [
