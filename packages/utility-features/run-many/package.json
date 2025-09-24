@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "1.6.0-0",
+  "version": "1.6.0",
   "type": "commonjs",
   "description": "A package containing runMany and runManySync",
   "publishConfig": {
