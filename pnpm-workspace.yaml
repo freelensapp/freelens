@@ -1,6 +1,4 @@
-packages:
-  - freelens
-  - packages/**
+engineStrict: true
 
 nodeGyp: ../../../../node-gyp/bin/node-gyp.js
 
@@ -24,6 +22,10 @@ overrides:
   http-proxy: npm:http-proxy-node16@^1.0.0
   minimatch@3.1.2: ^5.0.0
   tmp@^0.2.0: ^0.2.5
+
+packages:
+  - freelens
+  - packages/**
 
 patchedDependencies:
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
