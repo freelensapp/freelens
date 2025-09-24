@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kube-object",
   "private": false,
-  "version": "1.6.0",
+  "version": "1.6.1-0",
   "description": "Injection tokens for list layout",
   "type": "commonjs",
   "publishConfig": {
