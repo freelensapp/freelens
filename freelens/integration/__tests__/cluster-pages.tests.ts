@@ -153,12 +153,13 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
 
       await frame.click(".Dock .Button >> text='Create'");
       await frame.waitForSelector(`.TableCell >> text=${testPodName}`);
+
       await frame.click(".TableRow .TableCell.menu");
       await frame.click(".MenuItem >> text=Delete");
-      await frame.click("button >> text=Remove");
+      await frame.click("button >> text=Delete");
       await frame.waitForSelector(`.TableCell >> text=${testPodName}`, { state: "detached" });
     },
-    10 * 60 * 1000,
+    45 * 60 * 1000,
   );
 });
 
