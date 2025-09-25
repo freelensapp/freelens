@@ -84,10 +84,6 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Disable pre post scripts for pnpm
-        shell: bash
-        run: pnpm config set enablePrePostScripts false
-
       - name: Get Electron version
         shell: bash
         run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
@@ -174,6 +170,9 @@ jobs:
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os ==
           'Windows'
         run: pnpm --color=always --stream build
+
+      - name: Rebuild native packages for Electron
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
 
       - name: Build extra resources
         id: build-resources
