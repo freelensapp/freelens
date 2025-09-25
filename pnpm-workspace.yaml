@@ -9,7 +9,6 @@ onlyBuiltDependencies:
   - electron
   - electron-winstaller
   - esbuild
-  - node-pty
   - playwright
   - sharp
 

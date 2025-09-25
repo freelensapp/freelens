@@ -51,10 +51,6 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
-      - name: Disable pre post scripts for pnpm
-        shell: bash
-        run: pnpm config set enablePrePostScripts false
-
       - name: Install pnpm dependencies
         id: install-pnpm
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
