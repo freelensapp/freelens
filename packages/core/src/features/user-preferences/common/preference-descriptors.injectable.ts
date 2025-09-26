@@ -17,7 +17,6 @@ import {
   defaultTerminalConfig,
   getPreferenceDescriptor,
   packageMirrors,
-  ClusterPageMenuOrder,
 } from "./preferences-helpers";
 
 import type { ObservableMap } from "mobx";
@@ -130,10 +129,6 @@ const userPreferenceDescriptorsInjectable = getInjectable({
           },
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
       }),
-      clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
-        fromStore: (val) => val,
-        toStore: (val) => val,
-      })
     } as const;
   },
 });

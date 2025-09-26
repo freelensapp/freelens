@@ -1,28 +1,31 @@
-import { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import { runInAction } from "mobx";
+import { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
+import type { StorageLayer } from "../../utils/storage-helper";
 
 interface Dependencies {
-  userPreferencesState: UserPreferencesState;
+  sidebarStorage: StorageLayer<SidebarStorageState>;
 }
 
-const useSidebarHook = ({userPreferencesState}: Dependencies) => {
+const useSidebarHook = ({ sidebarStorage }: Dependencies) => {
+  const storage = sidebarStorage.get();
+
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
+    const sidebarStorageElements = Object.keys(storage.order!);
     if (startIndex === releaseIndex) return;
     if (startIndex < 0) return;
-    if (startIndex >= Object.keys(userPreferencesState.clusterPageMenuOrder!).length) return;
-    if (releaseIndex >= Object.keys(userPreferencesState.clusterPageMenuOrder!).length) return;
+    if (startIndex >= sidebarStorageElements.length) return;
     if (releaseIndex < 0) return;
+    if (releaseIndex >= sidebarStorageElements.length) return;
 
-    const keys = Object.keys(userPreferencesState.clusterPageMenuOrder!);
-    const [itemToMove] = keys.splice(startIndex, 1);
-    keys.splice(releaseIndex, 0, itemToMove);
+    const [itemToMove] = sidebarStorageElements.splice(startIndex, 1);
+    sidebarStorageElements.splice(releaseIndex, 0, itemToMove);
 
     const newOrder = Object.fromEntries(
-      keys.map((item, index) => [item, (index + 1) * 10])
+      sidebarStorageElements.map((item, index) => [item, (index + 1) * 10])
     );
 
     // @ts-ignore
-    runInAction(() => userPreferencesState.clusterPageMenuOrder = newOrder);
+    runInAction(() => storage.order = newOrder);
   }
 
   return { saveOrderInfo }

@@ -93,10 +93,6 @@ export type ExtensionRegistry =
       customUrl: string;
     };
 
-export type ClusterPageMenuOrder = {
-  [key: string]: number;
-};
-
 export const defaultExtensionRegistryUrlLocation = "default";
 export const defaultExtensionRegistryUrl = "https://registry.npmjs.org";
 

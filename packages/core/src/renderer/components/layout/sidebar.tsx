@@ -18,25 +18,24 @@ import type { IComputedValue } from "mobx";
 
 import type {CatalogEntityRegistry} from "../../api/catalog/entity/registry";
 import SortableList from "../orderable-list/sortable-list";
-import userPreferencesStateInjectable, {
-  UserPreferencesState
-} from "../../../features/user-preferences/common/state.injectable";
 import useSidebarHook from "./sidebar-hook";
+import sidebarStorageInjectable, { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
+import type {StorageLayer} from "../../utils/storage-helper";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
   entityRegistry: CatalogEntityRegistry;
-  userPreferencesState: UserPreferencesState;
+  sidebarStorage: StorageLayer<SidebarStorageState>;
 }
 
 const NonInjectedSidebar = observer((
   {
     sidebarItems,
     entityRegistry,
-    userPreferencesState
+    sidebarStorage
   }: Dependencies) => {
 
-  const sidebarHook = useSidebarHook({ userPreferencesState });
+  const sidebarHook = useSidebarHook({ sidebarStorage });
 
   return (
     <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
@@ -59,7 +58,7 @@ export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
     ...props,
     sidebarItems: di.inject(sidebarItemsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
-    userPreferencesState: di.inject(userPreferencesStateInjectable),
+    sidebarStorage: di.inject(sidebarStorageInjectable),
   }),
 });
 

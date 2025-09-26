@@ -1,25 +1,26 @@
 import { getInjectable } from "@ogre-tools/injectable";
-import userPreferencesStateInjectable from "./state.injectable";
 import { runInAction } from "mobx";
+import sidebarStorageInjectable, {
+  SidebarStorageState
+} from "../../../renderer/components/layout/sidebar-storage/sidebar-storage.injectable";
 
 const getClusterPageMenuOrderInjectable = getInjectable({
   id: "cluster-page-menu-order-injectable",
 
   instantiate: (di) => {
-    const state = di.inject(userPreferencesStateInjectable);
+    const state: SidebarStorageState = di.inject(sidebarStorageInjectable).get();
 
     return (key: string, defaultValue: number): number => {
       runInAction(() => {
-        if (!state.clusterPageMenuOrder) {
-          // @ts-ignore
-          state.clusterPageMenuOrder = {};
+        if (!state.order) {
+          state.order = {};
         }
-        if (state.clusterPageMenuOrder![key] === undefined) {
-          state.clusterPageMenuOrder![key] = defaultValue;
+        if (state.order[key] === undefined) {
+          state.order[key] = defaultValue;
         }
       })
 
-      return state.clusterPageMenuOrder![key]!;
+      return state.order[key];
     }
   }
 });

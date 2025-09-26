@@ -7,11 +7,16 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
 
+export type SidebarItemsOrder = {
+  [key: string]: number;
+};
+
 export interface SidebarStorageState {
   width: number;
   expanded: {
     [itemId: string]: boolean;
   };
+  order: SidebarItemsOrder
 }
 
 export const defaultSidebarWidth = 200;
@@ -25,6 +30,7 @@ const sidebarStorageInjectable = getInjectable({
     return createStorage("sidebar", {
       width: defaultSidebarWidth,
       expanded: {},
+      order: {}
     });
   },
 });
