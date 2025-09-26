@@ -1,6 +1,6 @@
 import React from "react";
-import {useSortable} from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface SortableItemDependencies {
   item: React.ReactElement,
@@ -16,8 +16,7 @@ const SortableItem = ({ item, id }: SortableItemDependencies) => {
     transform: CSS.Transform.toString(transform),
     transition,
     pointerEvents: isDragging ? "none" : "auto",
-    position: "relative",
-    zIndex: isDragging ? 99999 : "auto"
+    opacity: isDragging ? 0 : 1
   };
 
   return (
