@@ -17,7 +17,7 @@ import { SidebarItem } from "./sidebar-item";
 import type { IComputedValue } from "mobx";
 
 import type {CatalogEntityRegistry} from "../../api/catalog/entity/registry";
-import OrderableList from "../orderable-list/orderable-list";
+import SortableList from "../orderable-list/sortable-list";
 import userPreferencesStateInjectable, {
   UserPreferencesState
 } from "../../../features/user-preferences/common/state.injectable";
@@ -42,14 +42,14 @@ const NonInjectedSidebar = observer((
     <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
       <SidebarCluster clusterEntity={entityRegistry.activeEntity}/>
 
-      <OrderableList
+      <SortableList
         className={`${styles.sidebarNav} sidebar-active-status`}
         onReorder={sidebarHook.saveOrderInfo}
       >
         {sidebarItems.get().map((hierarchicalSidebarItem) => (
           <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id}/>
         ))}
-      </OrderableList>
+      </SortableList>
     </div>
   )
 });
