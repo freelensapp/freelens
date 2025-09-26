@@ -4,7 +4,7 @@
   "productName": "Freelens",
   "description": "Freelens - Free IDE for Kubernetes",
   "homepage": "https://freelens.app",
-  "version": "1.6.1-0",
+  "version": "1.6.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/icon",
   "private": false,
-  "version": "1.6.1-0",
+  "version": "1.6.1",
   "description": "Highly extendable icon in the Freelens.",
   "type": "commonjs",
   "files": [
