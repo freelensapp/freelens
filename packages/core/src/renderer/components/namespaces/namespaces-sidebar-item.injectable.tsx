@@ -11,11 +11,13 @@ import React from "react";
 import namespacesRouteInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/namespaces-route.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import getClusterPageMenuOrderInjectable
+import { getClusterPageMenuOrderInjectable }
   from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
+let id = "sidebar-item-namespaces";
+
 const namespacesSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-namespaces",
+  id: id,
 
   instantiate: (di) => {
     const title = "Namespaces";
@@ -29,7 +31,7 @@ const namespacesSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToNamespacesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: getClusterPageMenuOrder(title, 70),
+      orderNumber: getClusterPageMenuOrder(id, 70),
     };
   },
 

@@ -9,11 +9,13 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
-import getClusterPageMenuOrderInjectable
+import { getClusterPageMenuOrderInjectable }
   from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
+let id = "sidebar-item-user-management";
+
 const userManagementSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-user-management",
+  id: id,
 
   instantiate: (di) => {
     const title = "Access Control";
@@ -24,7 +26,7 @@ const userManagementSidebarItemInjectable = getInjectable({
       getIcon: () => <Icon material="security"/>,
       title: title,
       onClick: noop,
-      orderNumber: getClusterPageMenuOrder(title, 100),
+      orderNumber: getClusterPageMenuOrder(id, 100),
     }
   },
 

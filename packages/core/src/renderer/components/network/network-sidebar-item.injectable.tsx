@@ -9,11 +9,13 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
-import getClusterPageMenuOrderInjectable
+import { getClusterPageMenuOrderInjectable }
   from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
+let id = "sidebar-item-network";
+
 const networkSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-network",
+  id: id,
 
   instantiate: (di) => {
     const title = "Network";
@@ -24,7 +26,7 @@ const networkSidebarItemInjectable = getInjectable({
       getIcon: () => <Icon material="device_hub"/>,
       title: title,
       onClick: noop,
-      orderNumber: getClusterPageMenuOrder(title, 50),
+      orderNumber: getClusterPageMenuOrder(id, 50),
     }
   },
 

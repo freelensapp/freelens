@@ -17,8 +17,9 @@ import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routesInjectable from "../../routes/routes.injectable";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
-import getClusterPageMenuOrderInjectable
+import { getClusterPageMenuOrderInjectable }
   from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 
 const extensionSidebarItemRegistratorInjectable = getInjectable({
   id: "extension-sidebar-item-registrator",
@@ -44,11 +45,11 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
           id: rawId,
           target,
         } = registration;
-        const orderNumber = getClusterPageMenuOrder(extension.name, 9999);
         const id = rawId
-          ? `sidebar-item-${extension.sanitizedExtensionId}-${rawId}`
-          : `sidebar-item-${extension.sanitizedExtensionId}`;
-        const parentId = rawParentId ? `sidebar-item-${extension.sanitizedExtensionId}-${rawParentId}` : null;
+          ? getExtensionId(`${extension.sanitizedExtensionId}-${rawId}`)
+          : getExtensionId(extension.sanitizedExtensionId);
+        const parentId = rawParentId ? getExtensionId(`${extension.sanitizedExtensionId}-${rawParentId}`) : null;
+        const orderNumber = !rawParentId ? getClusterPageMenuOrder(getExtensionId(sanitizeExtensionName(extension.name)), 9999) : 9999;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find(matches({ path: targetRoutePath })));
 

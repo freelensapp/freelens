@@ -3,20 +3,22 @@ import { runInAction } from "mobx";
 import sidebarStorageInjectable, {
   SidebarStorageState
 } from "../../../renderer/components/layout/sidebar-storage/sidebar-storage.injectable";
+import { StorageLayer } from "../../../renderer/utils/storage-helper";
 
-const getClusterPageMenuOrderInjectable = getInjectable({
-  id: "cluster-page-menu-order-injectable",
+export const getClusterPageMenuOrderInjectable = getInjectable({
+  id: "get-cluster-page-menu-order-injectable",
 
   instantiate: (di) => {
-    const state: SidebarStorageState = di.inject(sidebarStorageInjectable).get();
-
     return (key: string, defaultValue: number): number => {
+      const sidebarStorageState: StorageLayer<SidebarStorageState> = di.inject(sidebarStorageInjectable);
+      const state: SidebarStorageState = sidebarStorageState.get();
+
       runInAction(() => {
         if (!state.order) {
           state.order = {};
         }
         if (state.order[key] === undefined) {
-          state.order[key] = defaultValue;
+          addClusterPageMenuOrder(state, key, defaultValue);
         }
       })
 

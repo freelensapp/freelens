@@ -10,7 +10,8 @@ const useSidebarHook = ({ sidebarStorage }: Dependencies) => {
   const storage = sidebarStorage.get();
 
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
-    const sidebarStorageElements = Object.keys(storage.order!);
+    const sidebarStorageElements = Object.keys(storage.order);
+
     if (startIndex === releaseIndex) return;
     if (startIndex < 0) return;
     if (startIndex >= sidebarStorageElements.length) return;

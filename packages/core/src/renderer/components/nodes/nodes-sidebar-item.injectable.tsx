@@ -11,11 +11,13 @@ import React from "react";
 import navigateToNodesInjectable from "../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
 import nodesRouteInjectable from "../../../common/front-end-routing/routes/cluster/nodes/nodes-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import getClusterPageMenuOrderInjectable
+import { getClusterPageMenuOrderInjectable }
   from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
+let id = "sidebar-item-nodes";
+
 const nodesSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-nodes",
+  id: id,
 
   instantiate: (di) => {
     const title = "Nodes";
@@ -29,7 +31,7 @@ const nodesSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToNodesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: getClusterPageMenuOrder(title, 20),
+      orderNumber: getClusterPageMenuOrder(id, 20),
     };
   },
 
