@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/tooltip",
   "private": false,
-  "version": "1.6.1",
+  "version": "1.6.2-0",
   "description": "Highly extendable tooltip in the Freelens.",
   "type": "commonjs",
   "files": [

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/error-boundary",
   "private": false,
-  "version": "1.6.1",
+  "version": "1.6.2-0",
   "description": "Highly extendable error-boundary in the Freelens.",
   "type": "commonjs",
   "files": [

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/event-emitter",
   "private": false,
-  "version": "1.6.1",
+  "version": "1.6.2-0",
   "description": "Event emitter",
   "type": "commonjs",
   "publishConfig": {
