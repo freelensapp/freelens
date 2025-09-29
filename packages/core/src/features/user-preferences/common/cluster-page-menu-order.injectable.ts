@@ -27,18 +27,3 @@ export const getClusterPageMenuOrderInjectable = getInjectable({
     }
   }
 });
-
-// const addClusterPageMenuOrder = (sidebarStorage: StorageLayer<SidebarStorageState>, key: string, value: number) => {
-//   sidebarStorage.merge(draft => {
-//     const storage = sidebarStorage.get().order;
-//     storage[key] = value;
-//
-//     const sortedEntries = Object.entries(storage)
-//       .sort(([, a], [, b]) => a - b)
-//
-//     return {
-//       ...sidebarStorage.get(),
-//       order: Object.fromEntries(sortedEntries)
-//     }
-//   });
-// }
