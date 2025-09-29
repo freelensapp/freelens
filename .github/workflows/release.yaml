@@ -102,14 +102,26 @@ jobs:
         shell: bash
         run: choco install yq --yes --no-progress
 
-      - name: Setup pnpm
-        run: corepack enable
-
       - name: Setup node
         uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
-          cache: pnpm
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Disable pre post scripts for pnpm
         shell: bash
@@ -169,8 +181,6 @@ jobs:
           echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Rebuild native packages for Electron
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
-          'Windows' && matrix.arch == 'arm64'
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
         env:
           npm_config_arch: ${{ matrix.arch }}
@@ -413,10 +423,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        run: corepack enable
 
       - name: Get pnpm cache directory
         shell: bash

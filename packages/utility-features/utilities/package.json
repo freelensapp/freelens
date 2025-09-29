@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/utilities",
   "description": "A collection of useful types",
-  "version": "1.5.4-0",
+  "version": "1.6.2-0",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,8 +24,8 @@
     "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand",
-    "knip": "pnpm dlx knip@5.63.1 --dependencies",
-    "knip:production": "pnpm dlx knip@5.63.1 --dependencies --production --strict"
+    "knip": "pnpm dlx knip@5.64.0 --dependencies",
+    "knip:production": "pnpm dlx knip@5.64.0 --dependencies --production --strict"
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
@@ -37,7 +37,7 @@
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
     "semver": "^7.7.2",
-    "tar": "^7.4.3",
+    "tar": "^7.4.4",
     "typed-regex": "^0.0.8"
   },
   "devDependencies": {

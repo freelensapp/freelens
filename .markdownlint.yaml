@@ -1,5 +1,17 @@
-# Prettier friendly markdownlint config (all formatting rules disabled)
-extends: markdownlint/style/prettier
+# Trailing spaces
+MD009: false
+# Multiple consecutive blank lines
+MD012: false
+# Line length
+MD013: false
+# Headings should be surrounded by blank lines
+MD022: false
+# Ordered list item prefix
+MD029: false
+# Fenced code blocks should be surrounded by blank lines
+MD031: false
+# Lists should be surrounded by blank lines
+MD032: false
 # Inline HTML
 MD033:
   allowed_elements:

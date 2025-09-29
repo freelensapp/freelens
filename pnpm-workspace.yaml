@@ -1,6 +1,4 @@
-packages:
-  - freelens
-  - packages/**
+engineStrict: true
 
 nodeGyp: ../../../../node-gyp/bin/node-gyp.js
 
@@ -11,19 +9,24 @@ onlyBuiltDependencies:
   - electron
   - electron-winstaller
   - esbuild
-  - node-pty
   - playwright
   - sharp
 
 overrides:
   '@types/http-proxy': '-'
+  brace-expansion@^2.0.1: ^2.0.2
   compression: ^1.8.1
+  form-data: ^4.0.4
   http-proxy-middleware: ^3.0.0
   http-proxy: npm:http-proxy-node16@^1.0.0
+  tmp@^0.2.0: ^0.2.5
+
+packages:
+  - freelens
+  - packages/**
 
 patchedDependencies:
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
-  monaco-editor: patches/monaco-editor.patch
   '@async-fn/jest': patches/@async-fn__jest.patch
 
 publicHoistPattern:

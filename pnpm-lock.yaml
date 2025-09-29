@@ -6,9 +6,12 @@ settings:
 
 overrides:
   '@types/http-proxy': '-'
+  brace-expansion@^2.0.1: ^2.0.2
   compression: ^1.8.1
+  form-data: ^4.0.4
   http-proxy-middleware: ^3.0.0
   http-proxy: npm:http-proxy-node16@^1.0.0
+  tmp@^0.2.0: ^0.2.5
 
 patchedDependencies:
   '@async-fn/jest':
@@ -17,17 +20,14 @@ patchedDependencies:
   circular-dependency-plugin:
     hash: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
     path: patches/circular-dependency-plugin.patch
-  monaco-editor:
-    hash: 1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0
-    path: patches/monaco-editor.patch
 
 importers:
 
   .:
     devDependencies:
       pnpm:
-        specifier: 10.17.0
-        version: 10.17.0
+        specifier: 10.17.1
+        version: 10.17.1
 
   freelens:
     dependencies:
@@ -188,8 +188,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0
       node-pty:
-        specifier: 1.1.0-beta34
-        version: 1.1.0-beta34
+        specifier: 1.1.0-beta35
+        version: 1.1.0-beta35
       p-limit:
         specifier: ^3.1.0
         version: 3.1.0
@@ -197,8 +197,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.17.0
-        version: 10.17.0
+        specifier: ^10.17.1
+        version: 10.17.1
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -224,8 +224,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       tar:
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       tar-fs:
         specifier: ^3.1.1
         version: 3.1.1
@@ -379,9 +379,9 @@ importers:
         version: 2.9.4(webpack@5.101.3)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
-        version: 7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3)
+        version: 7.1.0(monaco-editor@0.53.0)(webpack@5.101.3)
       node-gyp:
-        specifier: ^11.4.2
+        specifier: 11.4.2
         version: 11.4.2
       node-loader:
         specifier: ^2.1.0
@@ -835,16 +835,16 @@ importers:
         version: 0.6.0
       monaco-editor:
         specifier: ^0.53.0
-        version: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+        version: 0.53.0
       node-pty:
-        specifier: 1.1.0-beta34
-        version: 1.1.0-beta34
+        specifier: 1.1.0-beta35
+        version: 1.1.0-beta35
       path-to-regexp:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.17.0
-        version: 10.17.0
+        specifier: ^10.17.1
+        version: 10.17.1
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -894,8 +894,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       tar:
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       tcp-port-used:
         specifier: ^1.0.2
         version: 1.0.2
@@ -1105,7 +1105,7 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
       node-gyp:
-        specifier: ^11.4.2
+        specifier: 11.4.2
         version: 11.4.2
       node-loader:
         specifier: ^2.1.0
@@ -3311,8 +3311,8 @@ importers:
         specifier: ^7.7.2
         version: 7.7.2
       tar:
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -5228,11 +5228,11 @@ packages:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
-  brace-expansion@1.1.11:
-    resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
+  brace-expansion@1.1.12:
+    resolution: {integrity: sha512-9T9UjW3r0UW5c1Q7GTwllptXwhvYmEzFhzMfZ9H7FQWt+uZePjZPjBP/W1ZEyZ1twGWom5/56TF4lPcqjnDHcg==}
 
-  brace-expansion@2.0.1:
-    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+  brace-expansion@2.0.2:
+    resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
 
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
@@ -6229,8 +6229,8 @@ packages:
       typescript: '>3.6.0'
       webpack: ^5.11.0
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
+  form-data@4.0.4:
+    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
   formdata-polyfill@4.0.10:
@@ -7478,8 +7478,8 @@ packages:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
     engines: {node: '>= 8'}
 
-  minizlib@3.0.1:
-    resolution: {integrity: sha512-umcy022ILvb5/3Djuu8LWeqUa8D68JaBzlttKeMWen48SjabqS3iY5w/vzeMzMUNhLDifyhbOwKDSznB1vvrwg==}
+  minizlib@3.1.0:
+    resolution: {integrity: sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==}
     engines: {node: '>= 18'}
 
   mkdirp@0.5.6:
@@ -7488,11 +7488,6 @@ packages:
 
   mkdirp@1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
-    engines: {node: '>=10'}
-    hasBin: true
-
-  mkdirp@3.0.1:
-    resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -7668,8 +7663,8 @@ packages:
     peerDependencies:
       webpack: ^5.0.0
 
-  node-pty@1.1.0-beta34:
-    resolution: {integrity: sha512-RraDtX9RS1G1I5iO7e4YIOIA4arzd4ZVCD4mZr7+szaNupoTg9fxDCRr0EanqS0Qlzgm3PIdHNbPmblJguJuyg==}
+  node-pty@1.1.0-beta35:
+    resolution: {integrity: sha512-dGKw3PtLj/+uiFWUODNjr3QMyNjxRB2JY372AN4uzonfb6ri23d4PMr4s6UoibiqsXOQ3elXRCdq1qDLd86J8Q==}
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
@@ -7931,8 +7926,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.17.0:
-    resolution: {integrity: sha512-/Oij3Smk7S7FZvtT77sE2MRKDwW8bySnMEaRD7nDznr6NaCYBQBmj6NXM0W9ZEZE+pgzj6FoI1yA9KoXqhf77w==}
+  pnpm@10.17.1:
+    resolution: {integrity: sha512-F8Vg/KSGeulHOjiZrYSogzSRTzeb5G1FXL+S5c9LOdNJhdRS0lg7rxmWf6dstcF7yeJFUp0LmHRXIapyAOyveg==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -8330,10 +8325,6 @@ packages:
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     deprecated: Rimraf versions prior to v4 are no longer supported
-    hasBin: true
-
-  rimraf@5.0.10:
-    resolution: {integrity: sha512-l0OE8wL34P4nJH/H2ffoaniAokM2qSmrtXHmlpvYr5AVVX8msAyW0l8NVJFDxlSK4u3Uh/f41cQheDVdnYijwQ==}
     hasBin: true
 
   roarr@2.15.4:
@@ -8760,8 +8751,8 @@ packages:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
 
-  tar@7.4.3:
-    resolution: {integrity: sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==}
+  tar@7.4.4:
+    resolution: {integrity: sha512-O1z7ajPkjTgEgmTGz0v9X4eqeEXTDREPTO77pVC1Nbs86feBU1Zhdg+edzavPmYW1olxkwsqA2v4uOw6E8LeDg==}
     engines: {node: '>=18'}
 
   tcp-port-used@1.0.2:
@@ -8848,9 +8839,9 @@ packages:
   tmp-promise@3.0.3:
     resolution: {integrity: sha512-RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==}
 
-  tmp@0.2.1:
-    resolution: {integrity: sha512-76SUhtfqR2Ijn+xllcI5P1oyannHNHByD80W1q447gU3mp9G9PSpGdWmjUOHRDPiHYacIk66W7ubDTuPF3BEtQ==}
-    engines: {node: '>=8.17.0'}
+  tmp@0.2.5:
+    resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
+    engines: {node: '>=14.14'}
 
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
@@ -10328,7 +10319,7 @@ snapshots:
       '@types/node': 22.16.5
       '@types/node-fetch': 2.6.12
       '@types/stream-buffers': 3.0.7
-      form-data: 4.0.2
+      form-data: 4.0.4
       hpagent: 1.2.0
       isomorphic-ws: 5.0.0(ws@8.18.3)
       js-yaml: 4.1.0
@@ -10697,7 +10688,7 @@ snapshots:
   '@tailwindcss/oxide@4.1.13':
     dependencies:
       detect-libc: 2.1.0
-      tar: 7.4.3
+      tar: 7.4.4
     optionalDependencies:
       '@tailwindcss/oxide-android-arm64': 4.1.13
       '@tailwindcss/oxide-darwin-arm64': 4.1.13
@@ -10981,7 +10972,7 @@ snapshots:
   '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.16.5
-      form-data: 4.0.2
+      form-data: 4.0.4
 
   '@types/node-forge@1.3.11':
     dependencies:
@@ -11608,12 +11599,12 @@ snapshots:
   boolean@3.2.0:
     optional: true
 
-  brace-expansion@1.1.11:
+  brace-expansion@1.1.12:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
 
-  brace-expansion@2.0.1:
+  brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
 
@@ -11721,7 +11712,7 @@ snapshots:
       minipass-pipeline: 1.2.4
       p-map: 7.0.3
       ssri: 12.0.0
-      tar: 7.4.3
+      tar: 7.4.4
       unique-filename: 4.0.0
 
   cacheable-lookup@5.0.4: {}
@@ -12406,7 +12397,7 @@ snapshots:
       builder-util: 26.0.11
       builder-util-runtime: 9.3.1
       chalk: 4.1.2
-      form-data: 4.0.2
+      form-data: 4.0.4
       fs-extra: 10.1.0
       lazy-val: 1.0.5
       mime: 2.6.0
@@ -12763,11 +12754,12 @@ snapshots:
       typescript: 5.9.2
       webpack: 5.101.3(webpack-cli@6.0.1)
 
-  form-data@4.0.2:
+  form-data@4.0.4:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
       mime-types: 2.1.35
 
   formdata-polyfill@4.0.10:
@@ -13820,7 +13812,7 @@ snapshots:
       decimal.js: 10.5.0
       domexception: 4.0.0
       escodegen: 2.0.0
-      form-data: 4.0.2
+      form-data: 4.0.4
       html-encoding-sniffer: 3.0.0
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.1
@@ -14205,15 +14197,15 @@ snapshots:
 
   minimatch@3.1.2:
     dependencies:
-      brace-expansion: 1.1.11
+      brace-expansion: 1.1.12
 
   minimatch@5.1.6:
     dependencies:
-      brace-expansion: 2.0.1
+      brace-expansion: 2.0.2
 
   minimatch@9.0.5:
     dependencies:
-      brace-expansion: 2.0.1
+      brace-expansion: 2.0.2
 
   minimist@1.2.8: {}
 
@@ -14237,7 +14229,7 @@ snapshots:
     dependencies:
       minipass: 7.1.2
       minipass-sized: 1.0.3
-      minizlib: 3.0.1
+      minizlib: 3.1.0
     optionalDependencies:
       encoding: 0.1.13
 
@@ -14266,18 +14258,15 @@ snapshots:
       minipass: 3.3.6
       yallist: 4.0.0
 
-  minizlib@3.0.1:
+  minizlib@3.1.0:
     dependencies:
       minipass: 7.1.2
-      rimraf: 5.0.10
 
   mkdirp@0.5.6:
     dependencies:
       minimist: 1.2.8
 
   mkdirp@1.0.4: {}
-
-  mkdirp@3.0.1: {}
 
   mobx-observable-history@2.0.3:
     dependencies:
@@ -14324,13 +14313,13 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0))(webpack@5.101.3):
+  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.53.0)(webpack@5.101.3):
     dependencies:
       loader-utils: 2.0.4
-      monaco-editor: 0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0)
+      monaco-editor: 0.53.0
       webpack: 5.101.3(webpack-cli@6.0.1)
 
-  monaco-editor@0.53.0(patch_hash=1a1bf7326243501fc30efab3260b8f1fc6b08096469a2412701b86f657fb1bf0):
+  monaco-editor@0.53.0:
     dependencies:
       '@types/trusted-types': 1.0.6
 
@@ -14419,7 +14408,7 @@ snapshots:
       nopt: 8.1.0
       proc-log: 5.0.0
       semver: 7.7.2
-      tar: 7.4.3
+      tar: 7.4.4
       tinyglobby: 0.2.12
       which: 5.0.0
     transitivePeerDependencies:
@@ -14432,7 +14421,7 @@ snapshots:
       loader-utils: 2.0.4
       webpack: 5.101.3(webpack-cli@6.0.1)
 
-  node-pty@1.1.0-beta34:
+  node-pty@1.1.0-beta35:
     dependencies:
       node-addon-api: 7.1.1
 
@@ -14692,7 +14681,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.17.0: {}
+  pnpm@10.17.1: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -15109,10 +15098,6 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
-
-  rimraf@5.0.10:
-    dependencies:
-      glob: 10.4.5
 
   roarr@2.15.4:
     dependencies:
@@ -15612,13 +15597,12 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  tar@7.4.3:
+  tar@7.4.4:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
       minipass: 7.1.2
-      minizlib: 3.0.1
-      mkdirp: 3.0.1
+      minizlib: 3.1.0
       yallist: 5.0.0
 
   tcp-port-used@1.0.2:
@@ -15708,11 +15692,9 @@ snapshots:
 
   tmp-promise@3.0.3:
     dependencies:
-      tmp: 0.2.1
+      tmp: 0.2.5
 
-  tmp@0.2.1:
-    dependencies:
-      rimraf: 3.0.2
+  tmp@0.2.5: {}
 
   tmpl@1.0.5: {}
 
