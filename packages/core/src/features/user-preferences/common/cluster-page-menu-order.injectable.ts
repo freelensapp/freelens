@@ -1,30 +1,44 @@
 import { getInjectable } from "@ogre-tools/injectable";
-import { runInAction } from "mobx";
 import sidebarStorageInjectable, {
   SidebarStorageState
 } from "../../../renderer/components/layout/sidebar-storage/sidebar-storage.injectable";
 import { StorageLayer } from "../../../renderer/utils/storage-helper";
+import { computed } from "mobx";
 
 export const getClusterPageMenuOrderInjectable = getInjectable({
   id: "get-cluster-page-menu-order-injectable",
 
   instantiate: (di) => {
-    return (key: string, defaultValue: number): number => {
-      const sidebarStorageState: StorageLayer<SidebarStorageState> = di.inject(sidebarStorageInjectable);
-      const state: SidebarStorageState = sidebarStorageState.get();
+    const sidebarStorage: StorageLayer<SidebarStorageState> = di.inject(sidebarStorageInjectable);
 
-      runInAction(() => {
-        if (!state.order) {
-          state.order = {};
-        }
-        if (state.order[key] === undefined) {
-          addClusterPageMenuOrder(state, key, defaultValue);
-        }
-      })
-
-      return state.order[key];
+    return (key: string, defaultValue: number) => {
+      if (!sidebarStorage.get().order) {
+        sidebarStorage.set({
+          ...sidebarStorage.get(),
+          order: {}
+        });
+      }
+      if (!sidebarStorage.get().order.hasOwnProperty(key)) {
+        sidebarStorage.merge((draft) => {
+          draft.order[key] = defaultValue
+        })
+      }
+      return computed(() => sidebarStorage.get().order[key]);
     }
   }
 });
 
-export default getClusterPageMenuOrderInjectable;
+// const addClusterPageMenuOrder = (sidebarStorage: StorageLayer<SidebarStorageState>, key: string, value: number) => {
+//   sidebarStorage.merge(draft => {
+//     const storage = sidebarStorage.get().order;
+//     storage[key] = value;
+//
+//     const sortedEntries = Object.entries(storage)
+//       .sort(([, a], [, b]) => a - b)
+//
+//     return {
+//       ...sidebarStorage.get(),
+//       order: Object.fromEntries(sortedEntries)
+//     }
+//   });
+// }
