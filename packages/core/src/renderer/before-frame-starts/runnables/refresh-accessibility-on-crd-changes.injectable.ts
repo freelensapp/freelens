@@ -1,11 +1,11 @@
+import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
-import { noop } from "@freelensapp/utilities";
-import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
-import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
-import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
-import ipcRendererInjectable from "../../utils/channel/ipc-renderer.injectable";
 import { clusterRefreshAccessibilityChannel } from "../../../common/ipc/cluster";
+import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
+import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
+import ipcRendererInjectable from "../../utils/channel/ipc-renderer.injectable";
+import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
 
 const refreshAccessibilityOnCrdChangesInjectable = getInjectable({
   id: "refresh-accessibility-on-crd-changes",

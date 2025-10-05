@@ -7,9 +7,9 @@
 import { BrowserWindow, Menu } from "electron";
 import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
 import {
+  clusterRefreshAccessibilityChannel,
   clusterSetFrameIdHandler,
   clusterStates,
-  clusterRefreshAccessibilityChannel,
 } from "../../../../common/ipc/cluster";
 import {
   windowActionHandleChannel,
