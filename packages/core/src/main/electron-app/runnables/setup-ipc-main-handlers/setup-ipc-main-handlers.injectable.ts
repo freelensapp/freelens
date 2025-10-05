@@ -13,6 +13,7 @@ import clustersInjectable from "../../../../features/cluster/storage/common/clus
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import pushCatalogToRendererInjectable from "../../../catalog-sync-to-renderer/push-catalog-to-renderer.injectable";
 import { setupIpcMainHandlers } from "./setup-ipc-main-handlers";
+import clusterConnectionInjectable from "../../../cluster/cluster-connection.injectable";
 
 const setupIpcMainHandlersInjectable = getInjectable({
   id: "setup-ipc-main-handlers",
@@ -29,6 +30,16 @@ const setupIpcMainHandlersInjectable = getInjectable({
         clusters: di.inject(clustersInjectable),
         getClusterById: di.inject(getClusterByIdInjectable),
         clusterFrames: di.inject(clusterFramesInjectable),
+
+        refreshClusterAccessibility: async (clusterId) => {
+          const getClusterById = di.inject(getClusterByIdInjectable);
+          const cluster = getClusterById(clusterId);
+
+          if (!cluster) return;
+
+          const connection = di.inject(clusterConnectionInjectable, cluster);
+          await connection.refreshAccessibilityAndMetadata();
+        },
       });
     },
   }),

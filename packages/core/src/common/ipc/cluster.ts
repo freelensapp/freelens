@@ -7,6 +7,7 @@
 export const clusterSetFrameIdHandler = "cluster:set-frame-id";
 export const clusterVisibilityHandler = "cluster:visibility";
 export const clusterStates = "cluster:states";
+export const clusterRefreshAccessibilityChannel = "cluster:refresh-accessibility";
 
 /**
  * This channel is broadcast on whenever the cluster fails to list namespaces

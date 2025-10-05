@@ -6,7 +6,11 @@
 
 import { BrowserWindow, Menu } from "electron";
 import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
-import { clusterSetFrameIdHandler, clusterStates } from "../../../../common/ipc/cluster";
+import {
+  clusterSetFrameIdHandler,
+  clusterStates,
+  clusterRefreshAccessibilityChannel,
+} from "../../../../common/ipc/cluster";
 import {
   windowActionHandleChannel,
   windowLocationChangedChannel,
@@ -32,6 +36,7 @@ interface Dependencies {
   pushCatalogToRenderer: () => void;
   clusterFrames: ObservableMap<string, ClusterFrameInfo>;
   clusters: IComputedValue<Cluster[]>;
+  refreshClusterAccessibility: (clusterId: ClusterId) => Promise<void>;
 }
 
 export const setupIpcMainHandlers = ({
@@ -40,6 +45,7 @@ export const setupIpcMainHandlers = ({
   pushCatalogToRenderer,
   clusterFrames,
   clusters,
+  refreshClusterAccessibility,
 }: Dependencies) => {
   ipcMainHandle(clusterSetFrameIdHandler, (event: IpcMainInvokeEvent, clusterId: ClusterId) => {
     const cluster = getClusterById(clusterId);
@@ -74,4 +80,9 @@ export const setupIpcMainHandlers = ({
       state: cluster.getState(),
     })),
   );
+
+  ipcMainHandle(clusterRefreshAccessibilityChannel, async (event, clusterId: ClusterId) => {
+    await refreshClusterAccessibility(clusterId);
+    return true;
+  });
 };
