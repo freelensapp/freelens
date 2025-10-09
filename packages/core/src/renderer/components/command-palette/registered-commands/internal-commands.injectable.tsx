@@ -31,7 +31,6 @@ import navigateToStatefulsetsInjectable from "../../../../common/front-end-routi
 import navigateToEntitySettingsInjectable from "../../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 // TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
 import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
-import { ActivateEntityCommand } from "../../activate-entity-command";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
 import hasCatalogEntitySettingItemsInjectable from "../../entity-settings/has-settings.injectable";
 import { HotbarAddCommand } from "../../hotbar/hotbar-add-command";
@@ -43,6 +42,7 @@ import commandOverlayInjectable from "../command-overlay.injectable";
 import type { DockTabCreate } from "../../dock/dock/store";
 import type { HasCatalogEntitySettingItems } from "../../entity-settings/has-settings.injectable";
 import type { CommandContext, CommandRegistration } from "./commands";
+import navigateToCatalogInjectable from "../../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 
 export function isKubernetesClusterActive(context: CommandContext): boolean {
   return context.entity?.kind === "KubernetesCluster";
@@ -53,6 +53,7 @@ interface Dependencies {
   hasCatalogEntitySettingItems: HasCatalogEntitySettingItems;
   createTerminalTab: () => DockTabCreate;
   navigateToPreferences: () => void;
+  navigateToCatalog: () => void;
   navigateToHelmCharts: () => void;
   navigateToHelmReleases: () => void;
   navigateToConfigMaps: () => void;
@@ -80,6 +81,11 @@ interface Dependencies {
 
 function getInternalCommands(dependencies: Dependencies): CommandRegistration[] {
   return [
+    {
+      id: "app.showCatalog",
+      title: "Catalog: Open",
+      action: () => dependencies.navigateToCatalog(),
+    },
     {
       id: "app.showPreferences",
       title: "Preferences: Open",
@@ -249,11 +255,6 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
       title: "Hotbar: Rename Hotbar ...",
       action: () => dependencies.openCommandDialog(<HotbarRenameCommand />),
     },
-    {
-      id: "catalog.searchEntities",
-      title: "Catalog: Activate Entity ...",
-      action: () => dependencies.openCommandDialog(<ActivateEntityCommand />),
-    },
   ];
 }
 
@@ -266,6 +267,7 @@ const internalCommandsInjectable = getInjectable({
       hasCatalogEntitySettingItems: di.inject(hasCatalogEntitySettingItemsInjectable),
       createTerminalTab: di.inject(createTerminalTabInjectable),
       navigateToPreferences: di.inject(navigateToPreferencesInjectable),
+      navigateToCatalog: di.inject(navigateToCatalogInjectable),
       navigateToHelmCharts: di.inject(navigateToHelmChartsInjectable),
       navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
       navigateToConfigMaps: di.inject(navigateToConfigMapsInjectable),
