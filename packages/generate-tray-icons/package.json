@@ -27,7 +27,7 @@
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^21.1.7",
     "@types/node": "~22.16.5",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "bin": {
     "generate-tray-icons": "bin/generate-tray-icons.js"
