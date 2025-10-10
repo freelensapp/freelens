@@ -21,7 +21,7 @@ jobs:
     name: OSV scan scheduled
 
     if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.2.2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.2.3
     with:
       fail-on-vuln: false
 
@@ -29,6 +29,6 @@ jobs:
     name: OSV scan PR
 
     if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.2.2
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.2.3
     with:
       fail-on-vuln: false
