@@ -50,7 +50,7 @@
     "lodash": "^4.17.21",
     "ts-jest": "^29.4.4",
     "ts-loader": "^9.5.4",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3"
   }
 }

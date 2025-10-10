@@ -53,7 +53,7 @@
     "postcss-loader": "^8.2.0",
     "sass-loader": "^16.0.5",
     "ts-loader": "^9.5.4",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3"
   }
 }

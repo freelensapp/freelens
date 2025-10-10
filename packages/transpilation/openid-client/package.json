@@ -22,7 +22,7 @@
     "@freelensapp/typescript": "workspace:^",
     "openid-client": "^6.8.0",
     "ts-loader": "^9.5.4",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3"
   }
 }
