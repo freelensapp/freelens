@@ -26,8 +26,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.18.2
-        version: 10.18.2
+        specifier: 10.18.3
+        version: 10.18.3
 
   freelens:
     dependencies:
@@ -197,8 +197,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.18.2
-        version: 10.18.2
+        specifier: ^10.18.3
+        version: 10.18.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -834,8 +834,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.18.2
-        version: 10.18.2
+        specifier: ^10.18.3
+        version: 10.18.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -7898,8 +7898,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.18.2:
-    resolution: {integrity: sha512-n7lp+nSbOt5gNeDxCfC4pgtdCKGof99y4zfakNzJMzbiKAyk5E8jWKZJuDwXlZ6Zk+d3wggIefOAHm8NmZrT3Q==}
+  pnpm@10.18.3:
+    resolution: {integrity: sha512-u9FubXKG/X4B9rPAs8kyzaKWXAapCDKPdGY/EKmupR8RKe6mFRNL+ZKDGwCeq+Fn7LcAi1l/QP+bx1lGqt+wjQ==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -14817,7 +14817,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.18.2: {}
+  pnpm@10.18.3: {}
 
   possible-typed-array-names@1.1.0: {}
 
