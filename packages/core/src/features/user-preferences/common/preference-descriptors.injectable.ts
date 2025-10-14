@@ -86,6 +86,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
       }),
+      hotbarAutoHide: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
       terminalCopyOnSelect: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
