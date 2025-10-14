@@ -32,7 +32,7 @@
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
     "dev": "corepack pnpm --parallel dev",
     "knip": "corepack pnpm dlx knip@5.64.3 --dependencies --no-gitignore",
-    "knip:check": "corepack pnpm \"/^knip:(development|production)$/\"",
+    "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "corepack pnpm knip",
     "knip:production": "corepack pnpm knip --production --strict",
     "prettier": "corepack pnpm dlx prettier@3.6.2",
