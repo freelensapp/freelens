@@ -119,7 +119,7 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
     "node-pty": "1.1.0-beta35",
-    "p-limit": "^3.1.0",
+    "p-limit": "^7.1.1",
     "path-to-regexp": "^6.3.0",
     "pnpm": "^10.18.2",
     "proper-lockfile": "^4.1.2",
