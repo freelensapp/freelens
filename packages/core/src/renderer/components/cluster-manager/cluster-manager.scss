@@ -15,6 +15,14 @@
   grid-template-rows: auto 1fr min-content;
   grid-template-columns: min-content 1fr;
 
+  &.hotbarAutoHide {
+    grid-template-areas:
+      "topbar"
+      "main"
+      "status-bar";
+    grid-template-columns: 1fr;
+  }
+
   main {
     grid-area: main;
     position: relative;
@@ -25,6 +33,24 @@
 
   .HotbarMenu {
     grid-area: menu;
+
+    &.autoHide {
+      position: fixed;
+      left: 0;
+      top: var(--main-layout-header);
+      bottom: 21px;
+      z-index: 2;
+    }
+  }
+
+  .hotbar-trigger-zone {
+    position: fixed;
+    left: 0;
+    top: var(--main-layout-header);
+    bottom: 21px;
+    width: 15px;
+    z-index: 10;
+    pointer-events: auto;
   }
 
   .error {
@@ -39,6 +65,7 @@
     bottom: 0;
     display: flex;
     background-color: var(--mainBackground);
+    z-index: 1;
 
     iframe {
       position: absolute;
