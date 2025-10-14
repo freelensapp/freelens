@@ -38,7 +38,7 @@
       position: fixed;
       left: 0;
       top: var(--main-layout-header);
-      bottom: 21px;
+      bottom: var(--status-bar-height);
       z-index: 2;
     }
   }
@@ -47,7 +47,7 @@
     position: fixed;
     left: 0;
     top: var(--main-layout-header);
-    bottom: 21px;
+    bottom: var(--status-bar-height);
     width: 15px;
     z-index: 10;
     pointer-events: auto;
