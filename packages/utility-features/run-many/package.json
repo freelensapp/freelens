@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "uuid": "^11.1.0"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
