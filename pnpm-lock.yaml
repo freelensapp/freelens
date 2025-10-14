@@ -378,8 +378,8 @@ importers:
         specifier: ^2.9.4
         version: 2.9.4(webpack@5.101.3)
       monaco-editor-webpack-plugin:
-        specifier: ^7.1.0
-        version: 7.1.0(monaco-editor@0.54.0)(webpack@5.101.3)
+        specifier: ^7.1.1
+        version: 7.1.1(monaco-editor@0.54.0)(webpack@5.101.3)
       node-gyp:
         specifier: 11.4.2
         version: 11.4.2
@@ -7528,8 +7528,8 @@ packages:
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
-  monaco-editor-webpack-plugin@7.1.0:
-    resolution: {integrity: sha512-ZjnGINHN963JQkFqjjcBtn1XBtUATDZBMgNQhDQwd78w2ukRhFXAPNgWuacaQiDZsUr4h1rWv5Mv6eriKuOSzA==}
+  monaco-editor-webpack-plugin@7.1.1:
+    resolution: {integrity: sha512-WxdbFHS3Wtz4V9hzhe/Xog5hQRSMxmDLkEEYZwqMDHgJlkZo00HVFZR0j5d0nKypjTUkkygH3dDSXERLG4757A==}
     peerDependencies:
       monaco-editor: '>= 0.31.0'
       webpack: ^4.5.0 || 5.x
@@ -14456,7 +14456,7 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.54.0)(webpack@5.101.3):
+  monaco-editor-webpack-plugin@7.1.1(monaco-editor@0.54.0)(webpack@5.101.3):
     dependencies:
       loader-utils: 2.0.4
       monaco-editor: 0.54.0
