@@ -7,6 +7,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { isKubernetesCluster, KubernetesCluster } from "../../../common/catalog-entities";
 import { broadcastMessage } from "../../../common/ipc";
 import { catalogEntityRunListener } from "../../../common/ipc/catalog";
 import catalogEnitiesInjectable from "../../api/catalog/entity/entities.injectable";
@@ -22,9 +23,19 @@ interface Dependencies {
   entities: IComputedValue<CatalogEntity[]>;
 }
 
-const NonInjectedActivateEntityCommand = observer(({ closeCommandOverlay, entities }: Dependencies) => (
+const sortByLastSeen = (prev: KubernetesCluster, next: KubernetesCluster) => {
+  const prevLastSeen = typeof prev.metadata?.lastSeen === "string" ? prev.metadata?.lastSeen : "";
+  const nextLastSeen = typeof next.metadata?.lastSeen === "string" ? next.metadata?.lastSeen : "";
+
+  if (!prevLastSeen && !nextLastSeen) return 0;
+  if (!prevLastSeen) return 1;
+  if (!nextLastSeen) return -1;
+  return nextLastSeen.localeCompare(prevLastSeen); // desc
+};
+
+const NonInjectedClustersSearchCommand = observer(({ closeCommandOverlay, entities }: Dependencies) => (
   <Select
-    id="activate-entity-input"
+    id="clusters-search-input"
     menuPortalTarget={null}
     onChange={(option) => {
       if (option) {
@@ -34,17 +45,19 @@ const NonInjectedActivateEntityCommand = observer(({ closeCommandOverlay, entiti
     }}
     components={{ DropdownIndicator: null, IndicatorSeparator: null }}
     menuIsOpen={true}
-    options={entities.get().map((entity) => ({
-      value: entity,
-      label: `${entity.kind}: ${entity.getName()}`,
-    }))}
+    options={entities
+      .get()
+      .filter(isKubernetesCluster)
+      .slice()
+      .sort((prev, next) => sortByLastSeen(prev, next))
+      .map((entity) => ({ value: entity, label: `Cluster: ${entity.getName()}` }))}
     autoFocus={true}
     escapeClearsValue={false}
-    placeholder="Activate entity ..."
+    placeholder="Search clusters by name ..."
   />
 ));
 
-export const ActivateEntityCommand = withInjectables<Dependencies>(NonInjectedActivateEntityCommand, {
+export const ClustersSearchCommand = withInjectables<Dependencies>(NonInjectedClustersSearchCommand, {
   getProps: (di) => ({
     closeCommandOverlay: di.inject(commandOverlayInjectable).close,
     entities: di.inject(catalogEnitiesInjectable),

@@ -14,7 +14,7 @@ import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
 import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
-import { ClusterStatus } from "../../common/cluster-types";
+import { ClusterMetadataKey, ClusterStatus } from "../../common/cluster-types";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
 import { formatKubeApiResource } from "../../common/rbac";
@@ -309,6 +309,7 @@ class ClusterConnection {
 
       runInAction(() => {
         this.cluster.metadata.version = versionData.value;
+        this.cluster.metadata[ClusterMetadataKey.LAST_SEEN] = new Date().toJSON();
       });
 
       return ClusterStatus.AccessGranted;
