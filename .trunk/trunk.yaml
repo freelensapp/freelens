@@ -65,7 +65,7 @@ lint:
     - prettier@3.6.2! # datasource=npm depName=prettier
     - shellcheck@0.11.0
     - shfmt@3.6.0
-    - yamlfmt@0.17.2
+    - yamlfmt@0.20.0
     - yamllint@1.37.1
   disabled:
     - checkov
