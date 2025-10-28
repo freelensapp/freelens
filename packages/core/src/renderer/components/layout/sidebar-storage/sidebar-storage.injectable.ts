@@ -9,9 +9,8 @@ import createStorageInjectable from "../../../utils/create-storage/create-storag
 
 export interface SidebarStorageState {
   width: number;
-  expanded: {
-    [itemId: string]: boolean;
-  };
+  expanded: Record<string, boolean>;
+  order: Record<string, number>;
 }
 
 export const defaultSidebarWidth = 200;
@@ -22,9 +21,10 @@ const sidebarStorageInjectable = getInjectable({
   instantiate: (di) => {
     const createStorage = di.inject(createStorageInjectable);
 
-    return createStorage("sidebar", {
+    return createStorage<SidebarStorageState>("sidebar", {
       width: defaultSidebarWidth,
       expanded: {},
+      order: {}
     });
   },
 });

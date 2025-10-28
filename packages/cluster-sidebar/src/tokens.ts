@@ -18,7 +18,7 @@ export interface SidebarItemRegistration {
   getIcon?: () => StrictReactNode;
   isActive?: IComputedValue<boolean>;
   isVisible?: IComputedValue<boolean>;
-  orderNumber: number;
+  orderNumber: number | IComputedValue<number>;
 }
 
 export interface SidebarItemDeclaration {
