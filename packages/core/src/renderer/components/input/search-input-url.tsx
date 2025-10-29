@@ -63,9 +63,11 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
         ({ isEnabled, persistedValue, urlValue }) => {
           // Only update input when switching between persistence modes or namespace changes
           // Don't overwrite user's current input during typing
-          if (isEnabled && persistedValue) {
+          if (isEnabled) {
+            // When persistence is enabled, always sync to persisted value
+            // (which will be empty string if nothing stored for this namespace)
             this.inputVal = persistedValue;
-          } else if (!isEnabled) {
+          } else {
             this.inputVal = urlValue;
           }
         },
@@ -84,9 +86,8 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           if (isEnabled) {
             const persistedValue = persistentSearchStore.getValue(namespaceKey);
 
-            if (persistedValue) {
-              searchUrlParam.set(persistedValue);
-            }
+            // Always sync to URL, even if empty (to clear filter when switching namespaces)
+            searchUrlParam.set(persistedValue);
           }
         },
         { fireImmediately: true, equals: comparer.structural },
@@ -160,6 +161,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
             checked={persistentSearchStore.isEnabled}
             onChange={this.togglePersistence}
             title="Persist search across views"
+            style={{ accentColor: "var(--colorSuccess)" }}
           />
           <span style={{ fontSize: "12px", opacity: 0.8 }}>Persist</span>
         </label>
