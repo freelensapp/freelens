@@ -10,6 +10,7 @@ import { comparer, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { SearchInput } from "./search-input";
+import { Checkbox } from "../checkbox/checkbox";
 import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
@@ -31,6 +32,7 @@ interface Dependencies {
 @observer
 class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & Dependencies> {
   @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
+  @observable private lastNamespaceKey = "";
 
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
 
@@ -49,6 +51,9 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   componentDidMount(): void {
     const { searchUrlParam, persistentSearchStore } = this.props;
 
+    // Initialize lastNamespaceKey
+    this.lastNamespaceKey = this.getCurrentNamespaceKey();
+
     // Sync inputVal with either persistent store or URL param
     disposeOnUnmount(this, [
       reaction(
@@ -60,7 +65,9 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           urlValue: searchUrlParam.get(),
           namespaceKey: this.getCurrentNamespaceKey(),
         }),
-        ({ isEnabled, persistedValue, urlValue }) => {
+        ({ isEnabled, persistedValue, urlValue, namespaceKey }) => {
+          const namespaceChanged = namespaceKey !== this.lastNamespaceKey;
+
           // Only update input when switching between persistence modes or namespace changes
           // Don't overwrite user's current input during typing
           if (isEnabled) {
@@ -68,10 +75,20 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
             // (which will be empty string if nothing stored for this namespace)
             this.inputVal = persistedValue;
           } else {
-            this.inputVal = urlValue;
+            // When persistence is disabled
+            if (namespaceChanged) {
+              // Clear filter when switching namespaces
+              this.inputVal = "";
+              searchUrlParam.set("");
+            } else {
+              // Otherwise sync to URL param
+              this.inputVal = urlValue;
+            }
           }
+
+          this.lastNamespaceKey = namespaceKey;
         },
-        { equals: comparer.structural },
+        { fireImmediately: true, equals: comparer.structural },
       ),
     ]);
 
@@ -118,9 +135,8 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
     this.props.onChange?.(val, evt);
   };
 
-  togglePersistence = () => {
+  togglePersistence = (newState: boolean) => {
     const { persistentSearchStore } = this.props;
-    const newState = !persistentSearchStore.isEnabled;
     const namespaceKey = this.getCurrentNamespaceKey();
 
     if (newState) {
@@ -155,16 +171,14 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           onClear={this.clear}
           {...searchInputProps}
         />
-        <label style={{ display: "flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap", cursor: "pointer" }}>
-          <input
-            type="checkbox"
-            checked={persistentSearchStore.isEnabled}
+        <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
+          <Checkbox
+            value={persistentSearchStore.isEnabled}
             onChange={this.togglePersistence}
-            title="Persist search across views"
-            style={{ accentColor: "var(--colorSuccess)" }}
+            label="Persist"
+            inline
           />
-          <span style={{ fontSize: "12px", opacity: 0.8 }}>Persist</span>
-        </label>
+        </div>
       </div>
     );
   }
