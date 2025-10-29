@@ -6,7 +6,7 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import debounce from "lodash/debounce";
-import { autorun, comparer, makeObservable, observable, reaction } from "mobx";
+import { comparer, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { SearchInput } from "./search-input";
@@ -51,14 +51,26 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
 
     // Sync inputVal with either persistent store or URL param
     disposeOnUnmount(this, [
-      autorun(() => {
-        if (persistentSearchStore.isEnabled) {
-          const namespaceKey = this.getCurrentNamespaceKey();
-          this.inputVal = persistentSearchStore.getValue(namespaceKey);
-        } else {
-          this.inputVal = searchUrlParam.get();
-        }
-      }),
+      reaction(
+        () => ({
+          isEnabled: persistentSearchStore.isEnabled,
+          persistedValue: persistentSearchStore.isEnabled
+            ? persistentSearchStore.getValue(this.getCurrentNamespaceKey())
+            : "",
+          urlValue: searchUrlParam.get(),
+          namespaceKey: this.getCurrentNamespaceKey(),
+        }),
+        ({ isEnabled, persistedValue, urlValue }) => {
+          // Only update input when switching between persistence modes or namespace changes
+          // Don't overwrite user's current input during typing
+          if (isEnabled && persistedValue) {
+            this.inputVal = persistedValue;
+          } else if (!isEnabled) {
+            this.inputVal = urlValue;
+          }
+        },
+        { equals: comparer.structural },
+      ),
     ]);
 
     // When persistence is enabled and there's a persistent value, sync it to URL
@@ -108,13 +120,18 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   togglePersistence = () => {
     const { persistentSearchStore } = this.props;
     const newState = !persistentSearchStore.isEnabled;
+    const namespaceKey = this.getCurrentNamespaceKey();
 
-    persistentSearchStore.setEnabled(newState);
-
-    if (newState && this.inputVal) {
-      // When enabling persistence, save current search value
-      const namespaceKey = this.getCurrentNamespaceKey();
-      persistentSearchStore.setValue(namespaceKey, this.inputVal);
+    if (newState) {
+      // When enabling persistence, save current search value FIRST
+      if (this.inputVal) {
+        persistentSearchStore.setValue(namespaceKey, this.inputVal);
+      }
+      persistentSearchStore.setEnabled(newState);
+    } else {
+      // When disabling persistence, clear the stored value
+      persistentSearchStore.setEnabled(newState);
+      persistentSearchStore.setValue(namespaceKey, "");
     }
   };
 
