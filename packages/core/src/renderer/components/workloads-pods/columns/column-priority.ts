@@ -1,6 +1,7 @@
 export const COLUMN_PRIORITY = {
   NAME: 120,
   STATUS_ICON: 99,
+  LOGS: 95,
   NAMESPACE: 90,
   CONTAINERS: 80,
   CPU_USAGE: 70,
