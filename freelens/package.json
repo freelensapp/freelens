@@ -118,7 +118,7 @@
     "mobx": "^6.13.7",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
-    "node-pty": "1.1.0-beta37",
+    "node-pty": "1.1.0-beta38",
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
     "pnpm": "^10.20.0",
