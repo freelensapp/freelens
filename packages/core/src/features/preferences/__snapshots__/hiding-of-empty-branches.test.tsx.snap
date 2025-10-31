@@ -416,6 +416,33 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -1101,6 +1128,33 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                     data-testid="switch"
                   >
                     Automatically start Freelens on login
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
                     <input
                       role="switch"
                       type="checkbox"
@@ -1809,6 +1863,33 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                     data-testid="switch"
                   >
                     Automatically start Freelens on login
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
                     <input
                       role="switch"
                       type="checkbox"

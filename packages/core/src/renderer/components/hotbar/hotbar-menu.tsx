@@ -9,10 +9,12 @@ import "./hotbar-menu.scss";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DragDropContext, Draggable, Droppable, type DropResult } from "react-beautiful-dnd";
+import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
 import { defaultHotbarCells } from "../../../features/hotbar/storage/common/types";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 import { HotbarCell } from "./hotbar-cell";
 import { HotbarEntityIcon } from "./hotbar-entity-icon";
@@ -35,13 +37,64 @@ export interface HotbarMenuProps {
 interface Dependencies {
   activeHotbar: IComputedValue<Hotbar | undefined>;
   entityRegistry: CatalogEntityRegistry;
+  userPreferencesState: UserPreferencesState;
 }
 
 const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) => {
-  const { activeHotbar, entityRegistry, className } = props;
+  const { activeHotbar, entityRegistry, userPreferencesState, className } = props;
 
   const [draggingOver, setDraggingOver] = useState(false);
+  const [isHotbarVisible, setIsHotbarVisible] = useState(false);
+  const isHotbarVisibleRef = useRef(false);
   const hotbar = activeHotbar.get();
+
+  useEffect(() => {
+    if (!userPreferencesState.hotbarAutoHide) {
+      setIsHotbarVisible(false);
+      isHotbarVisibleRef.current = false;
+      return;
+    }
+
+    setIsHotbarVisible(false);
+    isHotbarVisibleRef.current = false;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const hotbarWidth = 75;
+      const triggerZone = 10;
+      const hideThreshold = hotbarWidth + 10;
+
+      if (event.clientX <= triggerZone && !isHotbarVisibleRef.current) {
+        isHotbarVisibleRef.current = true;
+        setIsHotbarVisible(true);
+      } else if (event.clientX > hideThreshold && isHotbarVisibleRef.current) {
+        isHotbarVisibleRef.current = false;
+        setIsHotbarVisible(false);
+      }
+      // Between triggerZone and hideThreshold, maintain current state
+    };
+
+    const handleTriggerZoneEnter = () => {
+      if (!isHotbarVisibleRef.current) {
+        isHotbarVisibleRef.current = true;
+        setIsHotbarVisible(true);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    const triggerZone = document.querySelector(".hotbar-trigger-zone");
+    if (triggerZone) {
+      triggerZone.addEventListener("mouseenter", handleTriggerZoneEnter);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+
+      if (triggerZone) {
+        triggerZone.removeEventListener("mouseenter", handleTriggerZoneEnter);
+      }
+    };
+  }, [userPreferencesState.hotbarAutoHide]);
 
   const getEntity = (item: HotbarItem | null) => {
     if (!item) {
@@ -154,8 +207,26 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       );
     });
 
+  const handleMouseLeave = () => {
+    if (userPreferencesState.hotbarAutoHide && isHotbarVisibleRef.current) {
+      isHotbarVisibleRef.current = false;
+      setIsHotbarVisible(false);
+    }
+  };
+
   return (
-    <div className={cssNames("HotbarMenu flex column", { draggingOver }, className)}>
+    <div
+      className={cssNames(
+        "HotbarMenu flex column",
+        {
+          draggingOver,
+          autoHide: userPreferencesState.hotbarAutoHide,
+          visible: isHotbarVisible,
+        },
+        className,
+      )}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="HotbarItems flex column gaps">
         <DragDropContext onDragStart={() => onDragStart()} onDragEnd={(result) => onDragEnd(result)}>
           {renderGrid()}
@@ -171,5 +242,6 @@ export const HotbarMenu = withInjectables<Dependencies, HotbarMenuProps>(NonInje
     ...props,
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
     activeHotbar: di.inject(activeHotbarInjectable),
+    userPreferencesState: di.inject(userPreferencesStateInjectable),
   }),
 });

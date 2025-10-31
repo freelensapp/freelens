@@ -416,6 +416,33 @@ exports[`preferences - navigation to application preferences given in preference
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -1073,6 +1100,33 @@ exports[`preferences - navigation to application preferences given in preference
                     data-testid="switch"
                   >
                     Automatically start Freelens on login
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
                     <input
                       role="switch"
                       type="checkbox"
@@ -2190,6 +2244,33 @@ exports[`preferences - navigation to application preferences given in some child
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -2848,6 +2929,33 @@ exports[`preferences - navigation to application preferences given in some child
                       data-testid="switch"
                     >
                       Automatically start Freelens on login
+                      <input
+                        role="switch"
+                        type="checkbox"
+                      />
+                    </label>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="hotbar-auto-hide"
+                >
+                  <section
+                    id="hotbar"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Auto-Hide Hotbar
+                       
+                    </div>
+                    <label
+                      class="Switch"
+                      data-testid="switch"
+                    >
+                      Automatically hide Hotbar
                       <input
                         role="switch"
                         type="checkbox"

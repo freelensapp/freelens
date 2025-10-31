@@ -6,12 +6,13 @@
 
 import "./cluster-manager.scss";
 
-import { buildURL } from "@freelensapp/utilities";
+import { buildURL, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Redirect } from "react-router";
 import welcomeRouteInjectable from "../../../common/front-end-routing/routes/welcome/welcome-route.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import watchForGeneralEntityNavigationInjectable from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 import currentPathInjectable from "../../routes/current-path.injectable";
 import currentRouteComponentInjectable from "../../routes/current-route-component.injectable";
@@ -22,6 +23,7 @@ import { StatusBar } from "../status-bar/status-bar";
 
 import type { IComputedValue } from "mobx";
 
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { WatchForGeneralEntityNavigation } from "../../api/helpers/watch-for-general-entity-navigation.injectable";
 
 interface Dependencies {
@@ -29,6 +31,7 @@ interface Dependencies {
   welcomeUrl: string;
   watchForGeneralEntityNavigation: WatchForGeneralEntityNavigation;
   currentPath: IComputedValue<string>;
+  userPreferencesState: UserPreferencesState;
 }
 
 @observer
@@ -62,13 +65,14 @@ class NonInjectedClusterManager extends React.Component<Dependencies> {
 
   render() {
     return (
-      <div className="ClusterManager">
+      <div className={cssNames("ClusterManager", { hotbarAutoHide: this.props.userPreferencesState.hotbarAutoHide })}>
         <TopBar />
         <main>
           <div id="lens-views" />
           {this.renderMainComponent()}
         </main>
         <HotbarMenu />
+        {this.props.userPreferencesState.hotbarAutoHide && <div className="hotbar-trigger-zone" />}
         <StatusBar />
         <DeleteClusterDialog />
       </div>
@@ -82,5 +86,6 @@ export const ClusterManager = withInjectables<Dependencies>(NonInjectedClusterMa
     welcomeUrl: buildURL(di.inject(welcomeRouteInjectable).path),
     watchForGeneralEntityNavigation: di.inject(watchForGeneralEntityNavigationInjectable),
     currentPath: di.inject(currentPathInjectable),
+    userPreferencesState: di.inject(userPreferencesStateInjectable),
   }),
 });

@@ -441,6 +441,33 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="hotbar-auto-hide"
+                >
+                  <section
+                    id="hotbar"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Auto-Hide Hotbar
+                       
+                    </div>
+                    <label
+                      class="Switch"
+                      data-testid="switch"
+                    >
+                      Automatically hide Hotbar
+                      <input
+                        role="switch"
+                        type="checkbox"
+                      />
+                    </label>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="timezone"
                 >
                   <section
