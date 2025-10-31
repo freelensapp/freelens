@@ -1123,8 +1123,8 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       typed-emitter:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1399,8 +1399,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       webpack:
         specifier: ^5.101.3
         version: 5.101.3(webpack-cli@6.0.1)
@@ -2735,8 +2735,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -2985,8 +2985,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       webpack:
         specifier: ^5.101.3
         version: 5.101.3(webpack-cli@6.0.1)
@@ -3064,8 +3064,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -3181,8 +3181,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       typed-emitter:
         specifier: ^1.4.0
         version: 1.4.0
@@ -3351,8 +3351,8 @@ importers:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.101.3)
       type-fest:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.1.0
+        version: 5.1.0
       webpack:
         specifier: ^5.101.3
         version: 5.101.3(webpack-cli@6.0.1)
@@ -8958,8 +8958,8 @@ packages:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
 
-  type-fest@5.0.1:
-    resolution: {integrity: sha512-9MpwAI52m8H6ssA542UxSLnSiSD2dsC3/L85g6hVubLSXd82wdI80eZwTWhdOfN67NlA+D+oipAs1MlcTcu3KA==}
+  type-fest@5.1.0:
+    resolution: {integrity: sha512-wQ531tuWvB6oK+pchHIu5lHe5f5wpSCqB8Kf4dWQRbOYc9HTge7JL0G4Qd44bh6QuJCccIzL3bugb8GI0MwHrg==}
     engines: {node: '>=20'}
 
   type-is@1.6.18:
@@ -16026,7 +16026,7 @@ snapshots:
 
   type-fest@4.41.0: {}
 
-  type-fest@5.0.1:
+  type-fest@5.1.0:
     dependencies:
       tagged-tag: 1.0.0
 
