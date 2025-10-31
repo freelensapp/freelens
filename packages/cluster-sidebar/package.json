@@ -35,7 +35,7 @@
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "mobx": "^6.13.7"
+    "mobx": "^6.15.0"
   },
   "devDependencies": {
     "@freelensapp/jest": "workspace:^",
