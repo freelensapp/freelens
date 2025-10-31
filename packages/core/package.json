@@ -54,8 +54,8 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack/library-bundle.ts --progress",
-    "clean": "pnpm dlx rimraf@6.0.1 dist static/build",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.0 dist static/build",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "test:unit": "jest",
     "test:watch": "jest --watch --testPathIgnorePatterns integration",
     "knip": "pnpm dlx knip@5.64.2 --dependencies",
