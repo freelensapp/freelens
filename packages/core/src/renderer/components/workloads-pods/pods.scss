@@ -55,5 +55,9 @@
       @include workloads-mixins.pod-status-colors;
       flex-grow: 0.7;
     }
+
+    &.logs {
+      flex-grow: 0.2;
+    }
   }
 }

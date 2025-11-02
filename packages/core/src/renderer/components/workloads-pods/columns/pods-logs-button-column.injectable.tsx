@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Icon } from "@freelensapp/icon";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 
@@ -26,7 +26,7 @@ interface LogsButtonProps {
 
 const NonInjectableLogsButton: React.FC<LogsButtonProps & Dependencies> = ({ pod, createPodLogsTab }) => {
   const handleClick = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent row click (opening details)
+    event.stopPropagation();
 
     const containers = pod.getAllContainers();
 
@@ -45,13 +45,7 @@ const NonInjectableLogsButton: React.FC<LogsButtonProps & Dependencies> = ({ pod
   };
 
   return (
-    <Icon
-      material="subject"
-      tooltip="View Logs"
-      interactive
-      onClick={handleClick}
-      style={{ cursor: "pointer" }}
-    />
+    <Icon material="subject" tooltip="View Logs" interactive onClick={handleClick} style={{ cursor: "pointer" }} />
   );
 };
 
@@ -70,7 +64,7 @@ export const podsLogsButtonColumnInjectable = getInjectable({
     apiVersion: "v1",
     priority: COLUMN_PRIORITY.LOGS,
     content: (pod: Pod) => <LogsButton pod={pod} />,
-    header: { title: "Logs", className: "logs", id: columnId },
+    header: { title: <Icon material="subject" />, className: "logs", id: columnId },
   }),
   injectionToken: podListLayoutColumnInjectionToken,
 });
