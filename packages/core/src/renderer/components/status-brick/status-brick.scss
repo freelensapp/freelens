@@ -32,7 +32,8 @@
 
   &.restarted {
     background-color: var(--colorOk);
-    border: 1px solid var(--colorWarning);
+    outline: 1px solid var(--colorWarning);
+    outline-offset: 3px;
   }
 
   &.terminated {
