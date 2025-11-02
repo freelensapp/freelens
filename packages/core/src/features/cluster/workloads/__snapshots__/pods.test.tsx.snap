@@ -354,32 +354,56 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Pods..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        namespacestore="[object Object]"
+                        placeholder="Search Pods..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <div
+                    style="display: flex; align-items: center; white-space: nowrap;"
+                  >
+                    <label
+                      class="Checkbox flex align-center inline"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Persist
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <div
@@ -1284,32 +1308,56 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Pods..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        namespacestore="[object Object]"
+                        placeholder="Search Pods..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <div
+                    style="display: flex; align-items: center; white-space: nowrap;"
+                  >
+                    <label
+                      class="Checkbox flex align-center inline"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Persist
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <div
@@ -2086,32 +2134,56 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Pods..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        namespacestore="[object Object]"
+                        placeholder="Search Pods..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <div
+                    style="display: flex; align-items: center; white-space: nowrap;"
+                  >
+                    <label
+                      class="Checkbox flex align-center inline"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Persist
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <div

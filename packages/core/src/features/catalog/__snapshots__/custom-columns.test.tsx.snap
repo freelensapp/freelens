@@ -269,32 +269,55 @@ exports[`custom category columns for catalog renders 1`] = `
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -870,32 +893,55 @@ exports[`custom category columns for catalog when category is added using defaul
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1471,32 +1517,55 @@ exports[`custom category columns for catalog when category is added using defaul
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2062,32 +2131,55 @@ exports[`custom category columns for catalog when category is added using defaul
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2642,32 +2734,55 @@ exports[`custom category columns for catalog when category is added with custom 
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -3243,32 +3358,55 @@ exports[`custom category columns for catalog when category is added with custom 
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -3781,32 +3919,55 @@ exports[`custom category columns for catalog when category is added without defa
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -4382,32 +4543,55 @@ exports[`custom category columns for catalog when category is added without defa
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; white-space: nowrap;"
+                    >
+                      <label
+                        class="Checkbox flex align-center inline"
+                      >
+                        <input
+                          type="checkbox"
+                        />
+                        <i
+                          class="box flex align-center"
+                        />
+                        <span
+                          class="label"
+                        >
+                          Persist
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div
