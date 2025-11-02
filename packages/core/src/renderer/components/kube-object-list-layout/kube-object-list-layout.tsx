@@ -99,6 +99,7 @@ class NonInjectedKubeObjectListLayout<
   };
 
   private readonly loadErrors = observable.array<string>();
+  private readonly menuOpeners = new Map<string, () => void>();
 
   @computed get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
@@ -167,6 +168,7 @@ class NonInjectedKubeObjectListLayout<
       columns,
       generalColumns,
       sortingCallbacks = {},
+      customizeTableRowProps,
       ...layoutProps
     } = this.props;
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
@@ -185,6 +187,24 @@ class NonInjectedKubeObjectListLayout<
       [...(renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header })), ...targetColumns],
       (v) => -v.priority,
     ).map((col) => col.header);
+
+    const getTableRowCustomizations = (item: K) => {
+      const id = `menu-actions-for-kube-object-menu-for-${item.getId()}`;
+      const baseProps = customizeTableRowProps?.(item) ?? {};
+
+      return {
+        id,
+        ...baseProps,
+        onContextMenu: (evt: React.MouseEvent<HTMLDivElement>) => {
+          baseProps.onContextMenu?.(evt);
+          if (evt.defaultPrevented) return;
+
+          evt.preventDefault();
+          evt.stopPropagation();
+          requestAnimationFrame(() => this.menuOpeners.get(item.getId())?.());
+        },
+      };
+    };
 
     return (
       <ItemListLayout<K, false>
@@ -217,7 +237,13 @@ class NonInjectedKubeObjectListLayout<
           }),
           ...[customizeHeader].filter(isDefined).flat(),
         ]}
-        renderItemMenu={(item) => <KubeObjectMenu object={item} />}
+        renderItemMenu={(item) => (
+          <KubeObjectMenu
+            id={item.getId()}
+            object={item}
+            onMenuReady={(controls) => this.menuOpeners.set(item.getId(), controls.open)}
+          />
+        )}
         onDetails={onDetails ?? ((item) => toggleDetails(item.selfLink))}
         sortingCallbacks={sortingCallbacks}
         renderTableHeader={headers}
@@ -232,6 +258,7 @@ class NonInjectedKubeObjectListLayout<
         }
         spinnerTestId="kube-object-list-layout-spinner"
         {...layoutProps}
+        customizeTableRowProps={getTableRowCustomizations}
       />
     );
   }

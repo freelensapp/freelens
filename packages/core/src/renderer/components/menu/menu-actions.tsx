@@ -44,6 +44,7 @@ export interface MenuActionsProps extends Partial<MenuProps> {
   removeAction?: () => void | Promise<void>;
   onOpen?: () => void;
   id?: string;
+  exposeControls?: (controls: { open: () => void; close: () => void }) => void;
 }
 
 interface Dependencies {
@@ -58,9 +59,14 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
 
   @observable isOpen = !!this.props.toolbar;
 
-  toggle = () => {
+  open = () => {
     if (this.props.toolbar) return;
-    this.isOpen = !this.isOpen;
+    this.isOpen = true;
+  };
+
+  close = () => {
+    if (this.props.toolbar) return;
+    this.isOpen = false;
   };
 
   constructor(props: MenuActionsProps & Dependencies) {
@@ -70,6 +76,11 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   }
 
   componentDidMount(): void {
+    this.props.exposeControls?.({
+      open: this.open.bind(this),
+      close: this.close.bind(this),
+    });
+
     disposeOnUnmount(this, [
       reaction(
         () => this.isOpen,
@@ -152,8 +163,8 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
         <Menu
           htmlFor={this.props.id}
           isOpen={this.isOpen}
-          open={this.toggle}
-          close={this.toggle}
+          open={this.open}
+          close={this.close}
           className={cssNames("MenuActions flex", className, {
             toolbar,
             gaps: toolbar, // add spacing for .flex

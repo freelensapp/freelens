@@ -37,9 +37,11 @@ import type { DeleteType, KubeObjectDeleteService } from "./kube-object-delete-s
 import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 
 export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends MenuActionsProps {
+  id?: string;
   object: TKubeObject;
   editable?: boolean;
   removable?: boolean;
+  onMenuReady?: (controls: { open: () => void; close: () => void }) => void;
 }
 
 interface Dependencies {
@@ -306,6 +308,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
       editable,
       removable,
       object,
+      onMenuReady,
       removeAction, // This is here so we don't pass it down to `<MenuAction>`
       removeConfirmationMessage, // This is here so we don't pass it down to `<MenuAction>`
       updateAction, // This is here so we don't pass it down to `<MenuAction>`
@@ -314,10 +317,11 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
 
     return (
       <MenuActions
-        id={`menu-actions-for-kube-object-menu-for-${object?.getId()}`}
-        data-testid={`menu-actions-for-kube-object-menu-for-${object?.getId()}`}
+        id={`menu-actions-for-kube-object-menu-for-${this.props.id ?? object?.getId()}`}
+        data-testid={`menu-actions-for-kube-object-menu-for-${this.props.id ?? object?.getId()}`}
         className={cssNames("KubeObjectMenu", className)}
         onOpen={object ? () => this.emitOnContextMenuOpen(object) : undefined}
+        exposeControls={onMenuReady}
         {...menuProps}
       >
         {this.renderMenuItems()}
