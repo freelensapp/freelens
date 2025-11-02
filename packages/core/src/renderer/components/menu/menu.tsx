@@ -55,6 +55,10 @@ export interface MenuProps {
   animated?: boolean;
   toggleEvent?: "click" | "contextmenu";
   "data-testid"?: string;
+  cursorPosition?: {
+    x: number;
+    y: number;
+  };
 }
 
 interface State {
@@ -142,8 +146,21 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   componentDidUpdate(prevProps: MenuProps) {
-    if (!isEqual(prevProps.children, this.props.children)) {
+    const childrenChanged = !isEqual(prevProps.children, this.props.children);
+    const positionChanged =
+      prevProps.cursorPosition?.x !== this.props.cursorPosition?.x ||
+      prevProps.cursorPosition?.y !== this.props.cursorPosition?.y;
+
+    if (childrenChanged || (this.props.isOpen && positionChanged)) {
       this.refreshPosition();
+    }
+
+    if (!prevProps.isOpen && this.props.isOpen) {
+      this.refreshPosition();
+
+      if (this.props.autoFocus) {
+        this.focusNextItem();
+      }
     }
   }
 
@@ -175,40 +192,53 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
 
   refreshPosition = () =>
     requestAnimationFrame(() => {
-      if (!this.props.usePortal || !this.opener || !this.elem) {
+      if (!this.props.usePortal || !this.elem) {
         return;
       }
 
-      const openerClientRect = this.opener.getBoundingClientRect();
-      let {
-        left: openerLeft,
-        top: openerTop,
-        bottom: openerBottom,
-        right: openerRight,
-      } = this.opener.getBoundingClientRect();
-      const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
-
-      // window global scroll corrections
-      if (withScroll) {
-        openerLeft += window.pageXOffset;
-        openerTop += window.pageYOffset;
-        openerRight = openerLeft + openerClientRect.width;
-        openerBottom = openerTop + openerClientRect.height;
-      }
-
-      const extraMargin = this.props.usePortal ? 8 : 0;
-
+      const extraMargin = 8;
       const { width: menuWidth, height: menuHeight } = this.elem.getBoundingClientRect();
 
-      const rightSideOfMenu = openerLeft + menuWidth;
-      const renderMenuLeft = rightSideOfMenu > window.innerWidth;
-      const menuOnLeftSidePosition = `${openerRight - this.elem.offsetWidth}px`;
-      const menuOnRightSidePosition = `${openerLeft}px`;
+      let anchorLeft: number;
+      let anchorTop: number;
+      let anchorBottom: number;
+      let anchorRight: number;
 
-      const bottomOfMenu = openerBottom + extraMargin + menuHeight;
+      const cursorPosition = this.props.cursorPosition;
+
+      if (cursorPosition) {
+        anchorLeft = cursorPosition.x;
+        anchorTop = cursorPosition.y;
+        anchorBottom = cursorPosition.y;
+        anchorRight = cursorPosition.x;
+      } else if (this.opener) {
+        const openerClientRect = this.opener.getBoundingClientRect();
+        const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
+
+        anchorLeft = openerClientRect.left;
+        anchorTop = openerClientRect.top;
+        anchorBottom = openerClientRect.bottom;
+        anchorRight = openerClientRect.right;
+
+        if (withScroll) {
+          anchorLeft += window.pageXOffset;
+          anchorTop += window.pageYOffset;
+          anchorRight = anchorLeft + openerClientRect.width;
+          anchorBottom = anchorTop + openerClientRect.height;
+        }
+      } else {
+        return;
+      }
+
+      const rightSideOfMenu = anchorLeft + menuWidth;
+      const renderMenuLeft = rightSideOfMenu > window.innerWidth;
+      const menuOnLeftSidePosition = `${anchorRight - this.elem.offsetWidth}px`;
+      const menuOnRightSidePosition = `${anchorLeft}px`;
+
+      const bottomOfMenu = anchorBottom + extraMargin + menuHeight;
       const renderMenuOnTop = bottomOfMenu > window.innerHeight;
-      const menuOnTopPosition = `${openerTop - this.elem.offsetHeight - extraMargin}px`;
-      const menuOnBottomPosition = `${openerBottom + extraMargin}px`;
+      const menuOnTopPosition = `${anchorTop - this.elem.offsetHeight - extraMargin}px`;
+      const menuOnBottomPosition = `${anchorBottom + extraMargin}px`;
 
       this.setState({
         position: {

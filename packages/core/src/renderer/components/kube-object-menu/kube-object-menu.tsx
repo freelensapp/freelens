@@ -41,7 +41,7 @@ export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends Men
   object: TKubeObject;
   editable?: boolean;
   removable?: boolean;
-  onMenuReady?: (controls: { open: () => void; close: () => void }) => void;
+  onMenuReady?: (controls: { open: (cursorPosition?: { x: number; y: number }) => void; close: () => void }) => void;
 }
 
 interface Dependencies {

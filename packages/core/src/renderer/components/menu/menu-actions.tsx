@@ -44,7 +44,7 @@ export interface MenuActionsProps extends Partial<MenuProps> {
   removeAction?: () => void | Promise<void>;
   onOpen?: () => void;
   id?: string;
-  exposeControls?: (controls: { open: () => void; close: () => void }) => void;
+  exposeControls?: (controls: { open: (cursorPosition?: { x: number; y: number }) => void; close: () => void }) => void;
 }
 
 interface Dependencies {
@@ -58,14 +58,20 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   };
 
   @observable isOpen = !!this.props.toolbar;
+  @observable openedViaCursor = false;
+  @observable cursorPosition: { x: number; y: number } | null = null;
 
-  open = () => {
+  open = (cursorPosition?: { x: number; y: number }) => {
     if (this.props.toolbar) return;
+    this.openedViaCursor = !!cursorPosition;
+    this.cursorPosition = cursorPosition ?? null;
     this.isOpen = true;
   };
 
   close = () => {
     if (this.props.toolbar) return;
+    this.openedViaCursor = false;
+    this.cursorPosition = null;
     this.isOpen = false;
   };
 
@@ -77,8 +83,8 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
 
   componentDidMount(): void {
     this.props.exposeControls?.({
-      open: this.open.bind(this),
-      close: this.close.bind(this),
+      open: this.open,
+      close: this.close,
     });
 
     disposeOnUnmount(this, [
@@ -117,8 +123,11 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       return null;
     }
 
+    // Only show active state if opened via icon click, not right-click
+    const isActive = this.isOpen && !this.openedViaCursor;
+
     if (isValidElement<HTMLElement>(triggerIcon)) {
-      const className = cssNames(triggerIcon.props.className, { active: this.isOpen });
+      const className = cssNames(triggerIcon.props.className, { active: isActive });
 
       return React.cloneElement(triggerIcon, { id: this.props.id, className });
     }
@@ -127,7 +136,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       id: this.props.id,
       interactive: true,
       material: isString(triggerIcon) ? triggerIcon : undefined,
-      active: this.isOpen,
+      active: isActive,
       ...(typeof triggerIcon === "object" ? triggerIcon : {}),
     };
 
@@ -174,6 +183,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           closeOnScroll={autoClose}
           closeOnClickItem={autoCloseOnSelect ?? autoClose}
           closeOnClickOutside={autoClose}
+          cursorPosition={this.cursorPosition ?? undefined}
           {...menuProps}
         >
           {children}

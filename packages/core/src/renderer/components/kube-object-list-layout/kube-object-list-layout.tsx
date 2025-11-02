@@ -99,7 +99,7 @@ class NonInjectedKubeObjectListLayout<
   };
 
   private readonly loadErrors = observable.array<string>();
-  private readonly menuOpeners = new Map<string, () => void>();
+  private readonly menuOpeners = new Map<string, (cursorPosition?: { x: number; y: number }) => void>();
 
   @computed get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
@@ -201,7 +201,8 @@ class NonInjectedKubeObjectListLayout<
 
           evt.preventDefault();
           evt.stopPropagation();
-          requestAnimationFrame(() => this.menuOpeners.get(item.getId())?.());
+          const cursorPosition = { x: evt.clientX, y: evt.clientY };
+          requestAnimationFrame(() => this.menuOpeners.get(item.getId())?.(cursorPosition));
         },
       };
     };
