@@ -125,6 +125,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     window.addEventListener("scroll", this.onScrollOutside, true);
     window.addEventListener("contextmenu", this.onContextMenu, true);
     window.addEventListener("blur", this.onBlur, true);
+    window.addEventListener("keydown", this.onKeyDown, true);
   }
 
   componentWillUnmount() {
@@ -137,6 +138,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     window.removeEventListener("scroll", this.onScrollOutside, true);
     window.removeEventListener("blur", this.onBlur, true);
     window.removeEventListener("contextmenu", this.onContextMenu, true);
+    window.removeEventListener("keydown", this.onKeyDown, true);
   }
 
   componentDidUpdate(prevProps: MenuProps) {
@@ -282,8 +284,21 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
   }
 
-  onContextMenu() {
-    this.close();
+  onContextMenu(evt: MouseEvent) {
+    if (!this.isOpen) return;
+
+    // If the event was prevented don't close the menu as it might be opening/repositioning
+    if (evt.defaultPrevented) {
+      return;
+    }
+
+    const target = evt.target as HTMLElement;
+    const contextMenuInsideMenu = this.elem?.contains(target);
+
+    // Only close if right-clicking outside the menu
+    if (!contextMenuInsideMenu) {
+      this.close();
+    }
   }
 
   onWindowResize() {
@@ -304,6 +319,10 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   onClickOutside(evt: MouseEvent) {
     if (!this.props.closeOnClickOutside) return;
     if (!this.isOpen || evt.target === document.body) return;
+
+    // Ignore right-clicks - they're handled by onContextMenu
+    if (evt.button === 2) return;
+
     const target = evt.target as HTMLElement;
     const clickInsideMenu = this.elem?.contains(target);
     const clickOnOpener = this.opener && this.opener.contains(target);
