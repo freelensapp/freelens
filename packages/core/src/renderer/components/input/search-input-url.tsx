@@ -4,17 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import debounce from "lodash/debounce";
 import { comparer, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { SearchInput } from "./search-input";
 import { Checkbox } from "../checkbox/checkbox";
-import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
-import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
-import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
+import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
+import { SearchInput } from "./search-input";
+import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
 
 import type { PageParam } from "../../navigation/page-param";
 import type { InputProps } from "./input";
@@ -172,12 +172,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           {...searchInputProps}
         />
         <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-          <Checkbox
-            value={persistentSearchStore.isEnabled}
-            onChange={this.togglePersistence}
-            label="Persist"
-            inline
-          />
+          <Checkbox value={persistentSearchStore.isEnabled} onChange={this.togglePersistence} label="Persist" inline />
         </div>
       </div>
     );

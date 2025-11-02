@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { observable, action, computed, makeObservable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 /**
  * Store for managing persistent search across views within the same namespace.
