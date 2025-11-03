@@ -373,6 +373,25 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 </i>
               </div>
               <div
+                class="TableCell logs nowrap"
+                id="logs"
+              >
+                <div
+                  class="content"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="subject"
+                    >
+                      subject
+                    </span>
+                  </i>
+                </div>
+              </div>
+              <div
                 class="TableCell menu nowrap"
               >
                 <div

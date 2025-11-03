@@ -593,6 +593,25 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       </i>
                     </div>
                     <div
+                      class="TableCell logs nowrap"
+                      id="logs"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="subject"
+                          >
+                            subject
+                          </span>
+                        </i>
+                      </div>
+                    </div>
+                    <div
                       class="TableCell menu nowrap"
                     >
                       <div
@@ -724,6 +743,25 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                                 class="TableCell waiting status"
                               >
                                 Waiting
+                              </div>
+                              <div
+                                class="TableCell logs"
+                              >
+                                <i
+                                  class="Icon material interactive focusable"
+                                  style="cursor: pointer;"
+                                  tabindex="0"
+                                >
+                                  <span
+                                    class="icon"
+                                    data-icon-name="subject"
+                                  >
+                                    subject
+                                  </span>
+                                </i>
+                                <div>
+                                  View Logs
+                                </div>
                               </div>
                               <div
                                 class="TableCell menu"
@@ -1521,6 +1559,25 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                    </div>
+                    <div
+                      class="TableCell logs nowrap"
+                      id="logs"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="subject"
+                          >
+                            subject
+                          </span>
+                        </i>
+                      </div>
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2323,6 +2380,25 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                    </div>
+                    <div
+                      class="TableCell logs nowrap"
+                      id="logs"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="subject"
+                          >
+                            subject
+                          </span>
+                        </i>
+                      </div>
                     </div>
                     <div
                       class="TableCell menu nowrap"
