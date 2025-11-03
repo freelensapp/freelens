@@ -22,6 +22,7 @@ import { ItemListLayout } from "../item-object-list/list-layout";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
+import { MenuControls } from "../menu";
 import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -99,7 +100,7 @@ class NonInjectedKubeObjectListLayout<
   };
 
   private readonly loadErrors = observable.array<string>();
-  private readonly menuOpeners = new Map<string, (cursorPosition?: { x: number; y: number }) => void>();
+  private readonly menuControls = new Map<string, MenuControls>();
 
   @computed get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
@@ -154,6 +155,10 @@ class NonInjectedKubeObjectListLayout<
     );
   }
 
+  private registerControls = (id: string) => (controls: MenuControls) => {
+    this.menuControls.set(id, controls);
+  };
+
   render() {
     const {
       className,
@@ -197,12 +202,28 @@ class NonInjectedKubeObjectListLayout<
         ...baseProps,
         onContextMenu: (evt: React.MouseEvent<HTMLDivElement>) => {
           baseProps.onContextMenu?.(evt);
-          if (evt.defaultPrevented) return;
+
+          const controls = this.menuControls.get(id);
+
+          if (!controls) {
+            return;
+          }
 
           evt.preventDefault();
           evt.stopPropagation();
+
           const cursorPosition = { x: evt.clientX, y: evt.clientY };
-          requestAnimationFrame(() => this.menuOpeners.get(item.getId())?.(cursorPosition));
+          const contextTarget = evt.currentTarget as HTMLElement;
+
+          for (const [otherId, otherControls] of this.menuControls.entries()) {
+            if (otherId !== id) {
+              otherControls.close();
+            }
+          }
+
+          requestAnimationFrame(() => {
+            controls.open({ cursorPosition, contextTarget });
+          });
         },
       };
     };
@@ -242,7 +263,7 @@ class NonInjectedKubeObjectListLayout<
           <KubeObjectMenu
             id={item.getId()}
             object={item}
-            onMenuReady={(controls) => this.menuOpeners.set(item.getId(), controls.open)}
+            onMenuReady={this.registerControls(`menu-actions-for-kube-object-menu-for-${item.getId()}`)}
           />
         )}
         onDetails={onDetails ?? ((item) => toggleDetails(item.selfLink))}

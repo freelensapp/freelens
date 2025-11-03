@@ -45,6 +45,7 @@ export interface MenuProps {
   id?: string;
   className?: string;
   htmlFor?: string;
+  contextTarget?: HTMLElement | null;
   autoFocus?: boolean;
   usePortal?: boolean | HTMLElement;
   closeOnClickItem?: boolean; // close menu on item click
@@ -122,7 +123,6 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
 
     if (this.opener) {
       this.opener.addEventListener(toggleEvent!, this.toggle);
-      this.opener.addEventListener("keydown", this.onKeyDown);
     }
     window.addEventListener("resize", this.onWindowResize);
     window.addEventListener("click", this.onClickOutside, true);
@@ -135,7 +135,6 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   componentWillUnmount() {
     if (this.opener) {
       this.opener.removeEventListener(this.props.toggleEvent!, this.toggle);
-      this.opener.removeEventListener("keydown", this.onKeyDown);
     }
     window.removeEventListener("resize", this.onWindowResize);
     window.removeEventListener("click", this.onClickOutside, true);
@@ -150,8 +149,9 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     const positionChanged =
       prevProps.cursorPosition?.x !== this.props.cursorPosition?.x ||
       prevProps.cursorPosition?.y !== this.props.cursorPosition?.y;
+    const contextTargetChanged = prevProps.contextTarget !== this.props.contextTarget;
 
-    if (childrenChanged || (this.props.isOpen && positionChanged)) {
+    if (this.props.isOpen && (childrenChanged || contextTargetChanged || positionChanged)) {
       this.refreshPosition();
     }
 
@@ -204,13 +204,28 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
       let anchorBottom: number;
       let anchorRight: number;
 
-      const cursorPosition = this.props.cursorPosition;
+      const { cursorPosition, contextTarget } = this.props;
 
       if (cursorPosition) {
         anchorLeft = cursorPosition.x;
         anchorTop = cursorPosition.y;
         anchorBottom = cursorPosition.y;
         anchorRight = cursorPosition.x;
+      } else if (contextTarget) {
+        const targetRect = contextTarget.getBoundingClientRect();
+        const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
+
+        anchorLeft = targetRect.left;
+        anchorTop = targetRect.top;
+        anchorBottom = targetRect.bottom;
+        anchorRight = targetRect.right;
+
+        if (withScroll) {
+          anchorLeft += window.pageXOffset;
+          anchorTop += window.pageYOffset;
+          anchorRight = anchorLeft + targetRect.width;
+          anchorBottom = anchorTop + targetRect.height;
+        }
       } else if (this.opener) {
         const openerClientRect = this.opener.getBoundingClientRect();
         const withScroll = window.getComputedStyle(this.elem).position !== "fixed";
@@ -255,10 +270,6 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     });
 
   open() {
-    if (this.isOpen) {
-      return;
-    }
-
     this.props.open();
     this.refreshPosition();
 
@@ -324,9 +335,10 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
 
     const target = evt.target as HTMLElement;
     const contextMenuInsideMenu = this.elem?.contains(target);
+    const contextMenuOnAnchor = this.props.contextTarget?.contains(target);
 
     // Only close if right-clicking outside the menu
-    if (!contextMenuInsideMenu) {
+    if (!contextMenuInsideMenu && !contextMenuOnAnchor) {
       this.close();
     }
   }
@@ -356,8 +368,9 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     const target = evt.target as HTMLElement;
     const clickInsideMenu = this.elem?.contains(target);
     const clickOnOpener = this.opener && this.opener.contains(target);
+    const clickOnContextTarget = this.props.contextTarget && this.props.contextTarget.contains(target);
 
-    if (!clickInsideMenu && !clickOnOpener) {
+    if (!clickInsideMenu && !clickOnOpener && !clickOnContextTarget) {
       this.close();
     }
   }

@@ -25,6 +25,15 @@ import type { StrictReactNode } from "@freelensapp/utilities";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import type { MenuProps } from "./menu";
 
+export interface MenuOpenOptions {
+  cursorPosition?: { x: number; y: number } | null;
+  contextTarget?: HTMLElement | null;
+}
+
+export interface MenuControls {
+  open: (options?: MenuOpenOptions) => void;
+  close: () => void;
+}
 export interface MenuActionsProps extends Partial<MenuProps> {
   className?: string;
   toolbar?: boolean; // display menu as toolbar with icons
@@ -44,7 +53,7 @@ export interface MenuActionsProps extends Partial<MenuProps> {
   removeAction?: () => void | Promise<void>;
   onOpen?: () => void;
   id?: string;
-  exposeControls?: (controls: { open: (cursorPosition?: { x: number; y: number }) => void; close: () => void }) => void;
+  onMenuReady?: (controls: MenuControls) => void;
 }
 
 interface Dependencies {
@@ -60,20 +69,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   @observable isOpen = !!this.props.toolbar;
   @observable openedViaCursor = false;
   @observable cursorPosition: { x: number; y: number } | null = null;
-
-  open = (cursorPosition?: { x: number; y: number }) => {
-    if (this.props.toolbar) return;
-    this.openedViaCursor = !!cursorPosition;
-    this.cursorPosition = cursorPosition ?? null;
-    this.isOpen = true;
-  };
-
-  close = () => {
-    if (this.props.toolbar) return;
-    this.openedViaCursor = false;
-    this.cursorPosition = null;
-    this.isOpen = false;
-  };
+  @observable contextTarget: HTMLElement | null = null;
 
   constructor(props: MenuActionsProps & Dependencies) {
     super(props);
@@ -82,7 +78,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   }
 
   componentDidMount(): void {
-    this.props.exposeControls?.({
+    this.props.onMenuReady?.({
       open: this.open,
       close: this.close,
     });
@@ -101,6 +97,29 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       ),
     ]);
   }
+
+  componentWillUnmount(): void {
+    this.props.onMenuReady?.({
+      open: () => {},
+      close: () => {},
+    });
+  }
+
+  open = (options?: MenuOpenOptions) => {
+    if (this.props.toolbar) return;
+    this.isOpen = true;
+    this.cursorPosition = options?.cursorPosition || null;
+    this.openedViaCursor = !!options?.cursorPosition;
+    this.contextTarget = options?.contextTarget || null;
+  };
+
+  close = () => {
+    if (this.props.toolbar) return;
+    this.isOpen = false;
+    this.cursorPosition = null;
+    this.openedViaCursor = false;
+    this.contextTarget = null;
+  };
 
   remove() {
     const { removeAction, openConfirmDialog } = this.props;
@@ -184,6 +203,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           closeOnClickItem={autoCloseOnSelect ?? autoClose}
           closeOnClickOutside={autoClose}
           cursorPosition={this.cursorPosition ?? undefined}
+          contextTarget={this.contextTarget ?? undefined}
           {...menuProps}
         >
           {children}

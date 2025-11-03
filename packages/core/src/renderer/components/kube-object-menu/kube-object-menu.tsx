@@ -32,7 +32,7 @@ import type { KubeObjectContextMenuItem } from "../../kube-object/handler";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
 import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
-import type { MenuActionsProps } from "../menu";
+import type { MenuActionsProps, MenuControls } from "../menu";
 import type { DeleteType, KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
 import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 
@@ -41,7 +41,7 @@ export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends Men
   object: TKubeObject;
   editable?: boolean;
   removable?: boolean;
-  onMenuReady?: (controls: { open: (cursorPosition?: { x: number; y: number }) => void; close: () => void }) => void;
+  onMenuReady?: (controls: MenuControls) => void;
 }
 
 interface Dependencies {
@@ -321,7 +321,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
         data-testid={`menu-actions-for-kube-object-menu-for-${this.props.id ?? object?.getId()}`}
         className={cssNames("KubeObjectMenu", className)}
         onOpen={object ? () => this.emitOnContextMenuOpen(object) : undefined}
-        exposeControls={onMenuReady}
+        onMenuReady={onMenuReady}
         {...menuProps}
       >
         {this.renderMenuItems()}
