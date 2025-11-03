@@ -23,6 +23,6 @@
     "openid-client": "^6.8.1",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "webpack": "^5.101.3"
+    "webpack": "^5.102.1"
   }
 }
