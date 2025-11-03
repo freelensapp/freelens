@@ -16,6 +16,15 @@
   width: var(--hotbar-width);
   overflow: hidden;
 
+  &.autoHide {
+    transform: translateX(calc(-1 * var(--hotbar-width)));
+    transition: transform 300ms ease-in-out;
+
+    &.visible {
+      transform: translateX(0);
+    }
+  }
+
   &.draggingOver::after {
     content: " ";
     position: fixed;
