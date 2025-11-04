@@ -1,0 +1,101 @@
+name: NPM Licenses
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  licenses:
+    name: licenses on ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: List licenses
+        run: pnpm licenses list --json > licenses.json
+
+      - name: Validate licenses
+        run: yq -pj -oy 'pick((keys) - (pick(env(allowed_licenses)) | keys))' licenses.json > disallowed_licenses.yaml
+        env:
+          allowed_licenses: |-
+            - (Apache-2.0 OR MPL-1.1)
+            - (BSD-3-Clause OR GPL-2.0)
+            - (MIT AND Zlib)
+            - (MIT OR CC0-1.0)
+            - (MIT OR GPL-3.0-or-later)
+            - (MPL-2.0 OR Apache-2.0)
+            - 0BSD
+            - Apache-2.0
+            - BlueOak-1.0.0
+            - BSD-2-Clause
+            - BSD-3-Clause
+            - CC-BY-4.0
+            - CC0
+            - CC0-1.0
+            - ISC
+            - LGPL-3.0-or-later
+            - MIT
+            - MIT-0
+            - MPL-2.0
+            - Python-2.0
+            - WTFPL
+            - WTFPL OR ISC
+
+      - name: Fail if disallowed licenses found
+        run: |-
+          if [ $(yq 'keys|length' disallowed_licenses.yaml) -gt 0 ]; then
+            echo "Disallowed licenses found:"
+            yq -C disallowed_licenses.yaml
+            exit 1
+          else
+            echo "No disallowed licenses found."
+          fi
