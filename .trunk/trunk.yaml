@@ -59,7 +59,7 @@ lint:
         - sass
   enabled:
     - actionlint@1.7.8
-    - biome@2.2.5! # datasource=npm depName=@biomejs/biome
+    - biome@2.3.3! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.45.0
     - prettier@3.6.2! # datasource=npm depName=prettier
