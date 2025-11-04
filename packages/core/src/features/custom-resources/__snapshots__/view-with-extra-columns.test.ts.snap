@@ -390,6 +390,7 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                         >
                           <div
                             class="TableRow nowrap"
+                            id="menu-actions-for-kube-object-menu-for-some-uid-2"
                           >
                             <div
                               class="TableCell checkbox"
@@ -452,7 +453,7 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                                 <i
                                   class="Icon material interactive focusable"
                                   data-testid="icon-for-menu-actions-for-kube-object-menu-for-some-uid-2"
-                                  id="menu-actions-for-kube-object-menu-for-some-uid-2"
+                                  id="some-uid-2"
                                   tabindex="0"
                                 >
                                   <span

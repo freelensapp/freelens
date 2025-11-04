@@ -629,6 +629,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           >
                             <div
                               class="TableRow nowrap"
+                              id="menu-actions-for-kube-object-menu-for-uuid-1"
                             >
                               <div
                                 class="TableCell checkbox"
@@ -732,7 +733,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                                   <i
                                     class="Icon material interactive focusable"
                                     data-testid="icon-for-menu-actions-for-kube-object-menu-for-uuid-1"
-                                    id="menu-actions-for-kube-object-menu-for-uuid-1"
+                                    id="uuid-1"
                                     tabindex="0"
                                   >
                                     <span
