@@ -24,7 +24,7 @@
     "build:resources": "cd freelens && corepack pnpm build:resources",
     "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
     "clean": "corepack pnpm -r clean",
-    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.0.1 node_modules",
+    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.0 node_modules",
     "start": "cd freelens && corepack pnpm start",
     "start:os": "corepack pnpm dlx run-script-os@1.1.6 --",
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
