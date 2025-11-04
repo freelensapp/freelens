@@ -21,8 +21,8 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.0.1 binaries dist static/build",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.0 binaries dist static/build",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "build": "NODE_ENV=production webpack --config webpack/webpack.ts --progress",
     "postbuild": "pnpm build:resources",
     "build:resources": "pnpm \"/^build:resources:/\"",
