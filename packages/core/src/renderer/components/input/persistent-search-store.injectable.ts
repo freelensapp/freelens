@@ -34,10 +34,6 @@ class PersistentSearchStore {
   }
 
   getValue(namespace: string): string {
-    if (!this.isEnabled) {
-      return "";
-    }
-
     return this.searchValuesByNamespace.get(namespace) || "";
   }
 
