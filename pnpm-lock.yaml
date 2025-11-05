@@ -816,8 +816,8 @@ importers:
         specifier: ^7.6.0
         version: 7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       mobx-react-lite:
-        specifier: ^4.1.0
-        version: 4.1.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        specifier: ^4.1.1
+        version: 4.1.1(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       mobx-utils:
         specifier: ^6.1.1
         version: 6.1.1(mobx@6.15.0)
@@ -7545,8 +7545,8 @@ packages:
       react-native:
         optional: true
 
-  mobx-react-lite@4.1.0:
-    resolution: {integrity: sha512-QEP10dpHHBeQNv1pks3WnHRCem2Zp636lq54M2nKO2Sarr13pL4u6diQXf65yzXUn0mkk18SyIDCm9UOJYTi1w==}
+  mobx-react-lite@4.1.1:
+    resolution: {integrity: sha512-iUxiMpsvNraCKXU+yPotsOncNNmyeS2B5DKL+TL6Tar/xm+wwNJAubJmtRSeAoYawdZqwv8Z/+5nPRHeQxTiXg==}
     peerDependencies:
       mobx: ^6.9.0
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -14541,7 +14541,7 @@ snapshots:
     optionalDependencies:
       react-dom: 17.0.2(react@17.0.2)
 
-  mobx-react-lite@4.1.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
+  mobx-react-lite@4.1.1(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
     dependencies:
       mobx: 6.15.0
       react: 17.0.2
