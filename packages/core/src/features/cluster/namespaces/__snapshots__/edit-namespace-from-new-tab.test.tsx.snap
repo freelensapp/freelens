@@ -279,7 +279,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -299,24 +298,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -948,7 +942,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -968,24 +961,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -1622,7 +1610,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -1642,24 +1629,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -2365,7 +2347,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -2385,24 +2366,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -3086,7 +3062,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -3106,24 +3081,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -3879,7 +3849,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -3899,24 +3868,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -4674,7 +4638,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -4694,24 +4657,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -5431,7 +5389,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -5451,24 +5408,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -6183,7 +6135,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -6203,24 +6154,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -6926,7 +6872,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -6946,24 +6891,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -7671,7 +7611,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -7691,24 +7630,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -8414,7 +8348,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -8434,24 +8367,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -8992,7 +8920,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -9012,24 +8939,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -9744,7 +9666,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -9764,24 +9685,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -10487,7 +10403,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -10507,24 +10422,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -11230,7 +11140,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Namespaces..."
                         spellcheck="false"
                         value=""
@@ -11250,24 +11159,19 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>

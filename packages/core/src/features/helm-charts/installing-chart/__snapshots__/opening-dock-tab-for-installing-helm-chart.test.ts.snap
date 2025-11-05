@@ -278,7 +278,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -298,24 +297,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -806,7 +800,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -826,24 +819,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -1502,7 +1490,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -1522,24 +1509,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -2255,7 +2237,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -2275,24 +2256,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -3158,7 +3134,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -3178,24 +3153,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -4071,7 +4041,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -4091,24 +4060,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -4974,7 +4938,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -4994,24 +4957,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -5881,7 +5839,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -5901,24 +5858,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -6794,7 +6746,6 @@ exports[`opening dock tab for installing helm chart given application is started
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -6814,24 +6765,19 @@ exports[`opening dock tab for installing helm chart given application is started
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>

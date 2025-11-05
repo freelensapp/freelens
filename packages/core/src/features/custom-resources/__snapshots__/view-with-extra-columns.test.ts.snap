@@ -252,7 +252,6 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                   >
                     <input
                       class="input box grow"
-                      namespacestore="[object Object]"
                       placeholder="SomeResource search ..."
                       spellcheck="false"
                       value=""
@@ -272,24 +271,19 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                     class="input-info flex gaps"
                   />
                 </div>
-                <div
-                  style="display: flex; align-items: center; white-space: nowrap;"
+                <i
+                  class="Icon material interactive focusable small"
+                  tabindex="0"
                 >
-                  <label
-                    class="Checkbox flex align-center inline"
+                  <span
+                    class="icon"
+                    data-icon-name="link_off"
                   >
-                    <input
-                      type="checkbox"
-                    />
-                    <i
-                      class="box flex align-center"
-                    />
-                    <span
-                      class="label"
-                    >
-                      Persist
-                    </span>
-                  </label>
+                    link_off
+                  </span>
+                </i>
+                <div>
+                  Link search (shared)
                 </div>
               </div>
             </div>
