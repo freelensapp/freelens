@@ -1111,8 +1111,8 @@ importers:
         specifier: ^5.5.1
         version: 5.5.1
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       tailwindcss:
         specifier: ^4.1.16
         version: 4.1.16
@@ -1307,8 +1307,8 @@ importers:
         specifier: ^1.93.3
         version: 1.93.3
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       style-loader:
         specifier: ^4.0.0
         version: 4.0.0(webpack@5.102.1)
@@ -2461,8 +2461,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2504,8 +2504,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2571,8 +2571,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2650,8 +2650,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2741,8 +2741,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2796,8 +2796,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2836,8 +2836,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
@@ -2915,8 +2915,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
       sass-loader:
-        specifier: ^16.0.5
-        version: 16.0.5(sass@1.93.3)(webpack@5.102.1)
+        specifier: ^16.0.6
+        version: 16.0.6(sass@1.93.3)(webpack@5.102.1)
       ts-jest:
         specifier: ^29.4.4
         version: 29.4.4(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -8409,8 +8409,8 @@ packages:
   sanitize-filename@1.6.3:
     resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}
 
-  sass-loader@16.0.5:
-    resolution: {integrity: sha512-oL+CMBXrj6BZ/zOq4os+UECPL+bWqt6OAC6DWS8Ln8GZRcMDjlJ4JC3FBDuHJdYaFWIdKNIBYmtZtK2MaMkNIw==}
+  sass-loader@16.0.6:
+    resolution: {integrity: sha512-sglGzId5gmlfxNs4gK2U3h7HlVRfx278YK6Ono5lwzuvi1jxig80YiuHkaDBVsYIKFhx8wN7XSCI0M2IDS/3qA==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@rspack/core': 0.x || 1.x
@@ -15419,7 +15419,7 @@ snapshots:
     dependencies:
       truncate-utf8-bytes: 1.0.2
 
-  sass-loader@16.0.5(sass@1.93.3)(webpack@5.102.1):
+  sass-loader@16.0.6(sass@1.93.3)(webpack@5.102.1):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:

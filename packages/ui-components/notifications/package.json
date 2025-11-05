@@ -59,7 +59,7 @@
     "@types/webpack-env": "^1.18.8",
     "css-loader": "^6.11.0",
     "postcss-loader": "^8.2.0",
-    "sass-loader": "^16.0.5",
+    "sass-loader": "^16.0.6",
     "ts-loader": "^9.5.4",
     "type-fest": "^5.0.1",
     "typescript": "^5.9.3",
