@@ -661,24 +661,19 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -1509,24 +1504,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -2389,24 +2379,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -3269,24 +3254,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -4400,24 +4380,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -5268,24 +5243,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>
@@ -6136,24 +6106,19 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         class="input-info flex gaps"
                       />
                     </div>
-                    <div
-                      style="display: flex; align-items: center; white-space: nowrap;"
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
                     >
-                      <label
-                        class="Checkbox flex align-center inline"
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
                       >
-                        <input
-                          type="checkbox"
-                        />
-                        <i
-                          class="box flex align-center"
-                        />
-                        <span
-                          class="label"
-                        >
-                          Persist
-                        </span>
-                      </label>
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
                     </div>
                   </div>
                 </div>

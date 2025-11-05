@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
 import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import debounce from "lodash/debounce";
 import { comparer, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { Checkbox } from "../checkbox/checkbox";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
 import { SearchInput } from "./search-input";
@@ -33,8 +33,12 @@ interface Dependencies {
 class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & Dependencies> {
   @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
   @observable private lastNamespaceKey = "";
+  @observable private lastPlaceholder = "";
 
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
+  readonly updateStorage = debounce((storageKey: string, val: string) => {
+    this.props.persistentSearchStore.setValue(storageKey, val);
+  }, 500);
 
   private getCurrentNamespaceKey(): string {
     const { namespaceStore } = this.props;
@@ -48,47 +52,80 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
     return namespaces.length > 0 ? namespaces.join(",") : "all-namespaces";
   }
 
-  componentDidMount(): void {
-    const { searchUrlParam, persistentSearchStore } = this.props;
+  private getStorageKey(): string {
+    const { persistentSearchStore, placeholder } = this.props;
 
-    // Initialize lastNamespaceKey
+    // When linking is enabled, use a global key (shared across all namespaces and placeholders)
+    if (persistentSearchStore.isEnabled) {
+      return "global:linked";
+    }
+
+    // When linking is disabled, use namespace + placeholder (separate per placeholder per namespace)
+    const namespaceKey = this.getCurrentNamespaceKey();
+    const placeholderKey = placeholder || "default";
+    return `${namespaceKey}:${placeholderKey}`;
+  }
+
+  componentDidMount(): void {
+    const { searchUrlParam, persistentSearchStore, placeholder } = this.props;
+
+    // Initialize lastNamespaceKey and lastPlaceholder
     this.lastNamespaceKey = this.getCurrentNamespaceKey();
+    this.lastPlaceholder = placeholder || "default";
+
+    // On first mount, load the stored value and sync to URL
+    const storageKey = this.getStorageKey();
+    const storedValue = persistentSearchStore.getValue(storageKey);
+
+    if (storedValue) {
+      this.inputVal = storedValue;
+      searchUrlParam.set(storedValue);
+    } else {
+      // If no stored value, check URL
+      const urlValue = searchUrlParam.get();
+      if (urlValue) {
+        this.inputVal = urlValue;
+      }
+    }
 
     // Sync inputVal with either persistent store or URL param
     disposeOnUnmount(this, [
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
-          persistedValue: persistentSearchStore.isEnabled
-            ? persistentSearchStore.getValue(this.getCurrentNamespaceKey())
-            : "",
+          storageKey: this.getStorageKey(),
+          persistedValue: persistentSearchStore.getValue(this.getStorageKey()),
           urlValue: searchUrlParam.get(),
           namespaceKey: this.getCurrentNamespaceKey(),
+          placeholderKey: placeholder || "default",
         }),
-        ({ isEnabled, persistedValue, urlValue, namespaceKey }) => {
+        ({ isEnabled, storageKey, persistedValue, urlValue, namespaceKey, placeholderKey }) => {
           const namespaceChanged = namespaceKey !== this.lastNamespaceKey;
+          const placeholderChanged = placeholderKey !== this.lastPlaceholder;
+          const contextChanged = namespaceChanged || (placeholderChanged && !isEnabled);
 
-          // Only update input when switching between persistence modes or namespace changes
-          // Don't overwrite user's current input during typing
+          // When persistence is enabled, always sync to persisted value
           if (isEnabled) {
-            // When persistence is enabled, always sync to persisted value
-            // (which will be empty string if nothing stored for this namespace)
             this.inputVal = persistedValue;
+            searchUrlParam.set(persistedValue);
           } else {
             // When persistence is disabled
-            if (namespaceChanged) {
-              // Clear filter when switching namespaces
-              this.inputVal = "";
-              searchUrlParam.set("");
+            if (contextChanged) {
+              // Load stored value for this specific placeholder+namespace or clear if none
+              this.inputVal = persistedValue;
+              searchUrlParam.set(persistedValue);
             } else {
-              // Otherwise sync to URL param
-              this.inputVal = urlValue;
+              // When user types in URL or uses browser back/forward, sync from URL
+              if (urlValue !== this.inputVal) {
+                this.inputVal = urlValue;
+              }
             }
           }
 
           this.lastNamespaceKey = namespaceKey;
+          this.lastPlaceholder = placeholderKey;
         },
-        { fireImmediately: true, equals: comparer.structural },
+        { equals: comparer.structural },
       ),
     ]);
 
@@ -97,11 +134,11 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
-          namespaceKey: this.getCurrentNamespaceKey(),
+          storageKey: this.getStorageKey(),
         }),
-        ({ isEnabled, namespaceKey }) => {
+        ({ isEnabled, storageKey }) => {
           if (isEnabled) {
-            const persistedValue = persistentSearchStore.getValue(namespaceKey);
+            const persistedValue = persistentSearchStore.getValue(storageKey);
 
             // Always sync to URL, even if empty (to clear filter when switching namespaces)
             searchUrlParam.set(persistedValue);
@@ -113,21 +150,22 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   }
 
   setValue = (value: string) => {
-    const { persistentSearchStore } = this.props;
+    const storageKey = this.getStorageKey();
 
     this.inputVal = value;
     this.updateUrl(value);
 
-    if (persistentSearchStore.isEnabled) {
-      const namespaceKey = this.getCurrentNamespaceKey();
-
-      persistentSearchStore.setValue(namespaceKey, value);
-    }
+    // Debounce storage updates to avoid slowdown during typing
+    // Always store the value (whether persist is enabled or not)
+    // When persist is disabled, it's stored per placeholder+namespace
+    // When persist is enabled, it's stored per namespace only
+    this.updateStorage(storageKey, value);
   };
 
   clear = () => {
     this.setValue("");
     this.updateUrl.flush();
+    this.updateStorage.flush();
   };
 
   onChange = (val: string, evt: React.ChangeEvent<any>) => {
@@ -137,18 +175,26 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
 
   togglePersistence = (newState: boolean) => {
     const { persistentSearchStore } = this.props;
-    const namespaceKey = this.getCurrentNamespaceKey();
 
     if (newState) {
-      // When enabling persistence, save current search value FIRST
+      // When enabling linking (switching to global shared):
+      // 1. Save current search value to the global key FIRST
+      // 2. Then enable persistence
+      const globalKey = "global:linked";
       if (this.inputVal) {
-        persistentSearchStore.setValue(namespaceKey, this.inputVal);
+        persistentSearchStore.setValue(globalKey, this.inputVal);
       }
       persistentSearchStore.setEnabled(newState);
     } else {
-      // When disabling persistence, clear the stored value
+      // When disabling linking (switching to per-namespace per-placeholder):
+      // 1. Disable persistence first
+      // 2. Save current value to namespace+placeholder-specific key
+      const currentValue = this.inputVal;
       persistentSearchStore.setEnabled(newState);
-      persistentSearchStore.setValue(namespaceKey, "");
+      const newStorageKey = this.getStorageKey(); // This will now be namespace+placeholder-specific
+      if (currentValue) {
+        persistentSearchStore.setValue(newStorageKey, currentValue);
+      }
     }
   };
 
@@ -158,7 +204,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   }
 
   render() {
-    const { searchUrlParam, persistentSearchStore, ...searchInputProps } = this.props;
+    const { searchUrlParam, persistentSearchStore, namespaceStore, ...searchInputProps } = this.props;
 
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -171,9 +217,12 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           onClear={this.clear}
           {...searchInputProps}
         />
-        <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-          <Checkbox value={persistentSearchStore.isEnabled} onChange={this.togglePersistence} label="Persist" inline />
-        </div>
+        <Icon
+          small
+          material={persistentSearchStore.isEnabled ? "link" : "link_off"}
+          onClick={() => this.togglePersistence(!persistentSearchStore.isEnabled)}
+          tooltip={persistentSearchStore.isEnabled ? "Unlink search (per-view)" : "Link search (shared)"}
+        />
       </div>
     );
   }

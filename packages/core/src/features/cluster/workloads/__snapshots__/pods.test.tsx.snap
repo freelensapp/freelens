@@ -365,7 +365,6 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -385,24 +384,19 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -1357,7 +1351,6 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -1377,24 +1370,19 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
@@ -2202,7 +2190,6 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                     >
                       <input
                         class="input box grow"
-                        namespacestore="[object Object]"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -2222,24 +2209,19 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                       class="input-info flex gaps"
                     />
                   </div>
-                  <div
-                    style="display: flex; align-items: center; white-space: nowrap;"
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
                   >
-                    <label
-                      class="Checkbox flex align-center inline"
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
                     >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="box flex align-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Persist
-                      </span>
-                    </label>
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
                   </div>
                 </div>
               </div>
