@@ -1172,8 +1172,8 @@ importers:
         specifier: ^3.11.6
         version: 3.11.6
       '@types/gunzip-maybe':
-        specifier: ^1.4.2
-        version: 1.4.2
+        specifier: ^1.4.3
+        version: 1.4.3
       '@types/node':
         specifier: ~22.16.5
         version: 22.16.5
@@ -4617,8 +4617,8 @@ packages:
   '@types/graceful-fs@4.1.6':
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
 
-  '@types/gunzip-maybe@1.4.2':
-    resolution: {integrity: sha512-2uqXZg1jTCKE1Pjbab8qb74+f2+i9h/jz8rQ+jRR+zaNJF75zWwrpbX8/TjF4m56m3KFOg9umHdCJ074KwiVxg==}
+  '@types/gunzip-maybe@1.4.3':
+    resolution: {integrity: sha512-X5KKtC4cSRsRWr6AfNYU5TvlUrLAv0flmtdjJDV7/P6MKZSiIqwiO0GuOKBYAREsxa38vSsDSwPYpNgNWkXK5A==}
 
   '@types/hapi__call@9.0.3':
     resolution: {integrity: sha512-/OpnjKpzkSAKmHHDtu2lpuz8c5f89JZSBToo6Y0dhmoLDPDiUkbH0V79qBicNqqgKvTb5slQBSmf0Pby4F3uxQ==}
@@ -10988,7 +10988,7 @@ snapshots:
     dependencies:
       '@types/node': 22.16.5
 
-  '@types/gunzip-maybe@1.4.2':
+  '@types/gunzip-maybe@1.4.3':
     dependencies:
       '@types/node': 22.16.5
 
