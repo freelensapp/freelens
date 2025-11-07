@@ -11,8 +11,6 @@ onlyBuiltDependencies:
   - esbuild
   - playwright
   - sharp
-  - node-pty
-  - nx
 
 overrides:
   '@types/http-proxy': '-'
