@@ -18,7 +18,6 @@
     "build": "NODE_ENV=production corepack pnpm -r build",
     "build:app": "cd freelens && corepack pnpm build:app",
     "build:core": "cd packages/core && corepack pnpm build",
-    "build:dev": "NODE_ENV=development corepack pnpm -r build",
     "build:dir": "corepack pnpm build:app dir",
     "build:freelens": "cd freelens && corepack pnpm build",
     "build:resources": "cd freelens && corepack pnpm build:resources",
@@ -30,7 +29,9 @@
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "dev": "corepack pnpm --parallel dev",
+    "dev": "turbo run dev --parallel --continue",
+    "build:dev": "cross-env NODE_ENV=development turbo run build",
+    "start-dev": "cd freelens && corepack pnpm dev:run",
     "knip": "corepack pnpm dlx knip@5.67.1 --dependencies --no-gitignore",
     "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "corepack pnpm knip",
@@ -59,6 +60,8 @@
   },
   "packageManager": "pnpm@10.20.0",
   "devDependencies": {
-    "pnpm": "10.20.0"
+    "cross-env": "10.1.0",
+    "pnpm": "10.20.0",
+    "turbo": "2.6.0"
   }
 }

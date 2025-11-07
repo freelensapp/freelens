@@ -21,3 +21,4 @@ icon.iconset/
 .DS_Store
 .idea/
 .vscode/
+.turbo/

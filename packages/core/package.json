@@ -54,6 +54,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack/library-bundle.ts --progress",
+    "dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress --watch",
     "clean": "pnpm dlx rimraf@6.1.0 dist static/build",
     "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "test:unit": "jest",
