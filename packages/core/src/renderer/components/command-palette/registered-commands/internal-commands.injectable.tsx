@@ -21,6 +21,7 @@ import navigateToEndpointSlicesInjectable from "../../../../common/front-end-rou
 import navigateToEndpointsInjectable from "../../../../common/front-end-routing/routes/cluster/network/endpoints/navigate-to-endpoints.injectable";
 import navigateToIngressesInjectable from "../../../../common/front-end-routing/routes/cluster/network/ingresses/navigate-to-ingresses.injectable";
 import navigateToNetworkPoliciesInjectable from "../../../../common/front-end-routing/routes/cluster/network/network-policies/navigate-to-network-policies.injectable";
+import navigateToPortForwardsInjectable from "../../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 import navigateToServicesInjectable from "../../../../common/front-end-routing/routes/cluster/network/services/navigate-to-services.injectable";
 import navigateToNodesInjectable from "../../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
 import navigateToCronJobsInjectable from "../../../../common/front-end-routing/routes/cluster/workloads/cron-jobs/navigate-to-cron-jobs.injectable";
@@ -69,6 +70,7 @@ interface Dependencies {
   navigateToEndpointSlices: () => void;
   navigateToIngresses: () => void;
   navigateToNetworkPolicies: () => void;
+  navigateToPortForwards: () => void;
   navigateToNodes: () => void;
   navigateToPods: () => void;
   navigateToDeployments: () => void;
@@ -182,6 +184,12 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
       action: () => dependencies.navigateToNetworkPolicies,
     },
     {
+      id: "cluster.viewPortForwarding",
+      title: "Cluster: View Port Forwarding",
+      isActive: isKubernetesClusterActive,
+      action: () => dependencies.navigateToPortForwards,
+    },
+    {
       id: "cluster.viewNodes",
       title: "Cluster: View Nodes",
       isActive: isKubernetesClusterActive,
@@ -288,6 +296,7 @@ const internalCommandsInjectable = getInjectable({
       navigateToEndpointSlices: di.inject(navigateToEndpointSlicesInjectable),
       navigateToIngresses: di.inject(navigateToIngressesInjectable),
       navigateToNetworkPolicies: di.inject(navigateToNetworkPoliciesInjectable),
+      navigateToPortForwards: di.inject(navigateToPortForwardsInjectable),
       navigateToNodes: di.inject(navigateToNodesInjectable),
       navigateToPods: di.inject(navigateToPodsInjectable),
       navigateToDeployments: di.inject(navigateToDeploymentsInjectable),
