@@ -12,6 +12,7 @@ import { Switch } from "../../../../../../renderer/components/switch";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
+import { ipcRenderer } from "electron";
 
 interface Dependencies {
   state: UserPreferencesState;
@@ -22,6 +23,12 @@ const NonInjectedStartUp = observer(({ state }: Dependencies) => (
     <SubTitle title="Start-up" />
     <Switch checked={state.openAtLogin} onChange={() => (state.openAtLogin = !state.openAtLogin)}>
       Automatically start Freelens on login
+    </Switch>
+    <Switch checked={state.showTrayIcon} onChange={() => {
+      state.showTrayIcon = !state.showTrayIcon;
+      ipcRenderer.send("tray:set-visible", state.showTrayIcon);
+    }}>
+      Show tray icon in the menu bar
     </Switch>
   </section>
 ));

@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import { Menu, Tray } from "electron";
+import {ipcMain, Menu, Tray} from "electron";
 import applicationDescriptionInjectable from "../../../common/vars/application-description.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
@@ -44,28 +44,37 @@ const electronTrayInjectable = getInjectable({
 
     let tray: Tray;
 
-    return {
-      start: () => {
-        tray = new Tray(trayIcon.get().iconPath);
+    const start = () => {
+      tray = new Tray(trayIcon.get().iconPath);
+      tray.setToolTip(applicationDescription);
+      tray.setIgnoreDoubleClickEvents(true);
 
-        tray.setToolTip(applicationDescription);
-        tray.setIgnoreDoubleClickEvents(true);
+      if (isWindows) {
+        tray.on("click", () => {
+          showApplicationWindow().catch((error) =>
+            logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }),
+          );
+        });
+      }
+    };
 
-        if (isWindows) {
-          tray.on("click", () => {
-            showApplicationWindow().catch((error) =>
-              logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }),
-            );
-          });
-        }
-      },
-      stop: () => {
+    const stop = () => {
+      if (tray) {
         tray.destroy();
-      },
+      }
+    };
+
+    ipcMain.on("tray:set-visible", (_, visible: boolean) => {
+      if (visible) start();
+      else stop();
+    });
+
+    return {
+      start,
+      stop,
       setMenuItems: (menuItems) => {
         const template = convertToElectronMenuTemplate(menuItems);
         const menu = Menu.buildFromTemplate(template);
-
         tray.setContextMenu(menu);
       },
       setIconPath: (iconPath) => {

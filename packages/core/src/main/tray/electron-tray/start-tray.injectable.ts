@@ -7,6 +7,7 @@
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
 import electronTrayInjectable from "./electron-tray.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 const startTrayInjectable = getInjectable({
   id: "start-tray",
@@ -14,6 +15,13 @@ const startTrayInjectable = getInjectable({
   instantiate: (di) => ({
     run: () => {
       const electronTray = di.inject(electronTrayInjectable);
+      const userPreferencesState = di.inject(userPreferencesStateInjectable);
+      const showTray = userPreferencesState.showTrayIcon;
+
+      if (!showTray) {
+        electronTray.stop();
+        return;
+      }
 
       electronTray.start();
     },
