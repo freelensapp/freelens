@@ -27,6 +27,7 @@ jobs:
     timeout-minutes: 60
 
     env:
+      DO_NOT_TRACK: "1"
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
