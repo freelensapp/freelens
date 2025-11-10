@@ -54,7 +54,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "rfc6902": "^5.1.2",
-    "ts-jest": "^29.4.4",
+    "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "type-fest": "^5.2.0",
     "typescript": "^5.9.3",
