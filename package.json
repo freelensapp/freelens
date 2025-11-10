@@ -29,7 +29,7 @@
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "dev": "corepack pnpm --parallel dev",
+    "dev": "turbo run dev --parallel --continue",
     "build:dev": "NODE_ENV=development corepack pnpm --parallel build",
     "start:dev": "cd freelens && corepack pnpm dev:run",
     "knip": "corepack pnpm dlx knip@5.68.0 --dependencies --no-gitignore",
