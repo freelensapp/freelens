@@ -3,10 +3,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["NODE_ENV"],
       "outputs": ["dist/**", "static/build/**"]
+    },
+    "build:app": {
+      "dependsOn": ["^build:app"],
+      "env": ["NODE_ENV"],
+      "outputs": ["dist/**"]
     },
     "build:dev": {
       "dependsOn": ["^build:dev"],
+      "env": ["NODE_ENV"],
       "outputs": ["dist/**", "static/build/**"]
     },
     "dev": {
