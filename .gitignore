@@ -15,10 +15,10 @@ out/
 icon.iconset/
 
 .cache/
+.turbo/
 
 .npmrc
 
 .DS_Store
 .idea/
 .vscode/
-.turbo/

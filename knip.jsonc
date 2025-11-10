@@ -8,7 +8,9 @@
       "ignoreBinaries": ["open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
-        "pnpm"
+        "pnpm",
+        // turbo is used to run tasks in parallel in monorepo
+        "turbo"
       ]
     },
     "freelens": {
