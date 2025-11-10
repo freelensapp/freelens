@@ -22,7 +22,8 @@
   "scripts": {
     "clean": "pnpm dlx rimraf@6.1.0 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
-    "build": "webpack"
+    "build": "webpack",
+    "build:dev": "webpack"
   },
   "dependencies": {
     "@freelensapp/node-fetch": "workspace:^",

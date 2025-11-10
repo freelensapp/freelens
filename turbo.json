@@ -5,13 +5,18 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "static/build/**"]
     },
+    "build:dev": {
+      "dependsOn": ["^build:dev"],
+      "outputs": ["dist/**", "static/build/**"]
+    },
     "dev": {
+      "dependsOn": ["^build:dev"],
       "cache": false,
       "persistent": true
     },
     "test:unit": {
-      "cache": true,
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "cache": true
     }
   }
 }

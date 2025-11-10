@@ -13,7 +13,7 @@ const isProductionInjectable = getInjectable({
   instantiate: (di) => {
     const nodeEnv = di.inject(nodeEnvInjectionToken);
 
-    return nodeEnv === "production";
+    return nodeEnv !== "development";
   },
 });
 
