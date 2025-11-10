@@ -38,6 +38,7 @@ jobs:
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
       - name: Checkout
@@ -86,18 +87,15 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
-          >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml
-          | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Playwright version
         shell: bash
-        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed
-          's/(.*)//')" >> $GITHUB_ENV
+        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v4
@@ -123,6 +121,14 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-playwright-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-turborepo-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -167,8 +173,7 @@ jobs:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
       - name: Build packages (macOS arm64, Linux x64, Windows)
-        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os ==
-          'Windows'
+        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: pnpm --color=always --stream build
 
       - name: Rebuild native packages for Electron
