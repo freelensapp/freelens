@@ -188,7 +188,6 @@
     "node-gyp": "11.5.0",
     "node-loader": "^2.1.0",
     "playwright": "^1.55.0",
-    "style-loader": "^4.0.0",
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
