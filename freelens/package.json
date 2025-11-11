@@ -185,7 +185,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "mini-css-extract-plugin": "^2.9.4",
     "monaco-editor-webpack-plugin": "^7.1.1",
-    "node-gyp": "11.5.0",
+    "node-gyp": "12.0.0",
     "node-loader": "^2.1.0",
     "playwright": "^1.55.0",
     "ts-jest": "^29.4.5",
