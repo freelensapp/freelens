@@ -60,6 +60,6 @@
   "packageManager": "pnpm@10.21.0",
   "devDependencies": {
     "pnpm": "10.21.0",
-    "turbo": "2.6.0"
+    "turbo": "2.6.1"
   }
 }
