@@ -16,18 +16,22 @@ import { buildDir, webpackDevServerPort } from "./vars";
  */
 const compiler = Webpack(renderer);
 
+if (!compiler) {
+  throw new Error("Failed to create webpack compiler instance");
+}
+
 const server = new WebpackDevServer(
   {
     setupExitSignals: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    allowedHosts: ".renderer.freelens.app",
+    allowedHosts: ["renderer.freelens.app", ".freelens.app"],
     host: "127.0.0.1",
     port: webpackDevServerPort,
     static: buildDir, // aka `devServer.contentBase` in webpack@4
-    hot: "only", // use HMR only without errors
-    liveReload: false,
+    hot: true, // NOTE: Server doesn't live reload but do a full page refresh instead
+    liveReload: false, // theoretically it should be off when using HMR
     devMiddleware: {
       writeToDisk: true,
       index: "index.html",
@@ -43,6 +47,11 @@ const server = new WebpackDevServer(
     client: {
       overlay: false, // don't show warnings and errors on top of rendered app view
       logging: "error",
+      webSocketURL: {
+        protocol: "ws",
+        hostname: "127.0.0.1",
+        port: webpackDevServerPort,
+      },
     },
   },
   compiler,

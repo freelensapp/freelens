@@ -7,7 +7,7 @@
 import assert from "assert";
 import path from "path";
 
-export const isDevelopment = process.env.NODE_ENV !== "production";
+export const isDevelopment = process.env.NODE_ENV === "development";
 export const mainDir = path.join(process.cwd(), "src", "main");
 export const buildDir = path.join(process.cwd(), "static", "build");
 export const assetsFolderName = "assets";

@@ -22,6 +22,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack/extensions.ts",
+    "build:dev": "webpack --config webpack/extensions.ts",
     "clean": "pnpm dlx rimraf@6.1.0 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
   },

@@ -53,13 +53,13 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack/library-bundle.ts --progress",
-    "clean": "pnpm dlx rimraf@6.1.0 dist static/build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "build": "webpack --config webpack/library-bundle.ts --progress",
+    "build:dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress",
+    "clean": "corepack pnpm dlx rimraf@6.1.0 dist static/build",
+    "clean:node_modules": "corepack pnpm dlx rimraf@6.1.0 node_modules",
+    "dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress --watch",
     "test:unit": "jest",
-    "test:watch": "jest --watch --testPathIgnorePatterns integration",
-    "knip": "pnpm dlx knip@5.68.0 --dependencies",
-    "knip:production": "pnpm dlx knip@5.68.0 --dependencies --production --strict"
+    "test:watch": "jest --watch --testPathIgnorePatterns integration"
   },
   "config": {
     "k8sProxyVersion": "1.4.0",

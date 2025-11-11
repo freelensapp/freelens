@@ -30,6 +30,9 @@ jobs:
     environment: automated
     timeout-minutes: 10
 
+    env:
+      DO_NOT_TRACK: "1"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5

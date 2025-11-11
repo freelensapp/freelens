@@ -20,6 +20,7 @@ jobs:
     timeout-minutes: 360
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
 
@@ -129,13 +130,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
-          >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml
-          | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v4
@@ -165,8 +164,7 @@ jobs:
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
-          'Windows' && matrix.arch == 'arm64'
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
         shell: bash
         run: |
           echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV

@@ -15,6 +15,7 @@ out/
 icon.iconset/
 
 .cache/
+.turbo/
 
 .npmrc
 

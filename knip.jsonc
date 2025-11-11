@@ -8,7 +8,9 @@
       "ignoreBinaries": ["open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
-        "pnpm"
+        "pnpm",
+        // turbo is used to run tasks in parallel in monorepo
+        "turbo"
       ]
     },
     "freelens": {
@@ -292,7 +294,7 @@
     "packages/kubectl-versions": {
       "entry": ["*.js", "build/compute-versions.mjs", "build/compute-versions.mts", "dist/index.js!", "index.ts"],
       "project": ["bin/*.js!", "build/*.mjs", "build/*.mts", "dist/*.mjs!", "src/*.mts"],
-      "ignoreDependencies": ["ts-loader"],
+      "ignoreDependencies": ["ts-loader", "webpack"],
       "typescript": {
         "config": ["tsconfig.json"]
       },

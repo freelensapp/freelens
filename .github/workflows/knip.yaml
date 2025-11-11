@@ -26,6 +26,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
 
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -50,6 +54,14 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-node-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-turborepo-
 
       - name: Install pnpm dependencies
         id: install-pnpm
