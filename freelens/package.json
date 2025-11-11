@@ -173,7 +173,7 @@
     "@types/node": "~22.16.5",
     "@types/webpack-env": "^1.18.8",
     "circular-dependency-plugin": "^5.2.2",
-    "copy-webpack-plugin": "^13.0.0",
+    "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^6.11.0",
     "electron": "^35.7.5",
     "electron-builder": "^26.0.12",
