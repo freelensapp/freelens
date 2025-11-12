@@ -196,7 +196,7 @@ jobs:
         run: pnpm --color=always build:resources
 
       - name: Build Electron app
-        run: pnpm --color=always build:dir -- --${{ matrix.arch }}
+        run: pnpm --color=always build:app:dir -- --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux

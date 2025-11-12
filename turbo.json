@@ -3,18 +3,23 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV"],
-      "outputs": ["dist/**", "static/build/**"]
+      "env": ["CC", "CXX", "NODE_ENV"],
+      "outputs": ["binaries/**", "dist/**", "static/build/**"]
     },
     "build:app": {
       "dependsOn": ["^build:app"],
-      "env": ["NODE_ENV"],
+      "env": ["APPLEIDPASS", "CC", "CXX", "NODE_ENV"],
       "outputs": ["dist/**"]
     },
     "build:dev": {
       "dependsOn": ["^build:dev"],
-      "env": ["NODE_ENV"],
-      "outputs": ["dist/**", "static/build/**"]
+      "env": ["CC", "CXX", "NODE_ENV"],
+      "outputs": ["binaries/**", "dist/**", "static/build/**"]
+    },
+    "build:resources": {
+      "dependsOn": ["^build:resources"],
+      "env": ["CC", "CXX", "NODE_ENV"],
+      "outputs": ["binaries/**", "static/build/**"]
     },
     "dev": {
       "dependsOn": ["^build:dev"],
