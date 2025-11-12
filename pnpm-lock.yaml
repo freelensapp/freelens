@@ -381,8 +381,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(monaco-editor@0.54.0)(webpack@5.102.1)
       node-gyp:
-        specifier: 12.0.0
-        version: 12.0.0
+        specifier: 12.1.0
+        version: 12.1.0
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.102.1)
@@ -1093,8 +1093,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
       node-gyp:
-        specifier: 12.0.0
-        version: 12.0.0
+        specifier: 12.1.0
+        version: 12.1.0
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.102.1)
@@ -5984,10 +5984,6 @@ packages:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
     engines: {node: '>=6'}
 
-  env-paths@3.0.0:
-    resolution: {integrity: sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   envinfo@7.14.0:
     resolution: {integrity: sha512-CO40UI41xDQzhLB1hWyqUKgFhs250pNcGbyGKe1l/e4FSaI/+YE4IMG76GDt0In67WLPACIITC+sOi08x4wIvg==}
     engines: {node: '>=4'}
@@ -7668,8 +7664,8 @@ packages:
     engines: {node: ^18.17.0 || >=20.5.0}
     hasBin: true
 
-  node-gyp@12.0.0:
-    resolution: {integrity: sha512-wHhC3dtPgsK6WskpSu4XmudWUmWbe/z7aaLtxAqudq5i2Sn8xRYkUit4yGiGkrd6yWjbYlkKVk4/ogG3mqooLw==}
+  node-gyp@12.1.0:
+    resolution: {integrity: sha512-W+RYA8jBnhSr2vrTtlPYPc1K+CSjGpVDRZxcqJcERZ8ND3A1ThWPHRwctTx3qC3oW99jt726jhdz3Y6ky87J4g==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
@@ -12575,8 +12571,6 @@ snapshots:
 
   env-paths@2.2.1: {}
 
-  env-paths@3.0.0: {}
-
   envinfo@7.14.0: {}
 
   err-code@2.0.3: {}
@@ -14670,9 +14664,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  node-gyp@12.0.0:
+  node-gyp@12.1.0:
     dependencies:
-      env-paths: 3.0.0
+      env-paths: 2.2.1
       exponential-backoff: 3.1.2
       graceful-fs: 4.2.11
       make-fetch-happen: 15.0.2
