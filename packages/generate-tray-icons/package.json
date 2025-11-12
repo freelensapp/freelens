@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^27.1.0",
+    "jsdom": "^27.2.0",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
