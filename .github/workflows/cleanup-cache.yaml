@@ -15,7 +15,7 @@ jobs:
     name: cleanup cache
 
     runs-on: ubuntu-24.04
-    environment: automated
+    environment: workflows
 
     steps:
       - name: Cleanup cache
