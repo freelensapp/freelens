@@ -35,6 +35,7 @@
         // used as script to run in fork() to install extensions
         "pnpm",
         // used by webpack and for dev-server
+        "style-loader",
         "ts-node",
         // all packages used in require() calls in webpacked files
         "@astronautlabs/jsonpath",
