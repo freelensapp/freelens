@@ -15,12 +15,13 @@ jobs:
     name: cleanup cache
 
     runs-on: ubuntu-24.04
+    environment: automated
 
     steps:
       - name: Cleanup cache
         run: gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id' | xargs -n1 -r -t gh cache delete
         continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_REPO: ${{ github.repository }}
           BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
