@@ -30,7 +30,7 @@
     "@freelensapp/openid-client": "workspace:^",
     "hpagent": "^1.2.0",
     "isomorphic-ws": "^5.0.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",
