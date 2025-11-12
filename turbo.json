@@ -8,7 +8,7 @@
     },
     "build:app": {
       "dependsOn": ["^build:app"],
-      "env": ["CC", "CXX", "NODE_ENV"],
+      "env": ["APPLEIDPASS", "CC", "CXX", "NODE_ENV"],
       "outputs": ["dist/**"]
     },
     "build:dev": {
