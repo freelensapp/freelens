@@ -26,8 +26,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.21.0
-        version: 10.21.0
+        specifier: 10.22.0
+        version: 10.22.0
       turbo:
         specifier: 2.6.1
         version: 2.6.1
@@ -200,8 +200,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.21.0
-        version: 10.21.0
+        specifier: ^10.22.0
+        version: 10.22.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -831,8 +831,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.21.0
-        version: 10.21.0
+        specifier: ^10.22.0
+        version: 10.22.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -7944,8 +7944,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.21.0:
-    resolution: {integrity: sha512-2jM3Jn5AD909R5psaAeaxtsB2MpPZ1cgg+cid1p5Z4inqZVmE3SeAA+sINQktZT3p5Gl9OLhNYHF75R/JpaKQA==}
+  pnpm@10.22.0:
+    resolution: {integrity: sha512-vwSe/plbKPUn/StBrgR0zikYb37cs79UUIe9Yfu+uyv3U2LRMH/aCcLSiOHkmXh6wS1Py2F6l0cYpgUfLu50HA==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -14943,7 +14943,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.21.0: {}
+  pnpm@10.22.0: {}
 
   possible-typed-array-names@1.1.0: {}
 
