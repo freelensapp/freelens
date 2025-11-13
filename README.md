@@ -235,6 +235,14 @@ maintenance costs and invest in its development.
 For more information, see our dedicated page in our Wiki: [Expenses and
 Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
 
+## Fund an issue or earn money by developing
+
+Anyone who wishes can also make targeted donations, funding their preferred issues alone or with others via [BountyHub](https://www.bountyhub.dev/en/bounties?repo=freelens).
+
+At the same time, anyone who wishes can apply by doing PR to earn the bounty.
+
+Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
+
 ## Core Team
 
 Each member of the core team is focused on specific roles. You can contact us
