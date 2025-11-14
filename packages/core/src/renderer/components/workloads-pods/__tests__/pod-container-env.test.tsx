@@ -70,7 +70,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -121,7 +121,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -173,7 +173,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -203,7 +203,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -260,7 +260,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
