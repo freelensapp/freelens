@@ -141,7 +141,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
             ))}
           </DrawerItem>
         )}
-        {<ContainerEnvironment container={container} namespace={pod.getNs()} />}
+        {<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />}
         {volumeMounts && volumeMounts.length > 0 && (
           <DrawerItem name="Mounts">
             {volumeMounts.map((mount) => {
