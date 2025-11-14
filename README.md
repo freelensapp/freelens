@@ -243,6 +243,8 @@ At the same time, anyone who wishes can apply by doing PR to earn the bounty.
 
 Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
 
+For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
+
 ## Core Team
 
 Each member of the core team is focused on specific roles. You can contact us
