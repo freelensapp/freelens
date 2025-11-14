@@ -5,6 +5,7 @@
  */
 
 export * from "./link-to-cluster-role";
+export * from "./link-to-config-map";
 export * from "./link-to-job";
 export * from "./link-to-namespace";
 export * from "./link-to-node";
@@ -16,3 +17,4 @@ export * from "./link-to-role";
 export * from "./link-to-runtime-class";
 export * from "./link-to-secret";
 export * from "./link-to-service-account";
+export * from "./link-to-storage-class";
