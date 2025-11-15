@@ -1,0 +1,76 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.colorPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--textColorPrimary);
+  text-transform: capitalize;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.colorInput {
+  width: 48px;
+  height: 32px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px;
+  background: transparent;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 2px;
+  }
+
+  &::-moz-color-swatch {
+    border: none;
+    border-radius: 2px;
+  }
+}
+
+.textInput {
+  flex: 1;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  font-family: monospace;
+  font-size: 13px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  &.invalid {
+    border-color: var(--colorError);
+  }
+}
+
+.error {
+  font-size: 11px;
+  color: var(--colorError);
+  margin-top: -4px;
+}

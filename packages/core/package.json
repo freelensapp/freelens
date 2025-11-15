@@ -78,6 +78,7 @@
     "@freelensapp/button": "workspace:^",
     "@freelensapp/cluster-settings": "workspace:^",
     "@freelensapp/cluster-sidebar": "workspace:^",
+    "@freelensapp/color-picker": "workspace:^",
     "@freelensapp/error-boundary": "workspace:^",
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",

@@ -1,0 +1,153 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  background: var(--contentColor);
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  padding: 20px 24px;
+  background: var(--layoutBackground);
+  border-bottom: 1px solid var(--borderColor);
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--textColorAccent);
+  }
+}
+
+.content {
+  padding: 24px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.basicInfo {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--borderFaintColor);
+}
+
+.field {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--textColorPrimary);
+  }
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  font-size: 13px;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+}
+
+.textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.colorEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.categoryTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.categoryTab {
+  padding: 8px 16px;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background: var(--mainBackground);
+  color: var(--textColorPrimary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--sidebarItemHoverBackground);
+  }
+
+  &.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background: var(--layoutBackground);
+  border-top: 1px solid var(--borderColor);
+}
+
+.cancelButton,
+.saveButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: var(--buttonDefaultBackground);
+  color: var(--textColorPrimary);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.saveButton {
+  background: var(--buttonPrimaryBackground);
+  color: white;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@freelensapp/color-picker",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@ogre-tools/injectable-react": "^18.1.1",
+    "color": "^4.2.3",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/color": "^4.0.0",
+    "@types/react": "^18.3.5"
+  }
+}

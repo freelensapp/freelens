@@ -34,7 +34,7 @@ const activeThemeInjectable = getInjectable({
         return matchingTheme;
       }
 
-      return lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
+      return lensThemes.get().get(pref.lensThemeId) ?? defaultLensTheme;
     });
   },
 });
