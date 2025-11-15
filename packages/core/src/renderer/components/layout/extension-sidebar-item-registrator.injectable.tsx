@@ -17,6 +17,9 @@ import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routesInjectable from "../../routes/routes.injectable";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
+import { getClusterPageMenuOrderInjectable }
+  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 
 const extensionSidebarItemRegistratorInjectable = getInjectable({
   id: "extension-sidebar-item-registrator",
@@ -24,6 +27,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
   instantiate: (di) => (ext) => {
     const extension = ext as LensRendererExtension;
     const navigateToRoute = di.inject(navigateToRouteInjectionToken);
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
     const routes = di.inject(routesInjectable);
     const extensionShouldBeEnabledForClusterFrame = di.inject(
       extensionShouldBeEnabledForClusterFrameInjectable,
@@ -36,16 +40,16 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
         const {
           components,
           title,
-          orderNumber = 9999,
           parentId: rawParentId,
           visible,
           id: rawId,
           target,
         } = registration;
         const id = rawId
-          ? `sidebar-item-${extension.sanitizedExtensionId}-${rawId}`
-          : `sidebar-item-${extension.sanitizedExtensionId}`;
-        const parentId = rawParentId ? `sidebar-item-${extension.sanitizedExtensionId}-${rawParentId}` : null;
+          ? getExtensionId(`${extension.sanitizedExtensionId}-${rawId}`)
+          : getExtensionId(extension.sanitizedExtensionId);
+        const parentId = rawParentId ? getExtensionId(`${extension.sanitizedExtensionId}-${rawParentId}`) : null;
+        const orderNumber = !rawParentId ? getClusterPageMenuOrder(getExtensionId(sanitizeExtensionName(extension.name)), 9999) : 9999;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find(matches({ path: targetRoutePath })));
 

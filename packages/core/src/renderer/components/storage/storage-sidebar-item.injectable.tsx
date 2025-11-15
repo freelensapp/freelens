@@ -9,17 +9,26 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
+import { getClusterPageMenuOrderInjectable }
+  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+
+let id = "sidebar-item-storage";
 
 const storageSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-storage",
+  id: id,
 
-  instantiate: () => ({
-    parentId: null,
-    getIcon: () => <Icon material="storage" />,
-    title: "Storage",
-    onClick: noop,
-    orderNumber: 60,
-  }),
+  instantiate: (di) => {
+    const title = "Storage";
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
+
+    return {
+      parentId: null,
+      getIcon: () => <Icon material="storage"/>,
+      title: title,
+      onClick: noop,
+      orderNumber: getClusterPageMenuOrder(id, 60),
+    }
+  },
 
   injectionToken: sidebarItemInjectionToken,
 });
