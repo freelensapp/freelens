@@ -8,7 +8,7 @@ Feel free to submit a Pull Request to be added.
 | Type | Name | Company | Since | Website | Use-Case |
 |:-|:-|:-|:-|:-|:-|
 | Individual | [Bandini Roberto](https://github.com/robertobandini) | Freelensapp | 2024 | [Roberto Bandini](https://www.robertobandini.it) | As the founder of Freelens I am its first user for managing Kubernetes clusters whether for work or personal R&D |
-| Individual | Capuano Leopoldo | Freelensapp | 2024 | - | Maintainer of Freelens |
+| Individual | [Capuano Leopoldo]() | Freelensapp | 2024 | [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | Maintainer of Freelens |
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
 
