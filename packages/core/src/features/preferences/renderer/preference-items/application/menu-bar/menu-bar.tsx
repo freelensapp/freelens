@@ -12,21 +12,25 @@ import { Switch } from "../../../../../../renderer/components/switch";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
+import { ipcRenderer } from "electron";
 
 interface Dependencies {
   state: UserPreferencesState;
 }
 
-const NonInjectedStartUp = observer(({ state }: Dependencies) => (
-  <section id="other">
-    <SubTitle title="Start-up" />
-    <Switch checked={state.openAtLogin} onChange={() => (state.openAtLogin = !state.openAtLogin)}>
-      Automatically start Freelens on login
+const NonInjectedMenuBarSettings = observer(({ state }: Dependencies) => (
+  <section id="menu">
+    <SubTitle title="Menu-bar Settings" />
+    <Switch checked={state.showTrayIcon} onChange={() => {
+      state.showTrayIcon = !state.showTrayIcon;
+      ipcRenderer.send("tray:set-visible", state.showTrayIcon);
+    }}>
+      Show tray icon in the menu bar
     </Switch>
   </section>
 ));
 
-export const StartUp = withInjectables<Dependencies>(NonInjectedStartUp, {
+export const MenuBar = withInjectables<Dependencies>(NonInjectedMenuBarSettings, {
   getProps: (di) => ({
     state: di.inject(userPreferencesStateInjectable),
   }),
