@@ -122,6 +122,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => merge(defaultEditorConfig, val),
         toStore: (val) => val,
       }),
+      crdGroup: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
       terminalConfig: getPreferenceDescriptor<Partial<TerminalConfig>, TerminalConfig>({
         fromStore: (val) => merge(defaultTerminalConfig, val),
         toStore: (val) => val,

@@ -122,6 +122,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   </div>
                   <div
                     class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -830,6 +842,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1206,6 +1230,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -1602,6 +1638,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1990,6 +2038,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -2408,6 +2468,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -3103,6 +3175,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -3840,6 +3924,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -4243,6 +4339,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div

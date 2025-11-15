@@ -121,6 +121,18 @@ exports[`preferences - navigation to application preferences given in preference
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -812,6 +824,18 @@ exports[`preferences - navigation to application preferences given in preference
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -1542,6 +1566,18 @@ exports[`preferences - navigation to application preferences given in some child
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1945,6 +1981,18 @@ exports[`preferences - navigation to application preferences given in some child
                     class="label"
                   >
                     Proxy
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -2641,6 +2689,18 @@ exports[`preferences - navigation to application preferences given in some child
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
