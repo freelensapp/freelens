@@ -5,14 +5,20 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
+import customThemesStorageInjectable from "./custom-themes-storage.injectable";
 
 const lensThemesInjectable = getInjectable({
   id: "lens-themes",
   instantiate: (di) => {
-    const themes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const builtInThemes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const customThemesStorage = di.inject(customThemesStorageInjectable);
 
-    return new Map(themes.map((theme) => [theme.name, theme]));
+    return computed(() => {
+      const allThemes = [...builtInThemes, ...customThemesStorage.themes];
+      return new Map(allThemes.map((theme) => [theme.name, theme]));
+    });
   },
 });
 

@@ -19,6 +19,7 @@ export interface LensTheme {
   author: string;
   monacoTheme: MonacoTheme;
   isDefault?: boolean;
+  isCustom?: boolean;
 }
 
 export type TerminalColorName = keyof ITheme;
