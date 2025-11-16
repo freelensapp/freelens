@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "pnpm dlx rimraf@6.1.0 dist",
     "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
     "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "start": "node --experimental-import-meta-resolve ./dist/index.js"
   },
@@ -20,8 +21,8 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^27.1.0",
-    "sharp": "^0.34.4"
+    "jsdom": "^27.2.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",

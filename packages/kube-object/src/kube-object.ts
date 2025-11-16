@@ -216,7 +216,7 @@ export class KubeObject<
   }
 
   getSearchFields() {
-    return [this.getName(), this.getNs(), this.getId(), ...this.getLabels(), ...this.getAnnotations(true)];
+    return [this.getName(), this.getNs(), this.getId(), ...this.getLabels()];
   }
 
   toPlainObject(omitFields: string[] = ["metadata.managedFields"]) {

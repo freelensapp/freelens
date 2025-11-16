@@ -23,10 +23,11 @@ jobs:
     environment: automated
     timeout-minutes: 10
 
-    if: >
-      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body
-      == '/tag') || (startsWith(github.event.pull_request.title, 'Automated npm version') && github.event.pull_request.merged)
+    env:
+      DO_NOT_TRACK: "1"
 
+    if: >
+      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag') || (startsWith(github.event.pull_request.title, 'Automated npm version') && github.event.pull_request.merged)
     steps:
       - name: Checkout
         uses: actions/checkout@v5

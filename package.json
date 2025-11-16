@@ -11,27 +11,27 @@
   },
   "scripts": {
     "asar": "corepack pnpm dlx @electron/asar@4.0.1",
-    "biome": "corepack pnpm dlx @biomejs/biome@2.3.3",
+    "biome": "corepack pnpm dlx @biomejs/biome@2.3.5",
     "biome:check": "corepack pnpm biome check",
     "biome:fix": "corepack pnpm biome check --fix",
     "biome:migrate": "corepack pnpm biome migrate --write",
-    "build": "NODE_ENV=production corepack pnpm -r build",
-    "build:app": "cd freelens && corepack pnpm build:app",
+    "build": "turbo run build",
+    "build:app": "turbo run build:app",
+    "build:app:dir": "corepack pnpm build:app -- dir",
     "build:core": "cd packages/core && corepack pnpm build",
-    "build:dev": "NODE_ENV=development corepack pnpm -r build",
-    "build:dir": "corepack pnpm build:app dir",
+    "build:dev": "NODE_ENV=development turbo run build:dev",
     "build:freelens": "cd freelens && corepack pnpm build",
-    "build:resources": "cd freelens && corepack pnpm build:resources",
-    "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
+    "build:resources": "turbo run build:resources",
     "clean": "corepack pnpm -r clean",
     "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.0 node_modules",
+    "dev": "turbo run dev --parallel",
+    "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
     "start": "cd freelens && corepack pnpm start",
     "start:os": "corepack pnpm dlx run-script-os@1.1.6 --",
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "dev": "corepack pnpm --parallel dev",
-    "knip": "corepack pnpm dlx knip@5.67.1 --dependencies --no-gitignore",
+    "knip": "corepack pnpm dlx knip@5.69.1 --dependencies --no-gitignore",
     "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "corepack pnpm knip",
     "knip:production": "corepack pnpm knip --production --strict",
@@ -57,8 +57,9 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.22.0",
   "devDependencies": {
-    "pnpm": "10.20.0"
+    "pnpm": "10.22.0",
+    "turbo": "2.6.1"
   }
 }

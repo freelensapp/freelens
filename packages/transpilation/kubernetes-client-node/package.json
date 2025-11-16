@@ -22,14 +22,15 @@
   "scripts": {
     "clean": "pnpm dlx rimraf@6.1.0 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
-    "build": "webpack"
+    "build": "webpack",
+    "build:dev": "webpack"
   },
   "dependencies": {
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/openid-client": "workspace:^",
     "hpagent": "^1.2.0",
     "isomorphic-ws": "^5.0.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",

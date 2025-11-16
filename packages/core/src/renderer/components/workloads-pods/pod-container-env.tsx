@@ -17,12 +17,13 @@ import secretStoreInjectable from "../config-secrets/store.injectable";
 import { DrawerItem } from "../drawer";
 import { SecretKey } from "./secret-key";
 
-import type { Container } from "@freelensapp/kube-object";
+import type { Container, Pod } from "@freelensapp/kube-object";
 
 import type { ConfigMapStore } from "../config-maps/store";
 import type { SecretStore } from "../config-secrets/store";
 
 export interface ContainerEnvironmentProps {
+  pod: Pod;
   container: Container;
   namespace: string;
 }
@@ -34,6 +35,8 @@ interface Dependencies {
 
 const NonInjectedContainerEnvironment = observer((props: Dependencies & ContainerEnvironmentProps) => {
   const {
+    pod,
+    container,
     container: { env, envFrom = [] },
     namespace,
     configMapStore,
@@ -72,12 +75,23 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
       if (value) {
         secretValue = value;
       } else if (valueFrom) {
-        const { fieldRef, secretKeyRef, configMapKeyRef } = valueFrom;
+        const { fieldRef, secretKeyRef, configMapKeyRef, resourceFieldRef } = valueFrom;
 
         if (fieldRef) {
-          const { apiVersion, fieldPath } = fieldRef;
+          const { fieldPath } = fieldRef;
 
-          secretValue = `fieldRef(${apiVersion}:${fieldPath})`;
+          secretValue = _.get(pod, fieldPath);
+        } else if (resourceFieldRef) {
+          const { containerName, resource, divisor } = resourceFieldRef;
+          const resourceContainer = containerName
+            ? pod.getAllContainers().find((c) => c.name === containerName)
+            : container;
+          if (resourceContainer) {
+            secretValue = _.get(resourceContainer.resources, resource) / (Number(divisor) || 1);
+          }
+          if (!secretValue) {
+            secretValue = `resourceFieldRef(${resource} / ${divisor || 1}))`;
+          }
         } else if (secretKeyRef?.name) {
           secretValue = (
             <SecretKey
@@ -92,7 +106,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
           const { name, key } = configMapKeyRef;
           const configMap = configMapStore.getByName(name, namespace);
 
-          secretValue = configMap ? configMap.data[key] : `configMapKeyRef(${name}${key})`;
+          secretValue = configMap ? configMap.data[key] : `configMapKeyRef(${name})[${key}])`;
         }
       }
 
