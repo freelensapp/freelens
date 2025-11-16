@@ -3,7 +3,7 @@
 This is a list of companies or users that have adopted Freelens.
 Feel free to submit a Pull Request to be added.
 
-### Adopter list (alphabetically)
+## Adopter list (alphabetically)
 
 | Type | Name | Company | Since | Website | Use-Case |
 |:-|:-|:-|:-|:-|:-|
@@ -12,13 +12,13 @@ Feel free to submit a Pull Request to be added.
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
 
-### Adopter Types
+## Adopter Types
 
 **Individual**: Represents a single person adopting Freelens, optionally including the company they work for.
 
 **Organization**: Represents an official company or team adopting Freelens, with a representative submitting the entry.
 
-### Optional info
+## Optional info
 
 **Name**: A company can specify in the Name either the name of the person representing it in the PR or the name of the company without using the company field, at its own choice.
 
