@@ -455,6 +455,34 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="menu-bar"
+              >
+                <section
+                  id="menu"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Menu-bar Settings
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Show tray icon in the menu bar
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -1915,6 +1943,34 @@ exports[`preferences - closing-preferences given already in a page and then navi
                   >
                     Automatically hide Hotbar
                     <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="menu-bar"
+              >
+                <section
+                  id="menu"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Menu-bar Settings
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Show tray icon in the menu bar
+                    <input
+                      checked=""
                       role="switch"
                       type="checkbox"
                     />
