@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import {ipcMain, Menu, Tray} from "electron";
+import { ipcMain, Menu, Tray } from "electron";
 import applicationDescriptionInjectable from "../../../common/vars/application-description.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
@@ -51,9 +51,7 @@ const electronTrayInjectable = getInjectable({
 
       if (isWindows) {
         tray.on("click", () => {
-          showApplicationWindow().catch((error) =>
-            logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }),
-          );
+          showApplicationWindow().catch((error) => logger.error(`${TRAY_LOG_PREFIX}: Failed to open lens`, { error }));
         });
       }
     };

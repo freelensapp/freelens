@@ -21,10 +21,13 @@ interface Dependencies {
 const NonInjectedMenuBarSettings = observer(({ state }: Dependencies) => (
   <section id="menu">
     <SubTitle title="Menu-bar Settings" />
-    <Switch checked={state.showTrayIcon} onChange={() => {
-      state.showTrayIcon = !state.showTrayIcon;
-      ipcRenderer.send("tray:set-visible", state.showTrayIcon);
-    }}>
+    <Switch
+      checked={state.showTrayIcon}
+      onChange={() => {
+        state.showTrayIcon = !state.showTrayIcon;
+        ipcRenderer.send("tray:set-visible", state.showTrayIcon);
+      }}
+    >
       Show tray icon in the menu bar
     </Switch>
   </section>

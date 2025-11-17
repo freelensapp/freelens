@@ -88,7 +88,7 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       }),
       showTrayIcon: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? true,
-        toStore: (val) => val ? undefined : val
+        toStore: (val) => (val ? undefined : val),
       }),
       hotbarAutoHide: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
