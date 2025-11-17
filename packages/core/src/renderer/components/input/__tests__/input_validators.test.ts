@@ -64,17 +64,17 @@ describe("input validation tests", () => {
       }
     });
 
-    it.each(["hello", "57"])(
-      "Given '%s' is neither a valid email nor URL, emailOrUrl does not match",
-      async (input) => {
-        try {
-          await emailOrUrl.validate(input);
-          fail("Should throw on invalid input");
-        } catch {
-          // We want this to happen
-        }
-      },
-    );
+    it.each([
+      "hello",
+      "57",
+    ])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", async (input) => {
+      try {
+        await emailOrUrl.validate(input);
+        fail("Should throw on invalid input");
+      } catch {
+        // We want this to happen
+      }
+    });
   });
 
   describe("isEmail tests", () => {
