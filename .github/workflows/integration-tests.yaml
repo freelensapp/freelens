@@ -169,7 +169,11 @@ jobs:
 
       - name: Install Electron headers
         if: steps.electron-headers.outputs.cache-hit != 'true'
-        run: curl -sSfL https://www.electronjs.org/headers/v${{ env.electron_version }}/node-v${{ env.electron_version }}-headers.tar.gz -o ${{ env.ELECTRON_HEADERS_CACHE }}/node-${{ env.electron_version }}-headers.tar.gz
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -192,7 +196,7 @@ jobs:
       - name: Rebuild native packages for Electron
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
         env:
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-${{ env.electron_version }}-headers.tar.gz
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
