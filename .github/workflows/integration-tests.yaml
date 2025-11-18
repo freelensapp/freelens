@@ -169,7 +169,7 @@ jobs:
 
       - name: Install Electron headers
         if: steps.electron-headers.outputs.cache-hit != 'true'
-        run: curl -sfL https://www.electronjs.org/headers/v${{ env.electron_version }}/node-${{ env.electron_version }}-headers.tar.gz -o ${{ env.ELECTRON_HEADERS_CACHE }}/node-${{ env.electron_version }}-headers.tar.gz
+        run: curl -sSfL https://www.electronjs.org/headers/v${{ env.electron_version }}/node-v${{ env.electron_version }}-headers.tar.gz -o ${{ env.ELECTRON_HEADERS_CACHE }}/node-${{ env.electron_version }}-headers.tar.gz
 
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
