@@ -7,7 +7,11 @@
     "CSC_LINK",
     "CSC_KEY_PASSWORD",
     "CSC_INSTALLER_LINK",
-    "CSC_INSTALLER_KEY_PASSWORD"
+    "CSC_INSTALLER_KEY_PASSWORD",
+    "COREPACK_*",
+    "LOCALAPPDATA",
+    "NVM_*",
+    "PNPM_*"
   ],
   "tasks": {
     "build": {
