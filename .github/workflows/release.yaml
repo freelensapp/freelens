@@ -23,6 +23,7 @@ jobs:
       DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
@@ -152,6 +153,13 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
       - name: Install pnpm dependencies
         id: install-pnpm
         shell: bash
@@ -162,6 +170,14 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
       - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
@@ -183,6 +199,7 @@ jobs:
         env:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -205,7 +222,7 @@ jobs:
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
             test -n "${!var}" || unset $var
           done
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             dmg pkg \
             --${{ matrix.arch }}
         env:
@@ -283,7 +300,7 @@ jobs:
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
         run: |
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
 
@@ -291,7 +308,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
