@@ -222,7 +222,7 @@ jobs:
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
             test -n "${!var}" || unset $var
           done
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             dmg pkg \
             --${{ matrix.arch }}
         env:
@@ -300,7 +300,7 @@ jobs:
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
         run: |
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
 
@@ -308,7 +308,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             msi nsis \
             --${{ matrix.arch }}
 
