@@ -10,8 +10,12 @@
     "CSC_INSTALLER_KEY_PASSWORD",
     "COREPACK_*",
     "LOCALAPPDATA",
+    "DOWNLOAD_ALL_ARCHITECTURES",
     "NVM_*",
-    "PNPM_*"
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD",
+    "PNPM_*",
+    "npm_config_*",
+    "npm_package_config_node_gyp_*"
   ],
   "tasks": {
     "build": {
