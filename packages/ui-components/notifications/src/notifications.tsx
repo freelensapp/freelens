@@ -87,15 +87,14 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
                   <Icon material="info_outline" />
                 </div>
                 <div className="message box grow">{msgText}</div>
-                <div className="box">
+                <div className="box" onClick={prevDefault(() => {
+                      remove(id);
+                      onClose?.();
+                    })}>
                   <Icon
                     material="close"
                     className="close"
                     data-testid={`close-notification-for-${id}`}
-                    onClick={prevDefault(() => {
-                      remove(id);
-                      onClose?.();
-                    })}
                   />
                 </div>
               </div>
