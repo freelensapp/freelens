@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/openid-client",
-  "version": "1.6.2",
+  "version": "1.7.0-0",
   "description": "Open ID for Freelens",
   "license": "MIT",
   "private": false,

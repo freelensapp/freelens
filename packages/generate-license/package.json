@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/generate-license",
-  "version": "1.6.2",
+  "version": "1.7.0-0",
   "description": "CLI for generating license files",
   "license": "MIT",
   "scripts": {
