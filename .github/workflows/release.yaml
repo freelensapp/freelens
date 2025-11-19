@@ -19,12 +19,6 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 360
 
-    env:
-      DO_NOT_TRACK: "1"
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
-
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -77,8 +71,10 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
