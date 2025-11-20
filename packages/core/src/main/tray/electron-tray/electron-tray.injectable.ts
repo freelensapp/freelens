@@ -42,7 +42,7 @@ const electronTrayInjectable = getInjectable({
     const logger = di.inject(loggerInjectionToken);
     const trayIcon = di.inject(trayIconInjectable);
 
-    let tray: Tray;
+    let tray: Tray | undefined;
 
     const start = () => {
       tray = new Tray(trayIcon.get().iconPath);
@@ -71,12 +71,16 @@ const electronTrayInjectable = getInjectable({
       start,
       stop,
       setMenuItems: (menuItems) => {
-        const template = convertToElectronMenuTemplate(menuItems);
-        const menu = Menu.buildFromTemplate(template);
-        tray.setContextMenu(menu);
+        if (tray) {
+          const template = convertToElectronMenuTemplate(menuItems);
+          const menu = Menu.buildFromTemplate(template);
+          tray.setContextMenu(menu);
+        }
       },
       setIconPath: (iconPath) => {
-        tray.setImage(iconPath);
+        if (tray) {
+          tray.setImage(iconPath);
+        }
       },
     };
   },
