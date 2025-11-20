@@ -609,20 +609,29 @@ export interface PodCondition {
 
 export type PodPhase = "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
 
+export interface PodIP {
+  ip: string;
+}
+
+export interface HostIP {
+  ip: string;
+}
+
 export interface PodStatus {
   phase: PodPhase;
   conditions: PodCondition[];
-  hostIP: string;
+  message?: string;
+  reason?: string;
+  nominatedNodeName?: string;
+  hostIP?: string;
+  hostIPs?: HostIP[];
   podIP: string;
-  podIPs?: {
-    ip: string;
-  }[];
+  podIPs?: PodIP[];
   startTime: string;
   initContainerStatuses?: PodContainerStatus[];
   containerStatuses?: PodContainerStatus[];
-  qosClass?: string;
+  qosClass?: "Guaranteed" | "Burstable" | "BestEffort";
   ephemeralContainerStatuses?: PodContainerStatus[];
-  reason?: string;
 }
 
 export type ContainersType = "containers" | "initContainers" | "ephemeralContainers";

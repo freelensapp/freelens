@@ -6,7 +6,7 @@
 
 import "./pod-container-env.scss";
 
-import { object } from "@freelensapp/utilities";
+import { cpuUnitsToNumber, metricUnitsToNumber, object, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import _ from "lodash";
 import { autorun } from "mobx";
@@ -38,6 +38,9 @@ function resolvePodRef(pod: Pod, ref: string) {
   if (Array.isArray(value) && value.every((v) => typeof v === "string" || typeof v === "number")) {
     return value.join(",");
   }
+  if (Array.isArray(value) && value.every((v) => typeof v === "object" && v.ip !== undefined)) {
+    return value.map((v) => v.ip).join(",");
+  }
   if (typeof value === "string" || typeof value === "number") {
     return value;
   }
@@ -45,9 +48,21 @@ function resolvePodRef(pod: Pod, ref: string) {
 }
 
 function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
-  const value = _.get(requirements, ref);
-  if (typeof value !== "string" && typeof value !== "number") return NaN;
-  return Number(value);
+  const path = _.toPath(ref);
+  const name = _.last(path);
+  const value = _.get(requirements, path);
+
+  if (!name || (typeof value !== "string" && typeof value !== "number")) return NaN;
+
+  if (name.includes("memory") || name.includes("storage")) {
+    return unitsToBytes(String(value));
+  }
+
+  if (name.includes("cpu")) {
+    return _.ceil(cpuUnitsToNumber(String(value)) ?? 0);
+  }
+
+  return metricUnitsToNumber(String(value));
 }
 
 const NonInjectedContainerEnvironment = observer((props: Dependencies & ContainerEnvironmentProps) => {
@@ -97,17 +112,30 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         if (fieldRef) {
           const { fieldPath } = fieldRef;
 
-          secretValue = resolvePodRef(pod, fieldPath);
+          const value = resolvePodRef(pod, fieldPath);
+          if (value !== null) {
+            secretValue = value;
+          } else {
+            secretValue = `fieldRef(${fieldPath})`;
+          }
         } else if (resourceFieldRef) {
           const { containerName, resource, divisor } = resourceFieldRef;
           const resourceContainer = containerName
             ? pod.getAllContainers().find((c) => c.name === containerName)
             : container;
           if (resourceContainer && resourceContainer.resources) {
-            secretValue = resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1);
+            secretValue = _.round(resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1));
           }
           if (!secretValue) {
-            secretValue = `resourceFieldRef(${resource} / ${divisor || 1}))`;
+            let divisorInfo = "";
+            if (Number(divisor) > 1) {
+              divisorInfo = ` / ${divisor}`;
+            }
+            if (containerName) {
+              secretValue = `resourceFieldRef(${containerName}: ${resource}${divisorInfo}))`;
+            } else {
+              secretValue = `resourceFieldRef(${resource}${divisorInfo}))`;
+            }
           }
         } else if (secretKeyRef?.name) {
           secretValue = (
