@@ -35,8 +35,13 @@ interface Dependencies {
 
 function resolvePodRef(pod: Pod, ref: string) {
   const value = _.get(pod, ref);
-  if (typeof value !== "string" && typeof value !== "number") return null;
-  return value;
+  if (Array.isArray(value) && value.every((v) => typeof v === "string" || typeof v === "number")) {
+    return value.join(",");
+  }
+  if (typeof value === "string" || typeof value === "number") {
+    return value;
+  }
+  return null;
 }
 
 function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
