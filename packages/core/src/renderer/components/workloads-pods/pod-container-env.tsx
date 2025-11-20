@@ -17,7 +17,7 @@ import secretStoreInjectable from "../config-secrets/store.injectable";
 import { DrawerItem } from "../drawer";
 import { SecretKey } from "./secret-key";
 
-import type { Container, Pod } from "@freelensapp/kube-object";
+import type { Container, Pod, ResourceRequirements } from "@freelensapp/kube-object";
 
 import type { ConfigMapStore } from "../config-maps/store";
 import type { SecretStore } from "../config-secrets/store";
@@ -31,6 +31,18 @@ export interface ContainerEnvironmentProps {
 interface Dependencies {
   configMapStore: ConfigMapStore;
   secretStore: SecretStore;
+}
+
+function resolvePodRef(pod: Pod, ref: string) {
+  const value = _.get(pod, ref);
+  if (typeof value !== "string" && typeof value !== "number") return null;
+  return value;
+}
+
+function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
+  const value = _.get(requirements, ref);
+  if (typeof value !== "string" && typeof value !== "number") return NaN;
+  return Number(value);
 }
 
 const NonInjectedContainerEnvironment = observer((props: Dependencies & ContainerEnvironmentProps) => {
@@ -70,7 +82,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
 
     return orderedEnv.map((variable) => {
       const { name, value, valueFrom } = variable;
-      let secretValue = null;
+      let secretValue: React.JSX.Element | string | number | null = null;
 
       if (value) {
         secretValue = value;
@@ -80,14 +92,14 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         if (fieldRef) {
           const { fieldPath } = fieldRef;
 
-          secretValue = _.get(pod, fieldPath);
+          secretValue = resolvePodRef(pod, fieldPath);
         } else if (resourceFieldRef) {
           const { containerName, resource, divisor } = resourceFieldRef;
           const resourceContainer = containerName
             ? pod.getAllContainers().find((c) => c.name === containerName)
             : container;
-          if (resourceContainer) {
-            secretValue = _.get(resourceContainer.resources, resource) / (Number(divisor) || 1);
+          if (resourceContainer && resourceContainer.resources) {
+            secretValue = resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1);
           }
           if (!secretValue) {
             secretValue = `resourceFieldRef(${resource} / ${divisor || 1}))`;
@@ -105,8 +117,11 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         } else if (configMapKeyRef?.name) {
           const { name, key } = configMapKeyRef;
           const configMap = configMapStore.getByName(name, namespace);
-
-          secretValue = configMap ? configMap.data[key] : `configMapKeyRef(${name})[${key}])`;
+          if (configMap && configMap.data[key] !== undefined) {
+            secretValue = configMap.data[key];
+          } else {
+            secretValue = `configMapKeyRef(${name})[${key}])`;
+          }
         }
       }
 
