@@ -12,12 +12,12 @@ import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import { forumsUrl } from "../../../common/vars";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
+import newVersionNotificationInjectable from "./new-version-notification.injectable";
 import welcomeMenuItemsInjectable from "./welcome-menu-items/welcome-menu-items.injectable";
 
 import type { IComputedValue } from "mobx";
 
 import type { WelcomeMenuRegistration } from "./welcome-menu-items/welcome-menu-registration";
-import newVersionNotificationInjectable from "./new-version-notification.injectable";
 
 export const defaultWidth = 320;
 
@@ -28,7 +28,6 @@ interface Dependencies {
 }
 
 const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersionNotification }: Dependencies) => {
-
   useEffect(() => {
     newVersionNotification();
   }, []);

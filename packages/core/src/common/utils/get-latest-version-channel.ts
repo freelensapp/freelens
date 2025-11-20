@@ -6,6 +6,4 @@
 
 import { getRequestChannel } from "@freelensapp/messaging";
 
-export const getLatestVersionChannel = getRequestChannel<void, string | undefined>(
-  "get-latest-version-channel",
-);
+export const getLatestVersionChannel = getRequestChannel<void, string | undefined>("get-latest-version-channel");

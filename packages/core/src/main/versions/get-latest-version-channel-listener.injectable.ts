@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import getLatestVersionInjectable from "../../common/utils/get-latest-version.injectable";
 import { getLatestVersionChannel } from "../../common/utils/get-latest-version-channel";
 
