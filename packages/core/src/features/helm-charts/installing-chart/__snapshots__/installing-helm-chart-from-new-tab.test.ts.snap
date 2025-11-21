@@ -11066,9 +11066,8 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           class="box"
         >
           <i
-            class="Icon close material interactive focusable"
+            class="Icon close material focusable"
             data-testid="close-notification-for-notification_3"
-            tabindex="0"
           >
             <span
               class="icon"
@@ -11866,9 +11865,8 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           class="box"
         >
           <i
-            class="Icon close material interactive focusable"
+            class="Icon close material focusable"
             data-testid="close-notification-for-notification_6"
-            tabindex="0"
           >
             <span
               class="icon"
