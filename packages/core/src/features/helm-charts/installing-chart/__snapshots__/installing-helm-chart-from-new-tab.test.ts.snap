@@ -11063,11 +11063,12 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           </p>
         </div>
         <div
-          class="box"
+          class="box close-icon"
         >
           <i
-            class="Icon close material focusable"
+            class="Icon close material interactive focusable"
             data-testid="close-notification-for-notification_3"
+            tabindex="0"
           >
             <span
               class="icon"
@@ -11862,11 +11863,12 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           </p>
         </div>
         <div
-          class="box"
+          class="box close-icon"
         >
           <i
-            class="Icon close material focusable"
+            class="Icon close material interactive focusable"
             data-testid="close-notification-for-notification_6"
+            tabindex="0"
           >
             <span
               class="icon"
