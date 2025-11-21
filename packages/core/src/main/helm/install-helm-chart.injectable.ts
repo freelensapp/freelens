@@ -20,6 +20,7 @@ export interface InstallHelmChartData {
   namespace: string;
   version: string;
   kubeconfigPath: string;
+  forceConflicts?: boolean;
 }
 
 export interface InstallHelmChartResult {
@@ -39,7 +40,7 @@ const installHelmChartInjectable = getInjectable({
     const removePath = di.inject(removePathInjectable);
     const execHelm = di.inject(execHelmInjectable);
 
-    return async ({ chart, kubeconfigPath, name, namespace, values, version }) => {
+    return async ({ chart, kubeconfigPath, name, namespace, values, version, forceConflicts }) => {
       const valuesFilePath = tempy.file({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, dump(values));
@@ -64,6 +65,10 @@ const installHelmChartInjectable = getInjectable({
 
       if (!name) {
         args.push("--generate-name");
+      }
+
+      if (forceConflicts) {
+        args.push("--force-conflicts", "--server-side=true");
       }
 
       try {

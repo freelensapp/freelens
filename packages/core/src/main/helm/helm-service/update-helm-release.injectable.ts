@@ -19,6 +19,7 @@ export interface UpdateChartArgs {
   chart: string;
   values: string;
   version: string;
+  forceConflicts?: boolean;
 }
 
 const updateHelmReleaseInjectable = getInjectable({
@@ -53,6 +54,7 @@ const updateHelmReleaseInjectable = getInjectable({
           namespace,
           "--kubeconfig",
           proxyKubeconfigPath,
+          ...(data.forceConflicts ? ["--force-conflicts", "--server-side=true"] : []),
         ]);
 
         if (result.callWasSuccessful === false) {
