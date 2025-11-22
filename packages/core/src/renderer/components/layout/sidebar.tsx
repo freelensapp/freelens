@@ -4,24 +4,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { ExtensionLoader } from "../../../extensions/extension-loader";
+import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import SortableList from "../orderable-list/sortable-list";
 import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
-import { SidebarItem } from "./sidebar-item";
-import type { IComputedValue } from "mobx";
-import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
-import SortableList from "../orderable-list/sortable-list";
 import useSidebarHook from "./sidebar-hook";
+import { SidebarItem } from "./sidebar-item";
 import sidebarStorageInjectable, { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
+
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import type { StorageLayer } from "../../utils/storage-helper";
-import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
-import { ExtensionLoader } from "../../../extensions/extension-loader";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;

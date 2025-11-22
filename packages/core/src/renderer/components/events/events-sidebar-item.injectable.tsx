@@ -10,8 +10,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import eventsRouteInjectable from "../../../common/front-end-routing/routes/cluster/events/events-route.injectable";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
-import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 
 let id = "sidebar-item-events";
 

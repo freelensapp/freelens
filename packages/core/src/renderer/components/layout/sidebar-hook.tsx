@@ -1,9 +1,10 @@
-import { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
-import type { StorageLayer } from "../../utils/storage-helper";
-import { ExtensionLoader } from "../../../extensions/extension-loader";
-import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 import { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions/src/lens-extension";
 import { useEffect, useState } from "react";
+import { ExtensionLoader } from "../../../extensions/extension-loader";
+import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
+import { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
+
+import type { StorageLayer } from "../../utils/storage-helper";
 
 interface Dependencies {
   sidebarStorage: StorageLayer<SidebarStorageState>;

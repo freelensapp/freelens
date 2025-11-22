@@ -1,7 +1,7 @@
+import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import React from "react";
 import useOrderableListHook from "./sortable-hook";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import SortableItem from "./sortable-item";
 import styles from "./sortable-list.module.css";
 

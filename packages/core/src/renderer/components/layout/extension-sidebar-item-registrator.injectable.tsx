@@ -11,14 +11,14 @@ import { computed } from "mobx";
 import React from "react";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import { getExtensionRoutePath } from "../../routes/for-extension";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routesInjectable from "../../routes/routes.injectable";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
-import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
-import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 
 const extensionSidebarItemRegistratorInjectable = getInjectable({
   id: "extension-sidebar-item-registrator",

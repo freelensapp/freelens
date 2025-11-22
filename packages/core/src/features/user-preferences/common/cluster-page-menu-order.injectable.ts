@@ -1,9 +1,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
 import sidebarStorageInjectable, {
   SidebarStorageState,
 } from "../../../renderer/components/layout/sidebar-storage/sidebar-storage.injectable";
 import { StorageLayer } from "../../../renderer/utils/storage-helper";
-import { computed } from "mobx";
 
 export const getClusterPageMenuOrderInjectable = getInjectable({
   id: "get-cluster-page-menu-order-injectable",
