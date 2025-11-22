@@ -11,8 +11,8 @@ interface OrderableListDependencies {
   onReorder: (dragIndex: number, releaseIndex: number) => void;
 }
 
-const SortableList = ({children, onReorder, className}: OrderableListDependencies) => {
-  const orderableHook = useOrderableListHook({children, onReorder});
+const SortableList = ({ children, onReorder, className }: OrderableListDependencies) => {
+  const orderableHook = useOrderableListHook({ children, onReorder });
 
   return (
     <div className={`${styles.container} ${className}`}>
@@ -24,7 +24,7 @@ const SortableList = ({children, onReorder, className}: OrderableListDependencie
       >
         <SortableContext items={orderableHook.itemIds} strategy={verticalListSortingStrategy}>
           {orderableHook.items.map((element, index) => (
-            <SortableItem key={element.key} item={element} id={orderableHook.itemIds[index]}/>
+            <SortableItem key={element.key} item={element} id={orderableHook.itemIds[index]} />
           ))}
           <DragOverlay>
             {undefined != orderableHook.activeId && orderableHook.items[orderableHook.activeId]}
@@ -32,7 +32,7 @@ const SortableList = ({children, onReorder, className}: OrderableListDependencie
         </SortableContext>
       </DndContext>
     </div>
-  )
-}
+  );
+};
 
 export default SortableList;

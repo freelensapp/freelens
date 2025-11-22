@@ -30,31 +30,23 @@ interface Dependencies {
   extensionLoader: ExtensionLoader;
 }
 
-const NonInjectedSidebar = observer((
-  {
-    sidebarItems,
-    entityRegistry,
-    sidebarStorage,
-    extensionLoader,
-  }: Dependencies) => {
+const NonInjectedSidebar = observer(
+  ({ sidebarItems, entityRegistry, sidebarStorage, extensionLoader }: Dependencies) => {
+    const sidebarHook = useSidebarHook({ sidebarStorage, extensionLoader });
 
-  const sidebarHook = useSidebarHook({ sidebarStorage, extensionLoader });
+    return (
+      <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
+        <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
 
-  return (
-    <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
-      <SidebarCluster clusterEntity={entityRegistry.activeEntity}/>
-
-      <SortableList
-        className={`${styles.sidebarNav} sidebar-active-status`}
-        onReorder={sidebarHook.saveOrderInfo}
-      >
-        {sidebarItems.get().map((hierarchicalSidebarItem) => (
-          <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id}/>
-        ))}
-      </SortableList>
-    </div>
-  )
-});
+        <SortableList className={`${styles.sidebarNav} sidebar-active-status`} onReorder={sidebarHook.saveOrderInfo}>
+          {sidebarItems.get().map((hierarchicalSidebarItem) => (
+            <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id} />
+          ))}
+        </SortableList>
+      </div>
+    );
+  },
+);
 
 export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
   getProps: (di, props) => ({
@@ -62,7 +54,7 @@ export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
     sidebarItems: di.inject(sidebarItemsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
     sidebarStorage: di.inject(sidebarStorageInjectable),
-    extensionLoader: di.inject(extensionLoaderInjectable)
+    extensionLoader: di.inject(extensionLoaderInjectable),
   }),
 });
 

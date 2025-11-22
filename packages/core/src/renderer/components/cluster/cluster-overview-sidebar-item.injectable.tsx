@@ -11,8 +11,7 @@ import React from "react";
 import clusterOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/overview/cluster-overview-route.injectable";
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { getClusterPageMenuOrderInjectable }
-  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 const id = "sidebar-item-cluster-overview";
 

@@ -9,8 +9,7 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
-import { getClusterPageMenuOrderInjectable }
-  from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 let id = "sidebar-item-workloads";
 
@@ -24,10 +23,10 @@ const workloadsSidebarItemInjectable = getInjectable({
     return {
       parentId: null,
       title: title,
-      getIcon: () => <Icon svg="workloads"/>,
+      getIcon: () => <Icon svg="workloads" />,
       onClick: noop,
-      orderNumber: getClusterPageMenuOrder(id, 30)
-    }
+      orderNumber: getClusterPageMenuOrder(id, 30),
+    };
   },
 
   injectionToken: sidebarItemInjectionToken,

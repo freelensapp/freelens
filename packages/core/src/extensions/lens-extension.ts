@@ -138,6 +138,6 @@ export function extensionDisplayName(name: string, version: string) {
   return `${name}@${version}`;
 }
 
-export function getExtensionId (name: string) {
+export function getExtensionId(name: string) {
   return `sidebar-item-${name}`;
 }

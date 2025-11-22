@@ -18,15 +18,9 @@ export interface MaybeOrderable {
 }
 
 export const byOrderNumber = <T extends MaybeOrderable>(left: T, right: T) => {
-  const leftValue =
-    typeof left.orderNumber === "number"
-      ? left.orderNumber
-      : left.orderNumber?.get();
+  const leftValue = typeof left.orderNumber === "number" ? left.orderNumber : left.orderNumber?.get();
 
-  const rightValue =
-    typeof right.orderNumber === "number"
-      ? right.orderNumber
-      : right.orderNumber?.get();
+  const rightValue = typeof right.orderNumber === "number" ? right.orderNumber : right.orderNumber?.get();
 
   return (leftValue ?? Number.MAX_SAFE_INTEGER) - (rightValue ?? Number.MAX_SAFE_INTEGER);
-}
+};

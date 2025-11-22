@@ -23,12 +23,12 @@ const useSidebarHook = ({ sidebarStorage, extensionLoader }: Dependencies) => {
 
     if (allExtensionIds.length < currentExtensionIds.length) {
       // A new extension has been removed
-      const removedExtensions = currentExtensionIds.filter(item => !allExtensionIds.includes(item));
+      const removedExtensions = currentExtensionIds.filter((item) => !allExtensionIds.includes(item));
 
       const sidebarStorageElements = Object.entries(sidebarStorage.get().order)
         .sort(([, a], [, b]) => a - b)
-        .map(entry => entry[0])
-        .filter(extensionName => !removedExtensions.includes(extensionName));
+        .map((entry) => entry[0])
+        .filter((extensionName) => !removedExtensions.includes(extensionName));
 
       const newOrder = __orderElements(sidebarStorageElements);
       __updateStorage(newOrder);
@@ -36,8 +36,7 @@ const useSidebarHook = ({ sidebarStorage, extensionLoader }: Dependencies) => {
   }, [extensionLoader.toJSON()]);
 
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
-    const sidebarStorageElements = Object.entries(sidebarStorage.get().order)
-      .map(entry => entry[0]);
+    const sidebarStorageElements = Object.entries(sidebarStorage.get().order).map((entry) => entry[0]);
 
     if (startIndex === releaseIndex) return;
     if (startIndex < 0) return;
@@ -50,32 +49,34 @@ const useSidebarHook = ({ sidebarStorage, extensionLoader }: Dependencies) => {
 
     const newOrder = __orderElements(sidebarStorageElements);
     __updateStorage(newOrder);
-  }
+  };
 
   const __getAllExtensionIds = () => {
-    const extensions: Map<LensExtensionId, InstalledExtension> = extensionLoader.toJSON() as Map<LensExtensionId, InstalledExtension>;
-    return extensions.values()
-      .filter(installedExtension => installedExtension.isEnabled)
-      .map(enabledExtension => {
+    const extensions: Map<LensExtensionId, InstalledExtension> = extensionLoader.toJSON() as Map<
+      LensExtensionId,
+      InstalledExtension
+    >;
+    return extensions
+      .values()
+      .filter((installedExtension) => installedExtension.isEnabled)
+      .map((enabledExtension) => {
         let extensionName = enabledExtension.manifest.name;
         return getExtensionId(sanitizeExtensionName(extensionName));
       })
       .toArray();
-  }
+  };
 
   const __orderElements = (sidebarStorageElements: string[]): Record<string, number> => {
-    return Object.fromEntries(
-      sidebarStorageElements.map<[string, number]>((item, index) => [item, (index + 1) * 10])
-    );
-  }
+    return Object.fromEntries(sidebarStorageElements.map<[string, number]>((item, index) => [item, (index + 1) * 10]));
+  };
 
   const __updateStorage = (newOrder: Record<string, number>) => {
     sidebarStorage.merge((draft) => {
       draft.order = newOrder;
     });
-  }
+  };
 
-  return { saveOrderInfo }
-}
+  return { saveOrderInfo };
+};
 
 export default useSidebarHook;
