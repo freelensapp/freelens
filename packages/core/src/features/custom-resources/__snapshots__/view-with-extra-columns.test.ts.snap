@@ -241,32 +241,50 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                 1 item
               </div>
               <div
-                class="Input SearchInput focused"
+                style="display: flex; align-items: center; gap: 8px;"
               >
-                <label
-                  class="input-area flex gaps align-center"
-                  id=""
-                >
-                  <input
-                    class="input box grow"
-                    placeholder="SomeResource search ..."
-                    spellcheck="false"
-                    value=""
-                  />
-                  <i
-                    class="Icon material focusable small"
-                  >
-                    <span
-                      class="icon"
-                      data-icon-name="search"
-                    >
-                      search
-                    </span>
-                  </i>
-                </label>
                 <div
-                  class="input-info flex gaps"
-                />
+                  class="Input SearchInput focused"
+                >
+                  <label
+                    class="input-area flex gaps align-center"
+                    id=""
+                  >
+                    <input
+                      class="input box grow"
+                      placeholder="SomeResource search ..."
+                      spellcheck="false"
+                      value=""
+                    />
+                    <i
+                      class="Icon material focusable small"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="search"
+                      >
+                        search
+                      </span>
+                    </i>
+                  </label>
+                  <div
+                    class="input-info flex gaps"
+                  />
+                </div>
+                <i
+                  class="Icon material interactive focusable small"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="link_off"
+                  >
+                    link_off
+                  </span>
+                </i>
+                <div>
+                  Link search (shared)
+                </div>
               </div>
             </div>
             <div
@@ -390,6 +408,7 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                         >
                           <div
                             class="TableRow nowrap"
+                            id="menu-actions-for-kube-object-menu-for-some-uid-2"
                           >
                             <div
                               class="TableCell checkbox"
@@ -452,7 +471,7 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                                 <i
                                   class="Icon material interactive focusable"
                                   data-testid="icon-for-menu-actions-for-kube-object-menu-for-some-uid-2"
-                                  id="menu-actions-for-kube-object-menu-for-some-uid-2"
+                                  id="some-uid-2"
                                   tabindex="0"
                                 >
                                   <span

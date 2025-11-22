@@ -25,6 +25,15 @@ import type { StrictReactNode } from "@freelensapp/utilities";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import type { MenuProps } from "./menu";
 
+export interface MenuOpenOptions {
+  cursorPosition?: { x: number; y: number } | null;
+  contextTarget?: HTMLElement | null;
+}
+
+export interface MenuControls {
+  open: (options?: MenuOpenOptions) => void;
+  close: () => void;
+}
 export interface MenuActionsProps extends Partial<MenuProps> {
   className?: string;
   toolbar?: boolean; // display menu as toolbar with icons
@@ -44,6 +53,7 @@ export interface MenuActionsProps extends Partial<MenuProps> {
   removeAction?: () => void | Promise<void>;
   onOpen?: () => void;
   id?: string;
+  onMenuReady?: (controls: MenuControls) => void;
 }
 
 interface Dependencies {
@@ -57,11 +67,9 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   };
 
   @observable isOpen = !!this.props.toolbar;
-
-  toggle = () => {
-    if (this.props.toolbar) return;
-    this.isOpen = !this.isOpen;
-  };
+  @observable openedViaCursor = false;
+  @observable cursorPosition: { x: number; y: number } | null = null;
+  @observable contextTarget: HTMLElement | null = null;
 
   constructor(props: MenuActionsProps & Dependencies) {
     super(props);
@@ -70,6 +78,11 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
   }
 
   componentDidMount(): void {
+    this.props.onMenuReady?.({
+      open: this.open,
+      close: this.close,
+    });
+
     disposeOnUnmount(this, [
       reaction(
         () => this.isOpen,
@@ -84,6 +97,29 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       ),
     ]);
   }
+
+  componentWillUnmount(): void {
+    this.props.onMenuReady?.({
+      open: () => {},
+      close: () => {},
+    });
+  }
+
+  open = (options?: MenuOpenOptions) => {
+    if (this.props.toolbar) return;
+    this.isOpen = true;
+    this.cursorPosition = options?.cursorPosition || null;
+    this.openedViaCursor = !!options?.cursorPosition;
+    this.contextTarget = options?.contextTarget || null;
+  };
+
+  close = () => {
+    if (this.props.toolbar) return;
+    this.isOpen = false;
+    this.cursorPosition = null;
+    this.openedViaCursor = false;
+    this.contextTarget = null;
+  };
 
   remove() {
     const { removeAction, openConfirmDialog } = this.props;
@@ -106,8 +142,11 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       return null;
     }
 
+    // Only show active state if opened via icon click, not right-click
+    const isActive = this.isOpen && !this.openedViaCursor;
+
     if (isValidElement<HTMLElement>(triggerIcon)) {
-      const className = cssNames(triggerIcon.props.className, { active: this.isOpen });
+      const className = cssNames(triggerIcon.props.className, { active: isActive });
 
       return React.cloneElement(triggerIcon, { id: this.props.id, className });
     }
@@ -116,7 +155,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       id: this.props.id,
       interactive: true,
       material: isString(triggerIcon) ? triggerIcon : undefined,
-      active: this.isOpen,
+      active: isActive,
       ...(typeof triggerIcon === "object" ? triggerIcon : {}),
     };
 
@@ -152,8 +191,8 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
         <Menu
           htmlFor={this.props.id}
           isOpen={this.isOpen}
-          open={this.toggle}
-          close={this.toggle}
+          open={this.open}
+          close={this.close}
           className={cssNames("MenuActions flex", className, {
             toolbar,
             gaps: toolbar, // add spacing for .flex
@@ -163,6 +202,8 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           closeOnScroll={autoClose}
           closeOnClickItem={autoCloseOnSelect ?? autoClose}
           closeOnClickOutside={autoClose}
+          cursorPosition={this.cursorPosition ?? undefined}
+          contextTarget={this.contextTarget ?? undefined}
           {...menuProps}
         >
           {children}

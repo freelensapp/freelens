@@ -12,6 +12,7 @@ import applicationMenuItemCompositeInjectable from "../../../../features/applica
 import clustersInjectable from "../../../../features/cluster/storage/common/clusters.injectable";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import pushCatalogToRendererInjectable from "../../../catalog-sync-to-renderer/push-catalog-to-renderer.injectable";
+import clusterConnectionInjectable from "../../../cluster/cluster-connection.injectable";
 import { setupIpcMainHandlers } from "./setup-ipc-main-handlers";
 
 const setupIpcMainHandlersInjectable = getInjectable({
@@ -29,6 +30,16 @@ const setupIpcMainHandlersInjectable = getInjectable({
         clusters: di.inject(clustersInjectable),
         getClusterById: di.inject(getClusterByIdInjectable),
         clusterFrames: di.inject(clusterFramesInjectable),
+
+        refreshClusterAccessibility: async (clusterId) => {
+          const getClusterById = di.inject(getClusterByIdInjectable);
+          const cluster = getClusterById(clusterId);
+
+          if (!cluster) return;
+
+          const connection = di.inject(clusterConnectionInjectable, cluster);
+          await connection.refreshAccessibilityAndMetadata();
+        },
       });
     },
   }),

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Kubernetes client for Freelens",
   "author": {
     "name": "Freelens Authors",
@@ -20,16 +20,17 @@
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
-    "build": "webpack"
+    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "build": "webpack",
+    "build:dev": "webpack"
   },
   "dependencies": {
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/openid-client": "workspace:^",
     "hpagent": "^1.2.0",
     "isomorphic-ws": "^5.0.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",
@@ -37,9 +38,9 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@kubernetes/client-node": "^1.3.0",
+    "@kubernetes/client-node": "^1.4.0",
     "ts-loader": "^9.5.4",
-    "typescript": "^5.9.2",
-    "webpack": "^5.101.3"
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.1"
   }
 }

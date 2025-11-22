@@ -6,6 +6,7 @@
 [![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90&logo=github)](https://github.com/freelensapp/freelens)
 [![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
 [![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/freelens?style=flat&label=r%2Ffreelens&logo=reddit)](https://www.reddit.com/r/freelens/)
+[![Bounties on BountyHub](https://img.shields.io/badge/Bounties-on%20BountyHub-yellow)](https://bountyhub.dev/bounties?repo=freelens)
 [![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/freelensapp/freelens)
 [![LFX Health Score](https://insights.linuxfoundation.org/api/badge/health-score?project=freelens)](https://insights.linuxfoundation.org/project/freelens)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
@@ -219,6 +220,14 @@ Get updates about Freelens & keep in touch with our community
 - Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
 
+## Adopters
+
+Freelens is used by many individuals, companies, and organizations.
+
+We have created the [adopters](https://github.com/freelensapp/freelens/blob/main/ADOPTERS.md) file for anyone who would like to be part of the official list.
+
+Anyone is welcome to request to be added to the official list by opening a dedicated Pull Request.
+
 ## Contributing
 
 Anyone is welcome to collaborate to advance the Freelens project. Read
@@ -233,6 +242,16 @@ maintenance costs and invest in its development.
 
 For more information, see our dedicated page in our Wiki: [Expenses and
 Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+
+## Fund an issue or earn money by developing
+
+Anyone who wishes can also make targeted donations, funding their preferred issues alone or with others via [BountyHub](https://www.bountyhub.dev/en/bounties?repo=freelens).
+
+At the same time, anyone who wishes can apply by doing PR to earn the bounty.
+
+Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
+
+For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
 
 ## Core Team
 

@@ -1,13 +1,14 @@
 {
   "name": "@freelensapp/ensure-binaries",
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
     "start": "node ./dist/index.mjs"
   },
   "files": [
@@ -24,14 +25,14 @@
     "gunzip-maybe": "^1.4.2",
     "node-fetch": "^3.3.2",
     "tar-stream": "^3.1.7",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
-    "@types/gunzip-maybe": "^1.4.2",
+    "@types/gunzip-maybe": "^1.4.3",
     "@types/node": "~22.16.5",
     "@types/tar-stream": "^3.1.4",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "bin": {
     "ensure-binaries": "bin/ensure-binaries.js"

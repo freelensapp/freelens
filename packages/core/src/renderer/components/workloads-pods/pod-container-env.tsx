@@ -6,7 +6,7 @@
 
 import "./pod-container-env.scss";
 
-import { object } from "@freelensapp/utilities";
+import { cpuUnitsToNumber, metricUnitsToNumber, object, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import _ from "lodash";
 import { autorun } from "mobx";
@@ -17,12 +17,13 @@ import secretStoreInjectable from "../config-secrets/store.injectable";
 import { DrawerItem } from "../drawer";
 import { SecretKey } from "./secret-key";
 
-import type { Container } from "@freelensapp/kube-object";
+import type { Container, Pod, ResourceRequirements } from "@freelensapp/kube-object";
 
 import type { ConfigMapStore } from "../config-maps/store";
 import type { SecretStore } from "../config-secrets/store";
 
 export interface ContainerEnvironmentProps {
+  pod: Pod;
   container: Container;
   namespace: string;
 }
@@ -32,8 +33,42 @@ interface Dependencies {
   secretStore: SecretStore;
 }
 
+function resolvePodRef(pod: Pod, ref: string) {
+  const value = _.get(pod, ref);
+  if (Array.isArray(value) && value.every((v) => typeof v === "string" || typeof v === "number")) {
+    return value.join(",");
+  }
+  if (Array.isArray(value) && value.every((v) => typeof v === "object" && v.ip !== undefined)) {
+    return value.map((v) => v.ip).join(",");
+  }
+  if (typeof value === "string" || typeof value === "number") {
+    return value;
+  }
+  return null;
+}
+
+function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
+  const path = _.toPath(ref);
+  const name = _.last(path);
+  const value = _.get(requirements, path);
+
+  if (!name || (typeof value !== "string" && typeof value !== "number")) return NaN;
+
+  if (name.includes("memory") || name.includes("storage")) {
+    return unitsToBytes(String(value));
+  }
+
+  if (name.includes("cpu")) {
+    return _.ceil(cpuUnitsToNumber(String(value)) ?? 0);
+  }
+
+  return metricUnitsToNumber(String(value));
+}
+
 const NonInjectedContainerEnvironment = observer((props: Dependencies & ContainerEnvironmentProps) => {
   const {
+    pod,
+    container,
     container: { env, envFrom = [] },
     namespace,
     configMapStore,
@@ -67,17 +102,41 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
 
     return orderedEnv.map((variable) => {
       const { name, value, valueFrom } = variable;
-      let secretValue = null;
+      let secretValue: React.JSX.Element | string | number | null = null;
 
       if (value) {
         secretValue = value;
       } else if (valueFrom) {
-        const { fieldRef, secretKeyRef, configMapKeyRef } = valueFrom;
+        const { fieldRef, secretKeyRef, configMapKeyRef, resourceFieldRef } = valueFrom;
 
         if (fieldRef) {
-          const { apiVersion, fieldPath } = fieldRef;
+          const { fieldPath } = fieldRef;
 
-          secretValue = `fieldRef(${apiVersion}:${fieldPath})`;
+          const value = resolvePodRef(pod, fieldPath);
+          if (value !== null) {
+            secretValue = value;
+          } else {
+            secretValue = `fieldRef(${fieldPath})`;
+          }
+        } else if (resourceFieldRef) {
+          const { containerName, resource, divisor } = resourceFieldRef;
+          const resourceContainer = containerName
+            ? pod.getAllContainers().find((c) => c.name === containerName)
+            : container;
+          if (resourceContainer && resourceContainer.resources) {
+            secretValue = _.round(resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1));
+          }
+          if (!secretValue) {
+            let divisorInfo = "";
+            if (Number(divisor) > 1) {
+              divisorInfo = ` / ${divisor}`;
+            }
+            if (containerName) {
+              secretValue = `resourceFieldRef(${containerName}: ${resource}${divisorInfo}))`;
+            } else {
+              secretValue = `resourceFieldRef(${resource}${divisorInfo}))`;
+            }
+          }
         } else if (secretKeyRef?.name) {
           secretValue = (
             <SecretKey
@@ -91,8 +150,11 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         } else if (configMapKeyRef?.name) {
           const { name, key } = configMapKeyRef;
           const configMap = configMapStore.getByName(name, namespace);
-
-          secretValue = configMap ? configMap.data[key] : `configMapKeyRef(${name}${key})`;
+          if (configMap && configMap.data[key] !== undefined) {
+            secretValue = configMap.data[key];
+          } else {
+            secretValue = `configMapKeyRef(${name})[${key}])`;
+          }
         }
       }
 

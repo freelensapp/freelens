@@ -5,6 +5,6 @@ exclude:
 formatter:
   eof_newline: false
   indentless_arrays: false
-  max_line_length: 120
+  max_line_length: 300
   retain_line_breaks_single: true
   trim_trailing_whitespace: true

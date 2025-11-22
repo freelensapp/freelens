@@ -776,6 +776,61 @@ exports[`preferences - navigation using application menu when navigating to pref
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="menu-bar"
+              >
+                <section
+                  id="menu"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Menu-bar Settings
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Show tray icon in the menu bar
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section

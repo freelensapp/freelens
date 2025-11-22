@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/metrics",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Injection tokens for implementing metrics for Freelens",
   "type": "commonjs",
   "publishConfig": {
@@ -25,8 +25,9 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
+    "build:dev": "lens-webpack-build",
+    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
   },
   "dependencies": {
     "@ogre-tools/injectable": "^17.11.1"
@@ -35,9 +36,9 @@
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.88",
+    "@types/react": "^17.0.89",
     "react": "^17.0.2",
     "ts-loader": "^9.5.4",
-    "webpack": "^5.101.3"
+    "webpack": "^5.102.1"
   }
 }

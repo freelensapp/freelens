@@ -354,32 +354,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -1023,32 +1041,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -1834,32 +1870,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput focused"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput focused"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -2699,32 +2753,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -3562,32 +3634,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -4567,32 +4657,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div
@@ -5574,32 +5682,50 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                   </div>
                 </div>
                 <div
-                  class="Input SearchInput"
+                  style="display: flex; align-items: center; gap: 8px;"
                 >
-                  <label
-                    class="input-area flex gaps align-center"
-                    id=""
-                  >
-                    <input
-                      class="input box grow"
-                      placeholder="Search Releases..."
-                      spellcheck="false"
-                      value=""
-                    />
-                    <i
-                      class="Icon material focusable small"
-                    >
-                      <span
-                        class="icon"
-                        data-icon-name="search"
-                      >
-                        search
-                      </span>
-                    </i>
-                  </label>
                   <div
-                    class="input-info flex gaps"
-                  />
+                    class="Input SearchInput"
+                  >
+                    <label
+                      class="input-area flex gaps align-center"
+                      id=""
+                    >
+                      <input
+                        class="input box grow"
+                        placeholder="Search Releases..."
+                        spellcheck="false"
+                        value=""
+                      />
+                      <i
+                        class="Icon material focusable small"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="search"
+                        >
+                          search
+                        </span>
+                      </i>
+                    </label>
+                    <div
+                      class="input-info flex gaps"
+                    />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="link_off"
+                    >
+                      link_off
+                    </span>
+                  </i>
+                  <div>
+                    Link search (shared)
+                  </div>
                 </div>
               </div>
               <div

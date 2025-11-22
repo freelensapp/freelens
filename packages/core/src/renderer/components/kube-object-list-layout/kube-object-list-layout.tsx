@@ -22,6 +22,7 @@ import { ItemListLayout } from "../item-object-list/list-layout";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
+import { MenuControls } from "../menu";
 import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -99,6 +100,7 @@ class NonInjectedKubeObjectListLayout<
   };
 
   private readonly loadErrors = observable.array<string>();
+  private readonly menuControls = new Map<string, MenuControls>();
 
   @computed get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
@@ -153,6 +155,10 @@ class NonInjectedKubeObjectListLayout<
     );
   }
 
+  private registerControls = (id: string) => (controls: MenuControls) => {
+    this.menuControls.set(id, controls);
+  };
+
   render() {
     const {
       className,
@@ -167,6 +173,7 @@ class NonInjectedKubeObjectListLayout<
       columns,
       generalColumns,
       sortingCallbacks = {},
+      customizeTableRowProps,
       ...layoutProps
     } = this.props;
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
@@ -185,6 +192,41 @@ class NonInjectedKubeObjectListLayout<
       [...(renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header })), ...targetColumns],
       (v) => -v.priority,
     ).map((col) => col.header);
+
+    const getTableRowCustomizations = (item: K) => {
+      const id = `menu-actions-for-kube-object-menu-for-${item.getId()}`;
+      const baseProps = customizeTableRowProps?.(item) ?? {};
+
+      return {
+        id,
+        ...baseProps,
+        onContextMenu: (evt: React.MouseEvent<HTMLDivElement>) => {
+          baseProps.onContextMenu?.(evt);
+
+          const controls = this.menuControls.get(id);
+
+          if (!controls) {
+            return;
+          }
+
+          evt.preventDefault();
+          evt.stopPropagation();
+
+          const cursorPosition = { x: evt.clientX, y: evt.clientY };
+          const contextTarget = evt.currentTarget as HTMLElement;
+
+          for (const [otherId, otherControls] of this.menuControls.entries()) {
+            if (otherId !== id) {
+              otherControls.close();
+            }
+          }
+
+          requestAnimationFrame(() => {
+            controls.open({ cursorPosition, contextTarget });
+          });
+        },
+      };
+    };
 
     return (
       <ItemListLayout<K, false>
@@ -217,7 +259,13 @@ class NonInjectedKubeObjectListLayout<
           }),
           ...[customizeHeader].filter(isDefined).flat(),
         ]}
-        renderItemMenu={(item) => <KubeObjectMenu object={item} />}
+        renderItemMenu={(item) => (
+          <KubeObjectMenu
+            id={item.getId()}
+            object={item}
+            onMenuReady={this.registerControls(`menu-actions-for-kube-object-menu-for-${item.getId()}`)}
+          />
+        )}
         onDetails={onDetails ?? ((item) => toggleDetails(item.selfLink))}
         sortingCallbacks={sortingCallbacks}
         renderTableHeader={headers}
@@ -232,6 +280,7 @@ class NonInjectedKubeObjectListLayout<
         }
         spinnerTestId="kube-object-list-layout-spinner"
         {...layoutProps}
+        customizeTableRowProps={getTableRowCustomizations}
       />
     );
   }

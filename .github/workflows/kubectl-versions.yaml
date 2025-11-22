@@ -29,8 +29,10 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated update of kubectl versions')
-      && contains(github.event.comment.body, '/rerun'))
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated update of kubectl versions') && contains(github.event.comment.body, '/rerun'))
+
+    env:
+      DO_NOT_TRACK: "1"
 
     steps:
       - name: Checkout
@@ -43,7 +45,7 @@ jobs:
         run: corepack enable
 
       - name: Setup node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: pnpm

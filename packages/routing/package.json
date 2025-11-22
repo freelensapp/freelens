@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/routing",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Highly extendable routing in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -25,7 +25,8 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
+    "build:dev": "lens-webpack-build",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
@@ -44,6 +45,6 @@
     "history": "^4.10.1",
     "lodash": "^4.17.21",
     "ts-loader": "^9.5.4",
-    "webpack": "^5.101.3"
+    "webpack": "^5.102.1"
   }
 }

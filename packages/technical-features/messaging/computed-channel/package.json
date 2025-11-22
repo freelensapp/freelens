@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/computed-channel",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "MobX-like computed between channels",
   "type": "commonjs",
   "publishConfig": {
@@ -24,15 +24,15 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.0.1 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "mobx": "^6.13.7"
+    "mobx": "^6.15.0"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
@@ -53,9 +53,9 @@
     "lodash": "^4.17.21",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
-    "ts-jest": "^29.4.4",
+    "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
-    "typescript": "^5.9.2",
-    "webpack": "^5.101.3"
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.1"
   }
 }

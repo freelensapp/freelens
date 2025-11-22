@@ -18,10 +18,6 @@ files:
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
 
-## Extra files added to unpacked resources
-extraResources:
-  - build/license.txt
-
 ## Notarization
 afterSign: build/notarize.js
 
@@ -55,7 +51,7 @@ appImage:
     - --enable-features=WaylandWindowDecorations
     - --disable-gpu-compositing
     - --no-sandbox
-  license: build/license.txt
+  license: static/build/license.txt
 
 deb:
   depends:
@@ -87,7 +83,7 @@ deb:
 ## Official Flatpak is built from the separate repository
 flatpak:
   useWaylandFlags: true
-  license: build/license.txt
+  license: static/build/license.txt
 
 ## Official Snap is built from the separate repository
 snap:
@@ -135,7 +131,7 @@ mac:
   publish: null
 
 pkg:
-  license: build/license.txt
+  license: static/build/license.txt
 
 ## For Windows targets
 win:
@@ -160,4 +156,4 @@ nsis:
   allowElevation: true
   createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
-  license: build/license.txt
+  license: static/build/license.txt

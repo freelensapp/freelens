@@ -19,10 +19,6 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 360
 
-    env:
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -75,8 +71,10 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
@@ -103,7 +101,7 @@ jobs:
         run: choco install yq --yes --no-progress
 
       - name: Setup node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -129,13 +127,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
-          >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml
-          | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v4
@@ -153,6 +149,13 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
       - name: Install pnpm dependencies
         id: install-pnpm
         shell: bash
@@ -164,9 +167,16 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+
       - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os ==
-          'Windows' && matrix.arch == 'arm64'
+        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
         shell: bash
         run: |
           echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
@@ -185,6 +195,7 @@ jobs:
         env:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -299,7 +310,7 @@ jobs:
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
-        uses: azure/trusted-signing-action@v0.5.9
+        uses: azure/trusted-signing-action@v0.5.10
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -420,7 +431,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Setup node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           package-manager-cache: false

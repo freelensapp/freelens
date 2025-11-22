@@ -35,9 +35,12 @@ jobs:
     timeout-minutes: 60
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
       - name: Checkout
@@ -64,7 +67,7 @@ jobs:
         run: timeout 300 choco install yq --yes --no-progress
 
       - name: Setup node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -86,18 +89,15 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
-          >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml
-          | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Playwright version
         shell: bash
-        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed
-          's/(.*)//')" >> $GITHUB_ENV
+        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v4
@@ -115,6 +115,13 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
       - name: Use Playwright cache
         id: playwright-cache
         uses: actions/cache@v4
@@ -123,6 +130,14 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-playwright-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-turborepo-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -152,6 +167,14 @@ jobs:
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpx playwright install --with-deps
@@ -167,12 +190,13 @@ jobs:
           DOWNLOAD_ALL_ARCHITECTURES: "true"
 
       - name: Build packages (macOS arm64, Linux x64, Windows)
-        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os ==
-          'Windows'
+        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: pnpm --color=always --stream build
 
       - name: Rebuild native packages for Electron
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -190,7 +214,7 @@ jobs:
         run: pnpm --color=always build:resources
 
       - name: Build Electron app
-        run: pnpm --color=always build:app dir --${{ matrix.arch }}
+        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux

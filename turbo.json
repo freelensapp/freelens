@@ -1,0 +1,51 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "APPLEID",
+    "APPLEIDPASS",
+    "APPLETEAMID",
+    "CSC_LINK",
+    "CSC_KEY_PASSWORD",
+    "CSC_INSTALLER_LINK",
+    "CSC_INSTALLER_KEY_PASSWORD",
+    "COREPACK_*",
+    "LOCALAPPDATA",
+    "DOWNLOAD_ALL_ARCHITECTURES",
+    "NVM_*",
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD",
+    "PNPM_*",
+    "npm_config_*",
+    "npm_package_config_node_gyp_*"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["CC", "CXX", "DOWNLOAD_ALL_ARCHITECTURES", "NODE_ENV"],
+      "outputs": ["binaries/**", "dist/**", "static/build/**"]
+    },
+    "build:app": {
+      "dependsOn": ["^build:app"],
+      "env": ["CC", "CXX", "NODE_ENV"],
+      "outputs": ["dist/**"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev"],
+      "env": ["CC", "CXX", "DOWNLOAD_ALL_ARCHITECTURES", "NODE_ENV"],
+      "outputs": ["binaries/**", "dist/**", "static/build/**"]
+    },
+    "build:resources": {
+      "dependsOn": ["^build:resources"],
+      "env": ["CC", "CXX", "DOWNLOAD_ALL_ARCHITECTURES", "NODE_ENV"],
+      "outputs": ["binaries/**", "static/build/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "test:unit": {
+      "dependsOn": ["build"],
+      "cache": true
+    }
+  }
+}

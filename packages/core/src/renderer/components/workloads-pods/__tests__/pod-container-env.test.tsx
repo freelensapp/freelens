@@ -70,7 +70,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -121,7 +121,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -173,7 +173,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -203,7 +203,7 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
   });
@@ -260,8 +260,385 @@ describe("<ContainerEnv />", () => {
         containers: [container],
       },
     });
-    const result = render(<ContainerEnvironment container={container} namespace={pod.getNs()} />);
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
 
     expect(result.baseElement).toMatchSnapshot();
+  });
+
+  it("renders env from fieldRef", () => {
+    const container: Container = {
+      image: "my-image",
+      name: "my-first-container",
+      env: [
+        {
+          name: "metadata_name",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.name",
+            },
+          },
+        },
+        {
+          name: "metadata_namespace",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.namespace",
+            },
+          },
+        },
+        {
+          name: "metadata_uid",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.uid",
+            },
+          },
+        },
+        {
+          name: "metadata_annotations_1",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.annotations['my-annotation-key']",
+            },
+          },
+        },
+        {
+          name: "metadata_labels_1",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.labels['app']",
+            },
+          },
+        },
+        {
+          name: "spec_service_account_name",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "spec.serviceAccountName",
+            },
+          },
+        },
+        {
+          name: "spec_node_name",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "spec.nodeName",
+            },
+          },
+        },
+        {
+          name: "status_host_ip",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status.hostIP",
+            },
+          },
+        },
+        {
+          name: "status_host_ips",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status.hostIPs",
+            },
+          },
+        },
+        {
+          name: "status_pod_ip",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status.podIP",
+            },
+          },
+        },
+        {
+          name: "status_pod_ips",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status.podIPs",
+            },
+          },
+        },
+        {
+          name: "incorrect_field",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status",
+            },
+          },
+        },
+        {
+          name: "missing_field",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "status.missing",
+            },
+          },
+        },
+        {
+          name: "missing_annotation",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.annotations['missing']",
+            },
+          },
+        },
+        {
+          name: "missing_label",
+          valueFrom: {
+            fieldRef: {
+              fieldPath: "metadata.labels['missing']",
+            },
+          },
+        },
+      ],
+    };
+    const pod = new Pod({
+      apiVersion: "v1",
+      kind: "Pod",
+      metadata: {
+        name: "my-pod",
+        namespace: "default",
+        resourceVersion: "1",
+        selfLink: "/api/v1/pods/default/my-pod",
+        uid: "1234",
+        labels: {
+          app: "my-app",
+        },
+        annotations: {
+          "my-annotation-key": "my-annotation-value",
+        },
+      },
+      spec: {
+        serviceAccountName: "my-service-account",
+        nodeName: "my-node",
+        containers: [container],
+      },
+      status: {
+        phase: "Running",
+        conditions: [],
+        startTime: "2024-01-01T00:00:00Z",
+        hostIP: "1.2.3.4",
+        hostIPs: [
+          {
+            ip: "1.2.3.4",
+          },
+          {
+            ip: "5.6.7.8",
+          },
+        ],
+        podIP: "2.3.4.5",
+        podIPs: [
+          {
+            ip: "2.3.4.5",
+          },
+          {
+            ip: "6.7.8.9",
+          },
+        ],
+      },
+    });
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
+
+    expect(result.baseElement).toMatchSnapshot();
+  });
+
+  it("renders env from resourceFieldRef", () => {
+    const container: Container = {
+      image: "my-image",
+      name: "my-first-container",
+      resources: {
+        limits: {
+          cpu: "4",
+          memory: "8192",
+        },
+        requests: {
+          cpu: "2",
+          memory: "4096",
+        },
+      },
+      env: [
+        {
+          name: "limits_cpu",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_divided",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.cpu",
+              divisor: "2",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_1",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "my-first-container",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_2",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "my-second-container",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_missing",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "missing",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_missing_divided",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "missing",
+              resource: "limits.cpu",
+              divisor: "2",
+            },
+          },
+        },
+        {
+          name: "limits_memory",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.memory",
+            },
+          },
+        },
+        {
+          name: "requests_cpu",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "requests.cpu",
+            },
+          },
+        },
+        {
+          name: "requests_memory",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "requests.memory",
+            },
+          },
+        },
+      ],
+    };
+    const container2: Container = {
+      image: "my-image",
+      name: "my-second-container",
+      resources: {
+        requests: {
+          cpu: "500m",
+          memory: "128Mi",
+        },
+        limits: {
+          cpu: "1.5",
+          memory: "2Gi",
+        },
+      },
+      env: [
+        {
+          name: "limits_cpu",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_divided",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.cpu",
+              divisor: "2",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_1",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "my-first-container",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_2",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "my-second-container",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_cpu_container_missing",
+          valueFrom: {
+            resourceFieldRef: {
+              containerName: "missing",
+              resource: "limits.cpu",
+            },
+          },
+        },
+        {
+          name: "limits_memory",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "limits.memory",
+            },
+          },
+        },
+        {
+          name: "requests_cpu",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "requests.cpu",
+            },
+          },
+        },
+        {
+          name: "requests_memory",
+          valueFrom: {
+            resourceFieldRef: {
+              resource: "requests.memory",
+            },
+          },
+        },
+      ],
+    };
+    const pod = new Pod({
+      apiVersion: "v1",
+      kind: "Pod",
+      metadata: {
+        name: "my-pod",
+        namespace: "default",
+        resourceVersion: "1",
+        selfLink: "/api/v1/pods/default/my-pod",
+        uid: "1234",
+      },
+      spec: {
+        containers: [container, container2],
+      },
+    });
+    const result = render(<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />);
+    const result2 = render(<ContainerEnvironment pod={pod} container={container2} namespace={pod.getNs()} />);
+
+    expect(result.baseElement).toMatchSnapshot();
+    expect(result2.baseElement).toMatchSnapshot();
   });
 });

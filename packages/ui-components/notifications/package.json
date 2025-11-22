@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/notifications",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Highly extendable notifications in the Freelens.",
   "type": "commonjs",
   "files": [
@@ -29,7 +29,8 @@
   "homepage": "https://freelens.app",
   "scripts": {
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.0.1 node_modules"
+    "build:dev": "lens-webpack-build",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
   },
   "dependencies": {
     "@freelensapp/animate": "workspace:^",
@@ -45,7 +46,7 @@
     "@ogre-tools/injectable-react": "^17.11.1",
     "auto-bind": "^4.0.0",
     "lodash": "^4.17.21",
-    "mobx": "^6.13.7",
+    "mobx": "^6.15.0",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
@@ -55,14 +56,14 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.20",
-    "@types/react": "^17.0.88",
+    "@types/react": "^17.0.89",
     "@types/webpack-env": "^1.18.8",
     "css-loader": "^6.11.0",
     "postcss-loader": "^8.2.0",
-    "sass-loader": "^16.0.5",
+    "sass-loader": "^16.0.6",
     "ts-loader": "^9.5.4",
-    "type-fest": "^5.0.1",
-    "typescript": "^5.9.2",
-    "webpack": "^5.101.3"
+    "type-fest": "^5.2.0",
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.1"
   }
 }

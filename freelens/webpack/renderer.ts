@@ -5,7 +5,6 @@
  */
 
 import corePackageJson from "@freelensapp/core/package.json";
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
@@ -129,8 +128,6 @@ const renderer: webpack.Configuration = {
         },
       ],
     }),
-
-    ...(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
   ],
 };
 

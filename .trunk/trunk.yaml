@@ -7,7 +7,7 @@ cli:
 plugins:
   sources:
     - id: trunk
-      ref: v1.7.2
+      ref: v1.7.4
       uri: https://github.com/trunk-io/plugins
 # Many linters and tools depend on runtimes - configure them here. (https://docs.trunk.io/runtimes)
 runtimes:
@@ -58,14 +58,14 @@ lint:
       files:
         - sass
   enabled:
-    - actionlint@1.7.7
-    - biome@2.2.4! # datasource=npm depName=@biomejs/biome
+    - actionlint@1.7.9
+    - biome@2.3.6! # datasource=npm depName=@biomejs/biome
     - git-diff-check
-    - markdownlint@0.45.0
+    - markdownlint@0.46.0
     - prettier@3.6.2! # datasource=npm depName=prettier
     - shellcheck@0.11.0
     - shfmt@3.6.0
-    - yamlfmt@0.17.2
+    - yamlfmt@0.20.0
     - yamllint@1.37.1
   disabled:
     - checkov
