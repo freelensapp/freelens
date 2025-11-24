@@ -8,6 +8,7 @@ import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
+import packageJson from "../../../package.json";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
 import nodeFetchInjectable, { type NodeFetchRequestInit } from "../fetch/node-fetch.injectable";
 
@@ -31,8 +32,15 @@ const createKubeJsonApiInjectable = getInjectable({
             ca: lensProxyCert.get().cert,
           });
 
+          console.log({
+            "User-Agent": `Freelens/${packageJson.version}`,
+          });
+
           return {
             agent,
+            headers: {
+              "User-Agent": `Freelens/${packageJson.version}`,
+            },
           };
         };
       }
