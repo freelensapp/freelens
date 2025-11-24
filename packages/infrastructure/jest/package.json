@@ -20,7 +20,7 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "identity-obj-proxy": "^3.0.0",

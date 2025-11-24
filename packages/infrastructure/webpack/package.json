@@ -21,8 +21,8 @@
   "homepage": "https://github.com/lensapp/lens",
   "scripts": {
     "build": "webpack",
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
