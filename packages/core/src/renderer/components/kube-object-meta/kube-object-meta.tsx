@@ -21,6 +21,7 @@ import { LinkToNamespace } from "../kube-object-link";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
 import { MonacoEditor } from "../monaco-editor";
+import { WithTooltip } from "../with-tooltip";
 
 import type { KubeMetaField } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
@@ -49,6 +50,16 @@ interface Dependencies {
   logger: Logger;
 }
 
+function ManagedFieldEntryLabel({ entry }: { entry: ManagedFieldsEntry }) {
+  return (
+    <WithTooltip tooltip={entry.time && <DurationAbsoluteTimestamp timestamp={entry.time} />}>
+      {entry.manager}
+      {": "}
+      {entry.operation}
+    </WithTooltip>
+  );
+}
+
 const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMetaProps) => {
   const { apiManager, getDetailsUrl, object, hideFields = ["uid", "resourceVersion", "selfLink"], logger } = props;
 
@@ -70,8 +81,10 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
       entry !== null &&
       "manager" in entry &&
       typeof entry.manager === "string" &&
+      entry.manager.length > 0 &&
       "operation" in entry &&
-      typeof entry.operation === "string"
+      typeof entry.operation === "string" &&
+      entry.operation.length > 0
     );
   };
 
@@ -131,7 +144,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
         <DrawerItem name="Managed Fields" hidden={isHidden("managedFields")}>
           {managedFields.filter(isManagedFieldsEntry).map((entry) => (
             <DrawerParamToggler
-              label={`${entry.manager}: ${entry.operation}`}
+              label={<ManagedFieldEntryLabel entry={entry} />}
               key={`${entry.manager}-${entry.operation}`}
             >
               <MonacoEditor
