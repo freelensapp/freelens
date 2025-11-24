@@ -23,7 +23,7 @@
     "build:freelens": "cd freelens && corepack pnpm build",
     "build:resources": "turbo run build:resources --",
     "clean": "corepack pnpm -r clean",
-    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.0 node_modules",
+    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.2 node_modules",
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
     "start": "cd freelens && corepack pnpm start",

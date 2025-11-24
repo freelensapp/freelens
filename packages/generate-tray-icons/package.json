@@ -4,10 +4,10 @@
   "description": "CLI generating tray icons for building a lens-like application",
   "license": "MIT",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
     "build": "tsc --pretty --project .",
     "build:dev": "tsc --pretty --project .",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "start": "node --experimental-import-meta-resolve ./dist/index.js"
   },
   "files": [

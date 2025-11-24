@@ -21,8 +21,8 @@
     "email": "freelens@freelens.app"
   },
   "scripts": {
-    "clean": "corepack pnpm dlx rimraf@6.1.0 binaries dist static/build",
-    "clean:node_modules": "corepack pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "corepack pnpm dlx rimraf@6.1.2 binaries dist static/build",
+    "clean:node_modules": "corepack pnpm dlx rimraf@6.1.2 node_modules",
     "build": "webpack --config webpack/webpack.ts --progress",
     "postbuild": "corepack pnpm build:resources",
     "build:dev": "NODE_ENV=development webpack --config webpack/webpack.ts --progress",
@@ -46,7 +46,7 @@
     "start:darwin:x86_64": "./dist/mac/Freelens.app/Contents/MacOS/Freelens",
     "start:default": "exit 1",
     "dev": "NODE_ENV=development corepack pnpm \"/^dev:/\"",
-    "dev:electron": "corepack pnpm dlx rimraf@6.1.0 ./static/build/freelens.js ./static/build/index.html && corepack pnpm dlx chokidar-cli@3.0.0 ./static/build/freelens.js ./static/build/index.html --throttle 5000 --command \"corepack pnpm start:electron\"",
+    "dev:electron": "corepack pnpm dlx rimraf@6.1.2 ./static/build/freelens.js ./static/build/index.html && corepack pnpm dlx chokidar-cli@3.0.0 ./static/build/freelens.js ./static/build/index.html --throttle 5000 --command \"corepack pnpm start:electron\"",
     "dev:webpack": "webpack --config webpack/main.ts --progress --watch",
     "dev:server": "ts-node ./webpack/dev-server.ts",
     "start:electron": "electron --remote-debugging-port=9223 --inspect .",

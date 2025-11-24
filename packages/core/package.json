@@ -55,8 +55,8 @@
   "scripts": {
     "build": "webpack --config webpack/library-bundle.ts --progress",
     "build:dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress",
-    "clean": "corepack pnpm dlx rimraf@6.1.0 dist static/build",
-    "clean:node_modules": "corepack pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "corepack pnpm dlx rimraf@6.1.2 dist static/build",
+    "clean:node_modules": "corepack pnpm dlx rimraf@6.1.2 node_modules",
     "dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress --watch",
     "test:unit": "jest",
     "test:watch": "jest --watch --testPathIgnorePatterns integration"

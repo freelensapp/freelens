@@ -21,7 +21,7 @@
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "compute-versions": "node ./build/compute-versions.mjs",
     "dev": "lens-webpack-build --watch",
     "precompute-versions": "tsc --pretty --project build"
