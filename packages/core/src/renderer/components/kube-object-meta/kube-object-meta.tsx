@@ -7,23 +7,36 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import yaml from "js-yaml";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { DrawerItem, DrawerItemLabels } from "../drawer";
+import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
+import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { LinkToNamespace } from "../kube-object-link";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
+import { MonacoEditor } from "../monaco-editor";
 
 import type { KubeMetaField } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+
+interface ManagedFieldsEntry {
+  manager: string;
+  operation: "Apply" | "Update";
+  apiVersion?: string;
+  time?: string;
+  fieldsType?: string;
+  fieldsV1?: unknown;
+  subresource?: string;
+}
 
 export interface KubeObjectMetaProps {
   object: KubeObject;
@@ -51,9 +64,20 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
 
   const isHidden = (field: KubeMetaField) => hideFields.includes(field);
 
+  const isManagedFieldsEntry = (entry: unknown): entry is ManagedFieldsEntry => {
+    return (
+      typeof entry === "object" &&
+      entry !== null &&
+      "manager" in entry &&
+      typeof entry.manager === "string" &&
+      "operation" in entry &&
+      typeof entry.operation === "string"
+    );
+  };
+
   const {
     selfLink,
-    metadata: { creationTimestamp, deletionTimestamp },
+    metadata: { creationTimestamp, deletionTimestamp, managedFields },
   } = object;
   const ownerRefs = object.getOwnerRefs();
   const namespace = object.getNs();
@@ -100,6 +124,22 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
               {`${ref.kind} `}
               <Link to={getDetailsUrl(apiManager.lookupApiLink(ref, object))}>{ref.name}</Link>
             </p>
+          ))}
+        </DrawerItem>
+      )}
+      {managedFields && managedFields.length > 0 && (
+        <DrawerItem name="Managed Fields" hidden={isHidden("managedFields")}>
+          {managedFields.filter(isManagedFieldsEntry).map((entry) => (
+            <DrawerParamToggler
+              label={`${entry.manager}: ${entry.operation}`}
+              key={`${entry.manager}-${entry.operation}`}
+            >
+              <MonacoEditor
+                readOnly
+                style={{ height: 200 }}
+                value={yaml.dump(entry.fieldsV1, defaultYamlDumpOptions)}
+              />
+            </DrawerParamToggler>
           ))}
         </DrawerItem>
       )}
