@@ -6,20 +6,20 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { preferenceItemInjectionToken } from "../../../preference-item-injection-token";
-import { HelmPathToBinary } from "./helm-path-to-binary";
+import { HelmServerSide } from "./helm-server-side";
 
-const helmPathToBinaryPreferenceBlockInjectable = getInjectable({
-  id: "helm-path-to-binary-preference-item",
+const helmServerSidePreferenceBlockInjectable = getInjectable({
+  id: "helm-server-side-preference-item",
 
   instantiate: () => ({
     kind: "block" as const,
-    id: "helm-path-to-binary",
+    id: "helm-server-side",
     parentId: "helm",
-    orderNumber: 10,
-    Component: HelmPathToBinary,
+    orderNumber: 20,
+    Component: HelmServerSide,
   }),
 
   injectionToken: preferenceItemInjectionToken,
 });
 
-export default helmPathToBinaryPreferenceBlockInjectable;
+export default helmServerSidePreferenceBlockInjectable;
