@@ -9,6 +9,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../../badge";
+import { Checkbox } from "../../checkbox";
 import { Notice } from "../../extensions/notice";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
@@ -49,6 +50,11 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
               <Badge label={model.name} />
               <span>Namespace:</span>
               <Badge label={model.namespace} />
+              <Checkbox
+                label="Managed Fields"
+                value={model.managedFields.value.get()}
+                onChange={model.managedFields.onChange}
+              />
             </div>
           }
         />
