@@ -189,7 +189,11 @@ export class EditResourceModel {
     runInAction(() => {
       const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), defaultYamlDumpOptions);
       this.editingResource.firstDraft = newYaml;
-      this.editingResource.draft = newYaml;
+
+      // Only set draft if there isn't already a saved draft from previous session
+      if (!this.editingResource.draft) {
+        this.editingResource.draft = newYaml;
+      }
 
       // Store managed fields if they exist for future restoration
       if (!this.managedFields.value.get() && this._resource!.metadata?.managedFields) {
