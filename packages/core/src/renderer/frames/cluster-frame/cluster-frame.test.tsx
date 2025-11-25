@@ -26,6 +26,9 @@ import { ClusterFrame } from "./cluster-frame";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import {
+  getClusterPageMenuOrderInjectable
+} from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 describe("<ClusterFrame />", () => {
   let render: () => RenderResult;
@@ -46,6 +49,9 @@ describe("<ClusterFrame />", () => {
     di.override(directoryForUserDataInjectable, () => "/some/irrelavent/path");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
     di.override(currentlyInClusterFrameInjectable, () => true);
+    di.override(getClusterPageMenuOrderInjectable, () => (key: string, defaultValue: number) => {
+      return computed(() => defaultValue);
+    });
 
     testUsingFakeTime("2000-01-01 12:00:00am");
 

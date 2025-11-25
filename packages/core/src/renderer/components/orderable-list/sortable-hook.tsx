@@ -1,6 +1,6 @@
 import { DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { random } from "lodash";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, {ReactElement, useEffect, useMemo, useState} from "react";
 
 interface OrderableListHookDependencies {
   children: React.ReactElement[];
@@ -8,6 +8,7 @@ interface OrderableListHookDependencies {
 }
 
 const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependencies) => {
+  const stableChildren = useMemo(() => children, [children.map(c => c.key).join(",")]);
   const [items, setItems] = useState<ReactElement[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
@@ -15,7 +16,7 @@ const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependen
 
   useEffect(() => {
     setItems(children);
-  }, [children]);
+  }, [stableChildren]);
 
   const onDragStart = (event: DragStartEvent) => {
     const activeIndex = items.findIndex((item) => item.key === event.active.id);

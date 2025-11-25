@@ -34,7 +34,7 @@ const useSidebarHook = ({ sidebarStorage, extensionLoader }: Dependencies) => {
       const newOrder = __orderElements(sidebarStorageElements);
       __updateStorage(newOrder);
     }
-  }, [extensionLoader.toJSON()]);
+  }, [extensionLoader.userExtensions]);
 
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
     const sidebarStorageElements = Object.entries(sidebarStorage.get().order).map((entry) => entry[0]);
