@@ -395,7 +395,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
                   "sidebar-item-some-extension-name": 9999,
                   "sidebar-item-storage": 60,
                   "sidebar-item-user-management": 100,
-                  "sidebar-item-workloads": 30
+                  "sidebar-item-workloads": 30,
                 },
                 width: 200,
               },

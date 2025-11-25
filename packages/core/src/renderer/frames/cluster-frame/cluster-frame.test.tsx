@@ -26,9 +26,7 @@ import { ClusterFrame } from "./cluster-frame";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
-import {
-  getClusterPageMenuOrderInjectable
-} from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 describe("<ClusterFrame />", () => {
   let render: () => RenderResult;

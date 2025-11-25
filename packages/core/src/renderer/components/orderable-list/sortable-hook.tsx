@@ -8,7 +8,7 @@ interface OrderableListHookDependencies {
 }
 
 const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependencies) => {
-  const stableChildren = useMemo(() => children, [children.map(c => c.key).join(",")]);
+  const stableChildren = useMemo(() => children, [children.map((c) => c.key).join(",")]);
   const [items, setItems] = useState<ReactElement[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
