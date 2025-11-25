@@ -1203,6 +1203,21 @@ exports[`installing helm chart from previously opened tab given tab for installi
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
