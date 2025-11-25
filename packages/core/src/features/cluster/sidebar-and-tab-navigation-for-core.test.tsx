@@ -270,7 +270,7 @@ describe("cluster - sidebar and tab navigation for core", () => {
             expect(actual).toBe(false);
           });
 
-          it("when enough time passes, stores state for expanded sidebar items to file system", async () => {
+          it("when enough time passes, stores state for expanded and order sidebar items to file system", async () => {
             advanceFakeTime(250);
 
             const readJsonFileFake = windowDi.inject(readJsonFileInjectable);
@@ -284,6 +284,19 @@ describe("cluster - sidebar and tab navigation for core", () => {
             expect(actual).toEqual({
               sidebar: {
                 expanded: { "sidebar-item-some-parent": true },
+                order: {
+                  "sidebar-item-cluster-overview": 10,
+                  "sidebar-item-config": 40,
+                  "sidebar-item-custom-resources": 110,
+                  "sidebar-item-events": 80,
+                  "sidebar-item-helm": 90,
+                  "sidebar-item-namespaces": 70,
+                  "sidebar-item-network": 50,
+                  "sidebar-item-nodes": 20,
+                  "sidebar-item-storage": 60,
+                  "sidebar-item-user-management": 100,
+                  "sidebar-item-workloads": 30
+                },
                 width: 200,
               },
             });
