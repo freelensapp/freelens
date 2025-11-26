@@ -12,6 +12,7 @@ import React from "react";
 import { Router } from "react-router";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
@@ -26,7 +27,6 @@ import { ClusterFrame } from "./cluster-frame";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
-import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 
 describe("<ClusterFrame />", () => {
   let render: () => RenderResult;
