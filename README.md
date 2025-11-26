@@ -158,6 +158,12 @@ by default.
 The version of the MSI package has the last 4th digit always `0` and this is a
 limitation of this package format.
 
+
+#### Portable
+
+Download the Portable EXE from the [releases](https://github.com/freelensapp/freelens/releases) page.
+It is a self-contained executable that can be run without installation.
+
 #### WinGet
 
 The package is available in
