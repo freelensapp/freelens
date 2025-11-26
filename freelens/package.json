@@ -145,7 +145,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@electron/notarize": "^3.0.2",
+    "@electron/notarize": "^3.1.0",
     "@electron/rebuild": "^4.0.1",
     "@freelensapp/animate": "workspace:^",
     "@freelensapp/button": "workspace:^",
