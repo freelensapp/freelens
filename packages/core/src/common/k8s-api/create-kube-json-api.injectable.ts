@@ -32,10 +32,6 @@ const createKubeJsonApiInjectable = getInjectable({
             ca: lensProxyCert.get().cert,
           });
 
-          console.log({
-            "User-Agent": `Freelens/${packageJson.version}`,
-          });
-
           return {
             agent,
             headers: {
