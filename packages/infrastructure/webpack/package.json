@@ -35,7 +35,7 @@
     "fs-extra": "^11.3.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.9.4",
-    "sass": "^1.94.0",
+    "sass": "^1.94.2",
     "sass-loader": "^16.0.6",
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.1.17",
