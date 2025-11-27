@@ -9,9 +9,6 @@
     "renovate"
   ],
   "osvVulnerabilityAlerts": true,
-  "postUpdateOptions": [
-    "pnpmDedupe"
-  ],
   // always bump depdenencies even when are in the range
   "rangeStrategy": "bump",
   "vulnerabilityAlerts": {

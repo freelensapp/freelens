@@ -39,6 +39,7 @@ const NonInjectedKubectlPathToBinary = observer(({ state, defaultPathForKubectlB
         onBlur={save}
         disabled={state.downloadKubectlBinaries}
       />
+      <div className="hint">The path to the kubectl binary. Defaults to the bundled version.</div>
     </section>
   );
 });

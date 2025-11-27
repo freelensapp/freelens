@@ -3481,6 +3481,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -4622,6 +4637,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -5733,6 +5763,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -6839,6 +6884,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -7945,6 +8005,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -9074,6 +9149,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -10215,6 +10305,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -11321,6 +11426,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -12359,7 +12479,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           </p>
         </div>
         <div
-          class="box"
+          class="box close-icon"
         >
           <i
             class="Icon close material interactive focusable"
@@ -13267,7 +13387,7 @@ exports[`installing helm chart from new tab given tab for installing chart was n
           </p>
         </div>
         <div
-          class="box"
+          class="box close-icon"
         >
           <i
             class="Icon close material interactive focusable"
@@ -15294,6 +15414,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -17608,6 +17743,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -18766,6 +18916,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -19872,6 +20037,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -20978,6 +21158,21 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                         class="input-info flex gaps"
                       />
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div

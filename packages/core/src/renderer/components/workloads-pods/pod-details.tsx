@@ -55,6 +55,8 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     const podIPs = pod.getIPs();
     const { nodeName } = spec ?? {};
     const nodeSelector = pod.getNodeSelectors();
+    const { hostIP } = status ?? {};
+    const hostIPs = pod.getHostIPs();
 
     const namespace = pod.getNs();
     const priorityClassName = pod.getPriorityClassName();
@@ -69,9 +71,13 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         <DrawerItem name="Node" hidden={!nodeName}>
           <LinkToNode name={nodeName} />
         </DrawerItem>
-        <DrawerItem name="Pod IP">{podIP}</DrawerItem>
-        <DrawerItem name="Pod IPs" hidden={podIPs.length === 0} labelsOnly>
-          {podIPs.map((label) => (
+        <DrawerItem name="Host IPs" hidden={!hostIPs.length && !hostIP} labelsOnly>
+          {(hostIPs.length ? hostIPs : hostIP ? [hostIP] : []).map((label) => (
+            <Badge key={label} label={label} />
+          ))}
+        </DrawerItem>
+        <DrawerItem name="Pod IPs" hidden={!podIPs.length && !podIP} labelsOnly>
+          {(podIPs.length ? podIPs : podIP ? [podIP] : []).map((label) => (
             <Badge key={label} label={label} />
           ))}
         </DrawerItem>

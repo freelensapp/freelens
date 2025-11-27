@@ -24,8 +24,8 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
@@ -49,7 +49,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@testing-library/react": "^12.1.5",
-    "@types/react": "^17.0.89",
+    "@types/react": "^17.0.90",
     "@types/react-dom": "^17.0.26",
     "@types/webpack-env": "^1.18.8",
     "identity-obj-proxy": "^3.0.0",

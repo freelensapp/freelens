@@ -26,8 +26,8 @@
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "dev": "lens-webpack-build --watch",
     "test:unit": "jest --coverage --runInBand --detectOpenHandles --forceExit"
   },
@@ -51,7 +51,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/byline": "^4.2.36",
-    "@types/lodash": "^4.17.20",
+    "@types/lodash": "^4.17.21",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "rfc6902": "^5.1.2",

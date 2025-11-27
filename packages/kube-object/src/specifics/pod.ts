@@ -922,4 +922,10 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
 
     return podIPs.map((value) => value.ip);
   }
+
+  getHostIPs(): string[] {
+    const hostIPs = this.status?.hostIPs ?? [];
+
+    return hostIPs.map((value) => value.ip);
+  }
 }
