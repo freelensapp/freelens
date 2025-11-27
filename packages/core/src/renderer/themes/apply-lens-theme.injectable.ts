@@ -23,6 +23,7 @@ const applyLensThemeInjectable = getInjectable({
       try {
         const colors = object.entries(theme.colors);
 
+        // Set each CSS variable on document.documentElement
         for (const [name, value] of colors) {
           document.documentElement.style.setProperty(`--${name}`, value);
         }
