@@ -58,6 +58,9 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     const { hostIP } = status ?? {};
     const hostIPs = pod.getHostIPs();
 
+    const requests = Object.entries(spec.resources?.requests ?? {});
+    const limits = Object.entries(spec.resources?.limits ?? {});
+
     const namespace = pod.getNs();
     const priorityClassName = pod.getPriorityClassName();
     const runtimeClassName = pod.getRuntimeClassName();
@@ -103,6 +106,22 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
 
         <PodDetailsTolerations workload={pod} />
         <PodDetailsAffinities workload={pod} />
+
+        {requests.length > 0 && (
+          <DrawerItem name="Requests" labelsOnly>
+            {requests.map(([key, value], index) => (
+              <Badge key={index} label={`${key}=${value}`} />
+            ))}
+          </DrawerItem>
+        )}
+
+        {limits.length > 0 && (
+          <DrawerItem name="Limits" labelsOnly>
+            {limits.map(([key, value], index) => (
+              <Badge key={index} label={`${key}=${value}`} />
+            ))}
+          </DrawerItem>
+        )}
 
         <DrawerItem name="Secrets" hidden={pod.getSecrets().length === 0}>
           <PodDetailsSecrets pod={pod} />
