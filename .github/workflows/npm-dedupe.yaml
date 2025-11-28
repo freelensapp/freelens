@@ -4,6 +4,12 @@ on:
   issue_comment:
     types:
       - created
+  push:
+    branches:
+      - main
+    paths:
+      - '**/package.json'
+      - '**/pnpm-lock.yaml'
   schedule:
     - cron: 46 6 * * *
   workflow_dispatch: {}
