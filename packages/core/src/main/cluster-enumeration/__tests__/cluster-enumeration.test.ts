@@ -10,8 +10,8 @@ import catalogEntityRegistryInjectable from "../../catalog/entity-registry.injec
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import clusterEnumerationInjectable from "../cluster-enumeration.injectable";
 
+import type { ClusterEnumeration } from "../../../features/cluster/enumeration/common";
 import type { CatalogEntityRegistry } from "../../catalog/entity-registry";
-import type { ClusterEnumeration } from "../cluster-enumeration";
 
 function createTestCluster(options: {
   id: string;

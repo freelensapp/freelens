@@ -5,6 +5,6 @@
 
 // Re-export from common for convenience
 export { ClusterEnumeration } from "../../features/cluster/enumeration/common";
-export { default as clusterEnumerationInjectable } from "./cluster-enumeration.injectable";
+export { default as rendererClusterEnumerationInjectable } from "./cluster-enumeration.injectable";
 
 export type { ClusterEnumerationDependencies } from "../../features/cluster/enumeration/common";
