@@ -343,13 +343,13 @@ importers:
         version: 1.18.8
       circular-dependency-plugin:
         specifier: ^5.2.2
-        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.102.1)
+        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.103.0)
       copy-webpack-plugin:
         specifier: ^13.0.0
-        version: 13.0.0(webpack@5.102.1)
+        version: 13.0.0(webpack@5.103.0)
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       electron:
         specifier: ^35.7.5
         version: 35.7.5
@@ -361,10 +361,10 @@ importers:
         version: 26.0.12(dmg-builder@26.0.12)
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
-        version: 9.1.0(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.1.0(typescript@5.9.3)(webpack@5.103.0)
       html-webpack-plugin:
         specifier: ^5.6.3
-        version: 5.6.3(webpack@5.102.1)
+        version: 5.6.3(webpack@5.103.0)
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -376,28 +376,28 @@ importers:
         version: 29.7.0
       mini-css-extract-plugin:
         specifier: ^2.9.4
-        version: 2.9.4(webpack@5.102.1)
+        version: 2.9.4(webpack@5.103.0)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.1
-        version: 7.1.1(monaco-editor@0.54.0)(webpack@5.102.1)
+        version: 7.1.1(monaco-editor@0.54.0)(webpack@5.103.0)
       node-gyp:
         specifier: 12.1.0
         version: 12.1.0
       node-loader:
         specifier: ^2.1.0
-        version: 2.1.0(webpack@5.102.1)
+        version: 2.1.0(webpack@5.103.0)
       playwright:
         specifier: ^1.56.1
         version: 1.56.1
       style-loader:
         specifier: ^4.0.0
-        version: 4.0.0(webpack@5.102.1)
+        version: 4.0.0(webpack@5.103.0)
       ts-jest:
         specifier: ^29.4.5
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@22.16.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3)))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.3)
@@ -408,14 +408,14 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3))(typescript@5.9.3)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
-        version: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+        version: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
       webpack-dev-server:
         specifier: ^5.2.2
-        version: 5.2.2(webpack-cli@6.0.1)(webpack@5.102.1)
+        version: 5.2.2(webpack-cli@6.0.1)(webpack@5.103.0)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -497,10 +497,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/cluster-settings:
     dependencies:
@@ -519,10 +519,10 @@ importers:
         version: 17.0.90
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/cluster-sidebar:
     dependencies:
@@ -577,10 +577,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/core:
     dependencies:
@@ -1046,16 +1046,16 @@ importers:
         version: 8.18.1
       circular-dependency-plugin:
         specifier: ^5.2.2
-        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.102.1)
+        version: 5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.103.0)
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       electron:
         specifier: ^35.7.5
         version: 35.7.5
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
-        version: 9.1.0(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.1.0(typescript@5.9.3)(webpack@5.103.0)
       glob:
         specifier: ^13.0.0
         version: 13.0.0
@@ -1085,7 +1085,7 @@ importers:
         version: 0.3.1
       mini-css-extract-plugin:
         specifier: ^2.9.4
-        version: 2.9.4(webpack@5.102.1)
+        version: 2.9.4(webpack@5.103.0)
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1097,16 +1097,16 @@ importers:
         version: 12.1.0
       node-loader:
         specifier: ^2.1.0
-        version: 2.1.0(webpack@5.102.1)
+        version: 2.1.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       react-select-event:
         specifier: ^5.5.1
         version: 5.5.1
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       tailwindcss:
         specifier: ^4.1.17
         version: 4.1.17
@@ -1115,7 +1115,7 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@22.16.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3)))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.3)
@@ -1132,11 +1132,11 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3))(typescript@5.9.3)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
-        version: 6.0.1(webpack@5.102.1)
+        version: 6.0.1(webpack@5.103.0)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1189,7 +1189,7 @@ importers:
         version: 22.16.5
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.16.5)(typescript@5.9.3)
@@ -1200,11 +1200,11 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3))(typescript@5.9.3)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
-        version: 6.0.1(webpack@5.102.1)
+        version: 6.0.1(webpack@5.103.0)
 
   packages/generate-license:
     dependencies:
@@ -1284,10 +1284,10 @@ importers:
         version: 4.1.17
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
-        version: 9.1.0(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.1.0(typescript@5.9.3)(webpack@5.103.0)
       fs-extra:
         specifier: ^11.3.2
         version: 11.3.2
@@ -1296,31 +1296,31 @@ importers:
         version: 4.17.21
       mini-css-extract-plugin:
         specifier: ^2.9.4
-        version: 2.9.4(webpack@5.102.1)
+        version: 2.9.4(webpack@5.103.0)
       sass:
         specifier: ^1.94.2
         version: 1.94.2
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       style-loader:
         specifier: ^4.0.0
-        version: 4.0.0(webpack@5.102.1)
+        version: 4.0.0(webpack@5.103.0)
       tailwindcss:
         specifier: ^4.1.17
         version: 4.1.17
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.7.1)(typescript@5.9.3)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
-        version: 6.0.1(webpack@5.102.1)
+        version: 6.0.1(webpack@5.103.0)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1403,13 +1403,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/kubectl-versions:
     devDependencies:
@@ -1433,7 +1433,7 @@ importers:
         version: 7.7.3
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -1441,8 +1441,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/legacy-global-di:
     devDependencies:
@@ -1457,10 +1457,10 @@ importers:
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/list-layout:
     dependencies:
@@ -1482,10 +1482,10 @@ importers:
         version: link:../infrastructure/webpack
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/logger:
     dependencies:
@@ -1537,10 +1537,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
       winston-transport:
         specifier: ^4.9.0
         version: 4.9.0
@@ -1568,10 +1568,10 @@ importers:
         version: 17.0.2
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/random:
     dependencies:
@@ -1599,10 +1599,10 @@ importers:
         version: 1.18.8
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/resource-templates: {}
 
@@ -1647,10 +1647,10 @@ importers:
         version: 4.17.21
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/semver:
     dependencies:
@@ -1724,13 +1724,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/application/application-for-electron-main:
     dependencies:
@@ -1785,13 +1785,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/application/legacy-extensions:
     dependencies:
@@ -1819,13 +1819,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/feature-core:
     dependencies:
@@ -1856,10 +1856,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/computed-channel:
     dependencies:
@@ -1932,13 +1932,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging:
     dependencies:
@@ -1996,13 +1996,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-fake-bridge:
     dependencies:
@@ -2066,13 +2066,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-for-main:
     dependencies:
@@ -2127,13 +2127,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/messaging/messaging-for-renderer:
     dependencies:
@@ -2191,13 +2191,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/prometheus:
     dependencies:
@@ -2234,13 +2234,13 @@ importers:
         version: 1.18.8
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/technical-features/react-application:
     dependencies:
@@ -2322,13 +2322,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/transpilation/kubernetes-client-node:
     dependencies:
@@ -2368,13 +2368,13 @@ importers:
         version: 1.4.0(encoding@0.1.13)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/transpilation/node-fetch:
     devDependencies:
@@ -2386,13 +2386,13 @@ importers:
         version: 3.3.2
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/transpilation/openid-client:
     devDependencies:
@@ -2404,13 +2404,13 @@ importers:
         version: 6.8.1
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/animate:
     dependencies:
@@ -2450,22 +2450,22 @@ importers:
         version: 1.18.8
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/button:
     dependencies:
@@ -2493,22 +2493,22 @@ importers:
         version: 17.0.90
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/error-boundary:
     dependencies:
@@ -2557,25 +2557,25 @@ importers:
         version: 17.0.90
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/icon:
     dependencies:
@@ -2636,25 +2636,25 @@ importers:
         version: 5.3.3
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       history:
         specifier: ^4.10.1
         version: 4.10.1
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/notifications:
     dependencies:
@@ -2730,16 +2730,16 @@ importers:
         version: 1.18.8
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
@@ -2747,8 +2747,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/resizing-anchor:
     dependencies:
@@ -2785,22 +2785,22 @@ importers:
         version: 17.0.90
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/spinner:
     dependencies:
@@ -2825,22 +2825,22 @@ importers:
         version: 17.0.90
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/ui-components/tooltip:
     dependencies:
@@ -2895,7 +2895,7 @@ importers:
         version: 17.0.26(@types/react@17.0.90)
       css-loader:
         specifier: ^6.11.0
-        version: 6.11.0(webpack@5.102.1)
+        version: 6.11.0(webpack@5.103.0)
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2907,22 +2907,22 @@ importers:
         version: 29.7.0
       postcss-loader:
         specifier: ^8.2.0
-        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1)
+        version: 8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0)
       sass-loader:
         specifier: ^16.0.6
-        version: 16.0.6(sass@1.94.2)(webpack@5.102.1)
+        version: 16.0.6(sass@1.94.2)(webpack@5.103.0)
       ts-jest:
         specifier: ^29.4.5
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/event-emitter:
     devDependencies:
@@ -2949,10 +2949,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/json-api:
     dependencies:
@@ -2989,13 +2989,13 @@ importers:
         version: 5.1.2
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/kube-api:
     dependencies:
@@ -3068,7 +3068,7 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
@@ -3076,8 +3076,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/kube-api-specifics:
     dependencies:
@@ -3108,10 +3108,10 @@ importers:
         version: 1.18.8
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/react-testing-library-discovery:
     dependencies:
@@ -3130,10 +3130,10 @@ importers:
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/run-many:
     dependencies:
@@ -3185,7 +3185,7 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
@@ -3193,8 +3193,8 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/startable-stoppable:
     devDependencies:
@@ -3221,10 +3221,10 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/test-utils:
     dependencies:
@@ -3273,10 +3273,10 @@ importers:
         version: 17.0.2(react@17.0.2)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
   packages/utility-features/utilities:
     dependencies:
@@ -3355,13 +3355,13 @@ importers:
         version: 29.4.5(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.102.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.103.0)
       type-fest:
         specifier: ^5.2.0
         version: 5.2.0
       webpack:
-        specifier: ^5.102.1
-        version: 5.102.1(webpack-cli@6.0.1)
+        specifier: ^5.103.0
+        version: 5.103.0(webpack-cli@6.0.1)
 
 packages:
 
@@ -7222,8 +7222,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  loader-runner@4.3.0:
-    resolution: {integrity: sha512-3R/1M+yS3j5ou80Me59j7F9IMs4PXs3VqRrm0TU3AbKPxlmpoY1TNscJV/oGJXo8qCatFGTfDbY6W6ipGOYXfg==}
+  loader-runner@4.3.1:
+    resolution: {integrity: sha512-IWqP2SCPhyVFTBtRcgMHdzlf9ul25NwaFx4wCEH/KjAXuuHY4yNjvPXsBokp8jCB936PyWRaPKUNh8NvylLp2Q==}
     engines: {node: '>=6.11.5'}
 
   loader-utils@2.0.4:
@@ -9260,8 +9260,8 @@ packages:
     resolution: {integrity: sha512-yd1RBzSGanHkitROoPFd6qsrxt+oFhg/129YzheDGqeustzX0vTZJZsSsQjVQC4yzBQ56K55XU8gaNCtIzOnTg==}
     engines: {node: '>=10.13.0'}
 
-  webpack@5.102.1:
-    resolution: {integrity: sha512-7h/weGm9d/ywQ6qzJ+Xy+r9n/3qgp/thalBbpOi5i223dPXKi04IBtqPN9nTd+jBc7QKfvDbaBnFipYp4sJAUQ==}
+  webpack@5.103.0:
+    resolution: {integrity: sha512-HU1JOuV1OavsZ+mfigY0j8d1TgQgbZ6M+J75zDkpEAwYeXjWSqrGJtgnPblJjd/mAyTNQ7ygw0MiKOn6etz8yw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -10908,7 +10908,7 @@ snapshots:
   '@types/circular-dependency-plugin@5.0.8(webpack-cli@6.0.1)':
     dependencies:
       '@types/node': 22.16.5
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -11218,7 +11218,7 @@ snapshots:
   '@types/webpack-node-externals@3.0.4(webpack-cli@6.0.1)':
     dependencies:
       '@types/node': 22.16.5
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -11316,27 +11316,27 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)':
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)':
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.2)(webpack@5.102.1)':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.2)(webpack@5.103.0)':
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
     optionalDependencies:
-      webpack-dev-server: 5.2.2(webpack-cli@6.0.1)(webpack@5.102.1)
+      webpack-dev-server: 5.2.2(webpack-cli@6.0.1)(webpack@5.103.0)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)':
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.102.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.103.0)
 
   '@xmldom/xmldom@0.8.10': {}
 
@@ -11911,9 +11911,9 @@ snapshots:
 
   ci-info@3.8.0: {}
 
-  circular-dependency-plugin@5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.102.1):
+  circular-dependency-plugin@5.2.2(patch_hash=fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51)(webpack@5.103.0):
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   cjs-module-lexer@1.2.2: {}
 
@@ -12084,14 +12084,14 @@ snapshots:
     dependencies:
       is-what: 3.14.1
 
-  copy-webpack-plugin@13.0.0(webpack@5.102.1):
+  copy-webpack-plugin@13.0.0(webpack@5.103.0):
     dependencies:
       glob-parent: 6.0.2
       normalize-path: 3.0.0
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       tinyglobby: 0.2.12
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   core-util-is@1.0.2: {}
 
@@ -12177,7 +12177,7 @@ snapshots:
     dependencies:
       tiny-invariant: 1.3.1
 
-  css-loader@6.11.0(webpack@5.102.1):
+  css-loader@6.11.0(webpack@5.103.0):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.3)
       postcss: 8.5.3
@@ -12188,7 +12188,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.7.3
     optionalDependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   css-select@4.3.0:
     dependencies:
@@ -12853,7 +12853,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@9.1.0(typescript@5.9.3)(webpack@5.102.1):
+  fork-ts-checker-webpack-plugin@9.1.0(typescript@5.9.3)(webpack@5.103.0):
     dependencies:
       '@babel/code-frame': 7.26.2
       chalk: 4.1.2
@@ -12868,7 +12868,7 @@ snapshots:
       semver: 7.7.3
       tapable: 2.3.0
       typescript: 5.9.3
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   form-data@4.0.4:
     dependencies:
@@ -13152,7 +13152,7 @@ snapshots:
       relateurl: 0.2.7
       terser: 5.39.0
 
-  html-webpack-plugin@5.6.3(webpack@5.102.1):
+  html-webpack-plugin@5.6.3(webpack@5.103.0):
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
@@ -13160,7 +13160,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.3.0
     optionalDependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   htmlparser2@6.1.0:
     dependencies:
@@ -14241,7 +14241,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  loader-runner@4.3.0: {}
+  loader-runner@4.3.1: {}
 
   loader-utils@2.0.4:
     dependencies:
@@ -14445,11 +14445,11 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  mini-css-extract-plugin@2.9.4(webpack@5.102.1):
+  mini-css-extract-plugin@2.9.4(webpack@5.103.0):
     dependencies:
       schema-utils: 4.3.3
       tapable: 2.3.0
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   minimalistic-assert@1.0.1: {}
 
@@ -14575,11 +14575,11 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.1(monaco-editor@0.54.0)(webpack@5.102.1):
+  monaco-editor-webpack-plugin@7.1.1(monaco-editor@0.54.0)(webpack@5.103.0):
     dependencies:
       loader-utils: 2.0.4
       monaco-editor: 0.54.0
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   monaco-editor@0.54.0:
     dependencies:
@@ -14701,10 +14701,10 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-loader@2.1.0(webpack@5.102.1):
+  node-loader@2.1.0(webpack@5.103.0):
     dependencies:
       loader-utils: 2.0.4
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   node-pty@1.1.0-beta39:
     dependencies:
@@ -14977,14 +14977,14 @@ snapshots:
       postcss: 8.5.3
       ts-node: 10.9.2(@types/node@24.7.1)(typescript@5.9.3)
 
-  postcss-loader@8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.102.1):
+  postcss-loader@8.2.0(postcss@8.5.3)(typescript@5.9.3)(webpack@5.103.0):
     dependencies:
       cosmiconfig: 9.0.0(typescript@5.9.3)
       jiti: 2.6.1
       postcss: 8.5.3
       semver: 7.7.3
     optionalDependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
     transitivePeerDependencies:
       - typescript
 
@@ -15417,12 +15417,12 @@ snapshots:
     dependencies:
       truncate-utf8-bytes: 1.0.2
 
-  sass-loader@16.0.6(sass@1.94.2)(webpack@5.102.1):
+  sass-loader@16.0.6(sass@1.94.2)(webpack@5.103.0):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
       sass: 1.94.2
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   sass@1.94.0:
     dependencies:
@@ -15817,9 +15817,9 @@ snapshots:
 
   strnum@2.1.0: {}
 
-  style-loader@4.0.0(webpack@5.102.1):
+  style-loader@4.0.0(webpack@5.103.0):
     dependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   stylis@4.2.0: {}
 
@@ -15918,14 +15918,14 @@ snapshots:
       type-fest: 0.16.0
       unique-string: 2.0.0
 
-  terser-webpack-plugin@5.3.14(webpack@5.102.1):
+  terser-webpack-plugin@5.3.14(webpack@5.103.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       terser: 5.39.0
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   terser@5.39.0:
     dependencies:
@@ -16085,7 +16085,7 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.26.9)
       jest-util: 29.7.0
 
-  ts-loader@9.5.4(typescript@5.9.3)(webpack@5.102.1):
+  ts-loader@9.5.4(typescript@5.9.3)(webpack@5.103.0):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.3
@@ -16093,7 +16093,7 @@ snapshots:
       semver: 7.7.3
       source-map: 0.7.4
       typescript: 5.9.3
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
   ts-node@10.9.2(@types/node@22.16.5)(typescript@5.9.3):
     dependencies:
@@ -16380,12 +16380,12 @@ snapshots:
 
   webidl-conversions@8.0.0: {}
 
-  webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1):
+  webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.2)(webpack@5.103.0)
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -16394,17 +16394,17 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
       webpack-merge: 6.0.1
     optionalDependencies:
-      webpack-dev-server: 5.2.2(webpack-cli@6.0.1)(webpack@5.102.1)
+      webpack-dev-server: 5.2.2(webpack-cli@6.0.1)(webpack@5.103.0)
 
-  webpack-cli@6.0.1(webpack@5.102.1):
+  webpack-cli@6.0.1(webpack@5.103.0):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.102.1)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.103.0)
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -16413,10 +16413,10 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
       webpack-merge: 6.0.1
 
-  webpack-dev-middleware@7.4.2(webpack@5.102.1):
+  webpack-dev-middleware@7.4.2(webpack@5.103.0):
     dependencies:
       colorette: 2.0.20
       memfs: 4.17.1
@@ -16425,9 +16425,9 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
     optionalDependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
 
-  webpack-dev-server@5.2.2(webpack-cli@6.0.1)(webpack@5.102.1):
+  webpack-dev-server@5.2.2(webpack-cli@6.0.1)(webpack@5.103.0):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -16455,11 +16455,11 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.2(webpack@5.102.1)
+      webpack-dev-middleware: 7.4.2(webpack@5.103.0)
       ws: 8.18.3
     optionalDependencies:
-      webpack: 5.102.1(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      webpack: 5.103.0(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -16475,7 +16475,7 @@ snapshots:
 
   webpack-sources@3.3.3: {}
 
-  webpack@5.102.1(webpack-cli@6.0.1):
+  webpack@5.103.0(webpack-cli@6.0.1):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -16494,16 +16494,16 @@ snapshots:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
       json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
+      loader-runner: 4.3.1
       mime-types: 2.1.35
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.14(webpack@5.102.1)
+      terser-webpack-plugin: 5.3.14(webpack@5.103.0)
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     optionalDependencies:
-      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.102.1)
+      webpack-cli: 6.0.1(webpack-dev-server@5.2.2)(webpack@5.103.0)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
