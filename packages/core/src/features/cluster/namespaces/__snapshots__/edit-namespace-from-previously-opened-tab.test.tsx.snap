@@ -1106,6 +1106,21 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab given t
                       <span
                         class="label"
                       >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
                         Managed Fields
                       </span>
                     </label>
