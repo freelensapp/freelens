@@ -10,6 +10,7 @@ Feel free to submit a Pull Request to be added.
 | Individual | [Bandini Roberto](https://github.com/robertobandini) | Freelensapp | 2024 | [Roberto Bandini](https://www.robertobandini.it) | As the founder of Freelens I am its first user for managing Kubernetes clusters whether for work or personal R&D |
 | Individual | [Capuano Leopoldo](https://github.com/leo-capvano) | Freelensapp | 2024 | [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | Maintainer of Freelens |
 | Organization | [Clastix Labs](https://github.com/clastix) | Clastix | 2025 | [Clastix](https://clastix.io) | Clastix is using Freelens as tooling for managing Kubernetes clusters and resources. |
+| Individual | [Nedzad Winter](https://github.com/dazden94) | Freelensapp | 2025 | - | As a Cloud Engineer I am daily driving freelens. |
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
 

@@ -18,6 +18,7 @@ interface HelmReleaseCreatePayload {
   namespace: string;
   version: string;
   values: string;
+  forceConflicts?: boolean;
 }
 
 export type RequestCreateHelmRelease = (payload: HelmReleaseCreatePayload) => Promise<HelmReleaseUpdateDetails>;

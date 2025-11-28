@@ -4,7 +4,7 @@
   "description": "CLI for generating license files",
   "license": "MIT",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "files": [
     "src"

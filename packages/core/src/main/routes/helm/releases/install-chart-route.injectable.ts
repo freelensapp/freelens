@@ -18,6 +18,7 @@ const installChartArgsValidator = Joi.object<InstallChartArgs, true, InstallChar
   name: Joi.string(),
   namespace: Joi.string().required(),
   version: Joi.string().required(),
+  forceConflicts: Joi.boolean().optional(),
 });
 
 const installChartRouteInjectable = getRouteInjectable({

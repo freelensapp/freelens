@@ -24,9 +24,9 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "@ogre-tools/injectable": "^17.11.1"

@@ -15,7 +15,7 @@ const kubeconfigSyncPreferenceBlockInjectable = getInjectable({
     kind: "block" as const,
     id: "kubeconfig-sync",
     parentId: "kubernetes-page",
-    orderNumber: 20,
+    orderNumber: 30,
     Component: KubeconfigSync,
   }),
 

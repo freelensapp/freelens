@@ -37,6 +37,10 @@ export interface UpgradeChartModel {
     readonly value: IComputedValue<HelmChartVersion | undefined>;
     set: (value: SingleValue<SelectOption<HelmChartVersion>>) => void;
   };
+  readonly forceConflicts: {
+    readonly value: IComputedValue<boolean>;
+    set: (value: boolean) => void;
+  };
   submit: () => AsyncResult<void, string>;
 }
 
@@ -82,6 +86,11 @@ const upgradeChartModelInjectable = getInjectable({
       value: computed(() => versionValue.get() ?? versions.value.get()[0]),
       set: action((option) => versionValue.set(option?.value)),
     };
+    const forceConflictsValue = observable.box<boolean>(false);
+    const forceConflicts: UpgradeChartModel["forceConflicts"] = {
+      value: computed(() => forceConflictsValue.get()),
+      set: action((value) => forceConflictsValue.set(value)),
+    };
     const versionOptions = computed(() =>
       versions.value.get().map((version) => ({
         value: version,
@@ -94,6 +103,7 @@ const upgradeChartModelInjectable = getInjectable({
       versionOptions,
       configuration: configration,
       version,
+      forceConflicts,
       submit: async () => {
         const selectedVersion = version.value.get();
 
@@ -116,6 +126,7 @@ const upgradeChartModelInjectable = getInjectable({
         const result = await updateRelease(release.getName(), release.getNs(), {
           chart: release.getChart(),
           values: configration.value.get(),
+          forceConflicts: forceConflicts.value.get(),
           ...selectedVersion,
         });
 

@@ -92,6 +92,18 @@ export const EditResourceAnnotationName = "freelens.app/resource-version";
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
 
+  // Store the managed fields when they're removed so we can restore them
+  @observable private savedManagedFields: any = null;
+
+  readonly managedFields = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.managedFields.value.set(value);
+      this.toggleManagedFields(value);
+    }),
+  };
+
   readonly configuration = {
     value: computed(() => this.editingResource.draft || this.editingResource.firstDraft || ""),
 
@@ -133,6 +145,62 @@ export class EditResourceModel {
     return this.editingResource.resource;
   }
 
+  toggleManagedFields = (showManagedFields: boolean) => {
+    const currentValue = this.configuration.value.get();
+
+    if (!currentValue) {
+      return;
+    }
+
+    try {
+      const parsedYaml = yaml.load(currentValue) as RawKubeObject;
+
+      if (showManagedFields) {
+        // Restore managed fields if we have them saved
+        if (this.savedManagedFields && parsedYaml.metadata) {
+          parsedYaml.metadata.managedFields = this.savedManagedFields;
+        }
+      } else {
+        // Save and remove managed fields
+        if (parsedYaml.metadata?.managedFields) {
+          this.savedManagedFields = parsedYaml.metadata.managedFields;
+          delete parsedYaml.metadata.managedFields;
+        }
+      }
+
+      const newYaml = yaml.dump(parsedYaml, defaultYamlDumpOptions);
+
+      runInAction(() => {
+        this.editingResource.draft = newYaml;
+      });
+    } catch (error) {
+      // If parsing fails, show error but don't update the content
+      console.warn("Failed to parse YAML for managed fields toggle:", error);
+    }
+  };
+
+  regenerateYaml = () => {
+    if (!this._resource) {
+      return;
+    }
+
+    const omitFields = this.managedFields.value.get() ? [] : ["metadata.managedFields"];
+
+    runInAction(() => {
+      const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), defaultYamlDumpOptions);
+      this.editingResource.firstDraft = newYaml;
+
+      // Only set draft if there isn't already a saved draft from previous session
+      if (!this.editingResource.draft) {
+        this.editingResource.draft = newYaml;
+      }
+
+      // Store managed fields if they exist for future restoration
+      if (!this.managedFields.value.get() && this._resource!.metadata?.managedFields) {
+        this.savedManagedFields = this._resource!.metadata.managedFields;
+      }
+    });
+  };
   load = async (): Promise<void> => {
     await this.dependencies.waitForEditingResource();
 
@@ -168,9 +236,7 @@ export class EditResourceModel {
       return;
     }
 
-    runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), defaultYamlDumpOptions);
-    });
+    this.regenerateYaml();
   };
 
   get namespace() {

@@ -14,6 +14,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../../badge";
+import { Checkbox } from "../../checkbox";
 import { LogsDialog } from "../../dialog/logs-dialog";
 import { Input } from "../../input";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
@@ -102,6 +103,11 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
               value={customName.value.get()}
               onChange={customName.onChange}
               data-testid={`install-chart-custom-name-input-for-${tabId}`}
+            />
+            <Checkbox
+              label="Force conflicts"
+              value={model.forceConflicts.value.get()}
+              onChange={model.forceConflicts.onChange}
             />
           </div>
         }
