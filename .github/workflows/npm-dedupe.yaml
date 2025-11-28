@@ -80,7 +80,10 @@ jobs:
       - name: Run pnpm dedupe
         run: |
           pnpm dedupe 2>&1 | tee .github/update.log || true
-          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
+          echo '```' > .github/pr_body.log
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log >> .github/pr_body.log
+          echo '' >> .github/pr_body.log
+          echo '```' >> .github/pr_body.log
 
       - name: Check for changes
         run: |
