@@ -18,9 +18,8 @@ import type { CreateCustomResourceStore } from "./create-custom-resource-store.i
 
 export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any> ? Store : never;
 export type RegisterableApi<Api> = Api extends KubeApi<any, any> ? Api : never;
-export type KubeObjectStoreFrom<Api> = Api extends KubeApi<infer KubeObj, infer ApiData>
-  ? KubeObjectStore<KubeObj, Api, ApiData>
-  : never;
+export type KubeObjectStoreFrom<Api> =
+  Api extends KubeApi<infer KubeObj, infer ApiData> ? KubeObjectStore<KubeObj, Api, ApiData> : never;
 
 export type FindApiCallback = (api: KubeApi<KubeObject>) => boolean;
 
