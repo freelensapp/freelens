@@ -25,6 +25,7 @@ import type {
   PodSecurityContext,
   Probe,
   ResourceFieldSelector,
+  ResourceRequirements,
 } from "../types";
 import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type { SecretReference } from "./secret";
@@ -587,6 +588,7 @@ export interface PodSpec {
   tolerations?: Toleration[];
   topologySpreadConstraints?: TopologySpreadConstraint[];
   volumes?: PodSpecVolume[];
+  resources?: ResourceRequirements;
 }
 
 export type PodConditionType =
