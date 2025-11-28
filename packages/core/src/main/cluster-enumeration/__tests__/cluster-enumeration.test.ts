@@ -6,41 +6,13 @@
 import { observable, reaction } from "mobx";
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import { ClusterConnectionStatus } from "../../../extensions/common-api/cluster-types";
+import { createTestCluster } from "../../../features/cluster/enumeration/common/test-utils";
 import catalogEntityRegistryInjectable from "../../catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import clusterEnumerationInjectable from "../cluster-enumeration.injectable";
 
 import type { ClusterEnumeration } from "../../../features/cluster/enumeration/common";
 import type { CatalogEntityRegistry } from "../../catalog/entity-registry";
-
-function createTestCluster(options: {
-  id: string;
-  name: string;
-  status?: LensKubernetesClusterStatus;
-  labels?: Record<string, string>;
-  kubeConfigPath?: string;
-  contextName?: string;
-  distro?: string;
-  kubeVersion?: string;
-}): KubernetesCluster {
-  return new KubernetesCluster({
-    metadata: {
-      uid: options.id,
-      name: options.name,
-      source: "test",
-      labels: options.labels ?? {},
-      distro: options.distro,
-      kubeVersion: options.kubeVersion,
-    },
-    spec: {
-      kubeconfigPath: options.kubeConfigPath ?? `/home/user/.kube/config-${options.id}`,
-      kubeconfigContext: options.contextName ?? `context-${options.id}`,
-    },
-    status: {
-      phase: options.status ?? LensKubernetesClusterStatus.DISCONNECTED,
-    },
-  });
-}
 
 describe("ClusterEnumeration", () => {
   let clusterEnumeration: ClusterEnumeration;

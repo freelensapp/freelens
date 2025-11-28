@@ -4,38 +4,14 @@
  */
 
 import { observable } from "mobx";
-import {
-  KubernetesCluster,
-  LensKubernetesClusterStatus,
-} from "../../../../../common/catalog-entities/kubernetes-cluster";
+import { LensKubernetesClusterStatus } from "../../../../../common/catalog-entities/kubernetes-cluster";
 import catalogEntityRegistryInjectable from "../../../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
+import { createTestCluster } from "../../common/test-utils";
 import getAllClustersInjectable from "../get-all-clusters.injectable";
 import getClusterByIdInjectable from "../get-cluster-by-id.injectable";
 
 import type { ClusterInfo } from "../../../../../extensions/common-api/cluster-types";
-
-function createTestCluster(options: {
-  id: string;
-  name: string;
-  status?: LensKubernetesClusterStatus;
-}): KubernetesCluster {
-  return new KubernetesCluster({
-    metadata: {
-      uid: options.id,
-      name: options.name,
-      source: "test",
-      labels: {},
-    },
-    spec: {
-      kubeconfigPath: `/home/user/.kube/config-${options.id}`,
-      kubeconfigContext: `context-${options.id}`,
-    },
-    status: {
-      phase: options.status ?? LensKubernetesClusterStatus.DISCONNECTED,
-    },
-  });
-}
 
 describe("Cluster Enumeration IPC Handlers", () => {
   describe("getAllClusters handler", () => {

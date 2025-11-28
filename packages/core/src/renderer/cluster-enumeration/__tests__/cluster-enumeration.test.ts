@@ -6,33 +6,7 @@
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import { ClusterConnectionStatus } from "../../../extensions/common-api/cluster-types";
 import { ClusterEnumeration } from "../../../features/cluster/enumeration/common";
-
-function createTestCluster(options: {
-  id: string;
-  name: string;
-  status?: LensKubernetesClusterStatus;
-  labels?: Record<string, string>;
-  distro?: string;
-  kubeVersion?: string;
-}): KubernetesCluster {
-  return new KubernetesCluster({
-    metadata: {
-      uid: options.id,
-      name: options.name,
-      source: "test",
-      labels: options.labels ?? {},
-      distro: options.distro,
-      kubeVersion: options.kubeVersion,
-    },
-    spec: {
-      kubeconfigPath: `/home/user/.kube/config-${options.id}`,
-      kubeconfigContext: `context-${options.id}`,
-    },
-    status: {
-      phase: options.status ?? LensKubernetesClusterStatus.DISCONNECTED,
-    },
-  });
-}
+import { createTestCluster } from "../../../features/cluster/enumeration/common/test-utils";
 
 function createRendererEnumeration(clusters: KubernetesCluster[], activeId?: string) {
   const activeCluster = activeId ? clusters.find((c) => c.getId() === activeId) : undefined;
