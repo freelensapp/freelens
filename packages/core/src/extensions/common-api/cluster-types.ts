@@ -57,12 +57,3 @@ export interface ClusterInfo {
   readonly isActive: boolean;
   readonly metadata?: ClusterMetadata;
 }
-
-/**
- * Event emitted when the cluster list changes.
- */
-export interface ClusterListChangeEvent {
-  readonly type: "added" | "removed" | "updated";
-  readonly cluster: ClusterInfo;
-  readonly timestamp: Date;
-}
