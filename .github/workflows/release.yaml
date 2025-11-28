@@ -319,7 +319,7 @@ jobs:
           trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
           certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
           files-folder: ${{ github.workspace }}\freelens\dist
-          files-folder-filter: exe,msi
+          files-folder-filter: exe,msi,portable
 
       - name: Tweak binaries
         shell: bash
@@ -346,6 +346,7 @@ jobs:
             s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
             s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
             s/-(amd64|arm64).(exe|msi|)$/-windows-$1.$2/;
+            s/-Portable-windows-(amd64|arm64)\.exe/-windows-$1-portable.exe/;
             my $dst = $_;
             if ($src ne $dst) {
               print "rename $src to $dst\n";
