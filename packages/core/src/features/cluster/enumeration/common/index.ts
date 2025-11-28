@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+export { getAllClustersChannel, getClusterByIdChannel } from "./channels";
 export {
   extractClusterMetadata,
   mapClusterStatus,
