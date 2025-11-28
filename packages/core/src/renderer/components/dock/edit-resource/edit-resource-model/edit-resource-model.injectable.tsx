@@ -244,10 +244,8 @@ export class EditResourceModel {
       this.editingResource.firstDraft = newYaml;
 
       // Only set draft if there isn't already a saved draft from previous session
-      if (!this.editingResource.draft) {
-        this.editingResource.draft = newYaml;
-      } else {
-        // Update draft when explicitly regenerating (e.g., when toggling sort)
+      // OR if we're explicitly regenerating (sortKeys parameter was provided)
+      if (!this.editingResource.draft || sortKeys !== undefined) {
         this.editingResource.draft = newYaml;
       }
 
