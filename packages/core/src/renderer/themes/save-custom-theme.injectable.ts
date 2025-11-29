@@ -7,38 +7,37 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
-import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { LensTheme } from "./lens-theme";
 
 export type SaveCustomTheme = (theme: LensTheme) => void;
 
 const saveCustomThemeInjectable = getInjectable({
-  id: "save-custom-theme",
-  instantiate: (di: DiContainer): SaveCustomTheme => {
-    const state = di.inject(userPreferencesStateInjectable);
+    id: "save-custom-theme",
+    instantiate: (di): SaveCustomTheme => {
+        const state = di.inject(userPreferencesStateInjectable);
 
-    return (theme) => {
-      const customThemes = [...state.customThemes];
-      const existingIndex = customThemes.findIndex((t) => t.name === theme.name);
+        return (theme) => {
+            const customThemes = [...state.customThemes];
+            const existingIndex = customThemes.findIndex((t) => t.name === theme.name);
 
-      const themeToSave: LensTheme = {
-        ...theme,
-        isCustom: true,
-        createdAt: theme.createdAt || new Date().toISOString(),
-      };
+            const themeToSave: LensTheme = {
+                ...theme,
+                isCustom: true,
+                createdAt: theme.createdAt || new Date().toISOString(),
+            };
 
-      if (existingIndex >= 0) {
-        // Update existing theme
-        customThemes[existingIndex] = themeToSave;
-      } else {
-        // Add new theme
-        customThemes.push(themeToSave);
-      }
+            if (existingIndex >= 0) {
+                // Update existing theme
+                customThemes[existingIndex] = themeToSave;
+            } else {
+                // Add new theme
+                customThemes.push(themeToSave);
+            }
 
-      state.customThemes = customThemes;
-    };
-  },
+            state.customThemes = customThemes;
+        };
+    },
 });
 
 export default saveCustomThemeInjectable;
