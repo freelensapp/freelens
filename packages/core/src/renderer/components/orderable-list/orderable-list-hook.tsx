@@ -9,12 +9,11 @@ interface OrderableListHookDependencies {
 const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependencies) => {
   const [items, setItems] = useState<ReactElement[]>(children);
   const [activeId, setActiveId] = useState<number | null>(null);
-  const [itemIds, setItemIds] = useState<string[]>([]);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const itemIds = children.map((child) => child.key!.toString());
 
   useEffect(() => {
     setItems(children);
-    setItemIds(children.map((child) => child.key!.toString()));
   }, [children]);
 
   const onDragStart = (event: DragStartEvent) => {

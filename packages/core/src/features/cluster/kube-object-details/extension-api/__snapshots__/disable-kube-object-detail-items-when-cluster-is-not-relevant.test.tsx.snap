@@ -38,7 +38,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -46,7 +46,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -54,7 +54,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -134,7 +134,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -142,7 +142,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -187,7 +187,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -195,7 +195,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -203,7 +203,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -211,7 +211,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -290,7 +290,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -298,7 +298,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -743,7 +743,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -751,7 +751,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -759,7 +759,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -839,7 +839,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -847,7 +847,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -892,7 +892,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -900,7 +900,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -908,7 +908,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -916,7 +916,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -995,7 +995,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1003,7 +1003,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1443,7 +1443,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1451,7 +1451,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1459,7 +1459,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1539,7 +1539,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1547,7 +1547,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1592,7 +1592,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1600,7 +1600,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1608,7 +1608,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1616,7 +1616,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1695,7 +1695,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1703,7 +1703,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div

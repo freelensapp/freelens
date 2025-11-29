@@ -3,7 +3,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import React from "react";
 import useOrderableListHook from "./orderable-list-hook";
 import OrderableItem from "./orderable-item";
-import styles from "./sortable-list.module.css";
+import styles from "./orderable-list.module.css";
 
 interface OrderableListDependencies {
   children: React.ReactElement[];

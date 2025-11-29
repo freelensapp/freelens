@@ -38,7 +38,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -46,7 +46,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -54,7 +54,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -133,7 +133,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -141,7 +141,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -186,7 +186,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -194,7 +194,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -202,7 +202,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -210,7 +210,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -290,7 +290,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -298,7 +298,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -668,7 +668,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -676,7 +676,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -684,7 +684,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -763,7 +763,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -771,7 +771,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -816,7 +816,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -824,7 +824,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -832,7 +832,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -840,7 +840,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -920,7 +920,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -928,7 +928,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1466,7 +1466,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1474,7 +1474,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1482,7 +1482,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1561,7 +1561,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1569,7 +1569,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1614,7 +1614,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1622,7 +1622,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1630,7 +1630,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1638,7 +1638,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -1718,7 +1718,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -1726,7 +1726,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2321,7 +2321,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2329,7 +2329,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2337,7 +2337,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -2416,7 +2416,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2424,7 +2424,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -2469,7 +2469,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2477,7 +2477,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2485,7 +2485,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2493,7 +2493,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -2573,7 +2573,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -2581,7 +2581,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3326,7 +3326,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3334,7 +3334,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3342,7 +3342,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -3421,7 +3421,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3429,7 +3429,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -3474,7 +3474,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3482,7 +3482,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3490,7 +3490,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3498,7 +3498,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -3578,7 +3578,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -3586,7 +3586,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4341,7 +4341,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4349,7 +4349,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4357,7 +4357,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -4436,7 +4436,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4444,7 +4444,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -4489,7 +4489,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4497,7 +4497,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4505,7 +4505,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4513,7 +4513,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -4593,7 +4593,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -4601,7 +4601,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5346,7 +5346,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5354,7 +5354,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5362,7 +5362,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -5441,7 +5441,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5449,7 +5449,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -5494,7 +5494,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5502,7 +5502,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5510,7 +5510,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5518,7 +5518,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -5598,7 +5598,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -5606,7 +5606,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6355,7 +6355,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6363,7 +6363,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6371,7 +6371,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -6450,7 +6450,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6458,7 +6458,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -6503,7 +6503,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6511,7 +6511,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6519,7 +6519,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6527,7 +6527,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -6607,7 +6607,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -6615,7 +6615,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7370,7 +7370,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7378,7 +7378,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7386,7 +7386,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -7465,7 +7465,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7473,7 +7473,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -7518,7 +7518,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7526,7 +7526,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7534,7 +7534,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7542,7 +7542,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             >
               <div
@@ -7622,7 +7622,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div
@@ -7630,7 +7630,7 @@ exports[`opening dock tab for installing helm chart given application is started
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1;"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
             />
             <div

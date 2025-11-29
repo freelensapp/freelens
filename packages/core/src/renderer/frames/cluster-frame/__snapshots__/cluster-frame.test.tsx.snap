@@ -37,7 +37,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -79,7 +79,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -126,7 +126,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -205,7 +205,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -213,7 +213,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -258,7 +258,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -266,7 +266,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -300,7 +300,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -308,7 +308,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -387,7 +387,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -395,7 +395,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -645,7 +645,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -687,7 +687,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -734,7 +734,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -813,7 +813,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -821,7 +821,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -866,7 +866,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -874,7 +874,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -908,7 +908,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -916,7 +916,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -995,7 +995,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1003,7 +1003,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1260,7 +1260,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1268,7 +1268,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1276,7 +1276,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1356,7 +1356,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1364,7 +1364,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1409,7 +1409,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1417,7 +1417,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1451,7 +1451,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1459,7 +1459,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1538,7 +1538,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1546,7 +1546,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div

@@ -37,7 +37,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -45,7 +45,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -53,7 +53,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -133,7 +133,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -141,7 +141,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -186,7 +186,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -194,7 +194,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -202,7 +202,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -210,7 +210,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -289,7 +289,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -297,7 +297,7 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -662,7 +662,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -670,7 +670,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -678,7 +678,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -758,7 +758,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -766,7 +766,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -811,7 +811,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -819,7 +819,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -827,7 +827,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -835,7 +835,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -914,7 +914,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -922,7 +922,7 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1324,7 +1324,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1332,7 +1332,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1340,7 +1340,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1420,7 +1420,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1428,7 +1428,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1473,7 +1473,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1481,7 +1481,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1489,7 +1489,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1497,7 +1497,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1576,7 +1576,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1584,7 +1584,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1949,7 +1949,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1957,7 +1957,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1965,7 +1965,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2045,7 +2045,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2053,7 +2053,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2098,7 +2098,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2106,7 +2106,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2114,7 +2114,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2122,7 +2122,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2201,7 +2201,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2209,7 +2209,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2611,7 +2611,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2619,7 +2619,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2627,7 +2627,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2707,7 +2707,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2715,7 +2715,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2760,7 +2760,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2768,7 +2768,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2776,7 +2776,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2784,7 +2784,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -2863,7 +2863,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -2871,7 +2871,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3293,7 +3293,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3301,7 +3301,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3309,7 +3309,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3389,7 +3389,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3397,7 +3397,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3442,7 +3442,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3450,7 +3450,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3458,7 +3458,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3466,7 +3466,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3545,7 +3545,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3553,7 +3553,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3918,7 +3918,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3926,7 +3926,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3934,7 +3934,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4014,7 +4014,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4022,7 +4022,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4067,7 +4067,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4075,7 +4075,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4083,7 +4083,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4091,7 +4091,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4170,7 +4170,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4178,7 +4178,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4573,7 +4573,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4581,7 +4581,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4589,7 +4589,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4669,7 +4669,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4677,7 +4677,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4722,7 +4722,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4730,7 +4730,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4738,7 +4738,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4746,7 +4746,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -4825,7 +4825,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -4833,7 +4833,7 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
