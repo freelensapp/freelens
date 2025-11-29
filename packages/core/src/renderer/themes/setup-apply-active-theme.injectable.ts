@@ -7,12 +7,12 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { broadcastMessage } from "../../common/ipc";
+import { activeThemeUpdateChannel } from "../../features/theme/active-theme/common/channel";
 import initializeSystemThemeTypeInjectable from "../../features/theme/system-type/renderer/initialize.injectable";
 import initUserStoreInjectable from "../../features/user-preferences/renderer/load-storage.injectable";
 import { beforeFrameStartsSecondInjectionToken } from "../before-frame-starts/tokens";
 import activeThemeInjectable from "./active.injectable";
 import applyLensThemeInjectable from "./apply-lens-theme.injectable";
-import { activeThemeUpdateChannel } from "../../features/theme/active-theme/common/channel";
 
 // Note: Due to cross-origin restrictions (iframes use different subdomains with HTTPS),
 // we cannot directly access iframe.contentDocument from the parent frame.
@@ -24,7 +24,7 @@ const setupApplyActiveThemeInjectable = getInjectable({
     run: () => {
       const activeTheme = di.inject(activeThemeInjectable);
       const applyLensTheme = di.inject(applyLensThemeInjectable);
-      
+
       // Store current theme for new iframes
       let currentTheme: any = null;
 
@@ -68,13 +68,13 @@ const setupApplyActiveThemeInjectable = getInjectable({
           },
         );
       }
-      
+
       // Watch for new iframes being added and broadcast theme via IPC
       if (process.isMainFrame) {
         // Wait for lens-views container to be available
         const waitForLensViews = () => {
-          const lensViewsContainer = document.getElementById('lens-views');
-          
+          const lensViewsContainer = document.getElementById("lens-views");
+
           if (!lensViewsContainer) {
             setTimeout(waitForLensViews, 50);
             return;
@@ -86,34 +86,38 @@ const setupApplyActiveThemeInjectable = getInjectable({
                 if (node instanceof HTMLIFrameElement && currentTheme) {
                   // Broadcast theme via IPC when iframe loads
                   // (Can't access contentDocument due to cross-origin restrictions)
-                  node.addEventListener("load", () => {
-                    // Broadcast immediately
-                    broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
-
-                    // Broadcast again after delays to ensure iframe's listener is ready
-                    // This handles race conditions where the iframe's DI container
-                    // might not be fully initialized when the load event fires
-                    setTimeout(() => {
+                  node.addEventListener(
+                    "load",
+                    () => {
+                      // Broadcast immediately
                       broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
-                    }, 50);
 
-                    setTimeout(() => {
-                      broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
-                    }, 150);
+                      // Broadcast again after delays to ensure iframe's listener is ready
+                      // This handles race conditions where the iframe's DI container
+                      // might not be fully initialized when the load event fires
+                      setTimeout(() => {
+                        broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
+                      }, 50);
 
-                    setTimeout(() => {
-                      broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
-                    }, 300);
-                  }, { once: true });
+                      setTimeout(() => {
+                        broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
+                      }, 150);
+
+                      setTimeout(() => {
+                        broadcastMessage(activeThemeUpdateChannel.id, currentTheme);
+                      }, 300);
+                    },
+                    { once: true },
+                  );
                 }
               }
             }
           });
-          
+
           observer.observe(lensViewsContainer, { childList: true, subtree: true });
 
           // Check for any existing iframes that may have already been added
-          const existingIframes = lensViewsContainer.querySelectorAll('iframe');
+          const existingIframes = lensViewsContainer.querySelectorAll("iframe");
           if (existingIframes.length > 0 && currentTheme) {
             // Broadcast immediately for any existing iframes
             broadcastMessage(activeThemeUpdateChannel.id, currentTheme);

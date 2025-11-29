@@ -5,6 +5,7 @@
  */
 
 import type { MessageChannel } from "@freelensapp/messaging";
+
 import type { LensTheme } from "../../../../renderer/themes/lens-theme";
 
 export const activeThemeUpdateChannel: MessageChannel<LensTheme> = {

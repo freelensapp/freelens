@@ -33,16 +33,14 @@ const ensureThemeReadyInjectable = getInjectable({
       };
 
       // Apply theme when document is fully ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', applyStoredTheme);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", applyStoredTheme);
       }
 
       // Watch for potential CSS variable resets
       // Some frameworks might clear styles, so we reapply after delays
       setTimeout(() => {
-        const primaryVar = getComputedStyle(document.documentElement)
-          .getPropertyValue('--primary')
-          .trim();
+        const primaryVar = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
 
         if (!primaryVar && (window as any).__lastReceivedTheme) {
           applyStoredTheme();
@@ -50,9 +48,7 @@ const ensureThemeReadyInjectable = getInjectable({
       }, 200);
 
       setTimeout(() => {
-        const primaryVar = getComputedStyle(document.documentElement)
-          .getPropertyValue('--primary')
-          .trim();
+        const primaryVar = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
 
         if (!primaryVar && (window as any).__lastReceivedTheme) {
           applyStoredTheme();

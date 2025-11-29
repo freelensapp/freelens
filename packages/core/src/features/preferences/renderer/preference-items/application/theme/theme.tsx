@@ -12,7 +12,6 @@ import { Select } from "../../../../../../renderer/components/select";
 import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
 import defaultLensThemeInjectable from "../../../../../../renderer/themes/default-theme.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
-
 import styles from "./theme.module.scss";
 
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
@@ -46,11 +45,11 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
   const currentColor = state.customAccentColor || "#00a7a0";
 
   const ColorSwatch = ({ color }: { color: string }) => (
-    <div style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '2px' }} />
+    <div style={{ backgroundColor: color, width: "20px", height: "20px", borderRadius: "2px" }} />
   );
 
   const ColorOption = ({ option }: { option: { value: string; label: string } }) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
       <ColorSwatch color={option.value} />
       <span>{option.label}</span>
     </div>
