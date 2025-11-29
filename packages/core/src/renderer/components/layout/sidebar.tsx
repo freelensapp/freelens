@@ -12,7 +12,7 @@ import React from "react";
 import { ExtensionLoader } from "../../../extensions/extension-loader";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
-import SortableList from "../orderable-list/sortable-list";
+import OrderableList from "../orderable-list/orderable-list";
 import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
 import useSidebarHook from "./sidebar-hook";
@@ -41,11 +41,11 @@ const NonInjectedSidebar = observer(
       <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
         <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
 
-        <SortableList className={`${styles.sidebarNav} sidebar-active-status`} onReorder={sidebarHook.saveOrderInfo}>
+        <OrderableList className={`${styles.sidebarNav} sidebar-active-status`} onReorder={sidebarHook.saveOrderInfo}>
           {sidebarItems.get().map((hierarchicalSidebarItem) => (
             <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id} />
           ))}
-        </SortableList>
+        </OrderableList>
       </div>
     );
   },

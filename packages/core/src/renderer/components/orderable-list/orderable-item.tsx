@@ -2,12 +2,12 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 
-interface SortableItemDependencies {
+interface OrderableItemDependencies {
   item: React.ReactElement;
   id: string;
 }
 
-const SortableItem = ({ item, id }: SortableItemDependencies) => {
+const OrderableItem = ({ item, id }: OrderableItemDependencies) => {
   // @ts-ignore
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
@@ -25,4 +25,4 @@ const SortableItem = ({ item, id }: SortableItemDependencies) => {
   );
 };
 
-export default SortableItem;
+export default OrderableItem;

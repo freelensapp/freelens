@@ -1327,7 +1327,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1335,7 +1335,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1343,7 +1343,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             >
               <div
@@ -1423,7 +1423,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1431,7 +1431,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             >
               <div
@@ -1476,7 +1476,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1484,7 +1484,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1492,7 +1492,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1500,7 +1500,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             >
               <div
@@ -1579,7 +1579,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div
@@ -1587,7 +1587,7 @@ exports[`disable sidebar items when cluster is not relevant given not yet known 
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
-              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              style="pointer-events: auto; opacity: 1;"
               tabindex="0"
             />
             <div

@@ -1,8 +1,8 @@
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import React from "react";
-import useOrderableListHook from "./sortable-hook";
-import SortableItem from "./sortable-item";
+import useOrderableListHook from "./orderable-list-hook";
+import OrderableItem from "./orderable-item";
 import styles from "./sortable-list.module.css";
 
 interface OrderableListDependencies {
@@ -11,7 +11,7 @@ interface OrderableListDependencies {
   onReorder: (dragIndex: number, releaseIndex: number) => void;
 }
 
-const SortableList = ({ children, onReorder, className }: OrderableListDependencies) => {
+const OrderableList = ({ children, onReorder, className }: OrderableListDependencies) => {
   const orderableHook = useOrderableListHook({ children, onReorder });
 
   return (
@@ -24,7 +24,7 @@ const SortableList = ({ children, onReorder, className }: OrderableListDependenc
       >
         <SortableContext items={orderableHook.itemIds} strategy={verticalListSortingStrategy}>
           {orderableHook.items.map((element, index) => (
-            <SortableItem key={element.key} item={element} id={orderableHook.itemIds[index]} />
+            <OrderableItem key={element.key} item={element} id={orderableHook.itemIds[index]} />
           ))}
           <DragOverlay>
             {undefined != orderableHook.activeId && orderableHook.items[orderableHook.activeId]}
@@ -35,4 +35,4 @@ const SortableList = ({ children, onReorder, className }: OrderableListDependenc
   );
 };
 
-export default SortableList;
+export default OrderableList;
