@@ -137,11 +137,13 @@ const createElectronWindowInjectable = getInjectable({
           logger.info(`[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`);
         })
         .setWindowOpenHandler((details) => {
-          openLinkInBrowser(details.url).catch((error) => {
-            logger.error("[CREATE-ELECTRON-WINDOW]: failed to open browser", {
-              error,
+          if (!details.url.includes(".renderer.freelens.app:")) {
+            openLinkInBrowser(details.url).catch((error) => {
+              logger.error("[CREATE-ELECTRON-WINDOW]: failed to open browser", {
+                error,
+              });
             });
-          });
+          }
 
           return { action: "deny" };
         });

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Kubernetes client for Freelens",
   "author": {
     "name": "Freelens Authors",
@@ -20,8 +20,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "webpack",
     "build:dev": "webpack"
   },

@@ -803,6 +803,34 @@ exports[`preferences - navigation using application menu when navigating to pref
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="menu-bar"
+              >
+                <section
+                  id="menu"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Menu-bar Settings
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Show tray icon in the menu bar
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section

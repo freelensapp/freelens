@@ -128,6 +128,16 @@ abstract class BinaryDownloader {
     });
 
     try {
+      // Remove existing file if it exists to ensure we download the new version
+      try {
+        await unlink(this.target);
+      } catch (error) {
+        // Ignore ENOENT errors (file doesn't exist)
+        if ((error as any)?.code !== "ENOENT") {
+          throw error;
+        }
+      }
+
       /**
        * This is necessary because for some reason `createWriteStream({ flags: "wx" })`
        * was throwing someplace else and not here

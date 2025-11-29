@@ -324,6 +324,7 @@ describe("installing helm chart from new tab", () => {
             it("calls for installation with default configuration", () => {
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: undefined,
                 namespace: "default",
                 repo: "some-repository",
@@ -517,6 +518,7 @@ describe("installing helm chart from new tab", () => {
 
                   expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-other-name",
+                    forceConflicts: false,
                     name: undefined,
                     namespace: "default",
                     repo: "some-repository",
@@ -558,6 +560,7 @@ describe("installing helm chart from new tab", () => {
 
                     expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                       chart: "some-name",
+                      forceConflicts: false,
                       name: undefined,
                       namespace: "default",
                       repo: "some-repository",
@@ -658,6 +661,7 @@ describe("installing helm chart from new tab", () => {
 
                   expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-name",
+                    forceConflicts: false,
                     name: undefined,
                     namespace: "default",
                     repo: "some-repository",
@@ -710,6 +714,7 @@ describe("installing helm chart from new tab", () => {
 
                 expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                   chart: "some-name",
+                  forceConflicts: false,
                   name: undefined,
                   namespace: "some-other-namespace",
                   repo: "some-repository",
@@ -810,6 +815,7 @@ describe("installing helm chart from new tab", () => {
 
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: undefined,
                 namespace: "default",
                 repo: "some-repository",
@@ -864,6 +870,7 @@ describe("installing helm chart from new tab", () => {
 
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: "some-custom-name",
                 namespace: "default",
                 repo: "some-repository",

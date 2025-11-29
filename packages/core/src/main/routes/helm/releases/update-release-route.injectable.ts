@@ -16,6 +16,7 @@ const updateChartArgsValidator = Joi.object<UpdateChartArgs, true, UpdateChartAr
   chart: Joi.string().required(),
   version: Joi.string().required(),
   values: Joi.string().required(),
+  forceConflicts: Joi.boolean().optional(),
 });
 
 const updateReleaseRouteInjectable = getRouteInjectable({

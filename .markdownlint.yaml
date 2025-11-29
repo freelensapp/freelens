@@ -21,3 +21,5 @@ MD033:
     - source
 # Emphasis used instead of a header
 MD036: false
+# Table column style
+MD060: false

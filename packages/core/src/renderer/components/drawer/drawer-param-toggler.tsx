@@ -13,7 +13,7 @@ import React from "react";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface DrawerParamTogglerProps {
-  label: string | number;
+  label: string | number | StrictReactNode;
   children: StrictReactNode;
 }
 

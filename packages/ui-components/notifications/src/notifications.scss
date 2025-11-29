@@ -68,5 +68,9 @@ $color-white: rgb(255, 255, 255);
         box-shadow: 0 0 20px var(--boxShadow);
       }
     }
+
+    .box.close-icon {
+      padding: 2px;
+    }
   }
 }

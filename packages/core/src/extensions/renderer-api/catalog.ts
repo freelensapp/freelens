@@ -7,12 +7,14 @@
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
+import rendererClusterEnumerationInjectable from "../../renderer/cluster-enumeration/cluster-enumeration.injectable";
 import activeKubernetesClusterInjectable from "../../renderer/cluster-frame-context/active-kubernetes-cluster.injectable";
 
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { CatalogCategory, CatalogEntity } from "../../common/catalog";
 import type { CatalogEntityOnBeforeRun } from "../../renderer/api/catalog/entity/registry";
+import type { ClusterInfo } from "../common-api/cluster-types";
 
 export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
 
@@ -58,3 +60,61 @@ export class CatalogEntityRegistry {
 export const catalogEntities = new CatalogEntityRegistry();
 
 export const activeCluster = asLegacyGlobalForExtensionApi(activeKubernetesClusterInjectable);
+
+// Cluster enumeration API
+const clusterEnumeration = asLegacyGlobalForExtensionApi(rendererClusterEnumerationInjectable);
+
+/**
+ * Get all registered Kubernetes clusters.
+ *
+ * @returns Array of cluster information objects
+ * @example
+ * ```typescript
+ * import { Catalog } from "@freelensapp/core/renderer";
+ *
+ * const clusters = Catalog.getAllClusters();
+ * for (const cluster of clusters) {
+ *   console.log(`${cluster.name}: ${cluster.status}`);
+ * }
+ * ```
+ */
+export function getAllClusters(): ClusterInfo[] {
+  return clusterEnumeration.clusters;
+}
+
+/**
+ * Get a specific cluster by its ID.
+ *
+ * @param id - The unique identifier of the cluster
+ * @returns The cluster information or undefined if not found
+ * @example
+ * ```typescript
+ * import { Catalog } from "@freelensapp/core/renderer";
+ *
+ * const cluster = Catalog.getClusterById("my-cluster-id");
+ * if (cluster) {
+ *   console.log(`Found: ${cluster.name}`);
+ * }
+ * ```
+ */
+export function getClusterById(id: string): ClusterInfo | undefined {
+  return clusterEnumeration.getById(id);
+}
+
+/**
+ * Get the currently active cluster (if any).
+ *
+ * @returns The active cluster information or undefined if no cluster is active
+ * @example
+ * ```typescript
+ * import { Catalog } from "@freelensapp/core/renderer";
+ *
+ * const active = Catalog.getActiveCluster();
+ * if (active) {
+ *   console.log(`Active cluster: ${active.name}`);
+ * }
+ * ```
+ */
+export function getActiveCluster(): ClusterInfo | undefined {
+  return clusterEnumeration.activeCluster;
+}

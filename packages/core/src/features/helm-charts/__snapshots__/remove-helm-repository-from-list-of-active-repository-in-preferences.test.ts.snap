@@ -364,6 +364,90 @@ exports[`remove helm repository from list of active repositories in preferences 
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -1072,6 +1156,90 @@ exports[`remove helm repository from list of active repositories in preferences 
                           <div
                             class="input-info flex gaps"
                           />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
                     </div>
@@ -1791,6 +1959,90 @@ exports[`remove helm repository from list of active repositories in preferences 
                           <div
                             class="input-info flex gaps"
                           />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
                     </div>
@@ -2538,6 +2790,90 @@ exports[`remove helm repository from list of active repositories in preferences 
                           <div
                             class="input-info flex gaps"
                           />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
                     </div>

@@ -7,7 +7,15 @@
     "CSC_LINK",
     "CSC_KEY_PASSWORD",
     "CSC_INSTALLER_LINK",
-    "CSC_INSTALLER_KEY_PASSWORD"
+    "CSC_INSTALLER_KEY_PASSWORD",
+    "COREPACK_*",
+    "LOCALAPPDATA",
+    "DOWNLOAD_ALL_ARCHITECTURES",
+    "NVM_*",
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD",
+    "PNPM_*",
+    "npm_config_*",
+    "npm_package_config_node_gyp_*"
   ],
   "tasks": {
     "build": {
@@ -28,6 +36,7 @@
     "build:resources": {
       "dependsOn": ["^build:resources"],
       "env": ["CC", "CXX", "DOWNLOAD_ALL_ARCHITECTURES", "NODE_ENV"],
+      "inputs": ["package.json", "**/logo-lens.svg"],
       "outputs": ["binaries/**", "static/build/**"]
     },
     "dev": {

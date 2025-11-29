@@ -4267,6 +4267,21 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -5290,6 +5305,21 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                         </div>
                       </div>
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Force conflicts
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div

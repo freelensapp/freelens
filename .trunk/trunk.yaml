@@ -58,11 +58,11 @@ lint:
       files:
         - sass
   enabled:
-    - actionlint@1.7.8
-    - biome@2.3.5! # datasource=npm depName=@biomejs/biome
+    - actionlint@1.7.9
+    - biome@2.3.8! # datasource=npm depName=@biomejs/biome
     - git-diff-check
-    - markdownlint@0.45.0
-    - prettier@3.6.2! # datasource=npm depName=prettier
+    - markdownlint@0.46.0
+    - prettier@3.7.1! # datasource=npm depName=prettier
     - shellcheck@0.11.0
     - shfmt@3.6.0
     - yamlfmt@0.20.0

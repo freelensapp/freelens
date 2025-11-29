@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../../badge";
+import { Checkbox } from "../../checkbox";
 import { Select } from "../../select";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
@@ -80,6 +81,11 @@ export class NonInjectedUpgradeChart extends React.Component<UpgradeChartProps &
                 value={model.version.value.get()}
                 options={model.versionOptions.get()}
                 onChange={model.version.set}
+              />
+              <Checkbox
+                label="Force conflicts"
+                value={model.forceConflicts.value.get()}
+                onChange={model.forceConflicts.set}
               />
             </div>
           }

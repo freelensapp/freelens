@@ -15,6 +15,7 @@ interface HelmReleaseUpdatePayload {
   chart: string;
   version: string;
   values: string;
+  forceConflicts?: boolean;
 }
 
 export type RequestHelmReleaseUpdate = (
@@ -31,13 +32,14 @@ const requestHelmReleaseUpdateInjectable = getInjectable({
   instantiate: (di): RequestHelmReleaseUpdate => {
     const apiBase = di.inject(apiBaseInjectable);
 
-    return async (name, namespace, { repo, chart, values, version }) => {
+    return async (name, namespace, { repo, chart, values, version, forceConflicts }) => {
       try {
         await apiBase.put(requestUpdateEndpoint.compile({ name, namespace }), {
           data: {
             chart: `${repo}/${chart}`,
             values,
             version,
+            forceConflicts,
           },
         });
       } catch (e) {

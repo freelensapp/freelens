@@ -97,6 +97,14 @@ export class InstallChartModel {
     }),
   };
 
+  readonly forceConflicts = {
+    value: computed(() => this.chart?.forceConflicts || false),
+
+    onChange: action((forceConflicts: boolean) => {
+      this.save({ forceConflicts });
+    }),
+  };
+
   private readonly versions = observable.array<HelmChart>([]);
   readonly installed = observable.box<HelmReleaseUpdateDetails | undefined>();
 
@@ -246,6 +254,7 @@ export class InstallChartModel {
       namespace: this.namespace.value.get() || "",
       version: this.version.value.get() || "",
       values: this.configuration.value.get() || "",
+      forceConflicts: this.forceConflicts.value.get(),
     });
 
     runInAction(() => {
