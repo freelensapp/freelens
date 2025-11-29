@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import tempy from "tempy";
 import removePathInjectable from "../../../common/fs/remove.injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import execHelmInjectable from "../exec-helm/exec-helm.injectable";
 import getHelmReleaseInjectable from "./get-helm-release.injectable";
@@ -19,6 +20,7 @@ export interface UpdateChartArgs {
   chart: string;
   values: string;
   version: string;
+  forceConflicts?: boolean;
 }
 
 const updateHelmReleaseInjectable = getInjectable({
@@ -30,6 +32,7 @@ const updateHelmReleaseInjectable = getInjectable({
     const writeFile = di.inject(writeFileInjectable);
     const removePath = di.inject(removePathInjectable);
     const execHelm = di.inject(execHelmInjectable);
+    const state = di.inject(userPreferencesStateInjectable);
 
     return async (cluster: Cluster, releaseName: string, namespace: string, data: UpdateChartArgs) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
@@ -41,7 +44,11 @@ const updateHelmReleaseInjectable = getInjectable({
       try {
         await writeFile(valuesFilePath, data.values);
 
-        const result = await execHelm([
+        // If forceConflicts is enabled, always use server-side
+        // Otherwise, use the preference setting
+        const useServerSide = data.forceConflicts || state.helmServerSide;
+
+        const args = [
           "upgrade",
           releaseName,
           data.chart,
@@ -53,7 +60,19 @@ const updateHelmReleaseInjectable = getInjectable({
           namespace,
           "--kubeconfig",
           proxyKubeconfigPath,
-        ]);
+        ];
+
+        if (data.forceConflicts) {
+          args.push("--force-conflicts");
+        }
+
+        if (useServerSide) {
+          args.push("--server-side=true");
+        } else {
+          args.push("--server-side=false");
+        }
+
+        const result = await execHelm(args);
 
         if (result.callWasSuccessful === false) {
           throw result.error; // keep the same interface

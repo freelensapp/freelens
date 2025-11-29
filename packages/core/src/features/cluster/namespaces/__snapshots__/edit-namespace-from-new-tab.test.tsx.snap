@@ -1980,6 +1980,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -3484,6 +3514,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -3517,10 +3577,10 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-other-uid
   name: some-other-name
   resourceVersion: some-resource-version
   selfLink: /api/some-api-version/namespaces/some-other-uid
-  uid: some-other-uid
 
               </textarea>
             </div>
@@ -4271,6 +4331,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -4304,12 +4394,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -5008,6 +5098,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -5759,6 +5879,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -5801,12 +5951,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -6505,6 +6655,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -6538,12 +6718,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -7242,6 +7422,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -7275,14 +7485,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
-  annotations:
-    freelens.app/resource-version: some-api-version
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -7981,6 +8189,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -8014,12 +8252,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -9290,6 +9528,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -9332,12 +9600,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -10036,6 +10304,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -10069,12 +10367,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -10773,6 +11071,36 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                     >
                       default
                     </div>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex align-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="box flex align-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
                   </div>
                 </div>
                 <div
@@ -10806,12 +11134,12 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>

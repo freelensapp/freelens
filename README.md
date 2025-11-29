@@ -220,6 +220,14 @@ Get updates about Freelens & keep in touch with our community
 - Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
 
+## Adopters
+
+Freelens is used by many individuals, companies, and organizations.
+
+We have created the [adopters](https://github.com/freelensapp/freelens/blob/main/ADOPTERS.md) file for anyone who would like to be part of the official list.
+
+Anyone is welcome to request to be added to the official list by opening a dedicated Pull Request.
+
 ## Contributing
 
 Anyone is welcome to collaborate to advance the Freelens project. Read

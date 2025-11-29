@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/messaging",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "An abstraction for messaging between Lens environments",
   "type": "commonjs",
   "publishConfig": {
@@ -24,8 +24,8 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },

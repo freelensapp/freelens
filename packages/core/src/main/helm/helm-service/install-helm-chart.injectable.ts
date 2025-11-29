@@ -18,6 +18,7 @@ export interface InstallChartArgs {
   name: string;
   namespace: string;
   version: string;
+  forceConflicts?: boolean;
 }
 
 const installClusterHelmChartInjectable = getInjectable({

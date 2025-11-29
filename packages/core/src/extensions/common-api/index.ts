@@ -10,6 +10,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 // APIs
 export { App } from "./app";
 export * as Catalog from "./catalog";
+export * as Clusters from "./cluster-types";
 export * as EventBus from "./event-bus";
 export * as Proxy from "./proxy";
 export * as Store from "./stores";

@@ -9,9 +9,10 @@ import "./welcome.scss";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { forumsUrl } from "../../../common/vars";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
+import newVersionNotificationInjectable from "./new-version-notification.injectable";
 import welcomeMenuItemsInjectable from "./welcome-menu-items/welcome-menu-items.injectable";
 
 import type { IComputedValue } from "mobx";
@@ -23,9 +24,14 @@ export const defaultWidth = 320;
 interface Dependencies {
   welcomeMenuItems: IComputedValue<WelcomeMenuRegistration[]>;
   productName: string;
+  newVersionNotification: () => Promise<void> | void;
 }
 
-const NonInjectedWelcome = observer(({ welcomeMenuItems, productName }: Dependencies) => {
+const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersionNotification }: Dependencies) => {
+  useEffect(() => {
+    newVersionNotification();
+  }, []);
+
   return (
     <div className="flex justify-center Welcome align-center" data-testid="welcome-page">
       <div style={{ width: `${defaultWidth}px` }} data-testid="welcome-banner-container">
@@ -67,5 +73,6 @@ export const Welcome = withInjectables<Dependencies>(NonInjectedWelcome, {
   getProps: (di) => ({
     welcomeMenuItems: di.inject(welcomeMenuItemsInjectable),
     productName: di.inject(productNameInjectable),
+    newVersionNotification: di.inject(newVersionNotificationInjectable),
   }),
 });

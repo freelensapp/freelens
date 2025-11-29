@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/legacy-extensions",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.7.0-0",
   "description": "Package for Lens extensions using the v1 API",
   "type": "commonjs",
   "files": [
@@ -24,9 +24,9 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
     "build": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "@ogre-tools/injectable": "^17.11.1"

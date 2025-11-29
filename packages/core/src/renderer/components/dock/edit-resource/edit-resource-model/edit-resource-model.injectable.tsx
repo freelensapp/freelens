@@ -92,6 +92,30 @@ export const EditResourceAnnotationName = "freelens.app/resource-version";
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
 
+  // Store the managed fields when they're removed so we can restore them
+  @observable private savedManagedFields: any = null;
+
+  // Store the unsorted YAML when sort is enabled so we can restore it
+  @observable private savedUnsortedYaml: string | null = null;
+
+  readonly managedFields = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.managedFields.value.set(value);
+      this.toggleManagedFields(value);
+    }),
+  };
+
+  readonly sortKeys = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.sortKeys.value.set(value);
+      this.toggleSortKeys(value);
+    }),
+  };
+
   readonly configuration = {
     value: computed(() => this.editingResource.draft || this.editingResource.firstDraft || ""),
 
@@ -133,6 +157,104 @@ export class EditResourceModel {
     return this.editingResource.resource;
   }
 
+  toggleManagedFields = (showManagedFields: boolean) => {
+    const currentValue = this.configuration.value.get();
+
+    if (!currentValue) {
+      return;
+    }
+
+    try {
+      const parsedYaml = yaml.load(currentValue) as RawKubeObject;
+
+      if (showManagedFields) {
+        // Restore managed fields if we have them saved
+        if (this.savedManagedFields && parsedYaml.metadata) {
+          parsedYaml.metadata.managedFields = this.savedManagedFields;
+        }
+      } else {
+        // Save and remove managed fields
+        if (parsedYaml.metadata?.managedFields) {
+          this.savedManagedFields = parsedYaml.metadata.managedFields;
+          delete parsedYaml.metadata.managedFields;
+        }
+      }
+
+      const newYaml = yaml.dump(parsedYaml, {
+        ...defaultYamlDumpOptions,
+        sortKeys: this.sortKeys.value.get(),
+      });
+
+      runInAction(() => {
+        this.editingResource.draft = newYaml;
+      });
+    } catch (error) {
+      // If parsing fails, show error but don't update the content
+      console.warn("Failed to parse YAML for managed fields toggle:", error);
+    }
+  };
+
+  toggleSortKeys = (enableSort: boolean) => {
+    const currentValue = this.configuration.value.get();
+    const isEdited = currentValue !== this.editingResource.firstDraft;
+
+    if (enableSort) {
+      // Save current YAML before sorting (only if not already edited)
+      if (!isEdited) {
+        this.savedUnsortedYaml = currentValue;
+      }
+
+      // Regenerate with sorting enabled
+      this.regenerateYaml(true);
+    } else {
+      // Restore unsorted YAML only if nothing was edited
+      if (!isEdited && this.savedUnsortedYaml) {
+        const unsortedYaml = this.savedUnsortedYaml;
+
+        runInAction(() => {
+          this.editingResource.draft = unsortedYaml;
+          this.savedUnsortedYaml = null;
+        });
+      } else {
+        // If edited, just regenerate without sorting
+        this.regenerateYaml(false);
+      }
+    }
+  };
+
+  regenerateYaml = (sortKeys?: boolean) => {
+    if (!this._resource) {
+      return;
+    }
+
+    const omitFields = this.managedFields.value.get() ? [] : ["metadata.managedFields"];
+    const shouldSortKeys = sortKeys ?? this.sortKeys.value.get();
+
+    runInAction(() => {
+      const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), {
+        ...defaultYamlDumpOptions,
+        sortKeys: shouldSortKeys,
+      });
+
+      // Store unsorted version when enabling sort for the first time
+      if (shouldSortKeys && !this.savedUnsortedYaml && !sortKeys) {
+        this.savedUnsortedYaml = this.editingResource.draft || this.editingResource.firstDraft || "";
+      }
+
+      this.editingResource.firstDraft = newYaml;
+
+      // Only set draft if there isn't already a saved draft from previous session
+      // OR if we're explicitly regenerating (sortKeys parameter was provided)
+      if (!this.editingResource.draft || sortKeys !== undefined) {
+        this.editingResource.draft = newYaml;
+      }
+
+      // Store managed fields if they exist for future restoration
+      if (!this.managedFields.value.get() && this._resource!.metadata?.managedFields) {
+        this.savedManagedFields = this._resource!.metadata.managedFields;
+      }
+    });
+  };
   load = async (): Promise<void> => {
     await this.dependencies.waitForEditingResource();
 
@@ -168,9 +290,7 @@ export class EditResourceModel {
       return;
     }
 
-    runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject(), defaultYamlDumpOptions);
-    });
+    this.regenerateYaml();
   };
 
   get namespace() {

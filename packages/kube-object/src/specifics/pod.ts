@@ -25,6 +25,7 @@ import type {
   PodSecurityContext,
   Probe,
   ResourceFieldSelector,
+  ResourceRequirements,
 } from "../types";
 import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type { SecretReference } from "./secret";
@@ -587,6 +588,7 @@ export interface PodSpec {
   tolerations?: Toleration[];
   topologySpreadConstraints?: TopologySpreadConstraint[];
   volumes?: PodSpecVolume[];
+  resources?: ResourceRequirements;
 }
 
 export type PodConditionType =
@@ -609,20 +611,29 @@ export interface PodCondition {
 
 export type PodPhase = "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
 
+export interface PodIP {
+  ip: string;
+}
+
+export interface HostIP {
+  ip: string;
+}
+
 export interface PodStatus {
   phase: PodPhase;
   conditions: PodCondition[];
-  hostIP: string;
+  message?: string;
+  reason?: string;
+  nominatedNodeName?: string;
+  hostIP?: string;
+  hostIPs?: HostIP[];
   podIP: string;
-  podIPs?: {
-    ip: string;
-  }[];
+  podIPs?: PodIP[];
   startTime: string;
   initContainerStatuses?: PodContainerStatus[];
   containerStatuses?: PodContainerStatus[];
-  qosClass?: string;
+  qosClass?: "Guaranteed" | "Burstable" | "BestEffort";
   ephemeralContainerStatuses?: PodContainerStatus[];
-  reason?: string;
 }
 
 export type ContainersType = "containers" | "initContainers" | "ephemeralContainers";
@@ -912,5 +923,11 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     const podIPs = this.status?.podIPs ?? [];
 
     return podIPs.map((value) => value.ip);
+  }
+
+  getHostIPs(): string[] {
+    const hostIPs = this.status?.hostIPs ?? [];
+
+    return hostIPs.map((value) => value.ip);
   }
 }

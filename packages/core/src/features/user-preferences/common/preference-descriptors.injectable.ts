@@ -84,9 +84,21 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
       }),
+      helmBinariesPath: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      helmServerSide: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? true,
+        toStore: (val) => (val ? undefined : val),
+      }),
       openAtLogin: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
+      }),
+      showTrayIcon: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? true,
+        toStore: (val) => (val ? undefined : val),
       }),
       hotbarAutoHide: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
