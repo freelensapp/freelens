@@ -10,6 +10,7 @@
   @apply flex overflow-auto flex-col;
   width: var(--sidebar-width);
   padding-bottom: calc(var(--padding) * 3);
+  height: 100%;
 
   /* Shadow above scrolling content from https://gist.github.com/distinctgrey/7548778 */
   background:

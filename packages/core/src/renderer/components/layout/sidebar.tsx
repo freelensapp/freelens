@@ -3,50 +3,61 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { ExtensionLoader } from "../../../extensions/extension-loader";
+import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import OrderableList from "../orderable-list/orderable-list";
 import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
+import useSidebarHook from "./sidebar-hook";
 import { SidebarItem } from "./sidebar-item";
+import sidebarStorageInjectable, { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 
 import type { IComputedValue } from "mobx";
 
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
+import type { StorageLayer } from "../../utils/storage-helper";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
   entityRegistry: CatalogEntityRegistry;
+  sidebarStorage: StorageLayer<SidebarStorageState>;
+  extensionLoader: ExtensionLoader;
 }
 
-const NonInjectedSidebar = observer(({ sidebarItems, entityRegistry }: Dependencies) => (
-  <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
-    <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
+const NonInjectedSidebar = observer(
+  ({ sidebarItems, entityRegistry, sidebarStorage, extensionLoader }: Dependencies) => {
+    const sidebarHook = useSidebarHook({ sidebarStorage, extensionLoader });
 
-    <div className={`${styles.sidebarNav} sidebar-active-status`}>
-      {sidebarItems.get().map((hierarchicalSidebarItem) => (
-        <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id} />
-      ))}
-    </div>
-  </div>
-));
+    return (
+      <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
+        <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
+
+        <OrderableList className={`${styles.sidebarNav} sidebar-active-status`} onReorder={sidebarHook.saveOrderInfo}>
+          {sidebarItems.get().map((hierarchicalSidebarItem) => (
+            <SidebarItem item={hierarchicalSidebarItem} key={hierarchicalSidebarItem.id} />
+          ))}
+        </OrderableList>
+      </div>
+    );
+  },
+);
 
 export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
   getProps: (di, props) => ({
     ...props,
     sidebarItems: di.inject(sidebarItemsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
+    sidebarStorage: di.inject(sidebarStorageInjectable),
+    extensionLoader: di.inject(extensionLoaderInjectable),
   }),
 });
 
