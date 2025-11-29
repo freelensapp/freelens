@@ -13,6 +13,8 @@ import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/t
 import defaultLensThemeInjectable from "../../../../../../renderer/themes/default-theme.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
+import styles from "./theme.module.scss";
+
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
@@ -34,16 +36,61 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
     })),
   ];
 
+  const accentColorOptions = [
+    { value: "#00a7a0", label: "Teal" },
+    { value: "#4caf50", label: "Green" },
+    { value: "#2196f3", label: "Blue" },
+    { value: "#ff9800", label: "Orange" },
+  ];
+
+  const currentColor = state.customAccentColor || "#00a7a0";
+
+  const ColorSwatch = ({ color }: { color: string }) => (
+    <div style={{ backgroundColor: color, width: '20px', height: '20px', borderRadius: '2px' }} />
+  );
+
+  const ColorOption = ({ option }: { option: { value: string; label: string } }) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <ColorSwatch color={option.value} />
+      <span>{option.label}</span>
+    </div>
+  );
+
   return (
     <section id="appearance">
       <SubTitle title="Theme" />
-      <Select
-        id="theme-input"
-        options={themeOptions}
-        value={state.colorTheme}
-        onChange={(value) => (state.colorTheme = value?.value ?? defaultTheme.name)}
-        themeName="lens"
-      />
+      <div className={styles.selectRow}>
+        <Select
+          className={styles.themeSelect}
+          id="theme-input"
+          options={themeOptions}
+          value={state.colorTheme}
+          onChange={(value) => (state.colorTheme = value?.value ?? defaultTheme.name)}
+          themeName="lens"
+        />
+
+        <Select
+          className={styles.accentSelect}
+          id="accent-color-select"
+          options={accentColorOptions}
+          value={currentColor}
+          onChange={(value) => (state.customAccentColor = value?.value)}
+          formatOptionLabel={(option) => <ColorOption option={option} />}
+          themeName="lens"
+        />
+      </div>
+
+      <div className={styles.colorPreview}>
+        {currentColor !== "#00a7a0" && (
+          <button
+            onClick={() => (state.customAccentColor = undefined)}
+            className={styles.resetButton}
+            title="Reset to default color"
+          >
+            Reset to Default
+          </button>
+        )}
+      </div>
     </section>
   );
 });
