@@ -5,14 +5,21 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 
 const lensThemesInjectable = getInjectable({
   id: "lens-themes",
   instantiate: (di) => {
-    const themes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const builtInThemes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const state = di.inject(userPreferencesStateInjectable);
 
-    return new Map(themes.map((theme) => [theme.name, theme]));
+    return computed(() => {
+      const allThemes = [...builtInThemes, ...state.customThemes];
+
+      return new Map(allThemes.map((theme) => [theme.name, theme]));
+    });
   },
 });
 

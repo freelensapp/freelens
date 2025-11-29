@@ -21,6 +21,7 @@ import {
 
 import type { ObservableMap } from "mobx";
 
+import type { LensTheme } from "../../../renderer/themes/lens-theme";
 import type {
   EditorConfiguration,
   ExtensionRegistry,
@@ -144,6 +145,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
             location: defaultExtensionRegistryUrlLocation,
           },
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
+      }),
+      customThemes: getPreferenceDescriptor<LensTheme[] | undefined, LensTheme[]>({
+        fromStore: (val) => val ?? [],
+        toStore: (val) => (val.length === 0 ? undefined : val),
       }),
     } as const;
   },

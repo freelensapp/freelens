@@ -32,7 +32,7 @@
 
   &.restarted {
     background-color: var(--colorOk);
-    outline: 1px solid var(--colorWarning);
+    outline: 1px solid var(--colorRestartedOutline);
     outline-offset: 3px;
   }
 
