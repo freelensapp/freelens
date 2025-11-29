@@ -10,14 +10,14 @@ import { ColorCustomization } from "./color-customization";
 import { colorCustomizationRouteInjectable } from "./color-customization-route.injectable";
 
 const colorCustomizationRouteComponentInjectable = getInjectable({
-    id: "color-customization-route-component",
+  id: "color-customization-route-component",
 
-    instantiate: (di) => ({
-        route: di.inject(colorCustomizationRouteInjectable),
-        Component: ColorCustomization,
-    }),
+  instantiate: (di) => ({
+    route: di.inject(colorCustomizationRouteInjectable),
+    Component: ColorCustomization,
+  }),
 
-    injectionToken: routeSpecificComponentInjectionToken,
+  injectionToken: routeSpecificComponentInjectionToken,
 });
 
 export default colorCustomizationRouteComponentInjectable;

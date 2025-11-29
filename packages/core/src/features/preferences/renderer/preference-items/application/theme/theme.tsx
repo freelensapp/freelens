@@ -7,18 +7,18 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import navigateToRouteInjectable from "../../../../../../common/front-end-routing/navigate-to-route.injectable";
+import { Button } from "../../../../../../renderer/components/button";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
-import { Button } from "../../../../../../renderer/components/button";
-import lensThemesInjectable from "../../../../../../renderer/themes/themes.injectable";
 import defaultLensThemeInjectable from "../../../../../../renderer/themes/default-theme.injectable";
+import lensThemesInjectable from "../../../../../../renderer/themes/themes.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
-import navigateToRouteInjectable from "../../../../../../common/front-end-routing/navigate-to-route.injectable";
 import { colorCustomizationRoute } from "../color-customization/color-customization-route.injectable";
 
+import type { NavigateToRoute } from "../../../../../../common/front-end-routing/navigate-to-route.injectable";
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
-import type { NavigateToRoute } from "../../../../../../common/front-end-routing/navigate-to-route.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;
@@ -56,11 +56,7 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme, navigateToRout
         themeName="lens"
       />
       <div style={{ marginTop: "16px" }}>
-        <Button
-          primary
-          label="Customize Colors..."
-          onClick={handleCustomizeColors}
-        />
+        <Button primary label="Customize Colors..." onClick={handleCustomizeColors} />
       </div>
     </section>
   );

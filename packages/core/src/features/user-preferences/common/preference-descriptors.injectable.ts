@@ -19,10 +19,9 @@ import {
   packageMirrors,
 } from "./preferences-helpers";
 
-import type { LensTheme } from "../../../renderer/themes/lens-theme";
-
 import type { ObservableMap } from "mobx";
 
+import type { LensTheme } from "../../../renderer/themes/lens-theme";
 import type {
   EditorConfiguration,
   ExtensionRegistry,
