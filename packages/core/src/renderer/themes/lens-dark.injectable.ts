@@ -129,6 +129,8 @@ const lensDarkThemeInjectable = getInjectable({
         navHoverColor: "#dcddde",
         hrColor: "#ffffff0f",
         tooltipBackground: "#18191c",
+        colorAccent: "#00a7a0",
+        colorRestartedOutline: "#ff9800",
       },
       terminalColors: {
         background: "#000000",

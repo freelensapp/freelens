@@ -57,6 +57,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
+        state.customThemes = descriptors.customThemes.fromStore(preferences.customThemes);
       }),
       toJSON: () =>
         toJS({
@@ -80,6 +81,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            customThemes: descriptors.customThemes.toStore(state.customThemes),
           },
         }),
     });

@@ -19,6 +19,8 @@ export interface LensTheme {
   author: string;
   monacoTheme: MonacoTheme;
   isDefault?: boolean;
+  isCustom?: boolean;
+  createdAt?: string;
 }
 
 export type TerminalColorName = keyof ITheme;
@@ -133,4 +135,6 @@ export type LensColorName =
   | "navSelectedBackground"
   | "navHoverColor"
   | "hrColor"
-  | "tooltipBackground";
+  | "tooltipBackground"
+  | "colorAccent"
+  | "colorRestartedOutline";

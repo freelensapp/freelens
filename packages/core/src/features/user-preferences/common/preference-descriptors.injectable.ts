@@ -19,6 +19,8 @@ import {
   packageMirrors,
 } from "./preferences-helpers";
 
+import type { LensTheme } from "../../../renderer/themes/lens-theme";
+
 import type { ObservableMap } from "mobx";
 
 import type {
@@ -132,6 +134,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
             location: defaultExtensionRegistryUrlLocation,
           },
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
+      }),
+      customThemes: getPreferenceDescriptor<LensTheme[] | undefined, LensTheme[]>({
+        fromStore: (val) => val ?? [],
+        toStore: (val) => (val.length === 0 ? undefined : val),
       }),
     } as const;
   },
