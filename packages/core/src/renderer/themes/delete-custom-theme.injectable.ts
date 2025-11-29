@@ -8,15 +8,18 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { defaultThemeId } from "../../common/vars";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { LensTheme } from "./lens-theme";
+
 export type DeleteCustomTheme = (themeName: string) => void;
 
 const deleteCustomThemeInjectable = getInjectable({
     id: "delete-custom-theme",
-    instantiate: (di): DeleteCustomTheme => {
+    instantiate: (di: DiContainer): DeleteCustomTheme => {
         const state = di.inject(userPreferencesStateInjectable);
 
-        return (themeName) => {
-            const customThemes = state.customThemes.filter((theme) => theme.name !== themeName);
+        return (themeName: string) => {
+            const customThemes = state.customThemes.filter((theme: LensTheme) => theme.name !== themeName);
 
             state.customThemes = customThemes;
 

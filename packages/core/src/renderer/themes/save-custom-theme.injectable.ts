@@ -8,12 +8,13 @@ import { getInjectable } from "@ogre-tools/injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
 import type { LensTheme } from "./lens-theme";
+import type { DiContainer } from "@ogre-tools/injectable";
 
 export type SaveCustomTheme = (theme: LensTheme) => void;
 
 const saveCustomThemeInjectable = getInjectable({
     id: "save-custom-theme",
-    instantiate: (di): SaveCustomTheme => {
+    instantiate: (di: DiContainer): SaveCustomTheme => {
         const state = di.inject(userPreferencesStateInjectable);
 
         return (theme) => {
