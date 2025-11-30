@@ -7,13 +7,8 @@ import createKubeJsonApiInjectable from "../../../../../common/k8s-api/create-ku
 import loadProxyKubeconfigInjectable from "../../../../../main/cluster/load-proxy-kubeconfig.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
 import clustersStateInjectable from "../../../storage/common/state.injectable";
-import {
-  createMockCluster,
-  createMockKubeJsonApi,
-  createMockProxyKubeconfig,
-  TEST_CLUSTER_CONFIGS,
-} from "../../test-helpers";
 import executeOnClusterHandlerInjectable from "../execute-handler.injectable";
+import { createMockCluster, createMockKubeJsonApi, createMockProxyKubeconfig, TEST_CLUSTER_CONFIGS } from "../testing";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
