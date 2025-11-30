@@ -18,7 +18,7 @@ import type { PartialDeep } from "type-fest";
 
 import type { ExecuteOnClusterRequest, ExecuteOnClusterResponse } from "../common/types";
 
-export type ExecuteOnClusterHandler = (request: ExecuteOnClusterRequest) => Promise<ExecuteOnClusterResponse>;
+type ExecuteOnClusterHandler = (request: ExecuteOnClusterRequest) => Promise<ExecuteOnClusterResponse>;
 
 const executeOnClusterHandlerInjectable = getInjectable({
   id: "execute-on-cluster-handler",

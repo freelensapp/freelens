@@ -11,8 +11,9 @@ import { LensRendererExtension as LensExtension } from "../lens-renderer-extensi
 // APIs
 import * as Catalog from "./catalog";
 import * as Component from "./components";
+import * as K8s from "./k8s";
 import * as K8sApi from "./k8s-api";
 import * as Navigation from "./navigation";
 import * as Theme from "./theming";
 
-export { Catalog, Component, K8sApi, Navigation, Theme, Ipc, LensExtension };
+export { Catalog, Component, K8s, K8sApi, Navigation, Theme, Ipc, LensExtension };

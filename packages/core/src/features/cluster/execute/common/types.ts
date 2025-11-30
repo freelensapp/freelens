@@ -9,7 +9,6 @@ export type { KubeApiPatchType };
 
 /**
  * Resource identifier for Kubernetes API operations.
- * Matches the query structure used by KubeApi internals.
  */
 export interface ResourceQuery {
   /** API version (e.g., "v1", "apps/v1") */
@@ -20,32 +19,25 @@ export interface ResourceQuery {
   readonly namespace?: string;
   /** Resource name for single-resource operations */
   readonly name?: string;
-  /** Label selector for filtering (e.g., "app=nginx,env=prod") */
+  /** Label selector (e.g., "app=nginx,env=prod") */
   readonly labelSelector?: string;
-  /** Field selector for filtering (e.g., "status.phase=Running") */
+  /** Field selector (e.g., "status.phase=Running") */
   readonly fieldSelector?: string;
 }
 
 /**
  * Supported Kubernetes API operations.
- * Maps to KubeApi methods: list, get, create, update, patch, delete.
  */
 export type KubeApiOperation = "list" | "get" | "create" | "update" | "patch" | "delete";
 
 /**
- * Request payload for executing operations on a cluster.
- * Sent from renderer to main process via IPC.
+ * Request payload for executing operations on a cluster via IPC.
  */
 export interface ExecuteOnClusterRequest {
-  /** Target cluster identifier */
   readonly clusterId: string;
-  /** Operation to perform */
   readonly operation: KubeApiOperation;
-  /** Resource query specifying what to operate on */
   readonly resource: ResourceQuery;
-  /** Request body for create/update/patch operations */
   readonly body?: unknown;
-  /** Patch type for patch operations */
   readonly patchType?: KubeApiPatchType;
 }
 
@@ -53,23 +45,18 @@ export interface ExecuteOnClusterRequest {
  * Error details returned when an operation fails.
  */
 export interface ExecuteOnClusterError {
-  /** Human-readable error message */
   readonly message: string;
   /** HTTP status code (e.g., 404, 503) */
   readonly code?: number;
-  /** Kubernetes error reason (e.g., "NotFound", "ClusterNotAccessible") */
+  /** Kubernetes error reason (e.g., "NotFound") */
   readonly reason?: string;
 }
 
 /**
  * Response from executing an operation on a cluster.
- * Generic type parameter allows typed responses for different operations.
  */
 export interface ExecuteOnClusterResponse<T = unknown> {
-  /** Whether the operation succeeded */
   readonly success: boolean;
-  /** Response data on success */
   readonly data?: T;
-  /** Error details on failure */
   readonly error?: ExecuteOnClusterError;
 }
