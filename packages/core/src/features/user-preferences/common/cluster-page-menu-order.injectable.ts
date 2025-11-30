@@ -1,29 +1,24 @@
 import { getInjectable } from "@ogre-tools/injectable";
-import { computed } from "mobx";
-import sidebarStorageInjectable, {
-  SidebarStorageState,
-} from "../../../renderer/components/layout/sidebar-storage/sidebar-storage.injectable";
-import { StorageLayer } from "../../../renderer/utils/storage-helper";
+import { computed, runInAction } from "mobx";
+import userPreferencesStateInjectable from "./state.injectable";
 
 export const getClusterPageMenuOrderInjectable = getInjectable({
   id: "get-cluster-page-menu-order-injectable",
 
   instantiate: (di) => {
-    const sidebarStorage: StorageLayer<SidebarStorageState> = di.inject(sidebarStorageInjectable);
+    
+    const userPreferences = di.inject(userPreferencesStateInjectable);
 
     return (key: string, defaultValue: number) => {
-      if (!sidebarStorage.get().order) {
-        sidebarStorage.set({
-          ...sidebarStorage.get(),
-          order: {},
-        });
+      if (!userPreferences.clusterPageMenuOrder) {
+
+        runInAction(() => userPreferences.clusterPageMenuOrder = {});
       }
-      if (!sidebarStorage.get().order.hasOwnProperty(key)) {
-        sidebarStorage.merge((draft) => {
-          draft.order[key] = defaultValue;
-        });
+      if (!userPreferences.clusterPageMenuOrder!.hasOwnProperty(key)) {
+        runInAction(() => userPreferences.clusterPageMenuOrder![key] = defaultValue);
       }
-      return computed(() => sidebarStorage.get().order[key]);
+
+      return computed(() => userPreferences.clusterPageMenuOrder![key]);
     };
   },
 });

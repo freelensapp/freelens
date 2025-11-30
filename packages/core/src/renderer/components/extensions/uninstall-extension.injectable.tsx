@@ -12,10 +12,11 @@ import React from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
-import { extensionDisplayName } from "../../../extensions/lens-extension";
+import { extensionDisplayName, getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 
 import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 const uninstallExtensionInjectable = getInjectable({
   id: "uninstall-extension",
@@ -27,6 +28,14 @@ const uninstallExtensionInjectable = getInjectable({
     const logger = di.inject(loggerInjectionToken);
     const showSuccessNotification = di.inject(showSuccessNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
+    const userPreferences = di.inject(userPreferencesStateInjectable);
+
+    const __removeExtensionOrderFromUserStore = (name: string) => {
+      if (userPreferences.clusterPageMenuOrder) {
+        const extensionName = sanitizeExtensionName(getExtensionId(name));
+        delete userPreferences.clusterPageMenuOrder[extensionName];
+      }
+    }
 
     return async (extensionId: LensExtensionId): Promise<boolean> => {
       const ext = extensionLoader.getExtensionById(extensionId);
@@ -48,6 +57,8 @@ const uninstallExtensionInjectable = getInjectable({
 
         // wait for the ExtensionLoader to actually uninstall the extension
         await when(() => !extensionLoader.userExtensions.get().has(extensionId));
+        
+        __removeExtensionOrderFromUserStore(manifest.name);
 
         showSuccessNotification(
           <p>

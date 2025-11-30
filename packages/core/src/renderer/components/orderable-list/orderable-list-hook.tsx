@@ -10,10 +10,16 @@ const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependen
   const [items, setItems] = useState<ReactElement[]>(children);
   const [activeId, setActiveId] = useState<number | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
-  const itemIds = children.map((child) => child.key!.toString());
+
+  const getItemIds = () => {
+    return children.map((child) => child.key!.toString());
+  }
+
+  const [itemIds, setItemIds] = useState(getItemIds());
 
   useEffect(() => {
     setItems(children);
+    setItemIds(getItemIds());
   }, [children]);
 
   const onDragStart = (event: DragStartEvent) => {

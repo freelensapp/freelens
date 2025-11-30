@@ -17,25 +17,24 @@ import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
 import useSidebarHook from "./sidebar-hook";
 import { SidebarItem } from "./sidebar-item";
-import sidebarStorageInjectable, { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 
 import type { IComputedValue } from "mobx";
 
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
-import type { StorageLayer } from "../../utils/storage-helper";
+import userPreferencesStateInjectable, { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
   entityRegistry: CatalogEntityRegistry;
-  sidebarStorage: StorageLayer<SidebarStorageState>;
+  userPreferences: UserPreferencesState;
   extensionLoader: ExtensionLoader;
 }
 
 const NonInjectedSidebar = observer(
-  ({ sidebarItems, entityRegistry, sidebarStorage, extensionLoader }: Dependencies) => {
-    const sidebarHook = useSidebarHook({ sidebarStorage, extensionLoader });
+  ({ sidebarItems, entityRegistry, userPreferences: sidebarStorage, extensionLoader }: Dependencies) => {
+    const sidebarHook = useSidebarHook({ userPreferences: sidebarStorage, extensionLoader });
 
     return (
       <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
@@ -56,7 +55,7 @@ export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
     ...props,
     sidebarItems: di.inject(sidebarItemsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
-    sidebarStorage: di.inject(sidebarStorageInjectable),
+    userPreferences: di.inject(userPreferencesStateInjectable),
     extensionLoader: di.inject(extensionLoaderInjectable),
   }),
 });
