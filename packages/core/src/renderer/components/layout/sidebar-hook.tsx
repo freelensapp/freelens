@@ -1,12 +1,11 @@
-import { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import { runInAction } from "mobx";
+import { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 interface Dependencies {
   userPreferences: UserPreferencesState;
 }
 
 const useSidebarHook = ({ userPreferences }: Dependencies) => {
-
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
     const orderedClusterPageMenuOrder = __orderClusterPageMenuOrder(userPreferences);
     const userPreferencesElements = Object.entries(orderedClusterPageMenuOrder!).map((entry) => entry[0]);
@@ -26,16 +25,16 @@ const useSidebarHook = ({ userPreferences }: Dependencies) => {
 
   const __orderClusterPageMenuOrder = (userPreferences: UserPreferencesState) => {
     return Object.fromEntries(
-      Object.entries(userPreferences.clusterPageMenuOrder ?? {}).sort(([, valueA], [, valueB]) => valueA - valueB)
+      Object.entries(userPreferences.clusterPageMenuOrder ?? {}).sort(([, valueA], [, valueB]) => valueA - valueB),
     );
-  }
+  };
 
   const __orderElements = (userPreferencesElements: string[]): Record<string, number> => {
     return Object.fromEntries(userPreferencesElements.map<[string, number]>((item, index) => [item, (index + 1) * 10]));
   };
 
   const __updateStorage = (newOrder: Record<string, number>) => {
-    runInAction(() => userPreferences.clusterPageMenuOrder = newOrder);
+    runInAction(() => (userPreferences.clusterPageMenuOrder = newOrder));
   };
 
   return { saveOrderInfo };
