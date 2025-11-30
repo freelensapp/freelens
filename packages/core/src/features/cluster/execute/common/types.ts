@@ -3,6 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { KubeApiPatchType } from "@freelensapp/kube-api";
+
+export type { KubeApiPatchType };
+
 /**
  * Resource identifier for Kubernetes API operations.
  * Matches the query structure used by KubeApi internals.
@@ -27,13 +31,6 @@ export interface ResourceQuery {
  * Maps to KubeApi methods: list, get, create, update, patch, delete.
  */
 export type KubeApiOperation = "list" | "get" | "create" | "update" | "patch" | "delete";
-
-/**
- * Patch types supported by Kubernetes API.
- * Re-exported from @freelensapp/kube-api for consistency.
- * @see packages/utility-features/kube-api/src/kube-api.ts:277
- */
-export type KubeApiPatchType = "json" | "merge" | "strategic";
 
 /**
  * Request payload for executing operations on a cluster.
