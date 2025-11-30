@@ -6,10 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { LensExtensionId } from "@freelensapp/legacy-extensions";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
-import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 
 export type DisableExtension = (extId: LensExtensionId) => void;
 

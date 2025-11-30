@@ -11,13 +11,13 @@ import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.
 import { defaultThemeId } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import {
+  ClusterPageMenuOrder,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
   packageMirrors,
-  ClusterPageMenuOrder,
 } from "./preferences-helpers";
 
 import type { ObservableMap } from "mobx";

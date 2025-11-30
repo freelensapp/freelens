@@ -22,7 +22,7 @@ const sidebarStorageInjectable = getInjectable({
 
     return createStorage<SidebarStorageState>("sidebar", {
       width: defaultSidebarWidth,
-      expanded: {}
+      expanded: {},
     });
   },
 });

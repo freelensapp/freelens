@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { waitFor } from "@testing-library/react";
 import { CustomResourceDefinition } from "../../extensions/common-api/k8s-api";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -12,7 +13,6 @@ import type { RenderResult } from "@testing-library/react";
 
 import type { CustomResourceDefinitionStore } from "../../renderer/components/custom-resource-definitions/store";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { waitFor } from "@testing-library/react";
 
 describe("cluster - custom resources in sidebar", () => {
   let builder: ApplicationBuilder;

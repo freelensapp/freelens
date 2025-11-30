@@ -1,13 +1,11 @@
-import { ExtensionLoader } from "../../../extensions/extension-loader";
 import { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import { runInAction } from "mobx";
 
 interface Dependencies {
   userPreferences: UserPreferencesState;
-  extensionLoader: ExtensionLoader;
 }
 
-const useSidebarHook = ({ userPreferences, extensionLoader }: Dependencies) => {
+const useSidebarHook = ({ userPreferences }: Dependencies) => {
 
   const saveOrderInfo = (startIndex: number, releaseIndex: number) => {
     const orderedClusterPageMenuOrder = __orderClusterPageMenuOrder(userPreferences);
@@ -27,10 +25,10 @@ const useSidebarHook = ({ userPreferences, extensionLoader }: Dependencies) => {
   };
 
   const __orderClusterPageMenuOrder = (userPreferences: UserPreferencesState) => {
-  return Object.fromEntries(
-    Object.entries(userPreferences.clusterPageMenuOrder ?? {}).sort(([, valueA], [, valueB]) => valueA - valueB)
-  );
-}
+    return Object.fromEntries(
+      Object.entries(userPreferences.clusterPageMenuOrder ?? {}).sort(([, valueA], [, valueB]) => valueA - valueB)
+    );
+  }
 
   const __orderElements = (userPreferencesElements: string[]): Record<string, number> => {
     return Object.fromEntries(userPreferencesElements.map<[string, number]>((item, index) => [item, (index + 1) * 10]));

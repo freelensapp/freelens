@@ -9,8 +9,9 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { ExtensionLoader } from "../../../extensions/extension-loader";
-import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+import userPreferencesStateInjectable, {
+  UserPreferencesState,
+} from "../../../features/user-preferences/common/state.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 import OrderableList from "../orderable-list/orderable-list";
 import styles from "./sidebar.module.scss";
@@ -23,18 +24,16 @@ import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import type { IComputedValue } from "mobx";
 
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
-import userPreferencesStateInjectable, { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 interface Dependencies {
   sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
   entityRegistry: CatalogEntityRegistry;
   userPreferences: UserPreferencesState;
-  extensionLoader: ExtensionLoader;
 }
 
 const NonInjectedSidebar = observer(
-  ({ sidebarItems, entityRegistry, userPreferences: sidebarStorage, extensionLoader }: Dependencies) => {
-    const sidebarHook = useSidebarHook({ userPreferences: sidebarStorage, extensionLoader });
+  ({ sidebarItems, entityRegistry, userPreferences: sidebarStorage }: Dependencies) => {
+    const sidebarHook = useSidebarHook({ userPreferences: sidebarStorage });
 
     return (
       <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
@@ -56,7 +55,6 @@ export const Sidebar = withInjectables<Dependencies>(NonInjectedSidebar, {
     sidebarItems: di.inject(sidebarItemsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
     userPreferences: di.inject(userPreferencesStateInjectable),
-    extensionLoader: di.inject(extensionLoaderInjectable),
   }),
 });
 

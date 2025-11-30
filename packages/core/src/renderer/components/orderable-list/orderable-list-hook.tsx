@@ -13,7 +13,7 @@ const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependen
 
   const getItemIds = () => {
     return children.map((child) => child.key!.toString());
-  }
+  };
 
   const [itemIds, setItemIds] = useState(getItemIds());
 

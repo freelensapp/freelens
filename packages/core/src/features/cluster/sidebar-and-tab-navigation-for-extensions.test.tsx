@@ -383,20 +383,6 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
             expect(actual).toEqual({
               sidebar: {
                 expanded: { "sidebar-item-some-extension-name-some-parent-id": true },
-                order: {
-                  "sidebar-item-cluster-overview": 10,
-                  "sidebar-item-config": 40,
-                  "sidebar-item-custom-resources": 110,
-                  "sidebar-item-events": 80,
-                  "sidebar-item-helm": 90,
-                  "sidebar-item-namespaces": 70,
-                  "sidebar-item-network": 50,
-                  "sidebar-item-nodes": 20,
-                  "sidebar-item-some-extension-name": 9999,
-                  "sidebar-item-storage": 60,
-                  "sidebar-item-user-management": 100,
-                  "sidebar-item-workloads": 30,
-                },
                 width: 200,
               },
             });

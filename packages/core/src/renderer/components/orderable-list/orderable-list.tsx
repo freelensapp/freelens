@@ -1,9 +1,9 @@
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import React from "react";
-import useOrderableListHook from "./orderable-list-hook";
 import OrderableItem from "./orderable-item";
 import styles from "./orderable-list.module.css";
+import useOrderableListHook from "./orderable-list-hook";
 
 interface OrderableListDependencies {
   children: React.ReactElement[];
