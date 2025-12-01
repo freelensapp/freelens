@@ -30,6 +30,8 @@
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
         "electron-builder-squirrel-windows",
+        // it has to be explicitly updated together with electron
+        "node-abi",
         // explicit dependency to prevent using version from pnpm
         "node-gyp",
         // used as script to run in fork() to install extensions
