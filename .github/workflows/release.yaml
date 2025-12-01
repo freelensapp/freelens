@@ -305,7 +305,7 @@ jobs:
         shell: bash
         run: |
           pnpm --color=always build:app \
-            msi nsis \
+            msi nsis portable \
             --${{ matrix.arch }}
 
       - name: Azure Trusted Signing (Windows)
@@ -319,7 +319,7 @@ jobs:
           trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
           certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
           files-folder: ${{ github.workspace }}\freelens\dist
-          files-folder-filter: exe,msi,portable
+          files-folder-filter: exe,msi
 
       - name: Tweak binaries
         shell: bash
@@ -336,7 +336,6 @@ jobs:
           my $arch = $arch{$ENV{ARCH}};
           while (<Freelens*>) {
             my $src = $_;
-            s/ Setup /-/;
             s/[ _]/-/g;
             if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
               s/\.(dmg|exe|msi|pkg)$/-$arch.$1/;
@@ -345,8 +344,10 @@ jobs:
             s/[.-](amd64|x86-64)/-amd64/;
             s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
             s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
-            s/-(amd64|arm64).(exe|msi|)$/-windows-$1.$2/;
-            s/-Portable-windows-(amd64|arm64)\.exe/-windows-$1-portable.exe/;
+            s/-(amd64|arm64)\.msi$/-windows-$1.msi/;
+            s/-(amd64|arm64)\.exe$/-windows-portable-$1.exe/ if !/-Setup-/;
+            s/-(amd64|arm64)\.exe$/-windows-$1.exe/ if /-Setup-/;
+            s/-Setup-/-/;
             my $dst = $_;
             if ($src ne $dst) {
               print "rename $src to $dst\n";
