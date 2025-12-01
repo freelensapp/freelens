@@ -16,7 +16,7 @@ const setupHostnamesInjectable = getInjectable({
       const app = di.inject(electronAppInjectable);
 
       app.commandLine.appendSwitch(
-        "host-rules",
+        "host-resolver-rules",
         [
           "MAP localhost 127.0.0.1",
           "MAP renderer.freelens.app 127.0.0.1",

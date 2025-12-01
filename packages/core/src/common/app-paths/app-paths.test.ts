@@ -23,6 +23,7 @@ describe("app-paths", () => {
     builder = getApplicationBuilder();
 
     const defaultAppPathsStub: AppPaths = {
+      assets: "/some-assets",
       currentApp: "/some-current-app",
       appData: "/some-app-data",
       crashDumps: "/some-crash-dumps",
