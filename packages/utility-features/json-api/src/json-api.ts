@@ -86,9 +86,8 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
-export type ParamsAndQuery<Params, Query> = ValueOf<Query> extends QueryParam
-  ? Params & { query?: Query }
-  : Params & { query?: undefined };
+export type ParamsAndQuery<Params, Query> =
+  ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
   fetch: typeof Fetch;

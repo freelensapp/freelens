@@ -40,7 +40,7 @@
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/lodash": "^4.17.20",
+    "@types/lodash": "^4.17.21",
     "@types/node": "~22.16.5",
     "rfc6902": "^5.1.2",
     "ts-loader": "^9.5.4",

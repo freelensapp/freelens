@@ -50,6 +50,7 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
               <Badge label={model.name} />
               <span>Namespace:</span>
               <Badge label={model.namespace} />
+              <Checkbox label="Sort" value={model.sortKeys.value.get()} onChange={model.sortKeys.onChange} />
               <Checkbox
                 label="Managed Fields"
                 value={model.managedFields.value.get()}

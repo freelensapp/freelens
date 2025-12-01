@@ -38,9 +38,9 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/jest": "^29.5.14",
-    "@types/lodash": "^4.17.20",
+    "@types/lodash": "^4.17.21",
     "@types/node": "~22.16.5",
-    "@types/react": "^17.0.89",
+    "@types/react": "^17.0.90",
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.4",
     "webpack": "^5.102.1"
