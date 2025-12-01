@@ -138,6 +138,7 @@ win:
   appId: app.freelens.Freelens
   target:
     - nsis
+    - portable
   extraResources:
     - from: binaries/client/windows/${arch}/kubectl.exe
       to: ./${arch}/kubectl.exe
