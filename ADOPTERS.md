@@ -14,6 +14,7 @@ Feel free to submit a Pull Request to be added.
 | Individual | [Nedzad Winter](https://github.com/dazden94) | Freelensapp | 2025 | - | As a Cloud Engineer I am daily driving freelens. |
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
+| Individual | [Juan Trejo](https://github.com/trejo08) | Ginnius | 2024 | [Juan Trejo](https://juantrejo.cloud) | A really compromised and commited Cloud Engineer with long experience working with K8S with different flavors/distributions like EKS, GPC, AKS, DOKS, RKE2 and many others, CNCF speaker multiple times and K8S evangelist |
 
 ## Adopter Types
 
