@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/cluster-settings",
-  "version": "1.7.0-0",
+  "version": "1.7.0",
   "description": "Injection token exporter for cluster settings configuration",
   "license": "MIT",
   "type": "commonjs",

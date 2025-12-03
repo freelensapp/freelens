@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application",
   "private": false,
-  "version": "1.7.0-0",
+  "version": "1.7.0",
   "description": "Package for creating Freelens applications",
   "type": "commonjs",
   "files": [
