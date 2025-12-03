@@ -27,7 +27,7 @@
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^27.0.0",
-    "@types/node": "~22.16.5",
+    "@types/node": "~22.19.1",
     "typescript": "^5.9.3"
   },
   "bin": {

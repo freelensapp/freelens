@@ -41,7 +41,7 @@ download the right package for your system.
 
 ### macOS
 
-macOS 11 or later is required.
+macOS 12 or later is required.
 
 Download either the PKG (installer) or DMG (image) package from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64

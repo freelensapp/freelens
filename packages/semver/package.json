@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.3",
-    "@types/node": "~22.16.5",
+    "@types/node": "~22.19.1",
     "@types/semver": "^7.7.1",
     "typescript": "^5.9.3"
   }
