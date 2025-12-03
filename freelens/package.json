@@ -4,7 +4,7 @@
   "productName": "Freelens",
   "description": "Freelens - Free IDE for Kubernetes",
   "homepage": "https://freelens.app",
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
@@ -56,7 +56,7 @@
     "test:integration": "jest -xyz --runInBand --detectOpenHandles --forceExit"
   },
   "config": {
-    "k8sProxyVersion": "1.4.1",
+    "k8sProxyVersion": "1.4.2",
     "bundledKubectlVersion": "1.34.2",
     "bundledHelmVersion": "4.0.1",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",

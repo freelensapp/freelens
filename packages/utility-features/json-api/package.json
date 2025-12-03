@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/json-api",
   "private": false,
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "description": "JSON api client",
   "type": "commonjs",
   "publishConfig": {
