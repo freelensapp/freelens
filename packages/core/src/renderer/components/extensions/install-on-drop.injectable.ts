@@ -8,7 +8,12 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import attemptInstallsInjectable from "./attempt-installs.injectable";
 
-export type InstallOnDrop = (files: File[]) => Promise<void>;
+// Electron extends the browser File interface with a path property
+interface FileWithPath extends File {
+  path: string;
+}
+
+export type InstallOnDrop = (files: FileWithPath[]) => Promise<void>;
 
 const installOnDropInjectable = getInjectable({
   id: "install-on-drop",

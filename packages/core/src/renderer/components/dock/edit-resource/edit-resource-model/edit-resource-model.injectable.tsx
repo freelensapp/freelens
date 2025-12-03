@@ -95,12 +95,24 @@ export class EditResourceModel {
   // Store the managed fields when they're removed so we can restore them
   @observable private savedManagedFields: any = null;
 
+  // Store the unsorted YAML when sort is enabled so we can restore it
+  @observable private savedUnsortedYaml: string | null = null;
+
   readonly managedFields = {
     value: observable.box(false),
 
     onChange: action((value: boolean) => {
       this.managedFields.value.set(value);
       this.toggleManagedFields(value);
+    }),
+  };
+
+  readonly sortKeys = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.sortKeys.value.set(value);
+      this.toggleSortKeys(value);
     }),
   };
 
@@ -168,7 +180,10 @@ export class EditResourceModel {
         }
       }
 
-      const newYaml = yaml.dump(parsedYaml, defaultYamlDumpOptions);
+      const newYaml = yaml.dump(parsedYaml, {
+        ...defaultYamlDumpOptions,
+        sortKeys: this.sortKeys.value.get(),
+      });
 
       runInAction(() => {
         this.editingResource.draft = newYaml;
@@ -179,19 +194,58 @@ export class EditResourceModel {
     }
   };
 
-  regenerateYaml = () => {
+  toggleSortKeys = (enableSort: boolean) => {
+    const currentValue = this.configuration.value.get();
+    const isEdited = currentValue !== this.editingResource.firstDraft;
+
+    if (enableSort) {
+      // Save current YAML before sorting (only if not already edited)
+      if (!isEdited) {
+        this.savedUnsortedYaml = currentValue;
+      }
+
+      // Regenerate with sorting enabled
+      this.regenerateYaml(true);
+    } else {
+      // Restore unsorted YAML only if nothing was edited
+      if (!isEdited && this.savedUnsortedYaml) {
+        const unsortedYaml = this.savedUnsortedYaml;
+
+        runInAction(() => {
+          this.editingResource.draft = unsortedYaml;
+          this.savedUnsortedYaml = null;
+        });
+      } else {
+        // If edited, just regenerate without sorting
+        this.regenerateYaml(false);
+      }
+    }
+  };
+
+  regenerateYaml = (sortKeys?: boolean) => {
     if (!this._resource) {
       return;
     }
 
     const omitFields = this.managedFields.value.get() ? [] : ["metadata.managedFields"];
+    const shouldSortKeys = sortKeys ?? this.sortKeys.value.get();
 
     runInAction(() => {
-      const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), defaultYamlDumpOptions);
+      const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), {
+        ...defaultYamlDumpOptions,
+        sortKeys: shouldSortKeys,
+      });
+
+      // Store unsorted version when enabling sort for the first time
+      if (shouldSortKeys && !this.savedUnsortedYaml && !sortKeys) {
+        this.savedUnsortedYaml = this.editingResource.draft || this.editingResource.firstDraft || "";
+      }
+
       this.editingResource.firstDraft = newYaml;
 
       // Only set draft if there isn't already a saved draft from previous session
-      if (!this.editingResource.draft) {
+      // OR if we're explicitly regenerating (sortKeys parameter was provided)
+      if (!this.editingResource.draft || sortKeys !== undefined) {
         this.editingResource.draft = newYaml;
       }
 

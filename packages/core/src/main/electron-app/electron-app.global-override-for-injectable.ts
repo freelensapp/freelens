@@ -219,6 +219,19 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void userInfo;
       throw new Error("Method not implemented.");
     }
+    getAccessibilitySupportFeatures(): string[] {
+      throw new Error("Method not implemented.");
+    }
+    getRecentDocuments(): string[] {
+      throw new Error("Method not implemented.");
+    }
+    isHardwareAccelerationEnabled(): boolean {
+      throw new Error("Method not implemented.");
+    }
+    setAccessibilitySupportFeatures(features: string[]): void {
+      void features;
+      throw new Error("Method not implemented.");
+    }
 
     resolveProxy(url: string): Promise<string> {
       void url;
@@ -232,7 +245,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
       throw new Error("Method not implemented.");
     }
 
-    setProxy(config: ProxyConfig): void {
+    setProxy(config: ProxyConfig): Promise<void> {
       void config;
       throw new Error("Method not implemented.");
     }

@@ -74,6 +74,21 @@ describe("Extensions API", () => {
       });
     });
 
+    describe("Clusters API", () => {
+      it("should export ClusterConnectionStatus enum", () => {
+        expect(extensions.Common.Clusters).toHaveProperty("ClusterConnectionStatus");
+        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("CONNECTED");
+        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("DISCONNECTED");
+        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("CONNECTING");
+        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("DISCONNECTING");
+      });
+
+      it("should export isClusterConnectionStatus type guard", () => {
+        expect(extensions.Common.Clusters).toHaveProperty("isClusterConnectionStatus");
+        expect(typeof extensions.Common.Clusters.isClusterConnectionStatus).toBe("function");
+      });
+    });
+
     describe("Proxy API", () => {
       it("should be defined", () => {
         expect(extensions.Common.Proxy).toBeDefined();
@@ -169,6 +184,16 @@ describe("Extensions API", () => {
         expect(extensions.Main.Catalog).toHaveProperty("catalogCategories");
         expect(extensions.Main.Catalog).toHaveProperty("catalogEntities");
       });
+
+      it("should export getAllClusters function", () => {
+        expect(extensions.Main.Catalog).toHaveProperty("getAllClusters");
+        expect(typeof extensions.Main.Catalog.getAllClusters).toBe("function");
+      });
+
+      it("should export getClusterById function", () => {
+        expect(extensions.Main.Catalog).toHaveProperty("getClusterById");
+        expect(typeof extensions.Main.Catalog.getClusterById).toBe("function");
+      });
     });
 
     describe("K8sApi namespace", () => {
@@ -221,8 +246,24 @@ describe("Extensions API", () => {
         expect(extensions.Renderer.Catalog).toHaveProperty("catalogCategories");
         expect(extensions.Renderer.Catalog).toHaveProperty("catalogEntities");
       });
+
       it("should export activeCluster", () => {
         expect(extensions.Renderer.Catalog).toHaveProperty("activeCluster");
+      });
+
+      it("should export getAllClusters function", () => {
+        expect(extensions.Renderer.Catalog).toHaveProperty("getAllClusters");
+        expect(typeof extensions.Renderer.Catalog.getAllClusters).toBe("function");
+      });
+
+      it("should export getClusterById function", () => {
+        expect(extensions.Renderer.Catalog).toHaveProperty("getClusterById");
+        expect(typeof extensions.Renderer.Catalog.getClusterById).toBe("function");
+      });
+
+      it("should export getActiveCluster function", () => {
+        expect(extensions.Renderer.Catalog).toHaveProperty("getActiveCluster");
+        expect(typeof extensions.Renderer.Catalog.getActiveCluster).toBe("function");
       });
     });
 

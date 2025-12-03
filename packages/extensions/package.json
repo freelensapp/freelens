@@ -2,7 +2,7 @@
   "name": "@freelensapp/extensions",
   "productName": "Freelens extensions",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "copyright": "© 2024-2025 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
@@ -30,7 +30,7 @@
     "@freelensapp/core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "~22.16.5",
+    "@types/node": "~22.19.1",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",

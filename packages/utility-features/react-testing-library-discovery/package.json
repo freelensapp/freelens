@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/react-testing-library-discovery",
   "private": false,
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "description": "A way to discover HTML-elements using react-testing-library",
   "type": "commonjs",
   "files": [

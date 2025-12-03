@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application-for-electron-main",
   "private": false,
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "description": "Electron's main specifics for creating Freelens applications",
   "type": "commonjs",
   "files": [
@@ -35,7 +35,7 @@
     "@freelensapp/run-many": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "electron": "^35.7.5"
+    "electron": "^39.2.4"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",

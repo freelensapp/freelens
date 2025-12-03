@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/ensure-binaries",
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
   "main": "dist/index.js",
   "license": "MIT",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
     "@types/gunzip-maybe": "^1.4.3",
-    "@types/node": "~22.16.5",
+    "@types/node": "~22.19.1",
     "@types/tar-stream": "^3.1.4",
     "typescript": "^5.9.3"
   },

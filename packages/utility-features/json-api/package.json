@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/json-api",
   "private": false,
-  "version": "1.7.0-0",
+  "version": "1.7.1-0",
   "description": "JSON api client",
   "type": "commonjs",
   "publishConfig": {
@@ -41,7 +41,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.21",
-    "@types/node": "~22.16.5",
+    "@types/node": "~22.19.1",
     "rfc6902": "^5.1.2",
     "ts-loader": "^9.5.4",
     "type-fest": "^5.2.0",
