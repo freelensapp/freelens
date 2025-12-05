@@ -219,6 +219,7 @@ Get updates about Freelens & keep in touch with our community
 
 - Follow us on [LinkedIn](https://www.linkedin.com/company/freelensapp/)
 - Follow us on [Bluesky](https://bsky.app/profile/freelensapp.bsky.social)
+- Follow us on [X](https://x.com/freelensapp)
 - Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
 - Chat on [Discord](https://discord.gg/NjKZERK95Y)
 - Discuss on [Reddit](https://www.reddit.com/r/freelens/)
