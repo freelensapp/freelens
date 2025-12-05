@@ -215,8 +215,8 @@ importers:
         specifier: ^1.5.4
         version: 1.5.4
       selfsigned:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.0.1
+        version: 4.0.1
       semver:
         specifier: ^7.7.3
         version: 7.7.3
@@ -876,8 +876,8 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
       selfsigned:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.0.1
+        version: 4.0.1
       semver:
         specifier: ^7.7.3
         version: 7.7.3
@@ -8349,8 +8349,8 @@ packages:
     resolution: {integrity: sha512-th5B4L2U+eGLq1TVh7zNRGBapioSORUeymIydxgFpwww9d2qyKvtuPU2jJuHvYAwwqi2Y596QBL3eEqcPEYL8Q==}
     engines: {node: '>=10'}
 
-  selfsigned@4.0.0:
-    resolution: {integrity: sha512-eP/1BEUCziBF/7p96ergE2JlGOMsGj9kIe77pD99G3ValgxDFwHA2oNCYW4rjlmYp8LXc684ypH0836GjSKw0A==}
+  selfsigned@4.0.1:
+    resolution: {integrity: sha512-QVGzJryYPB7ctpYxoK4DDvH4kFf23wtBl0s6km/wN+JCWLqjutdyWaiXHwSg3B3ftDOFfu0B7FWRVNH0xNn6rw==}
     engines: {node: '>=10'}
 
   semver-compare@1.0.0:
@@ -15216,7 +15216,7 @@ snapshots:
       '@types/node-forge': 1.3.11
       node-forge: 1.3.1
 
-  selfsigned@4.0.0:
+  selfsigned@4.0.1:
     dependencies:
       node-forge: 1.3.1
 
