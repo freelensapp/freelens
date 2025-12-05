@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 39.2.4 # datasource=npm depName=electron
+electronVersion: 39.2.5 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
