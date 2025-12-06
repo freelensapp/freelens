@@ -11,6 +11,7 @@ import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.
 import { defaultThemeId } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import {
+  ClusterPageMenuOrder,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultPackageMirror,
@@ -144,6 +145,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
             location: defaultExtensionRegistryUrlLocation,
           },
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
+      }),
+      clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val,
       }),
     } as const;
   },
