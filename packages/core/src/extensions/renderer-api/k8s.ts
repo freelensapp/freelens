@@ -8,7 +8,7 @@ import executeOnClusterInjectable from "../../features/cluster/execute/renderer/
 import { createK8sFunctions } from "../common-api/k8s-functions";
 import { getAllClusters } from "./catalog";
 
-export type { KubeApiPatchType, ResourceQuery } from "../../features/cluster/execute/common/types";
+export type { ClusterId, KubeApiPatchType, ResourceQuery } from "../../features/cluster/execute/common/types";
 
 const executeOnCluster = asLegacyGlobalFunctionForExtensionApi(executeOnClusterInjectable);
 
@@ -43,7 +43,6 @@ export const {
   queryClusters,
   queryAllClusters,
   getResource,
-  execute,
   applyOnCluster,
   deleteOnCluster,
   patchOnCluster,
