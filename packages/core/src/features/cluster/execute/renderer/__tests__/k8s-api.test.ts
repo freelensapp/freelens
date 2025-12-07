@@ -8,6 +8,7 @@ import { runInAction } from "mobx";
 import { KubernetesCluster } from "../../../../../common/catalog-entities/kubernetes-cluster";
 import catalogEntityRegistryInjectable from "../../../../../renderer/api/catalog/entity/registry.injectable";
 import { getDiForUnitTesting } from "../../../../../renderer/getDiForUnitTesting";
+import { createMockClusterEntity } from "../../common/testing";
 import executeOnClusterInjectable from "../execute-on-cluster.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -23,25 +24,6 @@ describe("K8s extension API functions (via injectable)", () => {
   let di: DiContainer;
   let requestFromChannelMock: jest.Mock;
   let catalogEntityRegistry: CatalogEntityRegistry;
-
-  const createMockCluster = (id: string, status: "connected" | "disconnected") => {
-    const cluster = new KubernetesCluster({
-      metadata: {
-        uid: id,
-        name: `Cluster ${id}`,
-        labels: {},
-      },
-      spec: {
-        kubeconfigPath: `/path/to/kubeconfig-${id}`,
-        kubeconfigContext: `context-${id}`,
-      },
-      status: {
-        phase: status,
-      },
-    });
-
-    return cluster;
-  };
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -209,9 +191,9 @@ describe("K8s extension API functions (via injectable)", () => {
       // Add clusters to the registry
       runInAction(() => {
         catalogEntityRegistry.updateItems([
-          createMockCluster("connected-1", "connected"),
-          createMockCluster("disconnected-1", "disconnected"),
-          createMockCluster("connected-2", "connected"),
+          createMockClusterEntity("connected-1", "connected"),
+          createMockClusterEntity("disconnected-1", "disconnected"),
+          createMockClusterEntity("connected-2", "connected"),
         ]);
       });
 
