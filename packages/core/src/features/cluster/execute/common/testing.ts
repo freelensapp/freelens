@@ -3,10 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubernetesCluster } from "../../../../common/catalog-entities/kubernetes-cluster";
 import { Cluster } from "../../../../common/cluster/cluster";
 
 /**
- * Creates a mock Cluster instance for testing execute-on-cluster functionality.
+ * Creates a mock Cluster instance (internal model) for main process tests.
  */
 export function createMockCluster(id: string, accessible: boolean): Cluster {
   const contextName = `context-${id}`;
@@ -18,6 +19,26 @@ export function createMockCluster(id: string, accessible: boolean): Cluster {
   cluster.accessible.set(accessible);
   cluster.contextName.set(contextName);
   return cluster;
+}
+
+/**
+ * Creates a mock KubernetesCluster catalog entity for renderer tests.
+ */
+export function createMockClusterEntity(id: string, status: "connected" | "disconnected"): KubernetesCluster {
+  return new KubernetesCluster({
+    metadata: {
+      uid: id,
+      name: `Cluster ${id}`,
+      labels: {},
+    },
+    spec: {
+      kubeconfigPath: `/path/to/kubeconfig-${id}`,
+      kubeconfigContext: `context-${id}`,
+    },
+    status: {
+      phase: status,
+    },
+  });
 }
 
 export interface MockProxyKubeconfigOptions {
