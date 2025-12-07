@@ -3,6 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { ClusterId } from "../../common/cluster-types";
+
+export type { ClusterId };
+
 /**
  * Connection status of a Kubernetes cluster.
  */
@@ -48,7 +52,8 @@ export interface ClusterMetadata {
  * ```
  */
 export interface ClusterInfo {
-  readonly id: string;
+  /** Unique cluster identifier (same as catalog entity metadata.uid) */
+  readonly id: ClusterId;
   readonly name: string;
   readonly kubeConfigPath: string;
   readonly contextName: string;

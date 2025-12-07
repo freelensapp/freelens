@@ -5,7 +5,10 @@
 
 import type { KubeApiPatchType } from "@freelensapp/kube-api";
 
+import type { ClusterId } from "../../../../common/cluster-types";
+
 export type { KubeApiPatchType };
+export type { ClusterId };
 
 /**
  * Resource identifier for Kubernetes API operations.
@@ -34,7 +37,7 @@ export type KubeApiOperation = "list" | "get" | "create" | "update" | "patch" | 
  * Request payload for executing operations on a cluster via IPC.
  */
 export interface ExecuteOnClusterRequest {
-  readonly clusterId: string;
+  readonly clusterId: ClusterId;
   readonly operation: KubeApiOperation;
   readonly resource: ResourceQuery;
   readonly body?: unknown;

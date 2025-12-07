@@ -8,16 +8,17 @@ import { ClusterConnectionStatus } from "./cluster-types";
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 import type {
+  ClusterId,
   ExecuteOnClusterRequest,
   ExecuteOnClusterResponse,
   KubeApiPatchType,
   ResourceQuery,
 } from "../../features/cluster/execute/common/types";
 
-export type { KubeApiPatchType, ResourceQuery } from "../../features/cluster/execute/common/types";
+export type { ClusterId, KubeApiPatchType, ResourceQuery } from "../../features/cluster/execute/common/types";
 
 type ExecuteFn = (request: ExecuteOnClusterRequest) => Promise<ExecuteOnClusterResponse>;
-type GetAllClustersFn = () => Array<{ id: string; status: ClusterConnectionStatus }>;
+type GetAllClustersFn = () => Array<{ id: ClusterId; status: ClusterConnectionStatus }>;
 
 /**
  * Creates K8s API functions bound to a specific execute function.
@@ -32,7 +33,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @returns Array of resources matching the query
    * @throws Error if the cluster is not available or the query fails
    */
-  async function queryCluster<T = unknown>(clusterId: string, query: ResourceQuery): Promise<T[]> {
+  async function queryCluster<T = unknown>(clusterId: ClusterId, query: ResourceQuery): Promise<T[]> {
     const response = await executeOnCluster({
       clusterId,
       operation: "list",
@@ -56,9 +57,9 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @returns Map of cluster IDs to either results array or Error
    */
   async function queryClusters<T = unknown>(
-    clusterIds: string[],
+    clusterIds: ClusterId[],
     query: ResourceQuery,
-  ): Promise<Map<string, T[] | Error>> {
+  ): Promise<Map<ClusterId, T[] | Error>> {
     const results = await Promise.allSettled(clusterIds.map((id) => queryCluster<T>(id, query)));
 
     return new Map(
@@ -79,7 +80,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @param query - Resource query specifying apiVersion, kind, namespace, and optional selectors
    * @returns Map of cluster IDs to either results array or Error
    */
-  async function queryAllClusters<T = unknown>(query: ResourceQuery): Promise<Map<string, T[] | Error>> {
+  async function queryAllClusters<T = unknown>(query: ResourceQuery): Promise<Map<ClusterId, T[] | Error>> {
     const connectedClusters = getAllClusters().filter((c) => c.status === ClusterConnectionStatus.CONNECTED);
 
     return queryClusters<T>(
@@ -97,7 +98,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @throws Error if the cluster is not available or the query fails (except 404)
    */
   async function getResource<T = unknown>(
-    clusterId: string,
+    clusterId: ClusterId,
     query: ResourceQuery & { name: string },
   ): Promise<T | null> {
     const response = await executeOnCluster({
@@ -138,7 +139,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @throws Error if the operation fails
    */
   async function applyOnCluster<T extends KubeJsonApiData = KubeJsonApiData>(
-    clusterId: string,
+    clusterId: ClusterId,
     manifest: T,
   ): Promise<T> {
     const { apiVersion, kind, metadata } = manifest;
@@ -175,7 +176,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @param resource - Resource query with required name field
    * @throws Error if the cluster is not available or deletion fails (except 404)
    */
-  async function deleteOnCluster(clusterId: string, resource: ResourceQuery & { name: string }): Promise<void> {
+  async function deleteOnCluster(clusterId: ClusterId, resource: ResourceQuery & { name: string }): Promise<void> {
     const response = await executeOnCluster({
       clusterId,
       operation: "delete",
@@ -202,7 +203,7 @@ export function createK8sFunctions(executeOnCluster: ExecuteFn, getAllClusters: 
    * @throws Error if the operation fails
    */
   async function patchOnCluster<T = unknown>(
-    clusterId: string,
+    clusterId: ClusterId,
     resource: ResourceQuery & { name: string },
     patch: unknown,
     patchType: KubeApiPatchType = "strategic",

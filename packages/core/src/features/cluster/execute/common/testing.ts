@@ -6,10 +6,12 @@
 import { KubernetesCluster } from "../../../../common/catalog-entities/kubernetes-cluster";
 import { Cluster } from "../../../../common/cluster/cluster";
 
+import type { ClusterId } from "../../../../extensions/common-api/cluster-types";
+
 /**
  * Creates a mock Cluster instance (internal model) for main process tests.
  */
-export function createMockCluster(id: string, accessible: boolean): Cluster {
+export function createMockCluster(id: ClusterId, accessible: boolean): Cluster {
   const contextName = `context-${id}`;
   const cluster = new Cluster({
     id,
@@ -24,7 +26,7 @@ export function createMockCluster(id: string, accessible: boolean): Cluster {
 /**
  * Creates a mock KubernetesCluster catalog entity for renderer tests.
  */
-export function createMockClusterEntity(id: string, status: "connected" | "disconnected"): KubernetesCluster {
+export function createMockClusterEntity(id: ClusterId, status: "connected" | "disconnected"): KubernetesCluster {
   return new KubernetesCluster({
     metadata: {
       uid: id,
