@@ -35,7 +35,7 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "electron": "^39.2.4",
+    "electron": "^39.2.5",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
