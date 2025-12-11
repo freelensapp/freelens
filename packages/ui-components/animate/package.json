@@ -36,7 +36,6 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
     "react": "^17.0.2"
   },

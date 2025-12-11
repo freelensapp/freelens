@@ -12,7 +12,7 @@ import {
   enabledExtensionsPersistentStorageVersionInitializable,
 } from "../common/storage-version";
 
-const {
+export const {
   initializationInjectable: enabledExtensionsPersistentStorageVersionInitializationInjectable,
   stateInjectable: enabledExtensionsPersistentStorageVersionStateInjectable,
 } = getInjectablesForInitializable({
@@ -24,8 +24,3 @@ const {
   },
   phase: beforeFrameStartsSecondInjectionToken,
 });
-
-export {
-  enabledExtensionsPersistentStorageVersionInitializationInjectable,
-  enabledExtensionsPersistentStorageVersionStateInjectable,
-};
