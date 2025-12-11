@@ -5,7 +5,7 @@
 
 import { getRequestChannel } from "@freelensapp/messaging";
 
-import type { ClusterInfo } from "../../../../extensions/common-api/cluster-types";
+import type { ClusterId, ClusterInfo } from "../../../../extensions/common-api/cluster-types";
 
 /**
  * Request all clusters from main process.
@@ -15,4 +15,4 @@ export const getAllClustersChannel = getRequestChannel<void, ClusterInfo[]>("get
 /**
  * Request a specific cluster by ID from main process.
  */
-export const getClusterByIdChannel = getRequestChannel<string, ClusterInfo | undefined>("get-cluster-by-id");
+export const getClusterByIdChannel = getRequestChannel<ClusterId, ClusterInfo | undefined>("get-cluster-by-id");
