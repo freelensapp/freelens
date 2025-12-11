@@ -28,7 +28,6 @@
   "dependencies": {
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@tailwindcss/postcss": "^4.1.17",
     "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",

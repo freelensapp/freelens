@@ -16,6 +16,7 @@ export {
 } from "./src/logger.injectable";
 /** @deprecated Use specific injectionToken, eg. logErrorInjectionToken */
 export { prefixedLoggerInjectable } from "./src/prefixed-logger.injectable";
+export { registerInjectables as registerLoggerInjectables } from "./src/register-injectables";
 export { loggerTransportInjectionToken } from "./src/transports";
 export { winstonLoggerInjectable } from "./src/winston-logger.injectable";
 

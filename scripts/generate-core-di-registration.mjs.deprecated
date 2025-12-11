@@ -1,0 +1,481 @@
+#!/usr/bin/env node
+
+/**
+ * Generate per-directory registration files for @freelensapp/core package
+ * This handles the large number of injectables by organizing them by directory
+ */
+
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { basename, dirname, join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const coreDir = join(__dirname, "..", "packages", "core", "src");
+
+/**
+ * Find all .injectable.ts and .injectable.tsx files in a directory (non-recursive)
+ */
+async function findInjectableFilesInDir(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    if (entry.isFile() && /\.injectable\.(ts|tsx)$/.test(entry.name)) {
+      files.push(entry.name);
+    }
+  }
+
+  return files;
+}
+
+/**
+ * Recursively find all directories containing injectable files
+ */
+async function findDirectoriesWithInjectables(dir, baseDir = dir, dirs = new Set()) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  let hasInjectables = false;
+
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      // Skip these directories
+      if (
+        [
+          "node_modules",
+          "dist",
+          "build",
+          ".turbo",
+          "coverage",
+          "__mocks__",
+          "test-data",
+          "__tests__",
+          "test-env",
+        ].includes(entry.name)
+      ) {
+        continue;
+      }
+      await findDirectoriesWithInjectables(fullPath, baseDir, dirs);
+    } else if (entry.isFile() && /\.injectable\.(ts|tsx)$/.test(entry.name)) {
+      hasInjectables = true;
+    }
+  }
+
+  if (hasInjectables) {
+    const relativePath = relative(baseDir, dir);
+    dirs.add(relativePath || ".");
+  }
+
+  return dirs;
+}
+
+/**
+ * Extract export info from an injectable file
+ * Returns array of export info objects (to handle multiple exports)
+ */
+async function extractExportInfo(filePath) {
+  const content = await readFile(filePath, "utf-8");
+
+  // Check for: export default anything; (more lenient match)
+  const defaultExportMatch = content.match(/export\s+default\s+(\w+);/);
+  if (defaultExportMatch) {
+    return [{ name: defaultExportMatch[1], isDefault: true }];
+  }
+
+  // Check for destructured exports: export const { foo, bar } = ...
+  const destructuredMatch = content.match(/export\s+const\s+\{([^}]+)\}\s*=/);
+  if (destructuredMatch) {
+    // Extract all names from the destructured export
+    const names = destructuredMatch[1]
+      .split(",")
+      .map((name) => {
+        const trimmed = name.trim();
+        // Handle renaming like { foo: bar } - we want 'bar' (the actual export name)
+        if (trimmed.includes(":")) {
+          return trimmed.split(":")[1].trim();
+        }
+        return trimmed;
+      })
+      .filter((name) => name.length > 0);
+    return names.map((name) => ({ name, isDefault: false }));
+  }
+
+  // Check for export const with destructuring: export const { a, b } = ...
+  const exportConstDestructMatch = content.match(/export\s+const\s+\{([^}]+)\}\s*=/);
+  if (exportConstDestructMatch) {
+    // Extract the destructured names
+    const names = exportConstDestructMatch[1]
+      .split(",")
+      .map((part) => {
+        const trimmed = part.trim();
+        // Handle renaming like { foo: bar } - we want 'bar' (the local name)
+        if (trimmed.includes(":")) {
+          return trimmed.split(":")[1].trim();
+        }
+        return trimmed;
+      })
+      .filter((name) => name.length > 0);
+
+    // Only process if all names end with "Injectable"
+    const allInjectables = names.every((name) => name.endsWith("Injectable"));
+    if (allInjectables && names.length > 0) {
+      return names.map((name) => ({ name, isDefault: false }));
+    }
+
+    // Skip files that export non-injectable things
+    return null;
+  }
+
+  // Check for multiple export const statements
+  const exportConstMatches = [...content.matchAll(/export\s+const\s+(\w+)\s*=/g)];
+  if (exportConstMatches.length > 1) {
+    // Multiple exports - extract all of them
+    return exportConstMatches.map((match) => ({ name: match[1], isDefault: false }));
+  }
+
+  // Check for single export const (regardless of naming pattern)
+  if (exportConstMatches.length === 1) {
+    const exportName = exportConstMatches[0][1];
+    // Check if it also has a default export
+    if (content.includes("export default")) {
+      return [{ name: exportName, isDefault: true }];
+    }
+    // Named export only
+    return [{ name: exportName, isDefault: false }];
+  }
+
+  // Check for multiple exports using export { ... } syntax
+  const multiExportMatch = content.match(/export\s+\{([^}]+)\}/);
+  if (multiExportMatch) {
+    // Extract the exported names
+    const names = multiExportMatch[1]
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name.length > 0);
+
+    // Only process if all exports end with "Injectable"
+    const allInjectables = names.every((name) => name.endsWith("Injectable"));
+    if (allInjectables && names.length > 0) {
+      return names.map((name) => ({ name, isDefault: false }));
+    }
+
+    // Skip files that export non-injectable things
+    return null;
+  }
+
+  // Fallback: convert filename to camelCase + Injectable
+  const filename = basename(filePath, filePath.endsWith(".tsx") ? ".injectable.tsx" : ".injectable.ts");
+  const camelCased = filename
+    .split(/[-.]/)
+    .map((part, index) => {
+      if (index === 0) return part;
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join("");
+
+  return [{ name: `${camelCased}Injectable`, isDefault: false }];
+}
+
+/**
+ * Generate registration file for a directory
+ */
+async function generateRegistrationForDirectory(dir, baseDir) {
+  const fullDirPath = join(baseDir, dir);
+  const files = await findInjectableFilesInDir(fullDirPath);
+
+  if (files.length === 0) {
+    return null;
+  }
+
+  console.log(`Processing ${dir}/ (${files.length} files)`);
+
+  const imports = [];
+  const registrations = [];
+  const usedNames = new Set();
+
+  for (const file of files) {
+    const fullPath = join(fullDirPath, file);
+    const exportInfos = await extractExportInfo(fullPath);
+
+    if (!exportInfos) {
+      console.log(`  ⚠️  Skipping ${file} (no valid exports)`);
+      continue;
+    }
+
+    // Keep the .injectable part but remove the file extension
+    const importPath = "./" + file.replace(/\.(ts|tsx)$/, "");
+
+    // Handle multiple exports from same file
+    for (const exportInfo of exportInfos) {
+      let importName = exportInfo.name;
+      let actualExportName = exportInfo.name;
+
+      // Ensure unique names by using filename if there's a conflict
+      if (usedNames.has(importName)) {
+        const filename = basename(file, file.endsWith(".tsx") ? ".injectable.tsx" : ".injectable.ts");
+        const camelCased = filename
+          .split(/[-.]/)
+          .map((part, index) => {
+            if (index === 0) return part;
+            return part.charAt(0).toUpperCase() + part.slice(1);
+          })
+          .join("");
+        importName = `${camelCased}Injectable`;
+
+        // If still conflicts, add a counter
+        let counter = 2;
+        while (usedNames.has(importName)) {
+          importName = `${camelCased}Injectable${counter}`;
+          counter++;
+        }
+
+        console.log(`  ⚠️  Renaming duplicate ${actualExportName} to ${importName} (from ${file})`);
+      }
+
+      usedNames.add(importName);
+
+      if (exportInfo.isDefault) {
+        imports.push(`import ${importName} from "${importPath}";`);
+      } else {
+        // For named exports with renamed import
+        if (importName !== actualExportName) {
+          imports.push(`import { ${actualExportName} as ${importName} } from "${importPath}";`);
+        } else {
+          imports.push(`import { ${actualExportName} } from "${importPath}";`);
+        }
+      }
+
+      registrations.push(importName);
+    }
+  }
+
+  if (registrations.length === 0) {
+    return null;
+  }
+
+  imports.sort();
+  registrations.sort();
+
+  const content = `/**
+ * AUTO-GENERATED FILE - DO NOT EDIT
+ * Generated by scripts/generate-core-di-registration.mjs
+ *
+ * This file explicitly registers all injectables in this directory.
+ */
+
+${imports.join("\n")}
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
+
+export function registerInjectables(di: DiContainerForInjection): void {
+${registrations.map((r) => `  di.register(${r});`).join("\n")}
+}
+`;
+
+  const outputPath = join(fullDirPath, "register-injectables.ts");
+  await writeFile(outputPath, content);
+  console.log(`  ✓ Generated register-injectables.ts`);
+
+  return {
+    dir,
+    count: registrations.length,
+    relativePath: dir === "." ? "./register-injectables" : `./${dir}/register-injectables`,
+  };
+}
+
+/**
+ * Generate root registration file that imports all per-directory registrations
+ * Creates separate files for main and renderer to avoid cross-bundle imports
+ */
+async function generateRootRegistration(registrations, baseDir) {
+  // Filter registrations based on which bundle they belong to
+  const hasRenderer = (dir) => dir.includes("/renderer/") || dir.includes("/renderer") || dir.endsWith("/renderer");
+  const hasMain = (dir) => dir.includes("/main/") || dir.includes("/main") || dir.endsWith("/main");
+
+  const mainRegistrations = registrations.filter((reg) => {
+    // Exclude anything with renderer in the path
+    if (hasRenderer(reg.dir)) {
+      return false;
+    }
+    // Include main/, common/, and anything else without renderer
+    return (
+      reg.dir.startsWith("main/") ||
+      reg.dir.startsWith("common/") ||
+      reg.dir === "." ||
+      hasMain(reg.dir) ||
+      reg.dir === "extensions" ||
+      reg.dir.startsWith("extensions/") ||
+      reg.dir === "features" ||
+      reg.dir.startsWith("features/")
+    );
+  });
+
+  const rendererRegistrations = registrations.filter((reg) => {
+    // Exclude anything with only main in the path (not common or renderer)
+    if (hasMain(reg.dir) && !hasRenderer(reg.dir) && !reg.dir.includes("/common")) {
+      return false;
+    }
+    // Include renderer/, common/, and anything else without main-only
+    return (
+      reg.dir.startsWith("renderer/") ||
+      reg.dir.startsWith("common/") ||
+      reg.dir === "." ||
+      hasRenderer(reg.dir) ||
+      reg.dir.startsWith("extensions/") ||
+      reg.dir.startsWith("features/")
+    );
+  });
+
+  // Generate main registration file
+  await generateRegistrationFile(baseDir, "main", mainRegistrations);
+
+  // Generate renderer registration file
+  await generateRegistrationFile(baseDir, "renderer", rendererRegistrations);
+}
+
+async function generateRegistrationFile(baseDir, targetName, registrations) {
+  // Collect injectable files directly from the target directory
+  const targetDir = join(baseDir, targetName);
+  const targetDirFiles = await findInjectableFilesInDir(targetDir);
+  const directImports = [];
+  const directCalls = [];
+
+  for (const file of targetDirFiles) {
+    const exportInfos = await extractExportInfo(join(targetDir, file));
+    if (!exportInfos) continue;
+
+    const importPath = "./" + file.replace(/\.(ts|tsx)$/, "");
+    for (const exportInfo of exportInfos) {
+      if (exportInfo.isDefault) {
+        directImports.push(`import ${exportInfo.name} from "${importPath}";`);
+        directCalls.push(`  di.register(${exportInfo.name});`);
+      } else {
+        directImports.push(`import { ${exportInfo.name} } from "${importPath}";`);
+        directCalls.push(`  di.register(${exportInfo.name});`);
+      }
+    }
+  }
+
+  // Group registrations by top-level directory
+  const byTopLevel = {};
+
+  for (const reg of registrations) {
+    // Skip the target directory itself to avoid circular import
+    if (reg.dir === targetName) {
+      continue;
+    }
+
+    const topLevel = reg.dir.split("/")[0];
+    if (!byTopLevel[topLevel]) {
+      byTopLevel[topLevel] = [];
+    }
+    byTopLevel[topLevel].push(reg);
+  }
+
+  // For main and renderer, also include common directory root injectables
+  if (
+    (targetName === "main" || targetName === "renderer") &&
+    registrations.some((r) => r.dir.startsWith("common/") || r.dir === "common")
+  ) {
+    if (!byTopLevel["common"]) {
+      byTopLevel["common"] = [];
+    }
+    // Add common root to the beginning (only if not already there)
+    if (!byTopLevel["common"].some((r) => r.dir === "common")) {
+      byTopLevel["common"].unshift({ dir: "common" });
+    }
+  }
+
+  // For main and renderer, also include extensions directory root injectables
+  if (
+    (targetName === "main" || targetName === "renderer") &&
+    registrations.some((r) => r.dir.startsWith("extensions/") || r.dir === "extensions")
+  ) {
+    if (!byTopLevel["extensions"]) {
+      byTopLevel["extensions"] = [];
+    }
+    // Add extensions root to the beginning (only if not already there)
+    if (!byTopLevel["extensions"].some((r) => r.dir === "extensions")) {
+      byTopLevel["extensions"].unshift({ dir: "extensions" });
+    }
+  }
+
+  const imports = [];
+  const calls = [];
+  let importIndex = 0;
+
+  for (const [topLevel, regs] of Object.entries(byTopLevel).sort()) {
+    for (const reg of regs) {
+      // Convert directory name to camelCase for valid identifier
+      const camelCased = topLevel
+        .split(/[-_]/)
+        .map((part, index) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join("");
+      const funcName = `register${camelCased}${importIndex > 0 ? importIndex : ""}`;
+      // Adjust path to be relative from the target directory
+      const adjustedPath = reg.dir === "." ? "./register-injectables" : `../${reg.dir}/register-injectables`;
+      imports.push(`import { registerInjectables as ${funcName} } from "${adjustedPath}";`);
+      calls.push(`  ${funcName}(di);`);
+      importIndex++;
+    }
+  }
+
+  const allImports = [...directImports, ...imports].filter((x) => x);
+  const allCalls = [...directCalls, ...calls].filter((x) => x);
+
+  const content = `/**
+ * AUTO-GENERATED FILE - DO NOT EDIT
+ * Generated by scripts/generate-core-di-registration.mjs
+ *
+ * This file imports and registers all injectables from subdirectories.
+ * This replaces the webpack-based auto-registration system.
+ */
+
+${allImports.join("\n")}
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
+
+export function registerInjectables(di: DiContainerForInjection): void {
+${allCalls.join("\n")}
+}
+`;
+
+  const outputPath = join(baseDir, targetName, "register-injectables.ts");
+  await writeFile(outputPath, content);
+  console.log(`✓ Generated ${targetName}/register-injectables.ts`);
+}
+
+/**
+ * Main function
+ */
+async function main() {
+  console.log("Finding directories with injectable files in @freelensapp/core...\n");
+
+  const dirs = await findDirectoriesWithInjectables(coreDir);
+  const sortedDirs = Array.from(dirs).sort();
+
+  console.log(`Found ${sortedDirs.length} directories with injectable files\n`);
+
+  const registrations = [];
+
+  for (const dir of sortedDirs) {
+    const result = await generateRegistrationForDirectory(dir, coreDir);
+    if (result) {
+      registrations.push(result);
+    }
+  }
+
+  // Generate root registration file
+  await generateRootRegistration(registrations, coreDir);
+
+  console.log(`\n${"=".repeat(60)}`);
+  console.log(`Summary:`);
+  console.log(`  Directories processed: ${registrations.length}`);
+  console.log(`  Total injectables: ${registrations.reduce((sum, r) => sum + r.count, 0)}`);
+  console.log(`${"=".repeat(60)}\n`);
+}
+
+main().catch((err) => {
+  console.error("Error:", err);
+  process.exit(1);
+});

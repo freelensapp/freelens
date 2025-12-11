@@ -113,7 +113,6 @@
     "@mui/material": "^5.17.1",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
     "@xterm/addon-fit": "^0.10.0",

@@ -33,8 +33,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1"
+    "@ogre-tools/injectable": "^17.11.1"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",

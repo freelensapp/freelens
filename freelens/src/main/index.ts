@@ -8,9 +8,10 @@ import { messagingFeatureForMain } from "@freelensapp/messaging-for-main";
 import { prometheusFeature } from "@freelensapp/prometheus";
 import { randomFeature } from "@freelensapp/random";
 import { createContainer } from "@ogre-tools/injectable";
-import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
+import { registerInjectables as registerCommonInjectables } from "../common/register-injectables";
+import { registerInjectables as registerMainInjectables } from "./register-injectables";
 
 const environment = "main";
 
@@ -34,19 +35,8 @@ runInAction(() => {
     kubeApiSpecificsFeature,
   );
 
-  try {
-    autoRegister({
-      di,
-      targetModule: module,
-      getRequireContexts: () => [
-        require.context("./", true, CONTEXT_MATCHER_FOR_NON_FEATURES),
-        require.context("../common", true, CONTEXT_MATCHER_FOR_NON_FEATURES),
-      ],
-    });
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
+  registerMainInjectables(di);
+  registerCommonInjectables(di);
 });
 
 const startApplication = di.inject(startApplicationInjectionToken);

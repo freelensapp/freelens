@@ -32,7 +32,6 @@
     "@freelensapp/feature-core": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "history": "^4.10.1",
     "mobx-observable-history": "^2.0.3"
   },
