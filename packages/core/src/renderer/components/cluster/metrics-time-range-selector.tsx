@@ -8,11 +8,14 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { Select } from "../select";
-import selectedMetricsTimeRangeInjectable, { timeRangeOptions } from "./overview/selected-metrics-time-range.injectable";
+import selectedMetricsTimeRangeInjectable, {
+  timeRangeOptions,
+} from "./overview/selected-metrics-time-range.injectable";
 
-import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
-import type { SelectOption } from "../select";
 import type { SingleValue } from "react-select";
+
+import type { SelectOption } from "../select";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 
 interface Dependencies {
   selectedMetricsTimeRange: SelectedMetricsTimeRange;
@@ -44,11 +47,11 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
   // Find current selected option - return just the value, not the full option
   const currentValue: number | "custom" | undefined = isCustom
     ? "custom"
-    : selectOptions.find((opt) => {
+    : (selectOptions.find((opt) => {
         const timeRange = selectedMetricsTimeRange.value.get();
 
         return opt.value === timeRange.duration;
-      })?.value ?? selectOptions[0]?.value;
+      })?.value ?? selectOptions[0]?.value);
 
   const handleChange = (option: SingleValue<SelectOption<number | "custom">>) => {
     if (!option) return;
@@ -70,7 +73,10 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
   };
 
   return (
-    <div className="MetricsTimeRangeSelector" style={{ position: "relative", display: "flex", alignItems: "center", gap: "8px", minWidth: "120px" }}>
+    <div
+      className="MetricsTimeRangeSelector"
+      style={{ position: "relative", display: "flex", alignItems: "center", gap: "8px", minWidth: "120px" }}
+    >
       <Select<number | "custom", SelectOption<number | "custom">, false>
         id="metrics-time-range-select"
         options={selectOptions}
@@ -81,9 +87,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
         isSearchable={false}
         placeholder="Select time range..."
       />
-      <span style={{ fontSize: "12px", color: "var(--textColorSecondary)", whiteSpace: "nowrap" }}>
-        {displayLabel}
-      </span>
+      <span style={{ fontSize: "12px", color: "var(--textColorSecondary)", whiteSpace: "nowrap" }}>{displayLabel}</span>
       {showCustomPicker && (
         <CustomTimeRangePicker
           onApply={handleCustomRangeApply}

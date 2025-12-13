@@ -21,17 +21,17 @@ import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-metrics.module.scss";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
-import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ChartOptions, ChartPoint } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
-import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 
 interface Dependencies {
   clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;

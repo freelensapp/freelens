@@ -9,8 +9,8 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { getItemMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
-import { ResourceMetrics } from "../resource-metrics";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
+import { ResourceMetrics } from "../resource-metrics";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
 

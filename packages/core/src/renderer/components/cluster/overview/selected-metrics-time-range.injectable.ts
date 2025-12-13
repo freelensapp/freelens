@@ -118,7 +118,7 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
       label,
       displayLabel,
       isCustom,
-      
+
       /**
        * Set a predefined duration
        */

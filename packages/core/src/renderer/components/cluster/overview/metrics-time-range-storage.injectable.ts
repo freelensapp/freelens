@@ -13,13 +13,13 @@ export interface MetricsTimeRange {
    * null means custom time range
    */
   duration: number | null;
-  
+
   /**
    * Custom start timestamp (unix seconds)
    * Only used when duration is null
    */
   customStart?: number;
-  
+
   /**
    * Custom end timestamp (unix seconds)
    * Only used when duration is null

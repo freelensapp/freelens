@@ -11,14 +11,14 @@ import React, { useContext } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import { BarChart } from "../chart";
 import { metricTabOptions } from "../chart/options";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 
 import type { ChartDataSets } from "../chart";
 import type { MetricsTab } from "../chart/options";
-import type { AtLeastOneMetricTab } from "../resource-metrics";
 import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
+import type { AtLeastOneMetricTab } from "../resource-metrics";
 
 export const podMetricTabs: AtLeastOneMetricTab = ["CPU", "Memory", "Network", "Filesystem"];
 
