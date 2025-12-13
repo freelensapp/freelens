@@ -9,6 +9,7 @@ import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 
@@ -19,14 +20,20 @@ const clusterOverviewMetricsInjectable = getInjectable({
   instantiate: (di) => {
     const requestClusterMetricsByNodeNames = di.inject(requestClusterMetricsByNodeNamesInjectable);
     const selectedNodeRoleForMetrics = di.inject(selectedNodeRoleForMetricsInjectable);
+    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
 
     return asyncComputed<ClusterMetricData | undefined>({
       getValueFromObservedPromise: async () => {
         now(everyMinute);
 
         const nodeNames = selectedNodeRoleForMetrics.nodes.get().map((node) => node.getName());
+        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
 
-        return requestClusterMetricsByNodeNames(nodeNames);
+        return requestClusterMetricsByNodeNames(nodeNames, {
+          start,
+          end,
+          range,
+        });
       },
       betweenUpdates: "show-latest-value",
     });
