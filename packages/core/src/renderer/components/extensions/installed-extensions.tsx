@@ -21,8 +21,8 @@ import disableExtensionInjectable from "./disable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
 import { ExtensionCard } from "./extension-card";
 import { ExtensionsGrid } from "./extensions-grid";
-import { SearchBar } from "./search-bar";
 import styles from "./installed-extensions.module.scss";
+import { SearchBar } from "./search-bar";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
 
 import type { InstalledExtension } from "@freelensapp/legacy-extensions";

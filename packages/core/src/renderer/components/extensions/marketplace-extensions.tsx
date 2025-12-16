@@ -14,6 +14,7 @@ import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplac
 import { SearchBar } from "./search-bar";
 
 import type { IComputedValue } from "mobx";
+
 import type { MarketplaceExtension } from "./marketplace-extensions/marketplace-extensions.injectable";
 
 export interface MarketplaceExtensionsProps {}
