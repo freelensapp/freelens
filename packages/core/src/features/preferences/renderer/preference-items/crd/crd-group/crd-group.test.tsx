@@ -442,7 +442,7 @@ describe("CrdGroup Component", () => {
 
       // The merge result should contain both custom and default groups
       expect(mergedTextarea.value).toContain("CustomGroup:");
-      expect(mergedTextarea.value).toContain("Built-in:"); // Should still have defaults
+      expect(mergedTextarea.value).toContain("Others:"); // Should still have defaults
     });
 
     it("applies correct CSS classes", () => {

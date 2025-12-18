@@ -83,21 +83,33 @@ Azure:
 ### Example 2: With Subgroups
 
 ```yaml
-Kubernetes:
-  - k8s.io
-  - API:
-    - api.k8s.io
-  - Storage:
-    - storage.k8s.io
+Cluster Management:
+  - Cluster API:
+    - Addons:
+      - addons.cluster.x-k8s.io
+    - Cluster:
+      - cluster.x-k8s.io
+      - clusterctl.cluster.x-k8s.io
+    - IPAM:
+      - ipam.cluster.x-k8s.io
+    - Runtime:
+      - runtime.cluster.x-k8s.io
+  - CSI Secrets Store:
+    - secrets-store.csi.x-k8s.io
 ```
 
 ### Example 3: Advanced Structure with All Features
 
 ```yaml
-Built-in:
-  - apps
-  - core
-  - batch
+Monitoring & Observability:
+  Victoria Metrics:
+    - operator.victoriametrics.com
+    - monitoring.coreos.com
+  Grafana:
+    - monitoring.grafana.com
+  OpenTelemetry:
+    - opentelemetry.io
+
 Cloud:
   AWS:
     - aws.amazon.com
@@ -107,7 +119,9 @@ Cloud:
     - microsoft.com
   GCP:
     - cloud.google.com
+
 Ignored: null  # These CRDs will be hidden
+
 Misc:
   - ""  # Catch-all for anything not matched above
 ```
