@@ -64,6 +64,14 @@
       "versioning": "deb",
       "enabled": true
     },
+    // bundle
+    {
+      "groupName": "electron-builder bundle",
+      "matchDepNames": [
+        "electron-builder",
+        "electron-builder-squirrel-windows"
+      ]
+    },
     // monorepo
     {
       "groupName": "ogre-tools monorepo",
