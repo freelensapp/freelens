@@ -24,7 +24,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 15
 
     env:
       DO_NOT_TRACK: "1"
