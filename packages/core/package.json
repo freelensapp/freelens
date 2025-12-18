@@ -132,7 +132,7 @@
     "dompurify": "^3.3.0",
     "electron-devtools-installer": "^4.0.0",
     "electron-window-state": "^5.0.3",
-    "fs-extra": "^11.3.2",
+    "fs-extra": "^11.3.3",
     "glob-to-regexp": "^0.4.1",
     "grapheme-splitter": "^1.0.4",
     "handlebars": "^4.7.8",
