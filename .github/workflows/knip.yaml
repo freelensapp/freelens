@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   knip:
-    name: knip on ${{ matrix.os }}
+    name: knip
 
     strategy:
       fail-fast: false
