@@ -335,10 +335,10 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   - keda.sh
   - Eventing:
     - eventing.keda.sh
-linkerd.io:
+LinkedD:
   - policy.linkerd.io
-Other:
-  - ""`}</pre>
+Others:
+  - ''`}</pre>
         </div>
       </div>
 
