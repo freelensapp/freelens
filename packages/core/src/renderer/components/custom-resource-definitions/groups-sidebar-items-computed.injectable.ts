@@ -26,229 +26,370 @@ const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
 
-interface GroupInfo {
-  topLevel: string;
-  subLevel: string | null;
-}
+// ============================================================================
+// NEW INTERFACES FOR N-LEVEL HIERARCHY SUPPORT
+// ============================================================================
 
-interface GroupConfig {
-  [topLevel: string]: string[] | { [subLevel: string]: string[] | null } | null;
-}
-
-// Structure to preserve the order of groups and subgroups from the YAML
-interface OrderedGroupConfig {
-  config: GroupConfig;
-  topLevelOrder: string[];
-  subLevelOrder: Record<string, string[]>;
+/**
+ * Represents a node in the configuration tree
+ * Supports arbitrary depth of nesting
+ */
+interface ConfigNode {
+  name: string;
+  patterns: string[]; // Direct patterns at this level
+  children: ConfigNode[]; // Child nodes (sub-groups)
+  order: number; // Order in which this node appears
 }
 
 /**
- * Safely parses configuration string in YAML format
- * @param configString Configuration string (YAML format)
- * @returns Parsed configuration with preserved order or null if invalid
+ * Represents the full path to a group in the hierarchy
+ * e.g., ["GitOps", "FluxCD", "Image Policies"]
  */
-const parseGroupConfig = (configString: string): OrderedGroupConfig | null => {
+interface GroupPath {
+  path: string[];
+}
+
+/**
+ * Represents the parsed configuration with the tree structure
+ */
+interface ParsedConfig {
+  nodes: ConfigNode[];
+}
+
+/**
+ * Represents a pattern match candidate with its full path
+ */
+interface PatternCandidate {
+  pattern: string;
+  path: string[];
+  specificity: number;
+}
+
+// ============================================================================
+// PARSING FUNCTIONS
+// ============================================================================
+
+/**
+ * Recursively parses YAML configuration into a tree of ConfigNodes
+ * Supports arbitrary nesting depth
+ *
+ * @param items Array of items (can be strings or objects)
+ * @param startOrder Starting order number for siblings
+ * @returns Array of ConfigNode
+ */
+function parseItemsRecursively(items: any[], startOrder: number = 0): ConfigNode[] {
+  const nodes: ConfigNode[] = [];
+  let currentOrder = startOrder;
+
+  for (const item of items) {
+    if (typeof item === "string") {
+      // Skip string patterns at this level - they are handled by the parent
+      continue;
+    }
+
+    if (item && typeof item === "object" && !Array.isArray(item)) {
+      // This is an object representing a sub-group
+      for (const [name, value] of Object.entries(item)) {
+        const node: ConfigNode = {
+          name,
+          patterns: [],
+          children: [],
+          order: currentOrder++,
+        };
+
+        if (value === null) {
+          // Null means this group should be hidden/skipped
+          continue;
+        }
+
+        if (Array.isArray(value)) {
+          // Extract direct patterns (strings) and recurse for children (objects)
+          for (const subItem of value) {
+            if (typeof subItem === "string") {
+              node.patterns.push(subItem);
+            } else if (subItem && typeof subItem === "object") {
+              // Recursively parse nested objects
+              const childNodes = parseItemsRecursively([subItem], 0);
+              node.children.push(...childNodes);
+            }
+          }
+        }
+
+        nodes.push(node);
+      }
+    }
+  }
+
+  return nodes;
+}
+
+/**
+ * Parses the top-level YAML configuration
+ * @param configString YAML configuration string
+ * @returns ParsedConfig with tree structure or null if invalid
+ */
+function parseGroupConfig(configString: string): ParsedConfig | null {
   if (!configString || typeof configString !== "string" || configString.trim() === "") {
     return null;
   }
 
   try {
-    // Parse YAML format
     const config = yaml.load(configString);
 
     if (!config || typeof config !== "object" || Array.isArray(config)) {
       return null;
     }
 
-    // Preserve the order of top-level groups
-    const topLevelOrder = Object.keys(config);
-    const subLevelOrder: Record<string, string[]> = {};
+    const nodes: ConfigNode[] = [];
+    let order = 0;
 
-    // Preserve the order of sub-levels for each top-level group
-    topLevelOrder.forEach((topLevel) => {
-      const topLevelConfig = (config as Record<string, any>)[topLevel];
+    for (const [topLevelName, topLevelValue] of Object.entries(config as Record<string, any>)) {
+      if (topLevelValue === null) {
+        // Skip hidden groups
+        continue;
+      }
 
-      // Process only arrays and objects
-      if (topLevelConfig && typeof topLevelConfig === "object" && !Array.isArray(topLevelConfig)) {
-        // This is an object with direct sub-levels
-        subLevelOrder[topLevel] = Object.keys(topLevelConfig);
-      } else if (Array.isArray(topLevelConfig)) {
-        // Extract the names of sub-levels from elements that are objects
-        const subLevels: string[] = [];
-        topLevelConfig.forEach((item) => {
-          if (item && typeof item === "object") {
-            subLevels.push(...Object.keys(item));
+      const node: ConfigNode = {
+        name: topLevelName,
+        patterns: [],
+        children: [],
+        order: order++,
+      };
+
+      if (Array.isArray(topLevelValue)) {
+        // Process array items
+        for (const item of topLevelValue) {
+          if (typeof item === "string") {
+            node.patterns.push(item);
+          } else if (item && typeof item === "object") {
+            const childNodes = parseItemsRecursively([item], node.children.length);
+            node.children.push(...childNodes);
           }
-        });
-        if (subLevels.length > 0) {
-          subLevelOrder[topLevel] = subLevels;
+        }
+      } else if (typeof topLevelValue === "object") {
+        // Direct object notation (less common)
+        for (const [subName, subValue] of Object.entries(topLevelValue)) {
+          const childNode: ConfigNode = {
+            name: subName,
+            patterns: [],
+            children: [],
+            order: node.children.length,
+          };
+
+          if (Array.isArray(subValue)) {
+            for (const item of subValue) {
+              if (typeof item === "string") {
+                childNode.patterns.push(item);
+              }
+            }
+          }
+
+          node.children.push(childNode);
         }
       }
-    });
 
-    return {
-      config: config as GroupConfig,
-      topLevelOrder,
-      subLevelOrder,
-    };
+      nodes.push(node);
+    }
+
+    return { nodes };
   } catch (error) {
     console.warn(`Failed to parse CRD groups configuration: ${error}`);
     return null;
   }
-};
+}
+
+// ============================================================================
+// PATTERN MATCHING FUNCTIONS
+// ============================================================================
 
 /**
- * Checks if a CRD group matches a pattern based on substring comparison
- * @param crdGroup The CRD group to check
+ * Checks if a CRD name matches a pattern
+ * @param crdName The CRD name to check
  * @param pattern The pattern to match against
- * @returns True if it matches, false otherwise
+ * @returns True if it matches
  */
-const matchesGroupPattern = (crdGroup: string, pattern: string): boolean => {
-  // Special case: empty pattern matches everything
-  if (pattern === "") return true;
-
-  // Special case: null pattern never matches
+function matchesPattern(crdName: string, pattern: string): boolean {
+  if (pattern === "") return true; // Empty pattern matches everything
   if (pattern === null) return false;
-
-  // Check if the CRD group contains the pattern as a substring
-  return crdGroup.includes(pattern);
-};
+  return crdName.includes(pattern);
+}
 
 /**
- * Scores a pattern based on specificity - more dots = higher score
+ * Calculates pattern specificity (more dots = more specific)
  * @param pattern The pattern to score
- * @returns The specificity score
+ * @returns Specificity score
  */
-const getPatternSpecificity = (pattern: string): number => {
+function getPatternSpecificity(pattern: string): number {
   if (!pattern) return 0;
   return (pattern.match(/\./g) || []).length;
-};
+}
 
 /**
- * Find the best matching pattern for a CRD group
- * @param crdGroup The CRD group
- * @param patterns Array of patterns to check
- * @returns The best matching pattern or null if none matches
+ * Recursively collects all pattern candidates from the config tree
+ * @param nodes Array of ConfigNodes to process
+ * @param currentPath Current path in the tree
+ * @returns Array of PatternCandidate
  */
-const findBestMatch = (crdGroup: string, patterns: (string | null)[]): string | null => {
-  if (!patterns || !patterns.length) return null;
+function collectPatternCandidates(nodes: ConfigNode[], currentPath: string[] = []): PatternCandidate[] {
+  const candidates: PatternCandidate[] = [];
 
-  let bestMatch: string | null = null;
-  let bestScore = -1;
+  for (const node of nodes) {
+    const nodePath = [...currentPath, node.name];
 
-  for (const pattern of patterns) {
-    if (pattern === null) continue;
+    // Add patterns at this level
+    for (const pattern of node.patterns) {
+      candidates.push({
+        pattern,
+        path: nodePath,
+        specificity: getPatternSpecificity(pattern),
+      });
+    }
 
-    if (matchesGroupPattern(crdGroup, pattern)) {
-      const score = getPatternSpecificity(pattern);
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = pattern;
-      }
+    // Recurse into children
+    if (node.children.length > 0) {
+      const childCandidates = collectPatternCandidates(node.children, nodePath);
+      candidates.push(...childCandidates);
     }
   }
 
-  return bestMatch;
-};
+  return candidates;
+}
 
 /**
- * Determines the group placement for a CRD
- * @param group The original CRD group
- * @param configData The parsed configuration data
- * @returns The top level and sublevel for the CRD
+ * Finds the best matching group path for a CRD
+ * @param crdName The fully qualified CRD name
+ * @param config The parsed configuration
+ * @returns GroupPath with the full path, or a default path
  */
-const getByNewGroup = (group: string, configData: OrderedGroupConfig): GroupInfo => {
-  // Default result uses the original group
-  const defaultResult = { topLevel: group, subLevel: null };
+function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath {
+  const defaultPath: GroupPath = { path: [crdName] };
 
-  if (!configData) {
-    return defaultResult;
+  if (!config || !config.nodes.length) {
+    return defaultPath;
   }
 
-  const configObj = configData.config;
+  const candidates = collectPatternCandidates(config.nodes);
 
-  // Prepare match candidates - maps pattern to [topLevel, subLevel]
-  type MatchCandidate = [string, string | null];
-  const candidates: [string, MatchCandidate][] = [];
+  // Find all matching candidates
+  const matches = candidates.filter((c) => matchesPattern(crdName, c.pattern));
 
-  // Process all patterns from the config
-  for (const topLevel of Object.keys(configObj)) {
-    const topLevelConfig = configObj[topLevel];
+  if (matches.length === 0) {
+    return defaultPath;
+  }
 
-    // Handle null config - skip this entry
-    if (topLevelConfig === null) continue;
+  // Sort by specificity (highest first), then by path length (prefer more specific paths)
+  matches.sort((a, b) => {
+    if (b.specificity !== a.specificity) {
+      return b.specificity - a.specificity;
+    }
+    return b.path.length - a.path.length;
+  });
 
-    // Handle array config - direct patterns at top level
-    if (Array.isArray(topLevelConfig)) {
-      for (const item of topLevelConfig) {
-        if (typeof item === "string") {
-          // Simple case - a direct string
-          candidates.push([item, [topLevel, null]]);
-        } else if (typeof item === "object" && item !== null) {
-          // Case where a array element is an object (sub-level)
-          for (const subLevel of Object.keys(item)) {
-            const subGroups = item[subLevel];
+  return { path: matches[0].path };
+}
 
-            // Ignore null sub-levels
-            if (subGroups === null) continue;
+// ============================================================================
+// CRD ORGANIZATION
+// ============================================================================
 
-            // Process pattern arrays in the sub-level
-            if (Array.isArray(subGroups)) {
-              const patterns = subGroups as any[];
-              for (const pattern of patterns) {
-                if (typeof pattern === "string") {
-                  candidates.push([pattern, [topLevel, subLevel]]);
-                }
-              }
-            }
-          }
+/**
+ * Tree node for storing CRDs in a hierarchical structure
+ */
+interface CrdTreeNode {
+  name: string;
+  crds: CustomResourceDefinition[];
+  children: Map<string, CrdTreeNode>;
+  order: number;
+}
+
+/**
+ * Creates an empty CRD tree node
+ */
+function createCrdTreeNode(name: string, order: number = 0): CrdTreeNode {
+  return {
+    name,
+    crds: [],
+    children: new Map(),
+    order,
+  };
+}
+
+/**
+ * Gets the order for a node at a specific path from the config
+ */
+function getNodeOrder(config: ParsedConfig | null, path: string[]): number {
+  if (!config || path.length === 0) return 999;
+
+  let nodes = config.nodes;
+  let order = 999;
+
+  for (let i = 0; i < path.length; i++) {
+    const nodeName = path[i];
+    const node = nodes.find((n) => n.name === nodeName);
+
+    if (node) {
+      order = node.order;
+      nodes = node.children;
+    } else {
+      break;
+    }
+  }
+
+  return order;
+}
+
+/**
+ * Organizes CRDs into a tree structure based on the configuration
+ * @param crds Iterable of CRDs
+ * @param configYaml YAML configuration string
+ * @returns Root CrdTreeNode containing all organized CRDs
+ */
+function organizeCrdsIntoTree(
+  crds: Iterable<CustomResourceDefinition>,
+  configYaml: string,
+): { root: CrdTreeNode; config: ParsedConfig | null } {
+  const config = parseGroupConfig(configYaml);
+  const root = createCrdTreeNode("root", 0);
+
+  for (const crd of crds) {
+    try {
+      const fullName = `${crd.getPluralName()}.${crd.getGroup()}`;
+      const { path } = findGroupPath(fullName, config);
+
+      // Navigate/create the tree path and add the CRD at the end
+      let currentNode = root;
+
+      for (let i = 0; i < path.length; i++) {
+        const segment = path[i];
+
+        if (!currentNode.children.has(segment)) {
+          const order = getNodeOrder(config, path.slice(0, i + 1));
+          currentNode.children.set(segment, createCrdTreeNode(segment, order));
         }
+
+        currentNode = currentNode.children.get(segment)!;
       }
-      continue;
-    }
 
-    // Handle object config - patterns in sublevels directly in top level
-    if (typeof topLevelConfig === "object") {
-      for (const subLevel of Object.keys(topLevelConfig)) {
-        const subGroups = topLevelConfig[subLevel];
-
-        // Handle null sublevel - skip this entry
-        if (subGroups === null) continue;
-
-        // Handle array of patterns in sublevel
-        if (Array.isArray(subGroups)) {
-          const patterns = subGroups as any[];
-          for (const pattern of patterns) {
-            if (typeof pattern === "string") {
-              candidates.push([pattern, [topLevel, subLevel]]);
-            }
-          }
-        }
-      }
+      currentNode.crds.push(crd);
+    } catch (error) {
+      console.error("Error processing CRD:", error);
     }
   }
 
-  // Find the best match from candidates
-  const bestPattern = findBestMatch(
-    group,
-    candidates.map(([pattern]) => pattern),
-  );
-  if (bestPattern !== null) {
-    const [topLevel, subLevel] = candidates.find(([pattern]) => pattern === bestPattern)![1];
-    return { topLevel, subLevel };
-  }
+  return { root, config };
+}
 
-  return defaultResult;
-};
+// ============================================================================
+// SIDEBAR GENERATION
+// ============================================================================
 
 /**
- * Creates a sidebar item for a CRD
+ * Creates a sidebar item for a CRD resource
  */
-const createCrdSidebarItem = ({
+function createCrdSidebarItem({
   parentId,
   definition,
-  topLevelName,
-  subLevelName = null,
+  pathSegments,
   itemIndex,
   navigateToCustomResources,
   customResourcesRoute,
@@ -256,24 +397,23 @@ const createCrdSidebarItem = ({
 }: {
   parentId: string;
   definition: CustomResourceDefinition;
-  topLevelName: string;
-  subLevelName?: string | null;
+  pathSegments: string[];
   itemIndex: number;
   navigateToCustomResources: any;
   customResourcesRoute: any;
   pathParameters: any;
-}): any => {
+}): any {
   const parameters = {
     group: definition.getGroup(),
     name: definition.getPluralName(),
   };
 
-  const idPrefix = subLevelName
-    ? `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`
-    : `sidebar-item-custom-resource-group-${topLevelName}`;
+  // Create a unique ID based on the full path (keeping backward compatible format)
+  const pathId = pathSegments.join("-");
+  const id = `sidebar-item-custom-resource-group-${pathId}/${definition.getPluralName()}`;
 
   return getInjectable({
-    id: `${idPrefix}/${definition.getPluralName()}`,
+    id,
     instantiate: (di): SidebarItemRegistration => ({
       parentId,
       onClick: () => navigateToCustomResources(parameters),
@@ -290,7 +430,80 @@ const createCrdSidebarItem = ({
     }),
     injectionToken: sidebarItemInjectionToken,
   });
-};
+}
+
+/**
+ * Recursively generates sidebar items from the CRD tree
+ * @param node Current tree node
+ * @param parentId Parent sidebar item ID
+ * @param pathSegments Path segments to this node
+ * @param options Sidebar options
+ * @returns Array of injectable sidebar items
+ */
+function generateSidebarItemsRecursive(
+  node: CrdTreeNode,
+  parentId: string,
+  pathSegments: string[],
+  options: {
+    navigateToCustomResources: any;
+    customResourcesRoute: any;
+    pathParameters: any;
+  },
+): any[] {
+  const result: any[] = [];
+
+  // Sort children by order, then by name
+  const sortedChildren = Array.from(node.children.values()).sort((a, b) => {
+    if (a.order !== b.order) return a.order - b.order;
+    return a.name.localeCompare(b.name);
+  });
+
+  for (const child of sortedChildren) {
+    const childPath = [...pathSegments, child.name];
+    const childPathId = childPath.join("-");
+
+    // Create the group item (keeping backward compatible ID format)
+    const groupItem = getInjectable({
+      id: `sidebar-item-custom-resource-group-${childPathId}`,
+      instantiate: (): SidebarItemRegistration => ({
+        parentId,
+        onClick: noop,
+        title: child.name.replaceAll(".", "\u200b."), // Add zero-width spaces for line breaks
+        orderNumber: child.order,
+      }),
+      injectionToken: sidebarItemInjectionToken,
+    });
+
+    result.push(groupItem);
+
+    // Add direct CRDs at this level
+    const sortedCrds = [...child.crds].sort((a, b) => a.getResourceKind().localeCompare(b.getResourceKind()));
+
+    for (let i = 0; i < sortedCrds.length; i++) {
+      result.push(
+        createCrdSidebarItem({
+          parentId: groupItem.id,
+          definition: sortedCrds[i],
+          pathSegments: childPath,
+          itemIndex: i,
+          ...options,
+        }),
+      );
+    }
+
+    // Recursively process children
+    if (child.children.size > 0) {
+      const childItems = generateSidebarItemsRecursive(child, groupItem.id, childPath, options);
+      result.push(...childItems);
+    }
+  }
+
+  return result;
+}
+
+// ============================================================================
+// MAIN INJECTABLE
+// ============================================================================
 
 const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-computed",
@@ -300,16 +513,14 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
     const state = di.inject(userPreferencesStateInjectable);
+
     return computed(() => {
       try {
-        // Organize CRDs into structure: { topLevel: { subLevel: [CRDs] } }
-        const { structure, topLevelOrder, subLevelOrder } = organizeCrdsIntoGroups(
-          customResourceDefinitions.get().values(),
-          state.crdGroup || "", // Provide an empty string by default if crdGroup is undefined
-        );
+        // Organize CRDs into a tree structure
+        const { root } = organizeCrdsIntoTree(customResourceDefinitions.get().values(), state.crdGroup || "");
 
-        // Generate sidebar items from structure
-        return generateSidebarItems(structure, topLevelOrder, subLevelOrder, {
+        // Generate sidebar items recursively from the tree
+        return generateSidebarItemsRecursive(root, customResourcesSidebarItemInjectable.id, [], {
           navigateToCustomResources,
           customResourcesRoute,
           pathParameters,
@@ -322,182 +533,19 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
   },
 });
 
-/**
- * Gets the fully-qualified resource name for a CRD
- * @param crd CustomResourceDefinition
- * @returns Fully qualified resource name in format: pluralized-name.group
- */
-const getFullyQualifiedResourceName = (crd: CustomResourceDefinition): string => {
-  return `${crd.getPluralName()}.${crd.getGroup()}`;
+export default customResourceDefinitionGroupsSidebarItemsComputedInjectable;
+
+// ============================================================================
+// EXPORTS FOR TESTING
+// ============================================================================
+
+export {
+  parseGroupConfig,
+  findGroupPath,
+  organizeCrdsIntoTree,
+  collectPatternCandidates,
+  matchesPattern,
+  getPatternSpecificity,
 };
 
-/**
- * Organizes CRDs into a hierarchical structure by top and sublevels
- * and preserves the order from the YAML configuration
- */
-function organizeCrdsIntoGroups(
-  crds: Iterable<CustomResourceDefinition>,
-  configYaml: string,
-): {
-  structure: Record<string, Record<string, CustomResourceDefinition[]>>;
-  topLevelOrder: string[];
-  subLevelOrder: Record<string, string[]>;
-} {
-  const structure: Record<string, Record<string, CustomResourceDefinition[]>> = {};
-
-  // Parse configuration to get the ordered structure
-  const parsedConfig = parseGroupConfig(configYaml);
-  const topLevelOrder = parsedConfig?.topLevelOrder || [];
-  const subLevelOrder = parsedConfig?.subLevelOrder || {};
-
-  for (const crd of crds) {
-    try {
-      // Use the full qualified name for matching
-      const fullName = getFullyQualifiedResourceName(crd);
-      // If parsedConfig is null, use an empty object by default
-      const { topLevel, subLevel } = parsedConfig
-        ? getByNewGroup(fullName, parsedConfig)
-        : { topLevel: fullName, subLevel: null };
-
-      // If null was specified for this top level, skip it entirely
-      if (!topLevel) continue;
-
-      const subLevelKey = subLevel || "direct";
-
-      // Initialize structure if needed
-      if (!structure[topLevel]) {
-        structure[topLevel] = {};
-      }
-      if (!structure[topLevel][subLevelKey]) {
-        structure[topLevel][subLevelKey] = [];
-      }
-
-      structure[topLevel][subLevelKey].push(crd);
-    } catch (error) {
-      console.error("Error processing CRD:", error);
-    }
-  }
-
-  return {
-    structure,
-    topLevelOrder,
-    subLevelOrder,
-  };
-}
-
-/**
- * Generates sidebar items from the CRD structure
- */
-function generateSidebarItems(
-  structure: Record<string, Record<string, CustomResourceDefinition[]>>,
-  topLevelOrder: string[],
-  subLevelOrder: Record<string, string[]>,
-  options: {
-    navigateToCustomResources: any;
-    customResourcesRoute: any;
-    pathParameters: any;
-  },
-): any[] {
-  const result: any[] = [];
-
-  // Process each top level group using the order from config
-  const effectiveTopLevelOrder = topLevelOrder.length > 0 ? topLevelOrder : Object.keys(structure);
-
-  effectiveTopLevelOrder
-    .filter((topLevelName) => structure[topLevelName]) // Only process groups that exist in structure
-    .forEach((topLevelName, topLevelIndex) => {
-      try {
-        // Create top level item
-        const topLevelItem = getInjectable({
-          id: `sidebar-item-custom-resource-group-${topLevelName}`,
-          instantiate: (): SidebarItemRegistration => ({
-            parentId: customResourcesSidebarItemInjectable.id,
-            onClick: noop,
-            title: topLevelName.replaceAll(".", "\u200b."), // Add zero-width spaces to allow breaks
-            orderNumber: topLevelIndex + 1,
-          }),
-          injectionToken: sidebarItemInjectionToken,
-        });
-
-        result.push(topLevelItem);
-
-        // Process direct CRDs (without sublevel)
-        const directCrds = structure[topLevelName]["direct"] || [];
-        if (directCrds.length > 0) {
-          try {
-            const directItems = directCrds.map((definition, itemIndex) =>
-              createCrdSidebarItem({
-                parentId: topLevelItem.id,
-                definition,
-                topLevelName,
-                itemIndex,
-                ...options,
-              }),
-            );
-
-            result.push(...directItems);
-          } catch (error) {
-            console.error("Error creating direct CRD items:", error);
-          }
-        }
-
-        // Process sublevels using the order from config
-        const availableSubLevels = Object.keys(structure[topLevelName]).filter((key) => key !== "direct");
-        const orderedSubLevels = subLevelOrder[topLevelName] || [];
-
-        // Use ordered sublevels if available, otherwise use default order
-        const subLevelsToProcess =
-          orderedSubLevels.length > 0
-            ? orderedSubLevels.filter((key) => availableSubLevels.includes(key))
-            : availableSubLevels;
-
-        subLevelsToProcess.forEach((subLevelKey, subLevelIndex) => {
-          try {
-            const subLevelName = subLevelKey;
-            const subLevelCrds = structure[topLevelName][subLevelKey];
-
-            // Skip if no CRDs in this sublevel
-            if (!subLevelCrds || subLevelCrds.length === 0) {
-              return;
-            }
-
-            // Create sublevel item
-            const subLevelItem = getInjectable({
-              id: `sidebar-item-custom-resource-subgroup-${topLevelName}-${subLevelName}`,
-              instantiate: (): SidebarItemRegistration => ({
-                parentId: topLevelItem.id,
-                onClick: noop,
-                title: subLevelName.replaceAll(".", "\u200b."),
-                orderNumber: subLevelIndex + 1,
-              }),
-              injectionToken: sidebarItemInjectionToken,
-            });
-
-            result.push(subLevelItem);
-
-            // Create items for CRDs in sublevel
-            const subLevelItems = subLevelCrds.map((definition, itemIndex) =>
-              createCrdSidebarItem({
-                parentId: subLevelItem.id,
-                definition,
-                topLevelName,
-                subLevelName,
-                itemIndex,
-                ...options,
-              }),
-            );
-
-            result.push(...subLevelItems);
-          } catch (error) {
-            console.error(`Error processing sublevel "${subLevelKey}":`, error);
-          }
-        });
-      } catch (error) {
-        console.error(`Error processing top level "${topLevelName}":`, error);
-      }
-    });
-
-  return result;
-}
-
-export default customResourceDefinitionGroupsSidebarItemsComputedInjectable;
+export type { ConfigNode, GroupPath, ParsedConfig, PatternCandidate, CrdTreeNode };
