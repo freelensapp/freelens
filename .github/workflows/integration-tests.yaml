@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  kind_version: 0.30.0 # datasource=github-releases depName=kubernetes-sigs/kind
+  kind_version: 0.31.0 # datasource=github-releases depName=kubernetes-sigs/kind
   kubernetes_version: 1.34.0 # datasource=docker depName=kindest/node
 
 jobs:
