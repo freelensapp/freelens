@@ -151,7 +151,7 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
     "monaco-editor": "^0.54.0",
-    "node-pty": "1.1.0-beta39",
+    "node-pty": "1.1.0-beta43",
     "path-to-regexp": "^6.3.0",
     "pnpm": "^10.26.0",
     "proper-lockfile": "^4.1.2",

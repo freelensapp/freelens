@@ -188,8 +188,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0
       node-pty:
-        specifier: 1.1.0-beta39
-        version: 1.1.0-beta39
+        specifier: 1.1.0-beta43
+        version: 1.1.0-beta43
       p-limit:
         specifier: ^3.1.0
         version: 3.1.0
@@ -819,8 +819,8 @@ importers:
         specifier: ^0.54.0
         version: 0.54.0
       node-pty:
-        specifier: 1.1.0-beta39
-        version: 1.1.0-beta39
+        specifier: 1.1.0-beta43
+        version: 1.1.0-beta43
       path-to-regexp:
         specifier: ^6.3.0
         version: 6.3.0
@@ -7556,8 +7556,8 @@ packages:
     peerDependencies:
       webpack: ^5.0.0
 
-  node-pty@1.1.0-beta39:
-    resolution: {integrity: sha512-1xnN2dbS0QngT4xenpS/6Q77QtaDQo5vE6f4slATgZsFIv3NP4ObE7vAjYnZtMFG5OEh3jyDRZc+hy1DjDF7dg==}
+  node-pty@1.1.0-beta43:
+    resolution: {integrity: sha512-CYyIQogRs97Rfjo0WKyku8V56Bm4WyWUijrbWDs5LJ+ZmsUW2gqbVAEpD+1gtA7dEZ6v1A08GzfqsDuIl/eRqw==}
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
@@ -14377,7 +14377,7 @@ snapshots:
       loader-utils: 2.0.4
       webpack: 5.102.1(webpack-cli@6.0.1)
 
-  node-pty@1.1.0-beta39:
+  node-pty@1.1.0-beta43:
     dependencies:
       node-addon-api: 7.1.1
 
