@@ -12,7 +12,6 @@ import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
 import { LinkToClusterRole } from "../../kube-object-link";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { WithTooltip } from "../../with-tooltip";
 import clusterRoleStoreInjectable from "../cluster-roles/store.injectable";
@@ -66,7 +65,6 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           renderHeaderTitle="Cluster Role Bindings"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             {
               title: "Cluster Role",
               className: "cluster-role",
@@ -79,7 +77,6 @@ class NonInjectedClusterRoleBindings extends React.Component<Dependencies> {
           ]}
           renderTableContents={(binding) => [
             <WithTooltip>{binding.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={binding} />,
             <LinkToClusterRole name={binding.roleRef.name} />,
             <WithTooltip>{binding.getSubjectTypes()}</WithTooltip>,
             <WithTooltip>{binding.getSubjectNames()}</WithTooltip>,
