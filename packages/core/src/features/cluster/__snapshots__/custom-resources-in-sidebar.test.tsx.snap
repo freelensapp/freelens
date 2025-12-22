@@ -3517,19 +3517,19 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                 class="SidebarItem"
                 data-is-active-test="false"
                 data-parent-id-test="sidebar-item-custom-resources"
-                data-testid="sidebar-item-custom-resource-group-some.group.com"
+                data-testid="sidebar-item-custom-resource-group-some-resources.some.group.com"
               >
                 <a
                   class="navItem"
-                  data-testid="link-for-sidebar-item-custom-resource-group-some.group.com"
+                  data-testid="link-for-sidebar-item-custom-resource-group-some-resources.some.group.com"
                   href="/"
                 >
                   <span>
-                    some​.group​.com
+                    some-resources​.some​.group​.com
                   </span>
                   <i
                     class="Icon expandIcon material focusable"
-                    data-testid="expand-icon-for-sidebar-item-custom-resource-group-some.group.com"
+                    data-testid="expand-icon-for-sidebar-item-custom-resource-group-some-resources.some.group.com"
                   >
                     <span
                       class="icon"
@@ -4101,19 +4101,19 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                 class="SidebarItem"
                 data-is-active-test="false"
                 data-parent-id-test="sidebar-item-custom-resources"
-                data-testid="sidebar-item-custom-resource-group-some.group.com"
+                data-testid="sidebar-item-custom-resource-group-some-resources.some.group.com"
               >
                 <a
                   class="navItem"
-                  data-testid="link-for-sidebar-item-custom-resource-group-some.group.com"
+                  data-testid="link-for-sidebar-item-custom-resource-group-some-resources.some.group.com"
                   href="/"
                 >
                   <span>
-                    some​.group​.com
+                    some-resources​.some​.group​.com
                   </span>
                   <i
                     class="Icon expandIcon material focusable"
-                    data-testid="expand-icon-for-sidebar-item-custom-resource-group-some.group.com"
+                    data-testid="expand-icon-for-sidebar-item-custom-resource-group-some-resources.some.group.com"
                   >
                     <span
                       class="icon"
@@ -4129,12 +4129,12 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
                   <div
                     class="SidebarItem"
                     data-is-active-test="false"
-                    data-parent-id-test="sidebar-item-custom-resource-group-some.group.com"
-                    data-testid="sidebar-item-custom-resource-group-some.group.com/some-resources"
+                    data-parent-id-test="sidebar-item-custom-resource-group-some-resources.some.group.com"
+                    data-testid="sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"
                   >
                     <a
                       class="navItem"
-                      data-testid="link-for-sidebar-item-custom-resource-group-some.group.com/some-resources"
+                      data-testid="link-for-sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"
                       href="/"
                     >
                       <span>
