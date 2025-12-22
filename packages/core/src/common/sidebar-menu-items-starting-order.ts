@@ -9,7 +9,7 @@ export enum SidebarMenuItem {
   Events = "sidebar-item-events",
   Helm = "sidebar-item-helm",
   UserManagement = "sidebar-item-user-management",
-  CustomResources = "sidebar-item-custom-resources"
+  CustomResources = "sidebar-item-custom-resources",
 }
 
 export const sidebarMenuItemIds: Record<SidebarMenuItem, number> = {
@@ -23,5 +23,5 @@ export const sidebarMenuItemIds: Record<SidebarMenuItem, number> = {
   [SidebarMenuItem.Events]: 80,
   [SidebarMenuItem.Helm]: 90,
   [SidebarMenuItem.UserManagement]: 100,
-  [SidebarMenuItem.CustomResources]: 110
-}
+  [SidebarMenuItem.CustomResources]: 110,
+};

@@ -9,8 +9,8 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
+import { SidebarMenuItem, sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
-import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
 let id = SidebarMenuItem.Network;
 

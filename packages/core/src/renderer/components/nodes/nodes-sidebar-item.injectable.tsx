@@ -10,9 +10,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import navigateToNodesInjectable from "../../../common/front-end-routing/routes/cluster/nodes/navigate-to-nodes.injectable";
 import nodesRouteInjectable from "../../../common/front-end-routing/routes/cluster/nodes/nodes-route.injectable";
+import { SidebarMenuItem, sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
 let id = SidebarMenuItem.Nodes;
 

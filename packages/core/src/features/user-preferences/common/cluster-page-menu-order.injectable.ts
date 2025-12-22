@@ -1,7 +1,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
-import userPreferencesStateInjectable from "./state.injectable";
 import { sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";
+import userPreferencesStateInjectable from "./state.injectable";
 
 export const getClusterPageMenuOrderInjectable = getInjectable({
   id: "get-cluster-page-menu-order-injectable",
@@ -29,7 +29,7 @@ export const resetClusterPageMenuOrderInjectable = getInjectable({
     const userPreferences = di.inject(userPreferencesStateInjectable);
 
     return () => {
-      runInAction(() => userPreferences.clusterPageMenuOrder = sidebarMenuItemIds);
+      runInAction(() => (userPreferences.clusterPageMenuOrder = sidebarMenuItemIds));
     };
   },
 });
