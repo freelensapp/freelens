@@ -6,6 +6,10 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import {
+  getClusterPageMenuOrderInjectable,
+  resetClusterPageMenuOrderInjectable,
+} from "./cluster-page-menu-order.injectable";
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
@@ -24,6 +28,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
+    di.register(getClusterPageMenuOrderInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(httpsProxyConfigurationInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -40,6 +49,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(lensColorThemePreferenceInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(resetClusterPageMenuOrderInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

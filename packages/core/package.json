@@ -72,6 +72,9 @@
     "node": "^22.0.0"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@freelensapp/animate": "workspace:^",
     "@freelensapp/application": "workspace:^",
     "@freelensapp/application-for-electron-main": "workspace:^",
