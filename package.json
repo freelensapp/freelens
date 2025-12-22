@@ -34,7 +34,7 @@
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "knip": "corepack pnpm dlx knip@5.75.1 --dependencies --no-gitignore",
+    "knip": "corepack pnpm dlx knip@5.76.3 --dependencies --no-gitignore",
     "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "corepack pnpm knip",
     "knip:production": "corepack pnpm knip --production --strict",
