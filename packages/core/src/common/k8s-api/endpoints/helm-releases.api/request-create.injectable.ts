@@ -6,7 +6,6 @@
 
 import { urlBuilderFor } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import yaml from "js-yaml";
 import apiBaseInjectable from "../../api-base.injectable";
 
 import type { HelmReleaseUpdateDetails } from "../helm-releases.api";
@@ -32,11 +31,10 @@ const requestCreateHelmReleaseInjectable = getInjectable({
     const apiBase = di.inject(apiBaseInjectable);
 
     return ({ repo, chart, values, ...data }) => {
-      const valuesData = yaml.load(values);
       return apiBase.post(requestCreateEndpoint.compile({}), {
         data: {
           chart: `${repo}/${chart}`,
-          values: typeof valuesData === "object" && valuesData !== null ? valuesData : {},
+          values,
           ...data,
         },
       });
