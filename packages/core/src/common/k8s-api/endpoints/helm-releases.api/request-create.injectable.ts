@@ -32,10 +32,11 @@ const requestCreateHelmReleaseInjectable = getInjectable({
     const apiBase = di.inject(apiBaseInjectable);
 
     return ({ repo, chart, values, ...data }) => {
+      const valuesData = yaml.load(values);
       return apiBase.post(requestCreateEndpoint.compile({}), {
         data: {
           chart: `${repo}/${chart}`,
-          values: yaml.load(values),
+          values: typeof valuesData === "object" && valuesData !== null ? valuesData : {},
           ...data,
         },
       });
