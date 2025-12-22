@@ -263,7 +263,6 @@
       "entry": ["bin/webpack-build!", "dist/index.js!", "index.ts"],
       "project": ["*.js", "*.ts", "bin/*", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "static/build/**/*.js!"],
       "ignoreDependencies": [
-        "@ogre-tools/injectable-extension-for-auto-registration",
         "@tailwindcss/postcss",
         "@types/webpack-env",
         "css-loader",

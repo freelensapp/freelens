@@ -34,8 +34,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "electron": "^39.2.5"
+    "electron": "^39.2.7"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",

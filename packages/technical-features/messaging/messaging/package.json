@@ -34,7 +34,6 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/startable-stoppable": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "mobx": "^6.15.0"
   },

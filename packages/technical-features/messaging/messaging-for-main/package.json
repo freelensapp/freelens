@@ -34,8 +34,7 @@
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-auto-registration": "^17.11.1",
-    "electron": "^39.2.5",
+    "electron": "^39.2.7",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -44,6 +43,7 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
+    "@types/lodash": "^4.17.21",
     "@types/webpack-env": "^1.18.8",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",

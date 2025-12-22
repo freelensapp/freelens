@@ -6,7 +6,6 @@
 
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
-import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment } from "./vars";
@@ -34,7 +33,7 @@ const webpackLensMain = (): webpack.Configuration => {
       minimize: false,
     },
     resolve: {
-      extensions: [".json", ".js", ".ts"],
+      extensions: [".json", ".js", ".ts", ".tsx"],
     },
     externals: [nodeExternals({ modulesFromFile: true })],
     module: {
@@ -61,14 +60,14 @@ const webpackLensMain = (): webpack.Configuration => {
             },
           },
         },
+        {
+          test: /\.(yaml|yml)$/,
+          type: "asset/source",
+        },
         ...iconsAndImagesWebpackRules(),
       ],
     },
     plugins: [
-      new DefinePlugin({
-        CONTEXT_MATCHER_FOR_NON_FEATURES: `/\\.injectable\\.tsx?$/`,
-        CONTEXT_MATCHER_FOR_FEATURES: `/\\/(main|common)\\/.+\\.injectable\\.tsx?$/`,
-      }),
       new ForkTsCheckerPlugin({
         typescript: {
           mode: "write-dts",
