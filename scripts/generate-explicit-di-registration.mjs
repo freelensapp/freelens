@@ -13,13 +13,19 @@
 
 import { spawn } from "node:child_process";
 import { readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { basename, dirname, join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 const packagesDir = join(rootDir, "packages");
+
+/**
+ * Normalize path to use forward slashes (cross-platform)
+ */
+function normalizePath(path) {
+  return path.replace(/\\/g, "/");
+}
 
 /**
  * Find all .injectable.ts and .injectable.tsx files in a directory (recursive)
@@ -41,7 +47,7 @@ async function findInjectableFiles(dir, baseDir = dir) {
       }
       files.push(...(await findInjectableFiles(fullPath, baseDir)));
     } else if (entry.isFile() && /\.injectable\.(ts|tsx)$/.test(entry.name)) {
-      files.push(relative(baseDir, fullPath));
+      files.push(normalizePath(relative(baseDir, fullPath)));
     }
   }
 
@@ -89,7 +95,7 @@ async function findDirectoriesWithInjectables(dir, baseDir = dir, dirs = new Set
   }
 
   if (hasInjectables) {
-    const relativePath = relative(baseDir, dir);
+    const relativePath = normalizePath(relative(baseDir, dir));
     dirs.add(relativePath || ".");
   }
 
@@ -322,7 +328,7 @@ ${calls.join("\n")}
   const outputPath = join(srcDir, `register-injectables-${type}.ts`);
   await writeFile(outputPath, content);
   console.log(`✓ Generated ${type}/register-injectables.ts`);
-  generatedFiles.push(outputPath);
+  generatedFiles.push(normalizePath(outputPath));
 }
 
 /**
@@ -622,7 +628,7 @@ ${calls.join("\n")}
 
     const outputPath = join(fullDir, "register-injectables.ts");
     await writeFile(outputPath, content);
-    generatedFiles.push(outputPath);
+    generatedFiles.push(normalizePath(outputPath));
     console.log(`  ✓ Generated aggregator ${dir}/register-injectables.ts`);
   }
 }
@@ -704,7 +710,7 @@ async function processCorePackage(packagePath) {
     const content = generateRegistrationFile(imports, registrations);
     const outputPath = join(fullDir, "register-injectables.ts");
     await writeFile(outputPath, content);
-    generatedFiles.push(outputPath);
+    generatedFiles.push(normalizePath(outputPath));
 
     console.log(`  ✓ Generated register-injectables.ts`);
     totalInjectables += registrations.length;
