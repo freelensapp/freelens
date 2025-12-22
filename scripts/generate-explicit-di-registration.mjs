@@ -13,6 +13,7 @@
 
 import { spawn } from "node:child_process";
 import { readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { basename, dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -836,17 +837,43 @@ async function runBiomeFix(generatedFiles) {
 
   console.log(`\nRunning biome:fix on ${generatedFiles.length} generated files...`);
 
-  // On Windows, batch files to avoid ENAMETOOLONG (32KB command-line limit)
+  // On Windows, batch files based on command-line length to avoid ENAMETOOLONG
+  // Windows cmd.exe limit is 8191 chars, CreateProcess is 32767 chars
   // On Linux/macOS, process all files at once (much higher limits)
   if (process.platform === "win32") {
-    const batchSize = 100;
+    const maxCommandLength = 8000; // Safe limit for cmd.exe (8191 - buffer)
+    const baseCommand = "pnpm --silent biome:fix ";
+    const baseLength = baseCommand.length;
 
-    for (let i = 0; i < generatedFiles.length; i += batchSize) {
-      const batch = generatedFiles.slice(i, i + batchSize);
-      const batchNum = Math.floor(i / batchSize) + 1;
-      const totalBatches = Math.ceil(generatedFiles.length / batchSize);
+    const batches = [];
+    let currentBatch = [];
+    let currentLength = baseLength;
 
-      console.log(`  Processing batch ${batchNum}/${totalBatches} (${batch.length} files)...`);
+    for (const file of generatedFiles) {
+      // +1 for space separator
+      const fileLength = file.length + 1;
+
+      if (currentLength + fileLength > maxCommandLength && currentBatch.length > 0) {
+        // Current batch would exceed limit, start new batch
+        batches.push(currentBatch);
+        currentBatch = [file];
+        currentLength = baseLength + fileLength;
+      } else {
+        currentBatch.push(file);
+        currentLength += fileLength;
+      }
+    }
+
+    // Add last batch
+    if (currentBatch.length > 0) {
+      batches.push(currentBatch);
+    }
+
+    console.log(`  Split into ${batches.length} batches based on command-line length`);
+
+    for (let i = 0; i < batches.length; i++) {
+      const batch = batches[i];
+      console.log(`  Processing batch ${i + 1}/${batches.length} (${batch.length} files)...`);
 
       await new Promise((resolve, reject) => {
         const biome = spawn("pnpm", ["--silent", "biome:fix", ...batch], {
