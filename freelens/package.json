@@ -109,7 +109,7 @@
     "handlebars": "^4.7.8",
     "hpagent": "^1.2.0",
     "http-proxy-node16": "^1.0.6",
-    "immer": "^11.0.1",
+    "immer": "^11.1.0",
     "isomorphic-ws": "^5.0.0",
     "joi": "^18.0.2",
     "js-yaml": "^4.1.1",
