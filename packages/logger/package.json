@@ -34,7 +34,7 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "lodash": "^4.17.21",
-    "winston": "^3.18.3"
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@freelensapp/jest": "workspace:^",

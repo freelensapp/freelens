@@ -180,7 +180,7 @@
     "typed-regex": "^0.0.8",
     "url-parse": "^1.5.10",
     "uuid": "^11.1.0",
-    "winston": "^3.18.3",
+    "winston": "^3.19.0",
     "winston-transport": "^4.9.0",
     "winston-transport-browserconsole": "^1.0.5",
     "ws": "^8.18.3",

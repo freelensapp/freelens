@@ -248,8 +248,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       winston:
-        specifier: ^3.18.3
-        version: 3.18.3
+        specifier: ^3.19.0
+        version: 3.19.0
       ws:
         specifier: ^8.18.3
         version: 8.18.3
@@ -906,8 +906,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       winston:
-        specifier: ^3.18.3
-        version: 3.18.3
+        specifier: ^3.19.0
+        version: 3.19.0
       winston-transport:
         specifier: ^4.9.0
         version: 4.9.0
@@ -1502,8 +1502,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       winston:
-        specifier: ^3.18.3
-        version: 3.18.3
+        specifier: ^3.19.0
+        version: 3.19.0
     devDependencies:
       '@freelensapp/jest':
         specifier: workspace:^
@@ -9203,8 +9203,8 @@ packages:
     resolution: {integrity: sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==}
     engines: {node: '>= 12.0.0'}
 
-  winston@3.18.3:
-    resolution: {integrity: sha512-NoBZauFNNWENgsnC9YpgyYwOVrl2m58PpQ8lNHjV3kosGs7KJ7Npk9pCUE+WJlawVSe8mykWDKWFSVfs3QO9ww==}
+  winston@3.19.0:
+    resolution: {integrity: sha512-LZNJgPzfKR+/J3cHkxcpHKpKKvGfDZVPS4hfJCc4cCG0CgYzvlD6yE/S3CIL/Yt91ak327YCpiF/0MyeZHEHKA==}
     engines: {node: '>= 12.0.0'}
 
   word-wrap@1.2.5:
@@ -16273,7 +16273,7 @@ snapshots:
 
   winston-transport-browserconsole@1.0.5:
     dependencies:
-      winston: 3.18.3
+      winston: 3.19.0
       winston-transport: 4.9.0
 
   winston-transport@4.9.0:
@@ -16282,7 +16282,7 @@ snapshots:
       readable-stream: 3.6.2
       triple-beam: 1.4.1
 
-  winston@3.18.3:
+  winston@3.19.0:
     dependencies:
       '@colors/colors': 1.6.0
       '@dabh/diagnostics': 2.0.8
