@@ -836,23 +836,56 @@ async function runBiomeFix(generatedFiles) {
 
   console.log(`\nRunning biome:fix on ${generatedFiles.length} generated files...`);
 
-  return new Promise((resolve, reject) => {
-    const biome = spawn("pnpm", ["biome:fix", ...generatedFiles], {
-      cwd: rootDir,
-      stdio: "inherit",
-    });
+  // On Windows, batch files to avoid ENAMETOOLONG (32KB command-line limit)
+  // On Linux/macOS, process all files at once (much higher limits)
+  if (process.platform === "win32") {
+    const batchSize = 100;
 
-    biome.on("close", (code) => {
-      if (code === 0) {
-        console.log("✓ Biome formatting completed\n");
-        resolve();
-      } else {
-        reject(new Error(`Biome exited with code ${code}`));
-      }
-    });
+    for (let i = 0; i < generatedFiles.length; i += batchSize) {
+      const batch = generatedFiles.slice(i, i + batchSize);
+      const batchNum = Math.floor(i / batchSize) + 1;
+      const totalBatches = Math.ceil(generatedFiles.length / batchSize);
 
-    biome.on("error", reject);
-  });
+      console.log(`  Processing batch ${batchNum}/${totalBatches} (${batch.length} files)...`);
+
+      await new Promise((resolve, reject) => {
+        const biome = spawn("pnpm", ["--silent", "biome:fix", ...batch], {
+          cwd: rootDir,
+          stdio: "inherit",
+        });
+
+        biome.on("close", (code) => {
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(new Error(`Biome exited with code ${code}`));
+          }
+        });
+
+        biome.on("error", reject);
+      });
+    }
+  } else {
+    // Linux/macOS: process all files in one go
+    await new Promise((resolve, reject) => {
+      const biome = spawn("pnpm", ["--silent", "biome:fix", ...generatedFiles], {
+        cwd: rootDir,
+        stdio: "inherit",
+      });
+
+      biome.on("close", (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Biome exited with code ${code}`));
+        }
+      });
+
+      biome.on("error", reject);
+    });
+  }
+
+  console.log("✓ Biome formatting completed\n");
 }
 
 /**
