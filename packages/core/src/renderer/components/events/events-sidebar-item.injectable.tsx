@@ -12,8 +12,9 @@ import eventsRouteInjectable from "../../../common/front-end-routing/routes/clus
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
-let id = "sidebar-item-events";
+let id = SidebarMenuItem.Events;
 
 const eventsSidebarItemInjectable = getInjectable({
   id: id,
@@ -30,7 +31,7 @@ const eventsSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToEventsInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: getClusterPageMenuOrder(id, 80),
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
     };
   },
 

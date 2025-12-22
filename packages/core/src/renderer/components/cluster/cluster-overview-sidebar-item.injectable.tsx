@@ -12,8 +12,9 @@ import clusterOverviewRouteInjectable from "../../../common/front-end-routing/ro
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
-const id = "sidebar-item-cluster-overview";
+const id = SidebarMenuItem.ClusterOverview;
 
 const clusterOverviewSidebarItemInjectable = getInjectable({
   id: id,
@@ -30,7 +31,7 @@ const clusterOverviewSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToClusterOverviewInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: getClusterPageMenuOrder(id, 10),
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
     };
   },
 

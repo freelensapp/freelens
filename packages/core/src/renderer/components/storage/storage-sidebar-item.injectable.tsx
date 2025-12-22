@@ -10,8 +10,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
-let id = "sidebar-item-storage";
+let id = SidebarMenuItem.Storage;
 
 const storageSidebarItemInjectable = getInjectable({
   id: id,
@@ -25,7 +26,7 @@ const storageSidebarItemInjectable = getInjectable({
       getIcon: () => <Icon material="storage" />,
       title: title,
       onClick: noop,
-      orderNumber: getClusterPageMenuOrder(id, 60),
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
     };
   },
 

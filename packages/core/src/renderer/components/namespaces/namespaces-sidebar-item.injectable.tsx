@@ -12,8 +12,9 @@ import namespacesRouteInjectable from "../../../common/front-end-routing/routes/
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import { sidebarMenuItemIds, SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 
-let id = "sidebar-item-namespaces";
+let id = SidebarMenuItem.Namespaces;
 
 const namespacesSidebarItemInjectable = getInjectable({
   id: id,
@@ -30,7 +31,7 @@ const namespacesSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToNamespacesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: getClusterPageMenuOrder(id, 70),
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
     };
   },
 
