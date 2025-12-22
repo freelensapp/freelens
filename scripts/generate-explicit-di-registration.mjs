@@ -847,7 +847,7 @@ async function runBiomeFix(generatedFiles) {
   // Windows cmd.exe limit is 8191 chars, CreateProcess is 32767 chars
   // On Linux/macOS, process all files at once (much higher limits)
   if (process.platform === "win32") {
-    const maxCommandLength = 8000; // Safe limit for cmd.exe (8191 - buffer)
+    const maxCommandLength = 7000; // Safe limit for cmd.exe (8191 - buffer)
     const baseCommand = "pnpm --silent biome:fix ";
     const baseLength = baseCommand.length;
 
