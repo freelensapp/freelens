@@ -8,9 +8,10 @@ import "@testing-library/jest-dom";
 
 import { NonInjectedItemListLayoutContent } from "../content";
 
-import type { ItemListLayoutContentProps } from "../content";
 import type { ItemObject } from "@freelensapp/list-layout";
+
 import type { StorageLayer } from "../../../utils/storage-helper";
+import type { ItemListLayoutContentProps } from "../content";
 
 const makeStorage = () => {
   let state: Record<string, any> = {};

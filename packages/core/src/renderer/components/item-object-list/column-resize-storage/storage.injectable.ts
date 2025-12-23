@@ -19,7 +19,7 @@ const columnResizeStorageInjectable = getInjectable({
   instantiate: (di) => {
     const createStorage = di.inject(createStorageInjectable);
 
-    return createStorage<ColumnResizeStorageState>("column-resize", {});
+    return createStorage<ColumnResizeStorageState>("column-resizes", {});
   },
 });
 

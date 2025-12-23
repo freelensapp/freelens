@@ -35,6 +35,16 @@
   > .items {
     position: relative;
     min-height: 130px;
+
+    .resize-guide {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--blue);
+      z-index: 1000;
+      pointer-events: none;
+    }
   }
 }
 

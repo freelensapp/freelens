@@ -34,6 +34,7 @@ import type { IComputedValue } from "mobx";
 import type { IsTableColumnHidden } from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
+import type { StorageLayer } from "../../utils/storage-helper";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
 import type { ConfirmDialogParams } from "../confirm-dialog";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
@@ -41,7 +42,6 @@ import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { ColumnResizeStorageState } from "./column-resize-storage/storage.injectable";
 import type { ItemListStore } from "./list-layout";
 import type { Filter, PageFiltersStore } from "./page-filters/store";
-import type { StorageLayer } from "../../utils/storage-helper";
 
 interface ResizeState {
   columnId: string;
@@ -525,20 +525,12 @@ export class NonInjectedItemListLayoutContent<
     const selectedItems = store.pickOnlySelected(items);
 
     return (
-      <div className="items box grow flex column" ref={this.tableRef} style={{ position: "relative" }}>
+      <div className="items box grow flex column" ref={this.tableRef}>
         {this.resizeGuideX !== null && (
           <div
             ref={this.resizeGuideRef}
-            style={{
-              position: "absolute",
-              right: `calc(100% - ${this.resizeGuideX}px)`,
-              top: 0,
-              bottom: 0,
-              width: "3px",
-              backgroundColor: "var(--blue)",
-              zIndex: 1000,
-              pointerEvents: "none",
-            }}
+            className="resize-guide"
+            style={{ right: `calc(100% - ${this.resizeGuideX}px)` }}
           />
         )}
         <Table
