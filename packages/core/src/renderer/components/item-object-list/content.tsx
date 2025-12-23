@@ -98,9 +98,10 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores extends boolean> extends React.Component<
-  ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies
-> {
+export class NonInjectedItemListLayoutContent<
+  Item extends ItemObject,
+  PreLoadStores extends boolean,
+> extends React.Component<ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies> {
   private resizeState: ResizeState | null = null;
   private tableRef = React.createRef<HTMLDivElement>();
   private resizeGuideRef = React.createRef<HTMLDivElement>();
