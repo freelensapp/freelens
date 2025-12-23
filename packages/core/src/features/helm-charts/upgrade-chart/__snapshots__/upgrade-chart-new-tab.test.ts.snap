@@ -550,6 +550,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -570,6 +573,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -590,6 +596,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -610,6 +619,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -620,6 +632,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -630,6 +645,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -650,6 +668,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -670,6 +691,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -1345,6 +1369,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -1365,6 +1392,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -1385,6 +1415,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -1405,6 +1438,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -1415,6 +1451,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -1425,6 +1464,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -1445,6 +1487,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -1465,6 +1510,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2282,6 +2330,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -2302,6 +2353,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -2322,6 +2376,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -2342,6 +2399,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -2352,6 +2412,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -2362,6 +2425,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -2382,6 +2448,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -2402,6 +2471,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -3273,6 +3345,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -3293,6 +3368,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -3313,6 +3391,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -3333,6 +3414,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -3343,6 +3427,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -3353,6 +3440,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -3373,6 +3463,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -3393,6 +3486,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -4262,6 +4358,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -4282,6 +4381,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -4302,6 +4404,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -4322,6 +4427,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -4332,6 +4440,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -4342,6 +4453,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -4362,6 +4476,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -4382,6 +4499,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -5408,6 +5528,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -5428,6 +5551,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -5448,6 +5574,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -5468,6 +5597,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -5478,6 +5610,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -5488,6 +5623,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -5508,6 +5646,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -5528,6 +5669,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -6556,6 +6700,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -6576,6 +6723,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -6596,6 +6746,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -6616,6 +6769,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -6626,6 +6782,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -6636,6 +6795,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -6656,6 +6818,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -6676,6 +6841,9 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"

@@ -343,6 +343,9 @@ exports[`custom category columns for catalog renders 1`] = `
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -364,6 +367,9 @@ exports[`custom category columns for catalog renders 1`] = `
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -385,6 +391,9 @@ exports[`custom category columns for catalog renders 1`] = `
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -396,6 +405,9 @@ exports[`custom category columns for catalog renders 1`] = `
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -417,6 +429,9 @@ exports[`custom category columns for catalog renders 1`] = `
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -962,6 +977,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -983,6 +1001,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1004,6 +1025,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1015,6 +1039,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1036,6 +1063,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1581,6 +1611,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1602,6 +1635,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1613,6 +1649,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1634,6 +1673,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap"
@@ -1645,6 +1687,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           High
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -2190,6 +2235,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -2211,6 +2259,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -2222,6 +2273,9 @@ exports[`custom category columns for catalog when category is added using defaul
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -2243,6 +2297,9 @@ exports[`custom category columns for catalog when category is added using defaul
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -2788,6 +2845,9 @@ exports[`custom category columns for catalog when category is added with custom 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -2809,6 +2869,9 @@ exports[`custom category columns for catalog when category is added with custom 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -2830,6 +2893,9 @@ exports[`custom category columns for catalog when category is added with custom 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -2841,6 +2907,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -2862,6 +2931,9 @@ exports[`custom category columns for catalog when category is added with custom 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -3407,6 +3479,9 @@ exports[`custom category columns for catalog when category is added with custom 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap"
@@ -3418,6 +3493,9 @@ exports[`custom category columns for catalog when category is added with custom 
                         >
                           Foo
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -3963,6 +4041,9 @@ exports[`custom category columns for catalog when category is added without defa
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -3984,6 +4065,9 @@ exports[`custom category columns for catalog when category is added without defa
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -4005,6 +4089,9 @@ exports[`custom category columns for catalog when category is added without defa
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -4016,6 +4103,9 @@ exports[`custom category columns for catalog when category is added without defa
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -4037,6 +4127,9 @@ exports[`custom category columns for catalog when category is added without defa
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -4582,6 +4675,9 @@ exports[`custom category columns for catalog when category is added without defa
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"

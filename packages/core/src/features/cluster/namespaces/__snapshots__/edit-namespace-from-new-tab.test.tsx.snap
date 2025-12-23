@@ -465,6 +465,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -492,6 +495,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -512,6 +518,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -532,6 +541,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -1237,6 +1249,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -1264,6 +1279,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -1284,6 +1302,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -1304,6 +1325,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2014,6 +2038,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -2041,6 +2068,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -2061,6 +2091,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -2081,6 +2114,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2890,6 +2926,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -2917,6 +2956,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -2937,6 +2979,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -2957,6 +3002,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -3714,6 +3762,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -3741,6 +3792,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -3761,6 +3815,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -3781,6 +3838,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -4640,6 +4700,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -4667,6 +4730,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -4687,6 +4753,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -4707,6 +4776,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -5568,6 +5640,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -5595,6 +5670,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -5615,6 +5693,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -5635,6 +5716,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -6458,6 +6542,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -6485,6 +6572,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -6505,6 +6595,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -6525,6 +6618,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -7343,6 +7439,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -7370,6 +7469,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -7390,6 +7492,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -7410,6 +7515,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -8219,6 +8327,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -8246,6 +8357,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -8266,6 +8380,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -8286,6 +8403,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -9095,6 +9215,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -9122,6 +9245,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -9142,6 +9268,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -9162,6 +9291,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -9971,6 +10103,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -9998,6 +10133,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -10018,6 +10156,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -10038,6 +10179,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -10652,6 +10796,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -10679,6 +10826,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -10699,6 +10849,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -10719,6 +10872,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -11537,6 +11693,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -11564,6 +11723,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -11584,6 +11746,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -11604,6 +11769,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -12413,6 +12581,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -12440,6 +12611,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -12460,6 +12634,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -12480,6 +12657,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -13289,6 +13469,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -13316,6 +13499,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -13336,6 +13522,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -13356,6 +13545,9 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"

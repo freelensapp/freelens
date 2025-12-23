@@ -1002,6 +1002,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -1012,6 +1015,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -1022,6 +1028,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -1032,6 +1041,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -1052,6 +1064,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2013,6 +2028,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -2023,6 +2041,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -2033,6 +2054,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -2043,6 +2067,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -2063,6 +2090,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2902,6 +2932,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -2912,6 +2945,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -2922,6 +2958,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -2932,6 +2971,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -2952,6 +2994,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -4059,6 +4104,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -4069,6 +4117,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -4079,6 +4130,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -4089,6 +4143,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -4109,6 +4166,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -5185,6 +5245,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -5195,6 +5258,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -5205,6 +5271,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -5215,6 +5284,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -5235,6 +5307,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -6306,6 +6381,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -6316,6 +6394,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -6326,6 +6407,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -6336,6 +6420,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -6356,6 +6443,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -7427,6 +7517,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -7437,6 +7530,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -7447,6 +7543,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -7457,6 +7556,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -7477,6 +7579,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -8570,6 +8675,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -8580,6 +8688,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -8590,6 +8701,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -8600,6 +8714,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -8620,6 +8737,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -9727,6 +9847,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -9737,6 +9860,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -9747,6 +9873,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -9757,6 +9886,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -9777,6 +9909,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -10848,6 +10983,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -10858,6 +10996,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -10868,6 +11009,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -10878,6 +11022,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -10898,6 +11045,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -11977,6 +12127,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -11987,6 +12140,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -11997,6 +12153,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -12007,6 +12166,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -12027,6 +12189,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -13040,6 +13205,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -13060,6 +13228,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -13080,6 +13251,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -13100,6 +13274,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -13110,6 +13287,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -13120,6 +13300,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -13140,6 +13323,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -13160,6 +13346,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -13854,6 +14043,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -13864,6 +14056,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -13874,6 +14069,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -13884,6 +14082,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -13904,6 +14105,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -14836,6 +15040,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -14846,6 +15053,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -14856,6 +15066,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -14866,6 +15079,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -14886,6 +15102,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -16170,6 +16389,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -16180,6 +16402,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -16190,6 +16415,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -16200,6 +16428,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -16220,6 +16451,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -17111,6 +17345,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -17121,6 +17358,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -17131,6 +17371,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -17141,6 +17384,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -17161,6 +17407,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -18286,6 +18535,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -18296,6 +18548,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -18306,6 +18561,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -18316,6 +18574,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -18336,6 +18597,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -19459,6 +19723,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -19469,6 +19736,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -19479,6 +19749,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -19489,6 +19762,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -19509,6 +19785,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -20580,6 +20859,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -20590,6 +20872,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -20600,6 +20885,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -20610,6 +20898,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -20630,6 +20921,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -21701,6 +21995,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -21711,6 +22008,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -21721,6 +22021,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -21731,6 +22034,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -21751,6 +22057,9 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"

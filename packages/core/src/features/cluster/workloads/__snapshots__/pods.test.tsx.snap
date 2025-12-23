@@ -550,6 +550,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -577,6 +580,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell containers nowrap sorting"
@@ -597,6 +603,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell cpu nowrap sorting"
@@ -617,6 +626,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell memory nowrap sorting"
@@ -637,6 +649,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell restarts nowrap sorting"
@@ -657,6 +672,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell owners nowrap sorting"
@@ -677,6 +695,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -697,6 +718,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -717,6 +741,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell logs nowrap"
@@ -1645,6 +1672,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -1672,6 +1702,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell containers nowrap sorting"
@@ -1692,6 +1725,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell cpu nowrap sorting"
@@ -1712,6 +1748,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell memory nowrap sorting"
@@ -1732,6 +1771,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell restarts nowrap sorting"
@@ -1752,6 +1794,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell owners nowrap sorting"
@@ -1772,6 +1817,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -1792,6 +1840,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -1812,6 +1863,9 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell logs nowrap"
@@ -2592,6 +2646,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell warning nowrap"
@@ -2619,6 +2676,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell containers nowrap sorting"
@@ -2639,6 +2699,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell cpu nowrap sorting"
@@ -2659,6 +2722,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell memory nowrap sorting"
@@ -2679,6 +2745,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell restarts nowrap sorting"
@@ -2699,6 +2768,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell owners nowrap sorting"
@@ -2719,6 +2791,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell age nowrap sorting"
@@ -2739,6 +2814,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -2759,6 +2837,9 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell logs nowrap"
