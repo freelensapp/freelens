@@ -69,6 +69,9 @@ export class TableCell extends React.Component<TableCellProps> {
       children,
       title,
       showWithColumn,
+      resizable,
+      onResizeStart,
+      style,
       ...cellProps
     } = this.props;
 
@@ -81,10 +84,19 @@ export class TableCell extends React.Component<TableCellProps> {
     const content = title || children;
 
     return (
-      <div {...cellProps} className={classNames} onClick={this.onClick}>
+      <div {...cellProps} className={classNames} style={style} onClick={this.onClick}>
         {this.renderCheckbox()}
         {_nowrap ? <div className="content">{content}</div> : content}
         {this.renderSortIcon()}
+        {resizable ? (
+          <div
+            className="resize-handle"
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              onResizeStart?.(event.nativeEvent);
+            }}
+          />
+        ) : null}
       </div>
     );
   }

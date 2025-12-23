@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, isDefined, isReactNode, noop, prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { computed, makeObservable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
@@ -39,6 +39,14 @@ import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { ItemListStore } from "./list-layout";
 import type { Filter, PageFiltersStore } from "./page-filters/store";
+
+interface ResizeState {
+  columnId: string;
+  startX: number;
+  tableWidth: number;
+  initialFlexGrowValues: Map<string, number>;
+  initialColumnRight: number;
+}
 
 export interface ItemListLayoutContentProps<Item extends ItemObject, PreLoadStores extends boolean> {
   getFilters: () => Filter[];
@@ -89,10 +97,148 @@ interface Dependencies {
 class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores extends boolean> extends React.Component<
   ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies
 > {
+  private resizeState: ResizeState | null = null;
+  private tableRef = React.createRef<HTMLDivElement>();
+  private resizeGuideRef = React.createRef<HTMLDivElement>();
+
+  @observable private columnFlexGrow = new Map<string, number>();
+  @observable private resizeGuideX: number | null = null;
+
   constructor(props: ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies) {
     super(props);
     makeObservable(this);
     autoBindReact(this);
+  }
+
+  componentWillUnmount() {
+    this.cleanupResizeListeners();
+  }
+
+  private handleResizeStart(columnId: string, event: MouseEvent) {
+    const tableElement = this.tableRef.current;
+    if (!tableElement) return;
+
+    const headers = this.getVisibleHeaders();
+    const initialFlexGrowValues = new Map<string, number>();
+    headers.forEach((header) => {
+      if (header.id) {
+        initialFlexGrowValues.set(header.id, this.getColumnFlexGrow(header));
+      }
+    });
+
+    const headerCell = tableElement.querySelector(`.TableHead .TableCell[id="${columnId}"]`) as HTMLElement;
+
+    if (!headerCell) return;
+
+    const tableRect = tableElement.getBoundingClientRect();
+    const headerRect = headerCell.getBoundingClientRect();
+    const initialColumnRight = headerRect.right - tableRect.left;
+
+    this.resizeState = {
+      columnId,
+      startX: event.clientX,
+      tableWidth: tableElement.offsetWidth,
+      initialFlexGrowValues,
+      initialColumnRight,
+    };
+
+    this.resizeGuideX = initialColumnRight;
+
+    document.addEventListener("mousemove", this.handleResizeMove);
+    document.addEventListener("mouseup", this.handleResizeEnd);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  }
+
+  @action
+  private handleResizeMove(event: MouseEvent) {
+    if (!this.resizeState) return;
+
+    const { columnId, startX, tableWidth, initialFlexGrowValues } = this.resizeState;
+    const deltaX = event.clientX - startX;
+
+    const headers = this.getVisibleHeaders();
+    const totalInitialFlexGrow = Array.from(initialFlexGrowValues.values()).reduce((sum, val) => sum + val, 0);
+    const pixelsPerFlexUnit = tableWidth / totalInitialFlexGrow;
+    const deltaFlexGrow = deltaX / pixelsPerFlexUnit;
+
+    const initialCurrentFlexGrow = initialFlexGrowValues.get(columnId);
+    if (!initialCurrentFlexGrow) return;
+
+    const newCurrentFlexGrow = Math.max(0.3, initialCurrentFlexGrow + deltaFlexGrow);
+    this.columnFlexGrow.set(columnId, newCurrentFlexGrow);
+
+    requestAnimationFrame(() => {
+      const tableElement = this.tableRef.current;
+      if (tableElement) {
+        const headerCell = tableElement.querySelector(`.TableHead .TableCell[id="${columnId}"]`) as HTMLElement;
+        if (headerCell) {
+          const tableRect = tableElement.getBoundingClientRect();
+          const headerRect = headerCell.getBoundingClientRect();
+          const actualColumnRight = headerRect.right - tableRect.left;
+
+          this.resizeGuideX = actualColumnRight;
+        }
+      }
+    });
+
+    const otherColumns = headers.filter((h) => h.id && h.id !== columnId);
+    const totalOtherInitialFlexGrow = otherColumns.reduce((sum, h) => sum + (initialFlexGrowValues.get(h.id!) || 0), 0);
+
+    if (totalOtherInitialFlexGrow > 0) {
+      otherColumns.forEach((col) => {
+        if (!col.id) return;
+        const initialFlexGrow = initialFlexGrowValues.get(col.id) || 0;
+        const proportion = initialFlexGrow / totalOtherInitialFlexGrow;
+        const adjustment = deltaFlexGrow * proportion;
+        const newFlexGrow = Math.max(0.3, initialFlexGrow - adjustment);
+        this.columnFlexGrow.set(col.id, newFlexGrow);
+      });
+    }
+  }
+
+  @action
+  private handleResizeEnd() {
+    this.cleanupResizeListeners();
+    this.resizeState = null;
+    this.resizeGuideX = null;
+  }
+
+  private cleanupResizeListeners() {
+    document.removeEventListener("mousemove", this.handleResizeMove);
+    document.removeEventListener("mouseup", this.handleResizeEnd);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+  }
+
+  private getVisibleHeaders(): (TableCellProps & { id: string })[] {
+    const { renderTableHeader = [] } = this.props;
+    const nonResizableIds = new Set(["checkbox", "logs", "menu"]);
+
+    return renderTableHeader
+      .filter(isDefined)
+      .filter((h) => this.showColumn(h))
+      .filter((h): h is TableCellProps & { id: string } => !!h.id && !nonResizableIds.has(h.id));
+  }
+
+  private getColumnFlexGrow(header: TableCellProps): number {
+    if (header.id && this.columnFlexGrow.has(header.id)) {
+      return this.columnFlexGrow.get(header.id)!;
+    }
+    return this.getDefaultFlexGrow(header);
+  }
+
+  private getDefaultFlexGrow(header: TableCellProps): number {
+    if (!header.id || !this.tableRef.current) return 1;
+
+    const headerCell = this.tableRef.current.querySelector(`.TableHead .TableCell[id="${header.id}"]`) as HTMLElement;
+
+    if (!headerCell) return 1;
+
+    const computedStyle = window.getComputedStyle(headerCell);
+    const flexGrow = computedStyle.flexGrow;
+
+    return flexGrow ? parseFloat(flexGrow) : 1;
   }
 
   @computed get failedToLoad() {
@@ -139,7 +285,19 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
           }
 
           if (!headCell || this.showColumn(headCell)) {
-            return <TableCell key={index} {...cellProps} />;
+            return (
+              <TableCell
+                key={index}
+                {...cellProps}
+                style={{
+                  ...cellProps.style,
+                  flex:
+                    headCell?.id && this.columnFlexGrow.has(headCell.id)
+                      ? `${this.columnFlexGrow.get(headCell.id)} 0`
+                      : cellProps.style?.flex,
+                }}
+              />
+            );
           }
 
           return null;
@@ -273,12 +431,24 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
             )}
           </Observer>
         )}
-        {renderTableHeader
-          .filter(isDefined)
-          .map(
-            (cellProps, index) =>
-              this.showColumn(cellProps) && <TableCell key={cellProps.id ?? index} {...cellProps} />,
-          )}
+        {renderTableHeader.filter(isDefined).map(
+          (cellProps, index) =>
+            this.showColumn(cellProps) && (
+              <TableCell
+                key={cellProps.id ?? index}
+                onResizeStart={cellProps.id ? (event) => this.handleResizeStart(cellProps.id!, event) : undefined}
+                {...cellProps}
+                resizable={cellProps.id !== "logs" && !!cellProps.id}
+                style={{
+                  ...cellProps.style,
+                  flex:
+                    cellProps.id && this.columnFlexGrow.has(cellProps.id)
+                      ? `${this.columnFlexGrow.get(cellProps.id)} 0`
+                      : cellProps.style?.flex,
+                }}
+              />
+            ),
+        )}
         <TableCell className="menu">
           {isConfigurable && tableId ? this.renderColumnVisibilityMenu(tableId) : undefined}
         </TableCell>
@@ -306,7 +476,22 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
     const selectedItems = store.pickOnlySelected(items);
 
     return (
-      <div className="items box grow flex column">
+      <div className="items box grow flex column" ref={this.tableRef} style={{ position: "relative" }}>
+        {this.resizeGuideX !== null && (
+          <div
+            ref={this.resizeGuideRef}
+            style={{
+              position: "absolute",
+              right: `calc(100% - ${this.resizeGuideX}px)`,
+              top: 0,
+              bottom: 0,
+              width: "3px",
+              backgroundColor: "var(--blue)",
+              zIndex: 1000,
+              pointerEvents: "none",
+            }}
+          />
+        )}
         <Table
           tableId={tableId}
           virtual={virtual}

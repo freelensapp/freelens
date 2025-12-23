@@ -30,9 +30,24 @@ export interface TableCellProps extends React.DOMAttributes<HTMLDivElement> {
   id?: string;
 
   /**
+   * Whether this header cell should expose a resize affordance
+   */
+  resizable?: boolean;
+
+  /**
+   * Callback when resize is initiated from a header cell
+   */
+  onResizeStart?: (event: MouseEvent) => void;
+
+  /**
    * Any css class names for this table cell. Only used if `title` is a "simple" react node
    */
   className?: string;
+
+  /**
+   * Inline styles for the cell
+   */
+  style?: React.CSSProperties;
 
   /**
    * The actual value of the cell
