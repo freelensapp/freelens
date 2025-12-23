@@ -23,6 +23,7 @@ import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
 import { NoItems } from "../no-items";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import columnResizeStorageInjectable from "./column-resize-storage/storage.injectable";
 import pageFiltersStoreInjectable from "./page-filters/store.injectable";
 
 import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
@@ -37,8 +38,10 @@ import type { AddRemoveButtonsProps } from "../add-remove-buttons";
 import type { ConfirmDialogParams } from "../confirm-dialog";
 import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
+import type { ColumnResizeStorageState } from "./column-resize-storage/storage.injectable";
 import type { ItemListStore } from "./list-layout";
 import type { Filter, PageFiltersStore } from "./page-filters/store";
+import type { StorageLayer } from "../../utils/storage-helper";
 
 interface ResizeState {
   columnId: string;
@@ -91,6 +94,7 @@ interface Dependencies {
   openConfirmDialog: OpenConfirmDialog;
   toggleTableColumnVisibility: ToggleTableColumnVisibility;
   isTableColumnHidden: IsTableColumnHidden;
+  columnResizeStorage: StorageLayer<ColumnResizeStorageState>;
 }
 
 @observer
@@ -108,10 +112,26 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
     super(props);
     makeObservable(this);
     autoBindReact(this);
+    this.loadSavedColumnWidths();
   }
 
   componentWillUnmount() {
     this.cleanupResizeListeners();
+  }
+
+  @action
+  private loadSavedColumnWidths() {
+    const { tableId, columnResizeStorage } = this.props;
+    if (!tableId) return;
+
+    const savedState = columnResizeStorage.get();
+    const tableState = savedState[tableId];
+
+    if (tableState) {
+      Object.entries(tableState).forEach(([columnId, flexGrow]) => {
+        this.columnFlexGrow.set(columnId, flexGrow);
+      });
+    }
   }
 
   @action
@@ -213,6 +233,19 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
 
   @action
   private handleResizeEnd() {
+    const { tableId, columnResizeStorage } = this.props;
+
+    if (tableId && this.resizeState) {
+      const savedState = columnResizeStorage.get();
+      const tableState = savedState[tableId] || {};
+
+      this.columnFlexGrow.forEach((flexGrow, columnId) => {
+        tableState[columnId] = Math.round(flexGrow * 100) / 100;
+      });
+
+      columnResizeStorage.merge({ [tableId]: tableState });
+    }
+
     this.cleanupResizeListeners();
     this.resizeState = null;
     this.resizeGuideX = null;
@@ -585,6 +618,7 @@ export const ItemListLayoutContent = withInjectables<Dependencies, ItemListLayou
       openConfirmDialog: di.inject(openConfirmDialogInjectable),
       toggleTableColumnVisibility: di.inject(toggleTableColumnVisibilityInjectable),
       isTableColumnHidden: di.inject(isTableColumnHiddenInjectable),
+      columnResizeStorage: di.inject(columnResizeStorageInjectable),
     }),
   },
 ) as <Item extends ItemObject, PreLoadStores extends boolean>(
