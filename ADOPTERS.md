@@ -15,7 +15,7 @@ Feel free to submit a Pull Request to be added.
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | [Juan Trejo](https://github.com/trejo08) | Ginnius | 2024 | [Juan Trejo](https://juantrejo.cloud) | A really compromised and commited Cloud Engineer with long experience working with K8S with different flavors/distributions like EKS, GPC, AKS, DOKS, RKE2 and many others, CNCF speaker multiple times and K8S evangelist |
-| Organization | [mobilistics GmbH](https://github.com/mobilistics) | mobilistics is using Freelens for employees and customers to manage applications on their managed Kubernetes offering | 
+| Organization | [mobilistics GmbH](https://github.com/mobilistics) | mobilistics GmbH | 2025 | [mobilistics GmbH](https://www.mobilistics.de) | mobilistics is using Freelens for employees and customers to manage applications on their managed Kubernetes offering | 
 
 ## Adopter Types
 
