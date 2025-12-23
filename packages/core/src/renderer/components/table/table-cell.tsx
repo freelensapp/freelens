@@ -91,6 +91,7 @@ export class TableCell extends React.Component<TableCellProps> {
       showWithColumn,
       resizable,
       onResizeStart,
+      onResizeReset,
       style,
       ...cellProps
     } = this.props;
@@ -115,6 +116,10 @@ export class TableCell extends React.Component<TableCellProps> {
               event.stopPropagation();
               this.suppressClickUntilMouseUp();
               onResizeStart?.(event.nativeEvent);
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              onResizeReset?.();
             }}
           />
         ) : null}

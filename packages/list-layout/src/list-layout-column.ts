@@ -40,6 +40,11 @@ export interface TableCellProps extends React.DOMAttributes<HTMLDivElement> {
   onResizeStart?: (event: MouseEvent) => void;
 
   /**
+   * Callback when resize handle is double-clicked to reset to default width
+   */
+  onResizeReset?: () => void;
+
+  /**
    * Any css class names for this table cell. Only used if `title` is a "simple" react node
    */
   className?: string;

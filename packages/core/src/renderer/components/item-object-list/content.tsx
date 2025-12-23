@@ -114,6 +114,20 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
     this.cleanupResizeListeners();
   }
 
+  @action
+  private handleResizeReset(columnId: string) {
+    const { tableId, columnResizeStorage } = this.props;
+
+    this.columnFlexGrow.delete(columnId);
+
+    if (tableId) {
+      const savedState = columnResizeStorage.get();
+      const tableState = savedState[tableId] || {};
+      delete tableState[columnId];
+      columnResizeStorage.merge({ [tableId]: tableState });
+    }
+  }
+
   private handleResizeStart(columnId: string, event: MouseEvent) {
     const tableElement = this.tableRef.current;
     if (!tableElement) return;
@@ -437,6 +451,7 @@ class NonInjectedItemListLayoutContent<Item extends ItemObject, PreLoadStores ex
               <TableCell
                 key={cellProps.id ?? index}
                 onResizeStart={cellProps.id ? (event) => this.handleResizeStart(cellProps.id!, event) : undefined}
+                onResizeReset={cellProps.id ? () => this.handleResizeReset(cellProps.id!) : undefined}
                 {...cellProps}
                 resizable={cellProps.id !== "logs" && !!cellProps.id}
                 style={{
