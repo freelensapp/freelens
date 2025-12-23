@@ -13,12 +13,19 @@
 
 import { spawn } from "node:child_process";
 import { readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
-import { basename, dirname, join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 const packagesDir = join(rootDir, "packages");
+
+/**
+ * Normalize path to use forward slashes (cross-platform)
+ */
+function normalizePath(path) {
+  return path.replace(/\\/g, "/");
+}
 
 /**
  * Find all .injectable.ts and .injectable.tsx files in a directory (recursive)
@@ -40,7 +47,7 @@ async function findInjectableFiles(dir, baseDir = dir) {
       }
       files.push(...(await findInjectableFiles(fullPath, baseDir)));
     } else if (entry.isFile() && /\.injectable\.(ts|tsx)$/.test(entry.name)) {
-      files.push(relative(baseDir, fullPath));
+      files.push(normalizePath(relative(baseDir, fullPath)));
     }
   }
 
@@ -88,7 +95,7 @@ async function findDirectoriesWithInjectables(dir, baseDir = dir, dirs = new Set
   }
 
   if (hasInjectables) {
-    const relativePath = relative(baseDir, dir);
+    const relativePath = normalizePath(relative(baseDir, dir));
     dirs.add(relativePath || ".");
   }
 
@@ -321,7 +328,7 @@ ${calls.join("\n")}
   const outputPath = join(srcDir, `register-injectables-${type}.ts`);
   await writeFile(outputPath, content);
   console.log(`✓ Generated ${type}/register-injectables.ts`);
-  generatedFiles.push(outputPath);
+  generatedFiles.push(normalizePath(outputPath));
 }
 
 /**
@@ -621,7 +628,7 @@ ${calls.join("\n")}
 
     const outputPath = join(fullDir, "register-injectables.ts");
     await writeFile(outputPath, content);
-    generatedFiles.push(outputPath);
+    generatedFiles.push(normalizePath(outputPath));
     console.log(`  ✓ Generated aggregator ${dir}/register-injectables.ts`);
   }
 }
@@ -703,7 +710,7 @@ async function processCorePackage(packagePath) {
     const content = generateRegistrationFile(imports, registrations);
     const outputPath = join(fullDir, "register-injectables.ts");
     await writeFile(outputPath, content);
-    generatedFiles.push(outputPath);
+    generatedFiles.push(normalizePath(outputPath));
 
     console.log(`  ✓ Generated register-injectables.ts`);
     totalInjectables += registrations.length;
@@ -836,23 +843,82 @@ async function runBiomeFix(generatedFiles) {
 
   console.log(`\nRunning biome:fix on ${generatedFiles.length} generated files...`);
 
-  return new Promise((resolve, reject) => {
-    const biome = spawn("pnpm", ["biome:fix", ...generatedFiles], {
-      cwd: rootDir,
-      stdio: "inherit",
-    });
+  // On Windows, batch files based on command-line length to avoid ENAMETOOLONG
+  // Windows cmd.exe limit is 8191 chars, CreateProcess is 32767 chars
+  // On Linux/macOS, process all files at once (much higher limits)
+  if (process.platform === "win32") {
+    const maxCommandLength = 7000; // Safe limit for cmd.exe (8191 - buffer)
+    const baseCommand = "pnpm --silent biome:fix ";
+    const baseLength = baseCommand.length;
 
-    biome.on("close", (code) => {
-      if (code === 0) {
-        console.log("✓ Biome formatting completed\n");
-        resolve();
+    const batches = [];
+    let currentBatch = [];
+    let currentLength = baseLength;
+
+    for (const file of generatedFiles) {
+      // +1 for space separator
+      const fileLength = file.length + 1;
+
+      if (currentLength + fileLength > maxCommandLength && currentBatch.length > 0) {
+        // Current batch would exceed limit, start new batch
+        batches.push(currentBatch);
+        currentBatch = [file];
+        currentLength = baseLength + fileLength;
       } else {
-        reject(new Error(`Biome exited with code ${code}`));
+        currentBatch.push(file);
+        currentLength += fileLength;
       }
-    });
+    }
 
-    biome.on("error", reject);
-  });
+    // Add last batch
+    if (currentBatch.length > 0) {
+      batches.push(currentBatch);
+    }
+
+    console.log(`  Split into ${batches.length} batches based on command-line length`);
+
+    for (let i = 0; i < batches.length; i++) {
+      const batch = batches[i];
+      console.log(`  Processing batch ${i + 1}/${batches.length} (${batch.length} files)...`);
+
+      await new Promise((resolve, reject) => {
+        const biome = spawn("pnpm", ["--silent", "biome:fix", ...batch], {
+          cwd: rootDir,
+          stdio: "inherit",
+        });
+
+        biome.on("close", (code) => {
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(new Error(`Biome exited with code ${code}`));
+          }
+        });
+
+        biome.on("error", reject);
+      });
+    }
+  } else {
+    // Linux/macOS: process all files in one go
+    await new Promise((resolve, reject) => {
+      const biome = spawn("pnpm", ["--silent", "biome:fix", ...generatedFiles], {
+        cwd: rootDir,
+        stdio: "inherit",
+      });
+
+      biome.on("close", (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Biome exited with code ${code}`));
+        }
+      });
+
+      biome.on("error", reject);
+    });
+  }
+
+  console.log("✓ Biome formatting completed\n");
 }
 
 /**

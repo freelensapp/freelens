@@ -1,0 +1,12 @@
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row span {
+  color: var(--textColorAccent);
+}
+
+.row button {
+  margin-left: auto;
+}

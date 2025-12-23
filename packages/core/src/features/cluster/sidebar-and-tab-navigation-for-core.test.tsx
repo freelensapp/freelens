@@ -270,7 +270,7 @@ describe("cluster - sidebar and tab navigation for core", () => {
             expect(actual).toBe(false);
           });
 
-          it("when enough time passes, stores state for expanded sidebar items to file system", async () => {
+          it("when enough time passes, stores state for expanded and order sidebar items to file system", async () => {
             advanceFakeTime(250);
 
             const readJsonFileFake = windowDi.inject(readJsonFileInjectable);
