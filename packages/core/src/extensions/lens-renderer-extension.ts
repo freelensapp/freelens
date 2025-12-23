@@ -36,7 +36,6 @@ import type { CommandRegistration } from "../renderer/components/command-palette
 import type { EntitySettingRegistration } from "../renderer/components/entity-settings/extension-registrator.injectable";
 import type { KubeObjectDetailRegistration } from "../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectMenuRegistration } from "../renderer/components/kube-object-menu/kube-object-menu-registration";
-import type { KubeObjectStatusRegistration } from "../renderer/components/kube-object-status-icon/kube-object-status-registration";
 import type { ClusterPageMenuRegistration } from "../renderer/components/layout/cluster-page-menu";
 import type { TopBarRegistration } from "../renderer/components/layout/top-bar/top-bar-registration";
 import type { StatusBarRegistration } from "../renderer/components/status-bar/status-bar-registration";
@@ -61,7 +60,6 @@ export class LensRendererExtension extends LensExtension {
   clusterPages: PageRegistration[] = [];
   clusterPageMenus: ClusterPageMenuRegistration[] = [];
   clusterFrameComponents: ClusterFrameChildComponent[] = [];
-  kubeObjectStatusTexts: KubeObjectStatusRegistration[] = [];
   appPreferences: AppPreferenceRegistration[] = [];
   appPreferenceTabs: AppPreferenceTabRegistration[] = [];
   entitySettings: EntitySettingRegistration[] = [];
