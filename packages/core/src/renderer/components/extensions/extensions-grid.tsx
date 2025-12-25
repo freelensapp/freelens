@@ -12,7 +12,5 @@ export interface ExtensionsGridProps {
 }
 
 export const ExtensionsGrid: React.FC<ExtensionsGridProps> = ({ children }) => {
-  return (
-    <div className={styles.grid}>{children}</div>
-  );
+  return <div className={styles.grid}>{children}</div>;
 };

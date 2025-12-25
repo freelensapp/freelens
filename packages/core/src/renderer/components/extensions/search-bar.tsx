@@ -16,7 +16,13 @@ export interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placeholder = "Search..." }) => {
   return (
     <div className={styles.container}>
-      <input type="text" placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} className={styles.input} />
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={styles.input}
+      />
     </div>
   );
 };

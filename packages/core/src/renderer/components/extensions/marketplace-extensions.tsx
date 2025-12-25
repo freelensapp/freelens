@@ -11,8 +11,8 @@ import React, { useState } from "react";
 import { ExtensionCard } from "./extension-card";
 import { ExtensionsGrid } from "./extensions-grid";
 import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplace-extensions.injectable";
-import { SearchBar } from "./search-bar";
 import styles from "./marketplace-extensions.module.scss";
+import { SearchBar } from "./search-bar";
 
 import type { IComputedValue } from "mobx";
 

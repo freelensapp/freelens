@@ -6,8 +6,8 @@
 
 import { Icon } from "@freelensapp/icon";
 import React from "react";
-import styles from "./extension-card.module.scss";
 import { MenuActions, MenuItem } from "../menu";
+import styles from "./extension-card.module.scss";
 
 type BaseExtensionCardProps = {
   id: string;
@@ -94,8 +94,12 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = (props) => {
       </div>
 
       {/* Status badges - only for installed extensions */}
-      {isInstalledVariant(props) && !props.isCompatible && <div className={`${styles.badge} ${styles.incompatible}`}>Incompatible</div>}
-      {isInstalledVariant(props) && !props.isEnabled && props.isCompatible && <div className={`${styles.badge} ${styles.disabled}`}>Disabled</div>}
+      {isInstalledVariant(props) && !props.isCompatible && (
+        <div className={`${styles.badge} ${styles.incompatible}`}>Incompatible</div>
+      )}
+      {isInstalledVariant(props) && !props.isEnabled && props.isCompatible && (
+        <div className={`${styles.badge} ${styles.disabled}`}>Disabled</div>
+      )}
     </div>
   );
 };
