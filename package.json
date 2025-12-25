@@ -11,7 +11,7 @@
   },
   "scripts": {
     "asar": "corepack pnpm dlx @electron/asar@4.0.1",
-    "biome": "corepack pnpm dlx @biomejs/biome@2.3.8",
+    "biome": "corepack pnpm dlx @biomejs/biome@2.3.10",
     "biome:check": "corepack pnpm biome check",
     "biome:fix": "corepack pnpm biome check --fix",
     "biome:migrate": "corepack pnpm biome migrate --write",
@@ -21,6 +21,7 @@
     "build:app:dir": "corepack pnpm build:app dir",
     "build:core": "cd packages/core && corepack pnpm build",
     "build:dev": "NODE_ENV=development turbo run build:dev --",
+    "build:di": "node scripts/generate-explicit-di-registration.mjs",
     "postbuild:dev": "turbo run build:resources --",
     "build:freelens": "cd freelens && corepack pnpm build",
     "build:resources": "turbo run build:resources --",
@@ -33,7 +34,7 @@
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "knip": "corepack pnpm dlx knip@5.71.0 --dependencies --no-gitignore",
+    "knip": "corepack pnpm dlx knip@5.76.3 --dependencies --no-gitignore",
     "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "corepack pnpm knip",
     "knip:production": "corepack pnpm knip --production --strict",
@@ -59,9 +60,9 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@10.26.1",
   "devDependencies": {
-    "pnpm": "10.25.0",
-    "turbo": "2.6.3"
+    "pnpm": "10.26.1",
+    "turbo": "2.7.1"
   }
 }
