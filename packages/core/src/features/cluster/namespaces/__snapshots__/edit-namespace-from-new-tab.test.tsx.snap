@@ -467,13 +467,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -1237,13 +1230,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -2014,13 +2000,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -2892,13 +2871,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -3714,13 +3686,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -4640,13 +4605,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -5570,13 +5528,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -6460,13 +6411,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -7345,13 +7289,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -8219,13 +8156,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -9097,13 +9027,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -9973,13 +9896,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -10652,13 +10568,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"
@@ -11539,13 +11448,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -12415,13 +12317,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </i>
                     </div>
                     <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
-                    </div>
-                    <div
                       class="TableCell labels scrollable nowrap sorting"
                       id="labels"
                     >
@@ -13289,13 +13184,6 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                           arrow_drop_down
                         </span>
                       </i>
-                    </div>
-                    <div
-                      class="TableCell warning nowrap"
-                    >
-                      <div
-                        class="content"
-                      />
                     </div>
                     <div
                       class="TableCell labels scrollable nowrap sorting"

@@ -37,7 +37,6 @@ export type {
   KubeObjectMenuItemProps,
   KubeObjectMenuRegistration,
 } from "../../renderer/components/kube-object-menu/kube-object-menu-registration";
-export type { KubeObjectStatusRegistration } from "../../renderer/components/kube-object-status-icon/kube-object-status-registration";
 export type {
   ClusterPageMenuComponents,
   ClusterPageMenuRegistration,
