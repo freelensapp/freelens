@@ -490,6 +490,20 @@ exports[`extensions - navigation using application menu when navigating to exten
               <div
                 class="size-md"
               />
+              <div
+                class="tabs"
+              >
+                <button
+                  class="tabButton tabActive"
+                >
+                  Installed
+                </button>
+                <button
+                  class="tabButton tabInactive"
+                >
+                  Marketplace
+                </button>
+              </div>
               <div>
                 <div
                   class="Spinner singleColor center"
