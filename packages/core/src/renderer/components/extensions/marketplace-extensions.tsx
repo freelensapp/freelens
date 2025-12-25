@@ -12,6 +12,7 @@ import { ExtensionCard } from "./extension-card";
 import { ExtensionsGrid } from "./extensions-grid";
 import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplace-extensions.injectable";
 import { SearchBar } from "./search-bar";
+import styles from "./marketplace-extensions.module.scss";
 
 import type { IComputedValue } from "mobx";
 
@@ -44,10 +45,10 @@ const NonInjectedMarketplaceExtensions = observer(
         <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search Extensions..." />
 
         {filteredExtensions.length === 0 ? (
-          <div className="flex column h-full items-center justify-center" style={{ padding: "4rem 0" }}>
-            <Icon material="extension" style={{ fontSize: "64px", opacity: 0.3, marginBottom: "1rem" }} />
+          <div className={`flex column h-full items-center justify-center ${styles.emptyState}`}>
+            <Icon material="extension" className={styles.iconLarge} />
             <h3 className="font-medium text-2xl mb-2">No extensions found</h3>
-            <p style={{ color: "var(--textColorSecondary)" }}>Try a different search term</p>
+            <p className={styles.emptyText}>Try a different search term</p>
           </div>
         ) : (
           <ExtensionsGrid>
