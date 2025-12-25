@@ -6,6 +6,7 @@
 
 import { Icon } from "@freelensapp/icon";
 import React from "react";
+import styles from "./extension-card.module.scss";
 import { MenuActions, MenuItem } from "../menu";
 
 type BaseExtensionCardProps = {
@@ -38,22 +39,10 @@ const isInstalledVariant = (props: ExtensionCardProps): props is InstalledExtens
 export const ExtensionCard: React.FC<ExtensionCardProps> = (props) => {
   const { id, name, description, version } = props;
   return (
-    <div
-      style={{
-        backgroundColor: "var(--contentColor)",
-        borderRadius: "8px",
-        padding: "1.5rem",
-        border: "1px solid var(--borderColor)",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        height: "100%",
-        minHeight: "240px",
-      }}
-    >
+    <div className={styles.container}>
       {/* Three-dot menu - only for installed extensions */}
       {isInstalledVariant(props) && (
-        <div style={{ position: "absolute", top: "1rem", right: "1rem" }}>
+        <div className={styles.menu}>
           <MenuActions id={`menu-actions-for-extension-${id}`} usePortal toolbar={false}>
             {props.isCompatible && (
               <MenuItem disabled={props.isUninstalling} onClick={props.onToggle}>
@@ -74,137 +63,39 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = (props) => {
       )}
 
       {/* Extension icon and name */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem", marginBottom: "1rem" }}>
-        <div
-          style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #00d4aa 0%, #00a3cc 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
-        >
-          <Icon material="extension" style={{ color: "white", fontSize: "24px" }} />
+      <div className={styles.header}>
+        <div className={styles.icon}>
+          <Icon material="extension" className={styles.iconSvg} />
         </div>
-        <div style={{ flex: 1, minWidth: 0, paddingTop: "0.25rem" }}>
-          <div
-            style={{
-              fontWeight: 600,
-              fontSize: "0.9375rem",
-              lineHeight: "1.3",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              wordBreak: "break-word",
-            }}
-          >
-            {name}
-          </div>
+        <div className={styles.contentWrap}>
+          <div className={styles.name}>{name}</div>
         </div>
       </div>
 
       {/* Description */}
-      <div
-        style={{
-          fontSize: "0.875rem",
-          color: "var(--textColorSecondary)",
-          marginBottom: "1rem",
-          lineHeight: "1.4",
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          flex: 1,
-          wordBreak: "break-word",
-        }}
-      >
-        {description || "No description available"}
-      </div>
+      <div className={styles.description}>{description || "No description available"}</div>
 
       {/* Footer with version and action button */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "auto",
-          paddingTop: "1rem",
-          borderTop: "1px solid var(--borderFaintColor)",
-        }}
-      >
-        <div style={{ fontSize: "0.875rem", color: "var(--textColorSecondary)" }}>{version}</div>
+      <div className={styles.footer}>
+        <div className={styles.version}>{version}</div>
         {isInstalledVariant(props) ? (
           <button
             disabled={props.isUninstalling || !props.isCompatible}
             onClick={props.onUninstall}
-            style={{
-              padding: "0.5rem 1.25rem",
-              borderRadius: "4px",
-              border: "none",
-              backgroundColor: props.isUninstalling ? "#666" : "#e74c3c",
-              color: "white",
-              fontWeight: 500,
-              cursor: props.isUninstalling ? "not-allowed" : "pointer",
-              fontSize: "0.875rem",
-              opacity: props.isUninstalling ? 0.5 : 1,
-            }}
+            className={`${styles.button} ${styles.uninstallButton} ${props.isUninstalling ? styles.uninstalling : ""}`}
           >
             Uninstall
           </button>
         ) : (
-          <button
-            onClick={props.onInstall}
-            style={{
-              padding: "0.5rem 1.25rem",
-              borderRadius: "4px",
-              border: "none",
-              backgroundColor: "#00d4aa",
-              color: "white",
-              fontWeight: 500,
-              cursor: "pointer",
-              fontSize: "0.875rem",
-            }}
-          >
+          <button onClick={props.onInstall} className={`${styles.button} ${styles.installButton}`}>
             Install
           </button>
         )}
       </div>
 
       {/* Status badges - only for installed extensions */}
-      {isInstalledVariant(props) && !props.isCompatible && (
-        <div
-          style={{
-            position: "absolute",
-            top: "1rem",
-            left: "1rem",
-            fontSize: "0.75rem",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-            backgroundColor: "#e74c3c",
-            color: "white",
-          }}
-        >
-          Incompatible
-        </div>
-      )}
-      {isInstalledVariant(props) && !props.isEnabled && props.isCompatible && (
-        <div
-          style={{
-            position: "absolute",
-            top: "1rem",
-            left: "1rem",
-            fontSize: "0.75rem",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-            backgroundColor: "#95a5a6",
-            color: "white",
-          }}
-        >
-          Disabled
-        </div>
-      )}
+      {isInstalledVariant(props) && !props.isCompatible && <div className={`${styles.badge} ${styles.incompatible}`}>Incompatible</div>}
+      {isInstalledVariant(props) && !props.isEnabled && props.isCompatible && <div className={`${styles.badge} ${styles.disabled}`}>Disabled</div>}
     </div>
   );
 };
