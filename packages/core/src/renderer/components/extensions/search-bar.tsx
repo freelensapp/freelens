@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+import styles from "./search-bar.module.scss";
 
 export interface SearchBarProps {
   value: string;
@@ -14,23 +15,8 @@ export interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placeholder = "Search..." }) => {
   return (
-    <div style={{ marginBottom: "1.5rem" }}>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        style={{
-          padding: "0.75rem 1rem",
-          borderRadius: "6px",
-          border: "1px solid var(--borderColor)",
-          backgroundColor: "var(--layoutBackground)",
-          color: "var(--textColorPrimary)",
-          width: "100%",
-          fontSize: "0.875rem",
-          outline: "none",
-        }}
-      />
+    <div className={styles.container}>
+      <input type="text" placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} className={styles.input} />
     </div>
   );
 };
