@@ -26,8 +26,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.26.1
-        version: 10.26.1
+        specifier: 10.26.2
+        version: 10.26.2
       turbo:
         specifier: 2.7.1
         version: 2.7.1
@@ -197,8 +197,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.26.1
-        version: 10.26.1
+        specifier: ^10.26.2
+        version: 10.26.2
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -834,8 +834,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.26.1
-        version: 10.26.1
+        specifier: ^10.26.2
+        version: 10.26.2
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -4054,7 +4054,7 @@ packages:
   '@mui/base@5.0.0-beta.13':
     resolution: {integrity: sha512-uC0l97pBspfDAp+iz2cJq8YZ8Sd9i73V77+WzUiOAckIVEyCm5dyVDZCCO2/phmzckVEeZCGcytybkjMQuhPQw==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
+    deprecated: This package has been replaced by @base-ui/react
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -7849,8 +7849,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.26.1:
-    resolution: {integrity: sha512-ZkB0q8Nn0skyT9wYA3CXzgqPEmA0Fg9wmSjp6fldmHFDRwROXDFk1lvV2mxZxr42KxB1Rikqjuy3mZGW5c5Y+g==}
+  pnpm@10.26.2:
+    resolution: {integrity: sha512-DjCP8gBfx0EDZvFU9iX2YxqysWsdLnAjhETdaunWMKhILZKkURRN68SSQWiW7Rb3sRSobsaLhASyRDhp5o/9pg==}
     engines: {node: '>=18.12'}
     hasBin: true
 
@@ -14703,7 +14703,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.26.1: {}
+  pnpm@10.26.2: {}
 
   possible-typed-array-names@1.1.0: {}
 
