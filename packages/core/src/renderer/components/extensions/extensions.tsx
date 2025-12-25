@@ -35,43 +35,16 @@ interface ExtensionTabsProps {
 }
 
 const ExtensionTabs = ({ activeTab, onTabChange }: ExtensionTabsProps) => (
-  <div
-    style={{
-      display: "flex",
-      gap: "2rem",
-      borderBottom: "1px solid var(--borderColor)",
-      marginBottom: "1.5rem",
-    }}
-  >
+  <div className={styles.tabs}>
     <button
       onClick={() => onTabChange("installed")}
-      style={{
-        padding: "0.75rem 0",
-        background: "none",
-        border: "none",
-        color: activeTab === "installed" ? "var(--textColorPrimary)" : "var(--textColorSecondary)",
-        fontSize: "1rem",
-        fontWeight: 500,
-        cursor: "pointer",
-        borderBottom: activeTab === "installed" ? "2px solid #00d4aa" : "2px solid transparent",
-        marginBottom: "-1px",
-      }}
+      className={`${styles.tabButton} ${activeTab === "installed" ? styles.tabActive : styles.tabInactive}`}
     >
       Installed
     </button>
     <button
       onClick={() => onTabChange("marketplace")}
-      style={{
-        padding: "0.75rem 0",
-        background: "none",
-        border: "none",
-        color: activeTab === "marketplace" ? "var(--textColorPrimary)" : "var(--textColorSecondary)",
-        fontSize: "1rem",
-        fontWeight: 500,
-        cursor: "pointer",
-        borderBottom: activeTab === "marketplace" ? "2px solid #00d4aa" : "2px solid transparent",
-        marginBottom: "-1px",
-      }}
+      className={`${styles.tabButton} ${activeTab === "marketplace" ? styles.tabActive : styles.tabInactive}`}
     >
       Marketplace
     </button>
