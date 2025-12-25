@@ -12,7 +12,6 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import path from "path";
-import { DefinePlugin } from "webpack";
 import { assetsFolderName, buildDir, htmlTemplate, isDevelopment, publicPath, rendererDir } from "./vars";
 
 import type webpack from "webpack";
@@ -83,10 +82,6 @@ const renderer: webpack.Configuration = {
   },
 
   plugins: [
-    new DefinePlugin({
-      CONTEXT_MATCHER_FOR_NON_FEATURES: `/\\.injectable\\.tsx?$/`,
-      CONTEXT_MATCHER_FOR_FEATURES: `/\\/(renderer|common)\\/.+\\.injectable\\.tsx?$/`,
-    }),
     new ForkTsCheckerPlugin(),
 
     // see also: https://github.com/Microsoft/monaco-editor-webpack-plugin#options

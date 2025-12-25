@@ -1,0 +1,63 @@
+name: Shai-Hulud 2.0 Security Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - '**/package.json'
+      - '**/pnpm-lock.yaml'
+  schedule:
+    - cron: 25 3 * * *
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  knip:
+    name: Shai-Hulud check
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+
+    env:
+      DO_NOT_TRACK: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Run Shai-Hulud 2.0 Detector
+        uses: gensecaihq/Shai-Hulud-2.0-Detector@v2
+        with:
+          fail-on-high: true
+          scan-lockfiles: true
+          output-format: sarif
+
+      - name: Upload SARIF to GitHub Security
+        if: always() && hashFiles('shai-hulud-results.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: shai-hulud-results.sarif
+        continue-on-error: true

@@ -12,7 +12,7 @@ import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "qos";
 
-export const podsQosColumnInjectable = getInjectable({
+export const podsStatusIconColumnInjectable = getInjectable({
   id: "pods-status-icon-column",
   instantiate: () => ({
     id: columnId,

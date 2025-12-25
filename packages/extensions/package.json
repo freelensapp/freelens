@@ -30,12 +30,12 @@
     "@freelensapp/core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "~22.19.1",
+    "@types/node": "~22.19.3",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-plugin-css-modules": "^5.2.0",
-    "webpack": "^5.102.1",
+    "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1"
   }
 }

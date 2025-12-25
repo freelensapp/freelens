@@ -484,6 +484,36 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="sidebar-menu"
+                >
+                  <section
+                    id="other"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Sidebar menu order
+                       
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <span>
+                        Reset sidebar menu order to the original settings
+                      </span>
+                      <button
+                        class="Button primary"
+                        type="button"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="timezone"
                 >
                   <section
@@ -2790,6 +2820,36 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="sidebar-menu"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Sidebar menu order
+                     
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <span>
+                      Reset sidebar menu order to the original settings
+                    </span>
+                    <button
+                      class="Button primary"
+                      type="button"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -3545,6 +3605,36 @@ exports[`preferences - navigation to extension specific preferences given in pre
                       type="checkbox"
                     />
                   </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="sidebar-menu"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Sidebar menu order
+                     
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <span>
+                      Reset sidebar menu order to the original settings
+                    </span>
+                    <button
+                      class="Button primary"
+                      type="button"
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </section>
               </div>
               <div

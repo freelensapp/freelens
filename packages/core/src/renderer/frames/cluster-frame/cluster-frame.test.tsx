@@ -12,6 +12,7 @@ import React from "react";
 import { Router } from "react-router";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
@@ -46,6 +47,9 @@ describe("<ClusterFrame />", () => {
     di.override(directoryForUserDataInjectable, () => "/some/irrelavent/path");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
     di.override(currentlyInClusterFrameInjectable, () => true);
+    di.override(getClusterPageMenuOrderInjectable, () => (key: string, defaultValue: number) => {
+      return computed(() => defaultValue);
+    });
 
     testUsingFakeTime("2000-01-01 12:00:00am");
 
