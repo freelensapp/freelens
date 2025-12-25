@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+import styles from "./extensions-grid.module.scss";
 
 export interface ExtensionsGridProps {
   children: React.ReactNode;
@@ -12,15 +13,6 @@ export interface ExtensionsGridProps {
 
 export const ExtensionsGrid: React.FC<ExtensionsGridProps> = ({ children }) => {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "1.5rem",
-        marginTop: "1rem",
-      }}
-    >
-      {children}
-    </div>
+    <div className={styles.grid}>{children}</div>
   );
 };
