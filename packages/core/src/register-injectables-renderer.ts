@@ -9,6 +9,7 @@ import { registerInjectables as registerCommonInjectables } from "./common/regis
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterActivationRendererInjectables } from "./features/cluster/activation/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterDeleteDialogRendererInjectables } from "./features/cluster/delete-dialog/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesClusterExecuteRendererInjectables } from "./features/cluster/execute/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncRendererInjectables } from "./features/cluster/state-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageRendererInjectables } from "./features/cluster/storage/renderer/register-injectables";
@@ -50,6 +51,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterInjectables(di);
   registerFeaturesFeaturesClusterActivationRendererInjectables(di);
   registerFeaturesFeaturesClusterDeleteDialogRendererInjectables(di);
+  registerFeaturesFeaturesClusterExecuteRendererInjectables(di);
   registerFeaturesFeaturesClusterStateSyncRendererInjectables(di);
   registerFeaturesFeaturesClusterStorageRendererInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
