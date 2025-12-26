@@ -125,7 +125,7 @@
     "react": "^17.0.2",
     "react-router": "^5.3.4",
     "rfc4648": "^1.5.4",
-    "selfsigned": "^4.0.1",
+    "selfsigned": "^5.4.0",
     "semver": "^7.7.3",
     "stoppable": "^1.1.0",
     "stream-buffers": "^3.0.3",
