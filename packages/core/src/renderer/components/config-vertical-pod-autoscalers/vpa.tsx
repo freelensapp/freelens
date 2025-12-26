@@ -13,7 +13,6 @@ import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectConditionsList } from "../kube-object-conditions";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import filterByNamespaceInjectable from "../namespaces/namespace-select-filter-model/filter-by-namespace.injectable";
 import verticalPodAutoscalerStoreInjectable from "./store.injectable";
@@ -53,7 +52,6 @@ class NonInjectedVerticalPodAutoscalers extends React.Component<Dependencies> {
           renderHeaderTitle="Vertical Pod Autoscalers"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Mode", className: "mode", sortBy: columnId.mode, id: columnId.mode },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
@@ -61,7 +59,6 @@ class NonInjectedVerticalPodAutoscalers extends React.Component<Dependencies> {
           ]}
           renderTableContents={(vpa) => [
             vpa.getName(),
-            <KubeObjectStatusIcon key="icon" object={vpa} />,
             <a
               key="namespace"
               className="filterNamespace"
