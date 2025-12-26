@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/keyboard-shortcuts",
   "private": false,
-  "version": "1.7.1-0",
+  "version": "1.8.0",
   "description": "Keyboard shortcuts for Freelens",
   "type": "commonjs",
   "files": [

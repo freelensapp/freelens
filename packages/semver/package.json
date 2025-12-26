@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/semver",
-  "version": "1.7.1-0",
+  "version": "1.8.0",
   "description": "CLI over semver package for picking parts of a version",
   "license": "MIT",
   "private": true,
