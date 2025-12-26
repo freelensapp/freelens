@@ -17,6 +17,8 @@ import type { TableCellProps } from "@freelensapp/list-layout";
 export type TableCellElem = React.ReactElement<TableCellProps>;
 
 export class TableCell extends React.Component<TableCellProps> {
+  private suppressClick = false;
+
   constructor(props: TableCellProps) {
     super(props);
     autoBindReact(this);
@@ -25,11 +27,29 @@ export class TableCell extends React.Component<TableCellProps> {
   onClick(evt: React.MouseEvent<HTMLDivElement>) {
     const { _sort, sortBy, onClick } = this.props;
 
+    if (this.suppressClick) {
+      return;
+    }
+
     onClick?.(evt);
 
     if (_sort && typeof sortBy === "string") {
       _sort(sortBy);
     }
+  }
+
+  private suppressClickUntilMouseUp() {
+    this.suppressClick = true;
+
+    const clear = () => {
+      window.removeEventListener("mouseup", clear);
+      // Defer clearing so the subsequent click event (fired after mouseup) is suppressed.
+      requestAnimationFrame(() => {
+        this.suppressClick = false;
+      });
+    };
+
+    window.addEventListener("mouseup", clear);
   }
 
   renderSortIcon() {
@@ -69,6 +89,10 @@ export class TableCell extends React.Component<TableCellProps> {
       children,
       title,
       showWithColumn,
+      resizable,
+      onResizeStart,
+      onResizeReset,
+      style,
       ...cellProps
     } = this.props;
 
@@ -81,10 +105,24 @@ export class TableCell extends React.Component<TableCellProps> {
     const content = title || children;
 
     return (
-      <div {...cellProps} className={classNames} onClick={this.onClick}>
+      <div {...cellProps} className={classNames} style={style} onClick={this.onClick}>
         {this.renderCheckbox()}
         {_nowrap ? <div className="content">{content}</div> : content}
         {this.renderSortIcon()}
+        {resizable ? (
+          <div
+            className="resize-handle"
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              this.suppressClickUntilMouseUp();
+              onResizeStart?.(event.nativeEvent);
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              onResizeReset?.();
+            }}
+          />
+        ) : null}
       </div>
     );
   }

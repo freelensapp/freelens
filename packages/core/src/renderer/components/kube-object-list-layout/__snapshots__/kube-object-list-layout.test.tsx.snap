@@ -144,12 +144,8 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
-              </div>
-              <div
-                class="TableCell warning nowrap"
-              >
                 <div
-                  class="content"
+                  class="resize-handle"
                 />
               </div>
               <div
@@ -171,6 +167,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell containers nowrap sorting"
@@ -191,6 +190,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell cpu nowrap sorting"
@@ -211,6 +213,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell memory nowrap sorting"
@@ -231,6 +236,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell restarts nowrap sorting"
@@ -251,6 +259,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell owners nowrap sorting"
@@ -271,6 +282,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell ip nowrap sorting"
@@ -291,6 +305,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell node nowrap sorting"
@@ -311,6 +328,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell qos nowrap sorting"
@@ -331,6 +351,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell age nowrap sorting"
@@ -351,6 +374,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell status nowrap sorting"
@@ -371,6 +397,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell logs nowrap"

@@ -60,9 +60,9 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.26.2",
   "devDependencies": {
-    "pnpm": "10.26.1",
+    "pnpm": "10.26.2",
     "turbo": "2.7.1"
   }
 }

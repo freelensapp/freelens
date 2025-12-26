@@ -456,6 +456,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -466,6 +469,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -476,6 +482,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -486,6 +495,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -506,6 +518,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -1086,6 +1101,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -1096,6 +1114,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -1106,6 +1127,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -1116,6 +1140,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -1136,6 +1163,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -1884,6 +1914,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -1894,6 +1927,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -1904,6 +1940,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -1914,6 +1953,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -1934,6 +1976,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2739,6 +2784,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -2749,6 +2797,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -2759,6 +2810,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -2769,6 +2823,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -2789,6 +2846,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -3744,6 +3804,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -3754,6 +3817,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -3764,6 +3830,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -3774,6 +3843,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -3794,6 +3866,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -4759,6 +4834,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -4769,6 +4847,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -4779,6 +4860,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -4789,6 +4873,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -4809,6 +4896,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -5764,6 +5854,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -5774,6 +5867,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -5784,6 +5880,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -5794,6 +5893,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -5814,6 +5916,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -6773,6 +6878,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -6783,6 +6891,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -6793,6 +6904,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -6803,6 +6917,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -6823,6 +6940,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -7788,6 +7908,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell description nowrap"
@@ -7798,6 +7921,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Description
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -7808,6 +7934,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -7818,6 +7947,9 @@ exports[`opening dock tab for installing helm chart given application is started
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell repository nowrap sorting"
@@ -7838,6 +7970,9 @@ exports[`opening dock tab for installing helm chart given application is started
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
