@@ -6,13 +6,19 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import columnResizeStorageInjectable from "./storage.injectable";
+import executeOnClusterListenerInjectable from "./execute-channel-listener.injectable";
+import executeOnClusterHandlerInjectable from "./execute-handler.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(columnResizeStorageInjectable);
+    di.register(executeOnClusterHandlerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(executeOnClusterListenerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
