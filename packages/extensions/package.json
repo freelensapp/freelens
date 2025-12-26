@@ -2,7 +2,7 @@
   "name": "@freelensapp/extensions",
   "productName": "Freelens extensions",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
-  "version": "1.7.1-0",
+  "version": "1.8.0",
   "copyright": "© 2024-2025 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
