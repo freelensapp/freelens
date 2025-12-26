@@ -11,7 +11,6 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
@@ -61,7 +60,6 @@ class NonInjectedPodDisruptionBudgets extends React.Component<PodDisruptionBudge
           renderHeaderTitle="Pod Disruption Budgets"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             {
               title: "Min Available",
@@ -91,7 +89,6 @@ class NonInjectedPodDisruptionBudgets extends React.Component<PodDisruptionBudge
           ]}
           renderTableContents={(pdb) => [
             <WithTooltip>{pdb.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={pdb} />,
             <NamespaceSelectBadge key="namespace" namespace={pdb.getNs()} />,
             pdb.getMinAvailable(),
             pdb.getMaxUnavailable(),

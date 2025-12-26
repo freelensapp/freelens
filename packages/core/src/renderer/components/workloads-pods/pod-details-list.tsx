@@ -17,7 +17,6 @@ import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
 import { LinkToNamespace, LinkToNode, LinkToPod } from "../kube-object-link";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
@@ -127,9 +126,6 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
             {linkToPod ? <LinkToPod name={pod.getName()} namespace={pod.getNs()} /> : pod.getName()}
           </WithTooltip>
         </TableCell>
-        <TableCell className="warning">
-          <KubeObjectStatusIcon key="icon" object={pod} />
-        </TableCell>
         {hideNode || (
           <TableCell className="node">
             <WithTooltip>
@@ -202,7 +198,6 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
             <TableCell className="name" sortBy={sortBy.name}>
               Name
             </TableCell>
-            <TableCell className="warning" />
             {hideNode || (
               <TableCell className="node" sortBy={sortBy.node}>
                 Node

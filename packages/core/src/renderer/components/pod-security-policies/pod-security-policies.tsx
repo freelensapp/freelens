@@ -11,7 +11,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import podSecurityPolicyStoreInjectable from "./store.injectable";
 
@@ -52,14 +51,12 @@ class NonInjectedPodSecurityPolicies extends React.Component<Dependencies> {
           renderHeaderTitle="Pod Security Policies"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Privileged", className: "privileged", sortBy: columnId.privileged, id: columnId.privileged },
             { title: "Volumes", className: "volumes", sortBy: columnId.volumes, id: columnId.volumes },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(podSecurityPolicy) => [
             podSecurityPolicy.getName(),
-            <KubeObjectStatusIcon key="icon" object={podSecurityPolicy} />,
             podSecurityPolicy.isPrivileged() ? "Yes" : "No",
             podSecurityPolicy.getVolumes().join(", "),
             <KubeObjectAge key="age" object={podSecurityPolicy} />,

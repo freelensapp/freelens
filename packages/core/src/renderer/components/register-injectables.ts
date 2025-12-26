@@ -44,7 +44,6 @@ import { registerInjectables as registerItemObjectListInjectables } from "./item
 import { registerInjectables as registerKubeDetailParamsInjectables } from "./kube-detail-params/register-injectables";
 import { registerInjectables as registerKubeObjectDetailsInjectables } from "./kube-object-details/register-injectables";
 import { registerInjectables as registerKubeObjectMenuInjectables } from "./kube-object-menu/register-injectables";
-import { registerInjectables as registerKubeObjectStatusIconInjectables } from "./kube-object-status-icon/register-injectables";
 import { registerInjectables as registerKubeconfigDialogInjectables } from "./kubeconfig-dialog/register-injectables";
 import { registerInjectables as registerLayoutInjectables } from "./layout/register-injectables";
 import { registerInjectables as registerMonacoEditorInjectables } from "./monaco-editor/register-injectables";
@@ -269,11 +268,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerKubeObjectMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectStatusIconInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

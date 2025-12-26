@@ -11,7 +11,6 @@ import React from "react";
 import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
 import { WithTooltip } from "../with-tooltip";
 import { AddNamespaceDialog } from "./add-dialog/dialog";
@@ -86,7 +85,6 @@ const NonInjectedNamespacesRoute = ({
       renderHeaderTitle="Namespaces"
       renderTableHeader={[
         { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-        { className: "warning", showWithColumn: columnId.name },
         { title: "Labels", className: "labels scrollable", sortBy: columnId.labels, id: columnId.labels },
         { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
@@ -98,7 +96,6 @@ const NonInjectedNamespacesRoute = ({
             <SubnamespaceBadge className="subnamespaceBadge" id={`namespace-list-badge-for-${namespace.getId()}`} />
           )}
         </>,
-        <KubeObjectStatusIcon key="icon" object={namespace} />,
         <WithTooltip tooltip={namespace.getLabels().join(", ")} key="labels">
           {namespace.getLabels().map((label) => (
             <Badge scrollable key={label} label={label} />

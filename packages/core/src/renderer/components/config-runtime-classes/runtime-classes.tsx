@@ -12,7 +12,6 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { WithTooltip } from "../with-tooltip";
 import runtimeClassStoreInjectable from "./store.injectable";
@@ -60,13 +59,11 @@ class NonInjectedRuntimeClasses extends React.Component<RuntimeClassesProps & De
           renderHeaderTitle="Runtime Classes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Handler", className: "handler", sortBy: columnId.handler, id: columnId.handler },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(rc) => [
             <WithTooltip>{rc.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={rc} />,
             <WithTooltip>{rc.getHandler()}</WithTooltip>,
             <KubeObjectAge key="age" object={rc} />,
           ]}

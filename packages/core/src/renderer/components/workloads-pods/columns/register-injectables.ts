@@ -19,7 +19,6 @@ import { podsOwnersColumnInjectable } from "./pods-owners-column.injectable";
 import { podsQosColumnInjectable } from "./pods-qos-column.injectable";
 import { podsRestartsColumnInjectable } from "./pods-restarts-column.injectable";
 import { podsStatusColumnInjectable } from "./pods-status-column.injectable";
-import { podsStatusIconColumnInjectable } from "./pods-status-icon-column.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -71,11 +70,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(podsStatusColumnInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podsStatusIconColumnInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

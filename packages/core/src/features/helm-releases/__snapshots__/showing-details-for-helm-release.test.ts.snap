@@ -550,6 +550,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -570,6 +573,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -590,6 +596,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -610,6 +619,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -620,6 +632,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -630,6 +645,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -650,6 +668,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -670,6 +691,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -1426,6 +1450,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -1446,6 +1473,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -1466,6 +1496,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -1486,6 +1519,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -1496,6 +1532,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -1506,6 +1545,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -1526,6 +1568,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -1546,6 +1591,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -2307,6 +2355,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -2327,6 +2378,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -2347,6 +2401,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -2367,6 +2424,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -2377,6 +2437,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -2387,6 +2450,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -2407,6 +2473,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -2427,6 +2496,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -3456,6 +3528,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -3476,6 +3551,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -3496,6 +3574,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -3516,6 +3597,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -3526,6 +3610,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -3536,6 +3623,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -3556,6 +3646,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -3576,6 +3669,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -4666,6 +4762,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -4686,6 +4785,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -4706,6 +4808,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -4726,6 +4831,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -4736,6 +4844,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -4746,6 +4857,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -4766,6 +4880,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -4786,6 +4903,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -5876,6 +5996,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -5896,6 +6019,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -5916,6 +6042,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -5936,6 +6065,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -5946,6 +6078,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -5956,6 +6091,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -5976,6 +6114,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -5996,6 +6137,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -7331,6 +7475,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -7351,6 +7498,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -7371,6 +7521,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -7391,6 +7544,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -7401,6 +7557,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -7411,6 +7570,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -7431,6 +7593,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -7451,6 +7616,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -8786,6 +8954,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -8806,6 +8977,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -8826,6 +9000,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -8846,6 +9023,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -8856,6 +9036,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -8866,6 +9049,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -8886,6 +9072,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -8906,6 +9095,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -10241,6 +10433,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -10261,6 +10456,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -10281,6 +10479,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -10301,6 +10502,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -10311,6 +10515,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -10321,6 +10528,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -10341,6 +10551,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -10361,6 +10574,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -11423,6 +11639,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -11443,6 +11662,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -11463,6 +11685,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -11483,6 +11708,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -11493,6 +11721,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -11503,6 +11734,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -11523,6 +11757,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -11543,6 +11780,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -12607,6 +12847,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -12627,6 +12870,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -12647,6 +12893,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -12667,6 +12916,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -12677,6 +12929,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -12687,6 +12942,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -12707,6 +12965,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -12727,6 +12988,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -14062,6 +14326,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -14082,6 +14349,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -14102,6 +14372,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -14122,6 +14395,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -14132,6 +14408,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -14142,6 +14421,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -14162,6 +14444,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -14182,6 +14467,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -15272,6 +15560,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -15292,6 +15583,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -15312,6 +15606,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -15332,6 +15629,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -15342,6 +15642,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -15352,6 +15655,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -15372,6 +15678,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -15392,6 +15701,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -16484,6 +16796,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -16504,6 +16819,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -16524,6 +16842,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -16544,6 +16865,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -16554,6 +16878,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -16564,6 +16891,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -16584,6 +16914,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -16604,6 +16937,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -17633,6 +17969,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -17653,6 +17992,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -17673,6 +18015,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -17693,6 +18038,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -17703,6 +18051,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -17713,6 +18064,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -17733,6 +18087,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -17753,6 +18110,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -18843,6 +19203,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -18863,6 +19226,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -18883,6 +19249,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -18903,6 +19272,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -18913,6 +19285,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -18923,6 +19298,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -18943,6 +19321,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -18963,6 +19344,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -20053,6 +20437,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -20073,6 +20460,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -20093,6 +20483,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -20113,6 +20506,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -20123,6 +20519,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -20133,6 +20532,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -20153,6 +20555,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -20173,6 +20578,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"
@@ -21263,6 +21671,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell namespace nowrap sorting"
@@ -21283,6 +21694,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell chart nowrap sorting"
@@ -21303,6 +21717,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell revision nowrap sorting"
@@ -21323,6 +21740,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell version nowrap"
@@ -21333,6 +21753,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell app-version nowrap"
@@ -21343,6 +21766,9 @@ exports[`showing details for helm release given application is started when navi
                       >
                         App Version
                       </div>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell status nowrap sorting"
@@ -21363,6 +21789,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell updated nowrap sorting"
@@ -21383,6 +21812,9 @@ exports[`showing details for helm release given application is started when navi
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
                     </div>
                     <div
                       class="TableCell menu nowrap"

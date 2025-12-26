@@ -12,7 +12,6 @@ import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
 import { LinkToRole } from "../../kube-object-link";
 import { KubeObjectListLayout } from "../../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
 import { WithTooltip } from "../../with-tooltip";
@@ -71,7 +70,6 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
           renderHeaderTitle="Role Bindings"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Role", className: "role", sortBy: columnId.role, id: columnId.role },
             { title: "Types", className: "types", sortBy: columnId.types, id: columnId.types },
@@ -80,7 +78,6 @@ class NonInjectedRoleBindings extends React.Component<Dependencies> {
           ]}
           renderTableContents={(binding) => [
             <WithTooltip>{binding.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={binding} />,
             <NamespaceSelectBadge key="namespace" namespace={binding.getNs()} />,
             <LinkToRole name={binding.roleRef.name} namespace={binding.getNs()} />,
             <WithTooltip>{binding.getSubjectTypes()}</WithTooltip>,

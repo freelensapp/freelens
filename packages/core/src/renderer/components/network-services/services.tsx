@@ -11,7 +11,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
@@ -77,7 +76,6 @@ class NonInjectedServices extends React.Component<Dependencies> {
           renderHeaderTitle="Services"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Type", className: "type", sortBy: columnId.type, id: columnId.type },
             { title: "Cluster IP", className: "clusterIp", sortBy: columnId.clusterIp, id: columnId.clusterIp },
@@ -88,7 +86,6 @@ class NonInjectedServices extends React.Component<Dependencies> {
           ]}
           renderTableContents={(service) => [
             <WithTooltip>{service.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={service} />,
             <NamespaceSelectBadge key="namespace" namespace={service.getNs()} />,
             service.getType(),
             <WithTooltip>{service.getClusterIp()}</WithTooltip>,

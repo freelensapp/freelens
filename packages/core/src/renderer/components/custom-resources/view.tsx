@@ -72,7 +72,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
         <KubeObjectListLayout
           isConfigurable
           key={`crd_resources_${crd.getResourceApiBase()}`}
-          tableId="crd_resources"
+          tableId={`crd_resources_${crd.getResourceApiBase()}`}
           className="CustomResources"
           store={store}
           sortingCallbacks={{

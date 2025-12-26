@@ -13,7 +13,6 @@ import { Badge } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
@@ -75,7 +74,6 @@ const NonInjectedDaemonSets = observer((props: Dependencies) => {
           { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
           { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
           { title: "Available", className: "available", sortBy: columnId.available, id: columnId.available },
-          { className: "warning", showWithColumn: columnId.current },
           { title: "Node Selector", className: "labels scrollable", id: columnId.labels },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
@@ -87,7 +85,6 @@ const NonInjectedDaemonSets = observer((props: Dependencies) => {
           daemonSet.status?.numberReady || 0,
           daemonSet.status?.updatedNumberScheduled || 0,
           daemonSet.status?.numberAvailable || 0,
-          <KubeObjectStatusIcon key="icon" object={daemonSet} />,
           daemonSet
             .getNodeSelectors()
             .map((selector) => <Badge key={selector} label={selector} tooltip={selector} scrollable />),

@@ -437,6 +437,9 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                         arrow_drop_down
                       </span>
                     </i>
+                    <div
+                      class="resize-handle"
+                    />
                   </div>
                   <div
                     class="TableCell some-column nowrap sorting"
@@ -458,6 +461,9 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                         arrow_drop_down
                       </span>
                     </i>
+                    <div
+                      class="resize-handle"
+                    />
                   </div>
                   <div
                     class="TableCell age nowrap sorting"
@@ -478,6 +484,9 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                         arrow_drop_down
                       </span>
                     </i>
+                    <div
+                      class="resize-handle"
+                    />
                   </div>
                   <div
                     class="TableCell menu nowrap"

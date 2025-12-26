@@ -1,10 +1,3 @@
-/**
- * AUTO-GENERATED FILE - DO NOT EDIT
- * Generated manually for messaging package
- *
- * This file explicitly registers all injectables in this feature.
- */
-
 import {
   enlistMessageChannelListenerStubInjectable,
   enlistRequestChannelListenerStubInjectable,
@@ -14,9 +7,23 @@ import {
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
+/**
+ * Register all injectables in this directory
+ */
 export function registerInjectables(di: DiContainerForInjection): void {
-  di.register(sendMessageToChannelStubInjectable);
-  di.register(enlistMessageChannelListenerStubInjectable);
-  di.register(requestFromChannelStubInjectable);
-  di.register(enlistRequestChannelListenerStubInjectable);
+  try {
+    di.register(enlistMessageChannelListenerStubInjectable);
+  } catch (e) {}
+
+  try {
+    di.register(enlistRequestChannelListenerStubInjectable);
+  } catch (e) {}
+
+  try {
+    di.register(requestFromChannelStubInjectable);
+  } catch (e) {}
+
+  try {
+    di.register(sendMessageToChannelStubInjectable);
+  } catch (e) {}
 }
