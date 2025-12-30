@@ -160,7 +160,28 @@ const createElectronWindowInjectable = getInjectable({
         loadUrl: async (url) => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
 
-          await browserWindow.loadURL(url);
+          // Retry logic for handling firewall delays (ERR_EMPTY_RESPONSE race condition)
+          const maxAttempts = 3;
+          const retryDelayMs = 1000;
+
+          for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+              await browserWindow.loadURL(url);
+              return; // Success
+            } catch (error: any) {
+              const isEmptyResponse = error.code === "ERR_EMPTY_RESPONSE" || error.errno === -324;
+              const isLastAttempt = attempt === maxAttempts;
+
+              if (isEmptyResponse && !isLastAttempt) {
+                logger.warn(
+                  `[CREATE-ELECTRON-WINDOW]: Failed to load "${configuration.id}" (attempt ${attempt}/${maxAttempts}): ${error.message}. This may be due to firewall blocking. Retrying in ${retryDelayMs}ms...`,
+                );
+                await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+              } else {
+                throw error; // Re-throw if it's not ERR_EMPTY_RESPONSE or it's the last attempt
+              }
+            }
+          }
         },
 
         show: () => browserWindow.show(),
