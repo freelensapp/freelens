@@ -160,7 +160,32 @@ const createElectronWindowInjectable = getInjectable({
         loadUrl: async (url) => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
 
-          await browserWindow.loadURL(url);
+          // Retry logic for handling firewall/proxy delays and connection issues
+          const maxAttempts = 3;
+          const retryDelayMs = 1000;
+
+          for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+              await browserWindow.loadURL(url);
+              return; // Success
+            } catch (error: any) {
+              const isRetriableError =
+                error.code === "ERR_EMPTY_RESPONSE" ||
+                error.code === "ERR_TUNNEL_CONNECTION_FAILED" ||
+                error.errno === -324 ||
+                error.errno === -111;
+              const isLastAttempt = attempt === maxAttempts;
+
+              if (isRetriableError && !isLastAttempt) {
+                logger.warn(
+                  `[CREATE-ELECTRON-WINDOW]: Failed to load "${configuration.id}" (attempt ${attempt}/${maxAttempts}): ${error.message} (${error.code || error.errno}). Retrying in ${retryDelayMs}ms...`,
+                );
+                await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+              } else {
+                throw error; // Re-throw if it's not a retriable error or it's the last attempt
+              }
+            }
+          }
         },
 
         show: () => browserWindow.show(),
