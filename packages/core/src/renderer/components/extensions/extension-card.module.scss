@@ -1,0 +1,128 @@
+/**
+ * Styles for ExtensionCard component
+ */
+
+.container {
+  background-color: var(--contentColor);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--borderColor);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  min-height: 240px;
+}
+
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d4aa 0%, #00a3cc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconSvg {
+  color: white;
+  font-size: 24px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.contentWrap {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.25rem;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--textColorSecondary);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+  word-break: break-word;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--borderFaintColor);
+}
+
+.version {
+  font-size: 0.875rem;
+  color: var(--textColorSecondary);
+}
+
+.button {
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.installButton {
+  background-color: #00d4aa;
+}
+
+.uninstallButton {
+  background-color: #e74c3c;
+}
+
+.uninstalling {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: white;
+}
+
+.incompatible {
+  background-color: #e74c3c;
+}
+
+.disabled {
+  background-color: #95a5a6;
+}
