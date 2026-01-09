@@ -27,8 +27,10 @@ import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
 import requestApiResourcesInjectable from "./request-api-resources.injectable";
+import powerMonitorInjectable from "../electron-app/features/power-monitor.injectable";
 
 import type { Logger } from "@freelensapp/logger";
+import type { PowerMonitor } from "electron";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
@@ -66,6 +68,7 @@ interface Dependencies {
   broadcastConnectionUpdate: BroadcastConnectionUpdate;
   loadProxyKubeconfig: LoadProxyKubeconfig;
   removeProxyKubeconfig: RemoveProxyKubeconfig;
+  readonly powerMonitor: PowerMonitor;
 }
 
 export type { ClusterConnection };
@@ -74,6 +77,7 @@ class ClusterConnection {
   protected readonly eventsDisposer = disposer();
 
   protected activated = false;
+  private isSystemSuspended = false;
 
   constructor(
     private readonly dependencies: Dependencies,
@@ -82,13 +86,36 @@ class ClusterConnection {
 
   private bindEvents() {
     this.dependencies.logger.info(`[CLUSTER]: bind events`, this.cluster.getMeta());
+
+    const onSuspend = () => {
+      this.isSystemSuspended = true;
+      this.dependencies.logger.info(`[CLUSTER]: system suspended/locked, stopping proxy`, this.cluster.getMeta());
+      this.dependencies.kubeAuthProxyServer.stop();
+    };
+    const onResume = () => {
+      this.isSystemSuspended = false;
+      this.dependencies.logger.info(`[CLUSTER]: system resumed/unlocked, restarting proxy`, this.cluster.getMeta());
+
+      if (this.activated) {
+        this.reconnect().catch((error) => {
+          this.dependencies.logger.error(`[CLUSTER]: failed to reconnect after resume`, error);
+        });
+      }
+    };
+
+    this.dependencies.powerMonitor.on("lock-screen", onSuspend);
+    this.dependencies.powerMonitor.on("suspend", onSuspend);
+    this.dependencies.powerMonitor.on("unlock-screen", onResume);
+    this.dependencies.powerMonitor.on("resume", onResume);
+
     const refreshTimer = setInterval(() => {
-      if (!this.cluster.disconnected.get()) {
+      if (!this.cluster.disconnected.get() && !this.isSystemSuspended) {
         this.refresh();
       }
-    }, 30_000); // every 30s
+    }, 180000);
+
     const refreshMetadataTimer = setInterval(() => {
-      if (this.cluster.available.get()) {
+      if (this.cluster.available.get() && !this.isSystemSuspended) {
         this.refreshAccessibilityAndMetadata();
       }
     }, 900000); // every 15 minutes
@@ -101,6 +128,12 @@ class ClusterConnection {
       ),
       () => clearInterval(refreshTimer),
       () => clearInterval(refreshMetadataTimer),
+      () => {
+        this.dependencies.powerMonitor.off("lock-screen", onSuspend);
+        this.dependencies.powerMonitor.off("suspend", onSuspend);
+        this.dependencies.powerMonitor.off("unlock-screen", onResume);
+        this.dependencies.powerMonitor.off("resume", onResume);
+      },
       reaction(
         () => this.cluster.preferences.defaultNamespace,
         () => this.recreateProxyKubeconfig(),
@@ -442,6 +475,7 @@ const clusterConnectionInjectable = getInjectable({
         createCoreApi: di.inject(createCoreApiInjectable),
         createCanI: di.inject(createCanIInjectable),
         createRequestNamespaceListPermissions: di.inject(createRequestNamespaceListPermissionsInjectable),
+        powerMonitor: di.inject(powerMonitorInjectable),
       },
       cluster,
     ),

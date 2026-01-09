@@ -45,7 +45,7 @@ export function readFileFromTar<ParseJson extends boolean>({
           reject(new Error(`reading file has failed ${entry.path}: ${err}`));
         });
         entry.once("end", () => {
-          const data = Buffer.concat(fileChunks);
+          const data = Buffer.concat(fileChunks as unknown as Uint8Array[]);
           const result = parseJson ? JSON.parse(data.toString("utf8")) : data;
 
           resolve(result);

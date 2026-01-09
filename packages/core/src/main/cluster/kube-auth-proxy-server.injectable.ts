@@ -8,6 +8,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+import powerMonitorInjectable from "../electron-app/features/power-monitor.injectable";
 
 import type { ServerOptions } from "http-proxy-node16";
 
@@ -25,16 +26,39 @@ export interface KubeAuthProxyServer {
 const fourHoursInMs = 4 * 60 * 60 * 1000;
 const thirtySecondsInMs = 30 * 1000;
 
+let isSystemSuspendedGlobal = false;
+let listenersAttached = false;
+
 const kubeAuthProxyServerInjectable = getInjectable({
   id: "kube-auth-proxy-server",
   instantiate: (di, cluster): KubeAuthProxyServer => {
     const clusterApiUrl = di.inject(clusterApiUrlInjectable, cluster);
     const createKubeAuthProxy = di.inject(createKubeAuthProxyInjectable, cluster);
+    const powerMonitor = di.inject(powerMonitorInjectable);
+
+    if (!listenersAttached) {
+      const onSuspend = () => {
+        isSystemSuspendedGlobal = true;
+      };
+      const onResume = () => {
+        isSystemSuspendedGlobal = false;
+      };
+
+      powerMonitor.on("suspend", onSuspend);
+      powerMonitor.on("lock-screen", onSuspend);
+      powerMonitor.on("resume", onResume);
+      powerMonitor.on("unlock-screen", onResume);
+      listenersAttached = true;
+    }
 
     let kubeAuthProxy: KubeAuthProxy | undefined = undefined;
     let apiTarget: ServerOptions | undefined = undefined;
 
     const ensureServerHelper = async (): Promise<KubeAuthProxy> => {
+      if (isSystemSuspendedGlobal) {
+        throw new Error("System is suspended/locked");
+      }
+
       if (!kubeAuthProxy) {
         const proxyEnv = {
           ...process.env,
@@ -82,6 +106,10 @@ const kubeAuthProxyServerInjectable = getInjectable({
 
     return {
       getApiTarget: async (isLongRunningRequest = false) => {
+        if (isSystemSuspendedGlobal) {
+          throw new Error("System is suspended/locked");
+        }
+
         if (isLongRunningRequest) {
           return newApiTarget(fourHoursInMs);
         }
