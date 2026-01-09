@@ -89,11 +89,13 @@ export class HorizontalPodAutoscalerV2MetricParser {
   }): MetricCurrentTarget {
     return {
       current:
-        current?.current?.averageValue ??
-        (current?.current?.averageUtilization ? `${current.current.averageUtilization}%` : undefined),
+        typeof current?.current?.averageUtilization === "number"
+          ? `${current.current.averageUtilization}%`
+          : current?.current?.averageValue,
       target:
-        target?.target?.averageValue ??
-        (target?.target?.averageUtilization ? `${target.target.averageUtilization}%` : undefined),
+        typeof target?.target?.averageUtilization === "number"
+          ? `${target.target.averageUtilization}%`
+          : target?.target?.averageValue,
     };
   }
 }
