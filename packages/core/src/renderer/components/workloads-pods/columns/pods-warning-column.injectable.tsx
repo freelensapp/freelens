@@ -10,50 +10,70 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { COLUMN_PRIORITY } from "./column-priority";
 import { Icon } from "@freelensapp/icon";
-import type { EventStore } from "../../events/store";
 import eventStoreInjectable from "../../events/store.injectable";
+import { withTooltip } from "@freelensapp/tooltip";
+import subscribeStoresInjectable from "../../../kube-watch-api/subscribe-stores.injectable";
+import { observer } from "mobx-react";
 
+import type { StrictReactNode } from "@freelensapp/utilities";
+import type { SubscribeStores } from "../../../kube-watch-api/kube-watch-api";
+import type { EventStore } from "../../events/store";
 import type {
   KubeEvent,
   Pod,
 } from "@freelensapp/kube-object";
 
+interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: StrictReactNode;
+}
+
+const WarningIcon = withTooltip(({...elemProps}: WarningIconProps) => (
+  <Icon material="warning_amber" className="warning" {...elemProps} />
+));
+
 interface Dependencies {
   eventStore: EventStore;
+  subscribeStores: SubscribeStores;
 }
 
 interface PodwarningProps {
   pod: Pod;
 }
 
-const NonInjectablePodwarning: React.FC<PodwarningProps & Dependencies> = ({ pod, eventStore }) => {
+const NonInjectablePodwarning: React.FC<PodwarningProps & Dependencies> = observer(({ pod, eventStore }) => {
   const events: KubeEvent[] = eventStore.getEventsByObject(pod);
   const latestWarningEvent: KubeEvent | undefined =
     events
       .filter(e => e.type === "Warning")
       .sort((a, b) => {
-        const ta = Date.parse(a.lastTimestamp ?? a.eventTime ?? "");
-        const tb = Date.parse(b.lastTimestamp ?? b.eventTime ?? "");
+        const ta = Date.parse(a.lastTimestamp ?? "");
+        const tb = Date.parse(b.lastTimestamp ?? "");
         return tb - ta;
       })
       .at(0);
 
-  if (!latestWarningEvent) {
+  if (!pod.hasIssues() || !latestWarningEvent) {
     return null;
   }
 
   return (
-    <Icon
-      material="warning_amber"
-      className="warning"
+    <WarningIcon
+      tooltip={{
+        formatters: {
+          tableView: true,
+          nowrap: true,
+        },
+        children: <div>{latestWarningEvent.message}</div>,
+      }}
     />
   );
-};
+});
 
 const Podwarning = withInjectables<Dependencies, PodwarningProps>(NonInjectablePodwarning, {
   getProps: (di, props) => ({
     ...props,
     eventStore: di.inject(eventStoreInjectable),
+    subscribeStores: di.inject(subscribeStoresInjectable),
   }),
 });
 
@@ -72,8 +92,7 @@ export const podsWarningColumnInjectable = getInjectable({
         material="warning_amber"
       />,
       className: "podwarning",
-      sortBy: columnId,
-      id: columnId,
+      id: columnId
     },
   }),
   injectionToken: podListLayoutColumnInjectionToken,
