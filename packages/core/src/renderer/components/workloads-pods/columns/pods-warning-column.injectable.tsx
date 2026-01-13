@@ -12,11 +12,9 @@ import { COLUMN_PRIORITY } from "./column-priority";
 import { Icon } from "@freelensapp/icon";
 import eventStoreInjectable from "../../events/store.injectable";
 import { withTooltip } from "@freelensapp/tooltip";
-import subscribeStoresInjectable from "../../../kube-watch-api/subscribe-stores.injectable";
 import { observer } from "mobx-react";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
-import type { SubscribeStores } from "../../../kube-watch-api/kube-watch-api";
 import type { EventStore } from "../../events/store";
 import type {
   KubeEvent,
@@ -33,7 +31,6 @@ const WarningIcon = withTooltip(({...elemProps}: WarningIconProps) => (
 
 interface Dependencies {
   eventStore: EventStore;
-  subscribeStores: SubscribeStores;
 }
 
 interface PodwarningProps {
@@ -72,8 +69,7 @@ const NonInjectablePodwarning: React.FC<PodwarningProps & Dependencies> = observ
 const Podwarning = withInjectables<Dependencies, PodwarningProps>(NonInjectablePodwarning, {
   getProps: (di, props) => ({
     ...props,
-    eventStore: di.inject(eventStoreInjectable),
-    subscribeStores: di.inject(subscribeStoresInjectable),
+    eventStore: di.inject(eventStoreInjectable)
   }),
 });
 
