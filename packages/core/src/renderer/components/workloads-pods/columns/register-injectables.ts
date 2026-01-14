@@ -85,12 +85,12 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(podsipColumnInjectable);
+    di.register(podsWarningColumnInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(podsWarningColumnInjectable);
+    di.register(podsipColumnInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
