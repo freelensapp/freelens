@@ -37,6 +37,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         logger.debug("fromStore()", { preferences });
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
+        state.allowDelete = descriptors.allowDelete.fromStore(preferences.allowDelete);
+        state.checkForUpdates = descriptors.checkForUpdates.fromStore(preferences.checkForUpdates);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
@@ -64,6 +66,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         toJS({
           preferences: {
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
+            allowDelete: descriptors.allowDelete.toStore(state.allowDelete),
+            checkForUpdates: descriptors.checkForUpdates.toStore(state.checkForUpdates),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
             colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),

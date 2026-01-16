@@ -11,6 +11,7 @@ import { buildVersionInitializable } from "../../../features/vars/build-version/
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -21,7 +22,6 @@ describe("new-version-notification.injectable", () => {
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    // Current app version used in comparison
     di.override(buildVersionInitializable.stateToken, () => "1.2.3");
 
     showInfoMock = jest.fn();
@@ -29,7 +29,6 @@ describe("new-version-notification.injectable", () => {
   });
 
   it("shows a notification containing the latest version when latest > current", async () => {
-    // latest version from main via channel
     di.override(getLatestVersionViaChannelInjectable, () => async () => "1.2.4");
 
     const newVersionNotification = di.inject(newVersionNotificationInjectable);
@@ -40,15 +39,27 @@ describe("new-version-notification.injectable", () => {
 
     const [message] = showInfoMock.mock.calls[0];
 
-    // message is JSX - render it to static markup and assert the version string presence
     const html = renderToStaticMarkup(<>{message}</>);
 
     expect(html).toContain("1.2.4");
   });
 
   it("does not show a notification when latest <= current", async () => {
-    // same version as current
     di.override(getLatestVersionViaChannelInjectable, () => async () => "1.2.3");
+
+    const newVersionNotification = di.inject(newVersionNotificationInjectable);
+
+    await newVersionNotification();
+
+    expect(showInfoMock).not.toHaveBeenCalled();
+  });
+
+  it("does not show a notification when checkForUpdates is disabled", async () => {
+    di.override(getLatestVersionViaChannelInjectable, () => async () => "1.2.4");
+
+    di.override(userPreferencesStateInjectable, () => ({
+      checkForUpdates: false,
+    }));
 
     const newVersionNotification = di.inject(newVersionNotificationInjectable);
 
