@@ -7,11 +7,11 @@
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 

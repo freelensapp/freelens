@@ -13,28 +13,30 @@ import { observable, reaction, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import clusterNameInjectable from "./cluster-name.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
+import navigateInjectable from "../../navigation/navigate.injectable";
+import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
+import { MenuActions, MenuItem } from "../menu";
+import clusterNameInjectable from "./cluster-name.injectable";
 import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
 import kubeObjectMenuItemsInjectable from "./kube-object-menu-items.injectable";
-import { MenuActions, MenuItem } from "../menu";
-import navigateInjectable from "../../navigation/navigate.injectable";
 import onKubeObjectContextMenuOpenInjectable from "./on-context-menu-open.injectable";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
-import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
+
+import type { KubeObject, Pod } from "@freelensapp/kube-object";
+
+import type { IComputedValue } from "mobx";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
-import type { DeleteType, KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
-import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
-import type { IComputedValue } from "mobx";
-import type { KubeObject, Pod } from "@freelensapp/kube-object";
-import type { KubeObjectContextMenuItem } from "../../kube-object/handler";
-import type { MenuActionsProps, MenuControls } from "../menu";
-import type { Navigate } from "../../navigation/navigate.injectable";
-import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
+import type { KubeObjectContextMenuItem } from "../../kube-object/handler";
+import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
+import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
+import type { MenuActionsProps, MenuControls } from "../menu";
+import type { DeleteType, KubeObjectDeleteService } from "./kube-object-delete-service.injectable";
+import type { OnKubeObjectContextMenuOpen } from "./on-context-menu-open.injectable";
 
 export interface KubeObjectMenuProps<TKubeObject extends KubeObject> extends MenuActionsProps {
   id?: string;
