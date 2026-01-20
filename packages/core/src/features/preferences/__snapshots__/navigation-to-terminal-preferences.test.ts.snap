@@ -471,6 +471,34 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="delete-protection"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Delete Protection
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Allow deleting Kubernetes resources
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -495,6 +523,34 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       Reset
                     </button>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="check-for-updates"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Check for Updates
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Check for new version on startup
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
                 </section>
               </div>
               <div

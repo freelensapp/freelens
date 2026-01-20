@@ -483,6 +483,34 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="delete-protection"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Delete Protection
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Allow deleting Kubernetes resources
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -507,6 +535,34 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                       Reset
                     </button>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="check-for-updates"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Check for Updates
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Check for new version on startup
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
                 </section>
               </div>
               <div
@@ -2011,6 +2067,34 @@ exports[`preferences - closing-preferences given already in a page and then navi
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="delete-protection"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Delete Protection
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Allow deleting Kubernetes resources
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -2035,6 +2119,34 @@ exports[`preferences - closing-preferences given already in a page and then navi
                       Reset
                     </button>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="check-for-updates"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Check for Updates
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Check for new version on startup
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
                 </section>
               </div>
               <div
