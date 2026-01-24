@@ -6,8 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-
-import type { FavoritesStorageState } from "./favorites-storage.injectable";
+import { FavoritesStorageState } from "./storage.injectable";
 
 const favoritesStateInjectable = getInjectable({
   id: "favorites-state",

@@ -6,25 +6,19 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
-import favoritesSidebarItemsComputedInjectable from "./sidebar-items-computed.injectable";
-import favoritesStoreInjectable from "./store.injectable";
+import favoritesStateInjectable from "./state.injectable";
+import favoritesPersistentStorageInjectable from "./storage.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(favoritesSidebarItemInjectable);
+    di.register(favoritesPersistentStorageInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(favoritesSidebarItemsComputedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(favoritesStoreInjectable);
+    di.register(favoritesStateInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

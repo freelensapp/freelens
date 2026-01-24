@@ -13,8 +13,8 @@ import userPreferencesStateInjectable, {
   UserPreferencesState,
 } from "../../../features/user-preferences/common/state.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
-import favoritesSidebarItemInjectable from "../favorites/favorites-sidebar-item.injectable";
-import favoritesSidebarItemsComputedInjectable from "../favorites/favorites-sidebar-items-computed.injectable";
+import favoritesSidebarItemInjectable from "../favorites/sidebar-item.injectable";
+import favoritesSidebarItemsComputedInjectable from "../favorites/sidebar-items-computed.injectable";
 import OrderableList from "../orderable-list/orderable-list";
 import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";

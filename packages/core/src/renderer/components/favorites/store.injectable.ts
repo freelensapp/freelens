@@ -6,9 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed, makeObservable } from "mobx";
-import favoritesStateInjectable from "./favorites-state.injectable";
+import favoritesStateInjectable from "../../../features/favorites/common/state.injectable";
 
-import type { FavoriteItem } from "./favorites-storage.injectable";
+import type { FavoriteItem } from "../../../features/favorites/common/storage.injectable";
 
 export class FavoritesStore {
   constructor(private state: any) {
@@ -41,6 +41,8 @@ export class FavoritesStore {
       ...item,
       order: this.highestOrder + 10,
     };
+
+    console.log("[1] calling this.state. with", newItem);
 
     this.state.set({
       items: [...this.items, newItem],

@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
-import favoritesStoreInjectable, { FavoritesStore } from "../favorites/favorites-store.injectable";
+import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";
 import styles from "./sidebar-items.module.scss";
 import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
 

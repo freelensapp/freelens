@@ -6,10 +6,10 @@
 import { SidebarItemDeclaration, sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import favoritesSidebarItemInjectable from "./favorites-sidebar-item.injectable";
-import favoritesStoreInjectable from "./favorites-store.injectable";
+import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
+import favoritesStoreInjectable from "./store.injectable";
 
-import type { FavoriteItem } from "./favorites-storage.injectable";
+import type { FavoriteItem } from "../../../features/favorites/common/storage.injectable";
 
 const favoritesSidebarItemsComputedInjectable = getInjectable({
   id: "favorites-sidebar-items-computed",
