@@ -1,0 +1,74 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+import { SidebarItemDeclaration, sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
+import { getInjectable } from "@ogre-tools/injectable";
+import { computed } from "mobx";
+import favoritesSidebarItemInjectable from "./favorites-sidebar-item.injectable";
+import favoritesStoreInjectable from "./favorites-store.injectable";
+
+import type { FavoriteItem } from "./favorites-storage.injectable";
+
+const favoritesSidebarItemsComputedInjectable = getInjectable({
+  id: "favorites-sidebar-items-computed",
+
+  instantiate: (di) => {
+    const favoritesStore = di.inject(favoritesStoreInjectable);
+    const sidebarItemsComputed = di.inject(sidebarItemsInjectable);
+
+    return computed((): SidebarItemDeclaration[] => {
+      const favoriteItems = favoritesStore.items;
+      const allSidebarItems = sidebarItemsComputed.get();
+
+      const isFavoriteClone = (item: any) =>
+        item.id?.startsWith("favorite-") || item.parentId === favoritesSidebarItemInjectable.id;
+
+      // TODO: check about improving this
+      const flattenSidebarItems = (items: any[]): any[] => {
+        return items.reduce((acc, item) => {
+          if (isFavoriteClone(item)) {
+            return acc;
+          }
+
+          acc.push(item);
+
+          if (item.children && item.children.length > 0) {
+            acc.push(...flattenSidebarItems(item.children));
+          }
+
+          return acc;
+        }, [] as any[]);
+      };
+
+      const flatSidebarItems = flattenSidebarItems(allSidebarItems);
+
+      const itemMap = new Map(flatSidebarItems.map((item) => [item.id, item]));
+
+      return favoriteItems
+        .map((fav: FavoriteItem) => {
+          const originalItem = itemMap.get(fav.id);
+
+          if (!originalItem) {
+            return null;
+          }
+
+          return {
+            id: `favorite-${fav.id}`,
+            parentId: favoritesSidebarItemInjectable.id,
+            title: originalItem.title,
+            onClick: originalItem.onClick,
+            isActive: originalItem.isActive,
+            isVisible: originalItem.isVisible,
+            getIcon: originalItem.getIcon,
+            orderNumber: fav.order,
+            children: originalItem.children,
+          };
+        })
+        .filter((item: SidebarItemDeclaration | null): item is SidebarItemDeclaration => Boolean(item));
+    });
+  },
+});
+
+export default favoritesSidebarItemsComputedInjectable;
