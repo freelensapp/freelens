@@ -111,13 +111,13 @@ importers:
         version: 8.1.1
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       auto-bind:
         specifier: ^4.0.0
         version: 4.0.0
@@ -176,8 +176,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -316,7 +316,7 @@ importers:
         version: link:../packages/ui-components/tooltip
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@side/jest-runtime':
         specifier: ^1.1.0
         version: 1.1.0(@jest/transform@29.7.0)(jest-runtime@29.7.0)(jest@29.7.0(@types/node@22.19.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3)))
@@ -430,16 +430,16 @@ importers:
         version: link:../../technical-features/react-application
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -464,7 +464,7 @@ importers:
         version: link:../../infrastructure/webpack
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -506,7 +506,7 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -534,10 +534,10 @@ importers:
         version: link:../utility-features/utilities
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -567,8 +567,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -709,16 +709,16 @@ importers:
         version: 5.17.1(@emotion/react@11.14.0(@types/react@17.0.90)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.90)(react@17.0.2))(@types/react@17.0.90)(react@17.0.2))(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@xterm/addon-fit':
         specifier: ^0.10.0
         version: 0.10.0(@xterm/xterm@5.5.0)
@@ -801,8 +801,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       marked:
         specifier: ^15.0.12
         version: 15.0.12
@@ -1252,8 +1252,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.9.1
@@ -1275,10 +1275,10 @@ importers:
     dependencies:
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.1.18
@@ -1292,8 +1292,8 @@ importers:
         specifier: ^11.3.3
         version: 11.3.3
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mini-css-extract-plugin:
         specifier: ^2.9.4
         version: 2.9.4(webpack@5.104.1)
@@ -1336,7 +1336,7 @@ importers:
         version: link:../typescript
       '@ogre-tools/test-utils':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -1368,8 +1368,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -1454,7 +1454,7 @@ importers:
         version: link:../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.104.1)
@@ -1466,7 +1466,7 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/kube-object':
         specifier: workspace:^
@@ -1494,13 +1494,13 @@ importers:
         version: link:../technical-features/feature-core
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       winston:
         specifier: ^3.19.0
         version: 3.19.0
@@ -1546,7 +1546,7 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/kube-object':
         specifier: workspace:^
@@ -1577,7 +1577,7 @@ importers:
         version: link:../technical-features/feature-core
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -1607,10 +1607,10 @@ importers:
         version: link:../technical-features/feature-core
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       history:
         specifier: ^4.10.1
         version: 4.10.1
@@ -1634,8 +1634,8 @@ importers:
         specifier: ^1.18.8
         version: 1.18.8
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.104.1)
@@ -1675,10 +1675,10 @@ importers:
         version: link:../../../utility-features/run-many
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -1705,8 +1705,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(babel-plugin-macros@3.1.0)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -1733,7 +1733,7 @@ importers:
         version: link:../../../utility-features/run-many
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
         specifier: ^39.2.7
         version: 39.2.7
@@ -1752,7 +1752,7 @@ importers:
         version: link:../../../infrastructure/webpack
       '@ogre-tools/test-utils':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1763,8 +1763,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(babel-plugin-macros@3.1.0)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -1782,7 +1782,7 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/jest':
         specifier: workspace:^
@@ -1816,7 +1816,7 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/jest':
         specifier: workspace:^
@@ -1853,7 +1853,7 @@ importers:
         version: link:../messaging
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -1881,10 +1881,10 @@ importers:
         version: link:../../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -1901,8 +1901,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx-react:
         specifier: ^7.6.0
         version: 7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -1935,10 +1935,10 @@ importers:
         version: link:../../../utility-features/startable-stoppable
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -1968,8 +1968,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -1993,10 +1993,10 @@ importers:
         version: link:../messaging
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
     devDependencies:
       '@freelensapp/application':
         specifier: workspace:^
@@ -2018,10 +2018,10 @@ importers:
         version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -2063,16 +2063,16 @@ importers:
         version: link:../messaging
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
         specifier: ^39.2.7
         version: 39.2.7
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -2127,7 +2127,7 @@ importers:
         version: link:../messaging
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
         specifier: ^39.2.7
         version: 39.2.7
@@ -2146,7 +2146,7 @@ importers:
         version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2157,8 +2157,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(babel-plugin-macros@3.1.0)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2188,7 +2188,7 @@ importers:
         version: link:../../utility-features/utilities
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/kubernetes-client-node':
         specifier: workspace:^
@@ -2201,7 +2201,7 @@ importers:
         version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2225,13 +2225,13 @@ importers:
         version: link:../feature-core
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2262,7 +2262,7 @@ importers:
         version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -2285,8 +2285,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
@@ -2392,10 +2392,10 @@ importers:
         version: link:../../utility-features/utilities
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -2487,13 +2487,13 @@ importers:
         version: link:../../routing
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2557,13 +2557,13 @@ importers:
         version: link:../../utility-features/utilities
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2648,19 +2648,19 @@ importers:
         version: link:../../utility-features/utilities
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       auto-bind:
         specifier: ^4.0.0
         version: 4.0.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2720,8 +2720,8 @@ importers:
         specifier: workspace:^
         version: link:../../utility-features/utilities
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2815,8 +2815,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -2927,8 +2927,8 @@ importers:
         specifier: workspace:^
         version: link:../utilities
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
     devDependencies:
       '@freelensapp/logger':
         specifier: workspace:^
@@ -2974,16 +2974,16 @@ importers:
         version: link:../utilities
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       byline:
         specifier: ^5.0.0
         version: 5.0.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -3056,7 +3056,7 @@ importers:
         version: link:../../logger
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -3122,10 +3122,10 @@ importers:
         version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
-        version: 17.11.1(lodash@4.17.21)
+        version: 17.11.1(lodash@4.17.23)
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@types/uuid':
         specifier: ^11.0.0
         version: 11.0.0
@@ -3191,16 +3191,16 @@ importers:
     dependencies:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       '@ogre-tools/injectable-react':
         specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.90)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -3248,8 +3248,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -7171,8 +7171,8 @@ packages:
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -8645,10 +8645,12 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   tar@7.5.2:
     resolution: {integrity: sha512-7NyxrTE4Anh8km8iEy7o0QYPs+0JKBTj5ZaqHg6B39erLg0qYXN3BijtShwbsNSvQ+LN75+KV+C4QR/f6Gwnpg==}
     engines: {node: '>=18'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   tcp-port-used@1.0.2:
     resolution: {integrity: sha512-l7ar8lLUD3XS1V2lfoJlCBaeoaWo/2xfYt81hM7VlvR4RrMVFqfmzfhLVk40hAb368uitje5gPtBRL1m/DGvLA==}
@@ -10303,7 +10305,7 @@ snapshots:
     dependencies:
       debug: 4.4.0
       fs-extra: 9.1.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       tmp-promise: 3.0.3
     transitivePeerDependencies:
       - supports-color
@@ -10453,35 +10455,35 @@ snapshots:
     dependencies:
       semver: 7.7.3
 
-  '@ogre-tools/fp@17.11.1(lodash@4.17.21)':
+  '@ogre-tools/fp@17.11.1(lodash@4.17.23)':
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
-  '@ogre-tools/injectable-extension-for-mobx@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx@6.15.0)':
+  '@ogre-tools/injectable-extension-for-mobx@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx@6.15.0)':
     dependencies:
-      '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-      lodash: 4.17.21
+      '@ogre-tools/fp': 17.11.1(lodash@4.17.23)
+      '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
+      lodash: 4.17.23
       mobx: 6.15.0
 
-  '@ogre-tools/injectable-react@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21))(lodash@4.17.21)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+  '@ogre-tools/injectable-react@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23))(lodash@4.17.23)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
-      '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)
-      lodash: 4.17.21
+      '@ogre-tools/fp': 17.11.1(lodash@4.17.23)
+      '@ogre-tools/injectable': 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
+      lodash: 4.17.23
       mobx: 6.15.0
       mobx-react: 7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
-  '@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.21))(lodash@4.17.21)':
+  '@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)':
     dependencies:
-      '@ogre-tools/fp': 17.11.1(lodash@4.17.21)
-      lodash: 4.17.21
+      '@ogre-tools/fp': 17.11.1(lodash@4.17.23)
+      lodash: 4.17.23
 
-  '@ogre-tools/test-utils@17.11.1(lodash@4.17.21)':
+  '@ogre-tools/test-utils@17.11.1(lodash@4.17.23)':
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -12348,7 +12350,7 @@ snapshots:
       '@electron/asar': 3.4.1
       debug: 4.4.0
       fs-extra: 7.0.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       temp: 0.9.4
     optionalDependencies:
       '@electron/windows-sign': 1.2.1
@@ -12960,7 +12962,7 @@ snapshots:
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       pretty-error: 4.0.0
       tapable: 2.3.0
     optionalDependencies:
@@ -14054,7 +14056,7 @@ snapshots:
 
   lodash.memoize@4.1.2: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -14779,7 +14781,7 @@ snapshots:
 
   pretty-error@4.0.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
       renderkid: 3.0.0
 
   pretty-format@27.5.1:
@@ -15063,7 +15065,7 @@ snapshots:
       css-select: 4.3.0
       dom-converter: 0.2.0
       htmlparser2: 6.1.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       strip-ansi: 6.0.1
 
   require-directory@2.1.1: {}

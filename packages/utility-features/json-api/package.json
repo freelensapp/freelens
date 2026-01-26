@@ -33,7 +33,7 @@
   "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@freelensapp/logger": "workspace:^",
