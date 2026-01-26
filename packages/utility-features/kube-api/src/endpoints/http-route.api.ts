@@ -13,6 +13,8 @@ export class HTTPRouteApi extends KubeApi<HTTPRoute> {
     super(deps, {
       ...(opts ?? {}),
       objectConstructor: HTTPRoute,
+      checkPreferredVersion: true,
+      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1beta1/httproutes"],
     });
   }
 }

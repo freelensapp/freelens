@@ -90,6 +90,10 @@ export class HTTPRoute extends KubeObject<NamespaceScopedMetadata, HTTPRouteStat
     return this.spec.hostnames ?? [];
   }
 
+  /**
+   * Get all parent references (Gateways) this route attaches to.
+   * Merges commonParentRefs (shared across all rules) with parentRefs (rule-specific).
+   */
   getParentRefs(): HTTPRouteParentReference[] {
     return [...(this.spec.commonParentRefs ?? []), ...(this.spec.parentRefs ?? [])];
   }

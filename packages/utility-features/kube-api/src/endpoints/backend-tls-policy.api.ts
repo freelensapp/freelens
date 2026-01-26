@@ -14,7 +14,10 @@ export class BackendTLSPolicyApi extends KubeApi<BackendTLSPolicy> {
       ...(opts ?? {}),
       objectConstructor: BackendTLSPolicy,
       checkPreferredVersion: true,
-      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1alpha2/backendlbspolicies"],
+      fallbackApiBases: [
+        "/apis/gateway.networking.k8s.io/v1alpha2/backendlbspolicies",
+        "/apis/gateway.networking.k8s.io/v1beta1/backendlbspolicies",
+      ],
     });
   }
 }
