@@ -7,9 +7,19 @@ import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
 
+export type GRPCRouteParentKind = "Gateway";
+
+export type GRPCRouteBackendKind = "Service";
+
+export type GRPCMethodMatchType = "Exact" | "RegularExpression";
+
+export type GRPCHeaderMatchType = "Exact" | "RegularExpression";
+
+export type GRPCRouteFilterType = "RequestHeaderModifier" | "RequestMirror" | "ExtensionRef";
+
 export interface GRPCRouteParentReference {
   group?: string;
-  kind: string;
+  kind: GRPCRouteParentKind;
   name: string;
   namespace?: string;
   sectionName?: string;
@@ -18,7 +28,7 @@ export interface GRPCRouteParentReference {
 
 export interface GRPCRouteBackendRef {
   group?: string;
-  kind?: string;
+  kind?: GRPCRouteBackendKind;
   name: string;
   namespace?: string;
   port?: number;
@@ -27,19 +37,19 @@ export interface GRPCRouteBackendRef {
 
 export interface GRPCRouteMatch {
   method?: {
-    type?: string;
+    type?: GRPCMethodMatchType;
     service?: string;
     method?: string;
   };
   headers?: Array<{
-    type: string;
+    type: GRPCHeaderMatchType;
     name: string;
     value?: string;
   }>;
 }
 
 export interface GRPCRouteFilter {
-  type: string;
+  type: GRPCRouteFilterType;
   requestHeaderModifier?: {
     set?: Array<{ name: string; value: string }>;
     add?: Array<{ name: string; value: string }>;
@@ -84,11 +94,49 @@ export class GRPCRoute extends KubeObject<NamespaceScopedMetadata, GRPCRouteStat
     return this.spec.hostnames ?? [];
   }
 
+  /**
+   * Get all parent references (Gateways) this route attaches to.
+   * Merges commonParentRefs (shared across all rules) with parentRefs (rule-specific).
+   */
   getParentRefs(): GRPCRouteParentReference[] {
     return [...(this.spec.commonParentRefs ?? []), ...(this.spec.parentRefs ?? [])];
   }
 
   getRoutes(): GRPCRouteRule[] {
     return this.spec.rules ?? [];
+  }
+
+  /**
+   * Aggregate all backend refs from all rules.
+   */
+  getBackendRefs(): GRPCRouteBackendRef[] {
+    const refs: GRPCRouteBackendRef[] = [];
+    for (const rule of this.spec.rules ?? []) {
+      refs.push(...(rule.backendRefs ?? []));
+    }
+    return refs;
+  }
+
+  /**
+   * Aggregate all filters from all rules.
+   */
+  getFilters(): GRPCRouteFilter[] {
+    const filters: GRPCRouteFilter[] = [];
+    for (const rule of this.spec.rules ?? []) {
+      filters.push(...(rule.filters ?? []));
+    }
+    return filters;
+  }
+
+  /**
+   * Check if this route is accepted by any parent.
+   * Returns true when any parent has an "Accepted" condition with status "True".
+   */
+  isAccepted(): boolean {
+    return (
+      this.status?.parents?.some((parent) =>
+        parent.conditions?.some((c) => c.type === "Accepted" && c.status === "True"),
+      ) ?? false
+    );
   }
 }

@@ -7,15 +7,25 @@ import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
 
+export type ReferenceKind =
+  | "Gateway"
+  | "GRPCRoute"
+  | "HTTPRoute"
+  | "TCPRoute"
+  | "TLSRoute"
+  | "UDPRoute"
+  | "Secret"
+  | "Service";
+
 export interface ReferenceGrantFrom {
   group: string;
-  kind: string;
+  kind: ReferenceKind;
   namespace?: string;
 }
 
 export interface ReferenceGrantTo {
   group: string;
-  kind: string;
+  kind: ReferenceKind;
   name?: string;
 }
 
