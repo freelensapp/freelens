@@ -7,11 +7,15 @@ import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
 
+export type GatewayProtocol = "HTTP" | "HTTPS" | "TCP" | "TLS" | "UDP";
+
+export type TLSMode = "Terminate" | "Passthrough";
+
 export interface GatewayListener {
   name: string;
   hostname?: string;
   port: number;
-  protocol: string;
+  protocol: GatewayProtocol;
   allowedRoutes?: {
     namespaces?: {
       from: "Selector" | "All";
@@ -21,7 +25,7 @@ export interface GatewayListener {
     };
   };
   tls?: {
-    mode?: string;
+    mode?: TLSMode;
     certificateRefs?: Array<{
       group?: string;
       kind: string;

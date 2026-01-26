@@ -76,4 +76,25 @@ export class BackendTLSPolicy extends KubeObject<
   getHostname(): string | undefined {
     return this.spec.hostname;
   }
+
+  /**
+   * Get all conditions from the policy status.
+   */
+  getConditions(): Array<{
+    type: string;
+    status: "True" | "False" | "Unknown";
+    lastTransitionTime?: string;
+    reason?: string;
+    message?: string;
+  }> {
+    return this.status?.conditions ?? [];
+  }
+
+  /**
+   * Check if this policy is accepted.
+   * Returns true when the "Accepted" condition in status is True.
+   */
+  isAccepted(): boolean {
+    return this.status?.conditions?.some((c) => c.type === "Accepted" && c.status === "True") ?? false;
+  }
 }

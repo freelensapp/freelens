@@ -55,11 +55,36 @@ export class BackendLBPolicy extends KubeObject<NamespaceScopedMetadata, Backend
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1alpha2/backendlbpolicies";
 
+  /**
+   * Get target references for this policy.
+   * Returns the single targetRef wrapped in an array for consistency with other policy types.
+   */
   getTargetRefs(): BackendLBPolicyTargetRef[] {
     return [this.spec.targetRef];
   }
 
   getPolicyType(): string {
     return this.spec.policyType ?? "";
+  }
+
+  /**
+   * Get all conditions from the policy status.
+   */
+  getConditions(): Array<{
+    type: string;
+    status: "True" | "False" | "Unknown";
+    lastTransitionTime?: string;
+    reason?: string;
+    message?: string;
+  }> {
+    return this.status?.conditions ?? [];
+  }
+
+  /**
+   * Check if this policy is accepted.
+   * Returns true when the "Accepted" condition in status is True.
+   */
+  isAccepted(): boolean {
+    return this.status?.conditions?.some((c) => c.type === "Accepted" && c.status === "True") ?? false;
   }
 }

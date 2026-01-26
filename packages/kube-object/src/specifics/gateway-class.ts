@@ -39,7 +39,14 @@ export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClass
     return this.spec.controllerName;
   }
 
-  getParametersRef() {
+  getParametersRef():
+    | {
+        group: string;
+        kind: string;
+        name: string;
+        namespace?: string;
+      }
+    | undefined {
     return this.spec.parametersRef;
   }
 
