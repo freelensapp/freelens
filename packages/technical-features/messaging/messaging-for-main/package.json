@@ -35,7 +35,7 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "electron": "^39.2.7",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
