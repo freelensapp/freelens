@@ -24,13 +24,9 @@ const setupSessionProxyBypassInjectable = getInjectable({
         await session.defaultSession.setProxy({
           mode: "fixed_servers",
           proxyRules: systemProxyRules,
-          proxyBypassRules: [
-            "<local>",
-            "renderer.freelens.app",
-            ".renderer.freelens.app",
-            "127.0.0.1/8",
-            "[::1]",
-          ].join(","),
+          proxyBypassRules: ["<local>", "renderer.freelens.app", ".renderer.freelens.app", "127.0.0.1/8", "[::1]"].join(
+            ",",
+          ),
         });
 
         logger.info("[PROXY-BYPASS] Proxy bypass configured for local addresses while preserving system proxy");
