@@ -78,6 +78,10 @@ export class Gateway extends KubeObject<NamespaceScopedMetadata, GatewayStatus, 
     return this.spec.gatewayClassName;
   }
 
+  /**
+   * Get the actual addresses assigned to this Gateway from status.
+   * Handles both string addresses and typed address objects.
+   */
   getAddresses(): string[] {
     if (this.status?.addresses) {
       return this.status.addresses.map((a) => (typeof a === "string" ? a : a.value));
@@ -89,6 +93,10 @@ export class Gateway extends KubeObject<NamespaceScopedMetadata, GatewayStatus, 
     return this.spec.listeners ?? [];
   }
 
+  /**
+   * Check if this Gateway is ready to serve traffic.
+   * Returns true when the "Ready" condition in status is True.
+   */
   isReady(): boolean {
     return this.status?.conditions?.some((c) => c.type === "Ready" && c.status === "True") ?? false;
   }

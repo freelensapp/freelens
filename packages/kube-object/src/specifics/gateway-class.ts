@@ -8,7 +8,7 @@ import { KubeObject } from "../kube-object";
 import type { ClusterScopedMetadata } from "../api-types";
 
 export interface GatewayClassSpec {
-  controller: string;
+  controllerName: string;
   parametersRef?: {
     group: string;
     kind: string;
@@ -36,13 +36,17 @@ export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClass
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/gatewayclasses";
 
   getControllerName(): string {
-    return this.spec.controller;
+    return this.spec.controllerName;
   }
 
   getParametersRef() {
     return this.spec.parametersRef;
   }
 
+  /**
+   * Check if this GatewayClass is accepted by a controller.
+   * Returns true when the "Accepted" condition in status is True.
+   */
   isAccepted(): boolean {
     return this.status?.conditions?.some((c) => c.type === "Accepted" && c.status === "True") ?? false;
   }

@@ -13,6 +13,8 @@ export class GatewayApi extends KubeApi<Gateway> {
     super(deps, {
       ...(opts ?? {}),
       objectConstructor: Gateway,
+      checkPreferredVersion: true,
+      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1beta1/gateways"],
     });
   }
 }

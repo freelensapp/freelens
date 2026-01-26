@@ -13,6 +13,8 @@ export class GRPCRouteApi extends KubeApi<GRPCRoute> {
     super(deps, {
       ...(opts ?? {}),
       objectConstructor: GRPCRoute,
+      checkPreferredVersion: true,
+      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1beta1/grpcroutes"],
     });
   }
 }
