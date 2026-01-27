@@ -24,7 +24,7 @@ export interface NodePodMenuItemProps {
   title: string;
   tooltip: string;
   toolbar: boolean;
-  annotations: string[]
+  annotations: string[];
   containers: (ContainerWithType | EphemeralContainerWithType)[];
   statuses: PodContainerStatus[];
   onMenuItemClick: (container: Container) => any;
@@ -38,17 +38,17 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
   const findOptimalDefaultContainer = () => {
     const defaultContainerAnnotation = "kubectl.kubernetes.io/default-container=";
     const defaultContainer = annotations
-        .find((s) => s.startsWith(defaultContainerAnnotation))
-        ?.substring(defaultContainerAnnotation.length)
+      .find((s) => s.startsWith(defaultContainerAnnotation))
+      ?.substring(defaultContainerAnnotation.length);
 
-    if(defaultContainer) {
-      const container = containers.find((container) => container.name == defaultContainer)
+    if (defaultContainer) {
+      const container = containers.find((container) => container.name == defaultContainer);
       if (container) {
         return container;
       }
     }
-    return containers[0]
-  }
+    return containers[0];
+  };
 
   return (
     <>

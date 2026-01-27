@@ -201,8 +201,11 @@ describe("pod-menu-item", () => {
   it("click on main MenuItem should execute onMenuItemClick with prefered container", () => {
     // GIVEN
     const title = "title";
-    const containers: ContainerWithType[] = [{ name: "container-name-1", type: "containers" }, { name: "container-name-2", type: "containers" }];
-    const annotations: string[] = ["kubectl.kubernetes.io/default-container=container-name-2"]
+    const containers: ContainerWithType[] = [
+      { name: "container-name-1", type: "containers" },
+      { name: "container-name-2", type: "containers" },
+    ];
+    const annotations: string[] = ["kubectl.kubernetes.io/default-container=container-name-2"];
 
     // WHEN
     expect(() => {
