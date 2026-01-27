@@ -13,6 +13,8 @@ export class BackendLBPolicyApi extends KubeApi<BackendLBPolicy> {
     super(deps, {
       ...(opts ?? {}),
       objectConstructor: BackendLBPolicy,
+      checkPreferredVersion: true,
+      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1alpha2/backendlbpolicies"],
     });
   }
 }
