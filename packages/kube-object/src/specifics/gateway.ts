@@ -71,6 +71,15 @@ export interface GatewayStatus {
   }>;
 }
 
+/**
+ * Gateway represents a logical endpoint that binds traffic to Routes.
+ *
+ * Gateways are namespace-scoped resources that define listeners (ports, protocols,
+ * and hostnames). Routes (HTTPRoute, GRPCRoute, etc.) attach to Gateways to receive
+ * traffic. A Gateway's listeners expose IP addresses that clients connect to.
+ *
+ * @see https://gateway-api.sigs.k8s.io/v1alpha2/references/spec/#gateway.networking.k8s.io/v1.Gateway
+ */
 export class Gateway extends KubeObject<NamespaceScopedMetadata, GatewayStatus, GatewaySpec> {
   static readonly kind = "Gateway";
 
@@ -78,6 +87,10 @@ export class Gateway extends KubeObject<NamespaceScopedMetadata, GatewayStatus, 
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/gateways";
 
+  /**
+   * Get the GatewayClass that defines which controller manages this Gateway.
+   * The controller watches for Gateways referencing its GatewayClass.
+   */
   getClassName(): string {
     return this.spec.gatewayClassName;
   }
@@ -93,6 +106,10 @@ export class Gateway extends KubeObject<NamespaceScopedMetadata, GatewayStatus, 
     return [];
   }
 
+  /**
+   * Get all listeners defined on this Gateway.
+   * Listeners define the protocol, port, and hostname for incoming connections.
+   */
   getListeners(): GatewayListener[] {
     return this.spec.listeners ?? [];
   }

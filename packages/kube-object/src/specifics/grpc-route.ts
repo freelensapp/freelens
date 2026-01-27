@@ -83,6 +83,15 @@ export interface GRPCRouteStatus {
   }>;
 }
 
+/**
+ * GRPCRoute defines gRPC routing rules for forwarding RPC calls to backend Services.
+ *
+ * GRPCRoutes attach to Gateway listeners and match gRPC requests based on hostnames,
+ * service names, method names, and headers. They support advanced traffic management
+ * including header modification, mirroring, and extension filters.
+ *
+ * @see https://gateway-api.sigs.k8s.io/v1alpha2/references/spec/#gateway.networking.k8s.io/v1.GRPCRoute
+ */
 export class GRPCRoute extends KubeObject<NamespaceScopedMetadata, GRPCRouteStatus, GRPCRouteSpec> {
   static readonly kind = "GRPCRoute";
 
@@ -90,6 +99,10 @@ export class GRPCRoute extends KubeObject<NamespaceScopedMetadata, GRPCRouteStat
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/grpcroutes";
 
+  /**
+   * Get hostnames that this route responds to.
+   * Hostnames are matched against the TLS SNI or HTTP/2 :authority header.
+   */
   getHostnames(): string[] {
     return this.spec.hostnames ?? [];
   }
@@ -102,6 +115,10 @@ export class GRPCRoute extends KubeObject<NamespaceScopedMetadata, GRPCRouteStat
     return [...(this.spec.commonParentRefs ?? []), ...(this.spec.parentRefs ?? [])];
   }
 
+  /**
+   * Get all routing rules defined in this GRPCRoute.
+   * Rules are evaluated in order and contain matches, filters, and backend refs.
+   */
   getRoutes(): GRPCRouteRule[] {
     return this.spec.rules ?? [];
   }

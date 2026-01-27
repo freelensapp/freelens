@@ -28,6 +28,15 @@ export interface GatewayClassStatus {
   }>;
 }
 
+/**
+ * GatewayClass represents a class of Gateways that share a common controller implementation.
+ *
+ * GatewayClass is cluster-scoped and defines the controller that will manage Gateways
+ * of this class. Multiple GatewayClasses can exist in a cluster, allowing different
+ * Gateway controllers to coexist.
+ *
+ * @see https://gateway-api.sigs.k8s.io/v1alpha2/references/spec/#gateway.networking.k8s.io/v1.GatewayClass
+ */
 export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClassStatus, GatewayClassSpec> {
   static readonly kind = "GatewayClass";
 
@@ -35,10 +44,18 @@ export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClass
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/gatewayclasses";
 
+  /**
+   * Get the controller name that manages Gateways of this class.
+   * Controllers watch for GatewayClasses with their controller name to claim ownership.
+   */
   getControllerName(): string {
     return this.spec.controllerName;
   }
 
+  /**
+   * Get the resource reference for controller configuration parameters.
+   * Allows controllers to be configured with custom resources (e.g., ConfigMap).
+   */
   getParametersRef():
     | {
         group: string;
