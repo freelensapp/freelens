@@ -6,10 +6,9 @@
 import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
+import type { GatewayApiBackendKind } from "./gateway-api-types";
 
 export type GRPCRouteParentKind = "Gateway";
-
-export type GRPCRouteBackendKind = "Service";
 
 export type GRPCMethodMatchType = "Exact" | "RegularExpression";
 
@@ -28,7 +27,7 @@ export interface GRPCRouteParentReference {
 
 export interface GRPCRouteBackendRef {
   group?: string;
-  kind?: GRPCRouteBackendKind;
+  kind?: GatewayApiBackendKind;
   name: string;
   namespace?: string;
   port?: number;

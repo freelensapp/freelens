@@ -13,6 +13,8 @@ export class ReferenceGrantApi extends KubeApi<ReferenceGrant> {
     super(deps, {
       ...(opts ?? {}),
       objectConstructor: ReferenceGrant,
+      checkPreferredVersion: true,
+      fallbackApiBases: ["/apis/gateway.networking.k8s.io/v1alpha2/referencegrants"],
     });
   }
 }

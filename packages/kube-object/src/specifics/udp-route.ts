@@ -6,14 +6,11 @@
 import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
-
-export type UDPRouteKind = "Gateway" | "GRPCRoute" | "HTTPRoute" | "TCPRoute" | "TLSRoute" | "UDPRoute";
-
-export type UDPRouteBackendKind = "Service";
+import type { GatewayApiBackendKind, GatewayApiRouteKind } from "./gateway-api-types";
 
 export interface UDPRouteParentReference {
   group?: string;
-  kind: UDPRouteKind;
+  kind: GatewayApiRouteKind;
   name: string;
   namespace?: string;
   sectionName?: string;
@@ -22,7 +19,7 @@ export interface UDPRouteParentReference {
 
 export interface UDPRouteBackendRef {
   group?: string;
-  kind?: UDPRouteBackendKind;
+  kind?: GatewayApiBackendKind;
   name: string;
   namespace?: string;
   port?: number;

@@ -6,10 +6,9 @@
 import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
+import type { GatewayApiBackendKind } from "./gateway-api-types";
 
 export type HTTPRouteParentKind = "Gateway";
-
-export type HTTPRouteBackendKind = "Service";
 
 export type PathMatchType = "Exact" | "PathPrefix" | "RegularExpression";
 
@@ -37,7 +36,7 @@ export interface HTTPRouteParentReference {
 
 export interface HTTPRouteBackendRef {
   group?: string;
-  kind?: HTTPRouteBackendKind;
+  kind?: GatewayApiBackendKind;
   name: string;
   namespace?: string;
   port?: number;
