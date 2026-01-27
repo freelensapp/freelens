@@ -98,6 +98,15 @@ export interface HTTPRouteStatus {
   }>;
 }
 
+/**
+ * HTTPRoute defines HTTP routing rules for forwarding traffic to backend Services.
+ *
+ * HTTPRoutes attach to Gateway listeners and match HTTP requests based on hostnames,
+ * paths, headers, query parameters, and methods. They support advanced traffic
+ * management including header modification, redirects, mirroring, and URL rewriting.
+ *
+ * @see https://gateway-api.sigs.k8s.io/v1alpha2/references/spec/#gateway.networking.k8s.io/v1.HTTPRoute
+ */
 export class HTTPRoute extends KubeObject<NamespaceScopedMetadata, HTTPRouteStatus, HTTPRouteSpec> {
   static readonly kind = "HTTPRoute";
 
@@ -105,6 +114,10 @@ export class HTTPRoute extends KubeObject<NamespaceScopedMetadata, HTTPRouteStat
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/httproutes";
 
+  /**
+   * Get hostnames that this route responds to.
+   * Hostnames are matched against the TLS SNI or HTTP Host header.
+   */
   getHostnames(): string[] {
     return this.spec.hostnames ?? [];
   }
@@ -117,6 +130,10 @@ export class HTTPRoute extends KubeObject<NamespaceScopedMetadata, HTTPRouteStat
     return [...(this.spec.commonParentRefs ?? []), ...(this.spec.parentRefs ?? [])];
   }
 
+  /**
+   * Get all routing rules defined in this HTTPRoute.
+   * Rules are evaluated in order and contain matches, filters, and backend refs.
+   */
   getRoutes(): HTTPRouteRule[] {
     return this.spec.rules ?? [];
   }
