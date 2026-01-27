@@ -51,6 +51,7 @@ import { registerInjectables as registerNamespacesInjectables } from "./namespac
 import { registerInjectables as registerNetworkInjectables } from "./network/register-injectables";
 import { registerInjectables as registerNetworkEndpointSlicesInjectables } from "./network-endpoint-slices/register-injectables";
 import { registerInjectables as registerNetworkEndpointsInjectables } from "./network-endpoints/register-injectables";
+import { registerInjectables as registerGatewayApiInjectables } from "./network-gateway-api/register-injectables";
 import { registerInjectables as registerNetworkIngressesInjectables } from "./network-ingresses/register-injectables";
 import { registerInjectables as registerNetworkPoliciesInjectables } from "./network-policies/register-injectables";
 import { registerInjectables as registerNetworkPortForwardsInjectables } from "./network-port-forwards/register-injectables";
@@ -308,6 +309,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerNetworkIngressesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerGatewayApiInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
