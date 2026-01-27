@@ -48,6 +48,15 @@ export interface BackendLBPolicyStatus {
   }>;
 }
 
+/**
+ * BackendLBPolicy defines load balancing behavior for traffic to backend Services.
+ *
+ * BackendLBPolicy controls how Gateways distribute traffic across backend endpoints,
+ * including slow start (gradual traffic ramp-up) and different traffic types
+ * (Application vs System). This enables graceful rollout and optimal resource utilization.
+ *
+ * @see https://gateway-api.sigs.k8s.io/v1alpha2/references/spec/#gateway.networking.k8s.io/v1alpha2.BackendLBPolicy
+ */
 export class BackendLBPolicy extends KubeObject<NamespaceScopedMetadata, BackendLBPolicyStatus, BackendLBPolicySpec> {
   static readonly kind = "BackendLBPolicy";
 
@@ -63,6 +72,10 @@ export class BackendLBPolicy extends KubeObject<NamespaceScopedMetadata, Backend
     return [this.spec.targetRef];
   }
 
+  /**
+   * Get the load balancing policy type (e.g., "RoundRobin", "LeastConnection").
+   * The specific values depend on the controller implementation.
+   */
   getPolicyType(): string {
     return this.spec.policyType ?? "";
   }
