@@ -7,13 +7,13 @@ import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata } from "../api-types";
 
-export type RouteKind = "Gateway" | "GRPCRoute" | "HTTPRoute" | "TCPRoute" | "TLSRoute" | "UDPRoute";
+export type TLSRouteKind = "Gateway" | "GRPCRoute" | "HTTPRoute" | "TCPRoute" | "TLSRoute" | "UDPRoute";
 
 export type TLSRouteBackendKind = "Service";
 
 export interface TLSRouteParentReference {
   group?: string;
-  kind: RouteKind;
+  kind: TLSRouteKind;
   name: string;
   namespace?: string;
   sectionName?: string;
