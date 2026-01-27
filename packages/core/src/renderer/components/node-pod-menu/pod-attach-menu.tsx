@@ -46,6 +46,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
 
   const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
+  const annotations = pod.getAnnotations(true)
 
   const attachToPod = async (container: Container) => {
     const containerName = container.name;
@@ -80,6 +81,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
       tooltip="Attach to Pod"
       toolbar={toolbar}
       containers={containers}
+      annotations={annotations}
       statuses={statuses}
       onMenuItemClick={attachToPod}
     />

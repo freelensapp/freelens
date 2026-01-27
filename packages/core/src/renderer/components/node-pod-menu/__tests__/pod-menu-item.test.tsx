@@ -44,6 +44,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={null as never}
+        annotations={[]}
         statuses={[]}
         onMenuItemClick={() => {}}
       />,
@@ -62,6 +63,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={[]}
+        annotations={[]}
         statuses={[]}
         onMenuItemClick={() => {}}
       />,
@@ -85,6 +87,7 @@ describe("pod-menu-item", () => {
           tooltip="tooltip"
           toolbar={true}
           containers={containers}
+          annotations={[]}
           statuses={[]}
           onMenuItemClick={callback}
         />,
@@ -122,6 +125,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={containers}
+        annotations={[]}
         // @ts-ignore
         statuses={statuses}
         onMenuItemClick={callback}
@@ -179,6 +183,7 @@ describe("pod-menu-item", () => {
           tooltip="tooltip"
           toolbar={true}
           containers={containers}
+          annotations={[]}
           // @ts-ignore
           statuses={statuses}
           onMenuItemClick={callback}
@@ -191,5 +196,36 @@ describe("pod-menu-item", () => {
 
     fireEvent.click(menuItem[1]);
     expect(callback).toBeCalledWith(containers[0]);
+  });
+
+  it("click on main MenuItem should execute onMenuItemClick with prefered container", () => {
+    // GIVEN
+    const title = "title";
+    const containers: ContainerWithType[] = [{ name: "container-name-1", type: "containers" }, { name: "container-name-2", type: "containers" }];
+    const annotations: string[] = ["kubectl.kubernetes.io/default-container=container-name-2"]
+
+    // WHEN
+    expect(() => {
+      render(
+        <PodMenuItem
+          material="pageview"
+          title={title}
+          tooltip="tooltip"
+          toolbar={true}
+          containers={containers}
+          annotations={annotations}
+          statuses={[]}
+          onMenuItemClick={callback}
+        />,
+      );
+    }).not.toThrow();
+
+    // THEN
+    const menuItem = screen.getAllByTestId("menu-item-testid");
+
+    expect(menuItem).toHaveLength(2);
+
+    fireEvent.click(menuItem[0]);
+    expect(callback).toBeCalledWith(containers[1]);
   });
 });
