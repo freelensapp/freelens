@@ -288,7 +288,7 @@ Lens](https://github.com/lensapp/lens/tree/master), the core of [Lens
 Desktop](https://k8slens.dev), with the aim of carrying forward its
 open-source version.
 
-Copyright (c) 2024-2025 Freelens Authors.
+Copyright (c) 2024-2026 Freelens Authors.
 
 Copyright (c) 2022 OpenLens Authors.
 
