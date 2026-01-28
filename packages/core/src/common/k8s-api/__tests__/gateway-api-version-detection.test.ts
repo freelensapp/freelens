@@ -18,8 +18,10 @@ import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 
 import type { HTTPRouteApi, ReferenceGrantApi } from "@freelensapp/kube-api";
+
 import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
+
 import type { NodeFetch } from "../../fetch/node-fetch.injectable";
 import type { ApiManager } from "../api-manager";
 
