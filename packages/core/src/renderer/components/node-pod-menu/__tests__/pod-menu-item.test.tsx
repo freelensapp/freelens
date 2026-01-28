@@ -198,7 +198,7 @@ describe("pod-menu-item", () => {
     expect(callback).toBeCalledWith(containers[0]);
   });
 
-  it("click on main MenuItem should execute onMenuItemClick with prefered container", () => {
+  it("click on main MenuItem should execute onMenuItemClick with preferred container", () => {
     // GIVEN
     const title = "title";
     const containers: ContainerWithType[] = [
@@ -226,7 +226,7 @@ describe("pod-menu-item", () => {
     // THEN
     const menuItem = screen.getAllByTestId("menu-item-testid");
 
-    expect(menuItem).toHaveLength(2);
+    expect(menuItem).toHaveLength(3);
 
     fireEvent.click(menuItem[0]);
     expect(callback).toBeCalledWith(containers[1]);
