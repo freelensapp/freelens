@@ -3,15 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { GatewayClass } from "./gateway-class";
+import { BackendLBPolicy } from "./backend-lb-policy";
+import { BackendTLSPolicy } from "./backend-tls-policy";
 import { Gateway } from "./gateway";
-import { HTTPRoute } from "./http-route";
+import { GatewayClass } from "./gateway-class";
 import { GRPCRoute } from "./grpc-route";
+import { HTTPRoute } from "./http-route";
 import { TCPRoute } from "./tcp-route";
 import { TLSRoute } from "./tls-route";
 import { UDPRoute } from "./udp-route";
-import { BackendTLSPolicy } from "./backend-tls-policy";
-import { BackendLBPolicy } from "./backend-lb-policy";
 
 const baseMetadata = (selfLink: string, name = "test", namespace?: string) => ({
   name,
