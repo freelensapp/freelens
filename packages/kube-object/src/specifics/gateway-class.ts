@@ -44,6 +44,8 @@ export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClass
 
   static readonly apiBase = "/apis/gateway.networking.k8s.io/v1/gatewayclasses";
 
+  static readonly ANNOTATION_IS_DEFAULT = "gateway.networking.k8s.io/is-default-class";
+
   /**
    * Get the controller name that manages Gateways of this class.
    * Controllers watch for GatewayClasses with their controller name to claim ownership.
@@ -73,5 +75,9 @@ export class GatewayClass extends KubeObject<ClusterScopedMetadata, GatewayClass
    */
   isAccepted(): boolean {
     return this.status?.conditions?.some((c) => c.type === "Accepted" && c.status === "True") ?? false;
+  }
+
+  get isDefault() {
+    return this.metadata.annotations?.[GatewayClass.ANNOTATION_IS_DEFAULT] === "true";
   }
 }
