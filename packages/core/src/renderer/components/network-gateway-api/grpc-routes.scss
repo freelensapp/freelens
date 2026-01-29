@@ -1,9 +1,12 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./badge";
-export * from "./badge-boolean";
-export * from "./beta-badge";
+.GRPCRoutes {
+  .TableCell {
+    &.accepted {
+      justify-content: center;
+    }
+  }
+}

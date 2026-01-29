@@ -1,0 +1,27 @@
+.BetaBadge {
+  --beta-badge-bg: 20%;
+  --beta-badge-border: 60%;
+  background: color-mix(
+    in srgb,
+    var(--beta-badge-color, var(--colorInfo)) var(--beta-badge-bg),
+    transparent
+  );
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--beta-badge-color, var(--colorInfo)) var(--beta-badge-border),
+      transparent
+    );
+  border-radius: 999px;
+  color: var(--beta-badge-color, var(--colorInfo));
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.1rem 0.4rem;
+  text-transform: uppercase;
+}
+
+.BetaBadgeInline {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.4rem;
+}

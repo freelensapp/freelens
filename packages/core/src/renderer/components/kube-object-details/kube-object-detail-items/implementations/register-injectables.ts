@@ -16,7 +16,11 @@ import deploymentDetailItemInjectable from "./deployment-detail-item.injectable"
 import endpointSliceDetailItemInjectable from "./endpoint-slice-detail-item.injectable";
 import endpointsDetailItemInjectable from "./endpoints-detail-item.injectable";
 import eventsDetailItemInjectable from "./events-detail-item.injectable";
+import gatewayClassDetailItemInjectable from "./gateway-class-detail-item.injectable";
+import gatewayDetailItemInjectable from "./gateway-detail-item.injectable";
+import grpcRouteDetailItemInjectable from "./grpc-route-detail-item.injectable";
 import horizontalPodAutoscalerDetailItemInjectable from "./horizontal-pod-autoscaler-detail-item.injectable";
+import httpRouteDetailItemInjectable from "./http-route-detail-item.injectable";
 import ingressClassDetailItemInjectable from "./ingress-class-detail-item.injectable";
 import ingressDetailItemInjectable from "./ingress-detail-item.injectable";
 import jobDetailItemInjectable from "./job-detail-item.injectable";
@@ -33,6 +37,7 @@ import podDetailItemInjectable from "./pod-detail-item.injectable";
 import podDisruptionBudgetDetailItemInjectable from "./pod-disruption-budget-detail-item.injectable";
 import podSecurityPolicyDetailItemInjectable from "./pod-security-policy-detail-item.injectable";
 import priorityClassDetailItemInjectable from "./priority-class-detail-item.injectable";
+import referenceGrantDetailItemInjectable from "./reference-grant-detail-item.injectable";
 import replicaSetDetailItemInjectable from "./replica-set-detail-item.injectable";
 import replicationControllerDetailItemInjectable from "./replication-controller-detail-item.injectable";
 import resourceQuotaDetailItemInjectable from "./resource-quota-detail-item.injectable";
@@ -101,7 +106,27 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(gatewayClassDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(gatewayDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(grpcRouteDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(horizontalPodAutoscalerDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(httpRouteDetailItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -182,6 +207,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(priorityClassDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(referenceGrantDetailItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
