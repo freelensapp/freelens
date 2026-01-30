@@ -13,6 +13,7 @@ import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { LinkToNamespace, LinkToObject } from "../kube-object-link";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -39,6 +40,7 @@ const NonInjectedGatewayClassDetails = observer((props: GatewayClassDetailsProps
 
   const parametersRef = gatewayClass.getParametersRef();
   const parametersApiVersion = parametersRef?.group ? `${parametersRef.group}/v1` : undefined;
+  const supportedFeatures = gatewayClass.status?.supportedFeatures ?? [];
 
   return (
     <div className="GatewayClassDetails">
@@ -65,6 +67,21 @@ const NonInjectedGatewayClassDetails = observer((props: GatewayClassDetailsProps
             {parametersRef.namespace ? <LinkToNamespace namespace={parametersRef.namespace} /> : "-"}
           </DrawerItem>
           <DrawerItem name="Group">{parametersRef.group}</DrawerItem>
+        </>
+      )}
+      {supportedFeatures.length > 0 && (
+        <>
+          <DrawerTitle>Supported Features</DrawerTitle>
+          <Table>
+            <TableHead flat>
+              <TableCell>Feature</TableCell>
+            </TableHead>
+            {supportedFeatures.map((feature) => (
+              <TableRow key={feature.name}>
+                <TableCell>{feature.name}</TableCell>
+              </TableRow>
+            ))}
+          </Table>
         </>
       )}
     </div>
