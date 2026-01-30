@@ -3,7 +3,7 @@
   "productName": "Freelens extensions",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
   "version": "1.8.1-0",
-  "copyright": "© 2024-2025 Freelens Authors",
+  "copyright": "© 2024-2026 Freelens Authors",
   "license": "MIT",
   "main": "dist/extension-api.js",
   "types": "dist/extension-api.d.ts",

@@ -25,7 +25,7 @@
   "dependencies": {
     "identity-obj-proxy": "^3.0.0",
     "glob": "^13.0.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

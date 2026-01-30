@@ -14,7 +14,7 @@
     "url": "https://github.com/freelensapp/freelens/issues"
   },
   "main": "static/build/main.js",
-  "copyright": "© 2024-2025 Freelens Authors",
+  "copyright": "© 2024-2026 Freelens Authors",
   "license": "MIT",
   "author": {
     "name": "Freelens Authors",
@@ -113,7 +113,7 @@
     "isomorphic-ws": "^5.0.0",
     "joi": "^18.0.2",
     "js-yaml": "^4.1.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "mobx": "^6.15.0",
     "moment": "^2.30.1",
     "moment-timezone": "^0.6.0",
