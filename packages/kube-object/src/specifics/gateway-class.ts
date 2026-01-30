@@ -26,6 +26,9 @@ export interface GatewayClassStatus {
     reason?: string;
     message?: string;
   }>;
+  supportedFeatures?: Array<{
+    name: string;
+  }>;
 }
 
 /**
