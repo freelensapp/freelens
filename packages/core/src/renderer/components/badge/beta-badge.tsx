@@ -8,4 +8,15 @@ import "./beta-badge.scss";
 import React from "react";
 import { Badge } from "./badge";
 
-export const BetaBadge = () => <Badge small flat className="BetaBadge" label="Beta" />;
+export type BetaBadgeVariant = "outline" | "solid" | "contrast";
+
+export interface BetaBadgeProps {
+  variant?: BetaBadgeVariant;
+  className?: string;
+}
+
+export const BetaBadge = ({ variant = "outline", className }: BetaBadgeProps) => {
+  const classes = ["BetaBadge", `BetaBadge--${variant}`, className].filter(Boolean).join(" ");
+
+  return <Badge small flat className={classes} label="Beta" />;
+};

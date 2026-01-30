@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import grpcRoutesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/grpc-routes/grpc-routes-route.injectable";
 import navigateToGRPCRoutesInjectable from "../../../common/front-end-routing/routes/cluster/network/grpc-routes/navigate-to-grpc-routes.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const grpcRoutesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-grpc-routes",
@@ -19,12 +17,8 @@ const grpcRoutesSidebarItemInjectable = getInjectable({
     const route = di.inject(grpcRoutesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          gRPC Routes <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "gRPC Routes",
       onClick: di.inject(navigateToGRPCRoutesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,

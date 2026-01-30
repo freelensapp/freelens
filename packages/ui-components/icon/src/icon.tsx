@@ -15,6 +15,7 @@ import React, { createRef } from "react";
 import { NavLink } from "react-router-dom";
 import Configuration from "../assets/configuration.svg";
 import Crane from "../assets/crane.svg";
+import GatewayApi from "../assets/gateway-api.svg";
 import Group from "../assets/group.svg";
 import Helm from "../assets/helm.svg";
 import Install from "../assets/install.svg";
@@ -53,6 +54,7 @@ const hrefIsSafe = (href: string) => Boolean(href.match(hrefValidation));
 const localSvgIcons = new Map([
   ["configuration", Configuration],
   ["crane", Crane],
+  ["gateway-api", GatewayApi],
   ["group", Group],
   ["helm", Helm],
   ["install", Install],
@@ -77,6 +79,7 @@ const localSvgIcons = new Map([
 export type NamedSvg =
   | "configuration"
   | "crane"
+  | "gateway-api"
   | "group"
   | "helm"
   | "install"

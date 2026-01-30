@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToReferenceGrantsInjectable from "../../../common/front-end-routing/routes/cluster/network/reference-grants/navigate-to-reference-grants.injectable";
 import referenceGrantsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/reference-grants/reference-grants-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const referenceGrantsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-reference-grants",
@@ -19,12 +17,8 @@ const referenceGrantsSidebarItemInjectable = getInjectable({
     const route = di.inject(referenceGrantsRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          Reference Grants <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "Reference Grants",
       onClick: di.inject(navigateToReferenceGrantsInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,

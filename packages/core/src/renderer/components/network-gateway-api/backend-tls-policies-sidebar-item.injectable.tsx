@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import backendTLSPoliciesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/backend-tls-policies/backend-tls-policies-route.injectable";
 import navigateToBackendTLSPoliciesInjectable from "../../../common/front-end-routing/routes/cluster/network/backend-tls-policies/navigate-to-backend-tls-policies.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const backendTLSPoliciesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-backend-tls-policies",
@@ -19,12 +17,8 @@ const backendTLSPoliciesSidebarItemInjectable = getInjectable({
     const route = di.inject(backendTLSPoliciesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          Backend TLS Policies <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "Backend TLS Policies",
       onClick: di.inject(navigateToBackendTLSPoliciesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
