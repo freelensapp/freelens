@@ -6,7 +6,11 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import backendLBPoliciesRouteComponentInjectable from "./backend-lb-policies-route-component.injectable";
+import backendLBPoliciesSidebarItemInjectable from "./backend-lb-policies-sidebar-item.injectable";
 import backendLBPolicyStoreInjectable from "./backend-lb-policy-store.injectable";
+import backendTLSPoliciesRouteComponentInjectable from "./backend-tls-policies-route-component.injectable";
+import backendTLSPoliciesSidebarItemInjectable from "./backend-tls-policies-sidebar-item.injectable";
 import backendTLSPolicyStoreInjectable from "./backend-tls-policy-store.injectable";
 import gatewayClassStoreInjectable from "./gateway-class-store.injectable";
 import gatewayClassesRouteComponentInjectable from "./gateway-classes-route-component.injectable";
@@ -24,14 +28,40 @@ import referenceGrantStoreInjectable from "./reference-grant-store.injectable";
 import referenceGrantsRouteComponentInjectable from "./reference-grants-route-component.injectable";
 import referenceGrantsSidebarItemInjectable from "./reference-grants-sidebar-item.injectable";
 import tcpRouteStoreInjectable from "./tcp-route-store.injectable";
+import tcpRoutesRouteComponentInjectable from "./tcp-routes-route-component.injectable";
+import tcpRoutesSidebarItemInjectable from "./tcp-routes-sidebar-item.injectable";
 import tlsRouteStoreInjectable from "./tls-route-store.injectable";
+import tlsRoutesRouteComponentInjectable from "./tls-routes-route-component.injectable";
+import tlsRoutesSidebarItemInjectable from "./tls-routes-sidebar-item.injectable";
 import udpRouteStoreInjectable from "./udp-route-store.injectable";
+import udpRoutesRouteComponentInjectable from "./udp-routes-route-component.injectable";
+import udpRoutesSidebarItemInjectable from "./udp-routes-sidebar-item.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
+    di.register(backendLBPoliciesRouteComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(backendLBPoliciesSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(backendLBPolicyStoreInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(backendTLSPoliciesRouteComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(backendTLSPoliciesSidebarItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -121,12 +151,42 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(tcpRoutesRouteComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(tcpRoutesSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(tlsRouteStoreInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(tlsRoutesRouteComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(tlsRoutesSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(udpRouteStoreInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(udpRoutesRouteComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(udpRoutesSidebarItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
