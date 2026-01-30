@@ -10,6 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import * as semver from "semver";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
 
@@ -23,8 +24,13 @@ const newVersionNotificationInjectable = getInjectable({
     const getLatestVersion = di.inject(getLatestVersionViaChannelInjectable);
     const logger = di.inject(loggerInjectionToken);
     const showInfoNotification = di.inject(showInfoNotificationInjectable);
+    const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
     return async () => {
+      if (userPreferencesState.checkForUpdates === false) {
+        return;
+      }
+
       let newVersion: string | undefined;
 
       try {
