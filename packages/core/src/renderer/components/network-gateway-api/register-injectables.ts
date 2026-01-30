@@ -12,6 +12,7 @@ import backendLBPolicyStoreInjectable from "./backend-lb-policy-store.injectable
 import backendTLSPoliciesRouteComponentInjectable from "./backend-tls-policies-route-component.injectable";
 import backendTLSPoliciesSidebarItemInjectable from "./backend-tls-policies-sidebar-item.injectable";
 import backendTLSPolicyStoreInjectable from "./backend-tls-policy-store.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 import gatewayClassStoreInjectable from "./gateway-class-store.injectable";
 import gatewayClassesRouteComponentInjectable from "./gateway-classes-route-component.injectable";
 import gatewayClassesSidebarItemInjectable from "./gateway-classes-sidebar-item.injectable";
@@ -67,6 +68,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(backendTLSPolicyStoreInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(gatewayApiSidebarItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

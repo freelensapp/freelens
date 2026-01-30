@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToTLSRoutesInjectable from "../../../common/front-end-routing/routes/cluster/network/tls-routes/navigate-to-tls-routes.injectable";
 import tlsRoutesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/tls-routes/tls-routes-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const tlsRoutesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-tls-routes",
@@ -19,12 +17,8 @@ const tlsRoutesSidebarItemInjectable = getInjectable({
     const route = di.inject(tlsRoutesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          TLS Routes <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "TLS Routes",
       onClick: di.inject(navigateToTLSRoutesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,

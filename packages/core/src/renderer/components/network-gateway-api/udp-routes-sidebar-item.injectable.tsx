@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToUDPRoutesInjectable from "../../../common/front-end-routing/routes/cluster/network/udp-routes/navigate-to-udp-routes.injectable";
 import udpRoutesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/udp-routes/udp-routes-route.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const udpRoutesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-udp-routes",
@@ -19,12 +17,8 @@ const udpRoutesSidebarItemInjectable = getInjectable({
     const route = di.inject(udpRoutesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          UDP Routes <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "UDP Routes",
       onClick: di.inject(navigateToUDPRoutesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
