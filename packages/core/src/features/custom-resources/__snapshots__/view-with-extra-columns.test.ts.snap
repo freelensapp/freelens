@@ -256,6 +256,14 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
             role="button"
             style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
+          />
+          <div
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
           >
             <div
               class="SidebarItem"
