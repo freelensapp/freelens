@@ -18,6 +18,7 @@ import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
+import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 
 interface Dependencies {
   sidebarStorage: StorageLayer<SidebarStorageState>;
@@ -101,7 +102,7 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
             small
           />
         )}
-        {item.parentId && !isExpandable && (
+        {item.parentId && !isExpandable && id !== favoritesOverviewSidebarItemInjectable.id && (
           <Icon
             className={styles.pinIcon}
             svg={isFavorite ? "push_off" : "push_pin"}

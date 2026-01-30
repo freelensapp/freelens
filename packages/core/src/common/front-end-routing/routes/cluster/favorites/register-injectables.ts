@@ -7,28 +7,10 @@
  */
 
 import { registerInjectables as registerOverviewInjectables } from "./overview/register-injectables";
-import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
-import favoritesSidebarItemsComputedInjectable from "./sidebar-items-computed.injectable";
-import favoritesStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(favoritesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(favoritesSidebarItemsComputedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(favoritesStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     registerOverviewInjectables(di);
   } catch (e) {

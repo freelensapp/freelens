@@ -26,8 +26,7 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
       const favoriteItems = favoritesStore.items;
       const allSidebarItems = sidebarItemsComputed.get();
 
-      const isFavoriteClone = (item: any) =>
-        item.id?.startsWith("favorite-") || item.parentId === favoritesSidebarItemInjectable.id;
+      const isFavoriteClone = (item: any) => item.id?.startsWith("favorite-");
 
       const flattenSidebarItems = (items: any[]): any[] => {
         return items.reduce((acc, item) => {
@@ -49,7 +48,10 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
 
       const itemMap = new Map(flatSidebarItems.map((item) => [item.id, item]));
 
-      return favoriteItems
+      const favoritesMainItem = allSidebarItems.find((item) => item.id === favoritesSidebarItemInjectable.id);
+      const naturalChildren = favoritesMainItem?.children || [];
+
+      const dynamicFavorites = favoriteItems
         .map((fav: FavoriteItem) => {
           const originalItem = itemMap.get(fav.id);
 
@@ -70,6 +72,8 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
           };
         })
         .filter((item: FavoriteSidebarItem | null): item is FavoriteSidebarItem => Boolean(item));
+
+      return [...naturalChildren, ...dynamicFavorites];
     });
   },
 });

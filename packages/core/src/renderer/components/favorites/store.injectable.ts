@@ -20,7 +20,7 @@ export class FavoritesStore {
   }
 
   @computed get highestOrder() {
-    return this.items.reduce((max: number, item: FavoriteItem) => Math.max(max, item.order ?? 0), 0);
+    return this.items.reduce((max: number, item: FavoriteItem) => Math.max(max, item.order ?? 0), 10);
   }
 
   has(id: string) {
