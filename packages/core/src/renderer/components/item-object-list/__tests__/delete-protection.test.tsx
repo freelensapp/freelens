@@ -7,13 +7,15 @@
 import "@testing-library/jest-dom";
 
 import React from "react";
+import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { ItemListLayoutContent } from "../content";
-import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
+
+import type { ItemObject } from "@freelensapp/list-layout";
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { ItemObject } from "@freelensapp/list-layout";
+
 import type { DiRender } from "../../test-utils/renderFor";
 import type { ItemListLayoutContentProps } from "../content";
 

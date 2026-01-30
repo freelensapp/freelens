@@ -8,6 +8,8 @@ import "./namespaces.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
@@ -18,12 +20,10 @@ import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
 import namespaceStoreInjectable from "./store.injectable";
 import { SubnamespaceBadge } from "./subnamespace-badge";
-import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
 import type { NamespaceStore } from "./store";
-import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 
 enum columnId {
   name = "name",

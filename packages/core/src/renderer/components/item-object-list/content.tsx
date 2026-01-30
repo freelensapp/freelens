@@ -13,10 +13,10 @@ import autoBindReact from "auto-bind/react";
 import { action, computed, makeObservable, observable } from "mobx";
 import { Observer, observer } from "mobx-react";
 import React from "react";
-import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
-import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
+import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
+import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { AddRemoveButtons } from "../add-remove-buttons";
 import { Checkbox } from "../checkbox";
@@ -34,8 +34,8 @@ import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import type { IComputedValue } from "mobx";
 
 import type { IsTableColumnHidden } from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
-import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
+import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
@@ -561,9 +561,9 @@ export class NonInjectedItemListLayoutContent<
             return (
               <AddRemoveButtons
                 onRemove={
-                  (allowDelete(this.props.userPreferencesState) &&
+                  allowDelete(this.props.userPreferencesState) &&
                   (store.removeItems || store.removeSelectedItems) &&
-                  selectedItems.length > 0)
+                  selectedItems.length > 0
                     ? () => this.removeItemsDialog(selectedItems)
                     : undefined
                 }
