@@ -12,6 +12,7 @@ import { kebabCase } from "lodash/fp";
 import moment from "moment-timezone";
 import React, { Component } from "react";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { ItemListLayout } from "../item-object-list";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
@@ -27,6 +28,7 @@ import type { IComputedValue } from "mobx";
 
 import type { NavigateToHelmReleases } from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { ItemListStore } from "../item-object-list";
 import type { RemovableHelmRelease } from "./removable-releases";
 
@@ -46,6 +48,7 @@ interface Dependencies {
   releasesArePending: IComputedValue<boolean>;
   namespace: IComputedValue<string>;
   navigateToHelmReleases: NavigateToHelmReleases;
+  userPreferencesState: UserPreferencesState;
 }
 
 class NonInjectedHelmReleases extends Component<Dependencies> {
@@ -111,16 +114,18 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
 
       isSelected: (release) => release.isSelected,
 
-      removeSelectedItems: async () => {
-        await Promise.all(
-          releases
-            .get()
-            .filter((release) => release.isSelected)
-            .map((release) => release.delete()),
-        );
-      },
-
       pickOnlySelected: (releases) => releases.filter((release) => release.isSelected),
+
+      removeSelectedItems: async () => {
+        if (this.props.userPreferencesState.allowDelete !== false) {
+          await Promise.all(
+            releases
+              .get()
+              .filter((release) => release.isSelected)
+              .map((release) => release.delete()),
+          );
+        }
+      },
     };
 
     return (
@@ -205,6 +210,7 @@ export const HelmReleases = withInjectables<Dependencies>(NonInjectedHelmRelease
     releases: di.inject(removableReleasesInjectable),
     releasesArePending: di.inject(releasesInjectable).pending,
     navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
+    userPreferencesState: di.inject(userPreferencesStateInjectable),
     ...di.inject(helmReleasesRouteParametersInjectable),
   }),
 });

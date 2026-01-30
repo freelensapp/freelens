@@ -200,7 +200,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
 
     const isEditable = editable ?? (Boolean(store?.patch) || Boolean(updateAction));
     const defaultRemovable = removable ?? (Boolean(store?.remove) || Boolean(removeAction));
-    const isRemovable = userPreferencesState.allowDelete !== false && defaultRemovable;
+    const isRemovable = (userPreferencesState.allowDelete ?? true) && defaultRemovable;
 
     runInAction(() => {
       this.menuItems.clear();

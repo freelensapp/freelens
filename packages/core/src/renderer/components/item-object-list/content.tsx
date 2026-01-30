@@ -15,6 +15,7 @@ import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { AddRemoveButtons } from "../add-remove-buttons";
 import { Checkbox } from "../checkbox";
@@ -33,6 +34,7 @@ import type { IComputedValue } from "mobx";
 
 import type { IsTableColumnHidden } from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import type { ToggleTableColumnVisibility } from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
@@ -95,6 +97,7 @@ interface Dependencies {
   toggleTableColumnVisibility: ToggleTableColumnVisibility;
   isTableColumnHidden: IsTableColumnHidden;
   columnResizeStorage: StorageLayer<ColumnResizeStorageState>;
+  userPreferencesState: UserPreferencesState;
 }
 
 @observer
@@ -522,7 +525,6 @@ export class NonInjectedItemListLayoutContent<
     const selectedItemId = detailsItem && detailsItem.getId();
     const classNames = cssNames(className, "box", "grow", activeTheme.get().type);
     const items = getItems();
-    const selectedItems = store.pickOnlySelected(items);
 
     return (
       <div className="items box grow flex column" ref={this.tableRef}>
@@ -551,17 +553,23 @@ export class NonInjectedItemListLayoutContent<
         </Table>
 
         <Observer>
-          {() => (
-            <AddRemoveButtons
-              onRemove={
-                (store.removeItems || store.removeSelectedItems) && selectedItems.length > 0
-                  ? () => this.removeItemsDialog(selectedItems)
-                  : undefined
-              }
-              removeTooltip={`Remove selected items (${selectedItems.length})`}
-              {...addRemoveButtons}
-            />
-          )}
+          {() => {
+            const items = getItems();
+            const selectedItems = store.pickOnlySelected(items);
+
+            return (
+              <AddRemoveButtons
+                onRemove={
+                  (this.props.userPreferencesState.allowDelete ??
+                  (true && (store.removeItems || store.removeSelectedItems) && selectedItems.length > 0))
+                    ? () => this.removeItemsDialog(selectedItems)
+                    : undefined
+                }
+                removeTooltip={`Remove selected items (${selectedItems.length})`}
+                {...addRemoveButtons}
+              />
+            );
+          }}
         </Observer>
       </div>
     );
@@ -612,6 +620,7 @@ export const ItemListLayoutContent = withInjectables<Dependencies, ItemListLayou
       toggleTableColumnVisibility: di.inject(toggleTableColumnVisibilityInjectable),
       isTableColumnHidden: di.inject(isTableColumnHiddenInjectable),
       columnResizeStorage: di.inject(columnResizeStorageInjectable),
+      userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
   },
 ) as <Item extends ItemObject, PreLoadStores extends boolean>(

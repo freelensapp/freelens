@@ -7,7 +7,9 @@
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
 import React from "react";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import createUpgradeChartTabInjectable from "../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
@@ -15,6 +17,7 @@ import deleteReleaseInjectable from "./delete-release/delete-release.injectable"
 import openHelmReleaseRollbackDialogInjectable from "./dialog/open.injectable";
 
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { MenuActionsProps } from "../menu/menu-actions";
 import type { OpenHelmReleaseRollbackDialog } from "./dialog/open.injectable";
 
@@ -27,48 +30,56 @@ interface Dependencies {
   deleteRelease: (release: HelmRelease) => Promise<any>;
   createUpgradeChartTab: (release: HelmRelease) => void;
   openRollbackDialog: OpenHelmReleaseRollbackDialog;
+  userPreferencesState: UserPreferencesState;
 }
 
-class NonInjectedHelmReleaseMenu extends React.Component<HelmReleaseMenuProps & Dependencies> {
-  remove = () => {
-    return this.props.deleteRelease(this.props.release);
-  };
+const NonInjectedHelmReleaseMenu = observer(
+  ({
+    release,
+    className,
+    hideDetails,
+    deleteRelease,
+    createUpgradeChartTab,
+    openRollbackDialog,
+    userPreferencesState,
+    ...menuProps
+  }: HelmReleaseMenuProps & Dependencies) => {
+    const remove = () => {
+      return deleteRelease(release);
+    };
 
-  upgrade = () => {
-    const { release, hideDetails } = this.props;
+    const upgrade = () => {
+      createUpgradeChartTab(release);
+      hideDetails?.();
+    };
 
-    this.props.createUpgradeChartTab(release);
-    hideDetails?.();
-  };
+    const rollback = () => {
+      openRollbackDialog(release);
+    };
 
-  rollback = () => {
-    this.props.openRollbackDialog(this.props.release);
-  };
+    const renderContent = () => {
+      const { toolbar } = menuProps;
 
-  renderContent() {
-    const { release, toolbar } = this.props;
+      if (!release) return null;
+      const hasRollback = release && release.getRevision() > 1;
 
-    if (!release) return null;
-    const hasRollback = release && release.getRevision() > 1;
-
-    return (
-      <>
-        {hasRollback && (
-          <MenuItem onClick={this.rollback}>
-            <Icon material="history" interactive={toolbar} tooltip="Rollback" />
-            <span className="title">Rollback</span>
+      return (
+        <>
+          {hasRollback && (
+            <MenuItem onClick={rollback}>
+              <Icon material="history" interactive={toolbar} tooltip="Rollback" />
+              <span className="title">Rollback</span>
+            </MenuItem>
+          )}
+          <MenuItem onClick={upgrade} data-testid={`upgrade-chart-menu-item-for-${release.getId()}`}>
+            <Icon material="refresh" interactive={toolbar} tooltip="Upgrade" />
+            <span className="title">Upgrade</span>
           </MenuItem>
-        )}
-        <MenuItem onClick={this.upgrade} data-testid={`upgrade-chart-menu-item-for-${release.getId()}`}>
-          <Icon material="refresh" interactive={toolbar} tooltip="Upgrade" />
-          <span className="title">Upgrade</span>
-        </MenuItem>
-      </>
-    );
-  }
+        </>
+      );
+    };
 
-  render() {
-    const { className, release, ...menuProps } = this.props;
+    const allowDelete = userPreferencesState.allowDelete ?? true;
 
     return (
       <MenuActions
@@ -79,18 +90,18 @@ class NonInjectedHelmReleaseMenu extends React.Component<HelmReleaseMenuProps & 
         }}
         {...menuProps}
         className={cssNames("HelmReleaseMenu", className)}
-        removeAction={this.remove}
+        removeAction={allowDelete ? remove : undefined}
         removeConfirmationMessage={() => (
           <p>
             Remove Helm Release <b>{release.name}</b>?
           </p>
         )}
       >
-        {this.renderContent()}
+        {renderContent()}
       </MenuActions>
     );
-  }
-}
+  },
+);
 
 export const HelmReleaseMenu = withInjectables<Dependencies, HelmReleaseMenuProps>(NonInjectedHelmReleaseMenu, {
   getProps: (di, props) => ({
@@ -98,5 +109,6 @@ export const HelmReleaseMenu = withInjectables<Dependencies, HelmReleaseMenuProp
     deleteRelease: di.inject(deleteReleaseInjectable),
     createUpgradeChartTab: di.inject(createUpgradeChartTabInjectable),
     openRollbackDialog: di.inject(openHelmReleaseRollbackDialogInjectable),
+    userPreferencesState: di.inject(userPreferencesStateInjectable),
   }),
 });
