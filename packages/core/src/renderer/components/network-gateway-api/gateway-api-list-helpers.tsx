@@ -8,11 +8,11 @@ import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
-import { renderParentRefLinks } from "./gateway-api-route-details";
+import { renderBackendLinks, renderParentRefLinks } from "./gateway-api-route-details";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
-import type { GatewayApiParentRefRow } from "./gateway-api-route-details";
+import type { GatewayApiBackendRefRow, GatewayApiParentRefRow } from "./gateway-api-route-details";
 
 export enum GatewayClassColumnId {
   name = "name",
@@ -99,6 +99,59 @@ export const referenceGrantTableHeaders = [
   { title: "Age", className: "age", sortBy: ReferenceGrantColumnId.age, id: ReferenceGrantColumnId.age },
 ];
 
+export enum GatewayApiStreamRouteColumnId {
+  name = "name",
+  namespace = "namespace",
+  parentRefs = "parentRefs",
+  backends = "backends",
+  accepted = "accepted",
+  age = "age",
+}
+
+export const gatewayApiStreamRouteTableHeaders = [
+  {
+    title: "Name",
+    className: "name",
+    sortBy: GatewayApiStreamRouteColumnId.name,
+    id: GatewayApiStreamRouteColumnId.name,
+  },
+  {
+    title: "Namespace",
+    className: "namespace",
+    sortBy: GatewayApiStreamRouteColumnId.namespace,
+    id: GatewayApiStreamRouteColumnId.namespace,
+  },
+  { title: "Parent Refs", className: "parentRefs", id: GatewayApiStreamRouteColumnId.parentRefs },
+  { title: "Backends", className: "backends", id: GatewayApiStreamRouteColumnId.backends },
+  { title: "Accepted", className: "accepted", id: GatewayApiStreamRouteColumnId.accepted },
+  { title: "Age", className: "age", sortBy: GatewayApiStreamRouteColumnId.age, id: GatewayApiStreamRouteColumnId.age },
+];
+
+export enum GatewayApiTlsRouteColumnId {
+  name = "name",
+  namespace = "namespace",
+  hostnames = "hostnames",
+  parentRefs = "parentRefs",
+  backends = "backends",
+  accepted = "accepted",
+  age = "age",
+}
+
+export const gatewayApiTlsRouteTableHeaders = [
+  { title: "Name", className: "name", sortBy: GatewayApiTlsRouteColumnId.name, id: GatewayApiTlsRouteColumnId.name },
+  {
+    title: "Namespace",
+    className: "namespace",
+    sortBy: GatewayApiTlsRouteColumnId.namespace,
+    id: GatewayApiTlsRouteColumnId.namespace,
+  },
+  { title: "Hostnames", className: "hostnames", id: GatewayApiTlsRouteColumnId.hostnames },
+  { title: "Parent Refs", className: "parentRefs", id: GatewayApiTlsRouteColumnId.parentRefs },
+  { title: "Backends", className: "backends", id: GatewayApiTlsRouteColumnId.backends },
+  { title: "Accepted", className: "accepted", id: GatewayApiTlsRouteColumnId.accepted },
+  { title: "Age", className: "age", sortBy: GatewayApiTlsRouteColumnId.age, id: GatewayApiTlsRouteColumnId.age },
+];
+
 export interface GatewayApiRouteLike extends KubeObject {
   getHostnames(): string[];
   getParentRefs(): GatewayApiParentRefRow[];
@@ -107,6 +160,19 @@ export interface GatewayApiRouteLike extends KubeObject {
   getNs(): string;
   getName(): string;
   getCreationTimestamp(): number;
+}
+
+export interface GatewayApiStreamRouteLike extends KubeObject {
+  getParentRefs(): GatewayApiParentRefRow[];
+  getBackendRefs(): GatewayApiBackendRefRow[];
+  getSearchFields(): string[];
+  getNs(): string;
+  getName(): string;
+  getCreationTimestamp(): number;
+}
+
+export interface GatewayApiTlsRouteLike extends GatewayApiStreamRouteLike {
+  getHostnames(): string[];
 }
 
 export const formatRouteHostnames = (hostnames: string[]) => {
@@ -132,6 +198,27 @@ export const getGatewayApiRouteSearchFilters = <T extends GatewayApiRouteLike>()
   (item: T) => item.getHostnames(),
 ];
 
+export const getGatewayApiStreamRouteSortingCallbacks = <T extends GatewayApiStreamRouteLike>() => ({
+  [GatewayApiStreamRouteColumnId.name]: (item: T) => item.getName(),
+  [GatewayApiStreamRouteColumnId.namespace]: (item: T) => item.getNs(),
+  [GatewayApiStreamRouteColumnId.age]: (item: T) => -item.getCreationTimestamp(),
+});
+
+export const getGatewayApiStreamRouteSearchFilters = <T extends GatewayApiStreamRouteLike>() => [
+  (item: T) => item.getSearchFields(),
+];
+
+export const getGatewayApiTlsRouteSortingCallbacks = <T extends GatewayApiTlsRouteLike>() => ({
+  [GatewayApiTlsRouteColumnId.name]: (item: T) => item.getName(),
+  [GatewayApiTlsRouteColumnId.namespace]: (item: T) => item.getNs(),
+  [GatewayApiTlsRouteColumnId.age]: (item: T) => -item.getCreationTimestamp(),
+});
+
+export const getGatewayApiTlsRouteSearchFilters = <T extends GatewayApiTlsRouteLike>() => [
+  (item: T) => item.getSearchFields(),
+  (item: T) => item.getHostnames(),
+];
+
 export const renderGatewayApiRouteTableContents = <T extends GatewayApiRouteLike>(item: T) => {
   const { label, tooltip } = formatRouteHostnames(item.getHostnames());
   const rulesLabel = formatRulesLabel(item.getRoutes().length);
@@ -144,6 +231,31 @@ export const renderGatewayApiRouteTableContents = <T extends GatewayApiRouteLike
     </WithTooltip>,
     <React.Fragment key="parentRefs">{renderParentRefLinks(item, item.getParentRefs())}</React.Fragment>,
     <WithTooltip key="rules">{rulesLabel}</WithTooltip>,
+    <KubeObjectStatusIcon key="accepted" object={item} />,
+    <KubeObjectAge key="age" object={item} />,
+  ];
+};
+
+export const renderGatewayApiStreamRouteTableContents = <T extends GatewayApiStreamRouteLike>(item: T) => [
+  <WithTooltip key="name">{item.getName()}</WithTooltip>,
+  <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
+  <React.Fragment key="parentRefs">{renderParentRefLinks(item, item.getParentRefs())}</React.Fragment>,
+  <React.Fragment key="backends">{renderBackendLinks(item, item.getBackendRefs())}</React.Fragment>,
+  <KubeObjectStatusIcon key="accepted" object={item} />,
+  <KubeObjectAge key="age" object={item} />,
+];
+
+export const renderGatewayApiTlsRouteTableContents = <T extends GatewayApiTlsRouteLike>(item: T) => {
+  const { label, tooltip } = formatRouteHostnames(item.getHostnames());
+
+  return [
+    <WithTooltip key="name">{item.getName()}</WithTooltip>,
+    <NamespaceSelectBadge key="namespace" namespace={item.getNs()} />,
+    <WithTooltip key="hostnames" tooltip={tooltip}>
+      {label}
+    </WithTooltip>,
+    <React.Fragment key="parentRefs">{renderParentRefLinks(item, item.getParentRefs())}</React.Fragment>,
+    <React.Fragment key="backends">{renderBackendLinks(item, item.getBackendRefs())}</React.Fragment>,
     <KubeObjectStatusIcon key="accepted" object={item} />,
     <KubeObjectAge key="age" object={item} />,
   ];
