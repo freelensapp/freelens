@@ -11,6 +11,10 @@ import favoritesStoreInjectable from "./store.injectable";
 
 import type { FavoriteItem } from "../../../features/favorites/common/storage.injectable";
 
+export type FavoriteSidebarItem = SidebarItemDeclaration & {
+  orderNumber: number;
+};
+
 const favoritesSidebarItemsComputedInjectable = getInjectable({
   id: "favorites-sidebar-items-computed",
 
@@ -18,14 +22,13 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
     const favoritesStore = di.inject(favoritesStoreInjectable);
     const sidebarItemsComputed = di.inject(sidebarItemsInjectable);
 
-    return computed((): SidebarItemDeclaration[] => {
+    return computed((): FavoriteSidebarItem[] => {
       const favoriteItems = favoritesStore.items;
       const allSidebarItems = sidebarItemsComputed.get();
 
       const isFavoriteClone = (item: any) =>
         item.id?.startsWith("favorite-") || item.parentId === favoritesSidebarItemInjectable.id;
 
-      // TODO: check about improving this
       const flattenSidebarItems = (items: any[]): any[] => {
         return items.reduce((acc, item) => {
           if (isFavoriteClone(item)) {
@@ -66,7 +69,7 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
             children: originalItem.children,
           };
         })
-        .filter((item: SidebarItemDeclaration | null): item is SidebarItemDeclaration => Boolean(item));
+        .filter((item: FavoriteSidebarItem | null): item is FavoriteSidebarItem => Boolean(item));
     });
   },
 });

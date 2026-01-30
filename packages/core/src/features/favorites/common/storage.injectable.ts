@@ -40,13 +40,9 @@ const favoritesPersistentStorageInjectable = getInjectable({
       fromStore: action((data) => {
         state.set({ items: data.items || [] });
       }),
-      toJSON: () => {
-        const items = state.get().items.map((item: FavoriteItem) => (item ? { ...item } : item));
-        console.log("[2] should write to json: ", items);
-        return {
-          items,
-        };
-      },
+      toJSON: () => ({
+        items: state.get().items.map((item: FavoriteItem) => (item ? { ...item } : item)),
+      }),
     });
   },
 });
