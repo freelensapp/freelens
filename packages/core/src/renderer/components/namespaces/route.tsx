@@ -18,6 +18,7 @@ import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
 import namespaceStoreInjectable from "./store.injectable";
 import { SubnamespaceBadge } from "./subnamespace-badge";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
@@ -71,12 +72,12 @@ const NonInjectedNamespacesRoute = ({
     pickOnlySelected: (...params: Parameters<NamespaceStore["pickOnlySelected"]>) =>
       namespaceStore.pickOnlySelected(...params),
     removeItems: async (items: Parameters<RequestDeleteNamespace>[0][]) => {
-      if (userPreferencesState.allowDelete !== false) {
+      if (allowDelete(userPreferencesState)) {
         await Promise.all(items.map(requestDeleteNamespace));
       }
     },
     removeSelectedItems: async () => {
-      if (userPreferencesState.allowDelete !== false) {
+      if (allowDelete(userPreferencesState)) {
         await Promise.all(namespaceStore.selectedItems.map(requestDeleteNamespace));
       }
     },

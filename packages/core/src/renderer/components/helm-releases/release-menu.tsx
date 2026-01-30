@@ -9,6 +9,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import createUpgradeChartTabInjectable from "../dock/upgrade-chart/create-upgrade-chart-tab.injectable";
 import { MenuItem } from "../menu";
@@ -79,7 +80,7 @@ const NonInjectedHelmReleaseMenu = observer(
       );
     };
 
-    const allowDelete = userPreferencesState.allowDelete ?? true;
+    const canDelete = allowDelete(userPreferencesState);
 
     return (
       <MenuActions
@@ -90,7 +91,7 @@ const NonInjectedHelmReleaseMenu = observer(
         }}
         {...menuProps}
         className={cssNames("HelmReleaseMenu", className)}
-        removeAction={allowDelete ? remove : undefined}
+        removeAction={canDelete ? remove : undefined}
         removeConfirmationMessage={() => (
           <p>
             Remove Helm Release <b>{release.name}</b>?

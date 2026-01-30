@@ -15,6 +15,7 @@ import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { AddRemoveButtons } from "../add-remove-buttons";
@@ -560,8 +561,9 @@ export class NonInjectedItemListLayoutContent<
             return (
               <AddRemoveButtons
                 onRemove={
-                  (this.props.userPreferencesState.allowDelete ??
-                  (true && (store.removeItems || store.removeSelectedItems) && selectedItems.length > 0))
+                  (allowDelete(this.props.userPreferencesState) &&
+                  (store.removeItems || store.removeSelectedItems) &&
+                  selectedItems.length > 0)
                     ? () => this.removeItemsDialog(selectedItems)
                     : undefined
                 }

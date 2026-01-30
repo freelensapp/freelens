@@ -12,6 +12,7 @@ import { kebabCase } from "lodash/fp";
 import moment from "moment-timezone";
 import React, { Component } from "react";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { ItemListLayout } from "../item-object-list";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -117,7 +118,7 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
       pickOnlySelected: (releases) => releases.filter((release) => release.isSelected),
 
       removeSelectedItems: async () => {
-        if (this.props.userPreferencesState.allowDelete !== false) {
+        if (allowDelete(this.props.userPreferencesState)) {
           await Promise.all(
             releases
               .get()

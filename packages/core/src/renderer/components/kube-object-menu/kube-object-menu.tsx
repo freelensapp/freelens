@@ -13,6 +13,7 @@ import { observable, reaction, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
@@ -200,7 +201,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
 
     const isEditable = editable ?? (Boolean(store?.patch) || Boolean(updateAction));
     const defaultRemovable = removable ?? (Boolean(store?.remove) || Boolean(removeAction));
-    const isRemovable = (userPreferencesState.allowDelete ?? true) && defaultRemovable;
+    const isRemovable = allowDelete(userPreferencesState) && defaultRemovable;
 
     runInAction(() => {
       this.menuItems.clear();
