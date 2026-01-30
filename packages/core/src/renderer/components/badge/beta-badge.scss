@@ -20,6 +20,18 @@
   text-transform: uppercase;
 }
 
+.BetaBadge--solid {
+  background: var(--beta-badge-color, var(--colorInfo));
+  border-color: transparent;
+  color: #fff;
+}
+
+.BetaBadge--contrast {
+  background: color-mix(in srgb, #000 35%, transparent);
+  border-color: color-mix(in srgb, #fff 70%, transparent);
+  color: #fff;
+}
+
 .BetaBadgeInline {
   align-items: center;
   display: inline-flex;

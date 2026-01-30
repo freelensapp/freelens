@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import backendLBPoliciesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/backend-lb-policies/backend-lb-policies-route.injectable";
 import navigateToBackendLBPoliciesInjectable from "../../../common/front-end-routing/routes/cluster/network/backend-lb-policies/navigate-to-backend-lb-policies.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const backendLBPoliciesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-backend-lb-policies",
@@ -19,12 +17,8 @@ const backendLBPoliciesSidebarItemInjectable = getInjectable({
     const route = di.inject(backendLBPoliciesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          Backend LB Policies <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "Backend LB Policies",
       onClick: di.inject(navigateToBackendLBPoliciesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,

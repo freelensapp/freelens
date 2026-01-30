@@ -5,12 +5,10 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import httpRoutesRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/http-routes/http-routes-route.injectable";
 import navigateToHTTPRoutesInjectable from "../../../common/front-end-routing/routes/cluster/network/http-routes/navigate-to-http-routes.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
-import { BetaBadge } from "../badge";
-import networkSidebarItemInjectable from "../network/network-sidebar-item.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
 
 const httpRoutesSidebarItemInjectable = getInjectable({
   id: "sidebar-item-http-routes",
@@ -19,12 +17,8 @@ const httpRoutesSidebarItemInjectable = getInjectable({
     const route = di.inject(httpRoutesRouteInjectable);
 
     return {
-      parentId: networkSidebarItemInjectable.id,
-      title: (
-        <span className="BetaBadgeInline">
-          HTTP Routes <BetaBadge />
-        </span>
-      ),
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "HTTP Routes",
       onClick: di.inject(navigateToHTTPRoutesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,

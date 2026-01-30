@@ -43,7 +43,13 @@ const NonInjectedReferenceGrants = observer((props: Dependencies) => {
         renderTableContents={(item: ReferenceGrant) => {
           const fromRefs = item.getFrom();
           const toRefs = item.getTo();
-          const fromLabel = fromRefs.length > 0 ? fromRefs.map((f) => f.kind).join(", ") : "-";
+          const fromNamespaces = Array.from(new Set(fromRefs.map((f) => f.namespace).filter(Boolean)));
+          const fromLabel =
+            fromRefs.length === 0
+              ? "-"
+              : fromNamespaces.length > 0
+                ? fromNamespaces.join(", ")
+                : fromRefs.map((f) => f.kind).join(", ");
           const toLabel = toRefs.length > 0 ? toRefs.map((t) => t.kind).join(", ") : "-";
 
           return [
