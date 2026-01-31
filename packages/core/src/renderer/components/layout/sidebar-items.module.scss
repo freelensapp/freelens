@@ -25,6 +25,18 @@
     span {
       word-break: break-word;
     }
+
+    .pinIcon {
+      opacity: 0;
+      pointer-events: none;
+      margin-left: auto;
+      transition: opacity 250ms;
+    }
+
+    &:hover .pinIcon {
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 
   .expandIcon {
