@@ -33,6 +33,7 @@ import { registerInjectables as registerFeaturesFeaturesPreferencesInjectables }
 import { registerInjectables as registerFeaturesFeaturesPreferencesRendererInjectables } from "./features/preferences/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncRendererInjectables } from "./features/shell-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesTerminalRendererInjectables } from "./features/terminal/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesThemeActiveThemeRendererInjectables } from "./features/theme/active-theme/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeSystemTypeRendererInjectables } from "./features/theme/system-type/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesTopBarExtensionApiRendererInjectables } from "./features/top-bar/extension-api/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesInjectables } from "./features/user-preferences/register-injectables";
@@ -74,6 +75,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesPreferencesInjectables(di);
   registerFeaturesFeaturesShellSyncRendererInjectables(di);
   registerFeaturesFeaturesTerminalRendererInjectables(di);
+  registerFeaturesFeaturesThemeActiveThemeRendererInjectables(di);
   registerFeaturesFeaturesThemeSystemTypeRendererInjectables(di);
   registerFeaturesFeaturesTopBarExtensionApiRendererInjectables(di);
   registerFeaturesFeaturesUserPreferencesRendererInjectables(di);
