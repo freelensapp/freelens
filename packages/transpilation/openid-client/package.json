@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/openid-client",
-  "version": "1.6.2-0",
+  "version": "1.8.1-0",
   "description": "Open ID for Freelens",
   "license": "MIT",
   "private": false,
@@ -14,8 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "webpack",
     "build:dev": "webpack"
   },
@@ -24,6 +24,6 @@
     "openid-client": "^6.8.1",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "webpack": "^5.102.1"
+    "webpack": "^5.104.1"
   }
 }

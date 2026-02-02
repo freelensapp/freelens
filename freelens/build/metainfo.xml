@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2025 Freelens Authors -->
+<!-- Copyright (c) 2024-2026 Freelens Authors -->
 <component type="desktop-application">
   <id>app.freelens.Freelens</id>
   <metadata_license>MIT</metadata_license>
@@ -69,7 +69,7 @@
   <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>
-    <release version="1.6.2-0" date="2025-09-28">
+    <release version="1.8.1-0" date="2025-12-29">
       <description translatable="no">The latest release.</description>
     </release>
   </releases>

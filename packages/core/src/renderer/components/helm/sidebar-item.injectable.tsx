@@ -9,17 +9,26 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { noop } from "lodash/fp";
 import React from "react";
+import { SidebarMenuItem, sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
+
+let id = SidebarMenuItem.Helm;
 
 const helmSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-helm",
+  id: id,
 
-  instantiate: () => ({
-    parentId: null,
-    getIcon: () => <Icon svg="helm" />,
-    title: "Helm",
-    onClick: noop,
-    orderNumber: 90,
-  }),
+  instantiate: (di) => {
+    const title = "Helm";
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
+
+    return {
+      parentId: null,
+      getIcon: () => <Icon svg="helm" />,
+      title: title,
+      onClick: noop,
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
+    };
+  },
 
   injectionToken: sidebarItemInjectionToken,
 });

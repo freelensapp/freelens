@@ -28,6 +28,7 @@ import setupMainWindowVisibilityAfterActivationInjectable from "./electron-app/r
 import waitUntilBundledExtensionsAreLoadedInjectable from "./start-main-application/lens-window/application-window/wait-until-bundled-extensions-are-loaded.injectable";
 import initializeExtensionsInjectable from "./start-main-application/runnables/initialize-extensions.injectable";
 import setupLensProxyInjectable from "./start-main-application/runnables/setup-lens-proxy.injectable";
+import setupSessionProxyBypassInjectable from "./start-main-application/runnables/setup-session-proxy-bypass.injectable";
 
 import type { GlobalOverride } from "@freelensapp/test-utils";
 
@@ -100,6 +101,7 @@ const overrideRunnablesHavingSideEffects = (di: DiContainer) => {
     initializeClusterManagerInjectable,
     setupIpcMainHandlersInjectable,
     setupLensProxyInjectable,
+    setupSessionProxyBypassInjectable,
     setupSyncingOfWeblinksInjectable,
   ].forEach((injectable) => {
     di.override(injectable, () => ({

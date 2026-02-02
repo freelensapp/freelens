@@ -25,7 +25,12 @@ const listHelmReleasesInjectable = getInjectable({
     return async (pathToKubeconfig, namespace) => {
       const args = [
         "ls",
-        "--all",
+        "--deployed",
+        "--failed",
+        "--pending",
+        "--superseded",
+        "--uninstalled",
+        "--uninstalling",
         // By default 256 results are listed, we want to list practically all
         "--max",
         "9999",

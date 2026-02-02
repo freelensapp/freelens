@@ -1,0 +1,13 @@
+changelog:
+  categories:
+    - title: Features
+      labels:
+        - '*'
+      exclude:
+        labels:
+          - automated
+          - renovate
+    - title: Dependencies
+      labels:
+        - automated
+        - renovate

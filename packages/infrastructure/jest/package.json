@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/jest",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.8.1-0",
   "description": "Jest configuration and scripts for Freelens packages.",
   "type": "commonjs",
   "publishConfig": {
@@ -20,12 +20,12 @@
   "license": "MIT",
   "homepage": "https://freelens.app",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "identity-obj-proxy": "^3.0.0",
-    "glob": "^11.0.3",
-    "lodash": "^4.17.21"
+    "glob": "^13.0.0",
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

@@ -20,13 +20,13 @@ import type {
 
 export type { CategoryColumnRegistration, TitleCellProps };
 
-export type CatalogEntityDataFor<Entity> = Entity extends CatalogEntity<infer Metadata, infer Status, infer Spec>
-  ? CatalogEntityData<Metadata, Status, Spec>
-  : never;
+export type CatalogEntityDataFor<Entity> =
+  Entity extends CatalogEntity<infer Metadata, infer Status, infer Spec>
+    ? CatalogEntityData<Metadata, Status, Spec>
+    : never;
 
-export type CatalogEntityInstanceFrom<Constructor> = Constructor extends CatalogEntityConstructor<infer Entity>
-  ? Entity
-  : never;
+export type CatalogEntityInstanceFrom<Constructor> =
+  Constructor extends CatalogEntityConstructor<infer Entity> ? Entity : never;
 
 export type CatalogEntityConstructor<Entity extends CatalogEntity> = new (data: CatalogEntityDataFor<Entity>) => Entity;
 

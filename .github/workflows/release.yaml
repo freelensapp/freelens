@@ -19,14 +19,9 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 360
 
-    env:
-      DO_NOT_TRACK: "1"
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Check if package version matches
         run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
@@ -76,12 +71,14 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
@@ -117,7 +114,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -137,7 +134,7 @@ jobs:
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
@@ -145,12 +142,19 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -162,6 +166,14 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
       - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
         if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
@@ -183,6 +195,7 @@ jobs:
         env:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -205,7 +218,7 @@ jobs:
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
             test -n "${!var}" || unset $var
           done
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             dmg pkg \
             --${{ matrix.arch }}
         env:
@@ -283,7 +296,7 @@ jobs:
       - name: Build Electron app (Linux)
         if: runner.os == 'Linux'
         run: |
-          pnpm --color=always build:app -- \
+          pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
 
@@ -291,13 +304,13 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          pnpm --color=always build:app -- \
-            msi nsis \
+          pnpm --color=always build:app \
+            msi nsis portable \
             --${{ matrix.arch }}
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
-        uses: azure/trusted-signing-action@v0.5.10
+        uses: azure/trusted-signing-action@v0.5.11
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -323,7 +336,6 @@ jobs:
           my $arch = $arch{$ENV{ARCH}};
           while (<Freelens*>) {
             my $src = $_;
-            s/ Setup /-/;
             s/[ _]/-/g;
             if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
               s/\.(dmg|exe|msi|pkg)$/-$arch.$1/;
@@ -332,7 +344,10 @@ jobs:
             s/[.-](amd64|x86-64)/-amd64/;
             s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
             s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
-            s/-(amd64|arm64).(exe|msi|)$/-windows-$1.$2/;
+            s/-(amd64|arm64)\.msi$/-windows-$1.msi/;
+            s/-(amd64|arm64)\.exe$/-windows-portable-$1.exe/ if !/-Setup-/;
+            s/-(amd64|arm64)\.exe$/-windows-$1.exe/ if /-Setup-/;
+            s/-Setup-/-/;
             my $dst = $_;
             if ($src ne $dst) {
               print "rename $src to $dst\n";
@@ -388,7 +403,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Publish GitHub release
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
@@ -415,7 +430,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup node
         uses: actions/setup-node@v6
@@ -432,7 +447,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -507,7 +522,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

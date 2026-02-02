@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kubectl-versions",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.8.1-0",
   "description": "Package of kubectl versions at build time",
   "files": [
     "dist"
@@ -21,7 +21,7 @@
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "compute-versions": "node ./build/compute-versions.mjs",
     "dev": "lens-webpack-build --watch",
     "precompute-versions": "tsc --pretty --project build"
@@ -30,12 +30,12 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/semver": "^7.7.1",
-    "fast-xml-parser": "^5.3.2",
+    "fast-xml-parser": "^5.3.3",
     "node-fetch": "^3.3.2",
     "semver": "^7.7.3",
     "ts-loader": "^9.5.4",
     "typed-regex": "^0.0.8",
     "typescript": "^5.9.3",
-    "webpack": "^5.102.1"
+    "webpack": "^5.104.1"
   }
 }

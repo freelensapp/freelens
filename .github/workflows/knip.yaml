@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   knip:
-    name: knip on ${{ matrix.os }}
+    name: knip
 
     strategy:
       fail-fast: false
@@ -24,7 +24,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 15
 
     env:
       DO_NOT_TRACK: "1"
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup node
         uses: actions/setup-node@v6
@@ -48,7 +48,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -56,7 +56,7 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-node-
 
       - name: Use Turborepo cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}

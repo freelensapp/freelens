@@ -4,6 +4,12 @@ on:
   issue_comment:
     types:
       - created
+  push:
+    branches:
+      - main
+    paths:
+      - '**/package.json'
+      - '**/pnpm-lock.yaml'
   schedule:
     - cron: 46 6 * * *
   workflow_dispatch: {}
@@ -36,7 +42,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
@@ -55,7 +61,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -74,7 +80,10 @@ jobs:
       - name: Run pnpm dedupe
         run: |
           pnpm dedupe 2>&1 | tee .github/update.log || true
-          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
+          echo '```' > .github/pr_body.log
+          sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log >> .github/pr_body.log
+          echo '' >> .github/pr_body.log
+          echo '```' >> .github/pr_body.log
 
       - name: Check for changes
         run: |

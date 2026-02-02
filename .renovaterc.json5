@@ -9,9 +9,6 @@
     "renovate"
   ],
   "osvVulnerabilityAlerts": true,
-  "postUpdateOptions": [
-    "pnpmDedupe"
-  ],
   // always bump depdenencies even when are in the range
   "rangeStrategy": "bump",
   "vulnerabilityAlerts": {
@@ -66,6 +63,14 @@
       ],
       "versioning": "deb",
       "enabled": true
+    },
+    // bundle
+    {
+      "groupName": "electron-builder bundle",
+      "matchDepNames": [
+        "electron-builder",
+        "electron-builder-squirrel-windows"
+      ]
     },
     // monorepo
     {

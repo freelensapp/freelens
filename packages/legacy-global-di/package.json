@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/legacy-global-di",
   "private": false,
-  "version": "1.6.2-0",
+  "version": "1.8.1-0",
   "description": "Injection tokens for implementing metrics for Freelens",
   "type": "commonjs",
   "publishConfig": {
@@ -26,14 +26,14 @@
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
-    "clean": "pnpm dlx rimraf@6.1.0 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.0 node_modules"
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "ts-loader": "^9.5.4",
-    "webpack": "^5.102.1"
+    "webpack": "^5.104.1"
   }
 }

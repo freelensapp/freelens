@@ -6,7 +6,6 @@
 
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 import getActiveHelmRepositoriesInjectable from "../repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
 
@@ -22,7 +21,9 @@ const listHelmChartsInjectable = getInjectable({
     return async () => {
       const result = await getActiveHelmRepositories();
 
-      assert(result.callWasSuccessful);
+      if (!result.callWasSuccessful) {
+        throw new Error(result.error);
+      }
 
       const repositories = result.response;
 

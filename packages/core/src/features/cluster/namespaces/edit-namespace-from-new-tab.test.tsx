@@ -186,12 +186,12 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
               expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 `);
             });
 
@@ -501,12 +501,12 @@ metadata:
                   firstDraft: `apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 `,
                   draft: `apiVersion: some-api-version
 kind: Namespace
@@ -745,10 +745,10 @@ metadata:
                   expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-other-uid
   name: some-other-name
   resourceVersion: some-resource-version
   selfLink: /api/some-api-version/namespaces/some-other-uid
-  uid: some-other-uid
 `);
                 });
 
@@ -815,12 +815,12 @@ metadata:
                     expect(input.value).toBe(`apiVersion: some-api-version
 kind: Namespace
 metadata:
+  uid: some-uid
   name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-uid
-  somePropertyToBeChanged: some-old-value
   somePropertyToBeRemoved: some-value
-  uid: some-uid
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 `);
                   });
 

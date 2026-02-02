@@ -52,12 +52,14 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.kubectlBinariesPath = descriptors.kubectlBinariesPath.fromStore(preferences.kubectlBinariesPath);
         state.localeTimezone = descriptors.localeTimezone.fromStore(preferences.localeTimezone);
         state.openAtLogin = descriptors.openAtLogin.fromStore(preferences.openAtLogin);
+        state.showTrayIcon = descriptors.showTrayIcon.fromStore(preferences.showTrayIcon);
         state.hotbarAutoHide = descriptors.hotbarAutoHide.fromStore(preferences.hotbarAutoHide);
         state.shell = descriptors.shell.fromStore(preferences.shell);
         state.syncKubeconfigEntries = descriptors.syncKubeconfigEntries.fromStore(preferences.syncKubeconfigEntries);
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
+        state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
       }),
       toJSON: () =>
         toJS({
@@ -76,12 +78,14 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             kubectlBinariesPath: descriptors.kubectlBinariesPath.toStore(state.kubectlBinariesPath),
             localeTimezone: descriptors.localeTimezone.toStore(state.localeTimezone),
             openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
+            showTrayIcon: descriptors.showTrayIcon.toStore(state.showTrayIcon),
             hotbarAutoHide: descriptors.hotbarAutoHide.toStore(state.hotbarAutoHide),
             shell: descriptors.shell.toStore(state.shell),
             syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
           },
         }),
     });

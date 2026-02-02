@@ -19,6 +19,7 @@ export interface IChartInstallData {
   description?: string;
   namespace?: string;
   lastVersion?: boolean;
+  forceConflicts?: boolean;
 }
 
 export interface InstallChartTabStoreDependencies extends DockTabStoreDependencies {

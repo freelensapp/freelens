@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 env:
-  kind_version: 0.30.0 # datasource=github-releases depName=kubernetes-sigs/kind
-  kubernetes_version: 1.34.0 # datasource=docker depName=kindest/node
+  kind_version: 0.31.0 # datasource=github-releases depName=kubernetes-sigs/kind
+  kubernetes_version: 1.35.0 # datasource=docker depName=kindest/node
 
 jobs:
   test-integration:
@@ -38,12 +38,13 @@ jobs:
       DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -79,7 +80,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -99,7 +100,7 @@ jobs:
         run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
@@ -107,16 +108,23 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
 
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
       - name: Use Playwright cache
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
@@ -124,7 +132,7 @@ jobs:
             ${{ matrix.os }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
           key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
@@ -159,6 +167,14 @@ jobs:
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+
       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpx playwright install --with-deps
@@ -179,6 +195,8 @@ jobs:
 
       - name: Rebuild native packages for Electron
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -196,7 +214,7 @@ jobs:
         run: pnpm --color=always build:resources
 
       - name: Build Electron app
-        run: pnpm --color=always build:app:dir -- --${{ matrix.arch }}
+        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux

@@ -47,7 +47,7 @@ const execFileInjectable = getInjectable({
           } else {
             resolve({
               callWasSuccessful: true,
-              response: stdout,
+              response: stdout.toString(),
             });
           }
         });
