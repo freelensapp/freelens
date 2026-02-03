@@ -53,10 +53,16 @@
       }
     }
 
+    .controlsRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $margin * 1.5;
+    }
+
     .countLabel {
       font-size: $font-size-small;
       color: var(--textColorSecondary);
-      margin-bottom: $margin * 1.5;
       font-weight: $font-weight-bold;
     }
 
@@ -84,7 +90,6 @@
 
     &.unavailable {
       opacity: 0.6;
-      cursor: not-allowed;
     }
 
     .dragHandle {
@@ -110,6 +115,14 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+    }
+
+    .unavailableText {
+      font-size: $font-size-small;
+      color: var(--textColorSecondary);
+      font-style: italic;
+      white-space: nowrap;
+      margin-right: $margin;
     }
 
     .removeButton {

@@ -10,6 +10,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
+import { Checkbox } from "../../checkbox";
 
 import { TabLayout } from "../../layout/tab-layout";
 import favoritesStoreInjectable, { FavoritesStore } from "../store.injectable";
@@ -54,6 +55,7 @@ const NonInjectedFavoritesOverview = observer(({ favoritesStore, favoritesSideba
         <div className={styles.content}>
           <div className={styles.title}>{item.title}</div>
         </div>
+        {!isAvailable && <div className={styles.unavailableText}>Not available in this cluster</div>}
         <button
           className={styles.removeButton}
           onClick={(e) => {
@@ -87,8 +89,15 @@ const NonInjectedFavoritesOverview = observer(({ favoritesStore, favoritesSideba
             </div>
           ) : (
             <>
-              <div className={styles.countLabel}>
-                {favorites.length} {favorites.length === 1 ? "item" : "items"}
+              <div className={styles.controlsRow}>
+                <div className={styles.countLabel}>
+                  {favorites.length} {favorites.length === 1 ? "item" : "items"}
+                </div>
+                <Checkbox
+                  label="Use short names"
+                  value={favoritesStore.useShortNames}
+                  onChange={(value) => favoritesStore.setUseShortNames(value)}
+                />
               </div>
               <OrderableList
                 className={styles.favoritesList}

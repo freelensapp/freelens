@@ -21,6 +21,7 @@ export interface FavoriteItem {
 
 export interface FavoritesStorageState {
   items: FavoriteItem[];
+  useShortNames: boolean;
 }
 
 const favoritesPersistentStorageInjectable = getInjectable({
@@ -39,10 +40,14 @@ const favoritesPersistentStorageInjectable = getInjectable({
         equals: comparer.structural,
       },
       fromStore: action((data) => {
-        state.set({ items: data.items || [] });
+        state.set({
+          items: data.items || [],
+          useShortNames: data.useShortNames ?? true,
+        });
       }),
       toJSON: () => ({
         items: state.get().items.map((item: FavoriteItem) => (item ? { ...item } : item)),
+        useShortNames: state.get().useShortNames ?? true,
       }),
     });
   },

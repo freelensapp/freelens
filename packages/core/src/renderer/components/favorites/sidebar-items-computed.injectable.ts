@@ -26,6 +26,7 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
     return computed((): FavoriteSidebarItem[] => {
       const favoriteItems = favoritesStore.items;
       const allSidebarItems = sidebarItemsComputed.get();
+      const useShortNames = favoritesStore.useShortNames;
 
       const isFavoriteClone = (item: any) => item.id?.startsWith("favorite-");
 
@@ -49,10 +50,12 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
             return null;
           }
 
+          const displayTitle = useShortNames ? originalItem.title : fav.title;
+
           return {
             id: `favorite-${fav.id}`,
             parentId: originalItem.parentId,
-            title: fav.title,
+            title: displayTitle,
             onClick: originalItem.onClick,
             isActive: originalItem.isActive,
             isVisible: originalItem.isVisible,

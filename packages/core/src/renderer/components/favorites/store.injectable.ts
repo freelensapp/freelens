@@ -33,6 +33,18 @@ export class FavoritesStore {
     return this.items.reduce((max: number, item: FavoriteItem) => Math.max(max, item.order ?? 0), 10);
   }
 
+  @computed get useShortNames(): boolean {
+    return this.state.get().useShortNames ?? true;
+  }
+
+  @action
+  setUseShortNames(value: boolean): void {
+    this.state.set({
+      ...this.state.get(),
+      useShortNames: value,
+    });
+  }
+
   has(id: string): boolean {
     return this.items.some((item: FavoriteItem) => item.id === this.#removeFavoritePrefix(id));
   }
@@ -72,6 +84,7 @@ export class FavoritesStore {
     };
 
     this.state.set({
+      ...this.state.get(),
       items: [...this.items, newItem],
     });
   }
@@ -83,7 +96,10 @@ export class FavoritesStore {
     if (index !== -1) {
       const newItems = this.items.slice();
       newItems.splice(index, 1);
-      this.state.set({ items: newItems });
+      this.state.set({
+        ...this.state.get(),
+        items: newItems,
+      });
     }
   }
 
@@ -109,7 +125,10 @@ export class FavoritesStore {
     reordered.splice(releaseIndex, 0, itemToMove);
 
     const newOrderedFavorites = reordered.map((item, idx) => ({ ...item, order: (idx + 2) * 10 }));
-    this.state.set({ items: newOrderedFavorites });
+    this.state.set({
+      ...this.state.get(),
+      items: newOrderedFavorites,
+    });
   }
 }
 
