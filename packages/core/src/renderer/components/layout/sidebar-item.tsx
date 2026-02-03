@@ -47,8 +47,8 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
     event.preventDefault();
     event.stopPropagation();
     item.id.includes(sideBarItemCustomResourcePrefix)
-      ? favoritesStore.toggle({ id, type: "crd" })
-      : favoritesStore.toggle({ id, type: "static" });
+      ? favoritesStore.toggle(item, "crd")
+      : favoritesStore.toggle(item, "static");
   };
 
   const renderSubMenu = () => {

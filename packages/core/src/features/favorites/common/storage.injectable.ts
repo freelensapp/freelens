@@ -15,6 +15,7 @@ import favoritesStateInjectable from "./state.injectable";
 export interface FavoriteItem {
   id: string;
   type: "static" | "crd";
+  title: string;
   order: number;
 }
 

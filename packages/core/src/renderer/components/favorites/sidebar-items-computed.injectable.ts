@@ -8,11 +8,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
 import favoritesStoreInjectable from "./store.injectable";
+import { flattenSidebarItems } from "./utils";
 
 import type { FavoriteItem } from "../../../features/favorites/common/storage.injectable";
 
 export type FavoriteSidebarItem = SidebarItemDeclaration & {
-  orderNumber: number;
+  orderNumber?: number;
 };
 
 const favoritesSidebarItemsComputedInjectable = getInjectable({
@@ -28,30 +29,19 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
 
       const isFavoriteClone = (item: any) => item.id?.startsWith("favorite-");
 
-      const flattenSidebarItems = (items: any[]): any[] => {
-        return items.reduce((acc, item) => {
-          if (isFavoriteClone(item)) {
-            return acc;
-          }
-
-          acc.push(item);
-
-          if (item.children && item.children.length > 0) {
-            acc.push(...flattenSidebarItems(item.children));
-          }
-
-          return acc;
-        }, [] as any[]);
-      };
-
-      const flatSidebarItems = flattenSidebarItems(allSidebarItems);
+      const flatSidebarItems = flattenSidebarItems(allSidebarItems).filter((item) => !isFavoriteClone(item));
 
       const itemMap = new Map(flatSidebarItems.map((item) => [item.id, item]));
 
       const favoritesMainItem = allSidebarItems.find((item) => item.id === favoritesSidebarItemInjectable.id);
-      const naturalChildren = favoritesMainItem?.children || [];
+      const naturalChildren: FavoriteSidebarItem[] =
+        favoritesMainItem?.children.map((item) => {
+          const child = item as FavoriteSidebarItem;
 
-      const dynamicFavorites = favoriteItems
+          return { ...child, orderNumber: child.orderNumber ?? 10 };
+        }) || [];
+
+      const dynamicFavorites: FavoriteSidebarItem[] = favoriteItems
         .map((fav: FavoriteItem) => {
           const originalItem = itemMap.get(fav.id);
 
@@ -61,17 +51,17 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
 
           return {
             id: `favorite-${fav.id}`,
-            parentId: favoritesSidebarItemInjectable.id,
-            title: originalItem.title,
+            parentId: originalItem.parentId,
+            title: fav.title,
             onClick: originalItem.onClick,
             isActive: originalItem.isActive,
             isVisible: originalItem.isVisible,
             getIcon: originalItem.getIcon,
             orderNumber: fav.order,
             children: originalItem.children,
-          };
+          } as FavoriteSidebarItem;
         })
-        .filter((item: FavoriteSidebarItem | null): item is FavoriteSidebarItem => Boolean(item));
+        .filter((item): item is FavoriteSidebarItem => Boolean(item));
 
       return [...naturalChildren, ...dynamicFavorites];
     });
