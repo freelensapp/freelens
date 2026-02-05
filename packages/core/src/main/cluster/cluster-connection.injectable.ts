@@ -68,6 +68,24 @@ interface Dependencies {
   removeProxyKubeconfig: RemoveProxyKubeconfig;
 }
 
+/**
+ * Maximum number of consecutive authentication failures before stopping
+ * automatic refresh attempts. After this many failures, the user must
+ * manually reconnect via the UI. This prevents exec-based auth plugins
+ * (like kubelogin/oidc-login) from opening unlimited browser tabs when
+ * OIDC tokens expire while the user is away.
+ */
+const maxAutoAuthRetries = 3;
+
+/**
+ * Backoff intervals (in ms) between consecutive auth failure retries.
+ * Index corresponds to (consecutiveFailures - 1). After the last interval,
+ * retries stop entirely until manual reconnect.
+ *
+ * Schedule: 1st retry after 1 min, 2nd after 5 min, then stop.
+ */
+const authBackoffIntervalsMs = [60_000, 300_000];
+
 export type { ClusterConnection };
 
 class ClusterConnection {
@@ -75,15 +93,104 @@ class ClusterConnection {
 
   protected activated = false;
 
+  /**
+   * Tracks consecutive authentication/credential failures from the
+   * periodic refresh timer. Used to implement exponential backoff and
+   * prevent exec auth plugins from repeatedly opening browser tabs.
+   */
+  private consecutiveAuthFailures = 0;
+
+  /**
+   * Timestamp (ms since epoch) before which the next automatic refresh
+   * should not be attempted. Set after each auth failure using the
+   * backoff schedule.
+   */
+  private nextRefreshAllowedAt = 0;
+
+  /**
+   * Guard to prevent concurrent refresh() calls from overlapping.
+   * When an exec auth plugin (kubelogin) blocks waiting for browser
+   * authentication, the 30s timer can fire again before the previous
+   * call completes, causing additional browser tabs to open.
+   */
+  private isRefreshing = false;
+
   constructor(
     private readonly dependencies: Dependencies,
     private readonly cluster: Cluster,
   ) {}
 
+  /**
+   * Returns whether the periodic refresh timer should attempt a connection
+   * check. Implements exponential backoff after auth failures to prevent
+   * exec auth plugins from spamming browser tabs.
+   */
+  private shouldAttemptAutoRefresh(): boolean {
+    if (this.consecutiveAuthFailures >= maxAutoAuthRetries) {
+      return false;
+    }
+
+    if (this.consecutiveAuthFailures > 0 && Date.now() < this.nextRefreshAllowedAt) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Called when a connection status check returns an auth-related failure
+   * (4xx status or credential fetch failure). Increments the failure
+   * counter and sets the next allowed refresh time based on the backoff
+   * schedule.
+   */
+  private onAuthFailure(): void {
+    this.consecutiveAuthFailures++;
+
+    const backoffIndex = Math.min(
+      this.consecutiveAuthFailures - 1,
+      authBackoffIntervalsMs.length - 1,
+    );
+    const backoffMs = authBackoffIntervalsMs[backoffIndex];
+
+    this.nextRefreshAllowedAt = Date.now() + backoffMs;
+
+    this.dependencies.logger.warn(
+      `[CLUSTER]: Authentication failure #${this.consecutiveAuthFailures} for "${this.cluster.contextName.get()}", ` +
+        (this.consecutiveAuthFailures >= maxAutoAuthRetries
+          ? "stopping automatic refresh — manual reconnect required"
+          : `next automatic retry in ${backoffMs / 1000}s`),
+    );
+  }
+
+  /**
+   * Called when a connection status check succeeds. Resets the auth
+   * failure counter and backoff state.
+   */
+  private onAuthSuccess(): void {
+    if (this.consecutiveAuthFailures > 0) {
+      this.dependencies.logger.info(
+        `[CLUSTER]: Authentication succeeded after ${this.consecutiveAuthFailures} consecutive failure(s)`,
+        this.cluster.getMeta(),
+      );
+    }
+
+    this.consecutiveAuthFailures = 0;
+    this.nextRefreshAllowedAt = 0;
+  }
+
+  /**
+   * Resets auth failure tracking. Called on manual reconnect so the user
+   * can trigger a fresh authentication attempt.
+   */
+  private resetAuthFailureTracking(): void {
+    this.consecutiveAuthFailures = 0;
+    this.nextRefreshAllowedAt = 0;
+  }
+
   private bindEvents() {
     this.dependencies.logger.info(`[CLUSTER]: bind events`, this.cluster.getMeta());
     const refreshTimer = setInterval(() => {
-      if (!this.cluster.disconnected.get()) {
+      if (!this.cluster.disconnected.get() && this.shouldAttemptAutoRefresh()) {
         this.refresh();
       }
     }, 30_000); // every 30s
@@ -191,6 +298,7 @@ class ClusterConnection {
 
   async reconnect() {
     this.dependencies.logger.info(`[CLUSTER]: reconnect`, this.cluster.getMeta());
+    this.resetAuthFailureTracking();
     await this.dependencies.kubeAuthProxyServer?.restart();
 
     runInAction(() => {
@@ -202,6 +310,8 @@ class ClusterConnection {
     if (this.cluster.disconnected.get()) {
       return this.dependencies.logger.debug("[CLUSTER]: already disconnected", { id: this.cluster.id });
     }
+
+    this.resetAuthFailureTracking();
 
     runInAction(() => {
       this.dependencies.logger.info(`[CLUSTER]: disconnecting`, { id: this.cluster.id });
@@ -218,8 +328,23 @@ class ClusterConnection {
   }
 
   async refresh() {
-    this.dependencies.logger.info(`[CLUSTER]: refresh`, this.cluster.getMeta());
-    await this.refreshConnectionStatus();
+    if (this.isRefreshing) {
+      this.dependencies.logger.debug(
+        `[CLUSTER]: skipping refresh, previous refresh still in progress`,
+        this.cluster.getMeta(),
+      );
+
+      return;
+    }
+
+    this.isRefreshing = true;
+
+    try {
+      this.dependencies.logger.info(`[CLUSTER]: refresh`, this.cluster.getMeta());
+      await this.refreshConnectionStatus();
+    } finally {
+      this.isRefreshing = false;
+    }
   }
 
   async refreshAccessibilityAndMetadata() {
@@ -312,6 +437,8 @@ class ClusterConnection {
         this.cluster.metadata[ClusterMetadataKey.LAST_SEEN] = new Date().toJSON();
       });
 
+      this.onAuthSuccess();
+
       return ClusterStatus.AccessGranted;
     } catch (error) {
       this.dependencies.logger.error(`[CLUSTER]: Failed to connect to "${this.cluster.contextName.get()}": ${error}`);
@@ -319,6 +446,7 @@ class ClusterConnection {
       if (isRequestError(error)) {
         if (error.statusCode) {
           if (error.statusCode >= 400 && error.statusCode < 500) {
+            this.onAuthFailure();
             this.dependencies.broadcastConnectionUpdate({
               level: "error",
               message: "Invalid credentials",
@@ -347,6 +475,7 @@ class ClusterConnection {
             return ClusterStatus.Offline;
           }
 
+          this.onAuthFailure();
           this.dependencies.broadcastConnectionUpdate({
             level: "error",
             message: "Failed to fetch credentials",
