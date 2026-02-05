@@ -215,8 +215,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       semver:
-        specifier: ^7.7.3
-        version: 7.7.3
+        specifier: ^7.7.4
+        version: 7.7.4
       stoppable:
         specifier: ^1.1.0
         version: 1.1.0
@@ -879,8 +879,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       semver:
-        specifier: ^7.7.3
-        version: 7.7.3
+        specifier: ^7.7.4
+        version: 7.7.4
       stoppable:
         specifier: ^1.1.0
         version: 1.1.0
@@ -1429,8 +1429,8 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
       semver:
-        specifier: ^7.7.3
-        version: 7.7.3
+        specifier: ^7.7.4
+        version: 7.7.4
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.105.0)
@@ -1649,8 +1649,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       semver:
-        specifier: ^7.7.3
-        version: 7.7.3
+        specifier: ^7.7.4
+        version: 7.7.4
     devDependencies:
       '@types/command-line-args':
         specifier: ^5.2.3
@@ -3266,8 +3266,8 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       semver:
-        specifier: ^7.7.3
-        version: 7.7.3
+        specifier: ^7.7.4
+        version: 7.7.4
       tar:
         specifier: ^7.5.2
         version: 7.5.2
@@ -8368,8 +8368,8 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.7.3:
-    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -9714,7 +9714,7 @@ snapshots:
       node-gyp: 11.5.0
       ora: 5.4.1
       read-binary-file-arch: 1.0.6
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 6.2.1
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -9732,7 +9732,7 @@ snapshots:
       node-gyp: 11.5.0
       ora: 5.4.1
       read-binary-file-arch: 1.0.6
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 6.2.1
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -10493,7 +10493,7 @@ snapshots:
 
   '@npmcli/fs@4.0.0':
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   '@ogre-tools/fp@17.11.1(lodash@4.17.23)':
     dependencies:
@@ -11377,7 +11377,7 @@ snapshots:
       minimatch: 10.1.1
       plist: 3.1.0
       resedit: 1.7.2
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 6.2.1
       temp-file: 3.4.0
       tiny-async-pool: 1.3.0
@@ -11922,7 +11922,7 @@ snapshots:
       json-schema-typed: 7.0.3
       onetime: 5.1.2
       pkg-up: 3.1.0
-      semver: 7.7.3
+      semver: 7.7.4
 
   connect-history-api-fallback@2.0.0: {}
 
@@ -12046,7 +12046,7 @@ snapshots:
       postcss-modules-scope: 3.2.1(postcss@8.5.3)
       postcss-modules-values: 4.0.0(postcss@8.5.3)
       postcss-value-parser: 4.2.0
-      semver: 7.7.3
+      semver: 7.7.4
     optionalDependencies:
       webpack: 5.105.0(webpack-cli@6.0.1)
 
@@ -12724,7 +12724,7 @@ snapshots:
       minimatch: 3.1.2
       node-abort-controller: 3.1.1
       schema-utils: 3.1.2
-      semver: 7.7.3
+      semver: 7.7.4
       tapable: 2.3.0
       typescript: 5.9.3
       webpack: 5.105.0(webpack-cli@6.0.1)
@@ -12874,7 +12874,7 @@ snapshots:
       es6-error: 4.1.1
       matcher: 3.0.0
       roarr: 2.15.4
-      semver: 7.7.3
+      semver: 7.7.4
       serialize-error: 7.0.1
     optional: true
 
@@ -13347,7 +13347,7 @@ snapshots:
       '@babel/parser': 7.27.0
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -13771,7 +13771,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -14153,7 +14153,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   make-error@1.3.6: {}
 
@@ -14439,7 +14439,7 @@ snapshots:
 
   node-abi@4.24.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   node-abort-controller@3.1.1: {}
 
@@ -14450,7 +14450,7 @@ snapshots:
 
   node-api-version@0.2.1:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   node-domexception@1.0.0: {}
 
@@ -14476,7 +14476,7 @@ snapshots:
       make-fetch-happen: 14.0.3
       nopt: 8.1.0
       proc-log: 5.0.0
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 7.5.2
       tinyglobby: 0.2.12
       which: 5.0.0
@@ -14491,7 +14491,7 @@ snapshots:
       make-fetch-happen: 15.0.2
       nopt: 9.0.0
       proc-log: 6.0.0
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 7.5.7
       tinyglobby: 0.2.12
       which: 6.0.0
@@ -14777,7 +14777,7 @@ snapshots:
       cosmiconfig: 9.0.0(typescript@5.9.3)
       jiti: 2.6.1
       postcss: 8.5.3
-      semver: 7.7.3
+      semver: 7.7.4
     optionalDependencies:
       webpack: 5.105.0(webpack-cli@6.0.1)
     transitivePeerDependencies:
@@ -15263,7 +15263,7 @@ snapshots:
 
   semver@6.3.1: {}
 
-  semver@7.7.3: {}
+  semver@7.7.4: {}
 
   send@0.19.0:
     dependencies:
@@ -15343,7 +15343,7 @@ snapshots:
     dependencies:
       '@img/colour': 1.0.0
       detect-libc: 2.1.2
-      semver: 7.7.3
+      semver: 7.7.4
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.5
       '@img/sharp-darwin-x64': 0.34.5
@@ -15416,7 +15416,7 @@ snapshots:
 
   simple-update-notifier@2.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   sisteransi@1.0.5: {}
 
@@ -15811,7 +15811,7 @@ snapshots:
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
-      semver: 7.7.3
+      semver: 7.7.4
       type-fest: 4.41.0
       typescript: 5.9.3
       yargs-parser: 21.1.1
@@ -15831,7 +15831,7 @@ snapshots:
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
-      semver: 7.7.3
+      semver: 7.7.4
       type-fest: 4.41.0
       typescript: 5.9.3
       yargs-parser: 21.1.1
@@ -15851,7 +15851,7 @@ snapshots:
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
-      semver: 7.7.3
+      semver: 7.7.4
       type-fest: 4.41.0
       typescript: 5.9.3
       yargs-parser: 21.1.1
@@ -15867,7 +15867,7 @@ snapshots:
       chalk: 4.1.2
       enhanced-resolve: 5.18.3
       micromatch: 4.0.8
-      semver: 7.7.3
+      semver: 7.7.4
       source-map: 0.7.4
       typescript: 5.9.3
       webpack: 5.105.0(webpack-cli@6.0.1)
