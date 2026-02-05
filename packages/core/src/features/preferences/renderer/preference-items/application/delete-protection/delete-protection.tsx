@@ -18,7 +18,7 @@ interface Dependencies {
 }
 
 const NonInjectedDeleteProtection = observer(({ state }: Dependencies) => (
-  <section id="other">
+  <section id="delete-protection">
     <SubTitle title="Delete Protection" />
     <Switch checked={state.allowDelete ?? true} onChange={() => (state.allowDelete = !state.allowDelete)}>
       Allow deleting Kubernetes resources
