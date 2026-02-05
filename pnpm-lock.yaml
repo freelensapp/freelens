@@ -1215,8 +1215,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3
       spdx-license-list:
-        specifier: ^6.10.0
-        version: 6.10.0
+        specifier: ^6.11.0
+        version: 6.11.0
 
   packages/generate-tray-icons:
     dependencies:
@@ -8507,8 +8507,8 @@ packages:
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
     engines: {node: '>= 8'}
 
-  spdx-license-list@6.10.0:
-    resolution: {integrity: sha512-wF3RhDFoqdu14d1Prv6c8aNU0FSRuSFJpNjWeygIZcNZEwPxp7I5/Hwo8j6lSkBKWAIkSQrKefrC5N0lvOP0Gw==}
+  spdx-license-list@6.11.0:
+    resolution: {integrity: sha512-p5ICd51dSnh7zIMtPgbB9ShBg3HMT77OeI6WVhrFFvxa5KIFYNcqxD4joAE+n1zZ7wlJdEkrOMwC75JUMMmsJA==}
     engines: {node: '>=8'}
 
   spdy-transport@3.0.0:
@@ -10598,7 +10598,7 @@ snapshots:
       minimist: 1.2.8
       multimatch: 6.0.0
       remove-markdown: 0.5.5
-      spdx-license-list: 6.10.0
+      spdx-license-list: 6.11.0
       strip-indent: 4.1.1
       zod: 3.25.76
 
@@ -15468,7 +15468,7 @@ snapshots:
 
   source-map@0.7.4: {}
 
-  spdx-license-list@6.10.0: {}
+  spdx-license-list@6.11.0: {}
 
   spdy-transport@3.0.0:
     dependencies:
