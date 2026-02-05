@@ -18,7 +18,7 @@ interface Dependencies {
 }
 
 const NonInjectedCheckForUpdates = observer(({ state }: Dependencies) => (
-  <section id="other">
+  <section id="check-for-updates">
     <SubTitle title="Check for Updates" />
     <Switch checked={state.checkForUpdates ?? true} onChange={() => (state.checkForUpdates = !state.checkForUpdates)}>
       Check for new version on startup
