@@ -254,8 +254,8 @@ importers:
         specifier: ^8.18.3
         version: 8.18.3
       zod:
-        specifier: ^4.2.1
-        version: 4.2.1
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@electron/notarize':
         specifier: ^3.0.2
@@ -918,8 +918,8 @@ importers:
         specifier: ^8.18.3
         version: 8.18.3
       zod:
-        specifier: ^4.2.1
-        version: 4.2.1
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@async-fn/jest':
         specifier: 1.6.4
@@ -1162,8 +1162,8 @@ importers:
         specifier: ^3.1.7
         version: 3.1.7
       zod:
-        specifier: ^4.2.1
-        version: 4.2.1
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@types/cli-progress':
         specifier: ^3.11.6
@@ -9314,8 +9314,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.2.1:
-    resolution: {integrity: sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==}
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
 
@@ -16395,4 +16395,4 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zod@4.2.1: {}
+  zod@4.3.6: {}
