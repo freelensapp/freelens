@@ -183,7 +183,7 @@
     "mini-css-extract-plugin": "^2.9.4",
     "monaco-editor-webpack-plugin": "^7.1.1",
     "node-abi": "^4.24.0",
-    "node-gyp": "12.1.0",
+    "node-gyp": "12.2.0",
     "node-loader": "^2.1.0",
     "playwright": "^1.57.0",
     "style-loader": "^4.0.0",
