@@ -310,7 +310,7 @@ jobs:
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
-        uses: azure/trusted-signing-action@v1.0.0
+        uses: azure/artifact-signing-action@v1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
