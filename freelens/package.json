@@ -100,7 +100,7 @@
     "chalk": "^4.1.2",
     "chokidar": "^4.0.3",
     "conf": "^10.2.0",
-    "cronstrue": "^3.9.0",
+    "cronstrue": "^3.11.0",
     "crypto-js": "^4.2.0",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^11.3.3",
