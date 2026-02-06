@@ -24,6 +24,8 @@ const setupHostnamesInjectable = getInjectable({
         ].join(),
       );
 
+      // NOTE: Proxy bypass is configured via session.setProxy() to preserve external proxy access
+
       return undefined;
     },
   }),

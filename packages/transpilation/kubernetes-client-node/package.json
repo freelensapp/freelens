@@ -6,7 +6,7 @@
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "copyright": "© 2025 Freelens Authors",
+  "copyright": "© 2024-2026 Freelens Authors",
   "license": "MIT",
   "private": false,
   "publishConfig": {
@@ -41,6 +41,6 @@
     "@kubernetes/client-node": "^1.4.0",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "webpack": "^5.104.1"
+    "webpack": "^5.105.0"
   }
 }
