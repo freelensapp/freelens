@@ -92,6 +92,8 @@ const authBackoffIntervalsMs = [60_000, 300_000];
  * that don't surface as HTTP 4xx errors.
  */
 const authErrorPatterns = [
+  /AbortError/i,
+  /operation was aborted/i,
   /authentication error/i,
   /authorization error/i,
   /auth.*failed/i,
@@ -519,10 +521,7 @@ class ClusterConnection {
 
         // Check if this is an auth-related error (e.g., kubelogin OIDC timeout,
         // exec plugin failure, AbortError from credential fetch)
-        if (
-          error instanceof Error &&
-          (error.name === "AbortError" || isAuthRelatedError(errorMessage))
-        ) {
+        if (isAuthRelatedError(errorMessage)) {
           this.onAuthFailure();
           this.dependencies.broadcastConnectionUpdate({
             level: "error",
