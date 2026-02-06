@@ -474,7 +474,7 @@ exports[`preferences - navigation to application preferences given in preference
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -532,7 +532,7 @@ exports[`preferences - navigation to application preferences given in preference
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -1283,7 +1283,7 @@ exports[`preferences - navigation to application preferences given in preference
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -1341,7 +1341,7 @@ exports[`preferences - navigation to application preferences given in preference
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -2530,7 +2530,7 @@ exports[`preferences - navigation to application preferences given in some child
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -2588,7 +2588,7 @@ exports[`preferences - navigation to application preferences given in some child
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -3340,7 +3340,7 @@ exports[`preferences - navigation to application preferences given in some child
                   data-preference-item-test="delete-protection"
                 >
                   <section
-                    id="other"
+                    id="delete-protection"
                   >
                     <div
                       class="SubTitle"
@@ -3398,7 +3398,7 @@ exports[`preferences - navigation to application preferences given in some child
                   data-preference-item-test="check-for-updates"
                 >
                   <section
-                    id="other"
+                    id="check-for-updates"
                   >
                     <div
                       class="SubTitle"

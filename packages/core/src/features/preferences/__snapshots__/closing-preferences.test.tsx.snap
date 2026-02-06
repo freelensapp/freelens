@@ -486,7 +486,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -544,7 +544,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -2070,7 +2070,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -2128,7 +2128,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"

@@ -499,7 +499,7 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                   data-preference-item-test="delete-protection"
                 >
                   <section
-                    id="other"
+                    id="delete-protection"
                   >
                     <div
                       class="SubTitle"
@@ -557,7 +557,7 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                   data-preference-item-test="check-for-updates"
                 >
                   <section
-                    id="other"
+                    id="check-for-updates"
                   >
                     <div
                       class="SubTitle"

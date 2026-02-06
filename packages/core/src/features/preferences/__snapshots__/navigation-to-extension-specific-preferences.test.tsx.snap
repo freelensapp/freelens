@@ -487,7 +487,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   data-preference-item-test="delete-protection"
                 >
                   <section
-                    id="other"
+                    id="delete-protection"
                   >
                     <div
                       class="SubTitle"
@@ -545,7 +545,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   data-preference-item-test="check-for-updates"
                 >
                   <section
-                    id="other"
+                    id="check-for-updates"
                   >
                     <div
                       class="SubTitle"
@@ -2879,7 +2879,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -2937,7 +2937,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -3726,7 +3726,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -3784,7 +3784,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"

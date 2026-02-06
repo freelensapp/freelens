@@ -837,7 +837,7 @@ exports[`show-about-using-tray when navigating using tray renders 1`] = `
                   data-preference-item-test="delete-protection"
                 >
                   <section
-                    id="other"
+                    id="delete-protection"
                   >
                     <div
                       class="SubTitle"
@@ -895,7 +895,7 @@ exports[`show-about-using-tray when navigating using tray renders 1`] = `
                   data-preference-item-test="check-for-updates"
                 >
                   <section
-                    id="other"
+                    id="check-for-updates"
                   >
                     <div
                       class="SubTitle"

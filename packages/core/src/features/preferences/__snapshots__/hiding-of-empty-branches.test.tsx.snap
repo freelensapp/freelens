@@ -474,7 +474,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -532,7 +532,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -1311,7 +1311,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -1369,7 +1369,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"
@@ -2160,7 +2160,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="delete-protection"
               >
                 <section
-                  id="other"
+                  id="delete-protection"
                 >
                   <div
                     class="SubTitle"
@@ -2218,7 +2218,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                 data-preference-item-test="check-for-updates"
               >
                 <section
-                  id="other"
+                  id="check-for-updates"
                 >
                   <div
                     class="SubTitle"

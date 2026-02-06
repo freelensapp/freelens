@@ -835,7 +835,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                   data-preference-item-test="delete-protection"
                 >
                   <section
-                    id="other"
+                    id="delete-protection"
                   >
                     <div
                       class="SubTitle"
@@ -893,7 +893,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                   data-preference-item-test="check-for-updates"
                 >
                   <section
-                    id="other"
+                    id="check-for-updates"
                   >
                     <div
                       class="SubTitle"
