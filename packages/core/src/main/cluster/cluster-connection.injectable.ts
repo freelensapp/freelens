@@ -86,6 +86,30 @@ const maxAutoAuthRetries = 3;
  */
 const authBackoffIntervalsMs = [60_000, 300_000];
 
+/**
+ * Patterns in error messages that indicate an authentication-related failure.
+ * These help detect exec auth plugin failures (like kubelogin OIDC timeouts)
+ * that don't surface as HTTP 4xx errors.
+ */
+const authErrorPatterns = [
+  /authentication error/i,
+  /authorization error/i,
+  /auth.*failed/i,
+  /get-token.*error/i,
+  /oauth2.*error/i,
+  /oidc.*error/i,
+  /exec.*failed/i,
+  /credential.*error/i,
+  /context deadline exceeded/i,
+];
+
+/**
+ * Checks if an error message indicates an authentication-related failure.
+ */
+function isAuthRelatedError(message: string): boolean {
+  return authErrorPatterns.some((pattern) => pattern.test(message));
+}
+
 export type { ClusterConnection };
 
 class ClusterConnection {
@@ -491,9 +515,26 @@ class ClusterConnection {
           message,
         });
       } else if (error instanceof Error || typeof error === "string") {
+        const errorMessage = `${error}`;
+
+        // Check if this is an auth-related error (e.g., kubelogin OIDC timeout,
+        // exec plugin failure, AbortError from credential fetch)
+        if (
+          error instanceof Error &&
+          (error.name === "AbortError" || isAuthRelatedError(errorMessage))
+        ) {
+          this.onAuthFailure();
+          this.dependencies.broadcastConnectionUpdate({
+            level: "error",
+            message: errorMessage,
+          });
+
+          return ClusterStatus.AccessDenied;
+        }
+
         this.dependencies.broadcastConnectionUpdate({
           level: "error",
-          message: `${error}`,
+          message: errorMessage,
         });
       } else {
         this.dependencies.broadcastConnectionUpdate({
