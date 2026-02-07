@@ -20,6 +20,8 @@ import customResourceDefinitionsInjectable from "./definitions.injectable";
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
+export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
+
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
@@ -37,7 +39,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
       index: number,
     ) => {
       const customResourceGroupSidebarItem = getInjectable({
-        id: `sidebar-item-custom-resource-group-${group}`,
+        id: `${sideBarItemCustomResourcePrefix}-${group}`,
         instantiate: (): SidebarItemRegistration => ({
           parentId: customResourcesSidebarItemInjectable.id,
           onClick: noop,
@@ -53,7 +55,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         };
 
         return getInjectable({
-          id: `sidebar-item-custom-resource-group-${group}/${definition.getPluralName()}`,
+          id: `${sideBarItemCustomResourcePrefix}-${group}/${definition.getPluralName()}`,
           instantiate: (di): SidebarItemRegistration => ({
             parentId: customResourceGroupSidebarItem.id,
             onClick: () => navigateToCustomResources(parameters),

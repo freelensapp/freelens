@@ -40,6 +40,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-0"
@@ -852,6 +897,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
@@ -1813,6 +1903,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-3"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
@@ -2835,6 +2970,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-4"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-4"
@@ -3841,6 +4021,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-9"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
@@ -5018,6 +5243,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-12"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-12"
@@ -6183,6 +6453,51 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-13"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
