@@ -40,6 +40,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-0"
@@ -933,6 +978,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-3"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
@@ -1838,6 +1928,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-4"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
@@ -3011,6 +3146,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-6"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-6"
               aria-disabled="false"
@@ -4252,6 +4432,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-26"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-26"
@@ -5479,6 +5704,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-28"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-28"
               aria-disabled="false"
@@ -6965,6 +7235,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-33"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-33"
@@ -8437,6 +8752,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-40"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-40"
               aria-disabled="false"
@@ -9923,6 +10283,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-48"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-48"
@@ -11122,6 +11527,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-43"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-43"
               aria-disabled="false"
@@ -12330,6 +12780,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-37"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-37"
               aria-disabled="false"
@@ -13816,6 +14311,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-30"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-30"
@@ -15043,6 +15583,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-22"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-22"
               aria-disabled="false"
@@ -16286,6 +16871,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-18"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-18"
@@ -17452,6 +18082,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-20"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-20"
               aria-disabled="false"
@@ -18693,6 +19368,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-10"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-10"
@@ -19927,6 +20647,51 @@ exports[`showing details for helm release given application is started when navi
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
+            <div
+              aria-describedby="DndDescribedBy-15"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             />
             <div
               aria-describedby="DndDescribedBy-15"
@@ -21154,6 +21919,51 @@ exports[`showing details for helm release given application is started when navi
           <div
             class="container sidebarNav sidebar-active-status"
           >
+            <div
+              aria-describedby="DndDescribedBy-17"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            >
+              <div
+                class="SidebarItem"
+                data-is-active-test="false"
+                data-testid="sidebar-item-favorites"
+              >
+                <a
+                  class="navItem"
+                  data-testid="link-for-sidebar-item-favorites"
+                  href="/"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="star"
+                    >
+                      star
+                    </span>
+                  </i>
+                  <span>
+                    Favorites
+                  </span>
+                  <i
+                    class="Icon expandIcon material focusable"
+                    data-testid="expand-icon-for-sidebar-item-favorites"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="keyboard_arrow_down"
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </i>
+                </a>
+              </div>
+            </div>
             <div
               aria-describedby="DndDescribedBy-17"
               aria-disabled="false"

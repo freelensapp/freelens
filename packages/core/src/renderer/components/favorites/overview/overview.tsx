@@ -4,21 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./overview.module.scss";
-
-import React from "react";
-import { observer } from "mobx-react";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
-import { Checkbox } from "../../checkbox";
-
-import { TabLayout } from "../../layout/tab-layout";
-import favoritesStoreInjectable, { FavoritesStore } from "../store.injectable";
-import favoritesSidebarItemsComputedInjectable, { FavoriteSidebarItem } from "../sidebar-items-computed.injectable";
-import type { IComputedValue } from "mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import OrderableList from "../../orderable-list/orderable-list";
+import { observer } from "mobx-react";
+import React from "react";
 import { FavoriteItem } from "../../../../features/favorites/common/storage.injectable";
+import { Checkbox } from "../../checkbox";
+import { TabLayout } from "../../layout/tab-layout";
+import OrderableList from "../../orderable-list/orderable-list";
+import favoritesSidebarItemsComputedInjectable, { FavoriteSidebarItem } from "../sidebar-items-computed.injectable";
+import favoritesStoreInjectable, { FavoritesStore } from "../store.injectable";
+import styles from "./overview.module.scss";
+
+import type { IComputedValue } from "mobx";
 
 interface Dependencies {
   favoritesStore: FavoritesStore;
@@ -72,7 +71,7 @@ const NonInjectedFavoritesOverview = observer(({ favoritesStore, favoritesSideba
 
   return (
     <TabLayout scrollable>
-      <div className={styles.FavoritesOverview}>
+      <div className={styles.FavoritesOverview} data-testid="page-for-favorites-overview">
         <div className={styles.favoritesContainer}>
           <div className={styles.header}>
             <h5>Favorites</h5>
@@ -80,12 +79,8 @@ const NonInjectedFavoritesOverview = observer(({ favoritesStore, favoritesSideba
 
           {!hasFavorites ? (
             <div className={styles.emptyState}>
-              <Icon material="star_border" className={styles.emptyIcon} />
               <h6>No favorites yet</h6>
-              <p>
-                Start by hovering over any item in the sidebar and clicking the pin icon to add it here. Your favorites
-                will be saved and easily accessible from this dashboard.
-              </p>
+              <p>Hover over any sidebar item and click the pin icon to add it here.</p>
             </div>
           ) : (
             <>

@@ -5,8 +5,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { frontEndRouteInjectionToken } from "../../../../front-end-route-injection-token";
 import { computed } from "mobx";
+import { frontEndRouteInjectionToken } from "../../../../front-end-route-injection-token";
 
 const favoritesOverviewRouteInjectable = getInjectable({
   id: "favorites-overview-route",

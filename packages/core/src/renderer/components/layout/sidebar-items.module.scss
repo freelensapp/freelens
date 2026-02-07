@@ -7,6 +7,7 @@
 
   > .navItem {
     display: flex;
+    align-items: center;
     gap: 8px;
     text-decoration: none;
     padding: 6px 8px 6px 10px;
@@ -30,6 +31,9 @@
       opacity: 0;
       pointer-events: none;
       margin-left: auto;
+      width: 24px;
+      display: flex;
+      justify-content: center;
       transition: opacity 250ms;
     }
 
@@ -41,6 +45,9 @@
 
   .expandIcon {
     margin-left: auto;
+    width: 24px;
+    display: flex;
+    justify-content: center;
   }
 
   .subMenu {

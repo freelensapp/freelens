@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed, observable, type IObservableValue } from "mobx";
 import { noop } from "lodash/fp";
+import { computed, type IObservableValue, observable } from "mobx";
 import { FavoritesStore } from "./store.injectable";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+
 import type { FavoritesStorageState } from "../../../features/favorites/common/storage.injectable";
 
 const makeSidebarItem = (overrides: Partial<SidebarItemDeclaration> & { id: string }): SidebarItemDeclaration => ({

@@ -10,7 +10,7 @@ import { FavoritesStorageState } from "./storage.injectable";
 
 const favoritesStateInjectable = getInjectable({
   id: "favorites-state",
-  instantiate: () => observable.box<FavoritesStorageState>({ items: [] }),
+  instantiate: () => observable.box<FavoritesStorageState>({ items: [], useShortNames: true }),
 });
 
 export default favoritesStateInjectable;

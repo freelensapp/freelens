@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
+import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";
 import styles from "./sidebar-items.module.scss";
 import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
@@ -18,7 +19,6 @@ import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
-import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 
 interface Dependencies {
   sidebarStorage: StorageLayer<SidebarStorageState>;
@@ -99,7 +99,6 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
             className={styles.expandIcon}
             material={expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"}
             data-testid={`expand-icon-for-${id}`}
-            small
           />
         )}
         {item.parentId && !isExpandable && id !== favoritesOverviewSidebarItemInjectable.id && (

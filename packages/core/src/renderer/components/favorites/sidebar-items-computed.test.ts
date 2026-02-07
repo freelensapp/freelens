@@ -16,8 +16,9 @@ import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
 import favoritesSidebarItemsComputedInjectable, { type FavoriteSidebarItem } from "./sidebar-items-computed.injectable";
 import favoritesStoreInjectable from "./store.injectable";
 
-import type { FavoritesStorageState } from "../../../features/favorites/common/storage.injectable";
 import type { IObservableValue } from "mobx";
+
+import type { FavoritesStorageState } from "../../../features/favorites/common/storage.injectable";
 
 const testPodsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-pods",
