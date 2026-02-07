@@ -1,0 +1,43 @@
+.HTTPRouteDetails {
+  --http-route-details-spacing: 0;
+
+  .rule {
+    .matches,
+    .backends,
+    .filters {
+      column-gap: 0.75rem;
+      display: grid;
+      grid-template-columns: minmax(6.25rem, max-content) minmax(0, 1fr);
+      margin-top: 0.25rem;
+      row-gap: 0.25rem;
+    }
+
+    .matches {
+      align-items: start;
+    }
+
+    .backends,
+    .filters {
+      align-items: center;
+    }
+
+    .label {
+      color: var(--textColorPrimary);
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .value {
+      display: block;
+      line-height: 1.4;
+      min-width: 0;
+
+      ul {
+        margin: 0;
+        padding-left: 1rem;
+      }
+    }
+  }
+}

@@ -212,6 +212,14 @@ exports[`opening dock tab for installing helm chart given application is started
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            />
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             >
               <div
                 class="SidebarItem"
@@ -826,6 +834,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
@@ -1639,6 +1655,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-3"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
@@ -2509,6 +2533,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-8"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-8"
               aria-disabled="false"
@@ -3529,6 +3561,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-11"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-11"
               aria-disabled="false"
@@ -4590,6 +4630,14 @@ exports[`opening dock tab for installing helm chart given application is started
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            />
+            <div
+              aria-describedby="DndDescribedBy-13"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             >
               <div
                 class="SidebarItem"
@@ -5579,6 +5627,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-18"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-18"
               aria-disabled="false"
@@ -6634,6 +6690,14 @@ exports[`opening dock tab for installing helm chart given application is started
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
+            />
+            <div
+              aria-describedby="DndDescribedBy-16"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
             >
               <div
                 class="SidebarItem"
@@ -7633,6 +7697,14 @@ exports[`opening dock tab for installing helm chart given application is started
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-19"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-19"
               aria-disabled="false"
