@@ -39,10 +39,12 @@ describe("Favorites storage technical tests", () => {
       favoritesPersistentStorage.loadAndStartSyncing();
     });
 
-    describe("load", () => {
-      it("loads empty favorites by default", () => {
-        expect(favoritesState.get().items.length).toEqual(0);
-      });
+    it("loads empty favorites by default", () => {
+      expect(favoritesState.get().items.length).toEqual(0);
+    });
+
+    it("defaults useShortNames to true", () => {
+      expect(favoritesState.get().useShortNames).toEqual(true);
     });
 
     describe("add static favorite", () => {
@@ -52,9 +54,11 @@ describe("Favorites storage technical tests", () => {
             {
               id: "sidebar-item-pods",
               type: "static",
+              title: "Pods",
               order: 10,
             },
           ],
+          useShortNames: true,
         });
       });
 
@@ -64,6 +68,7 @@ describe("Favorites storage technical tests", () => {
         expect(items.length).toEqual(1);
         expect(items[0].id).toEqual("sidebar-item-pods");
         expect(items[0].type).toEqual("static");
+        expect(items[0].title).toEqual("Pods");
         expect(items[0].order).toEqual(10);
       });
     });
@@ -75,9 +80,11 @@ describe("Favorites storage technical tests", () => {
             {
               id: "sidebar-item-custom-resource-group-cert-manager.io/certificates",
               type: "crd",
+              title: "Certificates",
               order: 20,
             },
           ],
+          useShortNames: true,
         });
       });
 
@@ -87,6 +94,7 @@ describe("Favorites storage technical tests", () => {
         expect(items.length).toEqual(1);
         expect(items[0].id).toEqual("sidebar-item-custom-resource-group-cert-manager.io/certificates");
         expect(items[0].type).toEqual("crd");
+        expect(items[0].title).toEqual("Certificates");
         expect(items[0].order).toEqual(20);
       });
     });
@@ -98,19 +106,23 @@ describe("Favorites storage technical tests", () => {
             {
               id: "sidebar-item-pods",
               type: "static",
+              title: "Pods",
               order: 10,
             },
             {
               id: "sidebar-item-deployments",
               type: "static",
+              title: "Deployments",
               order: 20,
             },
             {
               id: "sidebar-item-custom-resource-group-cert-manager.io/certificates",
               type: "crd",
+              title: "Certificates",
               order: 30,
             },
           ],
+          useShortNames: true,
         });
       });
 
@@ -131,19 +143,23 @@ describe("Favorites storage technical tests", () => {
             {
               id: "sidebar-item-pods",
               type: "static",
+              title: "Pods",
               order: 10,
             },
             {
               id: "sidebar-item-deployments",
               type: "static",
+              title: "Deployments",
               order: 20,
             },
           ],
+          useShortNames: true,
         });
       });
 
       it("removes a favorite from store", () => {
         favoritesState.set({
+          ...favoritesState.get(),
           items: favoritesState.get().items.filter((item) => item.id !== "sidebar-item-pods"),
         });
 
@@ -161,19 +177,23 @@ describe("Favorites storage technical tests", () => {
             {
               id: "sidebar-item-pods",
               type: "static",
+              title: "Pods",
               order: 30,
             },
             {
               id: "sidebar-item-deployments",
               type: "static",
+              title: "Deployments",
               order: 10,
             },
             {
               id: "sidebar-item-services",
               type: "static",
+              title: "Services",
               order: 20,
             },
           ],
+          useShortNames: true,
         });
       });
 
@@ -183,6 +203,17 @@ describe("Favorites storage technical tests", () => {
         expect(items[0].order).toEqual(30);
         expect(items[1].order).toEqual(10);
         expect(items[2].order).toEqual(20);
+      });
+    });
+
+    describe("useShortNames persistence", () => {
+      it("persists useShortNames as false", () => {
+        favoritesState.set({
+          items: [],
+          useShortNames: false,
+        });
+
+        expect(favoritesState.get().useShortNames).toEqual(false);
       });
     });
   });
@@ -199,14 +230,17 @@ describe("Favorites storage technical tests", () => {
           {
             id: "sidebar-item-pods",
             type: "static",
+            title: "Pods",
             order: 10,
           },
           {
             id: "sidebar-item-custom-resource-group-cert-manager.io/certificates",
             type: "crd",
+            title: "Certificates",
             order: 20,
           },
         ],
+        useShortNames: false,
       });
 
       di.override(storeMigrationVersionInjectable, () => "9999.0.0");
@@ -221,8 +255,14 @@ describe("Favorites storage technical tests", () => {
       expect(items.length).toEqual(2);
       expect(items[0].id).toEqual("sidebar-item-pods");
       expect(items[0].type).toEqual("static");
+      expect(items[0].title).toEqual("Pods");
       expect(items[1].id).toEqual("sidebar-item-custom-resource-group-cert-manager.io/certificates");
       expect(items[1].type).toEqual("crd");
+      expect(items[1].title).toEqual("Certificates");
+    });
+
+    it("restores useShortNames from existing state", () => {
+      expect(favoritesState.get().useShortNames).toEqual(false);
     });
   });
 });

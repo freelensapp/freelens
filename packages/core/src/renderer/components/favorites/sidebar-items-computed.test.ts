@@ -9,12 +9,15 @@ import { createContainer, type DiContainer, getInjectable } from "@ogre-tools/in
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { noop } from "lodash/fp";
 import { computed, type IComputedValue } from "mobx";
-import { SidebarMenuItem } from "../../../common/sidebar-menu-items-starting-order";
 import favoritesStateInjectable from "../../../features/favorites/common/state.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
-import favoritesSidebarItemsComputedInjectable, { FavoriteSidebarItem } from "./sidebar-items-computed.injectable";
+import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
+import favoritesSidebarItemsComputedInjectable, { type FavoriteSidebarItem } from "./sidebar-items-computed.injectable";
 import favoritesStoreInjectable from "./store.injectable";
+
+import type { FavoritesStorageState } from "../../../features/favorites/common/storage.injectable";
+import type { IObservableValue } from "mobx";
 
 const testPodsSidebarItemInjectable = getInjectable({
   id: "sidebar-item-pods",
@@ -65,7 +68,7 @@ const testInvisibleCrdSidebarItemInjectable = getInjectable({
 describe("favorites sidebar items computed", () => {
   let di: DiContainer;
   let favoritesSidebarItems: IComputedValue<FavoriteSidebarItem[]>;
-  let favoritesState: any;
+  let favoritesState: IObservableValue<FavoritesStorageState>;
 
   beforeEach(() => {
     di = createContainer("test");
@@ -76,6 +79,7 @@ describe("favorites sidebar items computed", () => {
     di.register(
       userPreferencesStateInjectable,
       getClusterPageMenuOrderInjectable,
+      favoritesSidebarItemInjectable,
       testPodsSidebarItemInjectable,
       testDeploymentsSidebarItemInjectable,
       testCrdSidebarItemInjectable,
@@ -91,10 +95,10 @@ describe("favorites sidebar items computed", () => {
 
   describe("with empty favorites", () => {
     beforeEach(() => {
-      favoritesState.set({ items: [] });
+      favoritesState.set({ items: [], useShortNames: true });
     });
 
-    it("returns empty array", () => {
+    it("returns empty dynamic favorites", () => {
       expect(favoritesSidebarItems.get().length).toEqual(0);
     });
   });
@@ -106,9 +110,11 @@ describe("favorites sidebar items computed", () => {
           {
             id: "sidebar-item-pods",
             type: "static",
+            title: "Pods",
             order: 10,
           },
         ],
+        useShortNames: true,
       });
     });
 
@@ -117,43 +123,41 @@ describe("favorites sidebar items computed", () => {
 
       expect(items.length).toEqual(1);
       expect(items[0].id).toEqual("favorite-sidebar-item-pods");
-      expect(items[0].parentId).toEqual(SidebarMenuItem.Favorites);
+      expect(items[0].parentId).toBeNull();
       expect(items[0].title).toEqual("Pods");
       expect(items[0].orderNumber).toEqual(10);
     });
   });
 
-  describe("with multiple favorites", () => {
+  describe("with multiple favorites sorted by order", () => {
     beforeEach(() => {
       favoritesState.set({
         items: [
           {
             id: "sidebar-item-pods",
             type: "static",
+            title: "Pods",
             order: 30,
           },
           {
             id: "sidebar-item-deployments",
             type: "static",
+            title: "Deployments",
             order: 10,
           },
         ],
+        useShortNames: true,
       });
     });
 
-    it("maps all favorites to sidebar items", () => {
+    it("returns items sorted by order", () => {
       const items = favoritesSidebarItems.get();
 
       expect(items.length).toEqual(2);
-      expect(items[0].id).toEqual("favorite-sidebar-item-pods");
-      expect(items[1].id).toEqual("favorite-sidebar-item-deployments");
-    });
-
-    it("preserves order from favorites", () => {
-      const items = favoritesSidebarItems.get();
-
-      expect(items[0].orderNumber).toEqual(30);
-      expect(items[1].orderNumber).toEqual(10);
+      expect(items[0].id).toEqual("favorite-sidebar-item-deployments");
+      expect(items[0].orderNumber).toEqual(10);
+      expect(items[1].id).toEqual("favorite-sidebar-item-pods");
+      expect(items[1].orderNumber).toEqual(30);
     });
   });
 
@@ -164,9 +168,11 @@ describe("favorites sidebar items computed", () => {
           {
             id: "sidebar-item-custom-resource-group-cert-manager.io/certificates",
             type: "crd",
+            title: "Certificates",
             order: 50,
           },
         ],
+        useShortNames: true,
       });
     });
 
@@ -192,13 +198,15 @@ describe("favorites sidebar items computed", () => {
           {
             id: "sidebar-item-custom-resource-group-example.io/examples",
             type: "crd",
+            title: "Examples",
             order: 60,
           },
         ],
+        useShortNames: true,
       });
     });
 
-    it("maps favorite but respects original visibility", () => {
+    it("respects original visibility", () => {
       const items = favoritesSidebarItems.get();
 
       expect(items.length).toEqual(1);
@@ -213,19 +221,23 @@ describe("favorites sidebar items computed", () => {
           {
             id: "sidebar-item-pods",
             type: "static",
+            title: "Pods",
             order: 10,
           },
           {
             id: "sidebar-item-non-existent",
             type: "crd",
+            title: "Non Existent",
             order: 20,
           },
           {
             id: "sidebar-item-deployments",
             type: "static",
+            title: "Deployments",
             order: 30,
           },
         ],
+        useShortNames: true,
       });
     });
 
@@ -245,19 +257,23 @@ describe("favorites sidebar items computed", () => {
           {
             id: "sidebar-item-pods",
             type: "static",
+            title: "Pods",
             order: 10,
           },
           {
             id: "sidebar-item-custom-resource-group-cert-manager.io/certificates",
             type: "crd",
+            title: "Certificates",
             order: 20,
           },
           {
             id: "sidebar-item-deployments",
             type: "static",
+            title: "Deployments",
             order: 30,
           },
         ],
+        useShortNames: true,
       });
     });
 
@@ -270,12 +286,45 @@ describe("favorites sidebar items computed", () => {
       expect(items[2].id).toEqual("favorite-sidebar-item-deployments");
     });
 
-    it("all items have correct parent", () => {
+    it("all items preserve original parentId", () => {
       const items = favoritesSidebarItems.get();
 
       items.forEach((item) => {
-        expect(item.parentId).toEqual(SidebarMenuItem.Favorites);
+        expect(item.parentId).toBeNull();
       });
+    });
+  });
+
+  describe("useShortNames toggle", () => {
+    beforeEach(() => {
+      favoritesState.set({
+        items: [
+          {
+            id: "sidebar-item-pods",
+            type: "static",
+            title: "Workloads - Pods",
+            order: 10,
+          },
+        ],
+        useShortNames: true,
+      });
+    });
+
+    it("uses short title when useShortNames is true", () => {
+      const items = favoritesSidebarItems.get();
+
+      expect(items[0].title).toEqual("Pods");
+    });
+
+    it("uses full title when useShortNames is false", () => {
+      favoritesState.set({
+        ...favoritesState.get(),
+        useShortNames: false,
+      });
+
+      const items = favoritesSidebarItems.get();
+
+      expect(items[0].title).toEqual("Workloads - Pods");
     });
   });
 });
