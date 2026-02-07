@@ -8,6 +8,7 @@
 
 import clusterFrameComponentRegistratorInjectable from "./cluster-frame-component-registrator.injectable";
 import clusterFrameLayoutChildComponentInjectable from "./cluster-frame-layout-child-component.injectable";
+import ensureThemeReadyInjectable from "./copy-theme-from-parent.injectable";
 import { registerInjectables as registerInitClusterFrameInjectables } from "./init-cluster-frame/register-injectables";
 import startUrlInjectable from "./start-url.injectable";
 
@@ -21,6 +22,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(clusterFrameLayoutChildComponentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(ensureThemeReadyInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
