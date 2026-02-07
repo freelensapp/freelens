@@ -13,6 +13,8 @@ import { observable, reaction, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { allowDelete } from "../../../features/user-preferences/common/allow-delete";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
@@ -28,6 +30,7 @@ import type { KubeObject, Pod } from "@freelensapp/kube-object";
 import type { IComputedValue } from "mobx";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { KubeObjectContextMenuItem } from "../../kube-object/handler";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
@@ -54,6 +57,7 @@ interface Dependencies {
   withConfirmation: WithConfirmation;
   navigate: Navigate;
   kubeObjectDeleteService: KubeObjectDeleteService;
+  userPreferencesState: UserPreferencesState;
 }
 
 @observer
@@ -188,6 +192,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
       navigate,
       updateAction,
       kubeObjectDeleteService,
+      userPreferencesState,
     } = this.props;
 
     // Get the latest object from the store to ensure we have current state
@@ -195,7 +200,8 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
     const latestObject = store?.getByPath(object.selfLink) || object;
 
     const isEditable = editable ?? (Boolean(store?.patch) || Boolean(updateAction));
-    const isRemovable = removable ?? (Boolean(store?.remove) || Boolean(removeAction));
+    const defaultRemovable = removable ?? (Boolean(store?.remove) || Boolean(removeAction));
+    const isRemovable = allowDelete(userPreferencesState) && defaultRemovable;
 
     runInAction(() => {
       this.menuItems.clear();
@@ -345,6 +351,7 @@ export const KubeObjectMenu = withInjectables<Dependencies, KubeObjectMenuProps<
       navigate: di.inject(navigateInjectable),
       withConfirmation: di.inject(withConfirmationInjectable),
       kubeObjectDeleteService: di.inject(kubeObjectDeleteServiceInjectable),
+      userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
   },
 ) as <T extends KubeObject>(props: KubeObjectMenuProps<T>) => React.ReactElement;

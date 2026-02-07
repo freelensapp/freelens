@@ -8,6 +8,8 @@
 
 import applicationPreferencePageInjectable from "./application-preference-page.injectable";
 import applicationPreferenceTabInjectable from "./application-preference-tab.injectable";
+import { registerInjectables as registerCheckForUpdatesInjectables } from "./check-for-updates/register-injectables";
+import { registerInjectables as registerDeleteProtectionInjectables } from "./delete-protection/register-injectables";
 import { registerInjectables as registerExtensionInstallRegistryInjectables } from "./extension-install-registry/register-injectables";
 import { registerInjectables as registerHotbarAutoHideInjectables } from "./hotbar-auto-hide/register-injectables";
 import { registerInjectables as registerMenuBarInjectables } from "./menu-bar/register-injectables";
@@ -26,6 +28,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applicationPreferenceTabInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCheckForUpdatesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerDeleteProtectionInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

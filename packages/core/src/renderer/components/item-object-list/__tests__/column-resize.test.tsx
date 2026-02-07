@@ -51,6 +51,7 @@ const baseProps: ItemListLayoutContentProps<ItemObject, boolean> & {
   openConfirmDialog: any;
   toggleTableColumnVisibility: any;
   isTableColumnHidden: any;
+  userPreferencesState: any;
   store: StubStore;
 } = {
   getFilters: () => [],
@@ -78,6 +79,7 @@ const baseProps: ItemListLayoutContentProps<ItemObject, boolean> & {
   openConfirmDialog: jest.fn(),
   toggleTableColumnVisibility: jest.fn(),
   isTableColumnHidden: jest.fn(),
+  userPreferencesState: { allowDelete: true },
   copyClassNameFromHeadCells: false,
   isConfigurable: false,
 };
