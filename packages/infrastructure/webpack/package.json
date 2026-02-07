@@ -35,7 +35,7 @@
     "lodash": "^4.17.23",
     "mini-css-extract-plugin": "^2.9.4",
     "sass": "^1.97.3",
-    "sass-loader": "^16.0.6",
+    "sass-loader": "^16.0.7",
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.1.18",
     "ts-loader": "^9.5.4",
