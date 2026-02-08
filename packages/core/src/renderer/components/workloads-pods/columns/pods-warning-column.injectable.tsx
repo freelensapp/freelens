@@ -4,19 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Icon } from "@freelensapp/icon";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { withTooltip } from "@freelensapp/tooltip";
+import type { KubeEvent, Pod } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
-import { COLUMN_PRIORITY } from "./column-priority";
-import { Icon } from "@freelensapp/icon";
-import eventStoreInjectable from "../../events/store.injectable";
-import { withTooltip } from "@freelensapp/tooltip";
 import { observer } from "mobx-react";
+import React from "react";
 
-import type { StrictReactNode } from "@freelensapp/utilities";
+import eventStoreInjectable from "../../events/store.injectable";
 import type { EventStore } from "../../events/store";
-import type { KubeEvent, Pod } from "@freelensapp/kube-object";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;
