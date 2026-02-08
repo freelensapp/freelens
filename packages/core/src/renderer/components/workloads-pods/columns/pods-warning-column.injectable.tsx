@@ -16,16 +16,13 @@ import { observer } from "mobx-react";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 import type { EventStore } from "../../events/store";
-import type {
-  KubeEvent,
-  Pod,
-} from "@freelensapp/kube-object";
+import type { KubeEvent, Pod } from "@freelensapp/kube-object";
 
 interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;
 }
 
-const WarningIcon = withTooltip(({...elemProps}: WarningIconProps) => (
+const WarningIcon = withTooltip(({ ...elemProps }: WarningIconProps) => (
   <Icon material="warning_amber" className="warning" {...elemProps} />
 ));
 
@@ -39,15 +36,14 @@ interface PodwarningProps {
 
 const NonInjectablePodwarning: React.FC<PodwarningProps & Dependencies> = observer(({ pod, eventStore }) => {
   const events: KubeEvent[] = eventStore.getEventsByObject(pod);
-  const latestWarningEvent: KubeEvent | undefined =
-    events
-      .filter(e => e.type === "Warning")
-      .sort((a, b) => {
-        const ta = Date.parse(a.lastTimestamp ?? "");
-        const tb = Date.parse(b.lastTimestamp ?? "");
-        return tb - ta;
-      })
-      .at(0);
+  const latestWarningEvent: KubeEvent | undefined = events
+    .filter((e) => e.type === "Warning")
+    .sort((a, b) => {
+      const ta = Date.parse(a.lastTimestamp ?? "");
+      const tb = Date.parse(b.lastTimestamp ?? "");
+      return tb - ta;
+    })
+    .at(0);
 
   if (!pod.hasIssues() || !latestWarningEvent) {
     return null;
@@ -69,7 +65,7 @@ const NonInjectablePodwarning: React.FC<PodwarningProps & Dependencies> = observ
 const Podwarning = withInjectables<Dependencies, PodwarningProps>(NonInjectablePodwarning, {
   getProps: (di, props) => ({
     ...props,
-    eventStore: di.inject(eventStoreInjectable)
+    eventStore: di.inject(eventStoreInjectable),
   }),
 });
 
@@ -84,11 +80,9 @@ export const podsWarningColumnInjectable = getInjectable({
     priority: COLUMN_PRIORITY.PODWARNING,
     content: (pod: Pod) => <Podwarning pod={pod} />,
     header: {
-      title: <Icon
-        material="warning_amber"
-      />,
+      title: <Icon material="warning_amber" />,
       className: "podwarning",
-      id: columnId
+      id: columnId,
     },
   }),
   injectionToken: podListLayoutColumnInjectionToken,
