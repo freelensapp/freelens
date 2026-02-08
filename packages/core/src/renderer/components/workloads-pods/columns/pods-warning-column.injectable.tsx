@@ -7,16 +7,17 @@
 import { Icon } from "@freelensapp/icon";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { withTooltip } from "@freelensapp/tooltip";
-import type { KubeEvent, Pod } from "@freelensapp/kube-object";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-
 import eventStoreInjectable from "../../events/store.injectable";
-import type { EventStore } from "../../events/store";
 import { COLUMN_PRIORITY } from "./column-priority";
+
+import type { KubeEvent, Pod } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { EventStore } from "../../events/store";
 
 interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;
