@@ -48,13 +48,13 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.90",
+    "@types/react": "^17.0.91",
     "css-loader": "^6.11.0",
     "mobx-observable-history": "^2.0.3",
     "postcss-loader": "^8.2.0",
-    "sass-loader": "^16.0.6",
+    "sass-loader": "^16.0.7",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "webpack": "^5.104.1"
+    "webpack": "^5.105.0"
   }
 }

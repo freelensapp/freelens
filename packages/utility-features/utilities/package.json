@@ -35,7 +35,7 @@
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
-    "semver": "^7.7.3",
+    "semver": "^7.7.4",
     "tar": "^7.5.2",
     "typed-regex": "^0.0.8"
   },
@@ -44,8 +44,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.17.21",
-    "@types/react": "^17.0.90",
+    "@types/lodash": "^4.17.23",
+    "@types/react": "^17.0.91",
     "@types/react-router": "^5.1.20",
     "@types/semver": "^7.7.1",
     "identity-obj-proxy": "^3.0.0",
@@ -54,7 +54,7 @@
     "react-router": "^5.3.4",
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.4",
-    "type-fest": "^5.3.1",
-    "webpack": "^5.104.1"
+    "type-fest": "^5.4.3",
+    "webpack": "^5.105.0"
   }
 }

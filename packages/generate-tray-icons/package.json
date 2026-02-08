@@ -21,13 +21,13 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^27.3.0",
+    "jsdom": "^28.0.0",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^27.0.0",
-    "@types/node": "~22.19.3",
+    "@types/node": "~22.19.9",
     "typescript": "^5.9.3"
   },
   "bin": {
