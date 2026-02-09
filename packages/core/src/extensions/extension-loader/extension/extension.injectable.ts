@@ -12,6 +12,8 @@ import { extensionRegistratorInjectionToken } from "../extension-registrator-inj
 
 import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
 
+import type { Injectable } from "@ogre-tools/injectable";
+
 export interface Extension {
   register: () => void;
   deregister: () => void;
@@ -27,7 +29,10 @@ const extensionInjectable = getInjectable({
       instantiate: (childDi) => {
         const extensionRegistrators = childDi.injectMany(extensionRegistratorInjectionToken);
         const reactionDisposer = disposer();
-        const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
+        const differencingRegistrator = injectableDifferencingRegistratorWith(childDi);
+
+        // Track previous state for each registrator separately
+        const previousInjectablesMap = new Map<any, Injectable<any, any, any>[]>();
 
         return {
           register: () => {
@@ -36,13 +41,25 @@ const extensionInjectable = getInjectable({
 
               if (Array.isArray(injectables)) {
                 runInAction(() => {
-                  injectableDifferencingRegistrator(injectables);
+                  const previousInjectables = previousInjectablesMap.get(extensionRegistrator) || [];
+                  differencingRegistrator(injectables, previousInjectables);
+                  previousInjectablesMap.set(extensionRegistrator, injectables);
                 });
               } else {
+                // For computed injectables, we need to track state per reaction
+                const reactionKey = `${extensionRegistrator.toString()}-computed`;
                 reactionDisposer.push(
-                  reaction(() => injectables.get(), injectableDifferencingRegistrator, {
-                    fireImmediately: true,
-                  }),
+                  reaction(
+                    () => injectables.get(),
+                    (currentInjectables) => {
+                      const previousInjectables = previousInjectablesMap.get(reactionKey) || [];
+                      differencingRegistrator(currentInjectables, previousInjectables);
+                      previousInjectablesMap.set(reactionKey, currentInjectables);
+                    },
+                    {
+                      fireImmediately: true,
+                    },
+                  ),
                 );
               }
             }
