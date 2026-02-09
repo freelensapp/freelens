@@ -98,7 +98,7 @@
     "await-lock": "^2.2.2",
     "byline": "^5.0.0",
     "chalk": "^4.1.2",
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "conf": "^10.2.0",
     "cronstrue": "^3.11.0",
     "crypto-js": "^4.2.0",
