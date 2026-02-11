@@ -41,7 +41,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.23",
-    "@types/node": "~22.19.9",
+    "@types/node": "~22.19.11",
     "rfc6902": "^5.1.2",
     "ts-loader": "^9.5.4",
     "type-fest": "^5.4.3",
