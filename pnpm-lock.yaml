@@ -1423,8 +1423,8 @@ importers:
         specifier: ^7.7.1
         version: 7.7.1
       fast-xml-parser:
-        specifier: ^5.3.4
-        version: 5.3.4
+        specifier: ^5.3.5
+        version: 5.3.5
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -6109,8 +6109,8 @@ packages:
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
 
-  fast-xml-parser@5.3.4:
-    resolution: {integrity: sha512-EFd6afGmXlCx8H8WTZHhAoDaWaGyuIBoZJ2mknrNxug+aZKjkp0a0dlars9Izl+jF+7Gu1/5f/2h68cQpe0IiA==}
+  fast-xml-parser@5.3.5:
+    resolution: {integrity: sha512-JeaA2Vm9ffQKp9VjvfzObuMCjUYAp5WDYhRYL5LrBPY/jUDlUtOvDfot0vKSkB9tuX885BDHjtw4fZadD95wnA==}
     hasBin: true
 
   fastest-levenshtein@1.0.16:
@@ -8628,8 +8628,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  strnum@2.1.0:
-    resolution: {integrity: sha512-w0S//9BqZZGw0L0Y8uLSelFGnDJgTyyNQLmSlPnVz43zPAiqu3w4t8J8sDqqANOGeZIZ/9jWuPguYcEnsoHv4A==}
+  strnum@2.1.2:
+    resolution: {integrity: sha512-l63NF9y/cLROq/yqKXSLtcMeeyOfnSQlfMSlzFt/K73oIaD8DGaQWd7Z34X9GPiKqP5rbSh84Hl4bOlLcjiSrQ==}
 
   style-loader@4.0.0:
     resolution: {integrity: sha512-1V4WqhhZZgjVAVJyt7TdDPZoPBPNHbekX4fWnCJL1yQukhCeZhJySUL+gL9y6sNdN95uEOS83Y55SqHcP7MzLA==}
@@ -12619,9 +12619,9 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
-  fast-xml-parser@5.3.4:
+  fast-xml-parser@5.3.5:
     dependencies:
-      strnum: 2.1.0
+      strnum: 2.1.2
 
   fastest-levenshtein@1.0.16: {}
 
@@ -15576,7 +15576,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  strnum@2.1.0: {}
+  strnum@2.1.2: {}
 
   style-loader@4.0.0(webpack@5.105.0):
     dependencies:
