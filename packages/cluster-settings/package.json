@@ -28,6 +28,6 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/react": "^17.0.91",
     "ts-loader": "^9.5.4",
-    "webpack": "^5.105.0"
+    "webpack": "^5.105.1"
   }
 }

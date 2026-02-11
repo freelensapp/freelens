@@ -47,6 +47,6 @@
     "ts-loader": "^9.5.4",
     "type-fest": "^5.4.4",
     "typed-emitter": "^1.4.0",
-    "webpack": "^5.105.0"
+    "webpack": "^5.105.1"
   }
 }
