@@ -30,7 +30,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/semver": "^7.7.1",
-    "fast-xml-parser": "^5.3.4",
+    "fast-xml-parser": "^5.3.5",
     "node-fetch": "^3.3.2",
     "semver": "^7.7.4",
     "ts-loader": "^9.5.4",
