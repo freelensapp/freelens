@@ -30,7 +30,7 @@
     "@freelensapp/core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "~22.19.9",
+    "@types/node": "~22.19.11",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
