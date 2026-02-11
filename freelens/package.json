@@ -172,7 +172,7 @@
     "circular-dependency-plugin": "^5.2.2",
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^6.11.0",
-    "electron": "^39.5.1",
+    "electron": "^39.5.2",
     "electron-builder": "^26.4.0",
     "electron-builder-squirrel-windows": "26.4.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
