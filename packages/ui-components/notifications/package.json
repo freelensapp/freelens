@@ -61,7 +61,7 @@
     "postcss-loader": "^8.2.0",
     "sass-loader": "^16.0.7",
     "ts-loader": "^9.5.4",
-    "type-fest": "^5.4.3",
+    "type-fest": "^5.4.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.0"
   }
