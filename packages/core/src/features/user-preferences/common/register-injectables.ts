@@ -23,6 +23,7 @@ import terminalConfigInjectable from "./terminal-config.injectable";
 import terminalCopyOnSelectInjectable from "./terminal-copy-on-select.injectable";
 import terminalThemePreferenceInjectable from "./terminal-theme.injectable";
 import toggleTableColumnVisibilityInjectable from "./toggle-table-column-visibility.injectable";
+import customThemesInjectable from "./custom-themes.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -99,6 +100,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(userShellSettingInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(customThemesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

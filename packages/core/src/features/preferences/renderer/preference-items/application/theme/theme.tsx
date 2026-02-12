@@ -44,6 +44,15 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
         onChange={(value) => (state.colorTheme = value?.value ?? defaultTheme.name)}
         themeName="lens"
       />
+      <div style={{ marginTop: "16px" }}>
+        <Button onClick={() => {
+          // Navigate to custom theme editor
+          // This would typically be handled by routing
+          console.log("Open custom theme editor");
+        }}>
+          Create Custom Theme
+        </Button>
+      </div>
     </section>
   );
 });

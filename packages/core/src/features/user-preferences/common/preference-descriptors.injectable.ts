@@ -30,6 +30,8 @@ import type {
   TerminalConfig,
 } from "./preferences-helpers";
 
+import type { LensTheme } from "../../../renderer/themes/lens-theme";
+
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
 
 const userPreferenceDescriptorsInjectable = getInjectable({
@@ -149,6 +151,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val,
+      }),
+      customThemes: getPreferenceDescriptor<Record<string, LensTheme> | undefined>({
+        fromStore: (val) => val ?? {},
+        toStore: (val) => (!val || Object.keys(val).length === 0 ? undefined : val),
       }),
     } as const;
   },

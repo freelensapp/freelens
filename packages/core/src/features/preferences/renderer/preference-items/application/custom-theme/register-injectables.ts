@@ -6,19 +6,13 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import themePreferenceBlockInjectable from "./theme-preference-block.injectable";
-import { registerInjectables as registerCustomThemeInjectables } from "../custom-theme/register-injectables";
+import customThemePreferenceBlockInjectable from "./custom-theme-preference-block.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(themePreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCustomThemeInjectables(di);
+    di.register(customThemePreferenceBlockInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
