@@ -24,19 +24,35 @@ export interface NodePodMenuItemProps {
   title: string;
   tooltip: string;
   toolbar: boolean;
+  annotations: string[];
   containers: (ContainerWithType | EphemeralContainerWithType)[];
   statuses: PodContainerStatus[];
   onMenuItemClick: (container: Container) => any;
 }
 
 const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
-  const { material, svg, title, tooltip, toolbar, containers, statuses, onMenuItemClick } = props;
+  const { material, svg, title, tooltip, toolbar, annotations, containers, statuses, onMenuItemClick } = props;
 
   if (!containers || !containers.length) return null;
 
+  const findOptimalDefaultContainer = () => {
+    const defaultContainerAnnotation = "kubectl.kubernetes.io/default-container=";
+    const defaultContainer = annotations
+      .find((s) => s.startsWith(defaultContainerAnnotation))
+      ?.substring(defaultContainerAnnotation.length);
+
+    if (defaultContainer) {
+      const container = containers.find((container) => container.name == defaultContainer);
+      if (container) {
+        return container;
+      }
+    }
+    return containers[0];
+  };
+
   return (
     <>
-      <MenuItem onClick={prevDefault(() => onMenuItemClick(containers[0]))}>
+      <MenuItem onClick={prevDefault(() => onMenuItemClick(findOptimalDefaultContainer()))}>
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
         <Icon className="arrow" material="keyboard_arrow_right" />
