@@ -19,6 +19,8 @@ import { registerInjectables as registerFeaturesFeaturesClusterStorageMainInject
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledMainInjectables } from "./features/extensions/enabled/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInjectables } from "./features/extensions/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsStoppingMainInjectables } from "./features/extensions/stopping/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesFavoritesMainInjectables } from "./features/favorites/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesFavoritesInjectables } from "./features/favorites/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesFileSystemProvisionerMainInjectables } from "./features/file-system-provisioner/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesHelmReleasesMainInjectables } from "./features/helm-releases/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesHotbarInjectables } from "./features/hotbar/register-injectables";
@@ -58,6 +60,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledMainInjectables(di);
   registerFeaturesFeaturesExtensionsStoppingMainInjectables(di);
+  registerFeaturesFeaturesFavoritesMainInjectables(di);
+  registerFeaturesFeaturesFavoritesInjectables(di);
   registerFeaturesFeaturesFileSystemProvisionerMainInjectables(di);
   registerFeaturesFeaturesHelmReleasesMainInjectables(di);
   registerFeaturesFeaturesHotbarInjectables(di);
