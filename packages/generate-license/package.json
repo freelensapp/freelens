@@ -16,8 +16,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@quantco/pnpm-licenses": "^2.2.2",
-    "spdx-license-list": "^6.10.0"
+    "@quantco/pnpm-licenses": "^2.2.3",
+    "spdx-license-list": "^6.11.0"
   },
   "devDependencies": {},
   "bin": {

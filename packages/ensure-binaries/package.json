@@ -25,12 +25,12 @@
     "gunzip-maybe": "^1.4.2",
     "node-fetch": "^3.3.2",
     "tar-stream": "^3.1.7",
-    "zod": "^4.2.1"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
     "@types/gunzip-maybe": "^1.4.3",
-    "@types/node": "~22.19.3",
+    "@types/node": "~22.19.11",
     "@types/tar-stream": "^3.1.4",
     "typescript": "^5.9.3"
   },

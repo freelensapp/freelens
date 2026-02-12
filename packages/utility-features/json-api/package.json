@@ -40,11 +40,11 @@
     "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/lodash": "^4.17.21",
-    "@types/node": "~22.19.3",
+    "@types/lodash": "^4.17.23",
+    "@types/node": "~22.19.11",
     "rfc6902": "^5.1.2",
     "ts-loader": "^9.5.4",
-    "type-fest": "^5.3.1",
-    "webpack": "^5.104.1"
+    "type-fest": "^5.4.4",
+    "webpack": "^5.105.1"
   }
 }
