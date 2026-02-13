@@ -23,7 +23,7 @@ const networkPoliciesSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToNetworkPoliciesInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: 40,
+      orderNumber: 42,
     };
   },
 
