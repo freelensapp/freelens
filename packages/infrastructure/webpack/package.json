@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/webpack",
   "private": false,
-  "version": "1.8.1",
+  "version": "1.8.2-0",
   "description": "Webpack configurations and scripts for Lens packages.",
   "type": "commonjs",
   "publishConfig": {
