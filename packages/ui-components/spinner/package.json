@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/spinner",
   "private": false,
-  "version": "1.8.1-0",
+  "version": "1.8.1",
   "description": "Highly extendable spinner in the Freelens.",
   "type": "commonjs",
   "files": [
