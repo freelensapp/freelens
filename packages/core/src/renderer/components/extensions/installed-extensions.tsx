@@ -11,24 +11,23 @@
 
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useState } from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import { List } from "../list/list";
-import { MenuActions, MenuItem } from "../menu";
 import confirmUninstallExtensionInjectable from "./confirm-uninstall-extension.injectable";
 import disableExtensionInjectable from "./disable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
+import { ExtensionCard } from "./extension-card";
+import { ExtensionsGrid } from "./extensions-grid";
 import styles from "./installed-extensions.module.scss";
+import { SearchBar } from "./search-bar";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
 
 import type { InstalledExtension } from "@freelensapp/legacy-extensions";
 
 import type { IComputedValue } from "mobx";
-import type { Row } from "react-table";
 
 import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
 import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
@@ -45,14 +44,6 @@ interface Dependencies {
   enableExtension: EnableExtension;
   disableExtension: DisableExtension;
   confirmUninstallExtension: ConfirmUninstallExtension;
-}
-
-function getStatus(extension: InstalledExtension) {
-  if (!extension.isCompatible) {
-    return "Incompatible";
-  }
-
-  return extension.isEnabled ? "Enabled" : "Disabled";
 }
 
 const NonInjectedInstalledExtensions = observer(
@@ -72,9 +63,16 @@ const NonInjectedInstalledExtensions = observer(
       );
     }
 
+    const [searchQuery, setSearchQuery] = useState("");
     const extensions = userExtensions.get();
 
-    if (extensions.length == 0) {
+    const filteredExtensions = extensions.filter(
+      (ext) =>
+        ext.manifest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (ext.manifest.description && ext.manifest.description.toLowerCase().includes(searchQuery.toLowerCase())),
+    );
+
+    if (extensions.length === 0) {
       return (
         <div className="flex column h-full items-center justify-center">
           <Icon material="extension" className={styles.noItemsIcon} />
@@ -88,88 +86,31 @@ const NonInjectedInstalledExtensions = observer(
 
     return (
       <section data-testid="extensions-table">
-        <List
-          title={<h2 className={styles.title}>Installed extensions</h2>}
-          columns={[
-            {
-              Header: "Name",
-              accessor: "extension",
-              width: 200,
-              sortType: (rowA: Row, rowB: Row) => {
-                // Custom sorting for extension name
-                const nameA = extensions[rowA.index].manifest.name;
-                const nameB = extensions[rowB.index].manifest.name;
-
-                if (nameA > nameB) return -1;
-                if (nameB > nameA) return 1;
-
-                return 0;
-              },
-            },
-            {
-              Header: "Version",
-              accessor: "version",
-            },
-            {
-              Header: "Status",
-              accessor: "status",
-            },
-            {
-              Header: "",
-              accessor: "actions",
-              disableSortBy: true,
-              width: 20,
-            },
-          ]}
-          data={extensions.map((extension) => {
+        <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search..." />
+        <ExtensionsGrid>
+          {filteredExtensions.map((extension) => {
             const { id, isEnabled, isCompatible, manifest } = extension;
             const { name, description, version } = manifest;
             const isUninstalling = extensionInstallationStateStore.isExtensionUninstalling(id);
             const toggleExtension = toggleExtensionWith(isEnabled);
 
-            return {
-              extension: (
-                <div className={"flex items-start"}>
-                  <div>
-                    <div className={styles.extensionName}>{name}</div>
-                    <div className={styles.extensionDescription}>{description}</div>
-                  </div>
-                </div>
-              ),
-              version,
-              status: (
-                <div className={cssNames({ [styles.enabled]: isEnabled, [styles.invalid]: !isCompatible })}>
-                  {getStatus(extension)}
-                </div>
-              ),
-              actions: (
-                <MenuActions id={`menu-actions-for-installed-extensions-for-${id}`} usePortal toolbar={false}>
-                  {isCompatible && (
-                    <MenuItem disabled={isUninstalling} onClick={() => toggleExtension(id)}>
-                      <Icon material={isEnabled ? "unpublished" : "check_circle"} />
-                      <span className="title" aria-disabled={isUninstalling}>
-                        {isEnabled ? "Disable" : "Enabled"}
-                      </span>
-                    </MenuItem>
-                  )}
-
-                  <MenuItem disabled={isUninstalling} onClick={() => confirmUninstallExtension(extension)}>
-                    <Icon material="delete" />
-                    <span className="title" aria-disabled={isUninstalling}>
-                      Uninstall
-                    </span>
-                  </MenuItem>
-                </MenuActions>
-              ),
-            };
+            return (
+              <ExtensionCard
+                key={id}
+                variant="installed"
+                id={id}
+                name={name}
+                description={description || "No description available"}
+                version={version}
+                isEnabled={isEnabled}
+                isCompatible={isCompatible}
+                isUninstalling={isUninstalling}
+                onUninstall={() => confirmUninstallExtension(extension)}
+                onToggle={() => toggleExtension(id)}
+              />
+            );
           })}
-          items={userExtensions.get()}
-          filters={[
-            (extension) => extension.manifest.name,
-            (extension) => getStatus(extension),
-            (extension) => extension.manifest.version,
-          ]}
-        />
+        </ExtensionsGrid>
       </section>
     );
   },

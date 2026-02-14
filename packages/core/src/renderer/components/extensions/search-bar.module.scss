@@ -1,0 +1,18 @@
+/**
+ * Styles for SearchBar component
+ */
+
+.container {
+  margin-bottom: 1.5rem;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--borderColor);
+  background-color: var(--layoutBackground);
+  color: var(--textColorPrimary);
+  width: 100%;
+  font-size: 0.875rem;
+  outline: none;
+}
