@@ -149,6 +149,28 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 />
               </div>
               <div
+                class="TableCell podwarning nowrap"
+                id="podwarning"
+              >
+                <div
+                  class="content"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="warning_amber"
+                    >
+                      warning_amber
+                    </span>
+                  </i>
+                </div>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
                 class="TableCell namespace nowrap sorting"
                 id="namespace"
               >
