@@ -667,6 +667,23 @@ exports[`legacy extension adding cluster frame components given custom component
       class="ResizingAnchor horizontal leading"
     />
   </div>
+  <button
+    aria-label="Toggle AI Chat"
+    class="AiChatButton"
+    data-testid="ai-chat-button"
+    title="AI Chat"
+  >
+    <i
+      class="Icon material focusable"
+    >
+      <span
+        class="icon"
+        data-icon-name="smart_toy"
+      >
+        smart_toy
+      </span>
+    </i>
+  </button>
   <div
     data-testid="test-modal"
   >

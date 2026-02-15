@@ -155,6 +155,18 @@ exports[`preferences - navigation to application preferences given in preference
                     Terminal
                   </div>
                 </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -906,6 +918,18 @@ exports[`preferences - navigation to application preferences given in preference
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
               </div>
@@ -1692,6 +1716,18 @@ exports[`preferences - navigation to application preferences given in some child
                     Terminal
                   </div>
                 </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2097,6 +2133,18 @@ exports[`preferences - navigation to application preferences given in some child
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
               </div>
@@ -2851,6 +2899,18 @@ exports[`preferences - navigation to application preferences given in some child
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>

@@ -158,6 +158,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   </div>
                   <div
                     class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
                     data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                     role="tab"
                     tabindex="0"
@@ -923,6 +935,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                   </div>
                 </div>
                 <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
+                <div
                   class="Tab flex gaps align-center active"
                   data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                   role="tab"
@@ -1300,6 +1324,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
                 <div
@@ -1696,6 +1732,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                 </div>
                 <div
                   class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
                   data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -2084,6 +2132,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
               </div>
@@ -2502,6 +2562,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
               </div>
@@ -3255,6 +3327,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
                   </div>
                 </div>
               </div>
@@ -4048,6 +4132,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                     Terminal
                   </div>
                 </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
               </div>
               <div
                 class="TabSeparator"
@@ -4453,6 +4549,18 @@ exports[`preferences - navigation to extension specific preferences given in pre
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>

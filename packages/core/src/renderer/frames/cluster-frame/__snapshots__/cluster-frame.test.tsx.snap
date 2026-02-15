@@ -650,6 +650,23 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       class="ResizingAnchor horizontal leading"
     />
   </div>
+  <button
+    aria-label="Toggle AI Chat"
+    class="AiChatButton"
+    data-testid="ai-chat-button"
+    title="AI Chat"
+  >
+    <i
+      class="Icon material focusable"
+    >
+      <span
+        class="icon"
+        data-icon-name="smart_toy"
+      >
+        smart_toy
+      </span>
+    </i>
+  </button>
 </div>
 `;
 
@@ -1310,6 +1327,23 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       class="ResizingAnchor horizontal leading"
     />
   </div>
+  <button
+    aria-label="Toggle AI Chat"
+    class="AiChatButton"
+    data-testid="ai-chat-button"
+    title="AI Chat"
+  >
+    <i
+      class="Icon material focusable"
+    >
+      <span
+        class="icon"
+        data-icon-name="smart_toy"
+      >
+        smart_toy
+      </span>
+    </i>
+  </button>
 </div>
 `;
 
@@ -2010,5 +2044,22 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
       class="ResizingAnchor horizontal leading"
     />
   </div>
+  <button
+    aria-label="Toggle AI Chat"
+    class="AiChatButton"
+    data-testid="ai-chat-button"
+    title="AI Chat"
+  >
+    <i
+      class="Icon material focusable"
+    >
+      <span
+        class="icon"
+        data-icon-name="smart_toy"
+      >
+        smart_toy
+      </span>
+    </i>
+  </button>
 </div>
 `;

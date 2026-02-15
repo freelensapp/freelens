@@ -515,6 +515,18 @@ exports[`preferences - navigation using application menu when navigating to pref
                     Terminal
                   </div>
                 </div>
+                <div
+                  class="Tab flex gaps align-center"
+                  data-preference-tab-link-test="ai-assistant"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    AI Assistant
+                  </div>
+                </div>
               </div>
             </div>
           </div>

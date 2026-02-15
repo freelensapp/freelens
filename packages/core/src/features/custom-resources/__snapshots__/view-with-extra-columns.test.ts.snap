@@ -827,5 +827,22 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
       class="ResizingAnchor horizontal leading"
     />
   </div>
+  <button
+    aria-label="Toggle AI Chat"
+    class="AiChatButton"
+    data-testid="ai-chat-button"
+    title="AI Chat"
+  >
+    <i
+      class="Icon material focusable"
+    >
+      <span
+        class="icon"
+        data-icon-name="smart_toy"
+      >
+        smart_toy
+      </span>
+    </i>
+  </button>
 </div>
 `;

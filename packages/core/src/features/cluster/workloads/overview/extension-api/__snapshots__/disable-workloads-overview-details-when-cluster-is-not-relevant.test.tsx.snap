@@ -673,6 +673,23 @@ exports[`disable workloads overview details when cluster is not relevant given e
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -1345,6 +1362,23 @@ exports[`disable workloads overview details when cluster is not relevant given e
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -2017,6 +2051,23 @@ exports[`disable workloads overview details when cluster is not relevant given n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;

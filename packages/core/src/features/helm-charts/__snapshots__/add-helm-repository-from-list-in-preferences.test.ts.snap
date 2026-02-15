@@ -156,6 +156,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -947,6 +959,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -1778,6 +1802,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -2669,6 +2705,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3498,6 +3546,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -4331,6 +4391,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5150,6 +5222,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -6015,6 +6099,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -6950,6 +7046,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -7813,6 +7921,18 @@ exports[`add helm repository from list in preferences when navigating to prefere
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>

@@ -180,6 +180,18 @@ exports[`preferences: URLs of legacy extensions given extension with both custom
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
                 <div
                   class="TabSeparator"
@@ -608,6 +620,18 @@ exports[`preferences: URLs of legacy extensions given extension with both custom
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>
@@ -1040,6 +1064,18 @@ exports[`preferences: URLs of legacy extensions given extension with custom pref
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1432,6 +1468,18 @@ exports[`preferences: URLs of legacy extensions given extension with custom pref
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1772,6 +1820,18 @@ exports[`preferences: URLs of legacy extensions given extension with custom pref
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="ai-assistant"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      AI Assistant
                     </div>
                   </div>
                 </div>

@@ -1153,6 +1153,23 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -2165,6 +2182,23 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -3172,6 +3206,23 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;

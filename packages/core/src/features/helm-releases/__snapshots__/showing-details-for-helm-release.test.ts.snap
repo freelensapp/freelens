@@ -941,6 +941,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -1891,6 +1908,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -3109,6 +3143,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -4327,6 +4378,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -5606,6 +5674,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -6885,6 +6970,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -8409,6 +8511,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -9933,6 +10052,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -11184,6 +11320,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -12435,6 +12588,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -13961,6 +14131,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -15546,6 +15733,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -16764,6 +16968,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -18045,6 +18266,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -19263,6 +19501,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -20542,6 +20797,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -21821,6 +22093,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -23100,6 +23389,23 @@ exports[`showing details for helm release given application is started when navi
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"

@@ -587,6 +587,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -1445,6 +1462,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer HelmChartDetails right enter"
@@ -2607,6 +2641,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -3789,6 +3840,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Select__menu-portal css-yj2v5g"
@@ -5010,6 +5078,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -6191,6 +6276,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -7372,6 +7474,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -8575,6 +8694,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -9757,6 +9893,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Select__menu-portal css-yj2v5g"
@@ -10973,6 +11126,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -12162,6 +12332,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -13144,6 +13331,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -14060,6 +14264,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer ReleaseDetails dark right enter"
@@ -15150,6 +15371,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate opacity-scale Dialog flex center LogsDialog modal enter"
@@ -16391,6 +16629,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
   <div
     class="Animate slide-right Drawer HelmChartDetails right enter"
@@ -17605,6 +17860,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -18840,6 +19112,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -20073,6 +20362,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -21254,6 +21560,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -22435,6 +22758,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
@@ -23293,6 +23633,23 @@ exports[`installing helm chart from new tab given tab for installing chart was n
         class="ResizingAnchor horizontal leading"
       />
     </div>
+    <button
+      aria-label="Toggle AI Chat"
+      class="AiChatButton"
+      data-testid="ai-chat-button"
+      title="AI Chat"
+    >
+      <i
+        class="Icon material focusable"
+      >
+        <span
+          class="icon"
+          data-icon-name="smart_toy"
+        >
+          smart_toy
+        </span>
+      </i>
+    </button>
   </div>
 </body>
 `;
