@@ -43,6 +43,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   @observable path = ""; // <namespace>/<service>:<port>
   @observable customPrefix = ""; // e.g. "/prometheus"
   @observable useHttps = false; // whether to use https scheme for service proxy
+  @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
+  @observable bearerToken = ""; // bearer token for Prometheus authentication
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
@@ -76,6 +78,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return this.loadedOptions.get(this.selectedOption)?.isConfigurable ?? false;
   }
 
+  @computed get isOpenShift(): boolean {
+    return this.selectedOption === "openshift";
+  }
+
   componentDidMount() {
     disposeOnUnmount(
       this,
@@ -85,13 +91,20 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
         if (prometheus) {
           const prefix = prometheus.prefix || "";
 
-          this.path = `${prometheus.namespace}/${prometheus.service}:${prometheus.port}`;
+          this.path =
+            prometheus.namespace && prometheus.service
+              ? `${prometheus.namespace}/${prometheus.service}:${prometheus.port}`
+              : "";
           this.customPrefix = prefix;
           this.useHttps = Boolean(prometheus.https);
+          this.directUrl = prometheus.directUrl || "";
+          this.bearerToken = prometheus.bearerToken || "";
         } else {
           this.path = "";
           this.customPrefix = "";
           this.useHttps = false;
+          this.directUrl = "";
+          this.bearerToken = "";
         }
 
         if (prometheusProvider) {
@@ -119,7 +132,26 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 
   parsePrometheusPath = () => {
-    if (!this.selectedOption || !this.path) {
+    if (!this.selectedOption) {
+      return undefined;
+    }
+
+    // For OpenShift, allow saving with just directUrl (no service path needed)
+    if (this.isOpenShift && this.directUrl) {
+      const parsed = this.path ? this.path.split(/\/|:/, 3) : [];
+
+      return {
+        namespace: parsed[0] || "",
+        service: parsed[1] || "",
+        port: parseInt(parsed[2]) || 0,
+        prefix: this.sanitizePrefix(this.customPrefix),
+        https: this.useHttps,
+        directUrl: this.directUrl,
+        bearerToken: this.bearerToken || undefined,
+      };
+    }
+
+    if (!this.path) {
       return undefined;
     }
 
@@ -135,6 +167,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       port: parseInt(parsed[2]),
       prefix: this.sanitizePrefix(this.customPrefix),
       https: this.useHttps,
+      directUrl: this.directUrl || undefined,
+      bearerToken: this.bearerToken || undefined,
     };
   };
 
@@ -170,7 +204,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 options={this.options}
                 themeName="lens"
               />
-              <small className="hint">What query format is used to fetch metrics from Prometheus</small>
+              <small className="hint">
+                What query format is used to fetch metrics from Prometheus. Select &quot;OpenShift&quot; for
+                OpenShift/OKD clusters where Prometheus requires bearer token authentication.
+              </small>
             </>
           )}
         </section>
@@ -187,7 +224,9 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 placeholder="<namespace>/<service>:<port>"
               />
               <small className="hint">
-                {`An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
+                {this.isOpenShift
+                  ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
+                  : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
               </small>
             </section>
             <hr />
@@ -202,7 +241,9 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 }}
               />
               <small className="hint">
-                Externally hosted Prometheus might listen using HTTPS. Usually this is not needed.
+                {this.isOpenShift
+                  ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
+                  : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
               </small>
             </section>
             <hr />
@@ -220,6 +261,44 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 to be added to all requests.
               </small>
             </section>
+            {this.isOpenShift && (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Prometheus ingress/route" />
+                  <Input
+                    theme="round-black"
+                    value={this.directUrl}
+                    onChange={(value) => (this.directUrl = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="https://prometheus-k8s-openshift-monitoring.apps.example.com"
+                  />
+                  <small className="hint">
+                    The external URL (OpenShift Route or Ingress) to the Prometheus instance. This connects directly
+                    to Prometheus, bypassing the Kubernetes API service proxy which cannot forward authentication
+                    headers. Find the route with: oc get route prometheus-k8s -n openshift-monitoring
+                    -o jsonpath=&apos;https://&#123;.spec.host&#125;&apos;
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Bearer token" />
+                  <Input
+                    theme="round-black"
+                    type="password"
+                    value={this.bearerToken}
+                    onChange={(value) => (this.bearerToken = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="eyJhbGciOi..."
+                  />
+                  <small className="hint">
+                    Service account bearer token for authenticating to Prometheus. On OpenShift, Prometheus
+                    requires authentication via kube-rbac-proxy. Generate a long-lived token with: oc create token
+                    &lt;service-account&gt; -n openshift-monitoring --duration=8760h
+                  </small>
+                </section>
+              </>
+            )}
           </>
         )}
         <>
