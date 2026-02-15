@@ -46,11 +46,13 @@ type StubStore = {
 
 const baseProps: ItemListLayoutContentProps<ItemObject, boolean> & {
   columnResizeStorage: StorageLayer<Record<string, any>>;
+  customColumnsStorage: StorageLayer<Record<string, any>>;
   activeTheme: any;
   pageFiltersStore: any;
   openConfirmDialog: any;
   toggleTableColumnVisibility: any;
   isTableColumnHidden: any;
+  openManageCustomColumnsDialog: any;
   store: StubStore;
 } = {
   getFilters: () => [],
@@ -78,6 +80,8 @@ const baseProps: ItemListLayoutContentProps<ItemObject, boolean> & {
   openConfirmDialog: jest.fn(),
   toggleTableColumnVisibility: jest.fn(),
   isTableColumnHidden: jest.fn(),
+  openManageCustomColumnsDialog: jest.fn(),
+  customColumnsStorage: makeStorage(),
   copyClassNameFromHeadCells: false,
   isConfigurable: false,
 };

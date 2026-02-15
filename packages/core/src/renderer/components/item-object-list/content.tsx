@@ -8,6 +8,7 @@ import "./item-list-layout.scss";
 
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, isDefined, isReactNode, noop, prevDefault, stopPropagation } from "@freelensapp/utilities";
+import { WithTooltip } from "../with-tooltip";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { action, computed, makeObservable, observable } from "mobx";
@@ -15,6 +16,8 @@ import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import toggleTableColumnVisibilityInjectable from "../../../features/user-preferences/common/toggle-table-column-visibility.injectable";
+import customColumnsStorageInjectable from "../../../features/custom-table-columns/renderer/custom-columns-storage.injectable";
+import { resolveFieldPath, formatFieldValue } from "../../../features/custom-table-columns/renderer/resolve-field-path";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { AddRemoveButtons } from "../add-remove-buttons";
 import { Checkbox } from "../checkbox";
@@ -25,6 +28,7 @@ import { NoItems } from "../no-items";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import columnResizeStorageInjectable from "./column-resize-storage/storage.injectable";
 import pageFiltersStoreInjectable from "./page-filters/store.injectable";
+import openManageCustomColumnsDialogInjectable from "../../../features/custom-table-columns/renderer/components/open-manage-custom-columns-dialog.injectable";
 
 import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
@@ -42,6 +46,8 @@ import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { ColumnResizeStorageState } from "./column-resize-storage/storage.injectable";
 import type { ItemListStore } from "./list-layout";
 import type { Filter, PageFiltersStore } from "./page-filters/store";
+import type { OpenManageCustomColumnsDialog } from "../../../features/custom-table-columns/renderer/components/open-manage-custom-columns-dialog.injectable";
+import type { CustomColumnConfig, CustomColumnsStorageState } from "../../../features/custom-table-columns/common/custom-column-config";
 
 interface ResizeState {
   columnId: string;
@@ -95,6 +101,8 @@ interface Dependencies {
   toggleTableColumnVisibility: ToggleTableColumnVisibility;
   isTableColumnHidden: IsTableColumnHidden;
   columnResizeStorage: StorageLayer<ColumnResizeStorageState>;
+  openManageCustomColumnsDialog: OpenManageCustomColumnsDialog;
+  customColumnsStorage: StorageLayer<CustomColumnsStorageState>;
 }
 
 @observer
@@ -108,6 +116,16 @@ export class NonInjectedItemListLayoutContent<
 
   @observable private columnFlexGrow = new Map<string, number>();
   @observable private resizeGuideX: number | null = null;
+
+  @computed get customColumns(): CustomColumnConfig[] {
+    const { tableId, customColumnsStorage } = this.props;
+
+    if (!tableId) return [];
+
+    const storageState = customColumnsStorage.get();
+
+    return storageState[tableId] || [];
+  }
 
   constructor(props: ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies) {
     super(props);
@@ -300,7 +318,6 @@ export class NonInjectedItemListLayoutContent<
   getTableRow(item: Item) {
     const {
       isSelectable,
-      renderTableHeader,
       renderTableContents,
       renderItemMenu,
       store,
@@ -311,6 +328,17 @@ export class NonInjectedItemListLayoutContent<
       detailsItem,
     } = this.props;
     const { isSelected } = store;
+    const allHeaders = this.allTableHeaders;
+
+    // Combine original contents with custom column values
+    const originalContents = renderTableContents(item);
+    const customColumnValues = this.customColumns.map((config) => {
+      const value = resolveFieldPath(item, config.path);
+      const formatted = formatFieldValue(value);
+
+      return <WithTooltip tooltip={formatted}>{formatted || "-"}</WithTooltip>;
+    });
+    const allContents: (StrictReactNode | TableCellProps)[] = [...originalContents, ...customColumnValues];
 
     return (
       <TableRow
@@ -324,9 +352,9 @@ export class NonInjectedItemListLayoutContent<
         {isSelectable && (
           <TableCell checkbox isChecked={isSelected(item)} onClick={prevDefault(() => store.toggleSelection(item))} />
         )}
-        {renderTableContents(item).map((content, index) => {
+        {allContents.map((content, index) => {
           const cellProps: TableCellProps = isReactNode(content) ? { children: content } : content;
-          const headCell = renderTableHeader?.[index];
+          const headCell = allHeaders[index];
 
           if (copyClassNameFromHeadCells && headCell) {
             cellProps.className = cssNames(cellProps.className, headCell.className);
@@ -457,6 +485,25 @@ export class NonInjectedItemListLayoutContent<
     return this.props.getItems().map((item) => this.getRow(item.getId()));
   }
 
+  get allTableHeaders(): (TableCellProps | undefined | null)[] {
+    const { renderTableHeader } = this.props;
+
+    if (!renderTableHeader) return [];
+
+    const customHeaders: TableCellProps[] = this.customColumns.map((config) => {
+      const colId = `custom-col-${config.path}`;
+
+      return {
+        title: config.title || config.path,
+        className: "custom-column",
+        sortBy: colId,
+        id: colId,
+      };
+    });
+
+    return [...renderTableHeader, ...customHeaders];
+  }
+
   renderTableHeader() {
     const { customizeTableRowProps, renderTableHeader, isSelectable, isConfigurable, store, tableId } = this.props;
 
@@ -464,6 +511,7 @@ export class NonInjectedItemListLayoutContent<
       return null;
     }
 
+    const allHeaders = this.allTableHeaders;
     const enabledItems = this.props.getItems().filter((item) => !customizeTableRowProps?.(item).disabled);
 
     return (
@@ -479,7 +527,7 @@ export class NonInjectedItemListLayoutContent<
             )}
           </Observer>
         )}
-        {renderTableHeader.filter(isDefined).map(
+        {allHeaders.filter(isDefined).map(
           (cellProps, index) =>
             this.showColumn(cellProps) && (
               <TableCell
@@ -505,13 +553,36 @@ export class NonInjectedItemListLayoutContent<
     );
   }
 
+  get allSortingCallbacks(): TableSortCallbacks<Item> | undefined {
+    const { sortingCallbacks } = this.props;
+    const customCallbacks = this.customColumns.reduce(
+      (acc, config) => {
+        const colId = `custom-col-${config.path}`;
+
+        acc[colId] = (item: Item) => {
+          const value = resolveFieldPath(item, config.path);
+
+          return String(value ?? "");
+        };
+
+        return acc;
+      },
+      {} as TableSortCallbacks<Item>,
+    );
+
+    if (!sortingCallbacks && Object.keys(customCallbacks).length === 0) {
+      return undefined;
+    }
+
+    return { ...sortingCallbacks, ...customCallbacks };
+  }
+
   render() {
     const {
       store,
       hasDetailsView,
       addRemoveButtons = {},
       virtual,
-      sortingCallbacks,
       detailsItem,
       className,
       tableProps = {},
@@ -537,7 +608,7 @@ export class NonInjectedItemListLayoutContent<
           tableId={tableId}
           virtual={virtual}
           selectable={hasDetailsView}
-          sortable={sortingCallbacks}
+          sortable={this.allSortingCallbacks}
           getTableRow={this.getRow}
           renderRow={virtual ? undefined : this.renderRow}
           items={items}
@@ -574,7 +645,7 @@ export class NonInjectedItemListLayoutContent<
   }
 
   renderColumnVisibilityMenu(tableId: string) {
-    const { renderTableHeader = [] } = this.props;
+    const allHeaders = this.allTableHeaders;
 
     return (
       <MenuActions
@@ -583,7 +654,7 @@ export class NonInjectedItemListLayoutContent<
         toolbar={false}
         autoCloseOnSelect={false}
       >
-        {renderTableHeader
+        {allHeaders
           .filter(isDefined)
           .filter((props): props is TableCellProps & { id: string } => !!props.id)
           .filter((props) => !props.showWithColumn)
@@ -596,6 +667,9 @@ export class NonInjectedItemListLayoutContent<
               />
             </MenuItem>
           ))}
+        <MenuItem key="manage-custom-columns" onClick={() => this.props.openManageCustomColumnsDialog(tableId)}>
+          Manage Custom Columns...
+        </MenuItem>
       </MenuActions>
     );
   }
@@ -612,6 +686,8 @@ export const ItemListLayoutContent = withInjectables<Dependencies, ItemListLayou
       toggleTableColumnVisibility: di.inject(toggleTableColumnVisibilityInjectable),
       isTableColumnHidden: di.inject(isTableColumnHiddenInjectable),
       columnResizeStorage: di.inject(columnResizeStorageInjectable),
+      openManageCustomColumnsDialog: di.inject(openManageCustomColumnsDialogInjectable),
+      customColumnsStorage: di.inject(customColumnsStorageInjectable),
     }),
   },
 ) as <Item extends ItemObject, PreLoadStores extends boolean>(

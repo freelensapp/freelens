@@ -17,6 +17,8 @@ import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected
 import userPreferencesStateInjectable, {
   type UserPreferencesState,
 } from "../../../features/user-preferences/common/state.injectable";
+import customColumnsStorageInjectable from "../../../features/custom-table-columns/renderer/custom-columns-storage.injectable";
+import { resolveFieldPath, formatFieldValue } from "../../../features/custom-table-columns/renderer/resolve-field-path";
 import { ItemListLayoutContent } from "./content";
 import { ItemListLayoutFilters } from "./filters";
 import { ItemListLayoutHeader } from "./header";
@@ -33,6 +35,7 @@ import type { Primitive } from "type-fest";
 
 import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
 import type { StorageLayer } from "../../utils/storage-helper";
+import type { CustomColumnsStorageState } from "../../../features/custom-table-columns/common/custom-column-config";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
 import type { ConfirmDialogParams } from "../confirm-dialog";
 import type { SearchInputUrlProps } from "../input";
@@ -177,6 +180,7 @@ interface Dependencies {
   itemListLayoutStorage: StorageLayer<ItemListLayoutStorage>;
   pageFiltersStore: PageFiltersStore;
   userPreferencesState: UserPreferencesState;
+  customColumnsStorage: StorageLayer<CustomColumnsStorageState>;
 }
 
 @observer
@@ -251,16 +255,32 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     return <PageFiltersList filters={filters} />;
   }
 
+  private get customColumnSearchFilters(): ListLayoutSearchFilter<I>[] {
+    const { tableId, customColumnsStorage } = this.props;
+
+    if (!tableId) return [];
+
+    const storageState = customColumnsStorage.get();
+    const columns = storageState[tableId] || [];
+
+    return columns.map((config) => (item: I) => {
+      const value = resolveFieldPath(item, config.path);
+
+      return formatFieldValue(value);
+    });
+  }
+
   private filterCallbacks: ListLayoutItemsFilters<I> = {
     [FilterType.SEARCH]: (items) => {
       const { searchFilters = [] } = this.props;
+      const allSearchFilters = [...searchFilters, ...this.customColumnSearchFilters];
       const search = this.props.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
-      if (search && searchFilters.length) {
+      if (search && allSearchFilters.length) {
         const searchTexts = [search].map(normalizeText);
 
         return items.filter((item) =>
-          searchFilters.some((getTexts) =>
+          allSearchFilters.some((getTexts) =>
             [getTexts(item)]
               .flat()
               .map(normalizeText)
@@ -357,6 +377,7 @@ export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<
       itemListLayoutStorage: di.inject(itemListLayoutStorageInjectable),
       pageFiltersStore: di.inject(pageFiltersStoreInjectable),
       userPreferencesState: di.inject(userPreferencesStateInjectable),
+      customColumnsStorage: di.inject(customColumnsStorageInjectable),
     }),
   },
 ) as <I extends ItemObject, PreLoadStores extends boolean = true>(

@@ -1,0 +1,115 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.ManageCustomColumnsDialog {
+  .dialog-content {
+    background: var(--contentColor);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--borderColor);
+    padding: var(--padding);
+    min-width: 500px;
+    max-width: 600px;
+  }
+
+  .dialog-header {
+    margin-bottom: var(--margin);
+
+    h5 {
+      margin: 0 0 var(--unit);
+    }
+
+    .dialog-subtitle {
+      color: var(--textColorSecondary);
+      font-size: var(--font-size-small);
+      margin: 0;
+    }
+  }
+
+  .add-column-form {
+    background: var(--contentColor);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--margin);
+
+    .form-row {
+      margin-bottom: var(--unit);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .Input {
+        width: 100%;
+      }
+    }
+  }
+
+  .existing-columns {
+    margin-bottom: var(--margin);
+
+    h6 {
+      margin: 0 0 var(--unit);
+      font-size: var(--font-size);
+    }
+
+    .columns-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .column-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--unit);
+      border: 1px solid var(--borderColor);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--unit);
+      background: var(--contentColor);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &:hover {
+        background: var(--layoutBackground);
+      }
+    }
+
+    .column-info {
+      flex: 1;
+      min-width: 0;
+
+      .column-title {
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .column-path {
+        font-size: var(--font-size-small);
+        color: var(--textColorSecondary);
+        font-family: var(--font-monospace);
+      }
+    }
+
+    .remove-icon {
+      cursor: pointer;
+      color: var(--colorError);
+      flex-shrink: 0;
+      margin-left: var(--unit);
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--padding);
+    border-top: 1px solid var(--borderColor);
+  }
+}
