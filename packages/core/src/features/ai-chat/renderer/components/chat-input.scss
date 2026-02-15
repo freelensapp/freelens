@@ -3,8 +3,6 @@
   align-items: flex-end;
   gap: 8px;
   padding: 12px;
-  border-top: 1px solid var(--borderFaintColor, #333);
-  background: var(--mainBackground, #252729);
 
   &__textarea {
     flex: 1;

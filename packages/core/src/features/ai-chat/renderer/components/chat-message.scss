@@ -1,53 +1,189 @@
 .AiChatMessage {
-  padding: 8px 12px;
+  position: relative;
+  padding: 10px 14px;
   margin: 4px 0;
-  border-radius: 8px;
+  border-radius: 12px;
   line-height: 1.5;
-  white-space: pre-wrap;
   word-break: break-word;
   font-size: 13px;
 
-  &.user {
+  // User messages
+  &--user {
     background: var(--buttonPrimaryBackground, #3d90ce);
     color: #ffffff;
     align-self: flex-end;
-    margin-left: 40px;
-    border-bottom-right-radius: 2px;
+    margin-left: 48px;
+    border-bottom-right-radius: 4px;
+    white-space: pre-wrap;
   }
 
-  &.assistant {
+  // Assistant messages
+  &--assistant {
     background: var(--mainBackground, #252729);
     color: var(--textColorAccent, #d2d2d2);
     align-self: flex-start;
-    margin-right: 40px;
-    border-bottom-left-radius: 2px;
+    margin-right: 24px;
+    border-bottom-left-radius: 4px;
+
+    &:hover .AiChatMessage__copy {
+      opacity: 1;
+    }
   }
 
-  &.error {
+  // Error state
+  &--error {
     background: var(--colorError, #ce3933);
     color: #ffffff;
   }
 
-  &.tool {
-    font-size: 11px;
-    padding: 4px 8px;
-    margin: 2px 0;
-    background: var(--secondaryBackground, #1e2024);
-    color: var(--textColorDimmed, #8e8e8e);
-    border-radius: 4px;
-  }
-
-  .content {
+  // --- Content area ---
+  &__content {
     position: relative;
+    overflow: hidden;
   }
 
-  .loadingDots {
+  // --- Markdown rendering (assistant messages) ---
+  &__markdown {
+    // Reset pre-wrap since markdown has its own block elements
+    white-space: normal;
+
+    // Compact spacing for chat context
+    p {
+      margin: 0 0 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      font-weight: 600;
+      color: inherit;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    code {
+      padding: 1px 5px;
+      font-size: 12px;
+      font-family: var(--font-monospace, "Roboto Mono", monospace);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+    }
+
+    pre {
+      margin: 8px 0;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+      overflow-x: auto;
+
+      code {
+        padding: 0;
+        background: none;
+        font-size: 12px;
+        white-space: pre;
+      }
+    }
+
+    // Tables
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 4px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: left;
+    }
+
+    th {
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    tr:nth-child(2n) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    // Lists
+    ul, ol {
+      margin: 4px 0;
+      padding-left: 20px;
+    }
+
+    ul {
+      list-style: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    li {
+      margin: 2px 0;
+    }
+
+    li + li {
+      margin-top: 2px;
+    }
+
+    // Headings (compact for chat)
+    h1, h2, h3, h4, h5, h6 {
+      margin: 12px 0 6px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 16px; }
+    h2 { font-size: 15px; }
+    h3 { font-size: 14px; }
+    h4, h5, h6 { font-size: 13px; }
+
+    // Blockquotes
+    blockquote {
+      margin: 6px 0;
+      padding: 4px 12px;
+      border-left: 3px solid rgba(255, 255, 255, 0.2);
+      color: var(--textColorDimmed, #8e8e8e);
+    }
+
+    // Horizontal rules
+    hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 10px 0;
+    }
+
+    // Links
+    a {
+      color: var(--buttonPrimaryBackground, #3d90ce);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // --- Typing indicator ---
+  &__typing {
     display: inline-flex;
-    gap: 2px;
+    gap: 4px;
+    padding: 4px 0;
 
     span {
-      animation: aiChatBounce 1.2s infinite;
-      opacity: 0.4;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--textColorDimmed, #8e8e8e);
+      animation: aiChatPulse 1.4s infinite ease-in-out;
 
       &:nth-child(2) {
         animation-delay: 0.2s;
@@ -59,68 +195,92 @@
     }
   }
 
-  .cursor {
+  // --- Streaming cursor ---
+  &__cursor {
     display: inline-block;
     width: 2px;
     height: 14px;
     background: var(--textColorAccent, #d2d2d2);
-    margin-left: 1px;
+    margin-left: 2px;
     animation: aiChatBlink 0.8s infinite;
     vertical-align: text-bottom;
   }
 
-  .toolCalls {
-    margin-top: 6px;
+  // --- Tool call badges (inside assistant messages) ---
+  &__tool-calls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
     padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .toolCall {
-    display: flex;
+  &__tool-call-badge {
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding: 2px 8px;
     font-size: 11px;
+    font-family: var(--font-monospace, monospace);
     color: var(--textColorDimmed, #8e8e8e);
-  }
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
 
-  .toolCallName {
-    font-family: var(--font-monospace, monospace);
-  }
-
-  .toolHeader {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .toolName {
-    font-family: var(--font-monospace, monospace);
-    font-weight: 600;
-  }
-
-  .toolStatus {
-    font-style: italic;
-  }
-
-  .confirmation {
-    margin-top: 8px;
-    padding: 8px;
-    border: 1px solid var(--colorWarning, #e6a817);
-    border-radius: 4px;
-    background: rgba(230, 168, 23, 0.1);
-
-    p {
-      margin: 0 0 8px 0;
+    .Icon {
+      font-size: 12px !important;
     }
   }
 
-  .confirmationActions {
+  // --- Copy button ---
+  &__copy {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--textColorDimmed, #8e8e8e);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    padding: 0;
+
+    .Icon {
+      font-size: 14px !important;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--textColorAccent, #d2d2d2);
+    }
+  }
+
+  // --- Confirmation (Phase 6) ---
+  &__confirmation {
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid var(--colorWarning, #e6a817);
+    border-radius: 6px;
+    background: rgba(230, 168, 23, 0.1);
+
+    p {
+      margin: 0 0 8px;
+    }
+  }
+
+  &__confirmation-actions {
     display: flex;
     gap: 8px;
   }
 
-  .confirmBtn,
-  .declineBtn {
+  &__confirm-btn,
+  &__decline-btn {
     padding: 4px 12px;
     border: none;
     border-radius: 4px;
@@ -128,31 +288,62 @@
     font-size: 12px;
   }
 
-  .confirmBtn {
+  &__confirm-btn {
     background: var(--colorOk, #43a047);
     color: #ffffff;
   }
 
-  .declineBtn {
+  &__decline-btn {
     background: var(--colorError, #ce3933);
     color: #ffffff;
   }
 }
 
-@keyframes aiChatBounce {
-  0%, 60%, 100% {
+// --- Tool result chip (standalone between messages) ---
+.AiChatMessage__tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  margin: 1px 0;
+  font-size: 11px;
+  color: var(--textColorDimmed, #8e8e8e);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  align-self: flex-start;
+
+  .Icon {
+    font-size: 13px !important;
+    color: var(--colorOk, #43a047);
+  }
+
+  &.error .Icon {
+    color: var(--colorError, #ce3933);
+  }
+
+  &__name {
+    font-family: var(--font-monospace, monospace);
+  }
+
+  &__status {
+    font-style: italic;
+    opacity: 0.7;
+  }
+}
+
+// --- Animations ---
+@keyframes aiChatPulse {
+  0%, 80%, 100% {
+    transform: scale(0.6);
     opacity: 0.4;
   }
-  30% {
+  40% {
+    transform: scale(1);
     opacity: 1;
   }
 }
 
 @keyframes aiChatBlink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }

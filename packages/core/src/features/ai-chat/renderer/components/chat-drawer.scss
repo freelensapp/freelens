@@ -10,6 +10,16 @@
     padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
+
+    // Reduce gap between tool chips and the following assistant message
+    .AiChatMessage__tool-chip + .AiChatMessage--assistant {
+      margin-top: 0;
+    }
+
+    // Reduce gap between consecutive assistant messages (multi-step)
+    .AiChatMessage--assistant + .AiChatMessage--assistant {
+      margin-top: 0;
+    }
   }
 }

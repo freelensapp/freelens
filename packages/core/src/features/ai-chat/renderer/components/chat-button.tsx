@@ -6,7 +6,6 @@
 import "./chat-button.scss";
 
 import { Icon } from "@freelensapp/icon";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
@@ -18,22 +17,26 @@ interface Dependencies {
   conversationStore: ConversationStore;
 }
 
-const NonInjectedChatButton = observer(({ conversationStore }: Dependencies) => (
-  <button
-    className={cssNames("AiChatButton", { active: conversationStore.isDrawerOpen })}
-    onClick={(e) => {
-      // Stop propagation to prevent the Drawer's onClickOutside handler
-      // from immediately closing the drawer on the same click event.
-      e.stopPropagation();
-      conversationStore.toggleDrawer();
-    }}
-    data-testid="ai-chat-button"
-    aria-label="Toggle AI Chat"
-    title="AI Chat"
-  >
-    <Icon material="smart_toy" />
-  </button>
-));
+const NonInjectedChatButton = observer(({ conversationStore }: Dependencies) => {
+  if (conversationStore.isDrawerOpen) {
+    return null;
+  }
+
+  return (
+    <button
+      className="AiChatButton"
+      onClick={(e) => {
+        e.stopPropagation();
+        conversationStore.toggleDrawer();
+      }}
+      data-testid="ai-chat-button"
+      aria-label="Toggle AI Chat"
+      title="AI Chat"
+    >
+      <Icon material="smart_toy" />
+    </button>
+  );
+});
 
 export const ChatButton = withInjectables<Dependencies>(NonInjectedChatButton, {
   getProps: (di) => ({

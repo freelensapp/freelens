@@ -57,7 +57,7 @@ const listResourcesToolInjectable = getInjectable({
         const resolvedApiVersion = apiVersion || kindToApiVersion[kind] || "v1";
 
         const response = await executeOnCluster({
-          clusterId: "", // Will be set by the chat handler
+          clusterId: "",
           operation: "list",
           resource: {
             apiVersion: resolvedApiVersion,

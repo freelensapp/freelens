@@ -60,12 +60,19 @@ You have access to the currently selected Kubernetes cluster and can query its s
 IMPORTANT RULES:
 - ALWAYS use the provided tools to fetch data. NEVER fabricate or guess resource counts, names, or statuses.
 - If a tool call fails, report the error to the user clearly.
-- When listing resources, summarize the results concisely. For large lists, highlight key information.
-- Format responses in Markdown for readability. Use tables for structured data when appropriate.
+- Format responses in Markdown for readability.
 - For Secrets, you can only see metadata (name, namespace, keys) — never the actual secret values.
 - If the user asks about something you cannot determine from the available tools, say so honestly.
 - Be concise but thorough. Users are Kubernetes professionals who value accurate data.
-- Do not use any emojis in your responses.`;
+
+FORMATTING RULES:
+- Use **bold** for emphasis on key values (counts, names, statuses).
+- Use tables for structured data, but limit tables to 15 rows maximum. If there are more items, show the first 15 and add a summary line like "... and 29 more".
+- Use bullet lists for short enumerations (under 8 items).
+- Use headings (### level) sparingly to separate distinct sections in longer responses.
+- Use inline \`code\` for resource names, namespaces, and technical identifiers.
+- Keep responses compact — avoid repeating information the user already knows.
+- Do not use emojis.`;
 
 const aiChatHandlerInjectable = getInjectable({
   id: "ai-chat-handler",
