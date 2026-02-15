@@ -49,10 +49,21 @@ class NonForwardedLogList extends React.Component<
 > {
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
+  @observable.ref private containerWidth = 0;
 
-  private virtualListDiv = React.createRef<HTMLDivElement>(); // A reference for outer container in VirtualList
+  private virtualListDivElement: HTMLDivElement | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
-  private lineHeight = 18; // Height of a log line. Should correlate with styles in pod-log-list.scss
+  private lineHeight = 18;
+  private charWidth = 7.2;
+  private rowPadding = 32;
+
+  private virtualListDiv = (el: HTMLDivElement | null) => {
+    this.virtualListDivElement = el;
+
+    if (el) {
+      this.containerWidth = el.clientWidth;
+    }
+  };
 
   constructor(props: any) {
     super(props);
@@ -61,6 +72,7 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentDidMount() {
+    this.measureCharMetrics();
     disposeOnUnmount(this, [
       reaction(
         () => this.props.model.logs.get(),
@@ -74,6 +86,21 @@ class NonForwardedLogList extends React.Component<
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
+  }
+
+  private measureCharMetrics() {
+    const probe = document.createElement("span");
+
+    probe.style.position = "absolute";
+    probe.style.visibility = "hidden";
+    probe.style.fontFamily = "var(--font-monospace)";
+    probe.style.fontSize = "smaller";
+    probe.style.whiteSpace = "pre";
+    probe.textContent = "X";
+    document.body.appendChild(probe);
+    this.charWidth = probe.offsetWidth || this.charWidth;
+    this.lineHeight = probe.offsetHeight || this.lineHeight;
+    document.body.removeChild(probe);
   }
 
   componentDidUpdate() {
@@ -109,10 +136,10 @@ class NonForwardedLogList extends React.Component<
   }
 
   onUserScrolledUp(logs: string[], prevLogs: string[]) {
-    if (!this.virtualListDiv.current) return;
+    if (!this.virtualListDivElement) return;
 
     const newLogsAdded = prevLogs.length < logs.length;
-    const scrolledToBeginning = this.virtualListDiv.current.scrollTop === 0;
+    const scrolledToBeginning = this.virtualListDivElement.scrollTop === 0;
 
     if (newLogsAdded && scrolledToBeginning) {
       const firstLineContents = prevLogs[0];
@@ -143,14 +170,37 @@ class NonForwardedLogList extends React.Component<
       );
   }
 
+  get showWordWrap(): boolean {
+    return this.props.model.logTabData.get()?.showWordWrap ?? false;
+  }
+
+  getRowHeights(): number[] {
+    if (!this.showWordWrap || !this.containerWidth) {
+      return array.filled(this.logs.length, this.lineHeight);
+    }
+
+    const usableWidth = Math.max(this.containerWidth - this.rowPadding, 1);
+    const charsPerLine = Math.floor(usableWidth / this.charWidth);
+
+    return this.logs.map((line) => {
+      const lineCount = Math.max(1, Math.ceil(line.length / charsPerLine));
+
+      return lineCount * this.lineHeight;
+    });
+  }
+
   /**
    * Checks if JumpToBottom button should be visible and sets its observable
    * @param props Scrolling props from virtual list core
    */
-  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps, { scrollHeight }: HTMLDivElement) => {
+  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+    const el = this.virtualListDivElement;
+
+    if (!el) return;
+
     const offset = 100 * this.lineHeight;
 
-    if (scrollHeight - scrollOffset < offset) {
+    if (el.scrollHeight - scrollOffset < offset) {
       this.isJumpButtonVisible = false;
     } else {
       this.isJumpButtonVisible = true;
@@ -161,11 +211,12 @@ class NonForwardedLogList extends React.Component<
    * Checks if last log line considered visible to user, setting its observable
    * @param props Scrolling props from virtual list core
    */
-  setLastLineVisibility = action(
-    ({ scrollOffset }: ListOnScrollProps, { scrollHeight, clientHeight }: HTMLDivElement) => {
-      this.isLastLineVisible = clientHeight + scrollOffset === scrollHeight;
-    },
-  );
+  setLastLineVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+    const el = this.virtualListDivElement;
+
+    if (!el) return;
+    this.isLastLineVisible = el.clientHeight + scrollOffset === el.scrollHeight;
+  });
 
   /**
    * Check if user scrolled to top and new logs should be loaded
@@ -180,8 +231,9 @@ class NonForwardedLogList extends React.Component<
   };
 
   scrollToBottom = () => {
-    if (!this.virtualListDiv.current) return;
-    this.virtualListDiv.current.scrollTop = this.virtualListDiv.current.scrollHeight;
+    if (this.logs.length) {
+      this.scrollToItem(this.logs.length - 1, "end");
+    }
   };
 
   scrollToItem = (index: number, align: Align) => {
@@ -194,11 +246,9 @@ class NonForwardedLogList extends React.Component<
   };
 
   onScrollDebounced = debounce((props: ListOnScrollProps) => {
-    const virtualList = this.virtualListDiv.current;
-
-    if (virtualList) {
-      this.setButtonVisibility(props, virtualList);
-      this.setLastLineVisibility(props, virtualList);
+    if (this.virtualListDivElement) {
+      this.setButtonVisibility(props);
+      this.setLastLineVisibility(props);
       this.checkLoadIntent(props);
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down
@@ -244,7 +294,7 @@ class NonForwardedLogList extends React.Component<
     }
 
     return (
-      <div className={cssNames("LogRow")}>
+      <div className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
         {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
         {/* For preserving copy-paste experience and keeping line breaks */}
         <br />
@@ -273,7 +323,7 @@ class NonForwardedLogList extends React.Component<
       <div className={cssNames("LogList flex")}>
         <VirtualList
           items={this.logs}
-          rowHeights={array.filled(this.logs.length, this.lineHeight)}
+          rowHeights={this.getRowHeights()}
           getRow={this.getLogRow}
           onScroll={this.onScroll}
           outerRef={this.virtualListDiv}

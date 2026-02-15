@@ -56,6 +56,7 @@ function getOnePodViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependenc
       namespace: selectedPod.getNs(),
       showPrevious: false,
       showTimestamps: false,
+      showWordWrap: false,
     }),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
@@ -84,6 +85,7 @@ const getFewPodsTabData = (tabId: TabId, deps: Partial<LogTabViewModelDependenci
       namespace: selectedPod.getNs(),
       showPrevious: false,
       showTimestamps: false,
+      showWordWrap: false,
     }),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
