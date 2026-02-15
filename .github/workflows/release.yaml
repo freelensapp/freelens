@@ -439,6 +439,9 @@ jobs:
           package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
       - name: Setup pnpm
         run: corepack enable
 
@@ -479,7 +482,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry)
@@ -494,7 +497,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry 2)
@@ -508,7 +511,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
 
   release-apt-repository:
     name: Release APT repository

@@ -7,6 +7,7 @@
 
   > .navItem {
     display: flex;
+    align-items: center;
     gap: 8px;
     text-decoration: none;
     padding: 6px 8px 6px 10px;
@@ -25,10 +26,28 @@
     span {
       word-break: break-word;
     }
+
+    .pinIcon {
+      opacity: 0;
+      pointer-events: none;
+      margin-left: auto;
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      transition: opacity 250ms;
+    }
+
+    &:hover .pinIcon {
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 
   .expandIcon {
     margin-left: auto;
+    width: 24px;
+    display: flex;
+    justify-content: center;
   }
 
   .subMenu {

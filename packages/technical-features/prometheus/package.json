@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/prometheus",
   "private": false,
-  "version": "1.8.1-0",
+  "version": "1.8.2-0",
   "description": "Prometheus support for Freelens",
   "type": "commonjs",
   "publishConfig": {

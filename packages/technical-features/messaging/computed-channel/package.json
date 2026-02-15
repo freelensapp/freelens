@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/computed-channel",
   "private": false,
-  "version": "1.8.1-0",
+  "version": "1.8.2-0",
   "description": "MobX-like computed between channels",
   "type": "commonjs",
   "publishConfig": {
