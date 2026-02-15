@@ -1,0 +1,158 @@
+.AiChatMessage {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 8px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+
+  &.user {
+    background: var(--buttonPrimaryBackground, #3d90ce);
+    color: #ffffff;
+    align-self: flex-end;
+    margin-left: 40px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &.assistant {
+    background: var(--mainBackground, #252729);
+    color: var(--textColorAccent, #d2d2d2);
+    align-self: flex-start;
+    margin-right: 40px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &.error {
+    background: var(--colorError, #ce3933);
+    color: #ffffff;
+  }
+
+  &.tool {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin: 2px 0;
+    background: var(--secondaryBackground, #1e2024);
+    color: var(--textColorDimmed, #8e8e8e);
+    border-radius: 4px;
+  }
+
+  .content {
+    position: relative;
+  }
+
+  .loadingDots {
+    display: inline-flex;
+    gap: 2px;
+
+    span {
+      animation: aiChatBounce 1.2s infinite;
+      opacity: 0.4;
+
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+    }
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: var(--textColorAccent, #d2d2d2);
+    margin-left: 1px;
+    animation: aiChatBlink 0.8s infinite;
+    vertical-align: text-bottom;
+  }
+
+  .toolCalls {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .toolCall {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--textColorDimmed, #8e8e8e);
+  }
+
+  .toolCallName {
+    font-family: var(--font-monospace, monospace);
+  }
+
+  .toolHeader {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .toolName {
+    font-family: var(--font-monospace, monospace);
+    font-weight: 600;
+  }
+
+  .toolStatus {
+    font-style: italic;
+  }
+
+  .confirmation {
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid var(--colorWarning, #e6a817);
+    border-radius: 4px;
+    background: rgba(230, 168, 23, 0.1);
+
+    p {
+      margin: 0 0 8px 0;
+    }
+  }
+
+  .confirmationActions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .confirmBtn,
+  .declineBtn {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .confirmBtn {
+    background: var(--colorOk, #43a047);
+    color: #ffffff;
+  }
+
+  .declineBtn {
+    background: var(--colorError, #ce3933);
+    color: #ffffff;
+  }
+}
+
+@keyframes aiChatBounce {
+  0%, 60%, 100% {
+    opacity: 0.4;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+@keyframes aiChatBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

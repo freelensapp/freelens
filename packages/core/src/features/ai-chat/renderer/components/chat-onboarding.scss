@@ -1,0 +1,55 @@
+.AiChatOnboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px;
+  text-align: center;
+  color: var(--textColorDimmed, #8e8e8e);
+
+  h3 {
+    margin: 16px 0 8px;
+    color: var(--textColorAccent, #d2d2d2);
+    font-size: 18px;
+  }
+
+  p {
+    margin: 4px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 300px;
+  }
+
+  strong {
+    color: var(--textColorAccent, #d2d2d2);
+  }
+
+  &__icon {
+    font-size: 48px !important;
+    color: var(--buttonPrimaryBackground, #3d90ce);
+    opacity: 0.6;
+  }
+
+  &__preferences-btn {
+    margin-top: 16px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background: var(--buttonPrimaryBackground, #3d90ce);
+    color: var(--textColorPrimary, #ffffff);
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__hint {
+    margin-top: 16px !important;
+    font-size: 12px !important;
+    opacity: 0.7;
+  }
+}

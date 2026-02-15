@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import { registerInjectables as registerAiChatInjectables } from "./ai-chat/register-injectables";
 import { registerInjectables as registerClusterInjectables } from "./cluster/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
 import { registerInjectables as registerFavoritesInjectables } from "./favorites/register-injectables";
@@ -20,6 +21,11 @@ import { registerInjectables as registerWeblinksInjectables } from "./weblinks/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    registerAiChatInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     registerClusterInjectables(di);
   } catch (e) {

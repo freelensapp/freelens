@@ -1,0 +1,19 @@
+.AiProviderSelector {
+  appearance: none;
+  background: var(--secondaryBackground, #1e2024);
+  color: var(--textColorAccent, #d2d2d2);
+  border: 1px solid var(--borderFaintColor, #333);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    border-color: var(--buttonPrimaryBackground, #3d90ce);
+  }
+
+  &:hover {
+    border-color: var(--textColorDimmed, #8e8e8e);
+  }
+}

@@ -59,6 +59,13 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
         state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
+
+        // AI Chat preferences
+        state.aiProviderApiKeyAnthropic = descriptors.aiProviderApiKeyAnthropic.fromStore(preferences.aiProviderApiKeyAnthropic);
+        state.aiProviderApiKeyOpenai = descriptors.aiProviderApiKeyOpenai.fromStore(preferences.aiProviderApiKeyOpenai);
+        state.aiProviderActiveProvider = descriptors.aiProviderActiveProvider.fromStore(preferences.aiProviderActiveProvider);
+        state.aiProviderModelAnthropic = descriptors.aiProviderModelAnthropic.fromStore(preferences.aiProviderModelAnthropic);
+        state.aiProviderModelOpenai = descriptors.aiProviderModelOpenai.fromStore(preferences.aiProviderModelOpenai);
       }),
       toJSON: () =>
         toJS({
@@ -84,6 +91,13 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
             clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
+
+            // AI Chat preferences
+            aiProviderApiKeyAnthropic: descriptors.aiProviderApiKeyAnthropic.toStore(state.aiProviderApiKeyAnthropic),
+            aiProviderApiKeyOpenai: descriptors.aiProviderApiKeyOpenai.toStore(state.aiProviderApiKeyOpenai),
+            aiProviderActiveProvider: descriptors.aiProviderActiveProvider.toStore(state.aiProviderActiveProvider),
+            aiProviderModelAnthropic: descriptors.aiProviderModelAnthropic.toStore(state.aiProviderModelAnthropic),
+            aiProviderModelOpenai: descriptors.aiProviderModelOpenai.toStore(state.aiProviderModelOpenai),
           },
         }),
     });

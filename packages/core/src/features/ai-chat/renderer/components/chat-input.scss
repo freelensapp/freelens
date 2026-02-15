@@ -1,0 +1,80 @@
+.AiChatInput {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--borderFaintColor, #333);
+  background: var(--mainBackground, #252729);
+
+  &__textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid var(--borderFaintColor, #333);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--textColorAccent, #d2d2d2);
+    background: var(--secondaryBackground, #1e2024);
+    font-family: inherit;
+    outline: none;
+    min-height: 36px;
+    max-height: 120px;
+
+    &:focus {
+      border-color: var(--buttonPrimaryBackground, #3d90ce);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: var(--textColorDimmed, #8e8e8e);
+    }
+  }
+
+  &__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--buttonPrimaryBackground, #3d90ce);
+    color: var(--textColorPrimary, #ffffff);
+    padding: 0;
+    transition: opacity 0.15s ease;
+
+    &.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.disabled) {
+      opacity: 0.85;
+    }
+  }
+
+  &__cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: var(--colorError, #ce3933);
+    color: var(--textColorPrimary, #ffffff);
+    padding: 0;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}

@@ -72,6 +72,8 @@
     "node": "^22.0.0"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.44",
+    "@ai-sdk/openai": "^3.0.29",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
@@ -121,6 +123,7 @@
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-web-links": "^0.11.0",
     "@xterm/xterm": "^5.5.0",
+    "ai": "^6.0.86",
     "ansi_up": "^5.2.1",
     "auto-bind": "^4.0.0",
     "await-lock": "^2.2.2",

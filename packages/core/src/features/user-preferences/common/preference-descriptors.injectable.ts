@@ -150,6 +150,28 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val,
       }),
+
+      // AI Chat preferences
+      aiProviderApiKeyAnthropic: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      aiProviderApiKeyOpenai: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      aiProviderActiveProvider: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "anthropic",
+        toStore: (val) => (val === "anthropic" ? undefined : val),
+      }),
+      aiProviderModelAnthropic: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "claude-sonnet-4-20250514",
+        toStore: (val) => (val === "claude-sonnet-4-20250514" ? undefined : val),
+      }),
+      aiProviderModelOpenai: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "gpt-4o",
+        toStore: (val) => (val === "gpt-4o" ? undefined : val),
+      }),
     } as const;
   },
 });

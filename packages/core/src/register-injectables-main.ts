@@ -7,6 +7,8 @@
 
 import { registerInjectables as registerCommonInjectables } from "./common/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesAiChatMainInjectables } from "./features/ai-chat/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesAiChatInjectables } from "./features/ai-chat/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesApplicationMenuMainInjectables } from "./features/application-menu/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterActivationMainInjectables } from "./features/cluster/activation/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterConnectionsMainInjectables } from "./features/cluster/connections/main/register-injectables";
@@ -48,6 +50,8 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   registerCommonInjectables(di);
   registerExtensionsInjectables(di);
+  registerFeaturesFeaturesAiChatMainInjectables(di);
+  registerFeaturesFeaturesAiChatInjectables(di);
   registerFeaturesFeaturesApplicationMenuMainInjectables(di);
   registerFeaturesFeaturesClusterInjectables(di);
   registerFeaturesFeaturesClusterActivationMainInjectables(di);

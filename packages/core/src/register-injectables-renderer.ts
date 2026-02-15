@@ -7,6 +7,8 @@
 
 import { registerInjectables as registerCommonInjectables } from "./common/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesAiChatInjectables } from "./features/ai-chat/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesAiChatRendererInjectables } from "./features/ai-chat/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterActivationRendererInjectables } from "./features/cluster/activation/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterDeleteDialogRendererInjectables } from "./features/cluster/delete-dialog/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterExecuteRendererInjectables } from "./features/cluster/execute/renderer/register-injectables";
@@ -50,6 +52,8 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   registerCommonInjectables(di);
   registerExtensionsInjectables(di);
+  registerFeaturesFeaturesAiChatRendererInjectables(di);
+  registerFeaturesFeaturesAiChatInjectables(di);
   registerFeaturesFeaturesClusterInjectables(di);
   registerFeaturesFeaturesClusterActivationRendererInjectables(di);
   registerFeaturesFeaturesClusterDeleteDialogRendererInjectables(di);
