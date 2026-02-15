@@ -8,6 +8,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Radio, RadioGroup } from "../radio";
+import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
@@ -32,6 +33,9 @@ const NonInjectedClusterMetricSwitchers = observer(
           <Radio label="Master" value="master" disabled={!selectedNodeRoleForMetrics.hasMasterNodes.get()} />
           <Radio label="Worker" value="worker" disabled={!selectedNodeRoleForMetrics.hasWorkerNodes.get()} />
         </RadioGroup>
+      </div>
+      <div className="box" style={{ minWidth: "140px" }}>
+        <MetricsTimeRangeSelector />
       </div>
       <div className="box grow" style={{ textAlign: "right" }}>
         <RadioGroup

@@ -30,6 +30,7 @@ export type RequestPodMetrics = (
   namespace: string,
   container?: Container,
   selector?: string,
+  opts?: { start?: number; end?: number; range?: number },
 ) => Promise<PodMetricData>;
 
 const requestPodMetricsInjectable = getInjectable({
@@ -37,7 +38,7 @@ const requestPodMetricsInjectable = getInjectable({
   instantiate: (di): RequestPodMetrics => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (pods, namespace, container, selector = "pod, namespace") => {
+    return (pods, namespace, container, selector = "pod, namespace", timeOpts = {}) => {
       const podSelector = pods.map((pod) => pod.getName()).join("|");
       const opts = { category: "pods", pods: podSelector, container: container?.name, namespace, selector };
 
@@ -57,6 +58,7 @@ const requestPodMetricsInjectable = getInjectable({
         },
         {
           namespace,
+          ...timeOpts,
         },
       );
     };
