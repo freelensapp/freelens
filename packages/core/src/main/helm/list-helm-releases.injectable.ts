@@ -29,11 +29,10 @@ const listHelmReleasesInjectable = getInjectable({
         "--failed",
         "--pending",
         "--superseded",
-        "--uninstalled",
-        "--uninstalling",
-        // By default 256 results are listed, we want to list practically all
+        // --uninstalled and --uninstalling removed: deleted releases are rarely needed
+        // 256 is a reasonable upper limit - most namespaces have far fewer releases
         "--max",
-        "9999",
+        "256",
         "--output",
         "json",
       ];
