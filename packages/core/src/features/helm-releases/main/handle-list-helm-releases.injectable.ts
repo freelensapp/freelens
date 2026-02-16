@@ -18,7 +18,7 @@ const handleListHelmReleasesInjectable = getRequestChannelListenerInjectable({
     const getClusterById = di.inject(getClusterByIdInjectable);
     const helmReleaseCache = di.inject(helmReleaseCacheInjectable);
 
-    return async ({ clusterId, namespace }) => {
+    return async ({ clusterId, namespace, skipCache }) => {
       const cluster = getClusterById(clusterId);
 
       if (!cluster) {
@@ -28,12 +28,15 @@ const handleListHelmReleasesInjectable = getRequestChannelListenerInjectable({
         };
       }
 
-      const cachedHelmReleases = helmReleaseCache.get(clusterId, namespace);
+      const cachedHelmReleases = skipCache ? undefined : helmReleaseCache.get(clusterId, namespace);
 
       if (cachedHelmReleases) {
         return {
           callWasSuccessful: true,
-          response: cachedHelmReleases,
+          response: {
+            releases: cachedHelmReleases,
+            fromCache: true,
+          },
         };
       }
 
@@ -41,6 +44,14 @@ const handleListHelmReleasesInjectable = getRequestChannelListenerInjectable({
 
       if (result.callWasSuccessful) {
         helmReleaseCache.set(clusterId, namespace, result.response);
+
+        return {
+          callWasSuccessful: true,
+          response: {
+            releases: result.response,
+            fromCache: false,
+          },
+        };
       }
 
       return result;

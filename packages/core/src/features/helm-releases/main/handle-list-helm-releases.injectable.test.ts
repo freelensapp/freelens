@@ -18,6 +18,7 @@ describe("handle list helm releases", () => {
   let listHelmReleasesHandler: (args: {
     clusterId: string;
     namespace?: string;
+    skipCache?: boolean;
   }) => ListHelmReleasesResponse | Promise<ListHelmReleasesResponse>;
   let listClusterHelmReleasesMock: jest.MockedFunction<ListClusterHelmReleases>;
 
@@ -68,11 +69,17 @@ describe("handle list helm releases", () => {
 
     expect(firstCallResult).toEqual({
       callWasSuccessful: true,
-      response: listedHelmReleases,
+      response: {
+        releases: listedHelmReleases,
+        fromCache: false,
+      },
     });
     expect(secondCallResult).toEqual({
       callWasSuccessful: true,
-      response: listedHelmReleases,
+      response: {
+        releases: listedHelmReleases,
+        fromCache: true,
+      },
     });
     expect(listClusterHelmReleasesMock).toHaveBeenCalledTimes(1);
   });
