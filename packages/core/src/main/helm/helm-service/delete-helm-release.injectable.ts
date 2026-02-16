@@ -6,6 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import helmReleaseCacheInjectable from "../../../features/helm-releases/main/helm-release-cache.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import deleteHelmReleaseInjectable from "../delete-helm-release.injectable";
 
@@ -18,6 +19,7 @@ const deleteClusterHelmReleaseInjectable = getInjectable({
   instantiate: (di) => {
     const logger = di.inject(loggerInjectionToken);
     const deleteHelmRelease = di.inject(deleteHelmReleaseInjectable);
+    const helmReleaseCache = di.inject(helmReleaseCacheInjectable);
 
     return async (cluster: Cluster, data: DeleteHelmReleaseData) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
@@ -25,7 +27,11 @@ const deleteClusterHelmReleaseInjectable = getInjectable({
 
       logger.debug(`[CLUSTER]: Delete helm release`, data);
 
-      return deleteHelmRelease(proxyKubeconfigPath, data);
+      const result = await deleteHelmRelease(proxyKubeconfigPath, data);
+
+      helmReleaseCache.invalidateCluster(cluster.id);
+
+      return result;
     };
   },
 });
