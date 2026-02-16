@@ -30,9 +30,10 @@ const listHelmReleasesInjectable = getInjectable({
         "--pending",
         "--superseded",
         // --uninstalled and --uninstalling removed: deleted releases are rarely needed
-        // 256 is a reasonable upper limit - most namespaces have far fewer releases
+        // Keeping max at 9999 to ensure all releases are fetched (helm default is 256)
+        // Performance is improved through caching rather than limiting results
         "--max",
-        "256",
+        "9999",
         "--output",
         "json",
       ];
