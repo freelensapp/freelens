@@ -172,6 +172,60 @@
     }
   }
 
+  // --- Thinking / reasoning block ---
+  &__thinking {
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+
+    &.expanded {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  &__thinking-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 4px 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--textColorDimmed, #8e8e8e);
+    cursor: pointer;
+    font-size: 11px;
+    text-align: left;
+
+    .Icon {
+      font-size: 16px !important;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--textColorAccent, #d2d2d2);
+    }
+  }
+
+  &__thinking-pulse {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--textColorDimmed, #8e8e8e);
+    margin-left: 4px;
+    animation: aiChatPulse 1.4s infinite ease-in-out;
+  }
+
+  &__thinking-content {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--textColorDimmed, #8e8e8e);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
   // --- Typing indicator ---
   &__typing {
     display: inline-flex;
@@ -220,9 +274,8 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 8px;
+    padding: 3px 8px;
     font-size: 11px;
-    font-family: var(--font-monospace, monospace);
     color: var(--textColorDimmed, #8e8e8e);
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
@@ -230,6 +283,28 @@
     .Icon {
       font-size: 12px !important;
     }
+
+    &--done .Icon {
+      color: var(--colorOk, #43a047);
+    }
+
+    &--error .Icon {
+      color: var(--colorError, #ce3933);
+    }
+  }
+
+  &__tool-call-name {
+    font-family: var(--font-monospace, monospace);
+    font-weight: 500;
+  }
+
+  &__tool-call-params {
+    font-size: 10px;
+    opacity: 0.7;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   // --- Copy button ---
@@ -259,6 +334,18 @@
       background: rgba(255, 255, 255, 0.15);
       color: var(--textColorAccent, #d2d2d2);
     }
+  }
+
+  // --- Token usage ---
+  &__usage {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 10px;
+    color: var(--textColorDimmed, #8e8e8e);
+    opacity: 0.7;
   }
 
   // --- Confirmation (Phase 6) ---

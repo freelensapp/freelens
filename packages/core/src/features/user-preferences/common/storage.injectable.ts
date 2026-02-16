@@ -7,15 +7,15 @@
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
+
 import { toJS } from "../../../common/utils";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
 import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
-import userPreferencesStateInjectable from "./state.injectable";
-
 import type { UserPreferencesModel } from "./preferences-helpers";
+import userPreferencesStateInjectable from "./state.injectable";
 
 export interface UserStoreModel {
   preferences: UserPreferencesModel;
@@ -66,6 +66,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.aiProviderActiveProvider = descriptors.aiProviderActiveProvider.fromStore(preferences.aiProviderActiveProvider);
         state.aiProviderModelAnthropic = descriptors.aiProviderModelAnthropic.fromStore(preferences.aiProviderModelAnthropic);
         state.aiProviderModelOpenai = descriptors.aiProviderModelOpenai.fromStore(preferences.aiProviderModelOpenai);
+        state.aiProviderThinkingEnabled = descriptors.aiProviderThinkingEnabled.fromStore(preferences.aiProviderThinkingEnabled);
+        state.aiProviderThinkingBudget = descriptors.aiProviderThinkingBudget.fromStore(preferences.aiProviderThinkingBudget);
       }),
       toJSON: () =>
         toJS({
@@ -98,6 +100,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             aiProviderActiveProvider: descriptors.aiProviderActiveProvider.toStore(state.aiProviderActiveProvider),
             aiProviderModelAnthropic: descriptors.aiProviderModelAnthropic.toStore(state.aiProviderModelAnthropic),
             aiProviderModelOpenai: descriptors.aiProviderModelOpenai.toStore(state.aiProviderModelOpenai),
+            aiProviderThinkingEnabled: descriptors.aiProviderThinkingEnabled.toStore(state.aiProviderThinkingEnabled),
+            aiProviderThinkingBudget: descriptors.aiProviderThinkingBudget.toStore(state.aiProviderThinkingBudget),
           },
         }),
     });

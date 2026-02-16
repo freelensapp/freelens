@@ -27,6 +27,10 @@ const chatStreamListenerInjectable = getMessageChannelListenerInjectable({
           conversationStore.appendTextDelta(event.text);
           break;
 
+        case "reasoning-delta":
+          conversationStore.appendReasoningDelta(event.text);
+          break;
+
         case "tool-call":
           conversationStore.addToolCall({
             toolCallId: event.toolCallId,
@@ -49,7 +53,7 @@ const chatStreamListenerInjectable = getMessageChannelListenerInjectable({
           break;
 
         case "finish":
-          conversationStore.finishStreaming();
+          conversationStore.finishStreaming(event.usage);
           break;
 
         case "error":

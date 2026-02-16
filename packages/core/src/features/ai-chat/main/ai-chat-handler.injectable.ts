@@ -3,20 +3,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { stepCountIs, streamText, tool } from "ai";
-import type { AssistantModelMessage, ModelMessage, ToolModelMessage, UserModelMessage } from "ai";
 import { logErrorInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import type { AssistantModelMessage, ModelMessage, ToolModelMessage, UserModelMessage } from "ai";
+import { stepCountIs, streamText, tool } from "ai";
+
 import executeOnClusterHandlerInjectable from "../../cluster/execute/main/execute-handler.injectable";
 import getClusterByIdInjectable from "../../cluster/storage/common/get-by-id.injectable";
-import aiProviderFactoryInjectable from "./ai-provider-factory.injectable";
+import userPreferencesStateInjectable from "../../user-preferences/common/state.injectable";
+import type { AiChatMessage, AiChatRequest, AiChatRequestAck } from "../common/types";
 import aiChatStreamSenderInjectable from "./ai-chat-stream-sender.injectable";
+import aiProviderFactoryInjectable from "./ai-provider-factory.injectable";
 import getClusterInfoToolInjectable from "./tools/get-cluster-info.injectable";
 import getEventsToolInjectable from "./tools/get-events.injectable";
 import getResourceToolInjectable from "./tools/get-resource.injectable";
 import listResourcesToolInjectable from "./tools/list-resources.injectable";
-
-import type { AiChatMessage, AiChatRequest, AiChatRequestAck } from "../common/types";
 
 /**
  * Active streams tracked by conversationId for cancellation support.
@@ -82,6 +83,7 @@ const aiChatHandlerInjectable = getInjectable({
     const streamSender = di.inject(aiChatStreamSenderInjectable);
     const getClusterById = di.inject(getClusterByIdInjectable);
     const logError = di.inject(logErrorInjectionToken);
+    const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
     // Get tool definitions — we'll wrap them to inject the clusterId
     const listResourcesTool = di.inject(listResourcesToolInjectable);
@@ -315,6 +317,9 @@ const aiChatHandlerInjectable = getInjectable({
           // and tool result messages need their own structured format.
           const sdkMessages = convertToSdkMessages(truncatedMessages);
 
+          // Build provider-specific options (e.g. Anthropic thinking)
+          const useThinking = providerId === "anthropic" && userPreferencesState.aiProviderThinkingEnabled;
+
           const result = streamText({
             model,
             system: systemPrompt,
@@ -322,6 +327,16 @@ const aiChatHandlerInjectable = getInjectable({
             tools,
             stopWhen: stepCountIs(5),
             abortSignal: abortController.signal,
+            ...(useThinking && {
+              providerOptions: {
+                anthropic: {
+                  thinking: {
+                    type: "enabled",
+                    budgetTokens: userPreferencesState.aiProviderThinkingBudget || 10000,
+                  },
+                },
+              },
+            }),
           });
 
           for await (const chunk of result.fullStream) {
@@ -334,13 +349,22 @@ const aiChatHandlerInjectable = getInjectable({
                 streamSender({ type: "text-delta", conversationId, text: chunk.text });
                 break;
 
+              case "reasoning-delta":
+                streamSender({ type: "reasoning-delta", conversationId, text: chunk.text });
+                break;
+
+              case "reasoning-start":
+              case "reasoning-end":
+                // Start/end markers handled implicitly — only deltas carry content
+                break;
+
               case "tool-call":
                 streamSender({
                   type: "tool-call",
                   conversationId,
                   toolCallId: chunk.toolCallId,
                   toolName: chunk.toolName,
-                  input: chunk.input,
+                  input: JSON.parse(JSON.stringify(chunk.input)),
                 });
                 break;
 
@@ -349,7 +373,7 @@ const aiChatHandlerInjectable = getInjectable({
                   type: "tool-result",
                   conversationId,
                   toolCallId: chunk.toolCallId,
-                  result: chunk.output,
+                  result: JSON.parse(JSON.stringify(chunk.output)),
                   isError: false,
                 });
                 break;
@@ -373,6 +397,12 @@ const aiChatHandlerInjectable = getInjectable({
             result.usage,
           ]);
 
+          const inputTokens = usage?.inputTokens ?? 0;
+          const outputTokens = usage?.outputTokens ?? 0;
+          const modelId = providerId === "anthropic"
+            ? (userPreferencesState.aiProviderModelAnthropic || "claude-sonnet-4-20250514")
+            : (userPreferencesState.aiProviderModelOpenai || "gpt-4o");
+
           streamSender({
             type: "finish",
             conversationId,
@@ -380,7 +410,8 @@ const aiChatHandlerInjectable = getInjectable({
             usage: {
               inputTokens: usage?.inputTokens,
               outputTokens: usage?.outputTokens,
-              totalTokens: (usage?.inputTokens ?? 0) + (usage?.outputTokens ?? 0),
+              totalTokens: inputTokens + outputTokens,
+              costUsd: estimateCostUsd(modelId, inputTokens, outputTokens),
             },
           });
         } catch (error: unknown) {
@@ -448,6 +479,33 @@ function resolveApiVersion(kind: string): string {
   };
 
   return map[kind] || "v1";
+}
+
+/**
+ * Per-million-token pricing by model prefix. Rates in USD.
+ * Update when providers change pricing.
+ */
+const MODEL_PRICING: Record<string, { input: number; output: number }> = {
+  // Anthropic
+  "claude-opus-4":   { input: 15,  output: 75 },
+  "claude-sonnet-4": { input: 3,   output: 15 },
+  "claude-haiku-4":  { input: 0.8, output: 4 },
+  // OpenAI
+  "gpt-4o-mini":     { input: 0.15, output: 0.6 },
+  "gpt-4o":          { input: 2.5,  output: 10 },
+  "gpt-4-turbo":     { input: 10,   output: 30 },
+};
+
+function estimateCostUsd(modelId: string, inputTokens: number, outputTokens: number): number | undefined {
+  // Match longest prefix first (so "gpt-4o-mini" matches before "gpt-4o")
+  const keys = Object.keys(MODEL_PRICING).sort((a, b) => b.length - a.length);
+  const match = keys.find((prefix) => modelId.includes(prefix));
+
+  if (!match) return undefined;
+
+  const rates = MODEL_PRICING[match];
+
+  return (inputTokens * rates.input + outputTokens * rates.output) / 1_000_000;
 }
 
 /**

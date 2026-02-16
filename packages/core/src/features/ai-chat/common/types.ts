@@ -60,6 +60,7 @@ export interface AiToolResult {
  */
 export type AiChatStreamEvent =
   | { type: "text-delta"; conversationId: string; text: string }
+  | { type: "reasoning-delta"; conversationId: string; text: string }
   | { type: "tool-call"; conversationId: string; toolCallId: string; toolName: string; input: unknown }
   | { type: "tool-result"; conversationId: string; toolCallId: string; result: unknown; isError: boolean }
   | {
@@ -73,7 +74,7 @@ export type AiChatStreamEvent =
       type: "finish";
       conversationId: string;
       finishReason: string;
-      usage: { inputTokens?: number; outputTokens?: number; totalTokens?: number };
+      usage: { inputTokens?: number; outputTokens?: number; totalTokens?: number; costUsd?: number };
     }
   | { type: "error"; conversationId: string; message: string };
 

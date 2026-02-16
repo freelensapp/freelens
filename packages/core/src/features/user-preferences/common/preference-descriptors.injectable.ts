@@ -172,6 +172,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val || "gpt-4o",
         toStore: (val) => (val === "gpt-4o" ? undefined : val),
       }),
+      aiProviderThinkingEnabled: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
+      aiProviderThinkingBudget: getPreferenceDescriptor<number>({
+        fromStore: (val) => val || 10000,
+        toStore: (val) => (val === 10000 ? undefined : val),
+      }),
     } as const;
   },
 });

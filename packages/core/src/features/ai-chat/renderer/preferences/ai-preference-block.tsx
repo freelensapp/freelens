@@ -8,6 +8,7 @@ import "./ai-preference-block.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { Checkbox } from "../../../../renderer/components/checkbox";
 import { Input } from "../../../../renderer/components/input";
 import { SubTitle } from "../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../renderer/components/select";
@@ -39,6 +40,7 @@ const providerOptions = [
 const NonInjectedAiPreferenceBlock = observer(({ state }: Dependencies) => {
   const [anthropicKey, setAnthropicKey] = React.useState(state.aiProviderApiKeyAnthropic || "");
   const [openaiKey, setOpenaiKey] = React.useState(state.aiProviderApiKeyOpenai || "");
+  const [thinkingBudget, setThinkingBudget] = React.useState(String(state.aiProviderThinkingBudget || 10000));
 
   return (
     <div className="AiPreferenceBlock">
@@ -88,6 +90,40 @@ const NonInjectedAiPreferenceBlock = observer(({ state }: Dependencies) => {
           }}
           themeName="lens"
         />
+      </section>
+
+      <section>
+        <SubTitle title="Extended Thinking" />
+        <Checkbox
+          label="Enable extended thinking for Anthropic models"
+          value={state.aiProviderThinkingEnabled}
+          onChange={(checked) => {
+            state.aiProviderThinkingEnabled = checked;
+          }}
+        />
+        {state.aiProviderThinkingEnabled && (
+          <div className="AiPreferenceBlock__thinking-budget">
+            <SubTitle title="Thinking Budget (tokens)" />
+            <Input
+              theme="round-black"
+              placeholder="10000"
+              value={thinkingBudget}
+              onChange={(v) => setThinkingBudget(v)}
+              onBlur={() => {
+                const num = parseInt(thinkingBudget, 10);
+
+                if (!isNaN(num) && num >= 1024 && num <= 128000) {
+                  state.aiProviderThinkingBudget = num;
+                } else {
+                  setThinkingBudget(String(state.aiProviderThinkingBudget || 10000));
+                }
+              }}
+            />
+            <small className="hint">
+              Token budget for reasoning (1,024 – 128,000). Higher values allow deeper reasoning but cost more.
+            </small>
+          </div>
+        )}
       </section>
 
       <section>

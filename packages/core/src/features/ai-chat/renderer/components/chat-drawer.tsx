@@ -9,19 +9,19 @@ import { requestFromChannelInjectionToken, sendMessageToChannelInjectionToken } 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useCallback, useEffect, useRef } from "react";
-import { Drawer } from "../../../../renderer/components/drawer/drawer";
+
 import hostedClusterIdInjectable from "../../../../renderer/cluster-frame-context/hosted-cluster-id.injectable";
+import { Drawer } from "../../../../renderer/components/drawer/drawer";
+import type { UserPreferencesState } from "../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../user-preferences/common/state.injectable";
 import { aiChatCancelChannel, aiChatSendMessageChannel } from "../../common/channels";
+import type { AiChatRequest, AiChatRequestAck, AiToolResult } from "../../common/types";
+import type { ConversationStore } from "../stores/conversation-store.injectable";
 import conversationStoreInjectable from "../stores/conversation-store.injectable";
 import { ChatInput } from "./chat-input";
 import { ChatMessage } from "./chat-message";
 import { ChatOnboarding } from "./chat-onboarding";
 import { ProviderSelector } from "./provider-selector";
-
-import type { UserPreferencesState } from "../../../user-preferences/common/state.injectable";
-import type { AiChatRequest, AiChatRequestAck } from "../../common/types";
-import type { ConversationStore } from "../stores/conversation-store.injectable";
 
 interface Dependencies {
   conversationStore: ConversationStore;
@@ -126,17 +126,36 @@ const NonInjectedChatDrawer = observer(({
         ) : (
           <>
             <div className="AiChatDrawer__messages">
-              {conversationStore.messages.map((msg, idx) => (
-                <ChatMessage
-                  key={msg.id}
-                  message={msg}
-                  isStreaming={
-                    conversationStore.isStreaming
-                    && idx === conversationStore.messages.length - 1
-                    && msg.role === "assistant"
+              {conversationStore.messages.map((msg, idx) => {
+                if (msg.role === "tool") return null;
+                let resolvedToolResults: AiToolResult[] | undefined;
+
+                if (msg.role === "assistant" && msg.toolCalls?.length) {
+                  resolvedToolResults = [];
+                  for (let j = idx + 1; j < conversationStore.messages.length; j++) {
+                    const next = conversationStore.messages[j];
+
+                    if (next.role === "tool" && next.toolResults) {
+                      resolvedToolResults.push(...next.toolResults);
+                    } else {
+                      break;
+                    }
                   }
-                />
-              ))}
+                }
+
+                return (
+                  <ChatMessage
+                    key={msg.id}
+                    message={msg}
+                    toolResults={resolvedToolResults}
+                    isStreaming={
+                      conversationStore.isStreaming
+                      && msg.role === "assistant"
+                      && msg === conversationStore.lastAssistantMessage
+                    }
+                  />
+                );
+              })}
               <div ref={messagesEndRef} />
             </div>
             <ChatInput
