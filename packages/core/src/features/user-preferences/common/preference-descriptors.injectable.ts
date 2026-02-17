@@ -165,8 +165,8 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         toStore: (val) => (val === "anthropic" ? undefined : val),
       }),
       aiProviderModelAnthropic: getPreferenceDescriptor<string>({
-        fromStore: (val) => val || "claude-sonnet-4-20250514",
-        toStore: (val) => (val === "claude-sonnet-4-20250514" ? undefined : val),
+        fromStore: (val) => val || "claude-sonnet-4-5",
+        toStore: (val) => (val === "claude-sonnet-4-5" ? undefined : val),
       }),
       aiProviderModelOpenai: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "gpt-4o",
@@ -177,8 +177,8 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         toStore: (val) => (!val ? undefined : val),
       }),
       aiProviderThinkingBudget: getPreferenceDescriptor<number>({
-        fromStore: (val) => val || 10000,
-        toStore: (val) => (val === 10000 ? undefined : val),
+        fromStore: (val) => val || 1024,
+        toStore: (val) => (val === 1024 ? undefined : val),
       }),
     } as const;
   },

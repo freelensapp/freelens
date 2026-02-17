@@ -42,7 +42,7 @@ const aiProviderFactoryInjectable = getInjectable({
               apiKey: userPreferencesState.aiProviderApiKeyAnthropic,
             });
 
-            return provider(userPreferencesState.aiProviderModelAnthropic || "claude-sonnet-4-20250514");
+            return provider(userPreferencesState.aiProviderModelAnthropic || "claude-sonnet-4-5");
           }
 
           case "openai": {

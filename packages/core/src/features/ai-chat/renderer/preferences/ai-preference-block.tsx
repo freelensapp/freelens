@@ -40,7 +40,7 @@ const providerOptions = [
 const NonInjectedAiPreferenceBlock = observer(({ state }: Dependencies) => {
   const [anthropicKey, setAnthropicKey] = React.useState(state.aiProviderApiKeyAnthropic || "");
   const [openaiKey, setOpenaiKey] = React.useState(state.aiProviderApiKeyOpenai || "");
-  const [thinkingBudget, setThinkingBudget] = React.useState(String(state.aiProviderThinkingBudget || 10000));
+  const [thinkingBudget, setThinkingBudget] = React.useState(String(state.aiProviderThinkingBudget || 1024));
 
   return (
     <div className="AiPreferenceBlock">
@@ -106,7 +106,7 @@ const NonInjectedAiPreferenceBlock = observer(({ state }: Dependencies) => {
             <SubTitle title="Thinking Budget (tokens)" />
             <Input
               theme="round-black"
-              placeholder="10000"
+              placeholder="1024"
               value={thinkingBudget}
               onChange={(v) => setThinkingBudget(v)}
               onBlur={() => {
@@ -115,7 +115,7 @@ const NonInjectedAiPreferenceBlock = observer(({ state }: Dependencies) => {
                 if (!isNaN(num) && num >= 1024 && num <= 128000) {
                   state.aiProviderThinkingBudget = num;
                 } else {
-                  setThinkingBudget(String(state.aiProviderThinkingBudget || 10000));
+                  setThinkingBudget(String(state.aiProviderThinkingBudget || 1024));
                 }
               }}
             />

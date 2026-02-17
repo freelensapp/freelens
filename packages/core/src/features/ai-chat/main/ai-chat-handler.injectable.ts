@@ -8,11 +8,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { stepCountIs, streamText } from "ai";
 import executeOnClusterHandlerInjectable from "../../cluster/execute/main/execute-handler.injectable";
 import getClusterByIdInjectable from "../../cluster/storage/common/get-by-id.injectable";
+import userPreferencesStateInjectable from "../../user-preferences/common/state.injectable";
 import aiChatStreamSenderInjectable from "./ai-chat-stream-sender.injectable";
 import aiProviderFactoryInjectable from "./ai-provider-factory.injectable";
 import { createChatTools } from "./tools/create-chat-tools";
 
-import type { AiChatRequest, AiChatRequestAck, AiChatStreamEvent } from "../common/types";
+import type { AiChatRequest, AiChatRequestAck } from "../common/types";
 
 type ConversationTurn = {
   role: "user" | "assistant";
@@ -89,13 +90,27 @@ function buildSystemPrompt(clusterName: string): string {
   ].join("\n");
 }
 
-function sendFinish(sendStreamEvent: (event: AiChatStreamEvent) => void, conversationId: string, finishReason: string): void {
-  sendStreamEvent({
-    type: "finish",
-    conversationId,
-    finishReason,
-    usage: {},
-  });
+/**
+ * Per-million-token pricing by model prefix. Rates in USD.
+ */
+const MODEL_PRICING: Record<string, { input: number; output: number }> = {
+  "claude-opus-4-6":   { input: 5,  output: 25 },
+  "claude-sonnet-4-5": { input: 3,  output: 15 },
+  "claude-haiku-4-5":  { input: 1,  output: 5 },
+  "gpt-4o-mini":       { input: 0.15, output: 0.6 },
+  "gpt-4o":            { input: 2.5,  output: 10 },
+  "gpt-4-turbo":       { input: 10,   output: 30 },
+};
+
+function estimateCostUsd(modelId: string, inputTokens: number, outputTokens: number): number | undefined {
+  const keys = Object.keys(MODEL_PRICING).sort((a, b) => b.length - a.length);
+  const match = keys.find((prefix) => modelId.includes(prefix));
+
+  if (!match) return undefined;
+
+  const rates = MODEL_PRICING[match];
+
+  return (inputTokens * rates.input + outputTokens * rates.output) / 1_000_000;
 }
 
 export function cancelStream(conversationId: string): boolean {
@@ -120,6 +135,7 @@ const aiChatHandlerInjectable = getInjectable({
     const sendStreamEvent = di.inject(aiChatStreamSenderInjectable);
     const executeOnCluster = di.inject(executeOnClusterHandlerInjectable);
     const getClusterById = di.inject(getClusterByIdInjectable);
+    const userPreferences = di.inject(userPreferencesStateInjectable);
 
     return async (request: AiChatRequest): Promise<AiChatRequestAck> => {
       const { conversationId, clusterId, providerId, userMessage } = request;
@@ -179,6 +195,8 @@ const aiChatHandlerInjectable = getInjectable({
             clusterName,
             executeOnCluster,
           });
+          const useThinking = providerId === "anthropic" && userPreferences.aiProviderThinkingEnabled;
+
           const streamResult = streamText({
             model,
             system: buildSystemPrompt(clusterName),
@@ -186,6 +204,16 @@ const aiChatHandlerInjectable = getInjectable({
             tools,
             stopWhen: stepCountIs(5),
             abortSignal: controller.signal,
+            ...(useThinking && {
+              providerOptions: {
+                anthropic: {
+                  thinking: {
+                    type: "enabled",
+                    budgetTokens: userPreferences.aiProviderThinkingBudget || 1024,
+                  },
+                },
+              },
+            }),
           });
 
           for await (const chunk of streamResult.fullStream as AsyncIterable<StreamChunk>) {
@@ -272,13 +300,32 @@ const aiChatHandlerInjectable = getInjectable({
           }
 
           if (controller.signal.aborted) {
-            sendFinish(sendStreamEvent, conversationId, "cancelled");
+            sendStreamEvent({ type: "finish", conversationId, finishReason: "cancelled", usage: {} });
           } else {
-            sendFinish(sendStreamEvent, conversationId, "stop");
+            const usageData = await (streamResult as { usage?: PromiseLike<{ inputTokens?: number; outputTokens?: number }> }).usage;
+            const finishReason = await (streamResult as { finishReason?: PromiseLike<string> }).finishReason;
+            const inputTokens = usageData?.inputTokens ?? 0;
+            const outputTokens = usageData?.outputTokens ?? 0;
+
+            const modelId = providerId === "anthropic"
+              ? (userPreferences.aiProviderModelAnthropic || "claude-sonnet-4-5")
+              : (userPreferences.aiProviderModelOpenai || "gpt-4o");
+
+            sendStreamEvent({
+              type: "finish",
+              conversationId,
+              finishReason: finishReason ?? "stop",
+              usage: {
+                inputTokens: inputTokens || undefined,
+                outputTokens: outputTokens || undefined,
+                totalTokens: (inputTokens + outputTokens) || undefined,
+                costUsd: estimateCostUsd(modelId, inputTokens, outputTokens),
+              },
+            });
           }
         } catch (error) {
           if (controller.signal.aborted) {
-            sendFinish(sendStreamEvent, conversationId, "cancelled");
+            sendStreamEvent({ type: "finish", conversationId, finishReason: "cancelled", usage: {} });
           } else {
             const message = toErrorMessage(error);
 
