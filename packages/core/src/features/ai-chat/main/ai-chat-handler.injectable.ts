@@ -6,7 +6,7 @@
 import { logErrorInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { AssistantModelMessage, ModelMessage, ToolModelMessage, UserModelMessage } from "ai";
-import { stepCountIs, streamText, tool } from "ai";
+import { stepCountIs, streamText } from "ai";
 
 import executeOnClusterHandlerInjectable from "../../cluster/execute/main/execute-handler.injectable";
 import getClusterByIdInjectable from "../../cluster/storage/common/get-by-id.injectable";
@@ -14,10 +14,7 @@ import userPreferencesStateInjectable from "../../user-preferences/common/state.
 import type { AiChatMessage, AiChatRequest, AiChatRequestAck } from "../common/types";
 import aiChatStreamSenderInjectable from "./ai-chat-stream-sender.injectable";
 import aiProviderFactoryInjectable from "./ai-provider-factory.injectable";
-import getClusterInfoToolInjectable from "./tools/get-cluster-info.injectable";
-import getEventsToolInjectable from "./tools/get-events.injectable";
-import getResourceToolInjectable from "./tools/get-resource.injectable";
-import listResourcesToolInjectable from "./tools/list-resources.injectable";
+import { createChatTools } from "./tools/create-chat-tools";
 
 /**
  * Active streams tracked by conversationId for cancellation support.
@@ -43,11 +40,9 @@ function truncateMessages(messages: AiChatMessage[]): AiChatMessage[] {
     return messages;
   }
 
-  // Keep first message + most recent messages
   const first = messages[0];
   const recent = messages.slice(-MAX_RECENT_MESSAGES_TO_KEEP);
 
-  // If the first message is already in the recent slice, just return recent
   if (recent[0] === first) {
     return recent;
   }
@@ -84,18 +79,11 @@ const aiChatHandlerInjectable = getInjectable({
     const getClusterById = di.inject(getClusterByIdInjectable);
     const logError = di.inject(logErrorInjectionToken);
     const userPreferencesState = di.inject(userPreferencesStateInjectable);
-
-    // Get tool definitions — we'll wrap them to inject the clusterId
-    const listResourcesTool = di.inject(listResourcesToolInjectable);
-    const getResourceTool = di.inject(getResourceToolInjectable);
-    const getClusterInfoTool = di.inject(getClusterInfoToolInjectable);
-    const getEventsTool = di.inject(getEventsToolInjectable);
     const executeOnCluster = di.inject(executeOnClusterHandlerInjectable);
 
     return async (request: AiChatRequest): Promise<AiChatRequestAck> => {
       const { conversationId, clusterId, providerId, messages } = request;
 
-      // Validate API key
       if (!providerFactory.hasApiKey(providerId)) {
         return {
           accepted: false,
@@ -103,7 +91,6 @@ const aiChatHandlerInjectable = getInjectable({
         };
       }
 
-      // Validate cluster
       const cluster = getClusterById(clusterId);
 
       if (!cluster) {
@@ -122,7 +109,6 @@ const aiChatHandlerInjectable = getInjectable({
 
       const clusterName = cluster.contextName.get();
 
-      // Create abort controller for cancellation
       const abortController = new AbortController();
 
       activeStreams.set(conversationId, abortController);
@@ -131,193 +117,13 @@ const aiChatHandlerInjectable = getInjectable({
       void (async () => {
         try {
           const model = providerFactory.createModel(providerId);
-
-          // Create tools with clusterId bound — each tool wrapper builds
-          // the correct request with the real clusterId from this conversation.
-          const tools = {
-            listResources: tool({
-              description: listResourcesTool.description,
-              inputSchema: listResourcesTool.parameters,
-              execute: async (input: any) => {
-                const resolvedApiVersion = input.apiVersion || resolveApiVersion(input.kind);
-                const response = await executeOnCluster({
-                  clusterId,
-                  operation: "list",
-                  resource: {
-                    apiVersion: resolvedApiVersion,
-                    kind: input.kind,
-                    namespace: input.namespace,
-                    labelSelector: input.labelSelector,
-                  },
-                });
-
-                if (!response.success) {
-                  return { error: response.error?.message ?? "Failed to list resources" };
-                }
-
-                const items = ((response.data as any)?.items as any[]) ?? [];
-
-                return {
-                  kind: input.kind,
-                  namespace: input.namespace ?? "all namespaces",
-                  count: items.length,
-                  items: items.map((item: any) => ({
-                    name: item?.metadata?.name,
-                    namespace: item?.metadata?.namespace,
-                    status: item?.status?.phase ?? item?.status?.conditions?.[0]?.type,
-                    createdAt: item?.metadata?.creationTimestamp,
-                    labels: item?.metadata?.labels,
-                  })),
-                };
-              },
-            }),
-
-            getResource: tool({
-              description: getResourceTool.description,
-              inputSchema: getResourceTool.parameters,
-              execute: async (input: any) => {
-                const resolvedApiVersion = input.apiVersion || resolveApiVersion(input.kind);
-                const response = await executeOnCluster({
-                  clusterId,
-                  operation: "get",
-                  resource: {
-                    apiVersion: resolvedApiVersion,
-                    kind: input.kind,
-                    name: input.name,
-                    namespace: input.namespace,
-                  },
-                });
-
-                if (!response.success) {
-                  if (response.error?.code === 404) {
-                    return {
-                      error: `Resource ${input.kind}/${input.name} not found${input.namespace ? ` in namespace ${input.namespace}` : ""}`,
-                    };
-                  }
-
-                  return { error: response.error?.message ?? "Failed to get resource" };
-                }
-
-                const resource = response.data as any;
-
-                if (input.kind === "Secret") {
-                  return {
-                    kind: input.kind,
-                    name: resource?.metadata?.name,
-                    namespace: resource?.metadata?.namespace,
-                    type: resource?.type,
-                    labels: resource?.metadata?.labels,
-                    dataKeys: resource?.data ? Object.keys(resource.data) : [],
-                    note: "Secret values are redacted for security",
-                  };
-                }
-
-                return resource;
-              },
-            }),
-
-            getClusterInfo: tool({
-              description: getClusterInfoTool.description,
-              inputSchema: getClusterInfoTool.parameters,
-              execute: async () => {
-                const [nodesRes, nsRes] = await Promise.all([
-                  executeOnCluster({
-                    clusterId,
-                    operation: "list",
-                    resource: { apiVersion: "v1", kind: "Node" },
-                  }),
-                  executeOnCluster({
-                    clusterId,
-                    operation: "list",
-                    resource: { apiVersion: "v1", kind: "Namespace" },
-                  }),
-                ]);
-
-                const nodes = ((nodesRes.data as any)?.items as any[]) ?? [];
-                const namespaces = ((nsRes.data as any)?.items as any[]) ?? [];
-
-                return {
-                  clusterName,
-                  nodeCount: nodes.length,
-                  nodes: nodes.map((n: any) => ({
-                    name: n?.metadata?.name,
-                    status:
-                      n?.status?.conditions?.find((c: any) => c.type === "Ready")?.status === "True"
-                        ? "Ready"
-                        : "NotReady",
-                    kubeletVersion: n?.status?.nodeInfo?.kubeletVersion,
-                  })),
-                  namespaceCount: namespaces.length,
-                  namespaces: namespaces.map((ns: any) => ns?.metadata?.name),
-                };
-              },
-            }),
-
-            getEvents: tool({
-              description: getEventsTool.description,
-              inputSchema: getEventsTool.parameters,
-              execute: async (input: any) => {
-                const fieldSelectors: string[] = [];
-
-                if (input.involvedObjectName) {
-                  fieldSelectors.push(`involvedObject.name=${input.involvedObjectName}`);
-                }
-
-                if (input.involvedObjectKind) {
-                  fieldSelectors.push(`involvedObject.kind=${input.involvedObjectKind}`);
-                }
-
-                const response = await executeOnCluster({
-                  clusterId,
-                  operation: "list",
-                  resource: {
-                    apiVersion: "v1",
-                    kind: "Event",
-                    namespace: input.namespace,
-                    fieldSelector: fieldSelectors.length > 0 ? fieldSelectors.join(",") : undefined,
-                  },
-                });
-
-                if (!response.success) {
-                  return { error: response.error?.message ?? "Failed to get events" };
-                }
-
-                const events = ((response.data as any)?.items as any[]) ?? [];
-                const sorted = events
-                  .sort((a: any, b: any) => {
-                    const tA = new Date(a?.lastTimestamp ?? a?.metadata?.creationTimestamp ?? 0).getTime();
-                    const tB = new Date(b?.lastTimestamp ?? b?.metadata?.creationTimestamp ?? 0).getTime();
-
-                    return tB - tA;
-                  })
-                  .slice(0, 50);
-
-                return {
-                  count: events.length,
-                  events: sorted.map((e: any) => ({
-                    type: e?.type,
-                    reason: e?.reason,
-                    message: e?.message,
-                    involvedObject: `${e?.involvedObject?.kind}/${e?.involvedObject?.name}`,
-                    count: e?.count,
-                    lastTimestamp: e?.lastTimestamp,
-                  })),
-                };
-              },
-            }),
-          };
+          const tools = createChatTools({ clusterId, clusterName, executeOnCluster });
 
           const systemPrompt = `${SYSTEM_PROMPT}\n\nYou are connected to the cluster "${clusterName}".`;
 
-          // Truncate conversation history to stay within context budget
           const truncatedMessages = truncateMessages(messages);
-
-          // Convert our flat message format into the ai-sdk CoreMessage format.
-          // Assistant messages with tool calls need structured content parts,
-          // and tool result messages need their own structured format.
           const sdkMessages = convertToSdkMessages(truncatedMessages);
 
-          // Build provider-specific options (e.g. Anthropic thinking)
           const useThinking = providerId === "anthropic" && userPreferencesState.aiProviderThinkingEnabled;
 
           const result = streamText({
@@ -355,7 +161,6 @@ const aiChatHandlerInjectable = getInjectable({
 
               case "reasoning-start":
               case "reasoning-end":
-                // Start/end markers handled implicitly — only deltas carry content
                 break;
 
               case "tool-call":
@@ -387,7 +192,6 @@ const aiChatHandlerInjectable = getInjectable({
                 break;
 
               case "finish":
-                // Will be sent after the loop
                 break;
             }
           }
@@ -417,7 +221,6 @@ const aiChatHandlerInjectable = getInjectable({
         } catch (error: unknown) {
           const errorMessage = error instanceof Error ? error.message : String(error);
 
-          // Classify common errors
           let userMessage = errorMessage;
 
           if (errorMessage.includes("401") || errorMessage.includes("invalid_api_key") || errorMessage.includes("Unauthorized")) {
@@ -425,7 +228,6 @@ const aiChatHandlerInjectable = getInjectable({
           } else if (errorMessage.includes("429") || errorMessage.includes("rate_limit")) {
             userMessage = `Rate limit exceeded for ${providerId}. Please wait a moment and try again.`;
           } else if (errorMessage.includes("abort") || errorMessage.includes("cancel")) {
-            // Don't send error for user-initiated cancellation
             streamSender({
               type: "finish",
               conversationId,
@@ -470,26 +272,15 @@ export function cancelStream(conversationId: string): boolean {
   return false;
 }
 
-function resolveApiVersion(kind: string): string {
-  const map: Record<string, string> = {
-    Pod: "v1", Service: "v1", Node: "v1", Namespace: "v1",
-    ConfigMap: "v1", Secret: "v1", Event: "v1",
-    Deployment: "apps/v1", StatefulSet: "apps/v1", DaemonSet: "apps/v1", ReplicaSet: "apps/v1",
-    Ingress: "networking.k8s.io/v1", Job: "batch/v1", CronJob: "batch/v1",
-  };
-
-  return map[kind] || "v1";
-}
-
 /**
  * Per-million-token pricing by model prefix. Rates in USD.
  * Update when providers change pricing.
  */
 const MODEL_PRICING: Record<string, { input: number; output: number }> = {
   // Anthropic
-  "claude-opus-4":   { input: 15,  output: 75 },
-  "claude-sonnet-4": { input: 3,   output: 15 },
-  "claude-haiku-4":  { input: 0.8, output: 4 },
+  "claude-opus-4-6":   { input: 5,  output: 25 },
+  "claude-sonnet-4-5": { input: 3,   output: 15 },
+  "claude-haiku-4-5":  { input: 1, output: 5 },
   // OpenAI
   "gpt-4o-mini":     { input: 0.15, output: 0.6 },
   "gpt-4o":          { input: 2.5,  output: 10 },
@@ -497,7 +288,6 @@ const MODEL_PRICING: Record<string, { input: number; output: number }> = {
 };
 
 function estimateCostUsd(modelId: string, inputTokens: number, outputTokens: number): number | undefined {
-  // Match longest prefix first (so "gpt-4o-mini" matches before "gpt-4o")
   const keys = Object.keys(MODEL_PRICING).sort((a, b) => b.length - a.length);
   const match = keys.find((prefix) => modelId.includes(prefix));
 
@@ -528,7 +318,6 @@ function convertToSdkMessages(messages: AiChatMessage[]): ModelMessage[] {
       const hasToolCalls = msg.toolCalls && msg.toolCalls.length > 0;
 
       if (hasToolCalls) {
-        // Build structured content array for assistant messages with tool calls
         const contentParts: AssistantModelMessage["content"] = [];
 
         if (msg.content) {
@@ -546,10 +335,8 @@ function convertToSdkMessages(messages: AiChatMessage[]): ModelMessage[] {
 
         result.push({ role: "assistant", content: contentParts } satisfies AssistantModelMessage);
       } else if (msg.content) {
-        // Simple text-only assistant message
         result.push({ role: "assistant", content: msg.content } satisfies AssistantModelMessage);
       }
-      // Skip assistant messages with no content and no tool calls
     } else if (msg.role === "tool") {
       if (msg.toolResults && msg.toolResults.length > 0) {
         const toolResultParts = msg.toolResults.map((tr) => ({
@@ -559,7 +346,6 @@ function convertToSdkMessages(messages: AiChatMessage[]): ModelMessage[] {
           output: { type: "json" as const, value: tr.result },
         }));
 
-        // Cast needed because ToolResultOutput expects JSONValue, but our result is unknown
         result.push({ role: "tool", content: toolResultParts } as ToolModelMessage);
       }
     }
