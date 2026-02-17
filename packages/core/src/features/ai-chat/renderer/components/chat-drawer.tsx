@@ -8,163 +8,201 @@ import "./chat-drawer.scss";
 import { requestFromChannelInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useCallback, useEffect, useRef } from "react";
-
-import hostedClusterIdInjectable from "../../../../renderer/cluster-frame-context/hosted-cluster-id.injectable";
+import React from "react";
+import hostedClusterInjectable from "../../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { Drawer } from "../../../../renderer/components/drawer/drawer";
-import type { UserPreferencesState } from "../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../user-preferences/common/state.injectable";
 import { aiChatCancelChannel, aiChatSendMessageChannel } from "../../common/channels";
-import type { AiChatRequest, AiChatRequestAck, AiToolResult } from "../../common/types";
-import type { ConversationStore } from "../stores/conversation-store.injectable";
-import conversationStoreInjectable from "../stores/conversation-store.injectable";
 import { ChatInput } from "./chat-input";
 import { ChatMessage } from "./chat-message";
 import { ChatOnboarding } from "./chat-onboarding";
 import { ProviderSelector } from "./provider-selector";
+import conversationStoreInjectable from "../stores/conversation-store.injectable";
+
+import type { Cluster } from "../../../../common/cluster/cluster";
+import type { UserPreferencesState } from "../../../user-preferences/common/state.injectable";
+import type { AiChatRequest, AiChatRequestAck, AiProviderId } from "../../common/types";
+import type { ConversationStore } from "../stores/conversation-store.injectable";
+
+type RequestFromChannel = <Request, Response>(channel: unknown, request: Request) => Promise<Response>;
+type SendMessageToChannel = <Message>(channel: unknown, message: Message) => void;
 
 interface Dependencies {
   conversationStore: ConversationStore;
-  hostedClusterId: string | undefined;
-  requestFromChannel: <Req, Res>(channel: { id: string; _requestSignature?: Req; _responseSignature?: Res }, req: Req) => Promise<Res>;
-  sendMessageToChannel: <Msg>(channel: { id: string; _messageSignature?: Msg }, msg: Msg) => void;
+  hostedCluster: Cluster | undefined;
   userPreferences: UserPreferencesState;
+  requestFromChannel: RequestFromChannel;
+  sendMessageToChannel: SendMessageToChannel;
+}
+
+function hasProviderKey(userPreferences: UserPreferencesState, providerId: AiProviderId): boolean {
+  if (providerId === "anthropic") {
+    return Boolean(userPreferences.aiProviderApiKeyAnthropic);
+  }
+
+  return Boolean(userPreferences.aiProviderApiKeyOpenai);
+}
+
+function pickProvider(userPreferences: UserPreferencesState, preferred: AiProviderId): AiProviderId | undefined {
+  if (hasProviderKey(userPreferences, preferred)) {
+    return preferred;
+  }
+
+  if (hasProviderKey(userPreferences, "anthropic")) {
+    return "anthropic";
+  }
+
+  if (hasProviderKey(userPreferences, "openai")) {
+    return "openai";
+  }
+
+  return undefined;
 }
 
 const NonInjectedChatDrawer = observer(({
   conversationStore,
-  hostedClusterId,
+  hostedCluster,
+  userPreferences,
   requestFromChannel,
   sendMessageToChannel,
-  userPreferences,
 }: Dependencies) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesRef = React.useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages appear
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversationStore.messages.length, conversationStore.lastAssistantMessage?.content]);
-
-  // Set the cluster context when the hosted cluster changes
-  useEffect(() => {
-    if (hostedClusterId) {
-      conversationStore.setCluster(hostedClusterId, hostedClusterId);
+  React.useEffect(() => {
+    if (!hostedCluster) {
+      return;
     }
-  }, [hostedClusterId, conversationStore]);
 
-  // Sync provider from preferences
-  useEffect(() => {
-    const provider = userPreferences.aiProviderActiveProvider;
+    conversationStore.setCluster(hostedCluster.id, hostedCluster.name.get());
+  }, [conversationStore, hostedCluster]);
 
-    if (provider === "anthropic" || provider === "openai") {
-      conversationStore.setProvider(provider);
+  React.useEffect(() => {
+    const preferred = userPreferences.aiProviderActiveProvider as AiProviderId;
+    const selected = pickProvider(userPreferences, preferred) ?? "anthropic";
+
+    conversationStore.setProvider(selected);
+  }, [conversationStore, userPreferences.aiProviderActiveProvider, userPreferences.aiProviderApiKeyAnthropic, userPreferences.aiProviderApiKeyOpenai]);
+
+  React.useEffect(() => {
+    const elem = messagesRef.current;
+
+    if (!elem) {
+      return;
     }
-  }, [userPreferences.aiProviderActiveProvider, conversationStore]);
 
-  const handleSend = useCallback(async (text: string) => {
-    conversationStore.addUserMessage(text);
+    elem.scrollTop = elem.scrollHeight;
+  }, [conversationStore.messages.length, conversationStore.isStreaming]);
 
-    // Ensure we have a conversationId
+  const selectedProvider = conversationStore.providerId;
+  const selectedProviderHasKey = hasProviderKey(userPreferences, selectedProvider);
+  const toolResults = conversationStore.messages.flatMap((message) => message.toolResults ?? []);
+  const lastAssistantMessage = conversationStore.lastAssistantMessage;
+  const visibleMessages = conversationStore.messages.filter((message) => {
+    console.log("message", JSON.stringify(message));
+    if (message.role === "tool") {
+      return false;
+    }
+
+    if (message.role === "user") {
+      return true;
+    }
+
+    const hasRenderableAssistantState = Boolean(
+      message.content.trim()
+      || message.reasoning.trim()
+      || message.isError
+      || message.pendingConfirmation
+      || message.toolCalls?.length,
+    );
+    const isCurrentStreamingAssistant = conversationStore.isStreaming && message.id === lastAssistantMessage?.id;
+
+    return hasRenderableAssistantState || isCurrentStreamingAssistant;
+  });
+
+  const sendMessage = React.useCallback(async (message: string) => {
+    if (!hostedCluster) {
+      conversationStore.addErrorMessage("Cluster context is not available.");
+      return;
+    }
+
+    const providerId = pickProvider(userPreferences, conversationStore.providerId);
+
+    if (!providerId) {
+      conversationStore.addErrorMessage("No AI provider API key configured. Open AI Assistant preferences to continue.");
+      return;
+    }
+
     if (!conversationStore.conversationId) {
       conversationStore.newConversationId();
     }
 
-    // Start assistant message placeholder
+    conversationStore.setProvider(providerId);
+    conversationStore.addUserMessage(message);
     conversationStore.startAssistantMessage();
 
-    const request: AiChatRequest = {
+    const payload: AiChatRequest = {
       conversationId: conversationStore.conversationId,
-      clusterId: conversationStore.clusterId,
-      providerId: conversationStore.providerId,
-      messages: conversationStore.messagesForRequest,
+      clusterId: hostedCluster.id,
+      providerId,
+      userMessage: message,
     };
+    const ack = await requestFromChannel<AiChatRequest, AiChatRequestAck>(aiChatSendMessageChannel, payload);
 
-    try {
-      const ack: AiChatRequestAck = await requestFromChannel(aiChatSendMessageChannel, request);
-
-      if (!ack.accepted) {
-        conversationStore.finishStreaming();
-        conversationStore.addErrorMessage(ack.error || "Request was not accepted.");
-      }
-    } catch (error: unknown) {
-      conversationStore.finishStreaming();
-      conversationStore.addErrorMessage(
-        error instanceof Error ? error.message : "Failed to send message.",
-      );
+    if (!ack.accepted) {
+      conversationStore.addErrorMessage(ack.error ?? "Failed to send message.");
     }
-  }, [conversationStore, requestFromChannel]);
+  }, [conversationStore, hostedCluster, requestFromChannel, userPreferences]);
 
-  const handleCancel = useCallback(() => {
-    if (conversationStore.isStreaming && conversationStore.conversationId) {
-      sendMessageToChannel(aiChatCancelChannel, { conversationId: conversationStore.conversationId });
+  const cancelStreaming = React.useCallback(() => {
+    if (!conversationStore.conversationId || !conversationStore.isStreaming) {
+      return;
     }
+
+    sendMessageToChannel(aiChatCancelChannel, { conversationId: conversationStore.conversationId });
+    conversationStore.finishStreaming();
   }, [conversationStore, sendMessageToChannel]);
-
-  const handleClose = useCallback(() => {
-    conversationStore.setDrawerOpen(false);
-    handleCancel();
-  }, [conversationStore, handleCancel]);
-
-  const hasApiKey = Boolean(
-    conversationStore.providerId === "anthropic"
-      ? userPreferences.aiProviderApiKeyAnthropic
-      : userPreferences.aiProviderApiKeyOpenai,
-  );
 
   return (
     <Drawer
       open={conversationStore.isDrawerOpen}
       title="AI Chat"
       position="right"
-      onClose={handleClose}
+      animation="slide-right"
+      className="AiChatDrawer"
       toolbar={<ProviderSelector />}
+      onClose={() => conversationStore.setDrawerOpen(false)}
       data-testid="ai-chat-drawer"
+      testIdForClose="ai-chat-drawer-close"
     >
       <div className="AiChatDrawer">
-        {!hasApiKey ? (
-          <ChatOnboarding providerId={conversationStore.providerId} />
-        ) : (
-          <>
-            <div className="AiChatDrawer__messages">
-              {conversationStore.messages.map((msg, idx) => {
-                if (msg.role === "tool") return null;
-                let resolvedToolResults: AiToolResult[] | undefined;
-
-                if (msg.role === "assistant" && msg.toolCalls?.length) {
-                  resolvedToolResults = [];
-                  for (let j = idx + 1; j < conversationStore.messages.length; j++) {
-                    const next = conversationStore.messages[j];
-
-                    if (next.role === "tool" && next.toolResults) {
-                      resolvedToolResults.push(...next.toolResults);
-                    } else {
-                      break;
-                    }
-                  }
-                }
-
-                return (
-                  <ChatMessage
-                    key={msg.id}
-                    message={msg}
-                    toolResults={resolvedToolResults}
-                    isStreaming={
-                      conversationStore.isStreaming
-                      && msg.role === "assistant"
-                      && msg === conversationStore.lastAssistantMessage
-                    }
-                  />
-                );
-              })}
-              <div ref={messagesEndRef} />
+        <div className="AiChatDrawer__messages" ref={messagesRef}>
+          {!selectedProviderHasKey ? (
+            <ChatOnboarding providerId={selectedProvider} />
+          ) : visibleMessages.length === 0 ? (
+            <div className="empty flex column gaps align-center justify-center">
+              <h3>Ask anything about this cluster</h3>
+              <p>Try "show failed pods" or "summarize recent warning events".</p>
             </div>
-            <ChatInput
-              onSend={handleSend}
-              onCancel={handleCancel}
-              isStreaming={conversationStore.isStreaming}
-            />
-          </>
-        )}
+          ) : (
+            visibleMessages.map((message) => (
+              <ChatMessage
+                key={message.id}
+                message={message}
+                isStreaming={conversationStore.isStreaming && message.id === lastAssistantMessage?.id}
+                toolResults={toolResults}
+              />
+            ))
+          )}
+        </div>
+
+        <ChatInput
+          onSend={(message) => {
+            void sendMessage(message);
+          }}
+          onCancel={cancelStreaming}
+          isStreaming={conversationStore.isStreaming}
+          disabled={!hostedCluster || !selectedProviderHasKey}
+        />
       </div>
     </Drawer>
   );
@@ -173,9 +211,9 @@ const NonInjectedChatDrawer = observer(({
 export const ChatDrawer = withInjectables<Dependencies>(NonInjectedChatDrawer, {
   getProps: (di) => ({
     conversationStore: di.inject(conversationStoreInjectable),
-    hostedClusterId: di.inject(hostedClusterIdInjectable),
-    requestFromChannel: di.inject(requestFromChannelInjectionToken),
-    sendMessageToChannel: di.inject(sendMessageToChannelInjectionToken),
+    hostedCluster: di.inject(hostedClusterInjectable),
     userPreferences: di.inject(userPreferencesStateInjectable),
+    requestFromChannel: di.inject(requestFromChannelInjectionToken) as RequestFromChannel,
+    sendMessageToChannel: di.inject(sendMessageToChannelInjectionToken) as SendMessageToChannel,
   }),
 });

@@ -3,91 +3,131 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { logErrorInjectionToken } from "@freelensapp/logger";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { AssistantModelMessage, ModelMessage, ToolModelMessage, UserModelMessage } from "ai";
 import { stepCountIs, streamText } from "ai";
-
 import executeOnClusterHandlerInjectable from "../../cluster/execute/main/execute-handler.injectable";
 import getClusterByIdInjectable from "../../cluster/storage/common/get-by-id.injectable";
-import userPreferencesStateInjectable from "../../user-preferences/common/state.injectable";
-import type { AiChatMessage, AiChatRequest, AiChatRequestAck } from "../common/types";
 import aiChatStreamSenderInjectable from "./ai-chat-stream-sender.injectable";
 import aiProviderFactoryInjectable from "./ai-provider-factory.injectable";
 import { createChatTools } from "./tools/create-chat-tools";
 
-/**
- * Active streams tracked by conversationId for cancellation support.
- */
-const activeStreams = new Map<string, AbortController>();
+import type { AiChatRequest, AiChatRequestAck, AiChatStreamEvent } from "../common/types";
 
-export type AiChatHandler = (request: AiChatRequest) => Promise<AiChatRequestAck>;
+type ConversationTurn = {
+  role: "user" | "assistant";
+  content: string;
+};
 
-/**
- * Rough token budget for context window management.
- * We keep the most recent messages and trim older ones to stay within budget.
- * Using conservative estimates: ~4 chars per token.
- */
-const MAX_CONTEXT_MESSAGES = 50;
-const MAX_RECENT_MESSAGES_TO_KEEP = 20;
+type StreamChunk = {
+  type?: unknown;
+  [key: string]: unknown;
+};
 
-/**
- * Truncate conversation history to fit within context budget.
- * Preserves the first user message (for context) and the most recent N messages.
- */
-function truncateMessages(messages: AiChatMessage[]): AiChatMessage[] {
-  if (messages.length <= MAX_CONTEXT_MESSAGES) {
-    return messages;
+const activeStreamsByConversationId = new Map<string, AbortController>();
+const conversationHistoryById = new Map<string, ConversationTurn[]>();
+
+function toErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) {
+    return error.message;
   }
 
-  const first = messages[0];
-  const recent = messages.slice(-MAX_RECENT_MESSAGES_TO_KEEP);
-
-  if (recent[0] === first) {
-    return recent;
+  if (typeof error === "string") {
+    return error;
   }
 
-  return [first, ...recent];
+  return "Failed to process AI response.";
 }
 
-const SYSTEM_PROMPT = `You are an AI assistant integrated into Freelens, a Kubernetes cluster management application.
-You have access to the currently selected Kubernetes cluster and can query its state using the tools provided.
+function getConversationHistory(conversationId: string): ConversationTurn[] {
+  const existing = conversationHistoryById.get(conversationId);
 
-IMPORTANT RULES:
-- ALWAYS use the provided tools to fetch data. NEVER fabricate or guess resource counts, names, or statuses.
-- If a tool call fails, report the error to the user clearly.
-- Format responses in Markdown for readability.
-- For Secrets, you can only see metadata (name, namespace, keys) — never the actual secret values.
-- If the user asks about something you cannot determine from the available tools, say so honestly.
-- Be concise but thorough. Users are Kubernetes professionals who value accurate data.
+  if (existing) {
+    return existing;
+  }
 
-FORMATTING RULES:
-- Use **bold** for emphasis on key values (counts, names, statuses).
-- Use tables for structured data, but limit tables to 15 rows maximum. If there are more items, show the first 15 and add a summary line like "... and 29 more".
-- Use bullet lists for short enumerations (under 8 items).
-- Use headings (### level) sparingly to separate distinct sections in longer responses.
-- Use inline \`code\` for resource names, namespaces, and technical identifiers.
-- Keep responses compact — avoid repeating information the user already knows.
-- Do not use emojis.`;
+  const created: ConversationTurn[] = [];
+
+  conversationHistoryById.set(conversationId, created);
+
+  return created;
+}
+
+function trimConversation(history: ConversationTurn[], maxTurns = 20): void {
+  if (history.length <= maxTurns) {
+    return;
+  }
+
+  history.splice(0, history.length - maxTurns);
+}
+
+function readString(value: unknown): string | undefined {
+  return typeof value === "string" && value.length > 0
+    ? value
+    : undefined;
+}
+
+function pickChunkText(chunk: StreamChunk): string | undefined {
+  return readString(chunk.text) ?? readString(chunk.textDelta);
+}
+
+function pickToolResult(chunk: StreamChunk): unknown {
+  if (typeof chunk.output !== "undefined") {
+    return chunk.output;
+  }
+
+  return chunk.result;
+}
+
+function buildSystemPrompt(clusterName: string): string {
+  return [
+    "You are the Freelens AI assistant for Kubernetes troubleshooting and operations.",
+    `Current cluster: ${clusterName}.`,
+    "Use available tools whenever the user asks for cluster data or object details.",
+    "Never invent Kubernetes state. If tool output is missing, say what is missing.",
+    "Respond in concise markdown with actionable next steps.",
+  ].join("\n");
+}
+
+function sendFinish(sendStreamEvent: (event: AiChatStreamEvent) => void, conversationId: string, finishReason: string): void {
+  sendStreamEvent({
+    type: "finish",
+    conversationId,
+    finishReason,
+    usage: {},
+  });
+}
+
+export function cancelStream(conversationId: string): boolean {
+  const active = activeStreamsByConversationId.get(conversationId);
+
+  if (!active) {
+    return false;
+  }
+
+  active.abort();
+  activeStreamsByConversationId.delete(conversationId);
+
+  return true;
+}
 
 const aiChatHandlerInjectable = getInjectable({
   id: "ai-chat-handler",
 
-  instantiate: (di): AiChatHandler => {
-    const providerFactory = di.inject(aiProviderFactoryInjectable);
-    const streamSender = di.inject(aiChatStreamSenderInjectable);
-    const getClusterById = di.inject(getClusterByIdInjectable);
-    const logError = di.inject(logErrorInjectionToken);
-    const userPreferencesState = di.inject(userPreferencesStateInjectable);
+  instantiate: (di) => {
+    const logger = di.inject(loggerInjectionToken);
+    const aiProviderFactory = di.inject(aiProviderFactoryInjectable);
+    const sendStreamEvent = di.inject(aiChatStreamSenderInjectable);
     const executeOnCluster = di.inject(executeOnClusterHandlerInjectable);
+    const getClusterById = di.inject(getClusterByIdInjectable);
 
     return async (request: AiChatRequest): Promise<AiChatRequestAck> => {
-      const { conversationId, clusterId, providerId, messages } = request;
+      const { conversationId, clusterId, providerId, userMessage } = request;
 
-      if (!providerFactory.hasApiKey(providerId)) {
+      if (!conversationId || !clusterId || !userMessage.trim()) {
         return {
           accepted: false,
-          error: `No API key configured for ${providerId}. Please configure it in Preferences → AI Assistant.`,
+          error: "Invalid chat request payload.",
         };
       }
 
@@ -96,260 +136,169 @@ const aiChatHandlerInjectable = getInjectable({
       if (!cluster) {
         return {
           accepted: false,
-          error: "Cluster not found. Please select a connected cluster.",
+          error: "Cluster not found.",
         };
       }
 
-      if (!cluster.accessible.get()) {
+      if (!aiProviderFactory.hasApiKey(providerId)) {
         return {
           accepted: false,
-          error: "Cluster is not accessible. Please ensure it is connected.",
+          error: `No API key configured for ${providerId}.`,
         };
       }
 
-      const clusterName = cluster.contextName.get();
+      const currentlyActive = activeStreamsByConversationId.get(conversationId);
 
-      const abortController = new AbortController();
+      if (currentlyActive) {
+        currentlyActive.abort();
+        activeStreamsByConversationId.delete(conversationId);
+      }
 
-      activeStreams.set(conversationId, abortController);
+      const controller = new AbortController();
 
-      // Start streaming in background — return ack immediately
+      activeStreamsByConversationId.set(conversationId, controller);
+
+      const history = getConversationHistory(conversationId);
+
+      history.push({
+        role: "user",
+        content: userMessage,
+      });
+
+      trimConversation(history);
+
+      const clusterName = cluster.name.get();
+
       void (async () => {
+        let assistantResponse = "";
+
         try {
-          const model = providerFactory.createModel(providerId);
-          const tools = createChatTools({ clusterId, clusterName, executeOnCluster });
-
-          const systemPrompt = `${SYSTEM_PROMPT}\n\nYou are connected to the cluster "${clusterName}".`;
-
-          const truncatedMessages = truncateMessages(messages);
-          const sdkMessages = convertToSdkMessages(truncatedMessages);
-
-          const useThinking = providerId === "anthropic" && userPreferencesState.aiProviderThinkingEnabled;
-
-          const result = streamText({
+          const model = aiProviderFactory.createModel(providerId);
+          const tools = createChatTools({
+            clusterId,
+            clusterName,
+            executeOnCluster,
+          });
+          const streamResult = streamText({
             model,
-            system: systemPrompt,
-            messages: sdkMessages,
+            system: buildSystemPrompt(clusterName),
+            messages: history,
             tools,
             stopWhen: stepCountIs(5),
-            abortSignal: abortController.signal,
-            ...(useThinking && {
-              providerOptions: {
-                anthropic: {
-                  thinking: {
-                    type: "enabled",
-                    budgetTokens: userPreferencesState.aiProviderThinkingBudget || 10000,
-                  },
-                },
-              },
-            }),
+            abortSignal: controller.signal,
           });
 
-          for await (const chunk of result.fullStream) {
-            if (abortController.signal.aborted) {
+          for await (const chunk of streamResult.fullStream as AsyncIterable<StreamChunk>) {
+            if (controller.signal.aborted) {
               break;
             }
 
-            switch (chunk.type) {
-              case "text-delta":
-                streamSender({ type: "text-delta", conversationId, text: chunk.text });
-                break;
+            const eventType = readString(chunk.type);
 
-              case "reasoning-delta":
-                streamSender({ type: "reasoning-delta", conversationId, text: chunk.text });
-                break;
+            if (!eventType) {
+              continue;
+            }
 
-              case "reasoning-start":
-              case "reasoning-end":
-                break;
+            if (eventType === "text-delta") {
+              const text = pickChunkText(chunk);
 
-              case "tool-call":
-                streamSender({
+              if (!text) {
+                continue;
+              }
+
+              assistantResponse += text;
+              sendStreamEvent({ type: "text-delta", conversationId, text });
+              continue;
+            }
+
+            if (eventType === "reasoning-delta") {
+              const text = pickChunkText(chunk);
+
+              if (text) {
+                sendStreamEvent({ type: "reasoning-delta", conversationId, text });
+              }
+              continue;
+            }
+
+            if (eventType === "tool-call") {
+              const toolCallId = readString(chunk.toolCallId);
+              const toolName = readString(chunk.toolName);
+
+              if (toolCallId && toolName) {
+                sendStreamEvent({
                   type: "tool-call",
                   conversationId,
-                  toolCallId: chunk.toolCallId,
-                  toolName: chunk.toolName,
-                  input: JSON.parse(JSON.stringify(chunk.input)),
+                  toolCallId,
+                  toolName,
+                  input: chunk.input,
                 });
-                break;
+              }
+              continue;
+            }
 
-              case "tool-result":
-                streamSender({
+            if (eventType === "tool-result") {
+              const toolCallId = readString(chunk.toolCallId);
+              const toolName = readString(chunk.toolName) ?? "tool";
+
+              if (toolCallId) {
+                sendStreamEvent({
                   type: "tool-result",
                   conversationId,
-                  toolCallId: chunk.toolCallId,
-                  result: JSON.parse(JSON.stringify(chunk.output)),
-                  isError: false,
+                  toolCallId,
+                  toolName,
+                  result: pickToolResult(chunk),
+                  isError: Boolean(chunk.isError),
                 });
-                break;
-
-              case "error":
-                streamSender({
-                  type: "error",
-                  conversationId,
-                  message: String(chunk.error),
-                });
-                break;
-
-              case "finish":
-                break;
+              }
             }
           }
 
-          const [finishReason, usage] = await Promise.all([
-            result.finishReason,
-            result.usage,
-          ]);
+          if (!assistantResponse.trim() && !controller.signal.aborted) {
+            const textPromise = (streamResult as { text?: PromiseLike<string> }).text;
+            const fallbackText = textPromise ? (await textPromise).trim() : "";
 
-          const inputTokens = usage?.inputTokens ?? 0;
-          const outputTokens = usage?.outputTokens ?? 0;
-          const modelId = providerId === "anthropic"
-            ? (userPreferencesState.aiProviderModelAnthropic || "claude-sonnet-4-20250514")
-            : (userPreferencesState.aiProviderModelOpenai || "gpt-4o");
-
-          streamSender({
-            type: "finish",
-            conversationId,
-            finishReason: finishReason ?? "stop",
-            usage: {
-              inputTokens: usage?.inputTokens,
-              outputTokens: usage?.outputTokens,
-              totalTokens: inputTokens + outputTokens,
-              costUsd: estimateCostUsd(modelId, inputTokens, outputTokens),
-            },
-          });
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-
-          let userMessage = errorMessage;
-
-          if (errorMessage.includes("401") || errorMessage.includes("invalid_api_key") || errorMessage.includes("Unauthorized")) {
-            userMessage = `Invalid API key for ${providerId}. Please check your API key in Preferences → AI Assistant.`;
-          } else if (errorMessage.includes("429") || errorMessage.includes("rate_limit")) {
-            userMessage = `Rate limit exceeded for ${providerId}. Please wait a moment and try again.`;
-          } else if (errorMessage.includes("abort") || errorMessage.includes("cancel")) {
-            streamSender({
-              type: "finish",
-              conversationId,
-              finishReason: "cancelled",
-              usage: {},
-            });
-
-            return;
-          } else if (errorMessage.includes("ENOTFOUND") || errorMessage.includes("ECONNREFUSED")) {
-            userMessage = `Unable to reach ${providerId} API. Please check your network connection.`;
-          } else if (errorMessage.includes("403") || errorMessage.includes("Forbidden")) {
-            userMessage = `Permission denied. You may not have access to the requested resources.`;
+            if (fallbackText) {
+              assistantResponse = fallbackText;
+              sendStreamEvent({ type: "text-delta", conversationId, text: fallbackText });
+            }
           }
 
-          logError(`[ai-chat] Error in conversation ${conversationId}: ${errorMessage}`);
-          streamSender({ type: "error", conversationId, message: userMessage });
+          if (assistantResponse.trim()) {
+            history.push({
+              role: "assistant",
+              content: assistantResponse,
+            });
+            trimConversation(history);
+          }
+
+          if (controller.signal.aborted) {
+            sendFinish(sendStreamEvent, conversationId, "cancelled");
+          } else {
+            sendFinish(sendStreamEvent, conversationId, "stop");
+          }
+        } catch (error) {
+          if (controller.signal.aborted) {
+            sendFinish(sendStreamEvent, conversationId, "cancelled");
+          } else {
+            const message = toErrorMessage(error);
+
+            logger.error(`[ai-chat] stream failed for ${conversationId}: ${message}`);
+            sendStreamEvent({
+              type: "error",
+              conversationId,
+              message,
+            });
+          }
         } finally {
-          activeStreams.delete(conversationId);
+          activeStreamsByConversationId.delete(conversationId);
         }
       })();
 
-      return { accepted: true };
+      return {
+        accepted: true,
+      };
     };
   },
 });
 
 export default aiChatHandlerInjectable;
-
-/**
- * Cancel an active stream by conversationId.
- */
-export function cancelStream(conversationId: string): boolean {
-  const controller = activeStreams.get(conversationId);
-
-  if (controller) {
-    controller.abort();
-    activeStreams.delete(conversationId);
-
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Per-million-token pricing by model prefix. Rates in USD.
- * Update when providers change pricing.
- */
-const MODEL_PRICING: Record<string, { input: number; output: number }> = {
-  // Anthropic
-  "claude-opus-4-6":   { input: 5,  output: 25 },
-  "claude-sonnet-4-5": { input: 3,   output: 15 },
-  "claude-haiku-4-5":  { input: 1, output: 5 },
-  // OpenAI
-  "gpt-4o-mini":     { input: 0.15, output: 0.6 },
-  "gpt-4o":          { input: 2.5,  output: 10 },
-  "gpt-4-turbo":     { input: 10,   output: 30 },
-};
-
-function estimateCostUsd(modelId: string, inputTokens: number, outputTokens: number): number | undefined {
-  const keys = Object.keys(MODEL_PRICING).sort((a, b) => b.length - a.length);
-  const match = keys.find((prefix) => modelId.includes(prefix));
-
-  if (!match) return undefined;
-
-  const rates = MODEL_PRICING[match];
-
-  return (inputTokens * rates.input + outputTokens * rates.output) / 1_000_000;
-}
-
-/**
- * Convert our flat AiChatMessage[] into the ai-sdk ModelMessage format.
- *
- * The Anthropic API requires:
- * - Assistant messages with tool calls use content arrays with tool-call parts
- * - Tool result messages use role: "tool" with tool-result content arrays
- * - Text content blocks must be non-empty
- */
-function convertToSdkMessages(messages: AiChatMessage[]): ModelMessage[] {
-  const result: ModelMessage[] = [];
-
-  for (const msg of messages) {
-    if (msg.role === "user") {
-      if (msg.content) {
-        result.push({ role: "user", content: msg.content } satisfies UserModelMessage);
-      }
-    } else if (msg.role === "assistant") {
-      const hasToolCalls = msg.toolCalls && msg.toolCalls.length > 0;
-
-      if (hasToolCalls) {
-        const contentParts: AssistantModelMessage["content"] = [];
-
-        if (msg.content) {
-          contentParts.push({ type: "text" as const, text: msg.content });
-        }
-
-        for (const tc of msg.toolCalls!) {
-          contentParts.push({
-            type: "tool-call" as const,
-            toolCallId: tc.toolCallId,
-            toolName: tc.toolName,
-            input: tc.input,
-          });
-        }
-
-        result.push({ role: "assistant", content: contentParts } satisfies AssistantModelMessage);
-      } else if (msg.content) {
-        result.push({ role: "assistant", content: msg.content } satisfies AssistantModelMessage);
-      }
-    } else if (msg.role === "tool") {
-      if (msg.toolResults && msg.toolResults.length > 0) {
-        const toolResultParts = msg.toolResults.map((tr) => ({
-          type: "tool-result" as const,
-          toolCallId: tr.toolCallId,
-          toolName: tr.toolName,
-          output: { type: "json" as const, value: tr.result },
-        }));
-
-        result.push({ role: "tool", content: toolResultParts } as ToolModelMessage);
-      }
-    }
-  }
-
-  return result;
-}

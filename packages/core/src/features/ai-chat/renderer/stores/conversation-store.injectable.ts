@@ -4,9 +4,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, computed, makeObservable, observable, toJS } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
-import type { AiChatMessage, AiProviderId, AiToolCall, AiToolResult } from "../../common/types";
+import type { AiProviderId, AiToolCall, AiToolResult } from "../../common/types";
 
 export interface TokenUsage {
   inputTokens?: number;
@@ -63,20 +63,6 @@ export class ConversationStore {
     }
 
     return undefined;
-  }
-
-  /**
-   * Convert conversation messages to the format expected by the IPC channel.
-   */
-  @computed get messagesForRequest(): AiChatMessage[] {
-    return this.messages
-      .filter((m) => !m.isError)
-      .map((m) => ({
-        role: m.role,
-        content: m.content,
-        toolCalls: m.toolCalls ? toJS(m.toolCalls) : undefined,
-        toolResults: m.toolResults ? toJS(m.toolResults) : undefined,
-      }));
   }
 
   @action
@@ -163,11 +149,22 @@ export class ConversationStore {
     if (!msg.toolCalls) {
       msg.toolCalls = [];
     }
+
+    if (msg.toolCalls.some((existing) => existing.toolCallId === toolCall.toolCallId)) {
+      return;
+    }
+
     msg.toolCalls.push(toolCall);
   }
 
   @action
   addToolResult(toolResult: AiToolResult): void {
+    const last = this.messages[this.messages.length - 1];
+
+    if (last?.role === "tool" && last.toolResults?.some((existing) => existing.toolCallId === toolResult.toolCallId)) {
+      return;
+    }
+
     this.messages.push({
       id: nextMessageId(),
       role: "tool",

@@ -10,12 +10,16 @@ export type AiProviderId = "anthropic" | "openai";
 
 /**
  * Request payload sent from renderer to main to initiate a chat message.
+ *
+ * Only the latest user message is sent. The main process keeps the full
+ * SDK-formatted conversation history so tool call/result pairs are never
+ * reconstructed from the renderer's simplified representation.
  */
 export interface AiChatRequest {
   conversationId: string;
   clusterId: string;
   providerId: AiProviderId;
-  messages: AiChatMessage[];
+  userMessage: string;
 }
 
 /**
@@ -62,7 +66,7 @@ export type AiChatStreamEvent =
   | { type: "text-delta"; conversationId: string; text: string }
   | { type: "reasoning-delta"; conversationId: string; text: string }
   | { type: "tool-call"; conversationId: string; toolCallId: string; toolName: string; input: unknown }
-  | { type: "tool-result"; conversationId: string; toolCallId: string; result: unknown; isError: boolean }
+  | { type: "tool-result"; conversationId: string; toolCallId: string; toolName: string; result: unknown; isError: boolean }
   | {
       type: "confirmation-required";
       conversationId: string;
