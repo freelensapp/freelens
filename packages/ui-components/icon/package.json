@@ -1,34 +1,33 @@
 {
   "name": "@freelensapp/icon",
-  "private": false,
   "version": "1.8.1",
+  "private": false,
   "description": "Highly extendable icon in the Freelens.",
-  "type": "commonjs",
-  "files": [
-    "assets",
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "main": "dist/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "type": "commonjs",
   "exports": {
     ".": "./dist/index.js",
     "./styles": "./dist/index.css",
     "./icons/*.svg": "./assets/*.svg"
   },
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
-  },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "files": [
+    "assets",
+    "dist"
+  ],
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
@@ -62,5 +61,9 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

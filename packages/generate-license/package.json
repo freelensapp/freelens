@@ -1,26 +1,38 @@
 {
   "name": "@freelensapp/generate-license",
   "version": "1.8.1",
+  "private": false,
   "description": "CLI for generating license files",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
   "license": "MIT",
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "type": "module",
+  "bin": {
+    "generate-license": "bin/generate-license.js"
   },
   "files": [
     "src"
   ],
-  "type": "module",
-  "private": false,
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "scripts": {
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "@quantco/pnpm-licenses": "^2.2.3",
     "spdx-license-list": "^6.11.0"
   },
   "devDependencies": {},
-  "bin": {
-    "generate-license": "bin/generate-license.js"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

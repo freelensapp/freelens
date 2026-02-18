@@ -1,23 +1,34 @@
 {
   "name": "@freelensapp/ensure-binaries",
   "version": "1.8.1",
+  "private": false,
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
-  "main": "dist/index.js",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
   "license": "MIT",
-  "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
-    "build": "tsc --pretty --project .",
-    "build:dev": "tsc --pretty --project .",
-    "start": "node ./dist/index.mjs"
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "main": "dist/index.js",
+  "bin": {
+    "ensure-binaries": "bin/ensure-binaries.js"
   },
   "files": [
     "dist"
   ],
-  "private": false,
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "scripts": {
+    "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
+    "start": "node ./dist/index.mjs"
   },
   "dependencies": {
     "arg": "^5.0.2",
@@ -34,7 +45,8 @@
     "@types/tar-stream": "^3.1.4",
     "typescript": "^5.9.3"
   },
-  "bin": {
-    "ensure-binaries": "bin/ensure-binaries.js"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

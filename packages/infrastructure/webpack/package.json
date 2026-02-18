@@ -1,24 +1,26 @@
 {
   "name": "@freelensapp/webpack",
-  "private": false,
   "version": "1.8.1",
+  "private": false,
   "description": "Webpack configurations and scripts for Lens packages.",
-  "type": "commonjs",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lensapp/lens.git"
+    "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "main": "dist/index.js",
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/lensapp/lens",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "lens-webpack-build": "bin/webpack-build"
+  },
   "scripts": {
     "build": "webpack",
     "clean": "pnpm dlx rimraf@6.1.2 dist",
@@ -57,7 +59,8 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.4.6"
   },
-  "bin": {
-    "lens-webpack-build": "bin/webpack-build"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

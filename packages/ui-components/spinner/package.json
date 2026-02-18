@@ -1,32 +1,31 @@
 {
   "name": "@freelensapp/spinner",
-  "private": false,
   "version": "1.8.1",
+  "private": false,
   "description": "Highly extendable spinner in the Freelens.",
-  "type": "commonjs",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "main": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./styles": "./dist/index.css"
-  },
-  "types": "dist/index.d.ts",
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "type": "commonjs",
+  "exports": {
+    ".": "./dist/index.js",
+    "./styles": "./dist/index.css"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
@@ -47,5 +46,9 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

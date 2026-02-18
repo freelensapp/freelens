@@ -1,10 +1,20 @@
 {
   "name": "@freelensapp/extensions",
-  "productName": "Freelens extensions",
-  "description": "Freelens - Free IDE for Kubernetes: extensions",
   "version": "1.8.1",
-  "copyright": "© 2024-2026 Freelens Authors",
+  "description": "Freelens - Free IDE for Kubernetes: extensions",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
   "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
   "main": "dist/extension-api.js",
   "types": "dist/extension-api.d.ts",
   "files": [
@@ -12,14 +22,6 @@
     "__mocks__/*.ts",
     "dist/**/*.js"
   ],
-  "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "scripts": {
     "build": "webpack --config webpack/extensions.ts",
     "build:dev": "webpack --config webpack/extensions.ts",
@@ -37,5 +39,11 @@
     "typescript-plugin-css-modules": "^5.2.0",
     "webpack": "^5.105.1",
     "webpack-cli": "^6.0.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "copyright": "© 2024-2026 Freelens Authors",
+  "productName": "Freelens extensions"
 }

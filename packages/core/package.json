@@ -1,22 +1,21 @@
 {
   "name": "@freelensapp/core",
-  "productName": "",
-  "description": "Freelens Core",
-  "homepage": "https://freelens.app",
   "version": "1.8.1",
+  "description": "Freelens Core",
+  "keywords": [],
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/freelensapp/freelens/issues"
+  "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "main": "static/build/main.js",
   "exports": {
     "./package.json": "./package.json",
     "./main": "./static/build/library/main.js",
@@ -26,6 +25,7 @@
     "./vars.scss": "./src/renderer/components/vars.scss",
     "./fonts": "./static/build/library/fonts"
   },
+  "main": "static/build/main.js",
   "typesVersions": {
     "*": {
       "main": [
@@ -46,12 +46,6 @@
     "types/*",
     "tsconfig.json"
   ],
-  "copyright": "© 2023 OpenLens Authors",
-  "license": "MIT",
-  "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
-  },
   "scripts": {
     "build": "webpack --config webpack/library-bundle.ts --progress",
     "build:dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress",
@@ -62,14 +56,11 @@
     "test:watch": "jest --watch --testPathIgnorePatterns integration"
   },
   "config": {
-    "k8sProxyVersion": "1.5.1",
-    "bundledKubectlVersion": "1.35.1",
     "bundledHelmVersion": "4.1.1",
+    "bundledKubectlVersion": "1.35.1",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
+    "k8sProxyVersion": "1.5.1",
     "welcomeRoute": "/welcome"
-  },
-  "engines": {
-    "node": "^22.0.0"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -261,5 +252,14 @@
     "webpack": "^5.105.1",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
-  }
+  },
+  "engines": {
+    "node": "^22.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "copyright": "© 2023 OpenLens Authors",
+  "productName": ""
 }

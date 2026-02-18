@@ -1,12 +1,20 @@
 {
   "name": "@freelensapp/openid-client",
   "version": "1.8.1",
-  "description": "Open ID for Freelens",
-  "license": "MIT",
   "private": false,
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "description": "Open ID for Freelens",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,10 +22,10 @@
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "webpack",
-    "build:dev": "webpack"
+    "build:dev": "webpack",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
@@ -25,5 +33,9 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

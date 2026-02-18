@@ -1,16 +1,28 @@
 {
   "name": "@freelensapp/semver",
   "version": "1.8.1",
-  "description": "CLI over semver package for picking parts of a version",
-  "license": "MIT",
   "private": true,
-  "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
-    "build": "tsc --pretty --project .",
-    "build:dev": "tsc --pretty --project ."
+  "description": "CLI over semver package for picking parts of a version",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
   },
   "type": "module",
+  "scripts": {
+    "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
+  },
   "dependencies": {
     "command-line-args": "^6.0.1",
     "semver": "^7.7.4"
