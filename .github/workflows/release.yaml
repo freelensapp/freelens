@@ -2,6 +2,8 @@ name: Release
 
 on:
   push:
+    branches:
+      - publish/*
     tags:
       - v*
   workflow_dispatch: {}
@@ -18,6 +20,8 @@ jobs:
 
     runs-on: ubuntu-22.04
     timeout-minutes: 360
+
+    if: startsWith(github.ref, 'refs/tags/')
 
     steps:
       - name: Checkout
@@ -69,6 +73,8 @@ jobs:
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
+
+    if: startsWith(github.ref, 'refs/tags/')
 
     env:
       DO_NOT_TRACK: "1"
@@ -401,6 +407,8 @@ jobs:
 
     runs-on: ubuntu-22.04
 
+    if: startsWith(github.ref, 'refs/tags/')
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -427,6 +435,8 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     environment: publishing
+
+    if: always()
 
     steps:
       - name: Checkout
@@ -522,6 +532,8 @@ jobs:
 
     runs-on: ubuntu-24.04
     environment: apt-signing
+
+    if: startsWith(github.ref, 'refs/tags/')
 
     steps:
       - name: Checkout
