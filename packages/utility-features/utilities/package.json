@@ -36,7 +36,7 @@
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
     "semver": "^7.7.4",
-    "tar": "^7.5.2",
+    "tar": "^7.5.9",
     "typed-regex": "^0.0.8"
   },
   "devDependencies": {
