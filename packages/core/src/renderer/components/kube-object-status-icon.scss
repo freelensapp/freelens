@@ -1,0 +1,13 @@
+.KubeObjectStatusIcon {
+  &.positive {
+    color: var(--colorOk);
+  }
+
+  &.negative {
+    color: var(--colorError);
+  }
+
+  &.unknown {
+    color: var(--colorVague);
+  }
+}

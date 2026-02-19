@@ -6,3 +6,4 @@
 
 export * from "./badge";
 export * from "./badge-boolean";
+export * from "./beta-badge";

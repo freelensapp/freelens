@@ -6,17 +6,37 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import { registerInjectables as registerBackendLbPoliciesInjectables } from "./backend-lb-policies/register-injectables";
+import { registerInjectables as registerBackendTlsPoliciesInjectables } from "./backend-tls-policies/register-injectables";
 import { registerInjectables as registerEndpointSlicesInjectables } from "./endpoint-slices/register-injectables";
 import { registerInjectables as registerEndpointsInjectables } from "./endpoints/register-injectables";
+import { registerInjectables as registerGatewayClassesInjectables } from "./gateway-classes/register-injectables";
+import { registerInjectables as registerGatewaysInjectables } from "./gateways/register-injectables";
+import { registerInjectables as registerGrpcRoutesInjectables } from "./grpc-routes/register-injectables";
+import { registerInjectables as registerHttpRoutesInjectables } from "./http-routes/register-injectables";
 import { registerInjectables as registerIngressClassInjectables } from "./ingress-class/register-injectables";
 import { registerInjectables as registerIngressesInjectables } from "./ingresses/register-injectables";
 import { registerInjectables as registerNetworkPoliciesInjectables } from "./network-policies/register-injectables";
 import { registerInjectables as registerPortForwardsInjectables } from "./port-forwards/register-injectables";
+import { registerInjectables as registerReferenceGrantsInjectables } from "./reference-grants/register-injectables";
 import { registerInjectables as registerServicesInjectables } from "./services/register-injectables";
+import { registerInjectables as registerTcpRoutesInjectables } from "./tcp-routes/register-injectables";
+import { registerInjectables as registerTlsRoutesInjectables } from "./tls-routes/register-injectables";
+import { registerInjectables as registerUdpRoutesInjectables } from "./udp-routes/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    registerBackendLbPoliciesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerBackendTlsPoliciesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     registerEndpointSlicesInjectables(di);
   } catch (e) {
@@ -24,6 +44,26 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerEndpointsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerGatewayClassesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerGatewaysInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerGrpcRoutesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerHttpRoutesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -48,7 +88,27 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    registerReferenceGrantsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     registerServicesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerTcpRoutesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerTlsRoutesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerUdpRoutesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

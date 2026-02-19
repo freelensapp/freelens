@@ -23,6 +23,12 @@
       }
     }
 
+    &:global(.active) :global(.BetaBadge) {
+      --beta-badge-color: var(--sidebarActiveColor);
+      --beta-badge-bg: 0%;
+      --beta-badge-border: 85%;
+    }
+
     span {
       word-break: break-word;
     }

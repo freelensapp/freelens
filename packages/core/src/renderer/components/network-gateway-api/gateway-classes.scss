@@ -1,0 +1,20 @@
+.GatewayClasses {
+  --table-spacing: 0;
+
+  .TableCell {
+    &.accepted {
+      justify-content: center;
+    }
+  }
+
+  .Icon {
+    &.set_default_icon {
+      filter: brightness(0.75);
+      margin-left: 0.25rem;
+
+      &:hover {
+        filter: brightness(1.5);
+      }
+    }
+  }
+}

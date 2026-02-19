@@ -6,6 +6,8 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import { backendLBPolicyApiInjectable } from "./specifics/backend-lb-policy.api.injectable";
+import { backendTLSPolicyApiInjectable } from "./specifics/backend-tls-policy.api.injectable";
 import { clusterApiInjectable } from "./specifics/cluster.api.injectable";
 import { clusterRoleApiInjectable } from "./specifics/cluster-role.api.injectable";
 import { clusterRoleBindingApiInjectable } from "./specifics/cluster-role-binding.api.injectable";
@@ -18,7 +20,11 @@ import { deploymentApiInjectable } from "./specifics/deployment.api.injectable";
 import { endpointsApiInjectable } from "./specifics/endpoint.api.injectable";
 import { endpointSliceApiInjectable } from "./specifics/endpoint-slice.api.injectable";
 import { kubeEventApiInjectable } from "./specifics/event.api.injectable";
+import { gatewayApiInjectable } from "./specifics/gateway.api.injectable";
+import { gatewayClassApiInjectable } from "./specifics/gateway-class.api.injectable";
+import { grpcRouteApiInjectable } from "./specifics/grpc-route.api.injectable";
 import { horizontalPodAutoscalerApiInjectable } from "./specifics/horizontal-pod-autoscaler.api.injectable";
+import { httpRouteApiInjectable } from "./specifics/http-route.api.injectable";
 import { ingressApiInjectable } from "./specifics/ingress.api.injectable";
 import { ingressClassApiInjectable } from "./specifics/ingress-class.api.injectable";
 import { jobApiInjectable } from "./specifics/job.api.injectable";
@@ -37,6 +43,7 @@ import { podDisruptionBudgetApiInjectable } from "./specifics/pod-disruption-bud
 import { podMetricsApiInjectable } from "./specifics/pod-metrics.api.injectable";
 import { podSecurityPolicyApiInjectable } from "./specifics/pod-security-policy.api.injectable";
 import { priorityClassApiInjectable } from "./specifics/priority-class.api.injectable";
+import { referenceGrantApiInjectable } from "./specifics/reference-grant.api.injectable";
 import { replicaSetApiInjectable } from "./specifics/replica-set.api.injectable";
 import { replicationControllerApiInjectable } from "./specifics/replication-controller.api.injectable";
 import { resourceQuotaApiInjectable } from "./specifics/resource-quota.api.injectable";
@@ -49,12 +56,26 @@ import { serviceApiInjectable } from "./specifics/service.api.injectable";
 import { serviceAccountApiInjectable } from "./specifics/service-account.api.injectable";
 import { statefulSetApiInjectable } from "./specifics/stateful-set.api.injectable";
 import { storageClassApiInjectable } from "./specifics/storage-class.api.injectable";
+import { tcpRouteApiInjectable } from "./specifics/tcp-route.api.injectable";
+import { tlsRouteApiInjectable } from "./specifics/tls-route.api.injectable";
+import { udpRouteApiInjectable } from "./specifics/udp-route.api.injectable";
 import { validatingWebhookConfigurationApiInjectable } from "./specifics/validating-webhook-configuration-api.injectable";
 import { verticalPodAutoscalerApiInjectable } from "./specifics/vertical-pod-autoscaler.api.injectable";
+import { xBackendTrafficPolicyApiInjectable } from "./specifics/x-backend-traffic-policy.api.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(backendLBPolicyApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(backendTLSPolicyApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(clusterApiInjectable);
   } catch (e) {
@@ -111,7 +132,27 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(gatewayApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(gatewayClassApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(grpcRouteApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(horizontalPodAutoscalerApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(httpRouteApiInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -211,6 +252,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(referenceGrantApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(replicaSetApiInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -271,12 +317,32 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(tcpRouteApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(tlsRouteApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(udpRouteApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(validatingWebhookConfigurationApiInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
     di.register(verticalPodAutoscalerApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(xBackendTrafficPolicyApiInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

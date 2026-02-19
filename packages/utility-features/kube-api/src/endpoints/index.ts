@@ -7,6 +7,8 @@
 // Kubernetes apis
 // Docs: https://kubernetes.io/docs/reference/kubernetes-api/
 
+export * from "./backend-lb-policy.api";
+export * from "./backend-tls-policy.api";
 export * from "./cluster.api";
 export * from "./cluster-role.api";
 export * from "./cluster-role-binding.api";
@@ -19,7 +21,11 @@ export * from "./deployment.api";
 export * from "./endpoint.api";
 export * from "./endpoint-slice.api";
 export * from "./events.api";
+export * from "./gateway.api";
+export * from "./gateway-class.api";
+export * from "./grpc-route.api";
 export * from "./horizontal-pod-autoscaler.api";
+export * from "./http-route.api";
 export * from "./ingress.api";
 export * from "./ingress-class.api";
 export * from "./job.api";
@@ -37,6 +43,7 @@ export * from "./pod-disruption-budget.api";
 export * from "./pod-metrics.api";
 export * from "./pod-security-policy.api";
 export * from "./priority-class.api";
+export * from "./reference-grant.api";
 export * from "./replica-set.api";
 export * from "./replication-controller.api";
 export * from "./resource-quota.api";
@@ -49,5 +56,9 @@ export * from "./service.api";
 export * from "./service-account.api";
 export * from "./stateful-set.api";
 export * from "./storage-class.api";
+export * from "./tcp-route.api";
+export * from "./tls-route.api";
+export * from "./udp-route.api";
 export * from "./validating-webhook-configuration.api";
 export * from "./vertical-pod-autoscaler.api";
+export * from "./x-backend-traffic-policy.api";
