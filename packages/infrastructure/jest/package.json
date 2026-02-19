@@ -22,7 +22,7 @@
     "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
-    "glob": "^13.0.2",
+    "glob": "^13.0.6",
     "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.23"
   },
