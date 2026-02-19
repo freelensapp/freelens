@@ -1,30 +1,33 @@
 {
   "name": "@freelensapp/kubectl-versions",
-  "private": false,
   "version": "1.8.2-0",
+  "private": false,
   "description": "Package of kubectl versions at build time",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "lens-webpack-build",
     "build:dev": "lens-webpack-build",
     "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
+    "precompute-versions": "tsc --pretty --project build",
     "compute-versions": "node ./build/compute-versions.mjs",
-    "dev": "lens-webpack-build --watch",
-    "precompute-versions": "tsc --pretty --project build"
+    "dev": "lens-webpack-build --watch"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
@@ -37,5 +40,9 @@
     "typed-regex": "^0.0.8",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

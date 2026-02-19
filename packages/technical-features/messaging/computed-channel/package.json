@@ -1,32 +1,31 @@
 {
   "name": "@freelensapp/computed-channel",
-  "private": false,
   "version": "1.8.2-0",
+  "private": false,
   "description": "MobX-like computed between channels",
-  "type": "commonjs",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "lens-webpack-build",
     "clean": "pnpm dlx rimraf@6.1.2 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
-    "build": "lens-webpack-build",
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
@@ -56,5 +55,9 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

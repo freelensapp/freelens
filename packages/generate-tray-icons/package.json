@@ -1,23 +1,34 @@
 {
   "name": "@freelensapp/generate-tray-icons",
   "version": "1.8.2-0",
+  "private": false,
   "description": "CLI generating tray icons for building a lens-like application",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
   "license": "MIT",
-  "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "build": "tsc --pretty --project .",
-    "build:dev": "tsc --pretty --project .",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
-    "start": "node --experimental-import-meta-resolve ./dist/index.js"
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "type": "module",
+  "bin": {
+    "generate-tray-icons": "bin/generate-tray-icons.js"
   },
   "files": [
     "dist"
   ],
-  "type": "module",
-  "private": false,
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "scripts": {
+    "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
+    "start": "node --experimental-import-meta-resolve ./dist/index.js"
   },
   "dependencies": {
     "arg": "^5.0.2",
@@ -30,7 +41,8 @@
     "@types/node": "~22.19.11",
     "typescript": "^5.9.3"
   },
-  "bin": {
-    "generate-tray-icons": "bin/generate-tray-icons.js"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
