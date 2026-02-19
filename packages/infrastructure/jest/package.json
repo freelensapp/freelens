@@ -1,34 +1,37 @@
 {
   "name": "@freelensapp/jest",
-  "private": false,
   "version": "1.8.2-0",
+  "private": false,
   "description": "Jest configuration and scripts for Freelens packages.",
-  "type": "commonjs",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
-  "main": "index.js",
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
-    "identity-obj-proxy": "^3.0.0",
     "glob": "^13.0.2",
+    "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
     "@types/jest": "^29.5.14"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

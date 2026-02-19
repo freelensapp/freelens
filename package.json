@@ -1,14 +1,23 @@
 {
   "name": "freelens-monorepo",
   "private": true,
-  "workspaces": [
-    "packages/**/*",
-    "freelens"
-  ],
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
+  "workspaces": [
+    "packages/**/*",
+    "freelens"
+  ],
   "scripts": {
     "asar": "corepack pnpm dlx @electron/asar@4.0.1",
     "biome": "corepack pnpm dlx @biomejs/biome@2.3.14",
@@ -21,48 +30,48 @@
     "build:app:dir": "corepack pnpm build:app dir",
     "build:core": "cd packages/core && corepack pnpm build",
     "build:dev": "NODE_ENV=development turbo run build:dev --",
-    "build:di": "node scripts/generate-explicit-di-registration.mjs",
     "postbuild:dev": "turbo run build:resources --",
+    "build:di": "node scripts/generate-explicit-di-registration.mjs",
     "build:freelens": "cd freelens && corepack pnpm build",
     "build:resources": "turbo run build:resources --",
+    "bump-version": "corepack pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
     "clean": "corepack pnpm -r clean",
     "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.2 node_modules",
+    "compute-versions": "corepack pnpm -r compute-versions",
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
+    "fmt": "corepack pnpm trunk fmt",
+    "knip": "corepack pnpm dlx knip@5.83.1 --dependencies --no-gitignore",
+    "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
+    "knip:development": "corepack pnpm knip",
+    "knip:production": "corepack pnpm knip --production --strict",
+    "lint": "corepack pnpm trunk check",
+    "lint:fix": "corepack pnpm trunk check --fix",
+    "prettier": "corepack pnpm dlx prettier@3.8.1",
+    "prettier:check": "corepack pnpm prettier --check .",
+    "prettier:fix": "corepack pnpm prettier --write .",
     "start": "cd freelens && corepack pnpm start",
     "start:os": "corepack pnpm dlx run-script-os@1.1.6 --",
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "knip": "corepack pnpm dlx knip@5.83.1 --dependencies --no-gitignore",
-    "knip:check": "corepack pnpm \"/^knip:(development|production)\\$/\"",
-    "knip:development": "corepack pnpm knip",
-    "knip:production": "corepack pnpm knip --production --strict",
-    "prettier": "corepack pnpm dlx prettier@3.8.1",
-    "prettier:check": "corepack pnpm prettier --check .",
-    "prettier:fix": "corepack pnpm prettier --write .",
-    "trunk": "corepack pnpm dlx @trunkio/launcher@1.3.4",
-    "trunk:check": "corepack pnpm trunk check",
-    "trunk:check:all": "corepack pnpm trunk check --all",
-    "trunk:fix": "corepack pnpm trunk check --fix",
-    "trunk:fix:all": "corepack pnpm trunk check --fix --all",
-    "fmt": "corepack pnpm trunk fmt",
-    "lint": "corepack pnpm trunk check",
-    "lint:fix": "corepack pnpm trunk check --fix",
+    "test:integration": "cd freelens && corepack pnpm test:integration",
     "test:unit": "corepack pnpm -r --no-bail test:unit",
     "test:unit:core": "cd packages/core && corepack pnpm test:unit",
     "test:unit:core:updatesnapshot": "cd packages/core && corepack pnpm test:unit -u",
     "test:unit:updatesnapshot": "corepack pnpm -r --no-bail test:unit -u",
-    "test:integration": "cd freelens && corepack pnpm test:integration",
-    "bump-version": "corepack pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
-    "compute-versions": "corepack pnpm -r compute-versions"
+    "trunk": "corepack pnpm dlx @trunkio/launcher@1.3.4",
+    "trunk:check": "corepack pnpm trunk check",
+    "trunk:check:all": "corepack pnpm trunk check --all",
+    "trunk:fix": "corepack pnpm trunk check --fix",
+    "trunk:fix:all": "corepack pnpm trunk check --fix --all"
   },
-  "engines": {
-    "node": ">=22.0.0"
-  },
-  "packageManager": "pnpm@10.29.2",
   "devDependencies": {
     "pnpm": "10.29.2",
     "turbo": "2.8.7"
+  },
+  "packageManager": "pnpm@10.29.2",
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
