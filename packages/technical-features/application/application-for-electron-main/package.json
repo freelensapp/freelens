@@ -34,7 +34,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "electron": "^39.5.2"
+    "electron": "^39.6.1"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.4",
