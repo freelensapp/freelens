@@ -30,7 +30,7 @@
   "dependencies": {
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/postcss": "^4.2.0",
     "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "fs-extra": "^11.3.3",
@@ -39,7 +39,7 @@
     "sass": "^1.97.3",
     "sass-loader": "^16.0.7",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.2.0",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "webpack": "^5.105.1",
