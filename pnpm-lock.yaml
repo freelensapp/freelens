@@ -372,8 +372,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       mini-css-extract-plugin:
-        specifier: ^2.9.4
-        version: 2.9.4(webpack@5.105.1)
+        specifier: ^2.10.0
+        version: 2.10.0(webpack@5.105.1)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.1
         version: 7.1.1(monaco-editor@0.54.0)(webpack@5.105.1)
@@ -1087,8 +1087,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1
       mini-css-extract-plugin:
-        specifier: ^2.9.4
-        version: 2.9.4(webpack@5.105.1)
+        specifier: ^2.10.0
+        version: 2.10.0(webpack@5.105.1)
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1295,8 +1295,8 @@ importers:
         specifier: ^4.17.23
         version: 4.17.23
       mini-css-extract-plugin:
-        specifier: ^2.9.4
-        version: 2.9.4(webpack@5.105.1)
+        specifier: ^2.10.0
+        version: 2.10.0(webpack@5.105.1)
       sass:
         specifier: ^1.97.3
         version: 1.97.3
@@ -7385,8 +7385,8 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  mini-css-extract-plugin@2.9.4:
-    resolution: {integrity: sha512-ZWYT7ln73Hptxqxk2DxPU9MmapXRhxkJD6tkSR04dnQxm8BGu2hzgKLugK5yySD97u/8yy7Ma7E76k9ZdvtjkQ==}
+  mini-css-extract-plugin@2.10.0:
+    resolution: {integrity: sha512-540P2c5dYnJlyJxTaSloliZexv8rji6rY8FhQN+WF/82iHQfA23j/xtJx97L+mXOML27EqksSek/g4eK7jaL3g==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
@@ -14279,7 +14279,7 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  mini-css-extract-plugin@2.9.4(webpack@5.105.1):
+  mini-css-extract-plugin@2.10.0(webpack@5.105.1):
     dependencies:
       schema-utils: 4.3.3
       tapable: 2.3.0
