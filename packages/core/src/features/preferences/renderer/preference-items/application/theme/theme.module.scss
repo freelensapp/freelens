@@ -1,0 +1,53 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../../../../../../renderer/components/vars" as *;
+
+$accent-teal: #00a7a0;
+$accent-green: #4caf50;
+$accent-blue: #2196f3;
+$accent-orange: #ff9800;
+
+.selectRow {
+  display: flex;
+  gap: $unit;
+}
+
+.themeSelect {
+  flex: 9;
+}
+
+.accentSelect {
+  flex: 1;
+}
+
+.colorPreview {
+  display: flex;
+  align-items: center;
+  gap: $unit;
+  margin-top: $unit;
+}
+
+.resetButton {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid var(--borderColor);
+  border-radius: $radius;
+  background-color: var(--secondaryBackground);
+  color: var(--textColorPrimary);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: var(--layoutTabsBackground);
+    border-color: var(--primary);
+    color: var(--textColorPrimary);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
