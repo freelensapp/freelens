@@ -180,7 +180,7 @@
     "node-abi": "^4.24.0",
     "node-gyp": "12.2.0",
     "node-loader": "^2.1.0",
-    "playwright": "^1.57.0",
+    "playwright": "^1.58.2",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.4",
