@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "corepack pnpm dlx @electron/asar@4.0.1",
-    "biome": "corepack pnpm dlx @biomejs/biome@2.3.14",
+    "biome": "corepack pnpm dlx @biomejs/biome@2.4.4",
     "biome:check": "corepack pnpm biome check",
     "biome:fix": "corepack pnpm biome check --fix",
     "biome:migrate": "corepack pnpm biome migrate --write",
