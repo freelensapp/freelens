@@ -39,6 +39,7 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
 
   const containers = pod.getAllContainersWithType();
   const statuses = pod.getContainerStatuses();
+  const annotations = pod.getAnnotations(true);
 
   const showLogs = (container: Container) => {
     const pod = props.object;
@@ -56,6 +57,7 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
       title="Logs"
       tooltip="Pod Logs"
       toolbar={toolbar}
+      annotations={annotations}
       containers={containers}
       statuses={statuses}
       onMenuItemClick={showLogs}
