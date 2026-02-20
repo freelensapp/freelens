@@ -19,7 +19,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
   },
   "dependencies": {
     "glob": "^13.0.6",

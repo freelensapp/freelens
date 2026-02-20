@@ -26,8 +26,8 @@
   "scripts": {
     "build": "tsc --pretty --project .",
     "build:dev": "tsc --pretty --project .",
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
+    "clean": "pnpm dlx rimraf@6.1.3 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
     "start": "node --experimental-import-meta-resolve ./dist/index.js"
   },
   "dependencies": {
