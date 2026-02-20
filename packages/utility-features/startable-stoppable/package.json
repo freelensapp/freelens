@@ -35,7 +35,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.4",
-    "webpack": "^5.105.1"
+    "webpack": "^5.105.2"
   },
   "publishConfig": {
     "access": "public",
