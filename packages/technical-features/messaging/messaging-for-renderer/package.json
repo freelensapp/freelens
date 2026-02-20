@@ -32,7 +32,7 @@
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/messaging": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
+    "@ogre-tools/injectable": "^19.0.0",
     "electron": "^39.6.1"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-mobx": "^19.0.0",
     "@types/webpack-env": "^1.18.8",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",

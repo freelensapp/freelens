@@ -33,13 +33,13 @@
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "^19.0.0"
   },
   "devDependencies": {
     "@freelensapp/kubernetes-client-node": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
+    "@ogre-tools/fp": "^19.0.0",
     "@types/webpack-env": "^1.18.8",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
