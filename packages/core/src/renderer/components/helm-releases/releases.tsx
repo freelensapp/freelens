@@ -44,6 +44,8 @@ enum columnId {
 interface Dependencies {
   releases: IComputedValue<RemovableHelmRelease[]>;
   releasesArePending: IComputedValue<boolean>;
+  releasesAreRefreshing: IComputedValue<boolean>;
+  releasesLastUpdatedAt: IComputedValue<number | undefined>;
   namespace: IComputedValue<string>;
   navigateToHelmReleases: NavigateToHelmReleases;
 }
@@ -80,11 +82,27 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
   render() {
     const releases = this.props.releases;
     const releasesArePending = this.props.releasesArePending;
+    const releasesAreRefreshing = this.props.releasesAreRefreshing;
+    const releasesLastUpdatedAt = this.props.releasesLastUpdatedAt;
+
+    const renderRefreshInfo = () => {
+      const lastUpdatedAt = releasesLastUpdatedAt.get();
+
+      if (releasesAreRefreshing.get()) {
+        return "Refreshing...";
+      }
+
+      if (!lastUpdatedAt) {
+        return undefined;
+      }
+
+      return `Last updated ${moment(lastUpdatedAt).fromNow()}`;
+    };
 
     // TODO: Implement ItemListLayout without stateful stores
     const legacyReleaseStore: ItemListStore<RemovableHelmRelease, false> = {
       get isLoaded() {
-        return !releasesArePending.get();
+        return !releasesArePending.get() || releases.get().length > 0;
       },
 
       failedLoading: false,
@@ -149,17 +167,18 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
             (release) => release.getVersion(),
           ]}
           customizeHeader={({ filters, searchProps, ...headerPlaceholders }) => ({
+            ...headerPlaceholders,
             filters: (
               <>
                 {filters}
                 <NamespaceSelectFilter id="namespace-select-filter" />
               </>
             ),
+            info: renderRefreshInfo() ?? headerPlaceholders.info,
             searchProps: {
               ...searchProps,
               placeholder: "Search Releases...",
             },
-            ...headerPlaceholders,
           })}
           renderHeaderTitle="Releases"
           renderTableHeader={[
@@ -201,10 +220,16 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
 }
 
 export const HelmReleases = withInjectables<Dependencies>(NonInjectedHelmReleases, {
-  getProps: (di) => ({
-    releases: di.inject(removableReleasesInjectable),
-    releasesArePending: di.inject(releasesInjectable).pending,
-    navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
-    ...di.inject(helmReleasesRouteParametersInjectable),
-  }),
+  getProps: (di) => {
+    const releases = di.inject(releasesInjectable);
+
+    return {
+      releases: di.inject(removableReleasesInjectable),
+      releasesArePending: releases.pending,
+      releasesAreRefreshing: releases.isRefreshing,
+      releasesLastUpdatedAt: releases.lastUpdatedAt,
+      navigateToHelmReleases: di.inject(navigateToHelmReleasesInjectable),
+      ...di.inject(helmReleasesRouteParametersInjectable),
+    };
+  },
 });

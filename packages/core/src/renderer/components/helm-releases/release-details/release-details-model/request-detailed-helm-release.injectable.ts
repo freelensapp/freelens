@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import requestHelmReleaseInjectable from "../../../../../features/helm-releases/renderer/request-helm-release.injectable";
-import requestListHelmReleasesInjectable from "../../../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
-import { toHelmRelease } from "../../to-helm-release";
+import releasesInjectable from "../../releases.injectable";
+import { toHelmReleaseFromData } from "../../to-helm-release";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
@@ -28,36 +28,23 @@ const requestDetailedHelmReleaseInjectable = getInjectable({
   id: "request-detailed-helm-release",
 
   instantiate: (di): RequestDetailedHelmRelease => {
-    const requestListHelmReleases = di.inject(requestListHelmReleasesInjectable);
     const requestHelmRelease = di.inject(requestHelmReleaseInjectable);
+    const releases = di.inject(releasesInjectable);
 
     return async ({ clusterId, namespace, releaseName }) => {
-      const listReleasesResult = await requestListHelmReleases({ clusterId, namespace });
       const detailsResult = await requestHelmRelease({ clusterId, releaseName, namespace });
-
-      if (!listReleasesResult.callWasSuccessful) {
-        return listReleasesResult;
-      }
-
-      const release = listReleasesResult.response.find(
-        (rel) => rel.name === releaseName && rel.namespace === namespace,
-      );
-
-      if (!release) {
-        return {
-          callWasSuccessful: false,
-          error: `Release ${releaseName} didn't exist in ${namespace} namespace.`,
-        };
-      }
 
       if (!detailsResult.callWasSuccessful) {
         return detailsResult;
       }
 
+      const loadedReleases = releases.value.get();
+      const release = loadedReleases.find((rel) => rel.getName() === releaseName && rel.getNs() === namespace);
+
       return {
         callWasSuccessful: true,
         response: {
-          release: toHelmRelease(release),
+          release: release ?? toHelmReleaseFromData(detailsResult.response),
           details: detailsResult.response,
         },
       };

@@ -54,9 +54,15 @@ export interface ListedHelmRelease {
 export interface ListHelmReleasesArgs {
   namespace?: string;
   clusterId: string;
+  skipCache?: boolean;
 }
 
-export type ListHelmReleasesResponse = Result<ListedHelmRelease[], string>;
+export interface ListHelmReleasesData {
+  releases: ListedHelmRelease[];
+  fromCache: boolean;
+}
+
+export type ListHelmReleasesResponse = Result<ListHelmReleasesData, string>;
 
 export const listHelmReleasesChannel = getRequestChannel<ListHelmReleasesArgs, ListHelmReleasesResponse>(
   "list-helm-releases",

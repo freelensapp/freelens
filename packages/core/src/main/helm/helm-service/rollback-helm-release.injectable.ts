@@ -6,6 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import helmReleaseCacheInjectable from "../../../features/helm-releases/main/helm-release-cache.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import rollbackHelmReleaseInjectable from "../rollback-helm-release.injectable";
 
@@ -18,6 +19,7 @@ const rollbackClusterHelmReleaseInjectable = getInjectable({
   instantiate: (di) => {
     const logger = di.inject(loggerInjectionToken);
     const rollbackHelmRelease = di.inject(rollbackHelmReleaseInjectable);
+    const helmReleaseCache = di.inject(helmReleaseCacheInjectable);
 
     return async (cluster: Cluster, data: RollbackHelmReleaseData) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
@@ -26,6 +28,8 @@ const rollbackClusterHelmReleaseInjectable = getInjectable({
       logger.debug(`[CLUSTER]: rolling back helm release for clusterId=${cluster.id}`, data);
 
       await rollbackHelmRelease(proxyKubeconfigPath, data);
+
+      helmReleaseCache.invalidateCluster(cluster.id);
     };
   },
 });
