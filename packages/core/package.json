@@ -233,7 +233,7 @@
     "logform": "^2.7.0",
     "memfs": "^4.17.1",
     "memorystream": "^0.3.1",
-    "mini-css-extract-plugin": "^2.9.4",
+    "mini-css-extract-plugin": "^2.10.0",
     "mobx-observable-history": "^2.0.3",
     "mock-http": "^1.1.1",
     "node-gyp": "12.2.0",
