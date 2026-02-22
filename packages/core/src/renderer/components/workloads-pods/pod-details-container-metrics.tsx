@@ -13,6 +13,7 @@ import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector
 import { ResourceMetrics } from "../resource-metrics";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
+import styles from "./pod-details-container-metrics.module.css";
 
 import type { Container, Pod } from "@freelensapp/kube-object";
 
@@ -36,7 +37,7 @@ const NonInjectedPodDetailsContainerMetrics = observer(
 
     return (
       <>
-        <div className="flex" style={{ marginBottom: "var(--margin)", justifyContent: "flex-end" }}>
+        <div className={`flex ${styles.timeRangeContainer}`}>
           <MetricsTimeRangeSelector />
         </div>
         {metrics ? (
@@ -44,7 +45,7 @@ const NonInjectedPodDetailsContainerMetrics = observer(
             <ContainerCharts />
           </ResourceMetrics>
         ) : (
-          <div style={{ padding: "var(--padding)", textAlign: "center" }}>Loading metrics...</div>
+          <div className={styles.loadingContainer}>Loading metrics...</div>
         )}
       </>
     );
