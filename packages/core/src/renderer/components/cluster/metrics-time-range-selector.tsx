@@ -7,15 +7,16 @@
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Dialog } from "../dialog";
 import { Select } from "../select";
+import styles from "./metrics-time-range-selector.module.scss";
 import selectedMetricsTimeRangeInjectable, {
   timeRangeOptions,
 } from "./overview/selected-metrics-time-range.injectable";
-import styles from "./metrics-time-range-selector.module.scss";
 
 import type { ShowNotification } from "@freelensapp/notifications";
+
 import type { SingleValue } from "react-select";
 
 import type { SelectOption } from "../select";
@@ -31,84 +32,86 @@ interface TimeRangeOption {
   label: string;
 }
 
-const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange, showErrorNotification }: Dependencies) => {
-  const [showCustomPicker, setShowCustomPicker] = useState(false);
+const NonInjectedMetricsTimeRangeSelector = observer(
+  ({ selectedMetricsTimeRange, showErrorNotification }: Dependencies) => {
+    const [showCustomPicker, setShowCustomPicker] = useState(false);
 
-  const selectOptions: TimeRangeOption[] = useMemo(
-    () => [
-      ...timeRangeOptions.map((opt) => ({
-        value: opt.duration,
-        label: opt.label,
-      })),
-      {
-        value: "custom" as const,
-        label: "Custom",
-      },
-    ],
-    [],
-  );
+    const selectOptions: TimeRangeOption[] = useMemo(
+      () => [
+        ...timeRangeOptions.map((opt) => ({
+          value: opt.duration,
+          label: opt.label,
+        })),
+        {
+          value: "custom" as const,
+          label: "Custom",
+        },
+      ],
+      [],
+    );
 
-  const isCustom = selectedMetricsTimeRange.isCustom.get();
-  const displayLabel = selectedMetricsTimeRange.displayLabel.get();
-  const timeRange = selectedMetricsTimeRange.value.get();
+    const isCustom = selectedMetricsTimeRange.isCustom.get();
+    const displayLabel = selectedMetricsTimeRange.displayLabel.get();
+    const timeRange = selectedMetricsTimeRange.value.get();
 
-  const currentValue: number | "custom" | null = useMemo(
-    () => (isCustom ? "custom" : timeRange.duration),
-    [isCustom, timeRange.duration],
-  );
+    const currentValue: number | "custom" | null = useMemo(
+      () => (isCustom ? "custom" : timeRange.duration),
+      [isCustom, timeRange.duration],
+    );
 
-  const handleChange = (option: SingleValue<SelectOption<number | "custom">>) => {
-    if (!option) return;
+    const handleChange = (option: SingleValue<SelectOption<number | "custom">>) => {
+      if (!option) return;
 
-    if (option.value === "custom") {
-      setShowCustomPicker(true);
-    } else {
-      selectedMetricsTimeRange.setDuration(option.value);
+      if (option.value === "custom") {
+        setShowCustomPicker(true);
+      } else {
+        selectedMetricsTimeRange.setDuration(option.value);
+        setShowCustomPicker(false);
+      }
+    };
+
+    const handleCustomRangeApply = (start: Date, end: Date) => {
+      const startSeconds = Math.floor(start.getTime() / 1000);
+      const endSeconds = Math.floor(end.getTime() / 1000);
+
+      selectedMetricsTimeRange.setCustomRange(startSeconds, endSeconds);
       setShowCustomPicker(false);
-    }
-  };
+    };
 
-  const handleCustomRangeApply = (start: Date, end: Date) => {
-    const startSeconds = Math.floor(start.getTime() / 1000);
-    const endSeconds = Math.floor(end.getTime() / 1000);
-
-    selectedMetricsTimeRange.setCustomRange(startSeconds, endSeconds);
-    setShowCustomPicker(false);
-  };
-
-  return (
-    <div className={styles.container}>
-      <Select<number | "custom", SelectOption<number | "custom">, false>
-        id="metrics-time-range-select"
-        options={selectOptions}
-        value={currentValue}
-        onChange={handleChange}
-        menuPlacement="auto"
-        themeName="lens"
-        isSearchable={false}
-        placeholder="Select time range..."
-      />
-      <span className={styles.displayLabel}>{displayLabel}</span>
-      <Dialog isOpen={showCustomPicker} close={() => setShowCustomPicker(false)}>
-        <CustomTimeRangePicker
-          onApply={handleCustomRangeApply}
-          onCancel={() => setShowCustomPicker(false)}
-          showErrorNotification={showErrorNotification}
-          initialStart={
-            isCustom && selectedMetricsTimeRange.value.get().customStart
-              ? new Date(selectedMetricsTimeRange.value.get().customStart! * 1000)
-              : new Date(Date.now() - 3600000)
-          }
-          initialEnd={
-            isCustom && selectedMetricsTimeRange.value.get().customEnd
-              ? new Date(selectedMetricsTimeRange.value.get().customEnd! * 1000)
-              : new Date()
-          }
+    return (
+      <div className={styles.container}>
+        <Select<number | "custom", SelectOption<number | "custom">, false>
+          id="metrics-time-range-select"
+          options={selectOptions}
+          value={currentValue}
+          onChange={handleChange}
+          menuPlacement="auto"
+          themeName="lens"
+          isSearchable={false}
+          placeholder="Select time range..."
         />
-      </Dialog>
-    </div>
-  );
-});
+        <span className={styles.displayLabel}>{displayLabel}</span>
+        <Dialog isOpen={showCustomPicker} close={() => setShowCustomPicker(false)}>
+          <CustomTimeRangePicker
+            onApply={handleCustomRangeApply}
+            onCancel={() => setShowCustomPicker(false)}
+            showErrorNotification={showErrorNotification}
+            initialStart={
+              isCustom && selectedMetricsTimeRange.value.get().customStart
+                ? new Date(selectedMetricsTimeRange.value.get().customStart! * 1000)
+                : new Date(Date.now() - 3600000)
+            }
+            initialEnd={
+              isCustom && selectedMetricsTimeRange.value.get().customEnd
+                ? new Date(selectedMetricsTimeRange.value.get().customEnd! * 1000)
+                : new Date()
+            }
+          />
+        </Dialog>
+      </div>
+    );
+  },
+);
 
 interface CustomTimeRangePickerProps {
   onApply: (start: Date, end: Date) => void;
