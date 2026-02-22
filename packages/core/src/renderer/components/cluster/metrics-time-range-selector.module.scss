@@ -1,0 +1,76 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.displayLabel {
+  font-size: 12px;
+  color: var(--textColorSecondary);
+  white-space: nowrap;
+}
+
+.pickerContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding);
+  min-width: 300px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 12px;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--borderColor);
+  border-radius: var(--border-radius);
+  background-color: var(--contentColor);
+  color: var(--textColorPrimary);
+  color-scheme: dark;
+}
+
+.inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.button {
+  padding: 4px 12px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.cancelButton {
+  border: 1px solid var(--borderColor);
+  background-color: var(--contentColor);
+  color: var(--textColorPrimary);
+}
+
+.applyButton {
+  border: none;
+  background-color: var(--colorSuccess);
+  color: white;
+}

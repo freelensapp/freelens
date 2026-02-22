@@ -4,14 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { Dialog } from "../dialog";
 import { Select } from "../select";
 import selectedMetricsTimeRangeInjectable, {
   timeRangeOptions,
 } from "./overview/selected-metrics-time-range.injectable";
+import styles from "./metrics-time-range-selector.module.scss";
 
+import type { ShowNotification } from "@freelensapp/notifications";
 import type { SingleValue } from "react-select";
 
 import type { SelectOption } from "../select";
@@ -19,6 +23,7 @@ import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-
 
 interface Dependencies {
   selectedMetricsTimeRange: SelectedMetricsTimeRange;
+  showErrorNotification: ShowNotification;
 }
 
 interface TimeRangeOption {
@@ -26,32 +31,31 @@ interface TimeRangeOption {
   label: string;
 }
 
-const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange }: Dependencies) => {
+const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange, showErrorNotification }: Dependencies) => {
   const [showCustomPicker, setShowCustomPicker] = useState(false);
 
-  // Convert time range options to select options
-  const selectOptions: TimeRangeOption[] = [
-    ...timeRangeOptions.map((opt) => ({
-      value: opt.duration,
-      label: opt.label,
-    })),
-    {
-      value: "custom" as const,
-      label: "Custom",
-    },
-  ];
+  const selectOptions: TimeRangeOption[] = useMemo(
+    () => [
+      ...timeRangeOptions.map((opt) => ({
+        value: opt.duration,
+        label: opt.label,
+      })),
+      {
+        value: "custom" as const,
+        label: "Custom",
+      },
+    ],
+    [],
+  );
 
   const isCustom = selectedMetricsTimeRange.isCustom.get();
   const displayLabel = selectedMetricsTimeRange.displayLabel.get();
+  const timeRange = selectedMetricsTimeRange.value.get();
 
-  // Find current selected option - return just the value, not the full option
-  const currentValue: number | "custom" | undefined = isCustom
-    ? "custom"
-    : (selectOptions.find((opt) => {
-        const timeRange = selectedMetricsTimeRange.value.get();
-
-        return opt.value === timeRange.duration;
-      })?.value ?? selectOptions[0]?.value);
+  const currentValue: number | "custom" | null = useMemo(
+    () => (isCustom ? "custom" : timeRange.duration),
+    [isCustom, timeRange.duration],
+  );
 
   const handleChange = (option: SingleValue<SelectOption<number | "custom">>) => {
     if (!option) return;
@@ -73,10 +77,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
   };
 
   return (
-    <div
-      className="MetricsTimeRangeSelector"
-      style={{ position: "relative", display: "flex", alignItems: "center", gap: "8px", minWidth: "120px" }}
-    >
+    <div className={styles.container}>
       <Select<number | "custom", SelectOption<number | "custom">, false>
         id="metrics-time-range-select"
         options={selectOptions}
@@ -87,11 +88,12 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
         isSearchable={false}
         placeholder="Select time range..."
       />
-      <span style={{ fontSize: "12px", color: "var(--textColorSecondary)", whiteSpace: "nowrap" }}>{displayLabel}</span>
-      {showCustomPicker && (
+      <span className={styles.displayLabel}>{displayLabel}</span>
+      <Dialog isOpen={showCustomPicker} close={() => setShowCustomPicker(false)}>
         <CustomTimeRangePicker
           onApply={handleCustomRangeApply}
           onCancel={() => setShowCustomPicker(false)}
+          showErrorNotification={showErrorNotification}
           initialStart={
             isCustom && selectedMetricsTimeRange.value.get().customStart
               ? new Date(selectedMetricsTimeRange.value.get().customStart! * 1000)
@@ -103,7 +105,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
               : new Date()
           }
         />
-      )}
+      </Dialog>
     </div>
   );
 });
@@ -111,19 +113,24 @@ const NonInjectedMetricsTimeRangeSelector = observer(({ selectedMetricsTimeRange
 interface CustomTimeRangePickerProps {
   onApply: (start: Date, end: Date) => void;
   onCancel: () => void;
+  showErrorNotification: ShowNotification;
   initialStart: Date;
   initialEnd: Date;
 }
 
 const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
-  ({ onApply, onCancel, initialStart, initialEnd }) => {
+  ({ onApply, onCancel, showErrorNotification, initialStart, initialEnd }) => {
     const [startDate, setStartDate] = useState(initialStart);
     const [endDate, setEndDate] = useState(initialEnd);
 
     const handleApply = () => {
       if (startDate >= endDate) {
-        alert("Start date must be before end date");
-
+        showErrorNotification("Start date must be before end date");
+        return;
+      }
+      const now = new Date();
+      if (endDate > now) {
+        showErrorNotification("End date cannot be in the future");
         return;
       }
 
@@ -145,79 +152,28 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
     };
 
     return (
-      <div
-        className="CustomTimeRangePicker"
-        style={{
-          position: "absolute",
-          top: "100%",
-          left: 0,
-          zIndex: 1000,
-          backgroundColor: "var(--contentColor)",
-          border: "1px solid var(--borderColor)",
-          borderRadius: "var(--border-radius)",
-          padding: "var(--padding)",
-          marginTop: "4px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-          minWidth: "300px",
-        }}
-      >
-        <div style={{ marginBottom: "8px" }}>
-          <label style={{ display: "block", marginBottom: "4px", fontSize: "12px" }}>Start:</label>
+      <div className={styles.pickerContent}>
+        <div className={styles.inputGroup}>
+          <label>Start:</label>
           <input
             type="datetime-local"
             value={formatDateTimeLocal(startDate)}
             onChange={(e) => setStartDate(parseDateTimeLocal(e.target.value))}
-            style={{
-              width: "100%",
-              padding: "4px 8px",
-              border: "1px solid var(--borderColor)",
-              borderRadius: "var(--border-radius)",
-              backgroundColor: "var(--contentColor)",
-              color: "var(--textColorPrimary)",
-            }}
           />
         </div>
-        <div style={{ marginBottom: "8px" }}>
-          <label style={{ display: "block", marginBottom: "4px", fontSize: "12px" }}>End:</label>
+        <div className={styles.inputGroup}>
+          <label>End:</label>
           <input
             type="datetime-local"
             value={formatDateTimeLocal(endDate)}
             onChange={(e) => setEndDate(parseDateTimeLocal(e.target.value))}
-            style={{
-              width: "100%",
-              padding: "4px 8px",
-              border: "1px solid var(--borderColor)",
-              borderRadius: "var(--border-radius)",
-              backgroundColor: "var(--contentColor)",
-              color: "var(--textColorPrimary)",
-            }}
           />
         </div>
-        <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-          <button
-            onClick={onCancel}
-            style={{
-              padding: "4px 12px",
-              border: "1px solid var(--borderColor)",
-              borderRadius: "var(--border-radius)",
-              backgroundColor: "var(--contentColor)",
-              color: "var(--textColorPrimary)",
-              cursor: "pointer",
-            }}
-          >
+        <div className={styles.actions}>
+          <button onClick={onCancel} className={`${styles.button} ${styles.cancelButton}`}>
             Cancel
           </button>
-          <button
-            onClick={handleApply}
-            style={{
-              padding: "4px 12px",
-              border: "none",
-              borderRadius: "var(--border-radius)",
-              backgroundColor: "var(--colorSuccess)",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
+          <button onClick={handleApply} className={`${styles.button} ${styles.applyButton}`}>
             Apply
           </button>
         </div>
@@ -229,5 +185,6 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
 export const MetricsTimeRangeSelector = withInjectables<Dependencies>(NonInjectedMetricsTimeRangeSelector, {
   getProps: (di) => ({
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+    showErrorNotification: di.inject(showErrorNotificationInjectable),
   }),
 });
