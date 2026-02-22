@@ -173,10 +173,18 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
           />
         </div>
         <div className={styles.actions}>
-          <button onClick={onCancel} className={`${styles.button} ${styles.cancelButton}`}>
+          <button
+            onClick={onCancel}
+            className={`${styles.button} ${styles.cancelButton}`}
+            aria-label="Cancel custom time range selection"
+          >
             Cancel
           </button>
-          <button onClick={handleApply} className={`${styles.button} ${styles.applyButton}`}>
+          <button
+            onClick={handleApply}
+            className={`${styles.button} ${styles.applyButton}`}
+            aria-label="Apply custom time range"
+          >
             Apply
           </button>
         </div>
