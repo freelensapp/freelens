@@ -11,6 +11,7 @@ import { Radio, RadioGroup } from "../radio";
 import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+import styles from "./cluster-metric-switchers.module.css";
 
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
@@ -22,7 +23,7 @@ interface Dependencies {
 
 const NonInjectedClusterMetricSwitchers = observer(
   ({ selectedMetricsType, selectedNodeRoleForMetrics }: Dependencies) => (
-    <div className="flex gaps" style={{ marginBottom: "calc(var(--margin) * 2)" }}>
+    <div className={`flex gaps ${styles.container}`}>
       <div className="box grow">
         <RadioGroup
           asButtons
@@ -34,10 +35,10 @@ const NonInjectedClusterMetricSwitchers = observer(
           <Radio label="Worker" value="worker" disabled={!selectedNodeRoleForMetrics.hasWorkerNodes.get()} />
         </RadioGroup>
       </div>
-      <div className="box" style={{ minWidth: "140px" }}>
+      <div className={`box ${styles.timeRangeBox}`}>
         <MetricsTimeRangeSelector />
       </div>
-      <div className="box grow" style={{ textAlign: "right" }}>
+      <div className={`box grow ${styles.metricTypeBox}`}>
         <RadioGroup
           asButtons
           className="RadioGroup flex gaps"
