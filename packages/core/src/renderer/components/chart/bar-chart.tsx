@@ -74,6 +74,12 @@ const NonInjectedBarChart = observer(
 
     // Calculate adaptive time label step based on time range
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
+    // Calculate adaptive time label step based on time range
+    // The step determines how frequently labels appear on the x-axis to prevent overcrowding
+    // Step values are in minutes and scale with the total time range being displayed:
+    // - Short ranges (≤1 hour): Show labels every 5 minutes for fine granularity
+    // - Medium ranges (1-4 hours): Show labels every 10-15 minutes to balance detail with readability
+    // - Long ranges (>4 hours): Show labels every 24 hours (1440 minutes) to avoid clutter
     const adaptiveTimeLabelStep = (() => {
       if (timeRangeSeconds <= 3600) return 5; // 1 hour: every 5 minutes
       if (timeRangeSeconds <= 7200) return 10; // 2 hours: every 10 minutes
@@ -88,7 +94,7 @@ const NonInjectedBarChart = observer(
       if (index == 0) return offset + label;
       if (index == 60) return label + offset;
 
-      return index % adaptiveTimeLabelStep == 0 ? label : "";
+      return index % adaptiveTimeLabelStep === 0 ? label : "";
     };
 
     const barOptions: ChartOptions = {
@@ -122,7 +128,7 @@ const NonInjectedBarChart = observer(
                 minute: "x",
               },
               parser: (timestamp: string | number) => {
-                // Timestamp is already in milliseconds
+                // The parser expects timestamps in milliseconds (after data transformation from seconds to ms)
                 return typeof timestamp === "string" ? parseInt(timestamp) : timestamp;
               },
             },
