@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../mixins";
+
 .container {
   position: relative;
   display: flex;
@@ -23,6 +25,16 @@
   flex-direction: column;
   gap: var(--padding);
   min-width: 300px;
+  background-color: var(--contentColor);
+  border-radius: var(--border-radius);
+  padding: calc(var(--padding) * 2);
+}
+
+.header {
+  margin: 0 0 var(--padding) 0;
+  color: var(--textColorPrimary) !important;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .inputGroup {
@@ -34,6 +46,7 @@
 .inputGroup label {
   display: block;
   font-size: 12px;
+  color: var(--textColorSecondary);
 }
 
 .inputGroup input {
@@ -49,6 +62,16 @@
 .inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
   cursor: pointer;
+}
+
+@include theme-light {
+  .inputGroup input {
+    color-scheme: light;
+  }
+
+  .inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+  }
 }
 
 .actions {
@@ -71,6 +94,6 @@
 
 .applyButton {
   border: none;
-  background-color: var(--colorSuccess);
+  background-color: var(--buttonPrimaryBackground);
   color: white;
 }

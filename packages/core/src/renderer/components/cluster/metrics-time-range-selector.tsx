@@ -156,12 +156,14 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
 
     return (
       <div className={styles.pickerContent}>
+        <h5 className={styles.header}>Custom Time Range</h5>
         <div className={styles.inputGroup}>
           <label>Start:</label>
           <input
             type="datetime-local"
             value={formatDateTimeLocal(startDate)}
             onChange={(e) => setStartDate(parseDateTimeLocal(e.target.value))}
+            autoFocus
           />
         </div>
         <div className={styles.inputGroup}>
