@@ -64,7 +64,7 @@
   cursor: pointer;
 }
 
-@include theme-light {
+@include mixins.theme-light {
   .inputGroup input {
     color-scheme: light;
   }
