@@ -2,14 +2,25 @@
   "name": "@freelensapp/resource-templates",
   "version": "1.8.2-0",
   "private": false,
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "files": [
+    "templates/**/*"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "copyright": "© 2023 OpenLens Authors",
-  "license": "MIT",
-  "author": "OpenLens Authors <freelens@freelens.app>",
-  "files": [
-    "templates/**/*"
-  ]
+  "copyright": "© 2023 OpenLens Authors"
 }

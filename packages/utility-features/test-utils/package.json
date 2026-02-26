@@ -1,29 +1,32 @@
 {
   "name": "@freelensapp/test-utils",
   "version": "1.8.2-0",
-  "description": "A collection of utilities for testing",
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "private": false,
-  "files": [
-    "dist"
-  ],
+  "description": "A collection of utilities for testing",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "license": "MIT",
-  "homepage": "https://freelens.app",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "lens-webpack-build",
-    "build:dev": "lens-webpack-build"
+    "build:dev": "lens-webpack-build",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "@ogre-tools/injectable": "^17.11.1",
@@ -44,5 +47,9 @@
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.4",
     "webpack": "^5.105.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
