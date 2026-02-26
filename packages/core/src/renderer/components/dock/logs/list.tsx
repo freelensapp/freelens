@@ -34,6 +34,7 @@ export interface LogListProps {
 }
 
 const colorConverter = new AnsiUp();
+const ansiEscapeSequenceRegex = /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
 export interface LogListRef {
   scrollToItem: (index: number, align: Align) => void;
@@ -50,18 +51,69 @@ class NonForwardedLogList extends React.Component<
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
   @observable.ref private containerWidth = 0;
+  @observable private overlapVersion = 0;
 
   private virtualListDivElement: HTMLDivElement | null = null;
+  private resizeObserver: ResizeObserver | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
+  private overlappingRowPadding = new Map<number, number>();
+  private pendingResetFromIndex: number | null = null;
+  private pendingResetFrame: number | null = null;
   private lineHeight = 18;
   private charWidth = 7.2;
   private rowPadding = 32;
+  private rowVerticalPadding = 4;
+  private wrappedRowSafetyPadding = 1;
+
+  private flushMeasuredRowReset = () => {
+    this.pendingResetFrame = null;
+
+    if (this.pendingResetFromIndex === null) {
+      return;
+    }
+
+    this.virtualListRef.current?.resetAfterIndex(this.pendingResetFromIndex);
+    this.pendingResetFromIndex = null;
+  };
+
+  private scheduleMeasuredRowReset(index: number) {
+    this.pendingResetFromIndex = this.pendingResetFromIndex === null ? index : Math.min(this.pendingResetFromIndex, index);
+
+    if (this.pendingResetFrame === null) {
+      this.pendingResetFrame = window.requestAnimationFrame(this.flushMeasuredRowReset);
+    }
+  }
+
+  @action
+  private updateContainerMetrics() {
+    if (!this.virtualListDivElement) {
+      return;
+    }
+
+    const prevWidth = this.containerWidth;
+
+    this.measureCharMetrics();
+    this.containerWidth = this.virtualListDivElement.clientWidth;
+
+    if (prevWidth !== this.containerWidth) {
+      this.overlappingRowPadding.clear();
+      this.overlapVersion++;
+      this.virtualListRef.current?.resetAfterIndex(0);
+    }
+  }
 
   private virtualListDiv = (el: HTMLDivElement | null) => {
+    this.resizeObserver?.disconnect();
     this.virtualListDivElement = el;
 
     if (el) {
-      this.containerWidth = el.clientWidth;
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateContainerMetrics();
+      });
+      this.resizeObserver.observe(el);
+      this.updateContainerMetrics();
+    } else {
+      this.resizeObserver = null;
     }
   };
 
@@ -72,11 +124,23 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentDidMount() {
-    this.measureCharMetrics();
+    this.updateContainerMetrics();
+    window.addEventListener("resize", this.updateContainerMetrics);
     disposeOnUnmount(this, [
       reaction(
         () => this.props.model.logs.get(),
         (logs, prevLogs) => {
+          const didLogsResetOrPrepend =
+            !prevLogs.length ||
+            !logs.length ||
+            logs[0] !== prevLogs[0] ||
+            logs.length < prevLogs.length;
+
+          if (didLogsResetOrPrepend) {
+            this.overlappingRowPadding.clear();
+            this.overlapVersion++;
+          }
+
           this.onLogsInitialLoad(logs, prevLogs);
           this.onLogsUpdate();
           this.onUserScrolledUp(logs, prevLogs);
@@ -89,18 +153,29 @@ class NonForwardedLogList extends React.Component<
   }
 
   private measureCharMetrics() {
+    if (!this.virtualListDivElement) {
+      return;
+    }
+
     const probe = document.createElement("span");
+    const probeCharacterCount = 10;
 
     probe.style.position = "absolute";
     probe.style.visibility = "hidden";
     probe.style.fontFamily = "var(--font-monospace)";
     probe.style.fontSize = "smaller";
     probe.style.whiteSpace = "pre";
-    probe.textContent = "X";
-    document.body.appendChild(probe);
-    this.charWidth = probe.offsetWidth || this.charWidth;
-    this.lineHeight = probe.offsetHeight || this.lineHeight;
-    document.body.removeChild(probe);
+    probe.textContent = "M".repeat(probeCharacterCount);
+
+    this.virtualListDivElement.appendChild(probe);
+
+    const probeWidth = probe.getBoundingClientRect().width;
+    const probeHeight = probe.getBoundingClientRect().height;
+
+    this.charWidth = probeWidth > 0 ? probeWidth / probeCharacterCount : this.charWidth;
+    this.lineHeight = probeHeight > 0 ? probeHeight : this.lineHeight;
+
+    this.virtualListDivElement.removeChild(probe);
   }
 
   componentDidUpdate() {
@@ -110,8 +185,37 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentWillUnmount() {
+    this.overlappingRowPadding.clear();
+    this.overlapVersion++;
+    if (this.pendingResetFrame !== null) {
+      window.cancelAnimationFrame(this.pendingResetFrame);
+      this.pendingResetFrame = null;
+    }
+    this.pendingResetFromIndex = null;
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+    window.removeEventListener("resize", this.updateContainerMetrics);
     this.bindInnerRef(null);
   }
+
+  private onRowRendered = (rowIndex: number) => (element: HTMLDivElement | null) => {
+    if (!element || !this.showWordWrap) {
+      return;
+    }
+
+    const overflowPadding = Math.ceil(element.scrollHeight - element.clientHeight);
+    const nextPadding = overflowPadding > this.wrappedRowSafetyPadding ? overflowPadding : 0;
+    const currentPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
+    const resolvedPadding = Math.max(currentPadding, nextPadding);
+
+    if (currentPadding === resolvedPadding) {
+      return;
+    }
+
+    this.overlappingRowPadding.set(rowIndex, resolvedPadding);
+    this.overlapVersion++;
+    this.scheduleMeasuredRowReset(rowIndex);
+  };
 
   private bindInnerRef(value: LogListRef | null) {
     if (typeof this.props.innerRef === "function") {
@@ -175,17 +279,26 @@ class NonForwardedLogList extends React.Component<
   }
 
   getRowHeights(): number[] {
+    this.overlapVersion;
+
     if (!this.showWordWrap || !this.containerWidth) {
-      return array.filled(this.logs.length, this.lineHeight);
+      return array.filled(this.logs.length, this.lineHeight + this.rowVerticalPadding);
     }
 
     const usableWidth = Math.max(this.containerWidth - this.rowPadding, 1);
-    const charsPerLine = Math.floor(usableWidth / this.charWidth);
+    const charsPerLine = Math.max(1, Math.floor(usableWidth / this.charWidth));
 
-    return this.logs.map((line) => {
-      const lineCount = Math.max(1, Math.ceil(line.length / charsPerLine));
+    return this.logs.map((line, rowIndex) => {
+      const visibleLine = line.replace(ansiEscapeSequenceRegex, "");
+      const lineCount = visibleLine.split("\n").reduce((count, segment) => {
+        const wrappedLineCount = Math.max(1, Math.ceil(segment.length / charsPerLine));
 
-      return lineCount * this.lineHeight;
+        return count + wrappedLineCount;
+      }, 0);
+
+      const overlapPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
+
+      return lineCount * this.lineHeight + this.rowVerticalPadding + this.wrappedRowSafetyPadding + overlapPadding;
     });
   }
 
@@ -294,7 +407,7 @@ class NonForwardedLogList extends React.Component<
     }
 
     return (
-      <div className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
+      <div ref={this.onRowRendered(rowIndex)} className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
         {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
         {/* For preserving copy-paste experience and keeping line breaks */}
         <br />
