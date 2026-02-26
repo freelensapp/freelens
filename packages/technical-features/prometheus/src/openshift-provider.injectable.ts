@@ -4,8 +4,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { createPrometheusProvider, findNamespacedService, prometheusProviderInjectionToken } from "./provider";
 import { getOperatorLikeQueryFor } from "./operator-provider.injectable";
+import { createPrometheusProvider, findNamespacedService, prometheusProviderInjectionToken } from "./provider";
 
 const openshiftPrometheusProviderInjectable = getInjectable({
   id: "openshift-prometheus-provider",

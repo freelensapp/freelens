@@ -11,12 +11,50 @@ import k8sRequestInjectable from "./k8s-request.injectable";
 
 import type { Cluster } from "../common/cluster/cluster";
 import type { RequestMetricsParams } from "../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
+import type { ProxyFetch } from "./fetch/proxy-fetch.injectable";
 
 export type GetMetrics = (
   cluster: Cluster,
   prometheusPath: string,
   queryParams: RequestMetricsParams & { query: string },
 ) => Promise<unknown>;
+
+/**
+ * Fetch metrics directly from a Prometheus URL, bypassing the K8s service proxy.
+ * Used for environments like OpenShift where Prometheus requires bearer token
+ * authentication via kube-rbac-proxy.
+ */
+async function fetchDirectMetrics(
+  proxyFetch: ProxyFetch,
+  cluster: Cluster,
+  prometheusPrefix: string,
+  directUrl: string,
+  body: URLSearchParams,
+): Promise<unknown> {
+  const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+  const bearerToken = cluster.preferences.prometheus?.bearerToken;
+
+  if (bearerToken) {
+    headers.Authorization = `Bearer ${bearerToken}`;
+  }
+
+  const response = await proxyFetch(url, {
+    method: "POST",
+    headers,
+    body: body.toString(),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to POST ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
+      cause: response,
+    });
+  }
+
+  return response.json();
+}
 
 const getMetricsInjectable = getInjectable({
   id: "get-metrics",
@@ -36,33 +74,7 @@ const getMetricsInjectable = getInjectable({
       const directUrl = cluster.preferences.prometheus?.directUrl;
 
       if (directUrl) {
-        // Direct request to Prometheus, bypassing K8s service proxy.
-        // Used for environments like OpenShift where Prometheus requires
-        // bearer token authentication via kube-rbac-proxy.
-        const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
-        const headers: Record<string, string> = {
-          "Content-Type": "application/x-www-form-urlencoded",
-        };
-        const bearerToken = cluster.preferences.prometheus?.bearerToken;
-
-        if (bearerToken) {
-          headers["Authorization"] = `Bearer ${bearerToken}`;
-        }
-
-        const response = await proxyFetch(url, {
-          method: "POST",
-          headers,
-          body: body.toString(),
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to POST ${url} for clusterId=${cluster.id}: ${response.statusText}`,
-            { cause: response },
-          );
-        }
-
-        return response.json();
+        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, body);
       }
 
       const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;

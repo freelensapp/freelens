@@ -18,11 +18,32 @@ import { SubTitle } from "../layout/sub-title";
 import { Select } from "../select";
 
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type {
   MetricProviderInfo,
   RequestMetricsProviders,
 } from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
 import type { SelectOption } from "../select";
+
+type PrometheusConfig = NonNullable<ClusterPrometheusPreferences["prometheus"]>;
+
+function buildPrometheusConfig(
+  parsed: string[],
+  prefix: string,
+  https: boolean,
+  directUrl?: string,
+  bearerToken?: string,
+): PrometheusConfig {
+  return {
+    namespace: parsed[0] || "",
+    service: parsed[1] || "",
+    port: parseInt(parsed[2]) || 0,
+    prefix,
+    https,
+    directUrl: directUrl || undefined,
+    bearerToken: bearerToken || undefined,
+  };
+}
 
 export interface ClusterPrometheusSettingProps {
   cluster: Cluster;
@@ -131,24 +152,18 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return prefix.startsWith("/") ? prefix : `/${prefix}`;
   }
 
-  parsePrometheusPath = () => {
+  parsePrometheusPath = (): PrometheusConfig | undefined => {
     if (!this.selectedOption) {
       return undefined;
     }
+
+    const prefix = this.sanitizePrefix(this.customPrefix);
 
     // For OpenShift, allow saving with just directUrl (no service path needed)
     if (this.isOpenShift && this.directUrl) {
       const parsed = this.path ? this.path.split(/\/|:/, 3) : [];
 
-      return {
-        namespace: parsed[0] || "",
-        service: parsed[1] || "",
-        port: parseInt(parsed[2]) || 0,
-        prefix: this.sanitizePrefix(this.customPrefix),
-        https: this.useHttps,
-        directUrl: this.directUrl,
-        bearerToken: this.bearerToken || undefined,
-      };
+      return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
     }
 
     if (!this.path) {
@@ -161,15 +176,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       return undefined;
     }
 
-    return {
-      namespace: parsed[0],
-      service: parsed[1],
-      port: parseInt(parsed[2]),
-      prefix: this.sanitizePrefix(this.customPrefix),
-      https: this.useHttps,
-      directUrl: this.directUrl || undefined,
-      bearerToken: this.bearerToken || undefined,
-    };
+    return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
   };
 
   onSaveProvider = () => {
@@ -274,10 +281,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                     placeholder="https://prometheus-k8s-openshift-monitoring.apps.example.com"
                   />
                   <small className="hint">
-                    The external URL (OpenShift Route or Ingress) to the Prometheus instance. This connects directly
-                    to Prometheus, bypassing the Kubernetes API service proxy which cannot forward authentication
-                    headers. Find the route with: oc get route prometheus-k8s -n openshift-monitoring
-                    -o jsonpath=&apos;https://&#123;.spec.host&#125;&apos;
+                    The external URL (OpenShift Route or Ingress) to the Prometheus instance. This connects directly to
+                    Prometheus, bypassing the Kubernetes API service proxy which cannot forward authentication headers.
+                    Find the route with: oc get route prometheus-k8s -n openshift-monitoring -o
+                    jsonpath=&apos;https://&#123;.spec.host&#125;&apos;
                   </small>
                 </section>
                 <hr />
@@ -292,8 +299,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                     placeholder="eyJhbGciOi..."
                   />
                   <small className="hint">
-                    Service account bearer token for authenticating to Prometheus. On OpenShift, Prometheus
-                    requires authentication via kube-rbac-proxy. Generate a long-lived token with: oc create token
+                    Service account bearer token for authenticating to Prometheus. On OpenShift, Prometheus requires
+                    authentication via kube-rbac-proxy. Generate a long-lived token with: oc create token
                     &lt;service-account&gt; -n openshift-monitoring --duration=8760h
                   </small>
                 </section>
