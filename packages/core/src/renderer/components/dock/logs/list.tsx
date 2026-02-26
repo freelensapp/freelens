@@ -34,7 +34,8 @@ export interface LogListProps {
 }
 
 const colorConverter = new AnsiUp();
-const ansiEscapeSequenceRegex = /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
+const ansiEscapeSequenceRegex =
+  /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
 export interface LogListRef {
   scrollToItem: (index: number, align: Align) => void;
@@ -77,7 +78,8 @@ class NonForwardedLogList extends React.Component<
   };
 
   private scheduleMeasuredRowReset(index: number) {
-    this.pendingResetFromIndex = this.pendingResetFromIndex === null ? index : Math.min(this.pendingResetFromIndex, index);
+    this.pendingResetFromIndex =
+      this.pendingResetFromIndex === null ? index : Math.min(this.pendingResetFromIndex, index);
 
     if (this.pendingResetFrame === null) {
       this.pendingResetFrame = window.requestAnimationFrame(this.flushMeasuredRowReset);
@@ -131,10 +133,7 @@ class NonForwardedLogList extends React.Component<
         () => this.props.model.logs.get(),
         (logs, prevLogs) => {
           const didLogsResetOrPrepend =
-            !prevLogs.length ||
-            !logs.length ||
-            logs[0] !== prevLogs[0] ||
-            logs.length < prevLogs.length;
+            !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
 
           if (didLogsResetOrPrepend) {
             this.overlappingRowPadding.clear();

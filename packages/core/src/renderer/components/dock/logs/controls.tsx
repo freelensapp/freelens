@@ -62,12 +62,7 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
           onChange={toggleTimestamps}
           className="show-timestamps"
         />
-        <Checkbox
-          label="Word wrap"
-          value={showWordWrap}
-          onChange={toggleWordWrap}
-          className="show-word-wrap"
-        />
+        <Checkbox label="Word wrap" value={showWordWrap} onChange={toggleWordWrap} className="show-word-wrap" />
         <Checkbox
           label="Show previous terminated container"
           value={previous}
