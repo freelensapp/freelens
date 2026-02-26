@@ -600,6 +600,28 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       />
                     </div>
                     <div
+                      class="TableCell podwarning nowrap"
+                      id="podwarning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="warning_amber"
+                          >
+                            warning_amber
+                          </span>
+                        </i>
+                      </div>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
                       class="TableCell namespace nowrap sorting"
                       id="namespace"
                     >
@@ -867,6 +889,9 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                                   test-pod-1
                                 </div>
                               </div>
+                              <div
+                                class="TableCell podwarning"
+                              />
                               <div
                                 class="TableCell namespace"
                               >
@@ -1752,6 +1777,28 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell podwarning nowrap"
+                      id="podwarning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="warning_amber"
+                          >
+                            warning_amber
+                          </span>
+                        </i>
+                      </div>
                       <div
                         class="resize-handle"
                       />
@@ -2764,6 +2811,28 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                           arrow_drop_down
                         </span>
                       </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell podwarning nowrap"
+                      id="podwarning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="warning_amber"
+                          >
+                            warning_amber
+                          </span>
+                        </i>
+                      </div>
                       <div
                         class="resize-handle"
                       />
