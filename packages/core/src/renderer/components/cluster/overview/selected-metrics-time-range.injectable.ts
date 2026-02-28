@@ -15,12 +15,12 @@ export type SelectedMetricsTimeRange = ReturnType<(typeof selectedMetricsTimeRan
  * Predefined time range options
  */
 export const timeRangeOptions = [
-  { label: "5m", duration: 300 },
-  { label: "30m", duration: 1800 },
-  { label: "1h", duration: 3600 },
-  { label: "2h", duration: 7200 },
-  { label: "4h", duration: 14400 },
-  { label: "24h", duration: 86400 },
+  { label: "5 minutes", duration: 300 },
+  { label: "30 minutes", duration: 1800 },
+  { label: "1 hour", duration: 3600 },
+  { label: "2 hours", duration: 7200 },
+  { label: "4 hours", duration: 14400 },
+  { label: "Today", duration: 86400 },
 ] as const;
 
 const selectedMetricsTimeRangeInjectable = getInjectable({
@@ -76,15 +76,14 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
     });
 
     /**
-     * Get the display label in compact format (e.g., "now-1h" or date range)
+     * Get the auxiliary display label shown next to the selector.
+     * Only custom ranges return text; predefined ranges intentionally return an empty string.
      */
     const displayLabel = computed(() => {
       const timeRange = value.get();
 
       if (timeRange.duration !== null) {
-        const option = timeRangeOptions.find((opt) => opt.duration === timeRange.duration);
-
-        return option ? `now-${option.label}` : "Custom";
+        return "";
       } else {
         // Custom time range - format as date range
         if (timeRange.customStart && timeRange.customEnd) {

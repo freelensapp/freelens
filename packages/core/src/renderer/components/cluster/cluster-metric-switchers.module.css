@@ -5,10 +5,19 @@
 
 .container {
   margin-bottom: calc(var(--margin) * 2);
+  align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.container > div {
+  min-width: 0;
 }
 
 .timeRangeBox {
-  min-width: 140px;
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 260px;
 }
 
 .metricTypeBox {

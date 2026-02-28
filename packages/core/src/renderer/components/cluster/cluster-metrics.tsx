@@ -3,11 +3,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
@@ -34,7 +29,7 @@ import type { SelectedMetricsType } from "./overview/selected-metrics-type.injec
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 interface Dependencies {
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
+  clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   selectedMetricsType: SelectedMetricsType;
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
   selectedMetricsTimeRange: SelectedMetricsTimeRange;
@@ -117,7 +112,9 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   const options = metricType === "cpu" ? cpuOptions : memoryOptions;
 
   const renderMetrics = () => {
-    if (!metricValues.length && !metrics) {
+    const isPending = clusterOverviewMetrics.pending.get();
+
+    if (!metricValues.length && isPending) {
       return <Spinner center />;
     }
 
@@ -150,9 +147,21 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 
 export const ClusterMetrics = withInjectables<Dependencies>(NonInjectedClusterMetrics, {
   getProps: (di) => ({
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
+    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
+      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+    }),
     selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}

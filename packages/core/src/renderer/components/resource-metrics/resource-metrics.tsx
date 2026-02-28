@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { isComputed } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { createContext, useState } from "react";
+import React, { createContext, useRef, useState } from "react";
 import { Radio, RadioGroup } from "../radio";
 
 import type { KubeObject } from "@freelensapp/kube-object";
@@ -40,6 +40,7 @@ export interface ResourceMetricsValue {
   object: KubeObject;
   tab: MetricsTab;
   metrics: Partial<Record<string, MetricData>> | null | undefined;
+  isPending: boolean;
 }
 
 export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>(null);
@@ -47,6 +48,18 @@ export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>
 export const ResourceMetrics = observer(
   <Keys extends string>({ object, tabs, children, className, metrics }: ResourceMetricsProps<Keys>) => {
     const [tab, setTab] = useState<MetricsTab>(tabs[0]);
+    const previousMetricsRef = useRef(metrics);
+    const isAsyncMetrics = isAsyncComputedMetrics(metrics);
+    const isPending = isAsyncMetrics ? metrics.pending.get() : false;
+    const hasMetricsSourceChanged = previousMetricsRef.current !== metrics;
+
+    previousMetricsRef.current = metrics;
+
+    const currentMetrics = isAsyncMetrics
+      ? isPending && hasMetricsSourceChanged
+        ? undefined
+        : metrics.value.get()
+      : metrics;
 
     return (
       <div className={cssNames("ResourceMetrics flex column", className)}>
@@ -61,7 +74,8 @@ export const ResourceMetrics = observer(
           value={{
             object,
             tab,
-            metrics: isAsyncComputedMetrics(metrics) ? metrics.value.get() : metrics,
+            metrics: currentMetrics,
+            isPending,
           }}
         >
           <div className="graph">{children}</div>

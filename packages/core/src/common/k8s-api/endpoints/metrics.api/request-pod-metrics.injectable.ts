@@ -25,13 +25,15 @@ export interface PodMetricData {
   memoryLimits: MetricData;
 }
 
+type PodMetricKey = keyof PodMetricData;
+
 export type RequestPodMetrics = (
   pods: Pod[],
   namespace: string,
   container?: Container,
   selector?: string,
-  opts?: { start?: number; end?: number; range?: number },
-) => Promise<PodMetricData>;
+  opts?: { start?: number; end?: number; range?: number; metrics?: PodMetricKey[] },
+) => Promise<Partial<PodMetricData>>;
 
 const requestPodMetricsInjectable = getInjectable({
   id: "request-pod-metrics",
@@ -41,26 +43,35 @@ const requestPodMetricsInjectable = getInjectable({
     return (pods, namespace, container, selector = "pod, namespace", timeOpts = {}) => {
       const podSelector = pods.map((pod) => pod.getName()).join("|");
       const opts = { category: "pods", pods: podSelector, container: container?.name, namespace, selector };
+      const {
+        metrics = [
+          "cpuUsage",
+          "cpuRequests",
+          "cpuLimits",
+          "memoryUsage",
+          "memoryRequests",
+          "memoryLimits",
+          "fsUsage",
+          "fsWrites",
+          "fsReads",
+          "networkReceive",
+          "networkTransmit",
+        ],
+        ...timeRangeOpts
+      } = timeOpts;
+      const query = metrics.reduce(
+        (acc, metricName) => {
+          acc[metricName] = opts;
 
-      return requestMetrics(
-        {
-          cpuUsage: opts,
-          cpuRequests: opts,
-          cpuLimits: opts,
-          memoryUsage: opts,
-          memoryRequests: opts,
-          memoryLimits: opts,
-          fsUsage: opts,
-          fsWrites: opts,
-          fsReads: opts,
-          networkReceive: opts,
-          networkTransmit: opts,
+          return acc;
         },
-        {
-          namespace,
-          ...timeOpts,
-        },
+        {} as Record<PodMetricKey, typeof opts>,
       );
+
+      return requestMetrics(query, {
+        namespace,
+        ...timeRangeOpts,
+      });
     };
   },
 });

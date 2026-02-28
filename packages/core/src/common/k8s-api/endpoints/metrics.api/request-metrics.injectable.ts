@@ -24,11 +24,12 @@ export interface RequestMetricsParams {
   /**
    * step in seconds
    * When not provided, automatically calculated based on time range:
-   * - <= 1 day: 60s (1 minute)
-   * - <= 7 days: 300s (5 minutes)
-   * - <= 30 days: 900s (15 minutes)
-   * - <= 90 days: 3600s (1 hour)
-   * - > 90 days: 21600s (6 hours)
+   * - <= 4 hours: 60s (1 minute)
+   * - <= 1 day: 600s (10 minutes)
+   * - <= 4 days: 3600s (1 hour)
+   * - <= 14 days: 10800s (3 hours)
+   * - <= 30 days: 21600s (6 hours)
+   * - > 30 days: 43200s (12 hours)
    */
   step?: number;
 
@@ -48,42 +49,60 @@ export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["insta
 
 /**
  * Calculate adaptive step based on time range to avoid excessive data points.
- * Aims to keep data points between 500-1500 for optimal performance.
+ * The policy favors UI responsiveness for large ranges by aggressively downsampling.
  *
  * @param rangeSeconds - Time range in seconds
  * @returns Appropriate step in seconds
  */
 function calculateAdaptiveStep(rangeSeconds: number): number {
   const ONE_DAY = 86400; // 24 hours in seconds
+  const FOUR_HOURS = 4 * 60 * 60;
 
-  // For ranges <= 1 day: 60s step (up to 1,440 points)
-  if (rangeSeconds <= ONE_DAY) {
+  // For ranges <= 4 hours: 60s step (up to 240 points)
+  if (rangeSeconds <= FOUR_HOURS) {
     return 60;
   }
 
-  // For ranges > 1 day and <= 7 days: 5min step (up to ~2,016 points for 7 days)
-  if (rangeSeconds <= 7 * ONE_DAY) {
-    return 300;
+  // For ranges <= 1 day: 10min step (up to 144 points)
+  if (rangeSeconds <= ONE_DAY) {
+    return 600;
   }
 
-  // For ranges > 7 days and <= 30 days: 15min step (up to ~2,880 points for 30 days)
-  if (rangeSeconds <= 30 * ONE_DAY) {
-    return 900;
-  }
-
-  // For ranges > 30 days and <= 90 days: 1hr step (up to ~2,160 points for 90 days)
-  if (rangeSeconds <= 90 * ONE_DAY) {
+  // For ranges <= 4 days: 1hr step
+  if (rangeSeconds <= 4 * ONE_DAY) {
     return 3600;
   }
 
-  // For ranges > 90 days: 6hr step
-  return 21600;
+  // For ranges <= 14 days: 3hr step
+  if (rangeSeconds <= 14 * ONE_DAY) {
+    return 10800;
+  }
+
+  // For ranges <= 30 days: 6hr step
+  if (rangeSeconds <= 30 * ONE_DAY) {
+    return 21600;
+  }
+
+  // For ranges > 30 days: 12hr step
+  return 43200;
 }
 
 const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
   instantiate: (di) => {
     const apiBase = di.inject(apiBaseInjectable);
+    const CACHE_TTL_MS = 5000;
+    const inFlightRequests = new Map<
+      string,
+      Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>>
+    >();
+    const responseCache = new Map<
+      string,
+      {
+        timestamp: number;
+        value: MetricData | MetricData[] | Partial<Record<string, MetricData>>;
+      }
+    >();
 
     function requestMetrics(query: string, params?: RequestMetricsParams): Promise<MetricData>;
     function requestMetrics(query: string[], params?: RequestMetricsParams): Promise<MetricData[]>;
@@ -113,15 +132,49 @@ const requestMetricsInjectable = getInjectable({
         step = calculateAdaptiveStep(actualRange);
       }
 
-      return apiBase.post("/metrics", {
-        data: query,
-        query: {
-          start,
-          end,
-          step,
-          kubernetes_namespace: namespace,
-        },
+      const requestKey = JSON.stringify({
+        query,
+        start,
+        end,
+        step,
+        namespace,
       });
+      const cachedResponse = responseCache.get(requestKey);
+
+      if (cachedResponse && Date.now() - cachedResponse.timestamp < CACHE_TTL_MS) {
+        return cachedResponse.value;
+      }
+
+      const existingRequest = inFlightRequests.get(requestKey);
+
+      if (existingRequest) {
+        return existingRequest;
+      }
+
+      const requestPromise = apiBase
+        .post("/metrics", {
+          data: query,
+          query: {
+            start,
+            end,
+            step,
+            kubernetes_namespace: namespace,
+          },
+        })
+        .finally(() => {
+          inFlightRequests.delete(requestKey);
+        });
+
+      inFlightRequests.set(requestKey, requestPromise);
+
+      const response = await requestPromise;
+
+      responseCache.set(requestKey, {
+        timestamp: Date.now(),
+        value: response,
+      });
+
+      return response;
     }
 
     return requestMetrics;

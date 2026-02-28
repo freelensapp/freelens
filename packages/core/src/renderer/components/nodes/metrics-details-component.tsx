@@ -18,7 +18,7 @@ import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metric
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
-  metrics: IAsyncComputed<ClusterMetricData>;
+  metrics: IAsyncComputed<Partial<ClusterMetricData>>;
 }
 
 const NonInjectedNodeMetricsDetailsComponent = ({ object, metrics }: KubeObjectDetailsProps<Node> & Dependencies) => (

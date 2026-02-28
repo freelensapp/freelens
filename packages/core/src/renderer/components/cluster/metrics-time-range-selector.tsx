@@ -27,13 +27,21 @@ interface Dependencies {
   showErrorNotification: ShowNotification;
 }
 
+export interface MetricsTimeRangeSelectorProps {
+  displayMode?: "compact" | "expanded";
+}
+
 interface TimeRangeOption {
   value: number | "custom";
   label: string;
 }
 
 const NonInjectedMetricsTimeRangeSelector = observer(
-  ({ selectedMetricsTimeRange, showErrorNotification }: Dependencies) => {
+  ({
+    selectedMetricsTimeRange,
+    showErrorNotification,
+    displayMode = "compact",
+  }: Dependencies & MetricsTimeRangeSelectorProps) => {
     const [showCustomPicker, setShowCustomPicker] = useState(false);
 
     const selectOptions: TimeRangeOption[] = useMemo(
@@ -79,7 +87,9 @@ const NonInjectedMetricsTimeRangeSelector = observer(
     };
 
     return (
-      <div className={styles.container}>
+      <div
+        className={`${styles.container} ${displayMode === "expanded" ? styles.containerExpanded : styles.containerCompact}`}
+      >
         <Select<number | "custom", SelectOption<number | "custom">, false>
           id="metrics-time-range-select"
           options={selectOptions}
@@ -90,7 +100,14 @@ const NonInjectedMetricsTimeRangeSelector = observer(
           isSearchable={false}
           placeholder="Select time range..."
         />
-        <span className={styles.displayLabel}>{displayLabel}</span>
+        {isCustom && displayLabel && (
+          <span
+            className={`${styles.displayLabel} ${displayMode === "expanded" ? styles.displayLabelExpanded : styles.displayLabelCompact}`}
+            title={displayLabel}
+          >
+            {displayLabel}
+          </span>
+        )}
         <Dialog isOpen={showCustomPicker} close={() => setShowCustomPicker(false)}>
           <CustomTimeRangePicker
             onApply={handleCustomRangeApply}
@@ -195,9 +212,13 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
   },
 );
 
-export const MetricsTimeRangeSelector = withInjectables<Dependencies>(NonInjectedMetricsTimeRangeSelector, {
-  getProps: (di) => ({
-    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
-    showErrorNotification: di.inject(showErrorNotificationInjectable),
-  }),
-});
+export const MetricsTimeRangeSelector = withInjectables<Dependencies, MetricsTimeRangeSelectorProps>(
+  NonInjectedMetricsTimeRangeSelector,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+      showErrorNotification: di.inject(showErrorNotificationInjectable),
+    }),
+  },
+);

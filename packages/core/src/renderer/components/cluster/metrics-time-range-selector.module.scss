@@ -11,13 +11,42 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 120px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.container :global(.Select) {
+  min-width: 0;
+  width: 100%;
+}
+
+.containerCompact :global(.Select) {
+  flex: 1 1 auto;
+}
+
+.containerExpanded :global(.Select) {
+  flex: 1 1 120px;
+  width: auto;
 }
 
 .displayLabel {
   font-size: 12px;
   color: var(--textColorSecondary);
+}
+
+.displayLabelCompact {
   white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.displayLabelExpanded {
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  flex: 0 1 auto;
 }
 
 .pickerContent {
@@ -28,6 +57,8 @@
   background-color: var(--contentColor);
   border-radius: var(--border-radius);
   padding: calc(var(--padding) * 2);
+  border: 1px solid var(--inputControlBorder);
+  box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
 }
 
 .header {
@@ -46,17 +77,26 @@
 .inputGroup label {
   display: block;
   font-size: 12px;
-  color: var(--textColorSecondary);
+  color: var(--textColorPrimary);
 }
 
 .inputGroup input {
   width: 100%;
   padding: 4px 8px;
-  border: 1px solid var(--borderColor);
+  border: 1px solid var(--inputControlBorder);
   border-radius: var(--border-radius);
-  background-color: var(--contentColor);
+  background-color: var(--inputControlBackground);
   color: var(--textColorPrimary);
   color-scheme: dark;
+
+  &:hover {
+    border-color: var(--inputControlHoverBorder);
+  }
+
+  &:focus {
+    border-color: var(--colorInfo);
+    outline: none;
+  }
 }
 
 .inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
@@ -87,8 +127,8 @@
 }
 
 .cancelButton {
-  border: 1px solid var(--borderColor);
-  background-color: var(--contentColor);
+  border: 1px solid var(--inputControlBorder);
+  background-color: var(--inputControlBackground);
   color: var(--textColorPrimary);
 }
 

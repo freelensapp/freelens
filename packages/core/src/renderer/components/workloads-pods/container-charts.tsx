@@ -6,9 +6,10 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { mapValues } from "lodash";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import React, { useContext } from "react";
-import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
+import React, { useContext, useRef } from "react";
+import { getItemMetrics, isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { BarChart } from "../chart";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
@@ -22,7 +23,9 @@ import type { LensTheme } from "../../themes/lens-theme";
 import type { ChartDataSets } from "../chart";
 import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 
-export interface ContainerChartsProps {}
+export interface ContainerChartsProps {
+  containerName: string;
+}
 
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
@@ -30,16 +33,30 @@ interface Dependencies {
 }
 
 const NonInjectedContainerCharts = observer(
-  ({ activeTheme, selectedMetricsTimeRange }: Dependencies & ContainerChartsProps) => {
-    const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
+  ({ activeTheme, selectedMetricsTimeRange, containerName }: Dependencies & ContainerChartsProps) => {
+    const { metrics, tab, object, isPending } = useContext(ResourceMetricsContext) ?? {};
     const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+    const currentRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+    const lastResolvedRangeKeyRef = useRef(currentRangeKey);
+
+    if (!isPending) {
+      lastResolvedRangeKeyRef.current = currentRangeKey;
+    }
+
+    const isRangeChangePending = Boolean(isPending) && currentRangeKey !== lastResolvedRangeKeyRef.current;
+
+    if (isRangeChangePending) {
+      return null;
+    }
 
     if (!metrics || !object || !tab) return null;
-    if (isMetricsEmpty(metrics)) return <NoMetrics />;
+    const selectedContainerMetrics = getItemMetrics(toJS(metrics), containerName);
+
+    if (!selectedContainerMetrics || isMetricsEmpty(selectedContainerMetrics)) return <NoMetrics />;
 
     const { chartCapacityColor } = activeTheme.get().colors;
     const { cpuUsage, cpuRequests, cpuLimits, memoryUsage, memoryRequests, memoryLimits, fsUsage, fsWrites, fsReads } =
-      mapValues(metrics, (metric) => normalizeMetrics(metric).data.result[0].values);
+      mapValues(selectedContainerMetrics, (metric) => normalizeMetrics(metric).data.result[0].values);
 
     const datasets: Partial<Record<MetricsTab, ChartDataSets[]>> = {
       CPU: [
@@ -132,3 +149,13 @@ export const ContainerCharts = withInjectables<Dependencies, ContainerChartsProp
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}

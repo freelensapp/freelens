@@ -7,7 +7,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { mapValues } from "lodash";
 import { observer } from "mobx-react";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import { BarChart } from "../chart";
 import { metricTabOptions } from "../chart/options";
@@ -26,9 +26,25 @@ interface Dependencies {
   selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencies) => {
-  const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
+interface PodChartsProps {
+  // Add any additional props here
+}
+
+const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencies & PodChartsProps) => {
+  const { metrics, tab, object, isPending } = useContext(ResourceMetricsContext) ?? {};
   const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+  const currentRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+  const lastResolvedRangeKeyRef = useRef(currentRangeKey);
+
+  if (!isPending) {
+    lastResolvedRangeKeyRef.current = currentRangeKey;
+  }
+
+  const isRangeChangePending = Boolean(isPending) && currentRangeKey !== lastResolvedRangeKeyRef.current;
+
+  if (isRangeChangePending) {
+    return null;
+  }
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -110,8 +126,19 @@ const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencie
   );
 });
 
-export const PodCharts = withInjectables<Dependencies>(NonInjectedPodCharts, {
-  getProps: (di) => ({
+export const PodCharts = withInjectables<Dependencies, PodChartsProps>(NonInjectedPodCharts, {
+  getProps: (di, props) => ({
+    ...props,
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}

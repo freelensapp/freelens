@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
+import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
@@ -13,16 +13,20 @@ import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 
+interface ClusterOverviewMetricsInjectableParams {
+  timeRangeKey: string;
+}
+
 const everyMinute = 60 * 1000;
 
 const clusterOverviewMetricsInjectable = getInjectable({
   id: "cluster-overview-metrics",
-  instantiate: (di) => {
+  instantiate: (di, _params: ClusterOverviewMetricsInjectableParams) => {
     const requestClusterMetricsByNodeNames = di.inject(requestClusterMetricsByNodeNamesInjectable);
     const selectedNodeRoleForMetrics = di.inject(selectedNodeRoleForMetricsInjectable);
     const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
 
-    return asyncComputed<ClusterMetricData | undefined>({
+    return asyncComputed<Partial<ClusterMetricData> | undefined>({
       getValueFromObservedPromise: async () => {
         now(everyMinute);
 
@@ -38,6 +42,9 @@ const clusterOverviewMetricsInjectable = getInjectable({
       betweenUpdates: "show-latest-value",
     });
   },
+  lifecycle: lifecycleEnum.keyedSingleton({
+    getInstanceKey: (di, { timeRangeKey }: ClusterOverviewMetricsInjectableParams) => timeRangeKey,
+  }),
 });
 
 export default clusterOverviewMetricsInjectable;

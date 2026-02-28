@@ -54,22 +54,34 @@ export function normalizeMetrics(metrics: MetricData | undefined | null, frames 
       result.forEach((res) => {
         if (!res.values || !res.values.length) return;
 
+        const estimatedStepSeconds = res.values.length > 1 ? Math.max(res.values[1][0] - res.values[0][0], 0) : 60;
+
+        // Minute-level gap filling is only valid for minute-resolution series.
+        // For coarse steps (hourly+), filling each minute causes huge arrays and severe UI lag.
+        if (estimatedStepSeconds > 60) {
+          return;
+        }
+
+        const timestamps = new Set(res.values.map(([valueTimestamp]) => valueTimestamp));
+
         let now = moment().startOf("minute").subtract(1, "minute").unix();
         let timestamp = res.values[0][0];
 
         while (timestamp <= now) {
           timestamp = moment.unix(timestamp).add(1, "minute").unix();
 
-          if (!res.values.find((value) => value[0] === timestamp)) {
+          if (!timestamps.has(timestamp)) {
             res.values.push([timestamp, "0"]);
+            timestamps.add(timestamp);
           }
         }
 
         while (res.values.length < frames) {
           const timestamp = moment.unix(res.values[0][0]).subtract(1, "minute").unix();
 
-          if (!res.values.find((value) => value[0] === timestamp)) {
+          if (!timestamps.has(timestamp)) {
             res.values.unshift([timestamp, "0"]);
+            timestamps.add(timestamp);
           }
           now = timestamp;
         }

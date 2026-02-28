@@ -15,6 +15,7 @@ import type { Container, Pod } from "@freelensapp/kube-object";
 interface PodContainerParams {
   pod: Pod;
   container: Container;
+  timeRangeKey: string;
 }
 
 const podContainerMetricsInjectable = getInjectable({
@@ -28,13 +29,29 @@ const podContainerMetricsInjectable = getInjectable({
         now(60 * 1000);
         const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
 
-        return requestPodMetrics([pod], pod.getNs(), container, "pod, container, namespace", { start, end, range });
+        return requestPodMetrics([pod], pod.getNs(), container, "pod, container, namespace", {
+          start,
+          end,
+          range,
+          metrics: [
+            "cpuUsage",
+            "cpuRequests",
+            "cpuLimits",
+            "memoryUsage",
+            "memoryRequests",
+            "memoryLimits",
+            "fsUsage",
+            "fsWrites",
+            "fsReads",
+          ],
+        });
       },
+      betweenUpdates: "show-latest-value",
     });
   },
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { pod, container }: PodContainerParams) => {
-      return `${pod.getId()}-${container.name}`;
+    getInstanceKey: (di, { pod, container, timeRangeKey }: PodContainerParams) => {
+      return `${pod.getId()}-${container.name}-${timeRangeKey}`;
     },
   }),
 });
