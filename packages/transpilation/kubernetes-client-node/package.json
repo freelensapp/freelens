@@ -1,29 +1,32 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
   "version": "1.8.2-0",
+  "private": false,
   "description": "Kubernetes client for Freelens",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "copyright": "© 2024-2026 Freelens Authors",
-  "license": "MIT",
-  "private": false,
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
+  "type": "module",
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.2 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules",
     "build": "webpack",
-    "build:dev": "webpack"
+    "build:dev": "webpack",
+    "clean": "pnpm dlx rimraf@6.1.2 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
     "@freelensapp/node-fetch": "workspace:^",
@@ -42,5 +45,10 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "copyright": "© 2024-2026 Freelens Authors"
 }
