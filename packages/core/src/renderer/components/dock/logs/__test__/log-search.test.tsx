@@ -76,6 +76,10 @@ describe("LogSearch tests", () => {
     user = userEvent.setup();
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("renders w/o errors", () => {
     const model = getOnePodViewModel("foobar");
     const { container } = render(<LogSearch model={model} scrollToOverlay={jest.fn()} />);
@@ -122,5 +126,104 @@ describe("LogSearch tests", () => {
     await user.click(await screen.findByText("keyboard_arrow_down"));
     await user.click(await screen.findByText("keyboard_arrow_up"));
     expect(scrollToOverlay).not.toBeCalled();
+  });
+
+  it.each([
+    { label: "ctrl+f", eventInit: { key: "f", ctrlKey: true } },
+    { label: "cmd+f", eventInit: { key: "f", metaKey: true } },
+  ])("should prefill search on $label when selection is inside pod logs list", async ({ eventInit }) => {
+    const scrollToOverlay = jest.fn();
+    const model = getOnePodViewModel("foobar", {
+      getLogsWithoutTimestamps: () => ["hello", "world"],
+    });
+
+    render(
+      <div className="PodLogs">
+        <div className="LogList">
+          <span data-testid="selection-source">hello</span>
+        </div>
+        <LogSearch model={model} scrollToOverlay={scrollToOverlay} />
+      </div>,
+    );
+
+    const selectionSource = screen.getByTestId("selection-source").firstChild;
+
+    jest.spyOn(window, "getSelection").mockReturnValue({
+      anchorNode: selectionSource,
+      focusNode: selectionSource,
+      toString: () => "hello",
+    } as Selection);
+
+    window.dispatchEvent(new KeyboardEvent("keydown", eventInit));
+
+    expect(await screen.findByPlaceholderText("Search...")).toHaveValue("hello");
+    expect(scrollToOverlay).toHaveBeenCalled();
+  });
+
+  it("should not prefill search on ctrl+f when selection is outside pod logs list", async () => {
+    const scrollToOverlay = jest.fn();
+    const model = getOnePodViewModel("foobar", {
+      getLogsWithoutTimestamps: () => ["hello", "world"],
+    });
+
+    render(
+      <div>
+        <div data-testid="outside-selection-source">hello</div>
+        <div className="PodLogs">
+          <div className="LogList" />
+          <LogSearch model={model} scrollToOverlay={scrollToOverlay} />
+        </div>
+      </div>,
+    );
+
+    const search = await screen.findByPlaceholderText("Search...");
+
+    await user.click(search);
+    await user.keyboard("o");
+
+    const outsideSelectionSource = screen.getByTestId("outside-selection-source").firstChild;
+
+    jest.spyOn(window, "getSelection").mockReturnValue({
+      anchorNode: outsideSelectionSource,
+      focusNode: outsideSelectionSource,
+      toString: () => "hello",
+    } as Selection);
+
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+
+    expect(search).toHaveValue("o");
+  });
+
+  it("should keep existing query on ctrl+f when selection is empty", async () => {
+    const scrollToOverlay = jest.fn();
+    const model = getOnePodViewModel("foobar", {
+      getLogsWithoutTimestamps: () => ["hello", "world"],
+    });
+
+    render(
+      <div className="PodLogs">
+        <div className="LogList">
+          <span data-testid="selection-source">hello</span>
+        </div>
+        <LogSearch model={model} scrollToOverlay={scrollToOverlay} />
+      </div>,
+    );
+
+    const search = await screen.findByPlaceholderText("Search...");
+
+    await user.click(search);
+    await user.keyboard("o");
+
+    const selectionSource = screen.getByTestId("selection-source").firstChild;
+
+    jest.spyOn(window, "getSelection").mockReturnValue({
+      anchorNode: selectionSource,
+      focusNode: selectionSource,
+      toString: () => "",
+    } as Selection);
+
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+
+    expect(search).toHaveValue("o");
   });
 });
