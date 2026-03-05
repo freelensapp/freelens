@@ -10,8 +10,8 @@ import React from "react";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { SearchStore } from "../../../../search-store/search-store";
 import { renderFor } from "../../../test-utils/renderFor";
+import { LogControls } from "../controls";
 import { LogTabViewModel } from "../logs-view-model";
-import { LogSearch } from "../search";
 import { dockerPod } from "./pod.mock";
 
 import type { UserEvent } from "@testing-library/user-event";
@@ -24,7 +24,7 @@ function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependen
   return new LogTabViewModel(tabId, {
     getLogs: jest.fn(),
     getLogsWithoutTimestamps: jest.fn(),
-    getTimestampSplitLogs: jest.fn(),
+    getTimestampSplitLogs: jest.fn(() => []),
     getLogTabData: jest.fn(),
     setLogTabData: jest.fn(),
     loadLogs: jest.fn(),
@@ -41,7 +41,11 @@ function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependen
   });
 }
 
-const getOnePodViewModel = (tabId: TabId, deps: Partial<LogTabViewModelDependencies> = {}): LogTabViewModel => {
+function getOnePodViewModel(
+  tabId: TabId,
+  showWordWrap: boolean,
+  deps: Partial<LogTabViewModelDependencies> = {},
+): LogTabViewModel {
   const selectedPod = dockerPod;
 
   return mockLogTabViewModel(tabId, {
@@ -51,7 +55,7 @@ const getOnePodViewModel = (tabId: TabId, deps: Partial<LogTabViewModelDependenc
       namespace: selectedPod.getNs(),
       showPrevious: false,
       showTimestamps: false,
-      showWordWrap: false,
+      showWordWrap,
     }),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
@@ -62,9 +66,9 @@ const getOnePodViewModel = (tabId: TabId, deps: Partial<LogTabViewModelDependenc
     },
     ...deps,
   });
-};
+}
 
-describe("LogSearch tests", () => {
+describe("LogControls", () => {
   let render: DiRender;
   let user: UserEvent;
 
@@ -72,55 +76,28 @@ describe("LogSearch tests", () => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
-
     user = userEvent.setup();
   });
 
-  it("renders w/o errors", () => {
-    const model = getOnePodViewModel("foobar");
-    const { container } = render(<LogSearch model={model} scrollToOverlay={jest.fn()} />);
+  it("enables word wrap when it is currently disabled", async () => {
+    const model = getOnePodViewModel("foobar", false);
+    const updateLogTabDataSpy = jest.spyOn(model, "updateLogTabData");
 
-    expect(container).toBeInstanceOf(HTMLElement);
+    render(<LogControls model={model} />);
+
+    await user.click(await screen.findByText("Word wrap"));
+
+    expect(updateLogTabDataSpy).toHaveBeenCalledWith({ showWordWrap: true });
   });
 
-  it("should scroll to new active overlay when clicking the previous button", async () => {
-    const scrollToOverlay = jest.fn();
-    const model = getOnePodViewModel("foobar", {
-      getLogsWithoutTimestamps: () => ["hello", "world"],
-    });
+  it("disables word wrap when it is currently enabled", async () => {
+    const model = getOnePodViewModel("foobar", true);
+    const updateLogTabDataSpy = jest.spyOn(model, "updateLogTabData");
 
-    render(<LogSearch model={model} scrollToOverlay={scrollToOverlay} />);
+    render(<LogControls model={model} />);
 
-    await user.click(await screen.findByPlaceholderText("Search..."));
-    await user.keyboard("o");
-    await user.click(await screen.findByText("keyboard_arrow_up"));
-    expect(scrollToOverlay).toBeCalled();
-  });
+    await user.click(await screen.findByText("Word wrap"));
 
-  it("should scroll to new active overlay when clicking the next button", async () => {
-    const scrollToOverlay = jest.fn();
-    const model = getOnePodViewModel("foobar", {
-      getLogsWithoutTimestamps: () => ["hello", "world"],
-    });
-
-    render(<LogSearch model={model} scrollToOverlay={scrollToOverlay} />);
-
-    await user.click(await screen.findByPlaceholderText("Search..."));
-    await user.keyboard("o");
-    await user.click(await screen.findByText("keyboard_arrow_down"));
-    expect(scrollToOverlay).toBeCalled();
-  });
-
-  it("next and previous should be disabled initially", async () => {
-    const scrollToOverlay = jest.fn();
-    const model = getOnePodViewModel("foobar", {
-      getLogsWithoutTimestamps: () => ["hello", "world"],
-    });
-
-    render(<LogSearch model={model} scrollToOverlay={scrollToOverlay} />);
-
-    await user.click(await screen.findByText("keyboard_arrow_down"));
-    await user.click(await screen.findByText("keyboard_arrow_up"));
-    expect(scrollToOverlay).not.toBeCalled();
+    expect(updateLogTabDataSpy).toHaveBeenCalledWith({ showWordWrap: false });
   });
 });
