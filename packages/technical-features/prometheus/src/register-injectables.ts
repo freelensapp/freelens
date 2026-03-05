@@ -9,6 +9,7 @@
 import helm14PrometheusProviderInjectable from "./helm-14-provider.injectable";
 import helmPrometheusProviderInjectable from "./helm-provider.injectable";
 import lensPrometheusProviderInjectable from "./lens-provider.injectable";
+import openshiftPrometheusProviderInjectable from "./openshift-provider.injectable";
 import operatorPrometheusProviderInjectable from "./operator-provider.injectable";
 import stacklightPrometheusProviderInjectable from "./stacklight-provider.injectable";
 
@@ -27,6 +28,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(lensPrometheusProviderInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(openshiftPrometheusProviderInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
