@@ -257,6 +257,14 @@ exports[`cluster - custom resources in sidebar renders 1`] = `
             role="button"
             style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
+          />
+          <div
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
           >
             <div
               class="SidebarItem"
@@ -896,6 +904,14 @@ exports[`cluster - custom resources in sidebar when custom resource definitions 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-30"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-30"
             aria-disabled="false"
@@ -1634,6 +1650,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists rende
             role="button"
             style="pointer-events: auto; opacity: 1;"
             tabindex="0"
+          />
+          <div
+            aria-describedby="DndDescribedBy-3"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1;"
+            tabindex="0"
           >
             <div
               class="SidebarItem"
@@ -2273,6 +2297,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-20"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-20"
             aria-disabled="false"
@@ -2980,6 +3012,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-25"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-25"
             aria-disabled="false"
@@ -3758,6 +3798,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
             role="button"
             style="pointer-events: auto; opacity: 1;"
             tabindex="0"
+          />
+          <div
+            aria-describedby="DndDescribedBy-5"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1;"
+            tabindex="0"
           >
             <div
               class="SidebarItem"
@@ -4397,6 +4445,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-10"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-10"
             aria-disabled="false"
@@ -5097,6 +5153,14 @@ exports[`cluster - custom resources in sidebar when custom resource exists when 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-15"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-15"
             aria-disabled="false"
