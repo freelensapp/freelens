@@ -158,7 +158,7 @@
     "react-router-dom": "^5.3.4",
     "react-select": "^5.10.2",
     "react-table": "^7.8.0",
-    "react-virtualized-auto-sizer": "^1.0.26",
+    "react-virtualized-auto-sizer": "^2.0.3",
     "react-window": "^1.8.11",
     "rfc6902": "^5.1.2",
     "selfsigned": "^4.0.1",
