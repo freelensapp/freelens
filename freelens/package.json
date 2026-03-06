@@ -175,7 +175,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "mini-css-extract-plugin": "^2.9.4",
+    "mini-css-extract-plugin": "^2.10.0",
     "monaco-editor-webpack-plugin": "^7.1.1",
     "node-abi": "^4.24.0",
     "node-gyp": "12.2.0",
