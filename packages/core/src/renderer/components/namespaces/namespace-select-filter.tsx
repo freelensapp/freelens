@@ -48,6 +48,7 @@ const NonInjectedNamespaceSelectFilter = observer(({ model, id }: Dependencies &
       closeMenuOnSelect={false}
       controlShouldRenderValue={false}
       onChange={model.onChange}
+      onInputChange={model.onInputChange}
       onBlur={model.reset}
       formatOptionLabel={model.formatOptionLabel}
       options={model.options.get()}
