@@ -19,7 +19,7 @@
     "freelens"
   ],
   "scripts": {
-    "asar": "corepack pnpm dlx @electron/asar@4.0.1",
+    "asar": "corepack pnpm dlx @electron/asar@4.1.0",
     "biome": "corepack pnpm dlx @biomejs/biome@2.3.14",
     "biome:check": "corepack pnpm biome check",
     "biome:fix": "corepack pnpm biome check --fix",
