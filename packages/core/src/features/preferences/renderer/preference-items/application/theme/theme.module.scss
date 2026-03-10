@@ -6,11 +6,6 @@
 
 @use "../../../../../../renderer/components/vars" as *;
 
-$accent-teal: #00a7a0;
-$accent-green: #4caf50;
-$accent-blue: #2196f3;
-$accent-orange: #ff9800;
-
 .selectRow {
   display: flex;
   gap: $unit;
@@ -50,4 +45,16 @@ $accent-orange: #ff9800;
   &:active {
     transform: translateY(1px);
   }
+}
+
+.colorSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.colorOption {
+  display: flex;
+  align-items: center;
+  gap: $unit;
 }

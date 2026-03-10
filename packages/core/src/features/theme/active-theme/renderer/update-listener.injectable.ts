@@ -5,24 +5,29 @@
  */
 
 import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
+import activeThemeInjectable from "../../../../renderer/themes/active.injectable";
 import applyLensThemeInjectable from "../../../../renderer/themes/apply-lens-theme.injectable";
-import { activeThemeUpdateChannel } from "../common/channel";
+import { themeChangedChannel } from "../common/channel";
 
-const activeThemeUpdateListenerInjectable = getMessageChannelListenerInjectable({
-  channel: activeThemeUpdateChannel,
+/**
+ * Listens for theme-changed events and reacts by computing and applying
+ * the theme from local state. This is the reactive pattern where each
+ * frame derives its own theme instead of receiving a pushed theme object.
+ */
+const themeChangedListenerInjectable = getMessageChannelListenerInjectable({
+  channel: themeChangedChannel,
   id: "renderer",
   getHandler: (di) => {
+    const activeTheme = di.inject(activeThemeInjectable);
     const applyLensTheme = di.inject(applyLensThemeInjectable);
 
-    return (theme) => {
-      // Store theme globally in cluster frames for persistence
-      if (!process.isMainFrame) {
-        (window as any).__lastReceivedTheme = theme;
-      }
+    return () => {
+      // Derive theme from local state and apply it
+      const theme = activeTheme.get();
 
       applyLensTheme(theme);
     };
   },
 });
 
-export default activeThemeUpdateListenerInjectable;
+export default themeChangedListenerInjectable;

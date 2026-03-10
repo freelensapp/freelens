@@ -6,8 +6,11 @@
 
 import type { MessageChannel } from "@freelensapp/messaging";
 
-import type { LensTheme } from "../../../../renderer/themes/lens-theme";
-
-export const activeThemeUpdateChannel: MessageChannel<LensTheme> = {
-  id: "active-theme-update",
+/**
+ * Channel to notify all renderer frames that theme preferences have changed.
+ * Each frame should react by re-computing and applying its own activeTheme.
+ * No payload is sent - frames derive the theme from their own state.
+ */
+export const themeChangedChannel: MessageChannel<void> = {
+  id: "theme-changed",
 };

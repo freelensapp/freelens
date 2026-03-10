@@ -23,6 +23,26 @@ interface Dependencies {
   themes: LensTheme[];
 }
 
+const DEFAULT_ACCENT_COLOR = "#00a7a0";
+
+const accentColorOptions = [
+  { value: "#00a7a0", label: "Teal" },
+  { value: "#4caf50", label: "Green" },
+  { value: "#2196f3", label: "Blue" },
+  { value: "#ff9800", label: "Orange" },
+];
+
+const ColorSwatch = ({ color }: { color: string }) => (
+  <div className={styles.colorSwatch} style={{ backgroundColor: color }} />
+);
+
+const ColorOption = ({ option }: { option: { value: string; label: string } }) => (
+  <div className={styles.colorOption}>
+    <ColorSwatch color={option.value} />
+    <span>{option.label}</span>
+  </div>
+);
+
 const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies) => {
   const themeOptions = [
     {
@@ -35,25 +55,7 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
     })),
   ];
 
-  const accentColorOptions = [
-    { value: "#00a7a0", label: "Teal" },
-    { value: "#4caf50", label: "Green" },
-    { value: "#2196f3", label: "Blue" },
-    { value: "#ff9800", label: "Orange" },
-  ];
-
-  const currentColor = state.customAccentColor || "#00a7a0";
-
-  const ColorSwatch = ({ color }: { color: string }) => (
-    <div style={{ backgroundColor: color, width: "20px", height: "20px", borderRadius: "2px" }} />
-  );
-
-  const ColorOption = ({ option }: { option: { value: string; label: string } }) => (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-      <ColorSwatch color={option.value} />
-      <span>{option.label}</span>
-    </div>
-  );
+  const currentColor = state.customAccentColor || DEFAULT_ACCENT_COLOR;
 
   return (
     <section id="appearance">
@@ -80,7 +82,7 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
       </div>
 
       <div className={styles.colorPreview}>
-        {currentColor !== "#00a7a0" && (
+        {currentColor !== DEFAULT_ACCENT_COLOR && (
           <button
             onClick={() => (state.customAccentColor = undefined)}
             className={styles.resetButton}
