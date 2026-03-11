@@ -315,10 +315,11 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                               class="Select__single-value css-1dimb5e-singleValue"
                             >
                               <div
-                                style="display: flex; align-items: center; gap: 8px;"
+                                class="colorOption"
                               >
                                 <div
-                                  style="background-color: rgb(0, 167, 160); width: 20px; height: 20px; border-radius: 2px;"
+                                  class="colorSwatch"
+                                  style="background-color: rgb(0, 167, 160);"
                                 />
                                 <span>
                                   Teal
