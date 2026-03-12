@@ -138,7 +138,7 @@
   },
   "devDependencies": {
     "@electron/notarize": "^3.0.2",
-    "@electron/rebuild": "^4.0.2",
+    "@electron/rebuild": "^4.0.3",
     "@freelensapp/animate": "workspace:^",
     "@freelensapp/button": "workspace:^",
     "@freelensapp/cluster-sidebar": "workspace:^",
