@@ -5,16 +5,21 @@
  */
 
 import { TerminalChannels } from "../../../../common/terminal/channels";
+import { TabKind } from "../dock/store";
 import { TerminalStore } from "./store";
 
 describe("TerminalStore", () => {
+  const tabId = "tab-id";
+
   it("sends exit and destroys resources when terminal is ready", () => {
     const sendMessage = jest.fn();
+    const apiConnect = jest.fn();
     const apiDestroy = jest.fn();
     const terminalDestroy = jest.fn();
 
     const terminalApi = {
       isReady: true,
+      connect: apiConnect,
       sendMessage,
       destroy: apiDestroy,
     } as any;
@@ -24,14 +29,15 @@ describe("TerminalStore", () => {
     } as any;
 
     const store = new TerminalStore({
-      createTerminalApi: jest.fn(),
-      createTerminal: jest.fn(),
+      createTerminalApi: jest.fn(() => terminalApi),
+      createTerminal: jest.fn(() => terminal),
     });
 
-    (store as any).connections.set("tab-id", terminalApi);
-    (store as any).terminals.set("tab-id", terminal);
+    store.connect({ id: tabId, kind: TabKind.TERMINAL, title: "Terminal", pinned: false });
 
-    store.destroy("tab-id");
+    expect(apiConnect).toHaveBeenCalled();
+
+    store.destroy(tabId);
 
     expect(sendMessage).toHaveBeenCalledWith({
       type: TerminalChannels.STDIN,
@@ -39,17 +45,19 @@ describe("TerminalStore", () => {
     });
     expect(terminalDestroy).toHaveBeenCalled();
     expect(apiDestroy).toHaveBeenCalled();
-    expect((store as any).connections.has("tab-id")).toBe(false);
-    expect((store as any).terminals.has("tab-id")).toBe(false);
+    expect(store.getTerminalApi(tabId)).toBeUndefined();
+    expect(store.getTerminal(tabId)).toBeUndefined();
   });
 
   it("does not send exit when terminal is not ready", () => {
     const sendMessage = jest.fn();
+    const apiConnect = jest.fn();
     const apiDestroy = jest.fn();
     const terminalDestroy = jest.fn();
 
     const terminalApi = {
       isReady: false,
+      connect: apiConnect,
       sendMessage,
       destroy: apiDestroy,
     } as any;
@@ -59,17 +67,20 @@ describe("TerminalStore", () => {
     } as any;
 
     const store = new TerminalStore({
-      createTerminalApi: jest.fn(),
-      createTerminal: jest.fn(),
+      createTerminalApi: jest.fn(() => terminalApi),
+      createTerminal: jest.fn(() => terminal),
     });
 
-    (store as any).connections.set("tab-id", terminalApi);
-    (store as any).terminals.set("tab-id", terminal);
+    store.connect({ id: tabId, kind: TabKind.TERMINAL, title: "Terminal", pinned: false });
 
-    store.destroy("tab-id");
+    expect(apiConnect).toHaveBeenCalled();
+
+    store.destroy(tabId);
 
     expect(sendMessage).not.toHaveBeenCalled();
     expect(terminalDestroy).toHaveBeenCalled();
     expect(apiDestroy).toHaveBeenCalled();
+    expect(store.getTerminalApi(tabId)).toBeUndefined();
+    expect(store.getTerminal(tabId)).toBeUndefined();
   });
 });
