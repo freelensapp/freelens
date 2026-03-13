@@ -265,6 +265,14 @@ exports[`cluster - visibility of sidebar items given kube resource for route is 
             role="button"
             style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
+          />
+          <div
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
           >
             <div
               class="SidebarItem"
@@ -928,6 +936,14 @@ exports[`cluster - visibility of sidebar items given kube resource for route is 
               </a>
             </div>
           </div>
+          <div
+            aria-describedby="DndDescribedBy-2"
+            aria-disabled="false"
+            aria-roledescription="sortable"
+            role="button"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
+            tabindex="0"
+          />
           <div
             aria-describedby="DndDescribedBy-2"
             aria-disabled="false"
