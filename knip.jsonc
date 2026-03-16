@@ -5,7 +5,7 @@
 
   "workspaces": {
     ".": {
-      "ignoreBinaries": ["open", "powershell", "xdg-open"],
+      "ignoreBinaries": [".*freelens", ".*Freelens.exe", "jq", "open", "powershell", "xdg-open"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm",
@@ -425,7 +425,7 @@
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
       "project": ["*.js", "*.ts", "dist/*.cjs!", "dist/*.ts"],
       "ignore": ["dist/**/*.d.ts"],
-      "ignoreDependencies": ["ts-loader"],
+      "ignoreDependencies": ["ts-loader", "webpack-cli"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
@@ -438,7 +438,7 @@
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
       "project": ["dist/*.mjs!", "src/*.mts"],
       "ignore": ["dist/**/*.d.ts"],
-      "ignoreDependencies": ["ts-loader"],
+      "ignoreDependencies": ["ts-loader", "webpack-cli"],
       "ignoreUnresolved": ["./request", "./response"],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -452,7 +452,7 @@
       "entry": ["*.js", "dist/index.cjs!", "index.ts"],
       "project": ["dist/*.mjs!", "src/*.mts"],
       "ignore": ["dist/**/*.d.ts"],
-      "ignoreDependencies": ["ts-loader"],
+      "ignoreDependencies": ["ts-loader", "webpack-cli"],
       "typescript": {
         "config": ["tsconfig.json"]
       },
