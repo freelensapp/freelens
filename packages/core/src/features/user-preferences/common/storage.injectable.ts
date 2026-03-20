@@ -38,6 +38,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
+        state.bypassKubeApiProxy = descriptors.bypassKubeApiProxy.fromStore(preferences.bypassKubeApiProxy);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
         state.downloadKubectlBinaries = descriptors.downloadKubectlBinaries.fromStore(
@@ -65,6 +66,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
           preferences: {
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
+            bypassKubeApiProxy: descriptors.bypassKubeApiProxy.toStore(state.bypassKubeApiProxy),
             colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
             downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),

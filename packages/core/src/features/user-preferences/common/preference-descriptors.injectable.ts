@@ -63,6 +63,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
       }),
+      bypassKubeApiProxy: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
       allowErrorReporting: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? true,
         toStore: (val) => (val ? undefined : val),
