@@ -164,6 +164,61 @@ describe("kube api upgrade request", () => {
     expect(socket.resume).toHaveBeenCalledTimes(1);
   });
 
+  it("applies backpressure from the client socket to the auth proxy socket", async () => {
+    const di = getDiForUnitTesting();
+    const connectMock = connect as jest.MockedFunction<typeof connect>;
+    const proxySocket = new MockSocket();
+    const socket = new MockSocket();
+    const cluster = new Cluster({
+      contextName: "kind-kind",
+      id: "cluster-id",
+      kubeConfigPath: "/some-kube-config-path",
+    });
+
+    di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
+    di.override(kubeAuthProxyServerInjectable, () => ({
+      getApiTarget: jest.fn(),
+      ensureAuthProxyUrl: jest.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      restart: jest.fn(),
+      ensureRunning: jest.fn(),
+      stop: jest.fn(),
+    }));
+    di.override(kubeAuthProxyCertificateInjectable, () => ({
+      cert: "some-cert",
+      private: "some-key",
+      public: "some-public-key",
+    }));
+
+    connectMock.mockImplementation(mockConnectImplementation(proxySocket));
+
+    const handleUpgrade = di.inject(kubeApiUpgradeRequestInjectable);
+
+    await handleUpgrade({
+      cluster,
+      head: Buffer.alloc(0),
+      req: {
+        httpVersion: "1.1",
+        method: "POST",
+        rawHeaders: [],
+        url: `${apiKubePrefix}/api/v1/namespaces/default/pods/demo/exec?command=tar`,
+      } as never,
+      socket: socket as never,
+    });
+
+    proxySocket.emit("secureConnect");
+    socket.write.mockClear();
+    socket.write.mockReturnValueOnce(false);
+
+    proxySocket.emit("data", Buffer.from("payload-from-proxy"));
+
+    expect(socket.write).toHaveBeenCalledWith(Buffer.from("payload-from-proxy"));
+    expect(proxySocket.pause).toHaveBeenCalledTimes(1);
+
+    socket.emit("drain");
+
+    expect(proxySocket.resume).toHaveBeenCalledTimes(1);
+  });
+
   it("returns an http error before the upgraded stream starts", async () => {
     const di = getDiForUnitTesting();
     const connectMock = connect as jest.MockedFunction<typeof connect>;
