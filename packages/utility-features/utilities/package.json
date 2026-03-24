@@ -48,7 +48,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.23",
-    "@types/node": "~22.19.11",
+    "@types/node": "~22.19.15",
     "@types/react": "^17.0.91",
     "@types/react-router": "^5.1.20",
     "@types/semver": "^7.7.1",
