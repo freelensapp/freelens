@@ -14,6 +14,7 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import kubeAuthProxyUrlInjectable from "../cluster/auth-proxy-url.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { KubeconfigManager } from "./kubeconfig-manager";
@@ -23,8 +24,10 @@ import type { Cluster } from "../../common/cluster/cluster";
 const kubeconfigManagerInjectable = getInjectable({
   id: "kubeconfig-manager",
 
-  instantiate: (di, cluster) =>
-    new KubeconfigManager(
+  instantiate: (di, cluster) => {
+    const state = di.inject(userPreferencesStateInjectable);
+
+    return new KubeconfigManager(
       {
         directoryForTemp: di.inject(directoryForTempInjectable),
         logger: di.inject(loggerInjectionToken),
@@ -37,9 +40,11 @@ const kubeconfigManagerInjectable = getInjectable({
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
         kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
         kubeAuthProxyUrl: di.inject(kubeAuthProxyUrlInjectable, cluster),
+        isBypassEnabled: () => state.bypassKubeApiProxy,
       },
       cluster,
-    ),
+    );
+  },
   lifecycle: lifecycleEnum.keyedSingleton({
     getInstanceKey: (di, cluster: Cluster) => cluster.id,
   }),

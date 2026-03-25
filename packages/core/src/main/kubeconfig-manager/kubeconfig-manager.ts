@@ -34,6 +34,7 @@ interface KubeconfigManagerDependencies {
   removePath: RemovePath;
   writeFile: WriteFile;
   loadKubeconfig: LoadKubeconfig;
+  isBypassEnabled: () => boolean;
 }
 
 export class KubeconfigManager {
@@ -52,9 +53,18 @@ export class KubeconfigManager {
 
   /**
    *
-   * @returns The path to the temporary kubeconfig
+   * @returns The path to the temporary kubeconfig, or the original kubeconfig
+   * when "Bypass Freelens Internal KubeApi Proxy" is enabled.
    */
   async ensurePath(): Promise<string> {
+    if (this.dependencies.isBypassEnabled()) {
+      this.dependencies.logger.debug(
+        "[KUBECONFIG-MANAGER]: Bypass KubeApi proxy is enabled, using original kubeconfig",
+      );
+
+      return this.cluster.kubeConfigPath.get();
+    }
+
     if (this.tempFilePath === null || !(await this.dependencies.pathExists(this.tempFilePath))) {
       return await this.ensureFile();
     }
