@@ -348,8 +348,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.105.4)
       electron:
-        specifier: ^39.8.0
-        version: 39.8.0
+        specifier: ^39.8.4
+        version: 39.8.4
       electron-builder:
         specifier: ^26.8.2
         version: 26.8.2(electron-builder-squirrel-windows@26.8.2)
@@ -1054,8 +1054,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.105.4)
       electron:
-        specifier: ^39.8.0
-        version: 39.8.0
+        specifier: ^39.8.4
+        version: 39.8.4
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
         version: 9.1.0(typescript@5.9.3)(webpack@5.105.4)
@@ -1735,8 +1735,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
-        specifier: ^39.8.0
-        version: 39.8.0
+        specifier: ^39.8.4
+        version: 39.8.4
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -2068,8 +2068,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
-        specifier: ^39.8.0
-        version: 39.8.0
+        specifier: ^39.8.4
+        version: 39.8.4
       lodash:
         specifier: ^4.17.23
         version: 4.17.23
@@ -2129,8 +2129,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.17.23))(lodash@4.17.23)
       electron:
-        specifier: ^39.8.0
-        version: 39.8.0
+        specifier: ^39.8.4
+        version: 39.8.4
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.6.4
@@ -5994,8 +5994,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@39.8.0:
-    resolution: {integrity: sha512-K+f3YelSyh9Q4LgUXuIhLB4kq73LJrqnIbe8ih9vpWi+iSdPebj0w7FRYwILCMDoyBQMFC9LicYHuIPmZzdKlg==}
+  electron@39.8.4:
+    resolution: {integrity: sha512-eXYKxr4y+s31xs78keVJYg+XY20tGQMQzyIhZvc5L0XRDH2Gp08mbeFlbR1OjAeM5h5l/T2JYT2MFK2kYe2fMg==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -12587,7 +12587,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@39.8.0:
+  electron@39.8.4:
     dependencies:
       '@electron/get': 2.0.2
       '@types/node': 22.19.11
