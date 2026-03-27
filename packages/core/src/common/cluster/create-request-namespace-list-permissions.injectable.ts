@@ -27,6 +27,10 @@ const createRequestNamespaceListPermissionsInjectable = getInjectable({
     const logger = di.inject(loggerInjectionToken);
 
     return (api) => async (namespace) => {
+      if (process.env.FREELENS_NAMESPACE_AUTHORIZATION_CHECK === "false") {
+        return () => true;
+      }
+
       try {
         const { status } = await api.createSelfSubjectRulesReview({
           body: {
