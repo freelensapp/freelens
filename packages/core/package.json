@@ -190,7 +190,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/chart.js": "^2.9.41",
     "@types/circular-dependency-plugin": "5.0.8",
-    "@types/color": "^4.0.0",
+    "@types/color": "^4.2.1",
     "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^11.0.4",
     "@types/glob-to-regexp": "^0.4.4",
