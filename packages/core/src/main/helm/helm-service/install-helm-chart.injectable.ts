@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import helmReleaseCacheInjectable from "../../../features/helm-releases/main/helm-release-cache.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import installHelmChartInjectable from "../install-helm-chart.injectable";
 
@@ -26,15 +27,20 @@ const installClusterHelmChartInjectable = getInjectable({
 
   instantiate: (di) => {
     const installHelmChart = di.inject(installHelmChartInjectable);
+    const helmReleaseCache = di.inject(helmReleaseCacheInjectable);
 
     return async (cluster: Cluster, data: InstallChartArgs) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
       const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
 
-      return installHelmChart({
+      const result = await installHelmChart({
         ...data,
         kubeconfigPath: proxyKubeconfigPath,
       });
+
+      helmReleaseCache.invalidateCluster(cluster.id);
+
+      return result;
     };
   },
 });

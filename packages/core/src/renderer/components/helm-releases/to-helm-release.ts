@@ -9,7 +9,7 @@ import { capitalize } from "lodash";
 import { getMillisecondsFromUnixEpoch } from "../../../common/utils/date/get-current-date-time";
 
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
-import type { ListedHelmRelease } from "../../../features/helm-releases/common/channels";
+import type { HelmReleaseData, ListedHelmRelease } from "../../../features/helm-releases/common/channels";
 
 export const toHelmRelease = (release: ListedHelmRelease): HelmRelease => ({
   appVersion: release.app_version,
@@ -60,6 +60,61 @@ export const toHelmRelease = (release: ListedHelmRelease): HelmRelease => ({
 
   getUpdated(humanize = true, compact = true) {
     const updated = this.updated.replace(/\s\w*$/, ""); // 2019-11-26 10:58:09 +0300 MSK -> 2019-11-26 10:58:09 +0300 to pass into Date()
+    const updatedDate = new Date(updated).getTime();
+    const diff = getMillisecondsFromUnixEpoch() - updatedDate;
+
+    if (humanize) {
+      return formatDuration(diff, compact);
+    }
+
+    return diff;
+  },
+});
+
+/**
+ * Convert HelmReleaseData (from getRelease API) to HelmRelease.
+ * Note: This uses limited information available in HelmReleaseData.
+ * For complete chart/appVersion info, use ListedHelmRelease-based toHelmRelease.
+ */
+export const toHelmReleaseFromData = (data: HelmReleaseData): HelmRelease => ({
+  appVersion: "",
+  chart: "",
+  namespace: data.namespace,
+  revision: String(data.version),
+  status: data.info.status,
+  name: data.name,
+  updated: data.info.last_deployed,
+
+  getId() {
+    return `${this.namespace}/${this.name}`;
+  },
+
+  getName() {
+    return this.name;
+  },
+
+  getNs() {
+    return this.namespace;
+  },
+
+  getChart(_withVersion = false) {
+    return this.chart;
+  },
+
+  getRevision() {
+    return parseInt(this.revision, 10);
+  },
+
+  getStatus() {
+    return capitalize(this.status);
+  },
+
+  getVersion() {
+    return "";
+  },
+
+  getUpdated(humanize = true, compact = true) {
+    const updated = this.updated;
     const updatedDate = new Date(updated).getTime();
     const diff = getMillisecondsFromUnixEpoch() - updatedDate;
 
