@@ -198,11 +198,6 @@ jobs:
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: pnpm --color=always --stream build
 
-      - name: Rebuild native packages for Electron
-        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
-        env:
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
-
       - name: Build extra resources
         id: build-resources
         run: pnpm --color=always build:resources
@@ -220,6 +215,8 @@ jobs:
 
       - name: Build Electron app
         run: pnpm --color=always build:app:dir --${{ matrix.arch }}
+        env:
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux
