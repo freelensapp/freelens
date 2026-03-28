@@ -230,8 +230,6 @@ jobs:
         shell: bash
         run: |
           pnpm deploy --legacy --prod --filter=freelens freelens/node_modules_prod
-          cp node_modules/.modules.yaml freelens/node_modules_prod/.modules.yaml
-          cp pnpm-lock.yaml freelens/pnpm-lock.yaml
           mv freelens/node_modules freelens/node_modules_dev
           mv freelens/node_modules_prod freelens/node_modules
 
@@ -241,6 +239,7 @@ jobs:
         run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
+          npm_config_user_agent: pnpm
 
       - name: Restore dev node_modules
         shell: bash
