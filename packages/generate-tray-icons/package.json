@@ -39,7 +39,7 @@
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^28.0.1",
     "@types/node": "~22.19.15",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "publishConfig": {
     "access": "public",
