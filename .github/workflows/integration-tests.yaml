@@ -18,20 +18,23 @@ env:
 
 jobs:
   test-integration:
-    name: integration tests on ${{ matrix.os }}
+    name: integration tests on ${{ matrix.runs-on }}
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
+            os: linux
             arch: x64
-          - os: macos-14
+          - runs-on: macos-14
+            os: macos
             arch: arm64
-          - os: windows-2022
+          - runs-on: windows-2022
+            os: windows
             arch: x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
 
     env:
@@ -83,9 +86,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Get Electron version
         shell: bash
@@ -103,17 +106,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
       - name: Use Electron headers cache
         id: electron-headers
@@ -127,17 +130,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
         uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-turborepo-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -162,6 +165,10 @@ jobs:
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
 
       - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'
@@ -193,11 +200,6 @@ jobs:
         if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
         run: pnpm --color=always --stream build
 
-      - name: Rebuild native packages for Electron
-        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
-        env:
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
-
       - name: Build extra resources
         id: build-resources
         run: pnpm --color=always build:resources
@@ -213,8 +215,37 @@ jobs:
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
 
+      - name: Rebuild native packages for Electron
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
+
+      - name: Get electron-builder path
+        shell: bash
+        run: |
+          EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
+          echo "ELECTRON_BUILDER_PATH=$EB_PATH" >> $GITHUB_ENV
+
+      - name: Deploy production node_modules
+        shell: bash
+        run: |
+          pnpm deploy --legacy --prod --filter=freelens freelens/node_modules_prod
+          mv freelens/node_modules freelens/node_modules_dev
+          mv freelens/node_modules_prod freelens/node_modules
+
       - name: Build Electron app
-        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
+        shell: bash
+        working-directory: freelens
+        run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+          npm_config_user_agent: pnpm
+
+      - name: Restore dev node_modules
+        shell: bash
+        run: |
+          mv freelens/node_modules freelens/node_modules_prod
+          mv freelens/node_modules_dev freelens/node_modules
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux
