@@ -46,11 +46,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Disable Windows Defender
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: Add-MpPreference -ExclusionPath "${{ github.workspace }}"
-
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
         run: brew install bash coreutils python-setuptools
@@ -213,11 +208,15 @@ jobs:
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
 
+      - name: Rebuild native packages for Electron
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
+
       - name: Build Electron app
-        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
+        run: pnpm --color=always --filter=freelens build:app:dir --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux
