@@ -26,10 +26,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 15
 
     env:

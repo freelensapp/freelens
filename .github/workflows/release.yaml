@@ -45,26 +45,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: arm64
             concurrency: linux-arm64
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: x64
             concurrency: linux-amd64
-          - os: macos-14
+          - runs-on: macos-14
             arch: arm64
             concurrency: macos
-          - os: macos-14
+          - runs-on: macos-14
             arch: x64
             concurrency: macos
-          - os: windows-2022
+          - runs-on: windows-2022
             arch: arm64
             concurrency: windows-arm64
-          - os: windows-2022
+          - runs-on: windows-2022
             arch: x64
             concurrency: windows-amd64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     environment: signing
 
     concurrency:
@@ -117,9 +117,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Disable pre post scripts for pnpm
         shell: bash
@@ -137,17 +137,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
       - name: Use Electron headers cache
         id: electron-headers
@@ -430,7 +430,7 @@ jobs:
           - os: ubuntu-22.04
             arch: x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     environment: publishing
 
     steps:
@@ -458,9 +458,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm
