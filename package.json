@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "pnpm": "10.33.0",
-    "turbo": "2.8.20"
+    "turbo": "2.8.21"
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
