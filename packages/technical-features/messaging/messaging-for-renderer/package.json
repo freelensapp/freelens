@@ -36,7 +36,7 @@
     "electron": "^39.8.5"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+    "@async-fn/jest": "^1.6.5",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",

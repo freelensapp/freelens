@@ -42,7 +42,7 @@
     "moment": "^2.30.1"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+    "@async-fn/jest": "^1.6.5",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/node-fetch": "workspace:^",

@@ -37,7 +37,7 @@
     "lodash": "^4.17.23"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.4",
+    "@async-fn/jest": "^1.6.5",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
