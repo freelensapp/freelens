@@ -229,15 +229,13 @@ jobs:
       - name: Deploy production node_modules
         shell: bash
         run: |
-          pnpm deploy --legacy --prod --filter=freelens _deploy
-          rm -rf freelens/node_modules
-          mv _deploy/node_modules freelens/node_modules
+          pnpm deploy --legacy --prod --filter=freelens freelens/build/node_modules
           cp pnpm-lock.yaml freelens/pnpm-lock.yaml
 
       - name: Build Electron app
         shell: bash
         working-directory: freelens
-        run: node "$ELECTRON_BUILDER_PATH" build --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
+        run: node "$ELECTRON_BUILDER_PATH" build --publish never --${{ matrix.os }} dir --${{ matrix.arch }} --config.directories.nodeModules=./build/node_modules
         env:
           DEBUG: electron-builder,electron-builder:*
 
