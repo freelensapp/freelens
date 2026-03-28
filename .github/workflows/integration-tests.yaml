@@ -213,8 +213,16 @@ jobs:
         env:
           npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
+      - name: Deploy production node_modules (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          pnpm deploy --prod --filter=freelens _deploy
+          rm -rf freelens/node_modules
+          mv _deploy/node_modules freelens/node_modules
+
       - name: Build Electron app
-        run: pnpm --color=always --filter=freelens build:app:dir --${{ matrix.arch }}
+        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
 
