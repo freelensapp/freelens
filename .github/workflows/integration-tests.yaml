@@ -46,6 +46,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Disable Windows Defender
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: Add-MpPreference -ExclusionPath "${{ github.workspace }}"
+
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
         run: brew install bash coreutils python-setuptools
