@@ -217,6 +217,12 @@ jobs:
         env:
           npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
+      - name: Get electron-builder path
+        shell: bash
+        run: |
+          EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/bin/electron-builder'))")
+          echo "ELECTRON_BUILDER_PATH=$EB_PATH" >> $GITHUB_ENV
+
       - name: Deploy production node_modules (Windows)
         if: runner.os == 'Windows'
         shell: bash
@@ -226,7 +232,9 @@ jobs:
           mv _deploy/node_modules freelens/node_modules
 
       - name: Build Electron app
-        run: pnpm --color=always build:app:dir --${{ matrix.arch }}
+        shell: bash
+        working-directory: freelens
+        run: node "$ELECTRON_BUILDER_PATH" --publish never dir --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
 
