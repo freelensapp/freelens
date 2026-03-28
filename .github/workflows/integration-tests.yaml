@@ -220,7 +220,7 @@ jobs:
       - name: Get electron-builder path
         shell: bash
         run: |
-          EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/bin/electron-builder'))")
+          EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
           echo "ELECTRON_BUILDER_PATH=$EB_PATH" >> $GITHUB_ENV
 
       - name: Deploy production node_modules (Windows)
