@@ -36,7 +36,7 @@
     "build:resources": "turbo run build:resources --",
     "bump-version": "corepack pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
     "clean": "corepack pnpm -r clean",
-    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.2 node_modules",
+    "clean:node_modules": "corepack pnpm -r clean:node_modules && corepack pnpm dlx rimraf@6.1.3 node_modules",
     "compute-versions": "corepack pnpm -r compute-versions",
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && corepack pnpm electron-rebuild",
