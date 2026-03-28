@@ -18,20 +18,23 @@ env:
 
 jobs:
   test-integration:
-    name: integration tests on ${{ matrix.os }}
+    name: integration tests on ${{ matrix.runs-on }}
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
+            os: linux
             arch: x64
-          - os: macos-14
+          - runs-on: macos-14
+            os: macos
             arch: arm64
-          - os: windows-2022
+          - runs-on: windows-2022
+            os: windows
             arch: x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
 
     env:
@@ -83,9 +86,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Get Electron version
         shell: bash
@@ -103,17 +106,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
       - name: Use Electron headers cache
         id: electron-headers
@@ -127,17 +130,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-playwright-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
         uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-turborepo-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -234,7 +237,7 @@ jobs:
       - name: Build Electron app
         shell: bash
         working-directory: freelens
-        run: node "$ELECTRON_BUILDER_PATH" --publish never dir --${{ matrix.arch }}
+        run: node "$ELECTRON_BUILDER_PATH" build --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
 
