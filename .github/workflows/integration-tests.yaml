@@ -217,7 +217,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          pnpm deploy --prod --filter=freelens _deploy
+          pnpm deploy --legacy --prod --filter=freelens _deploy
           rm -rf freelens/node_modules
           mv _deploy/node_modules freelens/node_modules
 
