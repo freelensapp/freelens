@@ -216,6 +216,7 @@ jobs:
       - name: Build Electron app
         run: pnpm --color=always build:app:dir --${{ matrix.arch }}
         env:
+          DEBUG: electron-builder,electron-builder:*
           npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Run integration tests (Linux)

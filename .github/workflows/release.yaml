@@ -234,6 +234,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -304,6 +305,8 @@ jobs:
           pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Build Electron app (Windows)
         if: runner.os == 'Windows'
@@ -312,6 +315,8 @@ jobs:
           pnpm --color=always build:app \
             msi nsis portable \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
