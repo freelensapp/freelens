@@ -2321,8 +2321,8 @@ importers:
         specifier: ^1.5.4
         version: 1.5.4
       socks-proxy-agent:
-        specifier: ^8.0.5
-        version: 8.0.5
+        specifier: ^9.0.0
+        version: 9.0.0
       stream-buffers:
         specifier: ^3.0.3
         version: 3.0.3
@@ -5003,6 +5003,10 @@ packages:
 
   agent-base@7.1.3:
     resolution: {integrity: sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw==}
+    engines: {node: '>= 14'}
+
+  agent-base@8.0.0:
+    resolution: {integrity: sha512-QT8i0hCz6C/KQ+KTAbSNwCHDGdmUJl2tp2ZpNlGSWCfhUNVbYG2WLE3MdZGBAgXPV4GAvjGMxo+C1hroyxmZEg==}
     engines: {node: '>= 14'}
 
   aggregate-error@3.1.0:
@@ -8581,6 +8585,10 @@ packages:
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
     engines: {node: '>= 14'}
 
+  socks-proxy-agent@9.0.0:
+    resolution: {integrity: sha512-fFlbMlfsXhK02ZB8aZY7Hwxh/IHBV9b1Oq9bvBk6tkFWXvdAxUgA0wbw/NYR5liU3Y5+KI6U4FH3kYJt9QYv0w==}
+    engines: {node: '>= 14'}
+
   socks@2.8.4:
     resolution: {integrity: sha512-D3YaD0aRxR3mEcqnidIs7ReYJFVzWdd6fXJYUM8ixcQcJRGTka/b3saV0KflYhyVJXKhb947GndU35SxYNResQ==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
@@ -11449,6 +11457,8 @@ snapshots:
       - supports-color
 
   agent-base@7.1.3: {}
+
+  agent-base@8.0.0: {}
 
   aggregate-error@3.1.0:
     dependencies:
@@ -15675,6 +15685,14 @@ snapshots:
   socks-proxy-agent@8.0.5:
     dependencies:
       agent-base: 7.1.3
+      debug: 4.4.0
+      socks: 2.8.4
+    transitivePeerDependencies:
+      - supports-color
+
+  socks-proxy-agent@9.0.0:
+    dependencies:
+      agent-base: 8.0.0
       debug: 4.4.0
       socks: 2.8.4
     transitivePeerDependencies:
