@@ -555,7 +555,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       />
                     </div>
                     <div
-                      class="TableCell podwarning nowrap"
+                      class="TableCell nowrap"
                       id="podwarning"
                     >
                       <div
@@ -845,7 +845,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                                 </div>
                               </div>
                               <div
-                                class="TableCell podwarning"
+                                class="TableCell"
                               />
                               <div
                                 class="TableCell namespace"
@@ -1692,7 +1692,7 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                       />
                     </div>
                     <div
-                      class="TableCell podwarning nowrap"
+                      class="TableCell nowrap"
                       id="podwarning"
                     >
                       <div
@@ -2681,7 +2681,7 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                       />
                     </div>
                     <div
-                      class="TableCell podwarning nowrap"
+                      class="TableCell nowrap"
                       id="podwarning"
                     >
                       <div

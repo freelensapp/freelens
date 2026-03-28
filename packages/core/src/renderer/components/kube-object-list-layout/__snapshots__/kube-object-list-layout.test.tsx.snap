@@ -149,7 +149,7 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 />
               </div>
               <div
-                class="TableCell podwarning nowrap"
+                class="TableCell nowrap"
                 id="podwarning"
               >
                 <div
