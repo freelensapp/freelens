@@ -24,7 +24,7 @@
     "clean:node_modules": "pnpm dlx rimraf@6.1.2 node_modules"
   },
   "dependencies": {
-    "command-line-args": "^6.0.1",
+    "command-line-args": "^6.0.2",
     "semver": "^7.7.4"
   },
   "devDependencies": {
