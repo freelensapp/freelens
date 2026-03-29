@@ -1,0 +1,139 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../mixins";
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.container :global(.Select) {
+  min-width: 0;
+  width: 100%;
+}
+
+.containerCompact :global(.Select) {
+  flex: 1 1 auto;
+}
+
+.containerExpanded :global(.Select) {
+  flex: 1 1 120px;
+  width: auto;
+}
+
+.displayLabel {
+  font-size: 12px;
+  color: var(--textColorSecondary);
+}
+
+.displayLabelCompact {
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.displayLabelExpanded {
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  flex: 0 1 auto;
+}
+
+.pickerContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding);
+  min-width: 300px;
+  background-color: var(--contentColor);
+  border-radius: var(--border-radius);
+  padding: calc(var(--padding) * 2);
+  border: 1px solid var(--inputControlBorder);
+  box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
+}
+
+.header {
+  margin: 0 0 var(--padding) 0;
+  color: var(--textColorPrimary) !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 12px;
+  color: var(--textColorPrimary);
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: var(--border-radius);
+  background-color: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  color-scheme: dark;
+
+  &:hover {
+    border-color: var(--inputControlHoverBorder);
+  }
+
+  &:focus {
+    border-color: var(--colorInfo);
+    outline: none;
+  }
+}
+
+.inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+@include mixins.theme-light {
+  .inputGroup input {
+    color-scheme: light;
+  }
+
+  .inputGroup input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.button {
+  padding: 4px 12px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.cancelButton {
+  border: 1px solid var(--inputControlBorder);
+  background-color: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+}
+
+.applyButton {
+  border: none;
+  background-color: var(--buttonPrimaryBackground);
+  color: white;
+}
