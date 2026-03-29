@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import downloadJsonViaChannelInjectable from "../../../fetch/download-json-via-channel-copy.injectable";
+
 import type { MarketplaceExtension } from "./marketplace-extensions.injectable";
 
 // todo: change to offficial url, once the MR is merged
@@ -51,7 +52,12 @@ const isMarketplacePackageFromApi = (value: unknown): value is MarketplacePackag
   );
 };
 
-const toMarketplaceExtension = ({ name, description, version, status }: MarketplacePackageFromApi): MarketplaceExtension => ({
+const toMarketplaceExtension = ({
+  name,
+  description,
+  version,
+  status,
+}: MarketplacePackageFromApi): MarketplaceExtension => ({
   // id is computed from name and version to ensure uniqueness and stability across updates
   id: `${clean(name)}-${clean(version)}`,
   name,

@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
@@ -15,6 +14,8 @@ import installExtensionFromInputInjectable from "./install-extension-from-input.
 import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplace-extensions.injectable";
 import styles from "./marketplace-extensions.module.scss";
 import { SearchBar } from "./search-bar";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
 import type { InstallExtensionFromInput } from "./install-extension-from-input.injectable";
 import type { MarketplaceExtension } from "./marketplace-extensions/marketplace-extensions.injectable";
