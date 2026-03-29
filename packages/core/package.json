@@ -178,7 +178,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@async-fn/jest": "1.6.4",
+    "@async-fn/jest": "1.6.5",
     "@freelensapp/messaging-fake-bridge": "workspace:^",
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
