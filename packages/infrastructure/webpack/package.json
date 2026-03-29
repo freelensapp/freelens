@@ -33,7 +33,7 @@
     "@tailwindcss/postcss": "^4.2.1",
     "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
-    "fs-extra": "^11.3.3",
+    "fs-extra": "^11.3.4",
     "lodash": "^4.17.23",
     "mini-css-extract-plugin": "^2.9.4",
     "sass": "^1.97.3",
