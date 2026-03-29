@@ -5,6 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
@@ -14,21 +15,19 @@ import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplac
 import styles from "./marketplace-extensions.module.scss";
 import { SearchBar } from "./search-bar";
 
-import type { IComputedValue } from "mobx";
-
 import type { MarketplaceExtension } from "./marketplace-extensions/marketplace-extensions.injectable";
 
 export interface MarketplaceExtensionsProps {}
 
 interface Dependencies {
-  marketplaceExtensions: IComputedValue<MarketplaceExtension[]>;
+  marketplaceExtensions: IAsyncComputed<MarketplaceExtension[]>;
 }
 
 const NonInjectedMarketplaceExtensions = observer(
   ({ marketplaceExtensions }: Dependencies & MarketplaceExtensionsProps) => {
     const [searchQuery, setSearchQuery] = useState("");
 
-    const extensions = marketplaceExtensions.get();
+    const extensions = marketplaceExtensions.value.get();
     const filteredExtensions = extensions.filter(
       (ext) =>
         ext.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
