@@ -1159,8 +1159,8 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
       tar-stream:
-        specifier: ^3.1.7
-        version: 3.1.7
+        specifier: ^3.1.8
+        version: 3.1.8
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -5220,6 +5220,15 @@ packages:
       bare-buffer:
         optional: true
 
+  bare-fs@4.5.6:
+    resolution: {integrity: sha512-1QovqDrR80Pmt5HPAsMsXTCFcDYr+NSUKW6nd6WO5v0JBmnItc/irNRzm2KOQ5oZ69P37y+AMujNyNtG+1Rggw==}
+    engines: {bare: '>=1.16.0'}
+    peerDependencies:
+      bare-buffer: '*'
+    peerDependenciesMeta:
+      bare-buffer:
+        optional: true
+
   bare-os@3.6.1:
     resolution: {integrity: sha512-uaIjxokhFidJP+bmmvKSgiMzj2sV5GPHaZVAIktcxcpCyBFFWO+YlikVAdhmUo2vYFvFhOXIAlldqV29L8126g==}
     engines: {bare: '>=1.14.0'}
@@ -5237,6 +5246,9 @@ packages:
         optional: true
       bare-events:
         optional: true
+
+  bare-url@2.4.0:
+    resolution: {integrity: sha512-NSTU5WN+fy/L0DDenfE8SXQna4voXuW0FHM7wH8i3/q9khUSchfPbPezO4zSFMnDGIf9YE+mt/RWhZgNRKRIXA==}
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -8786,6 +8798,9 @@ packages:
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
 
+  tar-stream@3.1.8:
+    resolution: {integrity: sha512-U6QpVRyCGHva435KoNWy9PRoi2IFYCgtEhq9nmrPPpbRacPs9IH4aJ3gbrFC8dPcXvdSZ4XXfXT5Fshbp2MtlQ==}
+
   tar@7.5.13:
     resolution: {integrity: sha512-tOG/7GyXpFevhXVh8jOPJrmtRpOTsYqUIkVdVooZYJS/z8WhfQUX8RJILmeuJNinGAMSu1veBr4asSHFt5/hng==}
     engines: {node: '>=18'}
@@ -11691,8 +11706,7 @@ snapshots:
 
   balanced-match@4.0.3: {}
 
-  bare-events@2.5.4:
-    optional: true
+  bare-events@2.5.4: {}
 
   bare-fs@4.1.4:
     dependencies:
@@ -11701,20 +11715,29 @@ snapshots:
       bare-stream: 2.6.5(bare-events@2.5.4)
     optional: true
 
-  bare-os@3.6.1:
-    optional: true
+  bare-fs@4.5.6:
+    dependencies:
+      bare-events: 2.5.4
+      bare-path: 3.0.0
+      bare-stream: 2.6.5(bare-events@2.5.4)
+      bare-url: 2.4.0
+      fast-fifo: 1.3.2
+
+  bare-os@3.6.1: {}
 
   bare-path@3.0.0:
     dependencies:
       bare-os: 3.6.1
-    optional: true
 
   bare-stream@2.6.5(bare-events@2.5.4):
     dependencies:
       streamx: 2.22.0
     optionalDependencies:
       bare-events: 2.5.4
-    optional: true
+
+  bare-url@2.4.0:
+    dependencies:
+      bare-path: 3.0.0
 
   base64-js@1.5.1: {}
 
@@ -15895,6 +15918,15 @@ snapshots:
       b4a: 1.6.4
       fast-fifo: 1.3.2
       streamx: 2.22.0
+
+  tar-stream@3.1.8:
+    dependencies:
+      b4a: 1.6.4
+      bare-fs: 4.5.6
+      fast-fifo: 1.3.2
+      streamx: 2.22.0
+    transitivePeerDependencies:
+      - bare-buffer
 
   tar@7.5.13:
     dependencies:

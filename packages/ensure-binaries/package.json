@@ -35,7 +35,7 @@
     "cli-progress": "^3.12.0",
     "gunzip-maybe": "^1.4.2",
     "node-fetch": "^3.3.2",
-    "tar-stream": "^3.1.7",
+    "tar-stream": "^3.1.8",
     "zod": "^4.3.6"
   },
   "devDependencies": {
