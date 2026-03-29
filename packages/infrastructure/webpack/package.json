@@ -43,7 +43,7 @@
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "webpack": "^5.105.4",
-    "webpack-cli": "^6.0.1",
+    "webpack-cli": "^7.0.2",
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
