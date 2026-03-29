@@ -11,20 +11,23 @@ import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { ExtensionCard } from "./extension-card";
 import { ExtensionsGrid } from "./extensions-grid";
+import installExtensionFromInputInjectable from "./install-extension-from-input.injectable";
 import marketplaceExtensionsInjectable from "./marketplace-extensions/marketplace-extensions.injectable";
 import styles from "./marketplace-extensions.module.scss";
 import { SearchBar } from "./search-bar";
 
+import type { InstallExtensionFromInput } from "./install-extension-from-input.injectable";
 import type { MarketplaceExtension } from "./marketplace-extensions/marketplace-extensions.injectable";
 
 export interface MarketplaceExtensionsProps {}
 
 interface Dependencies {
+  installExtensionFromInput: InstallExtensionFromInput;
   marketplaceExtensions: IAsyncComputed<MarketplaceExtension[]>;
 }
 
 const NonInjectedMarketplaceExtensions = observer(
-  ({ marketplaceExtensions }: Dependencies & MarketplaceExtensionsProps) => {
+  ({ marketplaceExtensions, installExtensionFromInput }: Dependencies & MarketplaceExtensionsProps) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const extensions = marketplaceExtensions.value.get();
@@ -34,9 +37,8 @@ const NonInjectedMarketplaceExtensions = observer(
         ext.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
-    const handleInstall = (extensionId: string) => {
-      console.log(`Installing extension: ${extensionId}`);
-      // TODO: Implement actual installation logic
+    const handleInstall = (extensionName: string, extensionVersion: string) => {
+      void installExtensionFromInput(`${extensionName}@${extensionVersion}`);
     };
 
     return (
@@ -59,7 +61,7 @@ const NonInjectedMarketplaceExtensions = observer(
                 name={extension.name}
                 description={extension.description}
                 version={extension.version}
-                onInstall={() => handleInstall(extension.id)}
+                onInstall={() => handleInstall(extension.name, extension.version)}
               />
             ))}
           </ExtensionsGrid>
@@ -74,6 +76,7 @@ export const MarketplaceExtensions = withInjectables<Dependencies, MarketplaceEx
   {
     getProps: (di, props) => ({
       ...props,
+      installExtensionFromInput: di.inject(installExtensionFromInputInjectable),
       marketplaceExtensions: di.inject(marketplaceExtensionsInjectable),
     }),
   },
