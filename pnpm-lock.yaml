@@ -227,8 +227,8 @@ importers:
         specifier: ^7.5.13
         version: 7.5.13
       tar-fs:
-        specifier: ^3.1.1
-        version: 3.1.1
+        specifier: ^3.1.2
+        version: 3.1.2
       tcp-port-used:
         specifier: ^1.0.2
         version: 1.0.2
@@ -2327,8 +2327,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       tar-fs:
-        specifier: ^3.1.1
-        version: 3.1.1
+        specifier: ^3.1.2
+        version: 3.1.2
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -8772,8 +8772,8 @@ packages:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
 
-  tar-fs@3.1.1:
-    resolution: {integrity: sha512-LZA0oaPOc2fVo82Txf3gw+AkEd38szODlptMYejQUhndHMLQ9M059uXR+AfS7DNo0NpINvSqDsvyaCrBVkptWg==}
+  tar-fs@3.1.2:
+    resolution: {integrity: sha512-QGxxTxxyleAdyM3kpFs14ymbYmNFrfY+pHj7Z8FgtbZ7w2//VAgLMac7sT6nRpIHjppXO2AwwEOg0bPFVRcmXw==}
 
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
@@ -10390,7 +10390,7 @@ snapshots:
       rfc4648: 1.5.4
       socks-proxy-agent: 8.0.5
       stream-buffers: 3.0.3
-      tar-fs: 3.1.1
+      tar-fs: 3.1.2
       ws: 8.19.0
     transitivePeerDependencies:
       - bare-buffer
@@ -15862,7 +15862,7 @@ snapshots:
 
   tapable@2.3.0: {}
 
-  tar-fs@3.1.1:
+  tar-fs@3.1.2:
     dependencies:
       pump: 3.0.0
       tar-stream: 3.1.7
