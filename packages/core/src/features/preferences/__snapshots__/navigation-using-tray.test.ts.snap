@@ -738,6 +738,7 @@ exports[`show-about-using-tray when navigating using tray renders 1`] = `
                           class="input box grow"
                           disabled=""
                           placeholder="Custom Extension Registry URL..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

@@ -317,6 +317,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -356,6 +357,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -405,6 +407,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1110,6 +1113,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1149,6 +1153,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1198,6 +1203,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1941,6 +1947,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1980,6 +1987,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2029,6 +2037,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2491,6 +2500,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value=""
                   />
@@ -2511,6 +2521,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value=""
                   />
@@ -2883,6 +2894,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2922,6 +2934,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2971,6 +2984,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3722,6 +3736,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3761,6 +3776,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3810,6 +3826,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4272,6 +4289,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="some-custom-repository"
                   />
@@ -4292,6 +4310,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="http://some.url"
                   />
@@ -4664,6 +4683,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4703,6 +4723,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4752,6 +4773,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5214,6 +5236,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="some-custom-repository"
                   />
@@ -5234,6 +5257,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="http://some.url"
                   />
@@ -5301,6 +5325,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-key-file-input"
                         placeholder="Key file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -5338,6 +5363,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-ca-cert-file-input"
                         placeholder="Ca file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -5375,6 +5401,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-cert-file-input"
                         placeholder="Certificate file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -5415,6 +5442,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="input box grow"
                       data-testid="custom-helm-repository-username-input"
                       placeholder="Username"
+                      searchhistory="[object Object]"
                       spellcheck="false"
                       value=""
                     />
@@ -5434,6 +5462,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="input box grow"
                       data-testid="custom-helm-repository-password-input"
                       placeholder="Password"
+                      searchhistory="[object Object]"
                       spellcheck="false"
                       type="password"
                       value=""
@@ -5788,6 +5817,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5827,6 +5857,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5876,6 +5907,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -6338,6 +6370,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="some-custom-repository"
                   />
@@ -6358,6 +6391,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="http://some.url"
                   />
@@ -6730,6 +6764,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -6769,6 +6804,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -6818,6 +6854,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -7280,6 +7317,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="some-custom-repository"
                   />
@@ -7300,6 +7338,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="http://some.url"
                   />
@@ -7367,6 +7406,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-key-file-input"
                         placeholder="Key file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value="some-key-file"
                       />
@@ -7404,6 +7444,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-ca-cert-file-input"
                         placeholder="Ca file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value="some-ca-cert-file"
                       />
@@ -7441,6 +7482,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         class="input box grow"
                         data-testid="custom-helm-repository-cert-file-input"
                         placeholder="Certificate file"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value="some-cert-file"
                       />
@@ -7481,6 +7523,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="input box grow"
                       data-testid="custom-helm-repository-username-input"
                       placeholder="Username"
+                      searchhistory="[object Object]"
                       spellcheck="false"
                       value="some-username"
                     />
@@ -7500,6 +7543,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="input box grow"
                       data-testid="custom-helm-repository-password-input"
                       placeholder="Password"
+                      searchhistory="[object Object]"
                       spellcheck="false"
                       type="password"
                       value="some-password"
@@ -7854,6 +7898,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -7893,6 +7938,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -7942,6 +7988,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -8404,6 +8451,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="some-custom-repository"
                   />
@@ -8424,6 +8472,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value="http://some.url"
                   />
@@ -8797,6 +8846,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -8836,6 +8886,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -8885,6 +8936,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -9636,6 +9688,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -9675,6 +9728,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -9724,6 +9778,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -10465,6 +10520,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -10504,6 +10560,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -10553,6 +10610,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -11005,6 +11063,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-name-input"
                     placeholder="Helm repo name"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value=""
                   />
@@ -11025,6 +11084,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                     data-testid="custom-helm-repository-url-input"
                     placeholder="URL"
                     required=""
+                    searchhistory="[object Object]"
                     spellcheck="false"
                     value=""
                   />

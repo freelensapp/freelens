@@ -375,6 +375,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1156,6 +1157,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1949,6 +1951,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page given
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

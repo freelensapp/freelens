@@ -432,6 +432,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1122,6 +1123,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1980,6 +1982,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -2895,6 +2898,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3960,6 +3964,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -5035,6 +5040,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -6100,6 +6106,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -7169,6 +7176,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -8244,6 +8252,7 @@ exports[`opening dock tab for installing helm chart given application is started
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

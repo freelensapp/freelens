@@ -1500,6 +1500,7 @@ exports[`installing helm chart from previously opened tab given tab for installi
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value="some-stored-custom-name"

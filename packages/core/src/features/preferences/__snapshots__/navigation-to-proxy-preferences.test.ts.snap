@@ -375,6 +375,7 @@ exports[`preferences - navigation to proxy preferences given in preferences, whe
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -948,6 +949,7 @@ exports[`preferences - navigation to proxy preferences given in preferences, whe
                       <input
                         class="input box grow"
                         placeholder="Type HTTP proxy url (example: http://proxy.acme.org:8080)"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

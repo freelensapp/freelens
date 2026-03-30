@@ -375,6 +375,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -950,6 +951,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                       <input
                         class="input box grow"
                         placeholder="some-default-shell"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1102,6 +1104,7 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                         class="input box grow"
                         max="50"
                         min="10"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         type="number"
                         value="12"
