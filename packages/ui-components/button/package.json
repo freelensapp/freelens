@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@freelensapp/tooltip": "workspace:^",
-    "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "react": "^17.0.2"
   },
