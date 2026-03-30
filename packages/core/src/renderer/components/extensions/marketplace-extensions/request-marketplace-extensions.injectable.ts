@@ -13,7 +13,7 @@ import type { MarketplaceExtension } from "./marketplace-extensions.injectable";
 // todo: change to offficial url, once the MR is merged
 // ref: https://github.com/freelensapp/freelens-marketplace/pull/1
 const extensionListUrl =
-  "https://raw.githubusercontent.com/maifeeulasad/freelens-marketplace/refs/heads/marketplace-v0/assets/extensions.json";
+  "https://raw.githubusercontent.com/maifeeulasad/freelens-marketplace/refs/heads/marketplace-v0/extensions.json";
 
 type MarketplacePackageStatus = "official" | "community";
 
@@ -28,7 +28,7 @@ interface MarketplacePackagesResponse {
   meta: {
     version: number;
   };
-  packages: MarketplacePackageFromApi[];
+  extensions: MarketplacePackageFromApi[];
 }
 
 // first change to lowercase then replace non-alphanumeric characters with underscores to create a id
@@ -85,9 +85,9 @@ const requestMarketplaceExtensionsInjectable = getInjectable({
       }
 
       const response = result.response as Partial<MarketplacePackagesResponse>;
-      const packages = Array.isArray(response.packages) ? response.packages : [];
+      const extensions = Array.isArray(response.extensions) ? response.extensions : [];
 
-      return packages.filter(isMarketplacePackageFromApi).map(toMarketplaceExtension);
+      return extensions.filter(isMarketplacePackageFromApi).map(toMarketplaceExtension);
     };
   },
 
