@@ -80,9 +80,22 @@
   border-top: 1px solid var(--borderFaintColor);
 }
 
+.footerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .version {
   font-size: 0.875rem;
   color: var(--textColorSecondary);
+}
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--textColorSecondary);
+  text-transform: capitalize;
 }
 
 .button {

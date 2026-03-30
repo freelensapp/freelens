@@ -9,11 +9,14 @@ import React from "react";
 import { MenuActions, MenuItem } from "../menu";
 import styles from "./extension-card.module.scss";
 
+type ExtensionStatus = "official" | "community";
+
 type BaseExtensionCardProps = {
   id: string;
   name: string;
   description: string;
   version: string;
+  status?: ExtensionStatus;
 };
 
 type InstalledExtensionCardProps = BaseExtensionCardProps & {
@@ -37,7 +40,7 @@ const isInstalledVariant = (props: ExtensionCardProps): props is InstalledExtens
 };
 
 export const ExtensionCard: React.FC<ExtensionCardProps> = (props) => {
-  const { id, name, description, version } = props;
+  const { id, name, description, version, status } = props;
   return (
     <div className={styles.container}>
       {/* Three-dot menu - only for installed extensions */}
@@ -77,7 +80,10 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = (props) => {
 
       {/* Footer with version and action button */}
       <div className={styles.footer}>
-        <div className={styles.version}>{version}</div>
+        <div className={styles.footerMeta}>
+          <div className={styles.version}>{version}</div>
+          {status && status !== "official" && <div className={styles.status}>Community</div>}
+        </div>
         {isInstalledVariant(props) ? (
           <button
             disabled={props.isUninstalling || !props.isCompatible}

@@ -56,6 +56,7 @@ const NonInjectedMarketplaceExtensions = observer(
           <ExtensionsGrid>
             {filteredExtensions.map((extension) => (
               <ExtensionCard
+                status={extension.status}
                 key={extension.id}
                 variant="marketplace"
                 id={extension.id}
