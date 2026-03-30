@@ -96,9 +96,20 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
+        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
-        run: choco install yq --yes --no-progress
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
+        continue-on-error: true
+
+      - name: Install dependencies (Windows) (retry)
+        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
 
       - name: Setup node
         uses: actions/setup-node@v6

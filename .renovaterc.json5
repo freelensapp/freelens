@@ -19,21 +19,6 @@
   },
   // disable autorebasing to save unecessary workflow runs
   "rebaseWhen": "conflicted",
-  // freelens/pnpm-lock.yaml is a dummy file for electron-builder, not a real lockfile;
-  // without this, Renovate treats freelens/ as a separate pnpm project and only updates
-  // the dummy lockfile instead of the root pnpm-lock.yaml
-  // Note: ignorePaths is not mergeable, so we must re-specify everything config:recommended adds
-  "ignorePaths": [
-    "**/node_modules/**",
-    "**/bower_components/**",
-    "**/vendor/**",
-    "**/examples/**",
-    "**/test/**",
-    "**/tests/**",
-    "**/fixture/**",
-    "**/fixtures/**",
-    "freelens/pnpm-lock.yaml"
-  ],
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",

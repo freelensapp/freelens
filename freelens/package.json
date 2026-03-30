@@ -20,7 +20,7 @@
   "main": "static/build/main.js",
   "scripts": {
     "build": "webpack --config webpack/webpack.ts --progress",
-    "prebuild:app": "corepack pnpm electron-rebuild",
+    "prebuild:app": "node build/prebuild.js",
     "build:app": "corepack pnpm dlx run-script-os@1.1.6 --",
     "build:app:darwin": "electron-builder --publish never --macos",
     "build:app:default": "electron-builder --publish never",
