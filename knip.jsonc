@@ -115,7 +115,9 @@
         ".*/__mocks__/assetMock.t",
         // webpack exceptions
         "../../declarations/WebpackOptions",
-        "./Logger"
+        "./Logger",
+        // false positives from webpacked files
+        "../../editor/browser/widget/markdownRenderer/browser/markdownRenderer.js"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
