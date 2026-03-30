@@ -26,7 +26,7 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "**/build/notarize.js"]
+    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "**/build/*.js"]
   },
   "formatter": {
     "attributePosition": "auto",
