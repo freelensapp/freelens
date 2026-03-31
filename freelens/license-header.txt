@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024-2025 Freelens Authors.
+Copyright (c) 2024-2026 Freelens Authors.
 
 Copyright (c) 2022 OpenLens Authors.
 

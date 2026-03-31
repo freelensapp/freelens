@@ -109,9 +109,12 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     return <LineProgress max={maxMemory} value={usage} tooltip={usage != 0 ? tooltip : null} />;
   }
 
-  getTableRow(uid: string, hideNode = false, linkToPod = false) {
-    const { pods, podStore, showDetails } = this.props;
+  getTableRow(uid: string) {
+    const { pods, owner, podStore, showDetails } = this.props;
     const pod = pods.find((pod) => pod.getId() == uid);
+
+    const hideNode = owner.kind === "Node";
+    const linkToPod = owner.kind !== "Pod";
 
     if (!pod) {
       return;
@@ -154,7 +157,6 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     const { owner, pods, podStore } = this.props;
 
     const hideNode = owner.kind === "Node";
-    const linkToPod = owner.kind !== "Pod";
 
     if (!podStore.isLoaded) {
       return (
@@ -191,7 +193,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
           sortByDefault={{ sortBy: sortBy.cpu, orderBy: "desc" }}
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
-          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId(), hideNode, linkToPod)}
+          renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId())}
           className="box grow"
         >
           <TableHead flat sticky={virtual}>

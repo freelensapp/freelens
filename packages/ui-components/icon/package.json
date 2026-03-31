@@ -40,7 +40,7 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "mobx": "^6.15.0",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
@@ -52,8 +52,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/history": "^4.7.11",
-    "@types/lodash": "^4.17.21",
-    "@types/react": "^17.0.90",
+    "@types/lodash": "^4.17.23",
+    "@types/react": "^17.0.91",
     "@types/react-router-dom": "^5.3.3",
     "css-loader": "^6.11.0",
     "history": "^4.10.1",
@@ -61,6 +61,6 @@
     "sass-loader": "^16.0.6",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "webpack": "^5.104.1"
+    "webpack": "^5.105.0"
   }
 }
