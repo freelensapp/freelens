@@ -34,6 +34,8 @@ export interface LogListProps {
 }
 
 const colorConverter = new AnsiUp();
+const ansiEscapeSequenceRegex =
+  /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
 export interface LogListRef {
   scrollToItem: (index: number, align: Align) => void;
@@ -49,10 +51,73 @@ class NonForwardedLogList extends React.Component<
 > {
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
+  @observable.ref private containerWidth = 0;
+  @observable private overlapVersion = 0;
 
-  private virtualListDiv = React.createRef<HTMLDivElement>(); // A reference for outer container in VirtualList
+  private virtualListDivElement: HTMLDivElement | null = null;
+  private resizeObserver: ResizeObserver | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
-  private lineHeight = 18; // Height of a log line. Should correlate with styles in pod-log-list.scss
+  private overlappingRowPadding = new Map<number, number>();
+  private pendingResetFromIndex: number | null = null;
+  private pendingResetFrame: number | null = null;
+  private lineHeight = 18;
+  private charWidth = 7.2;
+  private rowPadding = 32;
+  private rowVerticalPadding = 4;
+  private wrappedRowSafetyPadding = 1;
+
+  private flushMeasuredRowReset = () => {
+    this.pendingResetFrame = null;
+
+    if (this.pendingResetFromIndex === null) {
+      return;
+    }
+
+    this.virtualListRef.current?.resetAfterIndex(this.pendingResetFromIndex);
+    this.pendingResetFromIndex = null;
+  };
+
+  private scheduleMeasuredRowReset(index: number) {
+    this.pendingResetFromIndex =
+      this.pendingResetFromIndex === null ? index : Math.min(this.pendingResetFromIndex, index);
+
+    if (this.pendingResetFrame === null) {
+      this.pendingResetFrame = window.requestAnimationFrame(this.flushMeasuredRowReset);
+    }
+  }
+
+  @action
+  private updateContainerMetrics() {
+    if (!this.virtualListDivElement) {
+      return;
+    }
+
+    const prevWidth = this.containerWidth;
+
+    this.measureCharMetrics();
+    this.containerWidth = this.virtualListDivElement.clientWidth;
+
+    if (prevWidth !== this.containerWidth) {
+      this.overlappingRowPadding.clear();
+      this.overlapVersion++;
+      this.virtualListRef.current?.resetAfterIndex(0);
+    }
+  }
+
+  private virtualListDiv = (el: HTMLDivElement | null) => {
+    this.resizeObserver?.disconnect();
+    this.virtualListDivElement = el;
+
+    if (el) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateContainerMetrics();
+      });
+      this.resizeObserver.observe(el);
+      this.updateContainerMetrics();
+    } else {
+      this.resizeObserver = null;
+    }
+  };
 
   constructor(props: any) {
     super(props);
@@ -61,10 +126,20 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentDidMount() {
+    this.updateContainerMetrics();
+    window.addEventListener("resize", this.updateContainerMetrics);
     disposeOnUnmount(this, [
       reaction(
         () => this.props.model.logs.get(),
         (logs, prevLogs) => {
+          const didLogsResetOrPrepend =
+            !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
+
+          if (didLogsResetOrPrepend) {
+            this.overlappingRowPadding.clear();
+            this.overlapVersion++;
+          }
+
           this.onLogsInitialLoad(logs, prevLogs);
           this.onLogsUpdate();
           this.onUserScrolledUp(logs, prevLogs);
@@ -76,6 +151,32 @@ class NonForwardedLogList extends React.Component<
     });
   }
 
+  private measureCharMetrics() {
+    if (!this.virtualListDivElement) {
+      return;
+    }
+
+    const probe = document.createElement("span");
+    const probeCharacterCount = 10;
+
+    probe.style.position = "absolute";
+    probe.style.visibility = "hidden";
+    probe.style.fontFamily = "var(--font-monospace)";
+    probe.style.fontSize = "smaller";
+    probe.style.whiteSpace = "pre";
+    probe.textContent = "M".repeat(probeCharacterCount);
+
+    this.virtualListDivElement.appendChild(probe);
+
+    const probeWidth = probe.getBoundingClientRect().width;
+    const probeHeight = probe.getBoundingClientRect().height;
+
+    this.charWidth = probeWidth > 0 ? probeWidth / probeCharacterCount : this.charWidth;
+    this.lineHeight = probeHeight > 0 ? probeHeight : this.lineHeight;
+
+    this.virtualListDivElement.removeChild(probe);
+  }
+
   componentDidUpdate() {
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
@@ -83,8 +184,37 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentWillUnmount() {
+    this.overlappingRowPadding.clear();
+    this.overlapVersion++;
+    if (this.pendingResetFrame !== null) {
+      window.cancelAnimationFrame(this.pendingResetFrame);
+      this.pendingResetFrame = null;
+    }
+    this.pendingResetFromIndex = null;
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+    window.removeEventListener("resize", this.updateContainerMetrics);
     this.bindInnerRef(null);
   }
+
+  private onRowRendered = (rowIndex: number) => (element: HTMLDivElement | null) => {
+    if (!element || !this.showWordWrap) {
+      return;
+    }
+
+    const overflowPadding = Math.ceil(element.scrollHeight - element.clientHeight);
+    const nextPadding = overflowPadding > this.wrappedRowSafetyPadding ? overflowPadding : 0;
+    const currentPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
+    const resolvedPadding = Math.max(currentPadding, nextPadding);
+
+    if (currentPadding === resolvedPadding) {
+      return;
+    }
+
+    this.overlappingRowPadding.set(rowIndex, resolvedPadding);
+    this.overlapVersion++;
+    this.scheduleMeasuredRowReset(rowIndex);
+  };
 
   private bindInnerRef(value: LogListRef | null) {
     if (typeof this.props.innerRef === "function") {
@@ -109,10 +239,10 @@ class NonForwardedLogList extends React.Component<
   }
 
   onUserScrolledUp(logs: string[], prevLogs: string[]) {
-    if (!this.virtualListDiv.current) return;
+    if (!this.virtualListDivElement) return;
 
     const newLogsAdded = prevLogs.length < logs.length;
-    const scrolledToBeginning = this.virtualListDiv.current.scrollTop === 0;
+    const scrolledToBeginning = this.virtualListDivElement.scrollTop === 0;
 
     if (newLogsAdded && scrolledToBeginning) {
       const firstLineContents = prevLogs[0];
@@ -143,14 +273,46 @@ class NonForwardedLogList extends React.Component<
       );
   }
 
+  get showWordWrap(): boolean {
+    return this.props.model.logTabData.get()?.showWordWrap ?? false;
+  }
+
+  getRowHeights(): number[] {
+    this.overlapVersion;
+
+    if (!this.showWordWrap || !this.containerWidth) {
+      return array.filled(this.logs.length, this.lineHeight + this.rowVerticalPadding);
+    }
+
+    const usableWidth = Math.max(this.containerWidth - this.rowPadding, 1);
+    const charsPerLine = Math.max(1, Math.floor(usableWidth / this.charWidth));
+
+    return this.logs.map((line, rowIndex) => {
+      const visibleLine = line.replace(ansiEscapeSequenceRegex, "");
+      const lineCount = visibleLine.split("\n").reduce((count, segment) => {
+        const wrappedLineCount = Math.max(1, Math.ceil(segment.length / charsPerLine));
+
+        return count + wrappedLineCount;
+      }, 0);
+
+      const overlapPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
+
+      return lineCount * this.lineHeight + this.rowVerticalPadding + this.wrappedRowSafetyPadding + overlapPadding;
+    });
+  }
+
   /**
    * Checks if JumpToBottom button should be visible and sets its observable
    * @param props Scrolling props from virtual list core
    */
-  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps, { scrollHeight }: HTMLDivElement) => {
+  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+    const el = this.virtualListDivElement;
+
+    if (!el) return;
+
     const offset = 100 * this.lineHeight;
 
-    if (scrollHeight - scrollOffset < offset) {
+    if (el.scrollHeight - scrollOffset < offset) {
       this.isJumpButtonVisible = false;
     } else {
       this.isJumpButtonVisible = true;
@@ -161,11 +323,12 @@ class NonForwardedLogList extends React.Component<
    * Checks if last log line considered visible to user, setting its observable
    * @param props Scrolling props from virtual list core
    */
-  setLastLineVisibility = action(
-    ({ scrollOffset }: ListOnScrollProps, { scrollHeight, clientHeight }: HTMLDivElement) => {
-      this.isLastLineVisible = clientHeight + scrollOffset === scrollHeight;
-    },
-  );
+  setLastLineVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+    const el = this.virtualListDivElement;
+
+    if (!el) return;
+    this.isLastLineVisible = el.clientHeight + scrollOffset === el.scrollHeight;
+  });
 
   /**
    * Check if user scrolled to top and new logs should be loaded
@@ -180,8 +343,9 @@ class NonForwardedLogList extends React.Component<
   };
 
   scrollToBottom = () => {
-    if (!this.virtualListDiv.current) return;
-    this.virtualListDiv.current.scrollTop = this.virtualListDiv.current.scrollHeight;
+    if (this.logs.length) {
+      this.scrollToItem(this.logs.length - 1, "end");
+    }
   };
 
   scrollToItem = (index: number, align: Align) => {
@@ -194,11 +358,9 @@ class NonForwardedLogList extends React.Component<
   };
 
   onScrollDebounced = debounce((props: ListOnScrollProps) => {
-    const virtualList = this.virtualListDiv.current;
-
-    if (virtualList) {
-      this.setButtonVisibility(props, virtualList);
-      this.setLastLineVisibility(props, virtualList);
+    if (this.virtualListDivElement) {
+      this.setButtonVisibility(props);
+      this.setLastLineVisibility(props);
       this.checkLoadIntent(props);
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down
@@ -244,7 +406,7 @@ class NonForwardedLogList extends React.Component<
     }
 
     return (
-      <div className={cssNames("LogRow")}>
+      <div ref={this.onRowRendered(rowIndex)} className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
         {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
         {/* For preserving copy-paste experience and keeping line breaks */}
         <br />
@@ -273,7 +435,7 @@ class NonForwardedLogList extends React.Component<
       <div className={cssNames("LogList flex")}>
         <VirtualList
           items={this.logs}
-          rowHeights={array.filled(this.logs.length, this.lineHeight)}
+          rowHeights={this.getRowHeights()}
           getRow={this.getLogRow}
           onScroll={this.onScroll}
           outerRef={this.virtualListDiv}

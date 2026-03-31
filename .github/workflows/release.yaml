@@ -45,26 +45,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: arm64
             concurrency: linux-arm64
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: x64
             concurrency: linux-amd64
-          - os: macos-14
+          - runs-on: macos-14
             arch: arm64
             concurrency: macos
-          - os: macos-14
+          - runs-on: macos-14
             arch: x64
             concurrency: macos
-          - os: windows-2022
+          - runs-on: windows-2022
             arch: arm64
             concurrency: windows-arm64
-          - os: windows-2022
+          - runs-on: windows-2022
             arch: x64
             concurrency: windows-amd64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     environment: signing
 
     concurrency:
@@ -96,9 +96,20 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
+        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
-        run: choco install yq --yes --no-progress
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
+        continue-on-error: true
+
+      - name: Install dependencies (Windows) (retry)
+        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
 
       - name: Setup node
         uses: actions/setup-node@v6
@@ -117,9 +128,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Disable pre post scripts for pnpm
         shell: bash
@@ -137,17 +148,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
         uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
       - name: Use Electron headers cache
         id: electron-headers
@@ -229,6 +240,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -299,6 +311,8 @@ jobs:
           pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Build Electron app (Windows)
         if: runner.os == 'Windows'
@@ -307,6 +321,8 @@ jobs:
           pnpm --color=always build:app \
             msi nsis portable \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
@@ -422,10 +438,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-22.04
             arch: x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     environment: publishing
 
     steps:
@@ -439,6 +455,9 @@ jobs:
           package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
       - name: Setup pnpm
         run: corepack enable
 
@@ -450,9 +469,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -479,7 +498,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry)
@@ -494,7 +513,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry 2)
@@ -508,7 +527,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
 
   release-apt-repository:
     name: Release APT repository
