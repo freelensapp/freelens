@@ -21,6 +21,7 @@ import podStoreInjectable from "../workloads-pods/store.injectable";
 import { ClusterIssues } from "./cluster-issues";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-overview.module.scss";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 
 import type { ClusterOverviewUIBlock } from "@freelensapp/metrics";
 
@@ -32,6 +33,7 @@ import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import type { EventStore } from "../events/store";
 import type { NodeStore } from "../nodes/store";
 import type { PodStore } from "../workloads-pods/store";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -40,7 +42,7 @@ interface Dependencies {
   nodeStore: NodeStore;
   clusterMetricsAreVisible: IComputedValue<boolean>;
   uiBlocks: IComputedValue<ClusterOverviewUIBlock[]>;
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
+  clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
 }
 
 @observer
@@ -90,6 +92,18 @@ export const ClusterOverview = withInjectables<Dependencies>(NonInjectedClusterO
     eventStore: di.inject(eventStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
     uiBlocks: di.inject(computedInjectManyInjectable)(clusterOverviewUIBlockInjectionToken),
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
+    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
+      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+    }),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}
