@@ -19,7 +19,7 @@
     "freelens"
   ],
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@4.1.2",
+    "asar": "pnpm dlx @electron/asar@4.2.0",
     "biome": "pnpm dlx @biomejs/biome@2.4.9",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
