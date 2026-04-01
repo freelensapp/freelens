@@ -840,7 +840,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     for (const { state } of this.getContainerStatuses()) {
-      if (state?.waiting?.reason === "CrashLookBackOff") {
+      if (state?.waiting?.reason === "CrashLoopBackOff") {
         return true;
       }
     }

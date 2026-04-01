@@ -101,10 +101,11 @@ exports[`get-multi-export-config given maximal package.json, when creating confi
       MiniCssExtractPlugin {
         _sortedModulesCache: WeakMap { <items unknown> },
         options: {
+          filename: '[name].css',
           ignoreOrder: false,
           experimentalUseImportModule: undefined,
           runtime: true,
-          filename: '[name].css'
+          chunkFilename: '[name].css'
         },
         runtimeOptions: {
           insert: undefined,

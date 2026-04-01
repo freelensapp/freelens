@@ -56,7 +56,6 @@ const WarningEventIndicator: React.FC<WarningEventIndicatorProps> = ({ latestWar
     <WarningIcon
       tooltip={{
         formatters: {
-          tableView: true,
           nowrap: true,
         },
         children: <div>{latestWarningEvent.message}</div>,
@@ -65,10 +64,10 @@ const WarningEventIndicator: React.FC<WarningEventIndicatorProps> = ({ latestWar
   );
 };
 
-const columnId = "podwarning";
+const columnId = "warning";
 
 export const podsWarningColumnInjectable = getInjectable({
-  id: "pods-podwarning-column",
+  id: "pods-warning-column",
   instantiate: (di) => {
     const eventStore = di.inject(eventStoreInjectable);
 
@@ -76,7 +75,7 @@ export const podsWarningColumnInjectable = getInjectable({
       id: columnId,
       kind: "Pod",
       apiVersion: "v1",
-      priority: COLUMN_PRIORITY.PODWARNING,
+      priority: COLUMN_PRIORITY.WARNING,
       content: (pod: Pod) => {
         if (!pod.hasIssues()) {
           return null;
@@ -89,6 +88,7 @@ export const podsWarningColumnInjectable = getInjectable({
       },
       header: {
         title: <Icon material="warning_amber" />,
+        className: "warning-header",
         id: columnId,
       },
     };
