@@ -17,16 +17,24 @@ import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
 
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
+import type { Injectable } from "@ogre-tools/injectable";
+
 const setupAutoCrdApiCreationsInjectable = getInjectable({
   id: "setup-auto-crd-api-creations",
   instantiate: (di) => ({
     run: () => {
       const customResourceDefinitionStore = di.inject(customResourceDefinitionStoreInjectable);
-      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(di);
+      const differencingRegistrator = injectableDifferencingRegistratorWith(di);
+
+      // This registrator manages its own previous state
+      let previousCrdApis: Injectable<any, any, any>[] = [];
 
       reaction(
         () => customResourceDefinitionStore.getItems().map(toCrdApiInjectable),
-        injectableDifferencingRegistrator,
+        (currentCrdApis) => {
+          differencingRegistrator(currentCrdApis, previousCrdApis);
+          previousCrdApis = currentCrdApis;
+        },
         {
           fireImmediately: true,
         },
