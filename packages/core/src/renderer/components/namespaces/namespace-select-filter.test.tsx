@@ -265,6 +265,38 @@ describe("<NamespaceSelectFilter />", () => {
         });
       });
 
+      describe("when text matching an exact namespace is pasted into the input", () => {
+        beforeEach(() => {
+          const input = result.getByRole("combobox");
+
+          fireEvent.change(input, { target: { value: "test-5" } });
+        });
+
+        it("auto-selects the matching namespace in the store", () => {
+          expect(namespaceStore.contextNamespaces).toEqual(["test-5"]);
+        });
+
+        it("closes the menu", () => {
+          expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).toBeNull();
+        });
+      });
+
+      describe("when partial text not matching any namespace exactly is pasted into the input", () => {
+        beforeEach(() => {
+          const input = result.getByRole("combobox");
+
+          fireEvent.change(input, { target: { value: "test" } });
+        });
+
+        it("does not auto-select any namespace", () => {
+          expect(namespaceStore.contextNamespaces).not.toEqual(["test"]);
+        });
+
+        it("keeps the menu open", () => {
+          expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).not.toBeNull();
+        });
+      });
+
       describe("when multi-selection key is pressed", () => {
         beforeEach(() => {
           const filter = result.getByTestId("namespace-select-filter");
