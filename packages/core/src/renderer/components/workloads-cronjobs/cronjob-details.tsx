@@ -9,7 +9,7 @@ import "./cronjob-details.scss";
 import { Icon } from "@freelensapp/icon";
 import { CronJob } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { formatDuration } from "@freelensapp/utilities/dist";
+import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
