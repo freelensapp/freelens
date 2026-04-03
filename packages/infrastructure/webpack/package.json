@@ -40,7 +40,7 @@
     "sass-loader": "^16.0.7",
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.2.2",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.2",

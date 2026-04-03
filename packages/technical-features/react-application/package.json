@@ -55,7 +55,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "lodash": "^4.18.1",
     "ts-jest": "^29.4.9",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
     "webpack": "^5.105.4"
   },

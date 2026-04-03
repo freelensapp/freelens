@@ -31,7 +31,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "node-fetch": "^3.3.2",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
     "webpack": "^5.105.4"
   },
