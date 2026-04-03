@@ -243,7 +243,7 @@
     "sass-loader": "^16.0.7",
     "tailwindcss": "^4.2.2",
     "ts-jest": "^29.4.9",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
     "type-fest": "^5.5.0",
     "typed-emitter": "^1.4.0",

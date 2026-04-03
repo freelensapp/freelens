@@ -36,7 +36,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "webpack": "^5.105.4"
   },
   "publishConfig": {
