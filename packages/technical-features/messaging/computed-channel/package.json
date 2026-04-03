@@ -51,7 +51,7 @@
     "lodash": "^4.18.1",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
-    "ts-jest": "^29.4.6",
+    "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.105.4"
