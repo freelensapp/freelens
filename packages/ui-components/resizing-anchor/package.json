@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mobx": "^6.15.0",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2"

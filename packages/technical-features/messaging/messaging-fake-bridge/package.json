@@ -32,7 +32,7 @@
     "@async-fn/jest": "^1.6.5",
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
-    "lodash": "^4.17.23"
+    "lodash": "^4.18.1"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
