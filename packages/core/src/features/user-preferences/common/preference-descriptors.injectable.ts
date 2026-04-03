@@ -29,6 +29,7 @@ import type {
   KubeconfigSyncValue,
   TerminalConfig,
 } from "./preferences-helpers";
+import type { CustomTheme } from "./custom-themes.injectable";
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
 
@@ -149,6 +150,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val,
+      }),
+      customThemes: getPreferenceDescriptor<CustomTheme[]>({
+        fromStore: (val) => val || [],
+        toStore: (val) => (val.length ? val : undefined),
       }),
     } as const;
   },
