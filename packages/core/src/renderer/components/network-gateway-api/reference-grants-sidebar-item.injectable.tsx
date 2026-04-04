@@ -1,0 +1,32 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { getInjectable } from "@ogre-tools/injectable";
+import navigateToReferenceGrantsInjectable from "../../../common/front-end-routing/routes/cluster/network/reference-grants/navigate-to-reference-grants.injectable";
+import referenceGrantsRouteInjectable from "../../../common/front-end-routing/routes/cluster/network/reference-grants/reference-grants-route.injectable";
+import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
+import gatewayApiSidebarItemInjectable from "./gateway-api-sidebar-item.injectable";
+
+const referenceGrantsSidebarItemInjectable = getInjectable({
+  id: "sidebar-item-reference-grants",
+
+  instantiate: (di) => {
+    const route = di.inject(referenceGrantsRouteInjectable);
+
+    return {
+      parentId: gatewayApiSidebarItemInjectable.id,
+      title: "Reference Grants",
+      onClick: di.inject(navigateToReferenceGrantsInjectable),
+      isActive: di.inject(routeIsActiveInjectable, route),
+      isVisible: route.isEnabled,
+      orderNumber: 36,
+    };
+  },
+
+  injectionToken: sidebarItemInjectionToken,
+});
+
+export default referenceGrantsSidebarItemInjectable;
