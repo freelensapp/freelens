@@ -930,6 +930,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                         <input
                           class="input box grow"
                           placeholder="http://<address>:<port>"
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

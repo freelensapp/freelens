@@ -317,6 +317,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -356,6 +357,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -405,6 +407,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1110,6 +1113,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1149,6 +1153,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1198,6 +1203,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1913,6 +1919,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1952,6 +1959,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2001,6 +2009,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2744,6 +2753,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2783,6 +2793,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2832,6 +2843,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />

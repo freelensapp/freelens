@@ -7,6 +7,7 @@
 import "./input.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames, debouncePromise, isPromiseSettledFulfilled } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
@@ -14,6 +15,7 @@ import { debounce } from "lodash";
 import uniqueId from "lodash/uniqueId";
 import React from "react";
 import * as uuid from "uuid";
+import createStorageInjectable from "../../utils/create-storage/create-storage.injectable";
 import * as Validators from "./input_validators";
 
 import type { TooltipProps } from "@freelensapp/tooltip";
@@ -53,6 +55,30 @@ export interface IconDataFnArg {
  */
 export type IconData = string | StrictReactNode | ((opt: IconDataFnArg) => StrictReactNode);
 
+interface PersistedInputHistory {
+  history: string[];
+  pin: string[];
+}
+
+interface PersistedInputHistoryStore {
+  history: Record<string, PersistedInputHistory>;
+}
+
+type DisabledSearchHistoryConfig = {
+  enabled?: false;
+};
+
+type EnabledSearchHistoryConfig = {
+  enabled: true;
+  id: string;
+  maxHistory?: number;
+  maxPinned?: number;
+  debounceMs?: number;
+  minQueryLength?: number;
+};
+
+export type SearchHistoryConfig = DisabledSearchHistoryConfig | EnabledSearchHistoryConfig;
+
 export type InputProps = Omit<InputElementProps, "onChange" | "onSubmit"> & {
   theme?: "round-black" | "round";
   className?: string;
@@ -70,6 +96,7 @@ export type InputProps = Omit<InputElementProps, "onChange" | "onSubmit"> & {
   contentRight?: string | StrictReactNode; // Any component of string goes after iconRight
   validators?: SingleOrMany<InputValidator>;
   blurOnEnter?: boolean;
+  searchHistory?: SearchHistoryConfig;
   onChange?(value: string, evt: React.ChangeEvent<InputElement>): void;
   onSubmit?(value: string, evt: React.KeyboardEvent<InputElement>): void;
 };
@@ -81,6 +108,8 @@ interface State {
   validating: boolean;
   errors: StrictReactNode[];
   submitted: boolean;
+  history: string[];
+  pinned: string[];
 }
 
 const defaultProps: Partial<InputProps> = {
@@ -89,6 +118,40 @@ const defaultProps: Partial<InputProps> = {
   showValidationLine: true,
   validators: [],
   blurOnEnter: true,
+  searchHistory: { enabled: false },
+};
+
+const persistedInputHistoryStorageKey = "freelens:input:history:v1";
+
+const defaultSearchHistoryConfig = {
+  maxHistory: 10,
+  maxPinned: 10,
+  debounceMs: 600,
+  minQueryLength: 2,
+} as const;
+
+let inputHistoryStorage:
+  | {
+      get(): PersistedInputHistoryStore;
+      set(value: PersistedInputHistoryStore): void;
+    }
+  | undefined;
+
+const getInputHistoryStorage = () => {
+  if (!inputHistoryStorage) {
+    const di = getLegacyGlobalDiForExtensionApi();
+    const createStorage = di.inject(createStorageInjectable);
+    const storage = createStorage<PersistedInputHistoryStore>(persistedInputHistoryStorageKey, {
+      history: {},
+    });
+
+    inputHistoryStorage = {
+      get: () => storage.get(),
+      set: (value) => storage.set(value),
+    };
+  }
+
+  return inputHistoryStorage;
 };
 
 export class Input extends React.Component<InputProps, State> {
@@ -96,6 +159,10 @@ export class Input extends React.Component<InputProps, State> {
 
   public input: InputElement | null = null;
   public validators: InputValidator[] = [];
+  private saveSearchTermDebounced = debounce(
+    (value: string) => this.saveValueToHistory(value),
+    defaultSearchHistoryConfig.debounceMs,
+  );
 
   public state: State = {
     focused: false,
@@ -104,6 +171,8 @@ export class Input extends React.Component<InputProps, State> {
     dirty: !!this.props.dirty,
     errors: [],
     submitted: false,
+    history: [],
+    pinned: [],
   };
 
   constructor(props: InputProps) {
@@ -113,6 +182,7 @@ export class Input extends React.Component<InputProps, State> {
 
   componentWillUnmount(): void {
     this.setDirtyOnChange.cancel();
+    this.saveSearchTermDebounced.cancel();
   }
 
   setValue(value = "") {
@@ -157,6 +227,184 @@ export class Input extends React.Component<InputProps, State> {
   }
 
   private validationId?: string;
+
+  private getSearchHistoryConfig(): EnabledSearchHistoryConfig | undefined {
+    const config = this.props.searchHistory;
+
+    if (!config?.enabled) {
+      return undefined;
+    }
+
+    const mergedConfig = {
+      ...defaultSearchHistoryConfig,
+      ...config,
+    };
+
+    return mergedConfig;
+  }
+
+  private getStoredSearchHistory(): PersistedInputHistoryStore {
+    const store = getInputHistoryStorage().get();
+
+    return store;
+  }
+
+  private saveStoredSearchHistory(state: PersistedInputHistoryStore) {
+    getInputHistoryStorage().set(state);
+  }
+
+  private getHistoryEntry(config: EnabledSearchHistoryConfig) {
+    const store = this.getStoredSearchHistory();
+    const entry = store.history[config.id];
+
+    return {
+      store,
+      entry: {
+        history: entry?.history ?? [],
+        pin: entry?.pin ?? [],
+      },
+    };
+  }
+
+  private trimList(items: string[], max: number) {
+    return items.filter(Boolean).slice(0, max);
+  }
+
+  private updateHistoryState(config: EnabledSearchHistoryConfig) {
+    const { entry } = this.getHistoryEntry(config);
+    const nextState = {
+      history: this.trimList(entry.history, config.maxHistory ?? defaultSearchHistoryConfig.maxHistory),
+      pinned: this.trimList(entry.pin, config.maxPinned ?? defaultSearchHistoryConfig.maxPinned),
+    };
+
+    this.setState(nextState);
+  }
+
+  private persistHistoryEntry(
+    config: EnabledSearchHistoryConfig,
+    updater: (entry: PersistedInputHistory) => PersistedInputHistory,
+  ) {
+    const { store, entry } = this.getHistoryEntry(config);
+    const updated = updater(entry);
+    const normalized = {
+      history: this.trimList(updated.history, config.maxHistory ?? defaultSearchHistoryConfig.maxHistory),
+      pin: this.trimList(updated.pin, config.maxPinned ?? defaultSearchHistoryConfig.maxPinned),
+    };
+
+    const nextStore: PersistedInputHistoryStore = {
+      history: {
+        ...store.history,
+        [config.id]: normalized,
+      },
+    };
+
+    this.saveStoredSearchHistory(nextStore);
+    this.updateHistoryState(config);
+  }
+
+  private normalizeTerm(value: string) {
+    return value.trim();
+  }
+
+  private saveValueToHistory(rawValue: string) {
+    const config = this.getSearchHistoryConfig();
+
+    if (!config) {
+      return;
+    }
+
+    const value = this.normalizeTerm(rawValue);
+
+    if (value.length < (config.minQueryLength ?? defaultSearchHistoryConfig.minQueryLength)) {
+      return;
+    }
+
+    this.persistHistoryEntry(config, (entry) => ({
+      ...entry,
+      history: [value, ...entry.history.filter((item) => item !== value)],
+      pin: entry.pin,
+    }));
+  }
+
+  private saveCurrentValueToHistory() {
+    this.saveValueToHistory(this.getValue());
+  }
+
+  private pinHistoryValue(value: string) {
+    const config = this.getSearchHistoryConfig();
+
+    if (!config) {
+      return;
+    }
+
+    this.persistHistoryEntry(config, (entry) => ({
+      history: entry.history,
+      pin: [value, ...entry.pin.filter((item) => item !== value)],
+    }));
+  }
+
+  private unpinHistoryValue(value: string) {
+    const config = this.getSearchHistoryConfig();
+
+    if (!config) {
+      return;
+    }
+
+    this.persistHistoryEntry(config, (entry) => ({
+      history: entry.history,
+      pin: entry.pin.filter((item) => item !== value),
+    }));
+  }
+
+  private removeHistoryValue(value: string) {
+    const config = this.getSearchHistoryConfig();
+
+    if (!config) {
+      return;
+    }
+
+    this.persistHistoryEntry(config, (entry) => ({
+      history: entry.history.filter((item) => item !== value),
+      pin: entry.pin.filter((item) => item !== value),
+    }));
+  }
+
+  private selectHistoryValue(value: string) {
+    this.setValue(value);
+    this.focus();
+  }
+
+  private isHistoryPinned(value: string) {
+    return this.state.pinned.includes(value);
+  }
+
+  private getSuggestedHistoryItems() {
+    const query = this.normalizeTerm(this.getValue()).toLowerCase();
+    const pinned = this.state.pinned;
+    const baseHistory = this.state.history.filter((item) => !pinned.includes(item));
+
+    if (!query) {
+      return {
+        pinned,
+        history: baseHistory,
+      };
+    }
+
+    const result = {
+      pinned: pinned.filter((item) => item.toLowerCase().includes(query)),
+      history: baseHistory.filter((item) => item.toLowerCase().includes(query)),
+    };
+
+    return result;
+  }
+
+  private configureSearchHistoryDebounce() {
+    const config = this.getSearchHistoryConfig();
+    const debounceMs = config?.debounceMs ?? defaultSearchHistoryConfig.debounceMs;
+
+    this.saveSearchTermDebounced.cancel();
+    this.saveSearchTermDebounced = debounce((value: string) => this.saveValueToHistory(value), debounceMs);
+  }
 
   async validate() {
     const value = this.getValue();
@@ -273,6 +521,7 @@ export class Input extends React.Component<InputProps, State> {
 
     this.autoFitHeight();
     this.setDirtyOnChange();
+    this.saveSearchTermDebounced(newValue);
 
     // Handle uncontrolled components (`props.defaultValue` must be used instead `value`)
     if (this.isUncontrolled) {
@@ -297,6 +546,8 @@ export class Input extends React.Component<InputProps, State> {
 
     if (evt.key === "Enter") {
       if (this.state.valid) {
+        this.saveSearchTermDebounced.cancel();
+        this.saveCurrentValueToHistory();
         this.props.onSubmit?.(this.getValue(), evt);
         this.setDirtyOnChange.cancel();
         this.setState({ submitted: true });
@@ -328,6 +579,13 @@ export class Input extends React.Component<InputProps, State> {
   componentDidMount() {
     this.setupValidators();
     this.autoFitHeight();
+    this.configureSearchHistoryDebounce();
+
+    const config = this.getSearchHistoryConfig();
+
+    if (config) {
+      this.updateHistoryState(config);
+    }
   }
 
   componentDidUpdate(prevProps: InputProps) {
@@ -348,6 +606,18 @@ export class Input extends React.Component<InputProps, State> {
 
     if (prevProps.validators !== validators) {
       this.setupValidators();
+    }
+
+    if (prevProps.searchHistory !== this.props.searchHistory) {
+      this.configureSearchHistoryDebounce();
+
+      const config = this.getSearchHistoryConfig();
+
+      if (config) {
+        this.updateHistoryState(config);
+      } else {
+        this.setState({ history: [], pinned: [] });
+      }
     }
   }
 
@@ -381,6 +651,96 @@ export class Input extends React.Component<InputProps, State> {
     }
 
     return iconData;
+  }
+
+  private renderHistoryActions(value: string) {
+    const pinned = this.isHistoryPinned(value);
+
+    return (
+      <div className="history-actions flex align-center gaps">
+        <button
+          type="button"
+          className={cssNames("history-action", { pinned })}
+          aria-label={pinned ? "Unpin history item" : "Pin history item"}
+          title={pinned ? "Unpin" : "Pin"}
+          onMouseDown={(evt) => evt.preventDefault()}
+          onClick={(evt) => {
+            evt.stopPropagation();
+            if (pinned) {
+              this.unpinHistoryValue(value);
+            } else {
+              this.pinHistoryValue(value);
+            }
+          }}
+        >
+          <Icon small material={pinned ? "bookmark_remove" : "bookmark_add"} />
+        </button>
+        <button
+          type="button"
+          className="history-action"
+          aria-label="Remove history item"
+          title="Remove"
+          onMouseDown={(evt) => evt.preventDefault()}
+          onClick={(evt) => {
+            evt.stopPropagation();
+            this.removeHistoryValue(value);
+          }}
+        >
+          <Icon small material="close" />
+        </button>
+      </div>
+    );
+  }
+
+  private renderHistorySection(title: string, items: string[]) {
+    if (!items.length) {
+      return null;
+    }
+
+    return (
+      <div className="history-section">
+        <div className="history-title">{title}</div>
+        <div className="history-items">
+          {items.map((value) => (
+            <button
+              type="button"
+              key={value}
+              className="history-item flex align-center justify-between gaps"
+              onMouseDown={(evt) => evt.preventDefault()}
+              onClick={() => this.selectHistoryValue(value)}
+            >
+              <span className="history-label">{value}</span>
+              {this.renderHistoryActions(value)}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  private renderSearchHistory() {
+    const config = this.getSearchHistoryConfig();
+
+    if (!config) {
+      return null;
+    }
+
+    if (!this.state.focused) {
+      return null;
+    }
+
+    const { pinned, history } = this.getSuggestedHistoryItems();
+
+    if (!pinned.length && !history.length) {
+      return null;
+    }
+
+    return (
+      <div className="history-dropdown">
+        {this.renderHistorySection("Pinned", pinned)}
+        {this.renderHistorySection("Recent", history)}
+      </div>
+    );
   }
 
   render() {
@@ -463,6 +823,7 @@ export class Input extends React.Component<InputProps, State> {
           {this.renderIcon(iconRight)}
           {contentRight}
         </label>
+        {this.renderSearchHistory()}
         <div className="input-info flex gaps">
           {!showErrorsAsTooltip && showErrors && errorsInfo}
           {this.showMaxLenIndicator && (

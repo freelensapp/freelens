@@ -375,6 +375,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1154,6 +1155,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       <input
                         class="input box grow"
                         min="1"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         type="number"
                         value="2"
@@ -1188,6 +1190,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       <input
                         class="input box grow"
                         min="10"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         type="number"
                         value="12"
@@ -1221,6 +1224,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                     >
                       <input
                         class="input box grow"
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         type="text"
                         value="RobotoMono"
