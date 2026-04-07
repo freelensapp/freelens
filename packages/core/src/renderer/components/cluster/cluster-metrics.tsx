@@ -46,7 +46,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   const metricValues = selectedMetricsType.metrics.get();
   const metricType = selectedMetricsType.value.get();
   const metricNodeRole = selectedNodeRoleForMetrics.value.get();
-  const colors = { cpu: "#00a7a0", memory: "#C93DCE" };
+  const colors = { cpu: "#3d90ce", memory: "#C93DCE" };
   const data = metricValues.map((value) => ({
     x: value[0],
     y: parseFloat(value[1]).toFixed(3),

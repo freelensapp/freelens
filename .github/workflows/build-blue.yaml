@@ -1,0 +1,148 @@
+name: Build Blue Accent
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build-app:
+    name: build macOS app
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+
+    env:
+      DO_NOT_TRACK: "1"
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install dependencies (macOS)
+        run: brew install bash coreutils python-setuptools
+
+      - name: Add coreutils to PATH (macOS)
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-node-
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
+
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+
+      - name: Get Electron Builder version
+        shell: bash
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+
+      - name: Use Electron cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+
+      - name: Use Electron Builder cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Rebuild native packages for Electron
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
+
+      - name: Build extra resources
+        id: build-resources
+        run: pnpm --color=always build:resources
+        continue-on-error: true
+
+      - name: Build extra resources (retry)
+        if: steps.build-resources.outcome == 'failure'
+        run: pnpm --color=always build:resources
+
+      - name: Build Electron app (macOS dmg)
+        run: |
+          pnpm --color=always build:app \
+            dmg \
+            --${{ matrix.arch }}
+
+      - name: Remove blockmaps
+        shell: bash
+        run: rm -f freelens/dist/*.blockmap
+
+      - name: Upload macOS DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Freelens-Blue-macOS-arm64
+          path: freelens/dist/*.dmg
+          retention-days: 30

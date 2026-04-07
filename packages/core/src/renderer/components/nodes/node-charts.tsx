@@ -56,7 +56,7 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
         id: `${id}-cpuUsage`,
         label: `Usage`,
         tooltip: `CPU cores usage`,
-        borderColor: "#00a7a0",
+        borderColor: "#3d90ce",
         data: cpuUsage.map(([x, y]) => ({ x, y })),
       },
       {
