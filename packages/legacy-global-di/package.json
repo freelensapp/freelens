@@ -32,7 +32,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "webpack": "^5.105.4"
   },
   "publishConfig": {
