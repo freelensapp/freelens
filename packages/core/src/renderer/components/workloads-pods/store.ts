@@ -6,7 +6,7 @@
 
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import countBy from "lodash/countBy";
-import { observable } from "mobx";
+import { computed, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
@@ -28,6 +28,16 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   }
 
   readonly kubeMetrics = observable.array<PodMetrics>([]);
+
+  @computed get kubeMetricsByPod(): Map<string, PodMetrics> {
+    const map = new Map<string, PodMetrics>();
+
+    for (const metric of this.kubeMetrics) {
+      map.set(`${metric.getNs()}/${metric.getName()}`, metric);
+    }
+
+    return map;
+  }
 
   async loadKubeMetrics(namespace?: string) {
     try {
@@ -67,9 +77,7 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   getPodKubeMetrics(pod: Pod) {
     const containers = pod.getContainers();
     const empty = { cpu: 0, memory: 0 };
-    const metrics = this.kubeMetrics?.find((metric) => {
-      return [metric.getName() === pod.getName(), metric.getNs() === pod.getNs()].every((v) => v);
-    });
+    const metrics = this.kubeMetricsByPod.get(`${pod.getNs()}/${pod.getName()}`);
 
     if (!metrics || !metrics.containers || !containers) return { cpu: NaN, memory: NaN };
 
