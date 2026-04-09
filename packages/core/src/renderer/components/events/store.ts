@@ -8,6 +8,7 @@ import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import compact from "lodash/compact";
 import groupBy from "lodash/groupBy";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";
@@ -46,14 +47,33 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     );
   }
 
-  getEventsByObject(obj: KubeObject): KubeEvent[] {
-    return this.items.filter((evt) => {
-      if (obj.kind == "Node") {
-        return obj.getName() == evt.involvedObject.uid && evt.involvedObject.kind == "Node";
+  @computed get eventsByObjectId(): Map<string, KubeEvent[]> {
+    const map = new Map<string, KubeEvent[]>();
+
+    for (const evt of this.items) {
+      const uid = evt.involvedObject.uid;
+      let bucket = map.get(uid);
+
+      if (!bucket) {
+        bucket = [];
+        map.set(uid, bucket);
       }
 
-      return obj.getId() == evt.involvedObject.uid;
-    });
+      bucket.push(evt);
+    }
+
+    return map;
+  }
+
+  getEventsByObject(obj: KubeObject): KubeEvent[] {
+    if (obj.kind == "Node") {
+      // Node events are stored with involvedObject.uid equal to the node name
+      return (this.eventsByObjectId.get(obj.getName()) ?? []).filter(
+        (evt) => evt.involvedObject.kind == "Node",
+      );
+    }
+
+    return this.eventsByObjectId.get(obj.getId()) ?? [];
   }
 
   getWarnings() {
