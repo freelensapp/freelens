@@ -8,12 +8,14 @@ import { Icon } from "@freelensapp/icon";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { withTooltip } from "@freelensapp/tooltip";
 import { getInjectable } from "@ogre-tools/injectable";
+import { observer } from "mobx-react";
 import React from "react";
 import eventStoreInjectable from "../../events/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { KubeEvent, Pod } from "@freelensapp/kube-object";
 import type { StrictReactNode } from "@freelensapp/utilities";
+import type { EventStore } from "../../events/store";
 
 interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;
@@ -64,6 +66,26 @@ const WarningEventIndicator: React.FC<WarningEventIndicatorProps> = ({ latestWar
   );
 };
 
+interface PodWarningCellProps {
+  pod: Pod;
+  eventStore: EventStore;
+}
+
+/**
+ * Isolated observer so that event-store changes only re-render individual
+ * warning cells, not the entire pod list row.
+ */
+const PodWarningCell = observer(({ pod, eventStore }: PodWarningCellProps) => {
+  if (!pod.hasIssues()) {
+    return null;
+  }
+
+  const events = eventStore.getEventsByObject(pod);
+  const latestWarningEvent = getLatestWarningEvent(events);
+
+  return <WarningEventIndicator latestWarningEvent={latestWarningEvent} />;
+});
+
 const columnId = "warning";
 
 export const podsWarningColumnInjectable = getInjectable({
@@ -76,16 +98,7 @@ export const podsWarningColumnInjectable = getInjectable({
       kind: "Pod",
       apiVersion: "v1",
       priority: COLUMN_PRIORITY.WARNING,
-      content: (pod: Pod) => {
-        if (!pod.hasIssues()) {
-          return null;
-        }
-
-        const events = eventStore.getEventsByObject(pod);
-        const latestWarningEvent = getLatestWarningEvent(events);
-
-        return <WarningEventIndicator latestWarningEvent={latestWarningEvent} />;
-      },
+      content: (pod: Pod) => <PodWarningCell pod={pod} eventStore={eventStore} />,
       header: {
         title: <Icon material="warning_amber" />,
         className: "warning-header",
