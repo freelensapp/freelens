@@ -7,11 +7,18 @@
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { bytesToUnits } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import { observer } from "mobx-react";
 import React from "react";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 
-const columnId = "memoryUsage";
+import type { Pod } from "@freelensapp/kube-object";
+import type { PodStore } from "../store";
+
+interface PodMemoryCellProps {
+  pod: Pod;
+  podStore: PodStore;
+}
 
 function bytesToUnitsAligned(bytes: number): string {
   if (bytes < 1024) {
@@ -20,26 +27,32 @@ function bytesToUnitsAligned(bytes: number): string {
   return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
 }
 
+const PodMemoryCell = observer(({ pod, podStore }: PodMemoryCellProps) => {
+  const { memory } = podStore.getPodKubeMetrics(pod);
+
+  return <span>{bytesToUnitsAligned(memory)}</span>;
+});
+
+const columnId = "memoryUsage";
+
 export const podsUsedMemoryColumnInjectable = getInjectable({
   id: "pods-memory-usage-column",
-  instantiate: (di) => ({
-    id: columnId,
-    kind: "Pod",
-    apiVersion: "v1",
-    priority: COLUMN_PRIORITY.MEMORY_USAGE,
-    content: (pod) => {
-      const podStore = di.inject(podStoreInjectable);
-      const metrics = podStore.getPodKubeMetrics(pod);
+  instantiate: (di) => {
+    const podStore = di.inject(podStoreInjectable);
 
-      return <span>{bytesToUnitsAligned(metrics.memory)}</span>;
-    },
-    header: { title: "Memory", className: "memory", sortBy: columnId, id: columnId },
-    sortingCallBack: (pod) => {
-      const podStore = di.inject(podStoreInjectable);
-      const metrics = podStore.getPodKubeMetrics(pod);
+    return {
+      id: columnId,
+      kind: "Pod",
+      apiVersion: "v1",
+      priority: COLUMN_PRIORITY.MEMORY_USAGE,
+      content: (pod: Pod) => <PodMemoryCell pod={pod} podStore={podStore} />,
+      header: { title: "Memory", className: "memory", sortBy: columnId, id: columnId },
+      sortingCallBack: (pod: Pod) => {
+        const { memory } = podStore.getPodKubeMetrics(pod);
 
-      return isNaN(metrics.memory) ? 0 : metrics.memory;
-    },
-  }),
+        return isNaN(memory) ? 0 : memory;
+      },
+    };
+  },
   injectionToken: podListLayoutColumnInjectionToken,
 });

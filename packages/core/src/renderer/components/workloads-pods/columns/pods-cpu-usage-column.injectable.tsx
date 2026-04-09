@@ -6,33 +6,45 @@
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
+import { observer } from "mobx-react";
 import React from "react";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
+
+import type { Pod } from "@freelensapp/kube-object";
+import type { PodStore } from "../store";
+
+interface PodCpuCellProps {
+  pod: Pod;
+  podStore: PodStore;
+}
+
+const PodCpuCell = observer(({ pod, podStore }: PodCpuCellProps) => {
+  const { cpu } = podStore.getPodKubeMetrics(pod);
+
+  return <span>{isNaN(cpu) ? "N/A" : cpu.toFixed(3)}</span>;
+});
 
 const columnId = "cpuUsage";
 
 export const podsUsedCpuColumnInjectable = getInjectable({
   id: "pods-cpu-usage-column",
-  instantiate: (di) => ({
-    id: columnId,
-    kind: "Pod",
-    apiVersion: "v1",
-    priority: COLUMN_PRIORITY.CPU_USAGE,
-    content: (pod) => {
-      const podStore = di.inject(podStoreInjectable);
-      const metrics = podStore.getPodKubeMetrics(pod);
-      const cpuUsage = metrics.cpu;
+  instantiate: (di) => {
+    const podStore = di.inject(podStoreInjectable);
 
-      return <span>{isNaN(cpuUsage) ? "N/A" : cpuUsage.toFixed(3)}</span>;
-    },
-    header: { title: "CPU", className: "cpu", sortBy: columnId, id: columnId },
-    sortingCallBack: (pod) => {
-      const podStore = di.inject(podStoreInjectable);
-      const metrics = podStore.getPodKubeMetrics(pod);
+    return {
+      id: columnId,
+      kind: "Pod",
+      apiVersion: "v1",
+      priority: COLUMN_PRIORITY.CPU_USAGE,
+      content: (pod: Pod) => <PodCpuCell pod={pod} podStore={podStore} />,
+      header: { title: "CPU", className: "cpu", sortBy: columnId, id: columnId },
+      sortingCallBack: (pod: Pod) => {
+        const { cpu } = podStore.getPodKubeMetrics(pod);
 
-      return isNaN(metrics.cpu) ? 0 : metrics.cpu;
-    },
-  }),
+        return isNaN(cpu) ? 0 : cpu;
+      },
+    };
+  },
   injectionToken: podListLayoutColumnInjectionToken,
 });
