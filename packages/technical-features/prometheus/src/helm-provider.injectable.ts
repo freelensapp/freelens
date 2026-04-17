@@ -148,7 +148,7 @@ const helmPrometheusProviderInjectable = getInjectable({
       name: "Helm",
       isConfigurable: true,
       getQuery: getHelmLikeQueryFor({ rateAccuracy: "5m" }),
-      getService: (client) => findFirstNamespacedService(client, "app=prometheus,component=server,heritage=Helm"),
+      getService: (client) => findFirstNamespacedService(client, "app.kubernetes.io/name=prometheus,app.kubernetes.io/component=server,app.kubernetes.io/managed-by=Helm"),
     }),
   injectionToken: prometheusProviderInjectionToken,
 });
