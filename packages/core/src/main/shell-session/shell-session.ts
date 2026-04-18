@@ -234,6 +234,8 @@ export abstract class ShellSession {
         `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,
       );
 
+      this.dependencies.shellSessionProcesses.delete(this.terminalId);
+
       // This might already be false because of the kill() within the websocket.on("close") handler
       if (this.running) {
         this.running = false;
@@ -311,6 +313,10 @@ export abstract class ShellSession {
               error,
             );
           }
+        }
+
+        if (code !== WebSocketCloseEvent.AbnormalClosure && code !== WebSocketCloseEvent.GoingAway) {
+          this.dependencies.shellSessionProcesses.delete(this.terminalId);
         }
       });
 

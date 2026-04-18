@@ -40,6 +40,7 @@ const createLogsTab =
       setLogTabData(id, {
         showTimestamps: false,
         showPrevious: false,
+        showWordWrap: true,
         ...data,
       });
     });
