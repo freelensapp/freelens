@@ -39,7 +39,6 @@ export interface NamespaceSelectFilterModel {
     newValue: MultiValue<NamespaceSelectFilterOption>,
     actionMeta: ActionMeta<NamespaceSelectFilterOption>,
   ) => void;
-  onInputChange: (inputValue: string, actionMeta: { action: string }) => void;
   onClick: () => void;
   onKeyDown: React.KeyboardEventHandler;
   onKeyUp: React.KeyboardEventHandler;
@@ -126,7 +125,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
 
             if (action.option.value === selectAllNamespaces) {
               namespaceStore.selectAll();
-            } else if (isMultiSelection) {
+            } else if (isMultiSelection && !namespaceStore.areAllSelectedImplicitly) {
               namespaceStore.toggleSingle(action.option.value);
             } else {
               namespaceStore.selectSingle(action.option.value);
@@ -135,23 +134,6 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
           break;
       }
     },
-    onInputChange: action((inputValue, actionMeta) => {
-      // Only process input changes (typing or pasting)
-      if (actionMeta.action === "input-change") {
-        const trimmedInput = inputValue.trim();
-
-        // Find exact match (case-insensitive)
-        const matchingNamespace = context.allNamespaces.find(
-          (namespace) => namespace.toLowerCase() === trimmedInput.toLowerCase(),
-        );
-
-        if (matchingNamespace) {
-          // Auto-select the matching namespace
-          namespaceStore.selectSingle(matchingNamespace);
-          model.menu.close();
-        }
-      }
-    }),
     onClick: () => {
       if (!menuIsOpen.get()) {
         model.menu.open();

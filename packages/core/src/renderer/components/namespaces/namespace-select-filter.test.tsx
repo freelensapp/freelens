@@ -272,12 +272,12 @@ describe("<NamespaceSelectFilter />", () => {
           fireEvent.change(input, { target: { value: "test-5" } });
         });
 
-        it("auto-selects the matching namespace in the store", () => {
-          expect(namespaceStore.contextNamespaces).toEqual(["test-5"]);
+        it("does not auto-select the namespace", () => {
+          expect(namespaceStore.areAllSelectedImplicitly).toBe(true);
         });
 
-        it("closes the menu", () => {
-          expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).toBeNull();
+        it("keeps the menu open", () => {
+          expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).not.toBeNull();
         });
       });
 
@@ -289,7 +289,7 @@ describe("<NamespaceSelectFilter />", () => {
         });
 
         it("does not auto-select any namespace", () => {
-          expect(namespaceStore.contextNamespaces).not.toEqual(["test"]);
+          expect(namespaceStore.areAllSelectedImplicitly).toBe(true);
         });
 
         it("keeps the menu open", () => {
@@ -321,15 +321,19 @@ describe("<NamespaceSelectFilter />", () => {
             ).not.toHaveTextContent("All namespaces");
           });
 
+          it("selects only 'test-2' in the store", () => {
+            expect(namespaceStore.contextNamespaces).toEqual(["test-2"]);
+          });
+
           describe("when 'test-2' is clicked", () => {
             beforeEach(() => {
               result.getByText("test-2").click();
             });
 
-            it("should not show placeholder as 'All namespaces'", () => {
+            it("returns to showing 'All namespaces'", () => {
               expect(
                 result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
-              ).not.toHaveTextContent("All namespaces");
+              ).toHaveTextContent("All namespaces");
             });
 
             describe("when multi-selection key is raised", () => {
@@ -342,7 +346,7 @@ describe("<NamespaceSelectFilter />", () => {
               it("should show placeholder text as 'All namespaces'", () => {
                 expect(
                   result.baseElement.querySelector("#react-select-namespace-select-filter-placeholder"),
-                ).not.toHaveTextContent("All namespaces");
+                ).toHaveTextContent("All namespaces");
               });
             });
           });
