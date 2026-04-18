@@ -40,8 +40,8 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/history": "^4.7.11",
     "@types/webpack-env": "^1.18.8",
-    "lodash": "^4.17.23",
-    "ts-loader": "^9.5.4",
+    "lodash": "^4.18.1",
+    "ts-loader": "^9.5.7",
     "webpack": "^5.105.4"
   },
   "publishConfig": {

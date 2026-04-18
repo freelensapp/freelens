@@ -32,7 +32,7 @@
   "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "lodash": "^4.17.23"
+    "lodash": "^4.18.1"
   },
   "devDependencies": {
     "@freelensapp/logger": "workspace:^",
@@ -40,9 +40,9 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.24",
-    "@types/node": "~22.19.15",
+    "@types/node": "~22.19.17",
     "rfc6902": "^5.2.0",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "type-fest": "^5.5.0",
     "webpack": "^5.105.4"
   },

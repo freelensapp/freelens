@@ -19,8 +19,8 @@
     "freelens"
   ],
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@4.1.2",
-    "biome": "pnpm dlx @biomejs/biome@2.4.9",
+    "asar": "pnpm dlx @electron/asar@4.2.0",
+    "biome": "pnpm dlx @biomejs/biome@2.4.10",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",
@@ -41,7 +41,7 @@
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && pnpm electron-rebuild",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.1.0 --dependencies --no-gitignore",
+    "knip": "pnpm dlx knip@6.3.0 --dependencies --no-gitignore",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "pnpm": "10.33.0",
-    "turbo": "2.8.21"
+    "turbo": "2.9.3"
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
