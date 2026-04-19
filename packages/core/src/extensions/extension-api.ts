@@ -11,4 +11,4 @@ import * as Common from "./common-api";
 import * as Main from "./main-api";
 import * as Renderer from "./renderer-api";
 
-export { Common, Renderer, Main };
+export { Common, Main, Renderer };
