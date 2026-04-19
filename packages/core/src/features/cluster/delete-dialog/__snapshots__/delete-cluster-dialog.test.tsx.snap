@@ -281,6 +281,7 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -940,6 +941,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -1632,6 +1634,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -2405,6 +2408,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -3178,6 +3182,7 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

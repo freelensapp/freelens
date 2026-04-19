@@ -375,6 +375,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1069,6 +1070,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                           <input
                             class="input box grow"
                             placeholder="/some-directory-for-app-data/some-product-name/binaries"
+                            searchhistory="[object Object]"
                             spellcheck="false"
                             value=""
                           />
@@ -1108,6 +1110,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                             class="input box grow"
                             disabled=""
                             placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
+                            searchhistory="[object Object]"
                             spellcheck="false"
                             value=""
                           />
@@ -1157,6 +1160,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                           <input
                             class="input box grow"
                             placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                            searchhistory="[object Object]"
                             spellcheck="false"
                             value=""
                           />

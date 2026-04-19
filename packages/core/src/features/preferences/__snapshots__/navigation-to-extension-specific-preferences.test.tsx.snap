@@ -388,6 +388,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                           class="input box grow"
                           disabled=""
                           placeholder="Custom Extension Registry URL..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -2724,6 +2725,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3515,6 +3517,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

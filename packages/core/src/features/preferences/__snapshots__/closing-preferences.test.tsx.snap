@@ -387,6 +387,7 @@ exports[`preferences - closing-preferences given accessing preferences directly 
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1915,6 +1916,7 @@ exports[`preferences - closing-preferences given already in a page and then navi
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

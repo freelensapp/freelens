@@ -735,6 +735,7 @@ exports[`preferences - navigation using application menu when navigating to pref
                         class="input box grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

@@ -312,6 +312,7 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -1040,6 +1041,7 @@ exports[`entity running technical tests when navigated to catalog when details p
                         <input
                           class="input box grow"
                           placeholder="Search..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

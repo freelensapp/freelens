@@ -400,6 +400,7 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                           class="input box grow"
                           disabled=""
                           placeholder="Custom Extension Registry URL..."
+                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

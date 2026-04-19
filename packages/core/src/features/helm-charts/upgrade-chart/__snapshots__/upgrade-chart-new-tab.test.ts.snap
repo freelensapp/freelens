@@ -519,6 +519,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1383,6 +1384,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -2389,6 +2391,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3449,6 +3452,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -4507,6 +4511,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -5722,6 +5727,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -6939,6 +6945,7 @@ exports[`New Upgrade Helm Chart Dock Tab given a namespace is selected when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

@@ -519,6 +519,7 @@ exports[`workloads / pods when navigating to workloads / pods view given a names
                       <input
                         class="input box grow"
                         placeholder="Search Pods..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1701,6 +1702,7 @@ exports[`workloads / pods when navigating to workloads / pods view given no pods
                       <input
                         class="input box grow"
                         placeholder="Search Pods..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -2735,6 +2737,7 @@ exports[`workloads / pods when navigating to workloads / pods view given pods ar
                       <input
                         class="input box grow"
                         placeholder="Search Pods..."
+                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
