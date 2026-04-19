@@ -41,6 +41,7 @@ export interface VirtualListProps<T extends { getId(): string } | string> {
 
 export interface VirtualListRef {
   scrollToItem: (index: number, align: Align) => void;
+  resetAfterIndex: (index: number) => void;
 }
 
 function VirtualListInner<T extends { getId(): string } | string>({
@@ -76,6 +77,7 @@ function VirtualListInner<T extends { getId(): string } | string>({
 
   useImperativeHandle(forwardedRef, () => ({
     scrollToItem: (index, align) => listRef.current?.scrollToItem(index, align),
+    resetAfterIndex: (index) => listRef.current?.resetAfterIndex(index),
   }));
 
   useEffect(() => {

@@ -3,3 +3,4 @@ binaries/
 dist/
 *.mjs
 *.mjs.map
+pnpm-lock.yaml

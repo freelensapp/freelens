@@ -32,14 +32,13 @@ import navigateInjectable, { type Navigate } from "../../renderer/navigation/nav
 export type { URLParams } from "@freelensapp/utilities";
 
 export type { PageParam, PageParamInit } from "../../renderer/navigation/page-param";
-
 export type {
   CreatePageParam,
   GetDetailsUrl,
+  GetMaybeDetailsUrl,
   HideDetails,
   HideEntityDetails,
   IsRouteActive,
-  GetMaybeDetailsUrl,
   Navigate,
   ShowDetails,
   ShowEntityDetails,
