@@ -125,7 +125,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
 
             if (action.option.value === selectAllNamespaces) {
               namespaceStore.selectAll();
-            } else if (isMultiSelection) {
+            } else if (isMultiSelection && !namespaceStore.areAllSelectedImplicitly) {
               namespaceStore.toggleSingle(action.option.value);
             } else {
               namespaceStore.selectSingle(action.option.value);
