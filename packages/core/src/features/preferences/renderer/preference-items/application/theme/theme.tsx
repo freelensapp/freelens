@@ -12,6 +12,7 @@ import { Select } from "../../../../../../renderer/components/select";
 import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
 import defaultLensThemeInjectable from "../../../../../../renderer/themes/default-theme.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+import { CustomThemeManager } from "./custom-theme-manager";
 
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
@@ -44,6 +45,7 @@ const NonInjectedTheme = observer(({ state, themes, defaultTheme }: Dependencies
         onChange={(value) => (state.colorTheme = value?.value ?? defaultTheme.name)}
         themeName="lens"
       />
+      <CustomThemeManager />
     </section>
   );
 });
