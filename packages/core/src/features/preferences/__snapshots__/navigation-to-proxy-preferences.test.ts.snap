@@ -967,6 +967,38 @@ exports[`preferences - navigation to proxy preferences given in preferences, whe
                 class="HorizontalLine size-sm"
               />
               <div
+                data-preference-item-test="bypass-kube-api-proxy"
+              >
+                <section
+                  class="small"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Freelens Internal Proxy
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Bypass Freelens Internal KubeApi Proxy
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                  <small
+                    class="hint"
+                  >
+                    This will make commands like kubectl and helm skip Freelens internal KubeApi proxy. Needed with some corporate proxies, bastion hosts (e.g. Teleport), or SOCKS5 tunnels that do certificate re-writing. Does not affect cluster communications!
+                  </small>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-sm"
+              />
+              <div
                 data-preference-item-test="allow-untrusted-certificates"
               >
                 <section
