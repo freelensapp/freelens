@@ -22,6 +22,7 @@ import { PieChart } from "../chart";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
 import type { Node } from "@freelensapp/kube-object";
@@ -32,6 +33,7 @@ import type { IComputedValue } from "mobx";
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 function createLabels(rawLabelData: [string, number | undefined][]): string[] {
@@ -42,7 +44,7 @@ const checkedBytesToUnits = (value: number | undefined) => (typeof value === "nu
 
 interface Dependencies {
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
+  clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   activeTheme: IComputedValue<LensTheme>;
 }
 
@@ -179,7 +181,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   );
 };
 
-const renderContent = (defaultColor: string, nodes: Node[], metrics: ClusterMetricData | undefined) => {
+const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<ClusterMetricData> | undefined) => {
   if (!nodes.length) {
     return (
       <div className={cssNames(styles.empty, "flex column box grow align-center justify-center")}>
@@ -226,7 +228,19 @@ const NonInjectedClusterPieCharts = observer(
 export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedClusterPieCharts, {
   getProps: (di) => ({
     activeTheme: di.inject(activeThemeInjectable),
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
+    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
+      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+    }),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}

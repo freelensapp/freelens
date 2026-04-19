@@ -3,11 +3,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
@@ -21,6 +16,7 @@ import { ClusterMetricSwitchers } from "./cluster-metric-switchers";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-metrics.module.scss";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
@@ -28,19 +24,22 @@ import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ChartOptions, ChartPoint } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 interface Dependencies {
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
+  clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   selectedMetricsType: SelectedMetricsType;
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const NonInjectedClusterMetrics = observer((props: Dependencies) => {
-  const { clusterOverviewMetrics, selectedMetricsType, selectedNodeRoleForMetrics } = props;
+  const { clusterOverviewMetrics, selectedMetricsType, selectedNodeRoleForMetrics, selectedMetricsTimeRange } = props;
 
   const metrics = clusterOverviewMetrics.value.get();
+  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
   const [plugins] = useState([new ZebraStripesPlugin()]);
   const { memoryCapacity, cpuCapacity } = getMetricLastPoints(metrics ?? {});
   const metricValues = selectedMetricsType.metrics.get();
@@ -48,7 +47,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   const metricNodeRole = selectedNodeRoleForMetrics.value.get();
   const colors = { cpu: "#00a7a0", memory: "#C93DCE" };
   const data = metricValues.map((value) => ({
-    x: value[0],
+    x: value[0] * 1000, // Convert Unix seconds to milliseconds for Chart.js
     y: parseFloat(value[1]).toFixed(3),
   }));
 
@@ -113,7 +112,9 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   const options = metricType === "cpu" ? cpuOptions : memoryOptions;
 
   const renderMetrics = () => {
-    if (!metricValues.length && !metrics) {
+    const isPending = clusterOverviewMetrics.pending.get();
+
+    if (!metricValues.length && isPending) {
       return <Spinner center />;
     }
 
@@ -130,6 +131,8 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
         showLegend={false}
         plugins={plugins}
         className={styles.chart}
+        minTime={minTime}
+        maxTime={maxTime}
       />
     );
   };
@@ -144,8 +147,21 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 
 export const ClusterMetrics = withInjectables<Dependencies>(NonInjectedClusterMetrics, {
   getProps: (di) => ({
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
+    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
+      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+    }),
     selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
+    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  return "custom-active";
+}

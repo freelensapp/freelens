@@ -28,43 +28,50 @@ export interface ClusterMetricData {
   fsUsage: MetricData;
 }
 
+type ClusterMetricKey = keyof ClusterMetricData;
+
+const defaultClusterMetricKeys: ClusterMetricKey[] = [
+  "memoryUsage",
+  "memoryRequests",
+  "memoryLimits",
+  "memoryCapacity",
+  "memoryAllocatableCapacity",
+  "cpuUsage",
+  "cpuRequests",
+  "cpuLimits",
+  "cpuCapacity",
+  "cpuAllocatableCapacity",
+  "podUsage",
+  "podCapacity",
+  "podAllocatableCapacity",
+];
+
 export type RequestClusterMetricsByNodeNames = (
   nodeNames: string[],
-  params?: RequestMetricsParams,
-) => Promise<ClusterMetricData>;
+  params?: RequestMetricsParams & { metrics?: ClusterMetricKey[] },
+) => Promise<Partial<ClusterMetricData>>;
 
 const requestClusterMetricsByNodeNamesInjectable = getInjectable({
   id: "get-cluster-metrics-by-node-names",
   instantiate: (di): RequestClusterMetricsByNodeNames => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (nodeNames, params) => {
+    return (nodeNames, params = {}) => {
       const opts = {
         category: "cluster",
         nodes: nodeNames.join("|"),
       };
+      const { metrics = defaultClusterMetricKeys, ...requestParams } = params;
+      const query = metrics.reduce(
+        (acc, metricName) => {
+          acc[metricName] = opts;
 
-      return requestMetrics(
-        {
-          memoryUsage: opts,
-          workloadMemoryUsage: opts,
-          memoryRequests: opts,
-          memoryLimits: opts,
-          memoryCapacity: opts,
-          memoryAllocatableCapacity: opts,
-          cpuUsage: opts,
-          cpuRequests: opts,
-          cpuLimits: opts,
-          cpuCapacity: opts,
-          cpuAllocatableCapacity: opts,
-          podUsage: opts,
-          podCapacity: opts,
-          podAllocatableCapacity: opts,
-          fsSize: opts,
-          fsUsage: opts,
+          return acc;
         },
-        params,
+        {} as Record<ClusterMetricKey, typeof opts>,
       );
+
+      return requestMetrics(query, requestParams);
     };
   },
 });
