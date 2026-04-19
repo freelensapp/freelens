@@ -121,6 +121,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -911,6 +923,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -1742,6 +1766,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -2687,6 +2723,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -3523,6 +3571,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -4465,6 +4525,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -5592,6 +5664,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -6531,6 +6615,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -7658,6 +7754,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -8601,6 +8709,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -9440,6 +9560,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -10266,6 +10398,18 @@ exports[`add custom helm repository in preferences when navigating to preference
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
