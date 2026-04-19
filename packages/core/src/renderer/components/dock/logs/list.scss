@@ -27,6 +27,13 @@
         font-size: smaller;
         white-space: nowrap;
 
+        &.wordWrap {
+          white-space: pre-wrap;
+          word-break: break-all;
+          height: auto;
+          min-height: 18px;
+        }
+
         &:hover {
           background: var(--logRowHoverBackground);
         }
@@ -34,6 +41,11 @@
         span {
           -webkit-font-smoothing: auto; // Better readability on non-retina screens
           white-space: pre;
+        }
+
+        &.wordWrap span {
+          white-space: pre-wrap;
+          word-break: break-all;
         }
 
         span.overlay {
@@ -59,6 +71,15 @@
         }
       }
     }
+  }
+
+  .ToBottom {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    padding: 4px 6px;
+    gap: 4px;
   }
 
   &.isLoading {
