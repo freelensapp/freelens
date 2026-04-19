@@ -8,6 +8,7 @@
 
 import { registerInjectables as registerClusterInjectables } from "./cluster/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
+import { registerInjectables as registerFavoritesInjectables } from "./favorites/register-injectables";
 import { registerInjectables as registerHotbarInjectables } from "./hotbar/register-injectables";
 import { registerInjectables as registerLicensesInjectables } from "./licenses/register-injectables";
 import { registerInjectables as registerPersistentStorageInjectables } from "./persistent-storage/register-injectables";
@@ -26,6 +27,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerExtensionsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerFavoritesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

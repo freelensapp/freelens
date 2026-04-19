@@ -260,7 +260,9 @@ Features are, in any case, decided democratically according to the community's w
 
 For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
 
-## Core Team
+## The Freelens Teams
+
+### Core Team
 
 Each member of the core team is focused on specific roles. You can contact us
 at any time according to them.
@@ -273,6 +275,17 @@ Development direction, architecture and release management, flux-cd extension, f
 UI, Docs, freelens-ai extension development management
 - [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
 GenAI solutions & freelens-ai extension development management
+
+### Release Engineering Team
+
+This team is responsible for driving Freelens releases forward, reviewing PRs, and making decisions about the architecture and technical roadmap under the supervision of the core team.
+
+- [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
+Release Engineering Team Lead
+- [Omar Alani](https://www.linkedin.com/in/omarluq/) - [@omarluq](https://github.com/omarluq) - Maintainer<br/>
+Release Engineering Team Member
+- [Matías Roje](https://www.linkedin.com/in/matias-roje-carrasco/) - [@MatiasRoje](https://github.com/MatiasRoje) - Maintainer<br/>
+Release Engineering Team Member
 
 The project is growing very quickly and everyone is welcome!
 
@@ -288,7 +301,7 @@ Lens](https://github.com/lensapp/lens/tree/master), the core of [Lens
 Desktop](https://k8slens.dev), with the aim of carrying forward its
 open-source version.
 
-Copyright (c) 2024-2025 Freelens Authors.
+Copyright (c) 2024-2026 Freelens Authors.
 
 Copyright (c) 2022 OpenLens Authors.
 
