@@ -1078,8 +1078,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       jest-mock-extended:
-        specifier: ^4.0.0
-        version: 4.0.0(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.19.17)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3)))(typescript@5.9.3)
+        specifier: ^4.0.1
+        version: 4.0.1(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.19.17)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3)))(typescript@5.9.3)
       logform:
         specifier: ^2.7.0
         version: 2.7.0
@@ -6968,12 +6968,12 @@ packages:
     resolution: {integrity: sha512-GBEV4GRADeP+qtB2+6u61stea8mGcOT4mCtrYISZwfu9/ISHFJ/5zOMXYbpBE9RsS5+Gb63DW4FgmnKJ79Kf6w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-mock-extended@4.0.0:
-    resolution: {integrity: sha512-7BZpfuvLam+/HC+NxifIi9b+5VXj/utUDMPUqrDJehGWVuXPtLS9Jqlob2mJLrI/pg2k1S8DMfKDvEB88QNjaQ==}
+  jest-mock-extended@4.0.1:
+    resolution: {integrity: sha512-Q/4k/yefiv/Al3n755V9xDEwMiL+7LwkjRKjaORkgCdovZv00hF/D0QypLoqO+MVfrYkzCYa4BYlcEKA74iOgQ==}
     peerDependencies:
       '@jest/globals': ^28.0.0 || ^29.0.0 || ^30.0.0
       jest: ^24.0.0 || ^25.0.0 || ^26.0.0 || ^27.0.0 || ^28.0.0 || ^29.0.0 || ^30.0.0
-      typescript: ^3.0.0 || ^4.0.0 || ^5.0.0
+      typescript: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
 
   jest-mock@29.7.0:
     resolution: {integrity: sha512-ITOMZn+UkYS4ZFh83xYAOzWStloNzJFO2s8DWrE4lhtGD+AorgnbkiKERe4wQVBydIGPx059g6riW5Btp6Llnw==}
@@ -7266,6 +7266,10 @@ packages:
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
+
+  lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
@@ -8900,8 +8904,8 @@ packages:
   truncate-utf8-bytes@1.0.2:
     resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
 
-  ts-essentials@10.0.4:
-    resolution: {integrity: sha512-lwYdz28+S4nicm+jFi6V58LaAIpxzhg9rLdgNC1VsdP/xiFBseGhF1M/shwCk6zMmwahBZdXcl34LVHrEang3A==}
+  ts-essentials@10.1.1:
+    resolution: {integrity: sha512-4aTB7KLHKmUvkjNj8V+EdnmuVTiECzn3K+zIbRthumvHu+j44x3w63xpfs0JL3NGIzGXqoQ7AV591xHO+XrOTw==}
     peerDependencies:
       typescript: '>=4.5.0'
     peerDependenciesMeta:
@@ -13826,11 +13830,12 @@ snapshots:
       slash: 3.0.0
       stack-utils: 2.0.6
 
-  jest-mock-extended@4.0.0(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.19.17)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3)))(typescript@5.9.3):
+  jest-mock-extended@4.0.1(@jest/globals@29.7.0)(jest@29.7.0(@types/node@22.19.17)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3)))(typescript@5.9.3):
     dependencies:
       '@jest/globals': 29.7.0
       jest: 29.7.0(@types/node@22.19.17)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3))
-      ts-essentials: 10.0.4(typescript@5.9.3)
+      lodash.isequal: 4.5.0
+      ts-essentials: 10.1.1(typescript@5.9.3)
       typescript: 5.9.3
 
   jest-mock@29.7.0:
@@ -14275,6 +14280,8 @@ snapshots:
       p-locate: 4.1.0
 
   lodash.camelcase@4.3.0: {}
+
+  lodash.isequal@4.5.0: {}
 
   lodash.memoize@4.1.2: {}
 
@@ -15990,7 +15997,7 @@ snapshots:
     dependencies:
       utf8-byte-length: 1.0.4
 
-  ts-essentials@10.0.4(typescript@5.9.3):
+  ts-essentials@10.1.1(typescript@5.9.3):
     optionalDependencies:
       typescript: 5.9.3
 
