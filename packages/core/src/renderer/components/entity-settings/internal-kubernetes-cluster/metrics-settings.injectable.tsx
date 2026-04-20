@@ -10,6 +10,7 @@ import getClusterByIdInjectable from "../../../../features/cluster/storage/commo
 import { ClusterMetricsSetting } from "../../cluster-settings/metrics-setting";
 import { ClusterPrometheusSetting } from "../../cluster-settings/prometheus-setting";
 import { ShowMetricsSetting } from "../../cluster-settings/show-metrics";
+import { SkipMetricsRouteCheckSetting } from "../../cluster-settings/skip-metrics-route-check-setting";
 import { entitySettingInjectionToken } from "../token";
 
 import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
@@ -38,6 +39,10 @@ function NonInjectedMetricsKubernetesClusterSettings({
       <section>
         <ClusterMetricsSetting cluster={cluster} />
         <ShowMetricsSetting cluster={cluster} />
+      </section>
+      <hr />
+      <section>
+        <SkipMetricsRouteCheckSetting cluster={cluster} />
       </section>
     </section>
   );

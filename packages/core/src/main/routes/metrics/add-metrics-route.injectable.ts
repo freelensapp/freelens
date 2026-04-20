@@ -111,7 +111,7 @@ const addMetricsRouteInjectable = getRouteInjectable({
       method: "post",
       path: `${apiPrefix}/metrics`,
     })(async ({ cluster, payload, query }) => {
-      if (process.env.FREELENS_METRICS_CHECK === "false") {
+      if (cluster.preferences.skipMetricsRouteCheck) {
         return { response: {} };
       }
 

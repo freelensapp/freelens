@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import type { AuthorizationV1Api } from "@kubernetes/client-node";
 
+import type { Cluster } from "./cluster";
 import type { KubeApiResource } from "../rbac";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
@@ -19,15 +20,18 @@ export type CanListResource = (resource: KubeApiResource) => boolean;
  */
 export type RequestNamespaceListPermissions = (namespace: string) => Promise<CanListResource>;
 
-export type CreateRequestNamespaceListPermissions = (api: AuthorizationV1Api) => RequestNamespaceListPermissions;
+export type CreateRequestNamespaceListPermissions = (
+  api: AuthorizationV1Api,
+  cluster: Cluster,
+) => RequestNamespaceListPermissions;
 
 const createRequestNamespaceListPermissionsInjectable = getInjectable({
   id: "create-request-namespace-list-permissions",
   instantiate: (di): CreateRequestNamespaceListPermissions => {
     const logger = di.inject(loggerInjectionToken);
 
-    return (api) => async (namespace) => {
-      if (process.env.FREELENS_NAMESPACE_AUTHORIZATION_CHECK === "false") {
+    return (api, cluster) => async (namespace) => {
+      if (cluster.preferences.skipNamespaceAuthorizationCheck) {
         return () => true;
       }
 
