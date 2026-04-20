@@ -8,7 +8,7 @@ overrides:
   '@types/http-proxy': '-'
   brace-expansion@^2.0.1: ^2.0.2
   compression: ^1.8.1
-  form-data: ^4.0.4
+  form-data: ^4.0.5
   http-proxy: npm:http-proxy-node16@^1.0.0
   http-proxy-middleware: ^3.0.5
   tmp@^0.2.0: ^0.2.5
@@ -6275,8 +6275,8 @@ packages:
       typescript: '>3.6.0'
       webpack: ^5.11.0
 
-  form-data@4.0.4:
-    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
+  form-data@4.0.5:
+    resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
   formdata-polyfill@4.0.10:
@@ -10368,7 +10368,7 @@ snapshots:
       '@types/node': 24.7.1
       '@types/node-fetch': 2.6.13
       '@types/stream-buffers': 3.0.7
-      form-data: 4.0.4
+      form-data: 4.0.5
       hpagent: 1.2.0
       isomorphic-ws: 5.0.0(ws@8.20.0)
       js-yaml: 4.1.1
@@ -11126,7 +11126,7 @@ snapshots:
   '@types/node-fetch@2.6.13':
     dependencies:
       '@types/node': 22.19.17
-      form-data: 4.0.4
+      form-data: 4.0.5
 
   '@types/node@22.19.17':
     dependencies:
@@ -12520,7 +12520,7 @@ snapshots:
       builder-util: 26.8.1
       builder-util-runtime: 9.5.1
       chalk: 4.1.2
-      form-data: 4.0.4
+      form-data: 4.0.5
       fs-extra: 10.1.0
       lazy-val: 1.0.5
       mime: 2.6.0
@@ -12879,7 +12879,7 @@ snapshots:
       typescript: 5.9.3
       webpack: 5.105.4(webpack-cli@7.0.2)
 
-  form-data@4.0.4:
+  form-data@4.0.5:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -14070,7 +14070,7 @@ snapshots:
       decimal.js: 10.6.0
       domexception: 4.0.0
       escodegen: 2.0.0
-      form-data: 4.0.4
+      form-data: 4.0.5
       html-encoding-sniffer: 3.0.0
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.1
