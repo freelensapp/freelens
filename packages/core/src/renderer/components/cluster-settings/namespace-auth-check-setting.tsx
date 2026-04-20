@@ -29,8 +29,8 @@ export const NamespaceAuthCheckSetting = observer(function NamespaceAuthCheckSet
         }}
       />
       <small className="hint">
-        Skip the per-namespace authorization check when connecting to this cluster.
-        Speeds up connection but may show resources you cannot access.
+        Skip the per-namespace authorization check when connecting to this cluster. Speeds up connection but may show
+        resources you cannot access.
       </small>
     </>
   );

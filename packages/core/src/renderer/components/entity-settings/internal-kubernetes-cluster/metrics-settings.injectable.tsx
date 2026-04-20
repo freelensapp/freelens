@@ -7,10 +7,10 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import { MetricsRouteCheckSetting } from "../../cluster-settings/metrics-route-check-setting";
 import { ClusterMetricsSetting } from "../../cluster-settings/metrics-setting";
 import { ClusterPrometheusSetting } from "../../cluster-settings/prometheus-setting";
 import { ShowMetricsSetting } from "../../cluster-settings/show-metrics";
-import { MetricsRouteCheckSetting } from "../../cluster-settings/metrics-route-check-setting";
 import { entitySettingInjectionToken } from "../token";
 
 import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";

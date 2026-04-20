@@ -29,8 +29,8 @@ export const MetricsRouteCheckSetting = observer(function MetricsRouteCheckSetti
         }}
       />
       <small className="hint">
-        Skip Prometheus metrics endpoint detection when connecting to this cluster.
-        Speeds up connection on clusters without Prometheus.
+        Skip Prometheus metrics endpoint detection when connecting to this cluster. Speeds up connection on clusters
+        without Prometheus.
       </small>
     </>
   );

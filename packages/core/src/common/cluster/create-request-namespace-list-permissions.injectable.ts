@@ -9,8 +9,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import type { AuthorizationV1Api } from "@kubernetes/client-node";
 
-import type { Cluster } from "./cluster";
 import type { KubeApiResource } from "../rbac";
+import type { Cluster } from "./cluster";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
 
