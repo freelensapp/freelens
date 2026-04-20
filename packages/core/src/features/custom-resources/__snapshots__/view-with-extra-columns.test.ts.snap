@@ -406,7 +406,6 @@ exports[`Viewing Custom Resources with extra columns renders 1`] = `
                     <input
                       class="input box grow"
                       placeholder="SomeResource search ..."
-                      searchhistory="[object Object]"
                       spellcheck="false"
                       value=""
                     />

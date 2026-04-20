@@ -281,7 +281,6 @@ exports[`custom category columns for catalog renders 1`] = `
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -916,7 +915,6 @@ exports[`custom category columns for catalog when category is added using defaul
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -1551,7 +1549,6 @@ exports[`custom category columns for catalog when category is added using defaul
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -2176,7 +2173,6 @@ exports[`custom category columns for catalog when category is added using defaul
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -2787,7 +2783,6 @@ exports[`custom category columns for catalog when category is added with custom 
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -3422,7 +3417,6 @@ exports[`custom category columns for catalog when category is added with custom 
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -3985,7 +3979,6 @@ exports[`custom category columns for catalog when category is added without defa
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -4620,7 +4613,6 @@ exports[`custom category columns for catalog when category is added without defa
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

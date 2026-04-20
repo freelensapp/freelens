@@ -643,7 +643,6 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -1502,7 +1501,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -2393,7 +2391,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -3284,7 +3281,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -4426,7 +4422,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -5305,7 +5300,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />
@@ -6184,7 +6178,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         <input
                           class="input box grow"
                           placeholder="Search..."
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           value=""
                         />

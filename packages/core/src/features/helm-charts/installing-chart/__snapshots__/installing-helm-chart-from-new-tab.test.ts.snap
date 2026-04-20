@@ -1023,7 +1023,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -2095,7 +2094,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3045,7 +3043,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3700,7 +3697,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -4264,7 +4260,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -4918,7 +4913,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -5452,7 +5446,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -6106,7 +6099,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -6635,7 +6627,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -7289,7 +7280,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value="some-custom-name"
@@ -7818,7 +7808,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -8472,7 +8461,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -9023,7 +9011,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -9678,7 +9665,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -10242,7 +10228,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -10896,7 +10881,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -11425,7 +11409,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -12079,7 +12062,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -12616,7 +12598,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -13733,7 +13714,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -14624,7 +14604,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -15667,7 +15646,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -16321,7 +16299,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -17063,7 +17040,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -18065,7 +18041,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -18773,7 +18748,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-second-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -19302,7 +19276,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -20008,7 +19981,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -20537,7 +20509,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -21191,7 +21162,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -21720,7 +21690,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -22374,7 +22343,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                           class="input box grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
-                          searchhistory="[object Object]"
                           spellcheck="false"
                           title="Release name"
                           value=""
@@ -22903,7 +22871,6 @@ exports[`installing helm chart from new tab given tab for installing chart was n
                       <input
                         class="input box grow"
                         placeholder="Search Helm Charts..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

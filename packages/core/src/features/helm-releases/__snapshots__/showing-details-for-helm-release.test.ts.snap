@@ -519,7 +519,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -1465,7 +1464,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -2416,7 +2414,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -3635,7 +3632,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -4915,7 +4911,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -6195,7 +6190,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -7720,7 +7714,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -9245,7 +9238,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -10770,7 +10762,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -12022,7 +12013,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -13276,7 +13266,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -14801,7 +14790,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -16081,7 +16069,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -17363,7 +17350,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -18582,7 +18568,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -19862,7 +19847,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -21142,7 +21126,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />
@@ -22422,7 +22405,6 @@ exports[`showing details for helm release given application is started when navi
                       <input
                         class="input box grow"
                         placeholder="Search Releases..."
-                        searchhistory="[object Object]"
                         spellcheck="false"
                         value=""
                       />

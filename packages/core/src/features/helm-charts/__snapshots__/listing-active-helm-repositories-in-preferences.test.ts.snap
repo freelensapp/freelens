@@ -317,7 +317,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -357,7 +356,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -407,7 +405,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1113,7 +1110,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1153,7 +1149,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1203,7 +1198,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1937,7 +1931,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -1977,7 +1970,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2027,7 +2019,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2650,7 +2641,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2690,7 +2680,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -2740,7 +2729,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3449,7 +3437,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3489,7 +3476,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -3539,7 +3525,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4317,7 +4302,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4357,7 +4341,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -4407,7 +4390,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5030,7 +5012,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5070,7 +5051,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5120,7 +5100,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5743,7 +5722,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5783,7 +5761,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                               class="input box grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
@@ -5833,7 +5810,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                             <input
                               class="input box grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
-                              searchhistory="[object Object]"
                               spellcheck="false"
                               value=""
                             />
