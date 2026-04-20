@@ -50,7 +50,7 @@
     "ts-loader": "^9.5.7",
     "type-fest": "^5.5.0",
     "typed-emitter": "^1.4.0",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",
