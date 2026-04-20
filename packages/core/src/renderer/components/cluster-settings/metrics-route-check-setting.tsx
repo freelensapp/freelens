@@ -11,13 +11,13 @@ import { SubTitle } from "../layout/sub-title";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 
-export interface SkipMetricsRouteCheckSettingProps {
+export interface MetricsRouteCheckSettingProps {
   cluster: Cluster;
 }
 
-export const SkipMetricsRouteCheckSetting = observer(function SkipMetricsRouteCheckSetting({
+export const MetricsRouteCheckSetting = observer(function MetricsRouteCheckSetting({
   cluster,
-}: SkipMetricsRouteCheckSettingProps) {
+}: MetricsRouteCheckSettingProps) {
   return (
     <>
       <SubTitle title="Performance" />

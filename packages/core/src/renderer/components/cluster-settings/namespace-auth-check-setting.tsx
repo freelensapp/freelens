@@ -11,13 +11,13 @@ import { SubTitle } from "../layout/sub-title";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 
-export interface SkipNamespaceAuthCheckSettingProps {
+export interface NamespaceAuthCheckSettingProps {
   cluster: Cluster;
 }
 
-export const SkipNamespaceAuthCheckSetting = observer(function SkipNamespaceAuthCheckSetting({
+export const NamespaceAuthCheckSetting = observer(function NamespaceAuthCheckSetting({
   cluster,
-}: SkipNamespaceAuthCheckSettingProps) {
+}: NamespaceAuthCheckSettingProps) {
   return (
     <>
       <SubTitle title="Performance" />
