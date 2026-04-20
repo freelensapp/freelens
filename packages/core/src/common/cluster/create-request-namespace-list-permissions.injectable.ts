@@ -10,7 +10,6 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { AuthorizationV1Api } from "@kubernetes/client-node";
 
 import type { KubeApiResource } from "../rbac";
-import type { Cluster } from "./cluster";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
 
@@ -20,21 +19,14 @@ export type CanListResource = (resource: KubeApiResource) => boolean;
  */
 export type RequestNamespaceListPermissions = (namespace: string) => Promise<CanListResource>;
 
-export type CreateRequestNamespaceListPermissions = (
-  api: AuthorizationV1Api,
-  cluster: Cluster,
-) => RequestNamespaceListPermissions;
+export type CreateRequestNamespaceListPermissions = (api: AuthorizationV1Api) => RequestNamespaceListPermissions;
 
 const createRequestNamespaceListPermissionsInjectable = getInjectable({
   id: "create-request-namespace-list-permissions",
   instantiate: (di): CreateRequestNamespaceListPermissions => {
     const logger = di.inject(loggerInjectionToken);
 
-    return (api, cluster) => async (namespace) => {
-      if (cluster.preferences.skipNamespaceAuthorizationCheck) {
-        return () => true;
-      }
-
+    return (api) => async (namespace) => {
       try {
         const { status } = await api.createSelfSubjectRulesReview({
           body: {

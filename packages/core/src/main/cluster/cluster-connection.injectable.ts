@@ -241,7 +241,9 @@ class ClusterConnection {
     const proxyConfig = await this.dependencies.loadProxyKubeconfig();
     const api = this.dependencies.createAuthorizationApi(proxyConfig);
     const canI = this.dependencies.createCanI(api);
-    const requestNamespaceListPermissions = this.dependencies.createRequestNamespaceListPermissions(api, this.cluster);
+    const requestNamespaceListPermissions = this.cluster.preferences.skipNamespaceAuthorizationCheck
+      ? async () => () => true
+      : this.dependencies.createRequestNamespaceListPermissions(api);
 
     const isAdmin = await canI({
       namespace: "kube-system",

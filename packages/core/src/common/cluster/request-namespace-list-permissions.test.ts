@@ -15,7 +15,6 @@ import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { KubeApiResource } from "../rbac";
-import type { Cluster } from "./cluster";
 import type { RequestNamespaceListPermissions } from "./create-request-namespace-list-permissions.injectable";
 
 interface TestCase {
@@ -40,7 +39,6 @@ describe("requestNamespaceListPermissions", () => {
       cast<AuthorizationV1Api>({
         createSelfSubjectRulesReview: createSelfSubjectRulesReviewMock,
       }),
-      cast<Cluster>({ preferences: {} }),
     );
   });
 
