@@ -763,6 +763,7 @@ export class Input extends React.Component<InputProps, State> {
       dirty: _dirty, // excluded from passing to input-element
       trim,
       blurOnEnter,
+      searchHistory: _searchHistory, // excluded from passing to input-element
       ...inputProps
     } = this.props;
     const { focused, dirty, valid, validating, errors } = this.state;
