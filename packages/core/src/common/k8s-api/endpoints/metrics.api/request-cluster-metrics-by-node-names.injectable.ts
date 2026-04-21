@@ -12,6 +12,7 @@ import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface ClusterMetricData {
   memoryUsage: MetricData;
+  workloadMemoryUsage: MetricData;
   memoryRequests: MetricData;
   memoryLimits: MetricData;
   memoryCapacity: MetricData;

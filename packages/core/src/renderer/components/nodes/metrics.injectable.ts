@@ -10,6 +10,25 @@ import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 
 import type { Node } from "@freelensapp/kube-object";
+import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+
+type NodeMetricKey = keyof ClusterMetricData;
+
+const nodeMetricKeys: NodeMetricKey[] = [
+  "memoryUsage",
+  "workloadMemoryUsage",
+  "memoryRequests",
+  "memoryCapacity",
+  "memoryAllocatableCapacity",
+  "cpuUsage",
+  "cpuRequests",
+  "cpuCapacity",
+  "cpuAllocatableCapacity",
+  "podUsage",
+  "podCapacity",
+  "fsSize",
+  "fsUsage",
+];
 
 const nodeMetricsInjectable = getInjectable({
   id: "node-metrics",
@@ -20,7 +39,9 @@ const nodeMetricsInjectable = getInjectable({
       getValueFromObservedPromise: () => {
         now(60 * 1000);
 
-        return requestClusterMetricsByNodeNames([node.getName()]);
+        return requestClusterMetricsByNodeNames([node.getName()], {
+          metrics: nodeMetricKeys,
+        });
       },
     });
   },
