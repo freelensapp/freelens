@@ -7,7 +7,7 @@
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Dialog } from "../dialog";
 import { Select } from "../select";
 import { formatMetricsDateTimeLocal, validateCustomMetricsTimeRange } from "./metrics-time-range";
@@ -108,6 +108,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(
         )}
         <Dialog isOpen={showCustomPicker} close={() => setShowCustomPicker(false)}>
           <CustomTimeRangePicker
+            isOpen={showCustomPicker}
             onApply={handleCustomRangeApply}
             onCancel={() => setShowCustomPicker(false)}
             showErrorNotification={showErrorNotification}
@@ -129,6 +130,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(
 );
 
 interface CustomTimeRangePickerProps {
+  isOpen: boolean;
   onApply: (start: number, end: number) => void;
   onCancel: () => void;
   showErrorNotification: ShowNotification;
@@ -137,9 +139,18 @@ interface CustomTimeRangePickerProps {
 }
 
 const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
-  ({ onApply, onCancel, showErrorNotification, initialStart, initialEnd }) => {
+  ({ isOpen, onApply, onCancel, showErrorNotification, initialStart, initialEnd }) => {
     const [startValue, setStartValue] = useState(() => formatMetricsDateTimeLocal(initialStart));
     const [endValue, setEndValue] = useState(() => formatMetricsDateTimeLocal(initialEnd));
+
+    useEffect(() => {
+      if (!isOpen) {
+        return;
+      }
+
+      setStartValue(formatMetricsDateTimeLocal(initialStart));
+      setEndValue(formatMetricsDateTimeLocal(initialEnd));
+    }, [isOpen, initialStart, initialEnd]);
 
     const handleApply = () => {
       const result = validateCustomMetricsTimeRange({
