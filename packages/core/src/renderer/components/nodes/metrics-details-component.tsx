@@ -5,8 +5,12 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
+import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetrics } from "../resource-metrics";
+import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import nodeMetricsInjectable from "./metrics.injectable";
 import { NodeCharts } from "./node-charts";
 
@@ -15,24 +19,55 @@ import type { Node } from "@freelensapp/kube-object";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<Partial<ClusterMetricData>>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedNodeMetricsDetailsComponent = ({ object, metrics }: KubeObjectDetailsProps<Node> & Dependencies) => (
-  <ResourceMetrics tabs={["CPU", "Memory", "Disk", "Pods"]} object={object} metrics={metrics}>
-    <NodeCharts />
-  </ResourceMetrics>
+const NonInjectedNodeMetricsDetailsComponent = observer(
+  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<Node> & Dependencies) => {
+    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
+
+    return (
+      <>
+        <div className={`flex ${styles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
+          <MetricsTimeRangeSelector displayMode="expanded" />
+        </div>
+        <ResourceMetrics tabs={["CPU", "Memory", "Disk", "Pods"]} object={object} metrics={metrics}>
+          <NodeCharts />
+        </ResourceMetrics>
+      </>
+    );
+  },
 );
 
 export const NodeMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Node>>(
   NonInjectedNodeMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(nodeMetricsInjectable, props.object),
+      selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+      metrics: di.inject(nodeMetricsInjectable, {
+        node: props.object,
+        timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+      }),
       ...props,
     }),
   },
 );
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration, customStart, customEnd } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  if (customStart != null && customEnd != null) {
+    return `custom-${customStart}-${customEnd}`;
+  }
+
+  return "custom-active";
+}

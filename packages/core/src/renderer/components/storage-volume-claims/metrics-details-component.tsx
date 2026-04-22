@@ -4,30 +4,42 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
+import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetrics } from "../resource-metrics";
+import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import persistentVolumeClaimMetricsInjectable from "./metrics.injectable";
 import { VolumeClaimDiskChart } from "./volume-claim-disk-chart";
 
 import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { PersistentVolumeClaimMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-persistent-volume-claim-metrics.injectable";
+import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<PersistentVolumeClaimMetricData>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedPersistentVolumeClaimMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<PersistentVolumeClaim> & Dependencies) => (
-  <ResourceMetrics tabs={["Disk"]} object={object} metrics={metrics}>
-    <VolumeClaimDiskChart />
-  </ResourceMetrics>
+const NonInjectedPersistentVolumeClaimMetricsDetailsComponent = observer(
+  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<PersistentVolumeClaim> & Dependencies) => {
+    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
+
+    return (
+      <>
+        <div className={`flex ${styles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
+          <MetricsTimeRangeSelector displayMode="expanded" />
+        </div>
+        <ResourceMetrics tabs={["Disk"]} object={object} metrics={metrics}>
+          <VolumeClaimDiskChart />
+        </ResourceMetrics>
+      </>
+    );
+  },
 );
 
 export const PersistentVolumeClaimMetricsDetailsComponent = withInjectables<
@@ -35,7 +47,25 @@ export const PersistentVolumeClaimMetricsDetailsComponent = withInjectables<
   KubeObjectDetailsProps<PersistentVolumeClaim>
 >(NonInjectedPersistentVolumeClaimMetricsDetailsComponent, {
   getProps: (di, props) => ({
-    metrics: di.inject(persistentVolumeClaimMetricsInjectable, props.object),
+    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+    metrics: di.inject(persistentVolumeClaimMetricsInjectable, {
+      persistentVolumeClaim: props.object,
+      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+    }),
     ...props,
   }),
 });
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration, customStart, customEnd } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  if (customStart != null && customEnd != null) {
+    return `custom-${customStart}-${customEnd}`;
+  }
+
+  return "custom-active";
+}

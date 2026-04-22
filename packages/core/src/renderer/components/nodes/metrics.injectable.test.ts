@@ -5,8 +5,9 @@
  */
 
 import { Node } from "@freelensapp/kube-object";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import nodeMetricsInjectable from "./metrics.injectable";
 
 describe("node-metrics injectable", () => {
@@ -27,12 +28,23 @@ describe("node-metrics injectable", () => {
     });
 
     di.override(requestClusterMetricsByNodeNamesInjectable, () => requestClusterMetricsByNodeNames);
+    di.override(selectedMetricsTimeRangeInjectable, () => ({
+      timestamps: {
+        get: () => ({ start: 100, end: 200, range: 100 }),
+      },
+    }));
 
-    const metrics = di.inject(nodeMetricsInjectable, node);
+    const metrics = di.inject(nodeMetricsInjectable, {
+      node,
+      timeRangeKey: "duration-120",
+    });
 
     metrics.value.get();
 
     expect(requestClusterMetricsByNodeNames).toHaveBeenCalledWith(["worker-1"], {
+      start: 100,
+      end: 200,
+      range: 100,
       metrics: [
         "memoryUsage",
         "workloadMemoryUsage",

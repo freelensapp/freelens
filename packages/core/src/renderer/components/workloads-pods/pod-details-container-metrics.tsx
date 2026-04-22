@@ -10,9 +10,9 @@ import React from "react";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetrics } from "../resource-metrics";
+import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
-import styles from "./pod-details-container-metrics.module.css";
 
 import type { Container, Pod } from "@freelensapp/kube-object";
 

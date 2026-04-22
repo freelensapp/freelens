@@ -40,20 +40,16 @@ const ONE_HOUR_SECONDS = 60 * 60;
 const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
 const FOUR_DAYS_SECONDS = 4 * ONE_DAY_SECONDS;
 
-const getTimestampMillis = (timestamp: string | number): number => {
+const parseBarChartTimestamp = (timestamp: string | number): number => {
   if (typeof timestamp === "number") {
     return timestamp;
-  }
-
-  if (/^\d+$/.test(timestamp)) {
-    return Number(timestamp);
   }
 
   return Date.parse(timestamp);
 };
 
 const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: number) => {
-  const date = moment(getTimestampMillis(timestamp));
+  const date = moment(parseBarChartTimestamp(timestamp));
 
   if (timeRangeSeconds <= ONE_DAY_SECONDS) {
     return {
@@ -73,6 +69,16 @@ const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: num
     bucket: date.startOf("day").format("YYYY-MM-DD"),
     label: date.format("MMM DD"),
   };
+};
+
+const getBarChartTickTimestamp = (tick: string | number | { value: string | number }) => {
+  const rawValue = isObject(tick) && "value" in tick ? tick.value : tick;
+
+  if (typeof rawValue === "string" && /^\d+$/.test(rawValue)) {
+    return Number(rawValue);
+  }
+
+  return rawValue;
 };
 
 const NonInjectedBarChart = observer(
@@ -141,14 +147,19 @@ const NonInjectedBarChart = observer(
       return 3;
     })();
 
-    const formatTimeLabels = (timestamp: string | number, index?: number, values?: Array<string | number>) => {
-      const { bucket, label } = getTimeBucketAndLabel(timestamp, timeRangeSeconds);
+    const formatTimeLabels = (
+      timestamp: string | number,
+      index?: number,
+      values?: Array<string | number | { value: string | number }>,
+    ) => {
+      const currentTimestamp = values?.[index ?? 0] ? getBarChartTickTimestamp(values[index ?? 0]) : timestamp;
+      const { bucket, label } = getTimeBucketAndLabel(currentTimestamp, timeRangeSeconds);
 
       if (typeof index !== "number" || !values || index === 0) {
         return label;
       }
 
-      const previousTimestamp = values[index - 1];
+      const previousTimestamp = getBarChartTickTimestamp(values[index - 1]);
       const { bucket: previousBucket } = getTimeBucketAndLabel(previousTimestamp, timeRangeSeconds);
 
       return previousBucket === bucket ? "" : label;
@@ -192,7 +203,7 @@ const NonInjectedBarChart = observer(
                 day: "x",
               },
               parser: (timestamp: string | number) => {
-                return getTimestampMillis(timestamp);
+                return parseBarChartTimestamp(timestamp);
               },
             },
           },

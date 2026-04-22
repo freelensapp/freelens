@@ -10,9 +10,9 @@ import React from "react";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetrics } from "../resource-metrics";
+import timeRangeStyles from "../resource-metrics/metrics-time-range-container.module.css";
 import podMetricsInjectable from "./metrics.injectable";
 import { PodCharts, podMetricTabs } from "./pod-charts";
-import styles from "./pod-details-container-metrics.module.css";
 
 import type { Pod } from "@freelensapp/kube-object";
 
@@ -31,7 +31,7 @@ const NonInjectedPodMetricsDetailsComponent = observer(
 
     return (
       <>
-        <div className={`flex ${styles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
+        <div className={`flex ${timeRangeStyles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
           <MetricsTimeRangeSelector displayMode="expanded" />
         </div>
         <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>

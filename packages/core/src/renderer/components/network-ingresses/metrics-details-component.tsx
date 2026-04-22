@@ -4,38 +4,68 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
+import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetrics } from "../resource-metrics";
+import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import { IngressCharts } from "./ingress-charts";
 import ingressMetricsInjectable from "./metrics.injectable";
 
 import type { Ingress } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { IngressMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-ingress-metrics.injectable";
+import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<IngressMetricData>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedIngressMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<Ingress> & Dependencies) => (
-  <ResourceMetrics tabs={["Network", "Duration"]} object={object} metrics={metrics}>
-    <IngressCharts />
-  </ResourceMetrics>
+const NonInjectedIngressMetricsDetailsComponent = observer(
+  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<Ingress> & Dependencies) => {
+    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
+
+    return (
+      <>
+        <div className={`flex ${styles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
+          <MetricsTimeRangeSelector displayMode="expanded" />
+        </div>
+        <ResourceMetrics tabs={["Network", "Duration"]} object={object} metrics={metrics}>
+          <IngressCharts />
+        </ResourceMetrics>
+      </>
+    );
+  },
 );
 
 export const IngressMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Ingress>>(
   NonInjectedIngressMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(ingressMetricsInjectable, props.object),
+      selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+      metrics: di.inject(ingressMetricsInjectable, {
+        ingress: props.object,
+        timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+      }),
       ...props,
     }),
   },
 );
+
+function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
+  const { duration, customStart, customEnd } = selectedMetricsTimeRange.value.get();
+
+  if (duration !== null) {
+    return `duration-${duration}`;
+  }
+
+  if (customStart != null && customEnd != null) {
+    return `custom-${customStart}-${customEnd}`;
+  }
+
+  return "custom-active";
+}
