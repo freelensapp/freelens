@@ -47,6 +47,24 @@ export interface RequestMetricsParams {
 
 export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["instantiate"]>;
 
+function normalizeTimestampToUnixSeconds(value: number | string | undefined): number | undefined {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const milliseconds = Date.parse(value);
+
+  if (!Number.isFinite(milliseconds)) {
+    return undefined;
+  }
+
+  return Math.floor(milliseconds / 1000);
+}
+
 /**
  * Calculate adaptive step based on time range to avoid excessive data points.
  * The policy favors UI responsiveness for large ranges by aggressively downsampling.
@@ -97,8 +115,20 @@ const requestMetricsInjectable = getInjectable({
         end = now;
       }
 
+      const normalizedStart = normalizeTimestampToUnixSeconds(start);
+      const normalizedEnd = normalizeTimestampToUnixSeconds(end);
+
+      if (normalizedStart !== undefined) {
+        start = normalizedStart;
+      }
+
+      if (normalizedEnd !== undefined) {
+        end = normalizedEnd;
+      }
+
       // Calculate actual range in seconds
-      const actualRange = typeof end === "number" && typeof start === "number" ? end - start : range;
+      const actualRange =
+        normalizedStart !== undefined && normalizedEnd !== undefined ? normalizedEnd - normalizedStart : range;
 
       // Use adaptive step if not explicitly provided
       if (step === undefined) {

@@ -36,6 +36,27 @@ describe("requestMetricsInjectable", () => {
     });
   });
 
+  it("calculates the adaptive step for valid string timestamps", async () => {
+    const { post, requestMetrics } = instantiateRequestMetrics();
+    const start = "2024-01-01T00:00:00Z";
+    const end = "2024-01-06T00:00:00Z";
+
+    await requestMetrics("sum(rate(container_cpu_usage_seconds_total[5m]))", {
+      start,
+      end,
+    });
+
+    expect(post).toHaveBeenCalledWith("/metrics", {
+      data: "sum(rate(container_cpu_usage_seconds_total[5m]))",
+      query: {
+        start: 1704067200,
+        end: 1704499200,
+        step: 10800,
+        kubernetes_namespace: undefined,
+      },
+    });
+  });
+
   it("sends the explicit step override without adaptive recalculation", async () => {
     const { post, requestMetrics } = instantiateRequestMetrics();
 
