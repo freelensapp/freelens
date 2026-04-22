@@ -55,36 +55,17 @@ export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["insta
  * @returns Appropriate step in seconds
  */
 function calculateAdaptiveStep(rangeSeconds: number): number {
-  const ONE_DAY = 86400; // 24 hours in seconds
-  const FOUR_HOURS = 4 * 60 * 60;
+  const HOUR = 3_600;
+  const DAY = 24 * HOUR;
 
-  // For ranges <= 4 hours: 60s step (up to 240 points)
-  if (rangeSeconds <= FOUR_HOURS) {
-    return 60;
-  }
+  // Keep point count bounded as time range grows.
+  if (rangeSeconds <= 4 * HOUR) return 60; // 1m  (max ~240 pts)
+  if (rangeSeconds <= DAY) return 10 * 60; // 10m (max ~144 pts)
+  if (rangeSeconds <= 4 * DAY) return HOUR; // 1h
+  if (rangeSeconds <= 14 * DAY) return 3 * HOUR; // 3h
+  if (rangeSeconds <= 30 * DAY) return 6 * HOUR; // 6h
 
-  // For ranges <= 1 day: 10min step (up to 144 points)
-  if (rangeSeconds <= ONE_DAY) {
-    return 600;
-  }
-
-  // For ranges <= 4 days: 1hr step
-  if (rangeSeconds <= 4 * ONE_DAY) {
-    return 3600;
-  }
-
-  // For ranges <= 14 days: 3hr step
-  if (rangeSeconds <= 14 * ONE_DAY) {
-    return 10800;
-  }
-
-  // For ranges <= 30 days: 6hr step
-  if (rangeSeconds <= 30 * ONE_DAY) {
-    return 21600;
-  }
-
-  // For ranges > 30 days: 12hr step
-  return 43200;
+  return 12 * HOUR; // > 30d
 }
 
 const requestMetricsInjectable = getInjectable({
