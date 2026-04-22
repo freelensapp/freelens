@@ -4,11 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Node } from "@freelensapp/kube-object";
 
@@ -37,30 +34,17 @@ const nodeMetricKeys: NodeMetricKey[] = [
   "fsUsage",
 ];
 
-const nodeMetricsInjectable = getInjectable({
+const nodeMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "node-metrics",
-  instantiate: (di, { node }: NodeMetricsInjectableParams) => {
-    const requestClusterMetricsByNodeNames = di.inject(requestClusterMetricsByNodeNamesInjectable);
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000);
-        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
-
-        return requestClusterMetricsByNodeNames([node.getName()], {
-          start,
-          end,
-          range,
-          metrics: nodeMetricKeys,
-        });
-      },
-      betweenUpdates: "show-latest-value",
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { node, timeRangeKey }: NodeMetricsInjectableParams) => `${node.getId()}-${timeRangeKey}`,
-  }),
+  getObject: ({ node }: NodeMetricsInjectableParams) => node,
+  getObjectId: (node) => node.getId(),
+  request: ({ di, object: node, start, end, range }) =>
+    di.inject(requestClusterMetricsByNodeNamesInjectable)([node.getName()], {
+      start,
+      end,
+      range,
+      metrics: nodeMetricKeys,
+    }),
 });
 
 export default nodeMetricsInjectable;

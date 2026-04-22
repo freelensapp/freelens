@@ -7,13 +7,9 @@
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
-import selectedMetricsTimeRangeInjectable, {
-  type SelectedMetricsTimeRange,
-} from "../cluster/overview/selected-metrics-time-range.injectable";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
-import { ResourceMetrics } from "../resource-metrics";
-import timeRangeStyles from "../resource-metrics/metrics-time-range-container.module.css";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import replicaSetMetricsInjectable from "./metrics.injectable";
 
@@ -24,24 +20,14 @@ import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<ReplicaSetPodMetricData>;
-  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const NonInjectedReplicaSetMetricsDetailsComponent = observer(
-  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<ReplicaSet> & Dependencies) => {
-    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
-
-    return (
-      <>
-        <div className={`flex ${timeRangeStyles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
-          <MetricsTimeRangeSelector displayMode="expanded" />
-        </div>
-        <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-          <PodCharts />
-        </ResourceMetrics>
-      </>
-    );
-  },
+  ({ object, metrics }: KubeObjectDetailsProps<ReplicaSet> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const ReplicaSetMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<ReplicaSet>>(
@@ -55,7 +41,6 @@ export const ReplicaSetMetricsDetailsComponent = withInjectables<Dependencies, K
           replicaSet: props.object,
           timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
         }),
-        selectedMetricsTimeRange,
         ...props,
       };
     },

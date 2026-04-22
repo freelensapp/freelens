@@ -4,11 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Pod } from "@freelensapp/kube-object";
 
@@ -17,30 +14,17 @@ interface PodMetricsInjectableParams {
   timeRangeKey: string;
 }
 
-const podMetricsInjectable = getInjectable({
+const podMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "pod-metrics",
-  instantiate: (di, { pod }: PodMetricsInjectableParams) => {
-    const requestPodMetrics = di.inject(requestPodMetricsInjectable);
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000);
-        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
-
-        return requestPodMetrics([pod], pod.getNs(), undefined, "pod, namespace", {
-          start,
-          end,
-          range,
-          metrics: ["cpuUsage", "memoryUsage", "fsUsage", "fsWrites", "fsReads", "networkReceive", "networkTransmit"],
-        });
-      },
-      betweenUpdates: "show-latest-value",
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { pod, timeRangeKey }: PodMetricsInjectableParams) => `${pod.getId()}-${timeRangeKey}`,
-  }),
+  getObject: ({ pod }: PodMetricsInjectableParams) => pod,
+  getObjectId: (pod) => pod.getId(),
+  request: ({ di, object: pod, start, end, range }) =>
+    di.inject(requestPodMetricsInjectable)([pod], pod.getNs(), undefined, "pod, namespace", {
+      start,
+      end,
+      range,
+      metrics: ["cpuUsage", "memoryUsage", "fsUsage", "fsWrites", "fsReads", "networkReceive", "networkTransmit"],
+    }),
 });
 
 export default podMetricsInjectable;

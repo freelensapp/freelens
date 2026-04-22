@@ -7,40 +7,27 @@
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
-import { ResourceMetrics } from "../resource-metrics";
-import timeRangeStyles from "../resource-metrics/metrics-time-range-container.module.css";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import podMetricsInjectable from "./metrics.injectable";
 import { PodCharts, podMetricTabs } from "./pod-charts";
 
 import type { Pod } from "@freelensapp/kube-object";
 
 import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
-import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<Partial<PodMetricData>>;
-  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const NonInjectedPodMetricsDetailsComponent = observer(
-  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<Pod> & Dependencies) => {
-    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
-
-    return (
-      <>
-        <div className={`flex ${timeRangeStyles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
-          <MetricsTimeRangeSelector displayMode="expanded" />
-        </div>
-        <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-          <PodCharts />
-        </ResourceMetrics>
-      </>
-    );
-  },
+  ({ object, metrics }: KubeObjectDetailsProps<Pod> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 const PodMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Pod>>(
@@ -54,7 +41,6 @@ const PodMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetai
           pod: props.object,
           timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
         }),
-        selectedMetricsTimeRange,
         ...props,
       };
     },

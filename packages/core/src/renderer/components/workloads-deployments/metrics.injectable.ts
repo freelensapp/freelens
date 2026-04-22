@@ -4,11 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsForDeploymentsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-deployments.injectable";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Deployment } from "@freelensapp/kube-object";
 
@@ -17,30 +14,16 @@ interface DeploymentMetricsInjectableParams {
   timeRangeKey: string;
 }
 
-const deploymentMetricsInjectable = getInjectable({
+const deploymentMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "deployment-metrics",
-  instantiate: (di, { deployment }: DeploymentMetricsInjectableParams) => {
-    const requestPodMetricsForDeployments = di.inject(requestPodMetricsForDeploymentsInjectable);
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000);
-        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
-
-        return requestPodMetricsForDeployments([deployment], deployment.getNs(), undefined, {
-          start,
-          end,
-          range,
-        });
-      },
-      betweenUpdates: "show-latest-value",
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { deployment, timeRangeKey }: DeploymentMetricsInjectableParams) =>
-      `${deployment.getId()}-${timeRangeKey}`,
-  }),
+  getObject: ({ deployment }: DeploymentMetricsInjectableParams) => deployment,
+  getObjectId: (deployment) => deployment.getId(),
+  request: ({ di, object: deployment, start, end, range }) =>
+    di.inject(requestPodMetricsForDeploymentsInjectable)([deployment], deployment.getNs(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default deploymentMetricsInjectable;

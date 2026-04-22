@@ -7,11 +7,9 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
-import { ResourceMetrics } from "../resource-metrics";
-import styles from "../resource-metrics/metrics-time-range-container.module.css";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
 
@@ -20,7 +18,6 @@ import type { Container, Pod } from "@freelensapp/kube-object";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
 import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
-import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 
 interface ContainerMetricsProps {
   container: Container;
@@ -29,24 +26,14 @@ interface ContainerMetricsProps {
 
 interface Dependencies {
   podContainerMetrics: IAsyncComputed<Partial<PodMetricData>>;
-  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const NonInjectedPodDetailsContainerMetrics = observer(
-  ({ pod, container, podContainerMetrics, selectedMetricsTimeRange }: ContainerMetricsProps & Dependencies) => {
-    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
-
-    return (
-      <>
-        <div className={`flex ${styles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
-          <MetricsTimeRangeSelector displayMode="expanded" />
-        </div>
-        <ResourceMetrics object={pod} tabs={["CPU", "Memory", "Filesystem"]} metrics={podContainerMetrics}>
-          <ContainerCharts containerName={container.name} />
-        </ResourceMetrics>
-      </>
-    );
-  },
+  ({ pod, container, podContainerMetrics }: ContainerMetricsProps & Dependencies) => (
+    <TimeRangedResourceMetrics object={pod} tabs={["CPU", "Memory", "Filesystem"]} metrics={podContainerMetrics}>
+      <ContainerCharts containerName={container.name} />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const PodDetailsContainerMetrics = withInjectables<Dependencies, ContainerMetricsProps>(
@@ -57,7 +44,6 @@ export const PodDetailsContainerMetrics = withInjectables<Dependencies, Containe
 
       return {
         ...props,
-        selectedMetricsTimeRange,
         podContainerMetrics: di.inject(podContainerMetricsInjectable, {
           pod: props.pod,
           container: props.container,

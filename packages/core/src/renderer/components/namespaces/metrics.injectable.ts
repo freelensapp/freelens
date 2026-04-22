@@ -4,11 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsInNamespaceInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-in-namespace.injectable";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Namespace } from "@freelensapp/kube-object";
 
@@ -17,30 +14,16 @@ interface NamespaceMetricsInjectableParams {
   timeRangeKey: string;
 }
 
-const namespaceMetricsInjectable = getInjectable({
+const namespaceMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "namespace-metrics",
-  instantiate: (di, { namespace }: NamespaceMetricsInjectableParams) => {
-    const requestPodMetricsInNamespace = di.inject(requestPodMetricsInNamespaceInjectable);
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: async () => {
-        now(60 * 1000); // Update every minute
-        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
-
-        return requestPodMetricsInNamespace(namespace.getName(), undefined, {
-          start,
-          end,
-          range,
-        });
-      },
-      betweenUpdates: "show-latest-value",
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { namespace, timeRangeKey }: NamespaceMetricsInjectableParams) =>
-      `${namespace.getId()}-${timeRangeKey}`,
-  }),
+  getObject: ({ namespace }: NamespaceMetricsInjectableParams) => namespace,
+  getObjectId: (namespace) => namespace.getId(),
+  request: ({ di, object: namespace, start, end, range }) =>
+    di.inject(requestPodMetricsInNamespaceInjectable)(namespace.getName(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default namespaceMetricsInjectable;
