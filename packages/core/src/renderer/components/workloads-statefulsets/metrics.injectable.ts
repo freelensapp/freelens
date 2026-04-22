@@ -8,24 +8,38 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestPodMetricsForStatefulSetsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-stateful-sets.injectable";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 
 import type { StatefulSet } from "@freelensapp/kube-object";
 
+interface StatefulSetMetricsInjectableParams {
+  statefulSet: StatefulSet;
+  timeRangeKey: string;
+}
+
 const statefulSetMetricsInjectable = getInjectable({
   id: "stateful-set-metrics",
-  instantiate: (di, statefulSet) => {
+  instantiate: (di, { statefulSet }: StatefulSetMetricsInjectableParams) => {
     const requestPodMetricsForStatefulSets = di.inject(requestPodMetricsForStatefulSetsInjectable);
+    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
 
     return asyncComputed({
       getValueFromObservedPromise: async () => {
         now(60 * 1000);
+        const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
 
-        return requestPodMetricsForStatefulSets([statefulSet], statefulSet.getNs());
+        return requestPodMetricsForStatefulSets([statefulSet], statefulSet.getNs(), undefined, {
+          start,
+          end,
+          range,
+        });
       },
+      betweenUpdates: "show-latest-value",
     });
   },
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, statefulSet: StatefulSet) => statefulSet.getId(),
+    getInstanceKey: (di, { statefulSet, timeRangeKey }: StatefulSetMetricsInjectableParams) =>
+      `${statefulSet.getId()}-${timeRangeKey}`,
   }),
 });
 

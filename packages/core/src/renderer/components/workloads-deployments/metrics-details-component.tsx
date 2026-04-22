@@ -4,38 +4,60 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
+import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
+import selectedMetricsTimeRangeInjectable, {
+  type SelectedMetricsTimeRange,
+} from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetrics } from "../resource-metrics";
+import timeRangeStyles from "../resource-metrics/metrics-time-range-container.module.css";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import deploymentMetricsInjectable from "./metrics.injectable";
 
 import type { Deployment } from "@freelensapp/kube-object";
-
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
 import type { DeploymentPodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-deployments.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<DeploymentPodMetricData>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedDeploymentMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<Deployment> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedDeploymentMetricsDetailsComponent = observer(
+  ({ object, metrics, selectedMetricsTimeRange }: KubeObjectDetailsProps<Deployment> & Dependencies) => {
+    const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
+
+    return (
+      <>
+        <div className={`flex ${timeRangeStyles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
+          <MetricsTimeRangeSelector displayMode="expanded" />
+        </div>
+        <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+          <PodCharts />
+        </ResourceMetrics>
+      </>
+    );
+  },
 );
 
 export const DeploymentMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Deployment>>(
   NonInjectedDeploymentMetricsDetailsComponent,
   {
-    getProps: (di, props) => ({
-      metrics: di.inject(deploymentMetricsInjectable, props.object),
-      ...props,
-    }),
+    getProps: (di, props) => {
+      const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
+
+      return {
+        metrics: di.inject(deploymentMetricsInjectable, {
+          deployment: props.object,
+          timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
+        }),
+        selectedMetricsTimeRange,
+        ...props,
+      };
+    },
   },
 );
