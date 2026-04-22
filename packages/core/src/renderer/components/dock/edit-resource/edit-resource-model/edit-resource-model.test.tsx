@@ -227,8 +227,8 @@ spec:
     await model.save();
 
     expect(requestPatchKubeResource).not.toHaveBeenCalled();
-    expect(
-      renderToStaticMarkup(showErrorNotification.mock.calls[0][0] as React.ReactElement),
-    ).toContain("Pod resource updates must be saved separately from other pod changes");
+    expect(renderToStaticMarkup(showErrorNotification.mock.calls[0][0] as React.ReactElement)).toContain(
+      "Pod resource updates must be saved separately from other pod changes",
+    );
   });
 });

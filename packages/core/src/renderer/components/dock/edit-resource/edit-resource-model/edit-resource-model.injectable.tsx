@@ -12,7 +12,7 @@ import assert from "assert";
 import yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import { createPatch } from "rfc6902";
+import { createPatch, type Operation } from "rfc6902";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import editResourceTabStoreInjectable from "../store.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
@@ -20,7 +20,6 @@ import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.in
 
 import type { Container, KubeObject, KubeObjectMetadata, PodSpec, RawKubeObject } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
-import type { Operation } from "rfc6902";
 
 import type { EditingResource, EditResourceTabStore } from "../store";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
@@ -156,6 +155,11 @@ function getPatchRequestFor(currentVersion: RawKubeObject, firstVersion: RawKube
       subResource: "resize",
     },
   };
+}
+
+function setEditResourceVersionAnnotation(object: RawKubeObject) {
+  object.metadata.annotations ??= {};
+  object.metadata.annotations[EditResourceAnnotationName] = object.apiVersion.split("/").pop();
 }
 
 function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
@@ -404,7 +408,7 @@ export class EditResourceModel {
     const currentValue = this.configuration.value.get();
     const currentVersion = yaml.load(currentValue) as RawKubeObject;
     const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue) as RawKubeObject;
-    const patchRequest = getPatchRequestFor(currentVersion, firstVersion);
+    let patchRequest = getPatchRequestFor(currentVersion, firstVersion);
 
     if ("error" in patchRequest) {
       this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
@@ -412,9 +416,16 @@ export class EditResourceModel {
       return null;
     }
 
-    // Make sure we save this annotation so that we can use it in the future
-    currentVersion.metadata.annotations ??= {};
-    currentVersion.metadata.annotations[EditResourceAnnotationName] = currentVersion.apiVersion.split("/").pop();
+    if (patchRequest.options.subResource !== "resize") {
+      setEditResourceVersionAnnotation(currentVersion);
+      patchRequest = getPatchRequestFor(currentVersion, firstVersion);
+    }
+
+    if ("error" in patchRequest) {
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
+
+      return null;
+    }
 
     const selfLink = getEditSelfLinkFor(currentVersion);
 
