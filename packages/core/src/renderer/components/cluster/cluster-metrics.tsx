@@ -19,6 +19,7 @@ import { ClusterNoMetrics } from "./cluster-no-metrics";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ChartOptions, ChartPoint } from "chart.js";
@@ -148,20 +149,10 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 export const ClusterMetrics = withInjectables<Dependencies>(NonInjectedClusterMetrics, {
   getProps: (di) => ({
     clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
-      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+      timeRangeKey: createMetricsTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable).value.get()),
     }),
     selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}

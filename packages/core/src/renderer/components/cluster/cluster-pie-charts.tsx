@@ -3,11 +3,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
@@ -24,6 +19,7 @@ import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { Node } from "@freelensapp/kube-object";
 
@@ -33,7 +29,6 @@ import type { IComputedValue } from "mobx";
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
-import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 function createLabels(rawLabelData: [string, number | undefined][]): string[] {
@@ -229,18 +224,8 @@ export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedCluster
   getProps: (di) => ({
     activeTheme: di.inject(activeThemeInjectable),
     clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
-      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+      timeRangeKey: createMetricsTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable).value.get()),
     }),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
   }),
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}

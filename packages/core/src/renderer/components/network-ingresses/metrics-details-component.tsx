@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetrics } from "../resource-metrics";
 import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import { IngressCharts } from "./ingress-charts";
@@ -49,23 +50,9 @@ export const IngressMetricsDetailsComponent = withInjectables<Dependencies, Kube
       selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
       metrics: di.inject(ingressMetricsInjectable, {
         ingress: props.object,
-        timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+        timeRangeKey: createMetricsTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable).value.get()),
       }),
       ...props,
     }),
   },
 );
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration, customStart, customEnd } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  if (customStart != null && customEnd != null) {
-    return `custom-${customStart}-${customEnd}`;
-  }
-
-  return "custom-active";
-}

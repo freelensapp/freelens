@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetrics } from "../resource-metrics";
 import styles from "../resource-metrics/metrics-time-range-container.module.css";
 import { ContainerCharts } from "./container-charts";
@@ -60,19 +61,9 @@ export const PodDetailsContainerMetrics = withInjectables<Dependencies, Containe
         podContainerMetrics: di.inject(podContainerMetricsInjectable, {
           pod: props.pod,
           container: props.container,
-          timeRangeKey: createTimeRangeKey(selectedMetricsTimeRange),
+          timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
         }),
       };
     },
   },
 );
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}

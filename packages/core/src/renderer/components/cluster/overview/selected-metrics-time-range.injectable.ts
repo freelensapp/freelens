@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
+import { now } from "mobx-utils";
 import { getSecondsFromUnixEpoch } from "../../../../common/utils/date/get-current-date-time";
 import metricsTimeRangeStorageInjectable from "./metrics-time-range-storage.injectable";
 
@@ -20,8 +21,10 @@ export const timeRangeOptions = [
   { label: "1 hour", duration: 3600 },
   { label: "2 hours", duration: 7200 },
   { label: "4 hours", duration: 14400 },
-  { label: "Today", duration: 86400 },
+  { label: "24 hours", duration: 86400 },
 ] as const;
+
+const everyMinute = 60 * 1000;
 
 const selectedMetricsTimeRangeInjectable = getInjectable({
   id: "selected-metrics-time-range",
@@ -38,19 +41,21 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
      */
     const timestamps = computed(() => {
       const timeRange = value.get();
-      const now = getSecondsFromUnixEpoch();
 
       if (timeRange.duration !== null) {
+        now(everyMinute);
+        const currentTime = getSecondsFromUnixEpoch();
+
         // Predefined duration
         return {
-          start: now - timeRange.duration,
-          end: now,
+          start: currentTime - timeRange.duration,
+          end: currentTime,
           range: timeRange.duration,
         };
       } else {
         // Custom time range
-        const start = timeRange.customStart ?? now - 3600;
-        const end = timeRange.customEnd ?? now;
+        const start = timeRange.customStart ?? getSecondsFromUnixEpoch() - 3600;
+        const end = timeRange.customEnd ?? getSecondsFromUnixEpoch();
 
         return {
           start,

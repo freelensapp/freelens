@@ -10,8 +10,8 @@ import { normalizeMetrics } from "../../../../common/k8s-api/endpoints/metrics.a
 import clusterOverviewMetricsInjectable from "../cluster-metrics.injectable";
 import selectedMetricsTimeRangeInjectable from "./selected-metrics-time-range.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
+import { createMetricsTimeRangeKey } from "./time-range-key";
 
-import type { SelectedMetricsTimeRange } from "./selected-metrics-time-range.injectable";
 import type { MetricType } from "./storage.injectable";
 
 export type SelectedMetricsType = ReturnType<(typeof selectedMetricsTypeInjectable)["instantiate"]>;
@@ -21,19 +21,23 @@ const selectedMetricsTypeInjectable = getInjectable({
   instantiate: (di) => {
     const storage = di.inject(clusterOverviewStorageInjectable);
     const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-    const overviewMetrics = di.inject(clusterOverviewMetricsInjectable, {
-      timeRangeKey: createTimeRangeKey(selectedMetricsTimeRange),
-    });
-    let lastResolvedRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+    let lastResolvedRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
+    const getOverviewMetrics = () =>
+      di.inject(clusterOverviewMetricsInjectable, {
+        timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
+      });
 
     const shouldHideMetricsWhilePending = computed(() => {
-      const currentRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+      const overviewMetrics = getOverviewMetrics();
+      const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
 
       return overviewMetrics.pending.get() && currentRangeKey !== lastResolvedRangeKey;
     });
 
     const value = computed(() => storage.get().metricType);
     const metrics = computed((): [number, string][] => {
+      const overviewMetrics = getOverviewMetrics();
+
       if (shouldHideMetricsWhilePending.get()) {
         return [];
       }
@@ -45,7 +49,7 @@ const selectedMetricsTypeInjectable = getInjectable({
       }
 
       if (!overviewMetrics.pending.get()) {
-        lastResolvedRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+        lastResolvedRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
       }
 
       const type = value.get();
@@ -60,14 +64,24 @@ const selectedMetricsTypeInjectable = getInjectable({
       }
     });
     const hasCPUMetrics = computed(
-      () =>
-        !shouldHideMetricsWhilePending.get() &&
-        normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0,
+      () => {
+        const overviewMetrics = getOverviewMetrics();
+
+        return (
+          !shouldHideMetricsWhilePending.get() &&
+          normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0
+        );
+      },
     );
     const hasMemoryMetrics = computed(
-      () =>
-        !shouldHideMetricsWhilePending.get() &&
-        normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0,
+      () => {
+        const overviewMetrics = getOverviewMetrics();
+
+        return (
+          !shouldHideMetricsWhilePending.get() &&
+          normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0
+        );
+      },
     );
 
     return {
@@ -81,15 +95,5 @@ const selectedMetricsTypeInjectable = getInjectable({
     };
   },
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}
 
 export default selectedMetricsTypeInjectable;

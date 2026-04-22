@@ -14,6 +14,7 @@ import activeThemeInjectable from "../../themes/active.injectable";
 import { BarChart } from "../chart";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 
@@ -36,7 +37,7 @@ const NonInjectedContainerCharts = observer(
   ({ activeTheme, selectedMetricsTimeRange, containerName }: Dependencies & ContainerChartsProps) => {
     const { metrics, tab, object, isPending } = useContext(ResourceMetricsContext) ?? {};
     const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
-    const currentRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+    const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
     const lastResolvedRangeKeyRef = useRef(currentRangeKey);
 
     if (!isPending) {
@@ -149,13 +150,3 @@ export const ContainerCharts = withInjectables<Dependencies, ContainerChartsProp
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}

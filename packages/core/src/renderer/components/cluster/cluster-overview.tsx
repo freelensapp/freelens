@@ -22,6 +22,7 @@ import { ClusterIssues } from "./cluster-issues";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-overview.module.scss";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { ClusterOverviewUIBlock } from "@freelensapp/metrics";
 
@@ -33,7 +34,6 @@ import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import type { EventStore } from "../events/store";
 import type { NodeStore } from "../nodes/store";
 import type { PodStore } from "../workloads-pods/store";
-import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
@@ -93,17 +93,7 @@ export const ClusterOverview = withInjectables<Dependencies>(NonInjectedClusterO
     nodeStore: di.inject(nodeStoreInjectable),
     uiBlocks: di.inject(computedInjectManyInjectable)(clusterOverviewUIBlockInjectionToken),
     clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
-      timeRangeKey: createTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable)),
+      timeRangeKey: createMetricsTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable).value.get()),
     }),
   }),
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}

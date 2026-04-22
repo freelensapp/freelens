@@ -12,6 +12,7 @@ import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoi
 import { BarChart } from "../chart";
 import { metricTabOptions } from "../chart/options";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 
@@ -33,7 +34,7 @@ interface PodChartsProps {
 const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencies & PodChartsProps) => {
   const { metrics, tab, object, isPending } = useContext(ResourceMetricsContext) ?? {};
   const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
-  const currentRangeKey = createTimeRangeKey(selectedMetricsTimeRange);
+  const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
   const lastResolvedRangeKeyRef = useRef(currentRangeKey);
 
   if (!isPending) {
@@ -132,13 +133,3 @@ export const PodCharts = withInjectables<Dependencies, PodChartsProps>(NonInject
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
-
-function createTimeRangeKey(selectedMetricsTimeRange: SelectedMetricsTimeRange) {
-  const { duration } = selectedMetricsTimeRange.value.get();
-
-  if (duration !== null) {
-    return `duration-${duration}`;
-  }
-
-  return "custom-active";
-}
