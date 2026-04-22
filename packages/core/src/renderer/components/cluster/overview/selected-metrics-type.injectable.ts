@@ -63,26 +63,22 @@ const selectedMetricsTypeInjectable = getInjectable({
           return [];
       }
     });
-    const hasCPUMetrics = computed(
-      () => {
-        const overviewMetrics = getOverviewMetrics();
+    const hasCPUMetrics = computed(() => {
+      const overviewMetrics = getOverviewMetrics();
 
-        return (
-          !shouldHideMetricsWhilePending.get() &&
-          normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0
-        );
-      },
-    );
-    const hasMemoryMetrics = computed(
-      () => {
-        const overviewMetrics = getOverviewMetrics();
+      return (
+        !shouldHideMetricsWhilePending.get() &&
+        normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0
+      );
+    });
+    const hasMemoryMetrics = computed(() => {
+      const overviewMetrics = getOverviewMetrics();
 
-        return (
-          !shouldHideMetricsWhilePending.get() &&
-          normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0
-        );
-      },
-    );
+      return (
+        !shouldHideMetricsWhilePending.get() &&
+        normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0
+      );
+    });
 
     return {
       value,

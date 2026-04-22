@@ -7,36 +7,46 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
 
-export interface MetricsTimeRange {
+export interface DurationMetricsTimeRange {
   /**
    * Duration in seconds (1h = 3600, 2h = 7200, etc.)
    * null means custom time range
    */
-  duration: number | null;
+  duration: number;
 
   /**
    * Custom start timestamp (unix seconds)
-   * Only used when duration is null
+   * Not used for predefined durations
    */
-  customStart?: number;
+  customStart?: undefined;
 
   /**
    * Custom end timestamp (unix seconds)
-   * Only used when duration is null
+   * Not used for predefined durations
    */
-  customEnd?: number;
+  customEnd?: undefined;
 }
+
+export interface CustomMetricsTimeRange {
+  duration: null;
+  customStart: number;
+  customEnd: number;
+}
+
+export type MetricsTimeRange = DurationMetricsTimeRange | CustomMetricsTimeRange;
+
+export const defaultMetricsTimeRange: DurationMetricsTimeRange = {
+  duration: 3600,
+  customStart: undefined,
+  customEnd: undefined,
+};
 
 const metricsTimeRangeStorageInjectable = getInjectable({
   id: "metrics-time-range-storage",
   instantiate: (di) => {
     const createStorage = di.inject(createStorageInjectable);
 
-    return createStorage<MetricsTimeRange>("metrics_time_range", {
-      duration: 3600, // Default: 1 hour
-      customStart: undefined,
-      customEnd: undefined,
-    });
+    return createStorage<MetricsTimeRange>("metrics_time_range", defaultMetricsTimeRange);
   },
 });
 

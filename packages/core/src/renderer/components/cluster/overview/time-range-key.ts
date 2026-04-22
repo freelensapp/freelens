@@ -11,9 +11,5 @@ export function createMetricsTimeRangeKey({ duration, customStart, customEnd }: 
     return `duration-${duration}`;
   }
 
-  if (customStart != null && customEnd != null) {
-    return `custom-${customStart}-${customEnd}`;
-  }
-
-  return "custom-active";
+  return `custom-${customStart}-${customEnd}`;
 }

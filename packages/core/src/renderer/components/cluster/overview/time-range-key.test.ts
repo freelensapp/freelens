@@ -14,8 +14,4 @@ describe("createMetricsTimeRangeKey", () => {
   it("creates a boundary-based key for custom ranges", () => {
     expect(createMetricsTimeRangeKey({ duration: null, customStart: 100, customEnd: 200 })).toBe("custom-100-200");
   });
-
-  it("falls back for incomplete custom ranges", () => {
-    expect(createMetricsTimeRangeKey({ duration: null, customStart: 100 })).toBe("custom-active");
-  });
 });

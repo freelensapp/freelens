@@ -91,17 +91,9 @@ const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
   instantiate: (di) => {
     const apiBase = di.inject(apiBaseInjectable);
-    const CACHE_TTL_MS = 5000;
     const inFlightRequests = new Map<
       string,
       Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>>
-    >();
-    const responseCache = new Map<
-      string,
-      {
-        timestamp: number;
-        value: MetricData | MetricData[] | Partial<Record<string, MetricData>>;
-      }
     >();
 
     function requestMetrics(query: string, params?: RequestMetricsParams): Promise<MetricData>;
@@ -139,12 +131,6 @@ const requestMetricsInjectable = getInjectable({
         step,
         namespace,
       });
-      const cachedResponse = responseCache.get(requestKey);
-
-      if (cachedResponse && Date.now() - cachedResponse.timestamp < CACHE_TTL_MS) {
-        return cachedResponse.value;
-      }
-
       const existingRequest = inFlightRequests.get(requestKey);
 
       if (existingRequest) {
@@ -167,14 +153,7 @@ const requestMetricsInjectable = getInjectable({
 
       inFlightRequests.set(requestKey, requestPromise);
 
-      const response = await requestPromise;
-
-      responseCache.set(requestKey, {
-        timestamp: Date.now(),
-        value: response,
-      });
-
-      return response;
+      return requestPromise;
     }
 
     return requestMetrics;
