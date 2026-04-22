@@ -40,6 +40,20 @@ const ONE_HOUR_SECONDS = 60 * 60;
 const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
 const FOUR_DAYS_SECONDS = 4 * ONE_DAY_SECONDS;
 
+type BarChartTimeUnit = "minute" | "hour" | "day";
+
+const getBarChartTimeUnit = (timeRangeSeconds: number): BarChartTimeUnit => {
+  if (timeRangeSeconds <= ONE_DAY_SECONDS) {
+    return "minute";
+  }
+
+  if (timeRangeSeconds < FOUR_DAYS_SECONDS) {
+    return "hour";
+  }
+
+  return "day";
+};
+
 const parseBarChartTimestamp = (timestamp: string | number): number => {
   if (typeof timestamp === "number") {
     return timestamp;
@@ -50,15 +64,16 @@ const parseBarChartTimestamp = (timestamp: string | number): number => {
 
 const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: number) => {
   const date = moment(parseBarChartTimestamp(timestamp));
+  const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
 
-  if (timeRangeSeconds <= ONE_DAY_SECONDS) {
+  if (timeUnit === "minute") {
     return {
       bucket: date.startOf("minute").format("YYYY-MM-DD HH:mm"),
       label: date.format("HH:mm"),
     };
   }
 
-  if (timeRangeSeconds < FOUR_DAYS_SECONDS) {
+  if (timeUnit === "hour") {
     return {
       bucket: date.startOf("hour").format("YYYY-MM-DD HH"),
       label: date.format("DD, HH:mm"),
@@ -97,6 +112,7 @@ const NonInjectedBarChart = observer(
     const { textColorPrimary, borderFaintColor, chartStripesColor } = activeTheme.get().colors;
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
+    const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
     const inferredStepSeconds = rawDatasets[0]?.data?.length
       ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
       : 60;
@@ -196,7 +212,7 @@ const NonInjectedBarChart = observer(
             },
             bounds: "data",
             time: {
-              unit: "minute",
+              unit: timeUnit,
               displayFormats: {
                 minute: "x",
                 hour: "x",
