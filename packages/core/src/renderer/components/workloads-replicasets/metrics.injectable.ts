@@ -11,7 +11,6 @@ import type { ReplicaSet } from "@freelensapp/kube-object";
 
 interface ReplicaSetMetricsInjectableParams {
   replicaSet: ReplicaSet;
-  timeRangeKey: string;
 }
 
 const replicaSetMetricsInjectable = createTimeRangedMetricsInjectable({

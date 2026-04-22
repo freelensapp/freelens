@@ -30,7 +30,6 @@ describe("ingress-metrics injectable", () => {
 
     const metrics = di.inject(ingressMetricsInjectable, {
       ingress,
-      timeRangeKey: "duration-600",
     });
 
     metrics.value.get();

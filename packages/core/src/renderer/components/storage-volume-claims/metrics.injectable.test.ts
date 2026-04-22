@@ -30,7 +30,6 @@ describe("persistent-volume-claim-metrics injectable", () => {
 
     const metrics = di.inject(persistentVolumeClaimMetricsInjectable, {
       persistentVolumeClaim,
-      timeRangeKey: "duration-600",
     });
 
     metrics.value.get();

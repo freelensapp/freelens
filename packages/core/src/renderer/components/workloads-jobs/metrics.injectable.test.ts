@@ -12,7 +12,7 @@ import jobMetricsInjectable from "./metrics.injectable";
 import type { Job } from "@freelensapp/kube-object";
 
 describe("job-metrics injectable", () => {
-  it("requests job pod metrics with selected time range and range-aware keying", () => {
+  it("requests job pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsForJobs = jest.fn().mockResolvedValue({});
     const job = {
@@ -28,22 +28,14 @@ describe("job-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(jobMetricsInjectable, {
-      job,
-      timeRangeKey: "custom-4000-4100",
-    });
-    const metricsB = di.inject(jobMetricsInjectable, {
-      job,
-      timeRangeKey: "custom-4200-4300",
-    });
+    const metrics = di.inject(jobMetricsInjectable, { job });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsForJobs).toHaveBeenCalledWith([job], "job-ns", undefined, {
       start: 4000,
       end: 4100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

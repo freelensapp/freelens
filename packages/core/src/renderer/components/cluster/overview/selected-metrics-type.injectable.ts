@@ -6,11 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
-import { normalizeMetrics } from "../../../../common/k8s-api/endpoints/metrics.api";
-import clusterOverviewMetricsInjectable from "../cluster-metrics.injectable";
-import selectedMetricsTimeRangeInjectable from "./selected-metrics-time-range.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
-import { createMetricsTimeRangeKey } from "./time-range-key";
 
 import type { MetricType } from "./storage.injectable";
 
@@ -20,71 +16,10 @@ const selectedMetricsTypeInjectable = getInjectable({
   id: "selected-metrics-type",
   instantiate: (di) => {
     const storage = di.inject(clusterOverviewStorageInjectable);
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-    let lastResolvedRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
-    const getOverviewMetrics = () =>
-      di.inject(clusterOverviewMetricsInjectable, {
-        timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
-      });
-
-    const shouldHideMetricsWhilePending = computed(() => {
-      const overviewMetrics = getOverviewMetrics();
-      const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
-
-      return overviewMetrics.pending.get() && currentRangeKey !== lastResolvedRangeKey;
-    });
-
     const value = computed(() => storage.get().metricType);
-    const metrics = computed((): [number, string][] => {
-      const overviewMetrics = getOverviewMetrics();
-
-      if (shouldHideMetricsWhilePending.get()) {
-        return [];
-      }
-
-      const rawValue = overviewMetrics.value.get();
-
-      if (!rawValue) {
-        return [];
-      }
-
-      if (!overviewMetrics.pending.get()) {
-        lastResolvedRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
-      }
-
-      const type = value.get();
-
-      switch (type) {
-        case "cpu":
-          return normalizeMetrics(rawValue.cpuUsage).data.result[0].values;
-        case "memory":
-          return normalizeMetrics(rawValue.memoryUsage).data.result[0].values;
-        default:
-          return [];
-      }
-    });
-    const hasCPUMetrics = computed(() => {
-      const overviewMetrics = getOverviewMetrics();
-
-      return (
-        !shouldHideMetricsWhilePending.get() &&
-        normalizeMetrics(overviewMetrics.value.get()?.cpuUsage).data.result[0].values.length > 0
-      );
-    });
-    const hasMemoryMetrics = computed(() => {
-      const overviewMetrics = getOverviewMetrics();
-
-      return (
-        !shouldHideMetricsWhilePending.get() &&
-        normalizeMetrics(overviewMetrics.value.get()?.memoryUsage).data.result[0].values.length > 0
-      );
-    });
 
     return {
       value,
-      metrics,
-      hasCPUMetrics,
-      hasMemoryMetrics,
       set: action((value: MetricType) => {
         storage.merge({ metricType: value });
       }),

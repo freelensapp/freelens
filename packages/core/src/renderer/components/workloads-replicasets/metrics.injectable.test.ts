@@ -12,7 +12,7 @@ import replicaSetMetricsInjectable from "./metrics.injectable";
 import type { ReplicaSet } from "@freelensapp/kube-object";
 
 describe("replica-set-metrics injectable", () => {
-  it("requests replica set pod metrics with selected time range and range-aware keying", () => {
+  it("requests replica set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsForReplicaSets = jest.fn().mockResolvedValue({});
     const replicaSet = {
@@ -28,22 +28,14 @@ describe("replica-set-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(replicaSetMetricsInjectable, {
-      replicaSet,
-      timeRangeKey: "custom-3000-3100",
-    });
-    const metricsB = di.inject(replicaSetMetricsInjectable, {
-      replicaSet,
-      timeRangeKey: "custom-3200-3300",
-    });
+    const metrics = di.inject(replicaSetMetricsInjectable, { replicaSet });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsForReplicaSets).toHaveBeenCalledWith([replicaSet], "replica-set-ns", undefined, {
       start: 3000,
       end: 3100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

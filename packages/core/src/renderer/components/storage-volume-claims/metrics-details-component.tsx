@@ -7,8 +7,6 @@
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
-import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import persistentVolumeClaimMetricsInjectable from "./metrics.injectable";
 import { VolumeClaimDiskChart } from "./volume-claim-disk-chart";
@@ -34,15 +32,10 @@ export const PersistentVolumeClaimMetricsDetailsComponent = withInjectables<
   Dependencies,
   KubeObjectDetailsProps<PersistentVolumeClaim>
 >(NonInjectedPersistentVolumeClaimMetricsDetailsComponent, {
-  getProps: (di, props) => {
-    const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-    return {
-      metrics: di.inject(persistentVolumeClaimMetricsInjectable, {
-        persistentVolumeClaim: props.object,
-        timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
-      }),
-      ...props,
-    };
-  },
+  getProps: (di, props) => ({
+    metrics: di.inject(persistentVolumeClaimMetricsInjectable, {
+      persistentVolumeClaim: props.object,
+    }),
+    ...props,
+  }),
 });

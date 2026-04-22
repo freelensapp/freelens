@@ -11,7 +11,6 @@ import type { Namespace } from "@freelensapp/kube-object";
 
 interface NamespaceMetricsInjectableParams {
   namespace: Namespace;
-  timeRangeKey: string;
 }
 
 const namespaceMetricsInjectable = createTimeRangedMetricsInjectable({

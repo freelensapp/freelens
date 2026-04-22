@@ -11,7 +11,6 @@ import type { DaemonSet } from "@freelensapp/kube-object";
 
 interface DaemonSetMetricsInjectableParams {
   daemonSet: DaemonSet;
-  timeRangeKey: string;
 }
 
 const daemonSetMetricsInjectable = createTimeRangedMetricsInjectable({

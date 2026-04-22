@@ -12,7 +12,6 @@ import type { Container, Pod } from "@freelensapp/kube-object";
 interface PodContainerParams {
   pod: Pod;
   container: Container;
-  timeRangeKey: string;
 }
 
 const podContainerMetricsInjectable = createTimeRangedMetricsInjectable({

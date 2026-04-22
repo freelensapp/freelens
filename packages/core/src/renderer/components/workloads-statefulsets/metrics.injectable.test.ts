@@ -12,7 +12,7 @@ import statefulSetMetricsInjectable from "./metrics.injectable";
 import type { StatefulSet } from "@freelensapp/kube-object";
 
 describe("stateful-set-metrics injectable", () => {
-  it("requests stateful set pod metrics with selected time range and range-aware keying", () => {
+  it("requests stateful set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsForStatefulSets = jest.fn().mockResolvedValue({});
     const statefulSet = {
@@ -28,22 +28,14 @@ describe("stateful-set-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(statefulSetMetricsInjectable, {
-      statefulSet,
-      timeRangeKey: "custom-2000-2100",
-    });
-    const metricsB = di.inject(statefulSetMetricsInjectable, {
-      statefulSet,
-      timeRangeKey: "custom-2200-2300",
-    });
+    const metrics = di.inject(statefulSetMetricsInjectable, { statefulSet });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsForStatefulSets).toHaveBeenCalledWith([statefulSet], "stateful-set-ns", undefined, {
       start: 2000,
       end: 2100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

@@ -7,8 +7,6 @@
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
-import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import daemonSetMetricsInjectable from "./metrics.injectable";
@@ -33,16 +31,11 @@ const NonInjectedDaemonSetMetricsDetailsComponent = observer(
 export const DaemonSetMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<DaemonSet>>(
   NonInjectedDaemonSetMetricsDetailsComponent,
   {
-    getProps: (di, props) => {
-      const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-      return {
-        metrics: di.inject(daemonSetMetricsInjectable, {
-          daemonSet: props.object,
-          timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
-        }),
-        ...props,
-      };
-    },
+    getProps: (di, props) => ({
+      metrics: di.inject(daemonSetMetricsInjectable, {
+        daemonSet: props.object,
+      }),
+      ...props,
+    }),
   },
 );

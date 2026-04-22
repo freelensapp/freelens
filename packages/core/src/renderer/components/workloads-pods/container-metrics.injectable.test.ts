@@ -37,12 +37,10 @@ describe("pod-container-metrics injectable", () => {
     const metricsForFirstContainer = di.inject(podContainerMetricsInjectable, {
       pod,
       container: firstContainer,
-      timeRangeKey: "custom-100-200",
     });
     const metricsForSecondContainer = di.inject(podContainerMetricsInjectable, {
       pod,
       container: secondContainer,
-      timeRangeKey: "custom-100-200",
     });
 
     metricsForFirstContainer.value.get();

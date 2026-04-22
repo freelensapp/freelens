@@ -21,8 +21,18 @@ interface Dependencies {
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
 }
 
+interface ClusterMetricSwitchersProps {
+  hasCPUMetrics: boolean;
+  hasMemoryMetrics: boolean;
+}
+
 const NonInjectedClusterMetricSwitchers = observer(
-  ({ selectedMetricsType, selectedNodeRoleForMetrics }: Dependencies) => (
+  ({
+    selectedMetricsType,
+    selectedNodeRoleForMetrics,
+    hasCPUMetrics,
+    hasMemoryMetrics,
+  }: Dependencies & ClusterMetricSwitchersProps) => (
     <div className={`flex gaps ${styles.container}`}>
       <div className="box grow">
         <RadioGroup
@@ -45,17 +55,21 @@ const NonInjectedClusterMetricSwitchers = observer(
           value={selectedMetricsType.value.get()}
           onChange={selectedMetricsType.set}
         >
-          <Radio label="CPU" value="cpu" disabled={!selectedMetricsType.hasCPUMetrics.get()} />
-          <Radio label="Memory" value="memory" disabled={!selectedMetricsType.hasMemoryMetrics.get()} />
+          <Radio label="CPU" value="cpu" disabled={!hasCPUMetrics} />
+          <Radio label="Memory" value="memory" disabled={!hasMemoryMetrics} />
         </RadioGroup>
       </div>
     </div>
   ),
 );
 
-export const ClusterMetricSwitchers = withInjectables<Dependencies>(NonInjectedClusterMetricSwitchers, {
-  getProps: (di) => ({
-    selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
-    selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
-  }),
-});
+export const ClusterMetricSwitchers = withInjectables<Dependencies, ClusterMetricSwitchersProps>(
+  NonInjectedClusterMetricSwitchers,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
+      selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
+    }),
+  },
+);

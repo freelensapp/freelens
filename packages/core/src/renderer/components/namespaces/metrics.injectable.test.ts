@@ -12,7 +12,7 @@ import namespaceMetricsInjectable from "./metrics.injectable";
 import type { Namespace } from "@freelensapp/kube-object";
 
 describe("namespace-metrics injectable", () => {
-  it("requests namespace pod metrics with selected time range and range-aware keying", () => {
+  it("requests namespace pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsInNamespace = jest.fn().mockResolvedValue({});
     const namespace = {
@@ -28,22 +28,14 @@ describe("namespace-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(namespaceMetricsInjectable, {
-      namespace,
-      timeRangeKey: "custom-6000-6100",
-    });
-    const metricsB = di.inject(namespaceMetricsInjectable, {
-      namespace,
-      timeRangeKey: "custom-6200-6300",
-    });
+    const metrics = di.inject(namespaceMetricsInjectable, { namespace });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsInNamespace).toHaveBeenCalledWith("namespace-name", undefined, {
       start: 6000,
       end: 6100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

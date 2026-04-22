@@ -11,6 +11,7 @@ import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector
 import selectedMetricsTimeRangeInjectable, {
   type SelectedMetricsTimeRange,
 } from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import timeRangeStyles from "./metrics-time-range-container.module.css";
 import { ResourceMetrics } from "./resource-metrics";
 
@@ -28,13 +29,14 @@ const NonInjectedTimeRangedResourceMetrics = observer(
     ...resourceMetricsProps
   }: TimeRangedResourceMetricsProps<Keys> & Dependencies) => {
     const timeRangeLabel = selectedMetricsTimeRange.displayLabel.get();
+    const metricsKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
 
     return (
       <>
         <div className={`flex ${timeRangeStyles.timeRangeContainer}`} data-time-range={timeRangeLabel}>
           <MetricsTimeRangeSelector displayMode="expanded" />
         </div>
-        <ResourceMetrics {...resourceMetricsProps} />
+        <ResourceMetrics {...resourceMetricsProps} metricsKey={metricsKey} />
       </>
     );
   },

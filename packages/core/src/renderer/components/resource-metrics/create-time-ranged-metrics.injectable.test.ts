@@ -50,11 +50,7 @@ describe("createTimeRangedMetricsInjectable", () => {
       getId: () => "resource-id",
     };
 
-    const injectable = createTimeRangedMetricsInjectable<
-      { object: TestObject; timeRangeKey: string },
-      TestObject,
-      unknown
-    >({
+    const injectable = createTimeRangedMetricsInjectable<{ object: TestObject }, TestObject, unknown>({
       id: "test-time-ranged-metrics",
       getObject: ({ object }) => object,
       getObjectId: (resource) => resource.getId(),
@@ -79,7 +75,6 @@ describe("createTimeRangedMetricsInjectable", () => {
 
     di.inject(injectable, {
       object,
-      timeRangeKey: "custom-2000-2100",
     });
     const asyncComputedConfiguration = asyncComputedMock.mock.calls[0]?.[0] as {
       getValueFromObservedPromise: () => Promise<unknown>;
@@ -102,7 +97,7 @@ describe("createTimeRangedMetricsInjectable", () => {
     );
   });
 
-  it("keys instances by both object identity and time range", () => {
+  it("keys instances by object identity", () => {
     const di = getDiForUnitTesting();
     const objectA: TestObject = {
       getId: () => "resource-a",
@@ -111,11 +106,7 @@ describe("createTimeRangedMetricsInjectable", () => {
       getId: () => "resource-b",
     };
 
-    const injectable = createTimeRangedMetricsInjectable<
-      { object: TestObject; timeRangeKey: string },
-      TestObject,
-      unknown
-    >({
+    const injectable = createTimeRangedMetricsInjectable<{ object: TestObject }, TestObject, unknown>({
       id: "test-time-ranged-metrics-identity",
       getObject: ({ object }) => object,
       getObjectId: (resource) => resource.getId(),
@@ -136,18 +127,15 @@ describe("createTimeRangedMetricsInjectable", () => {
 
     const metricsForObjectA = di.inject(injectable, {
       object: objectA,
-      timeRangeKey: "custom-2000-2100",
     });
-    const metricsForObjectAWithDifferentRange = di.inject(injectable, {
+    const metricsForObjectAAgain = di.inject(injectable, {
       object: objectA,
-      timeRangeKey: "custom-2200-2300",
     });
     const metricsForObjectB = di.inject(injectable, {
       object: objectB,
-      timeRangeKey: "custom-2000-2100",
     });
 
-    expect(metricsForObjectAWithDifferentRange).not.toBe(metricsForObjectA);
+    expect(metricsForObjectAAgain).toBe(metricsForObjectA);
     expect(metricsForObjectB).not.toBe(metricsForObjectA);
   });
 });

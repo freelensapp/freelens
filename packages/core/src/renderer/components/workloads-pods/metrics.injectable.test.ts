@@ -12,7 +12,7 @@ import podMetricsInjectable from "./metrics.injectable";
 import type { Pod } from "@freelensapp/kube-object";
 
 describe("pod-metrics injectable", () => {
-  it("requests pod metrics with selected time range and range-aware keying", () => {
+  it("requests pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetrics = jest.fn().mockResolvedValue({});
     const pod = {
@@ -28,16 +28,9 @@ describe("pod-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(podMetricsInjectable, {
-      pod,
-      timeRangeKey: "custom-100-200",
-    });
-    const metricsB = di.inject(podMetricsInjectable, {
-      pod,
-      timeRangeKey: "custom-300-400",
-    });
+    const metrics = di.inject(podMetricsInjectable, { pod });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetrics).toHaveBeenCalledWith([pod], "pod-ns", undefined, "pod, namespace", {
       start: 100,
@@ -45,6 +38,5 @@ describe("pod-metrics injectable", () => {
       range: 100,
       metrics: ["cpuUsage", "memoryUsage", "fsUsage", "fsWrites", "fsReads", "networkReceive", "networkTransmit"],
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

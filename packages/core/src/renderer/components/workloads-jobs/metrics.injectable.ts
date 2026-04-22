@@ -11,7 +11,6 @@ import type { Job } from "@freelensapp/kube-object";
 
 interface JobMetricsInjectableParams {
   job: Job;
-  timeRangeKey: string;
 }
 
 const jobMetricsInjectable = createTimeRangedMetricsInjectable({

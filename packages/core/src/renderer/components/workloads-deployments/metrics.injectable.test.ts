@@ -12,7 +12,7 @@ import deploymentMetricsInjectable from "./metrics.injectable";
 import type { Deployment } from "@freelensapp/kube-object";
 
 describe("deployment-metrics injectable", () => {
-  it("requests deployment pod metrics with selected time range and range-aware keying", () => {
+  it("requests deployment pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsForDeployments = jest.fn().mockResolvedValue({});
     const deployment = {
@@ -28,22 +28,14 @@ describe("deployment-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(deploymentMetricsInjectable, {
-      deployment,
-      timeRangeKey: "custom-1000-1100",
-    });
-    const metricsB = di.inject(deploymentMetricsInjectable, {
-      deployment,
-      timeRangeKey: "custom-1200-1300",
-    });
+    const metrics = di.inject(deploymentMetricsInjectable, { deployment });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsForDeployments).toHaveBeenCalledWith([deployment], "deployment-ns", undefined, {
       start: 1000,
       end: 1100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

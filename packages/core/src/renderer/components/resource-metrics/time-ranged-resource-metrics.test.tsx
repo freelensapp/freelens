@@ -41,6 +41,9 @@ describe("TimeRangedResourceMetrics", () => {
       selectedMetricsTimeRangeInjectable,
       () =>
         ({
+          value: {
+            get: () => ({ duration: null, customStart: 101, customEnd: 202 }),
+          },
           displayLabel: {
             get: () => "custom-100-200",
           },
@@ -63,6 +66,7 @@ describe("TimeRangedResourceMetrics", () => {
         object,
         tabs,
         metrics,
+        metricsKey: "custom-101-202",
       }),
     );
   });

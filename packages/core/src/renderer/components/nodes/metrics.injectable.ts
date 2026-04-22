@@ -15,7 +15,6 @@ type NodeMetricKey = keyof ClusterMetricData;
 
 interface NodeMetricsInjectableParams {
   node: Node;
-  timeRangeKey: string;
 }
 
 const nodeMetricKeys: NodeMetricKey[] = [

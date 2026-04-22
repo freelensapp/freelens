@@ -11,7 +11,6 @@ import type { Ingress } from "@freelensapp/kube-object";
 
 interface IngressMetricsInjectableParams {
   ingress: Ingress;
-  timeRangeKey: string;
 }
 
 const ingressMetricsInjectable = createTimeRangedMetricsInjectable({

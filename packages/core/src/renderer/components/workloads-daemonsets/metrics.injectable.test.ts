@@ -12,7 +12,7 @@ import daemonSetMetricsInjectable from "./metrics.injectable";
 import type { DaemonSet } from "@freelensapp/kube-object";
 
 describe("daemon-set-metrics injectable", () => {
-  it("requests daemon set pod metrics with selected time range and range-aware keying", () => {
+  it("requests daemon set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
     const requestPodMetricsForDaemonSets = jest.fn().mockResolvedValue({});
     const daemonSet = {
@@ -28,22 +28,14 @@ describe("daemon-set-metrics injectable", () => {
       },
     }));
 
-    const metricsA = di.inject(daemonSetMetricsInjectable, {
-      daemonSet,
-      timeRangeKey: "custom-5000-5100",
-    });
-    const metricsB = di.inject(daemonSetMetricsInjectable, {
-      daemonSet,
-      timeRangeKey: "custom-5200-5300",
-    });
+    const metrics = di.inject(daemonSetMetricsInjectable, { daemonSet });
 
-    metricsA.value.get();
+    metrics.value.get();
 
     expect(requestPodMetricsForDaemonSets).toHaveBeenCalledWith([daemonSet], "daemon-set-ns", undefined, {
       start: 5000,
       end: 5100,
       range: 100,
     });
-    expect(metricsB).not.toBe(metricsA);
   });
 });

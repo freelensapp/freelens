@@ -11,7 +11,6 @@ import type { Deployment } from "@freelensapp/kube-object";
 
 interface DeploymentMetricsInjectableParams {
   deployment: Deployment;
-  timeRangeKey: string;
 }
 
 const deploymentMetricsInjectable = createTimeRangedMetricsInjectable({

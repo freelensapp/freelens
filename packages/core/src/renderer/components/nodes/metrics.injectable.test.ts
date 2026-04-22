@@ -36,7 +36,6 @@ describe("node-metrics injectable", () => {
 
     const metrics = di.inject(nodeMetricsInjectable, {
       node,
-      timeRangeKey: "duration-120",
     });
 
     metrics.value.get();

@@ -10,7 +10,7 @@ import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { isNumber } from "lodash";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
@@ -29,6 +29,7 @@ import type { IComputedValue } from "mobx";
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 function createLabels(rawLabelData: [string, number | undefined][]): string[] {
@@ -41,6 +42,7 @@ interface Dependencies {
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
   clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   activeTheme: IComputedValue<LensTheme>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const renderLimitWarning = () => (
@@ -209,23 +211,35 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<Clu
 };
 
 const NonInjectedClusterPieCharts = observer(
-  ({ selectedNodeRoleForMetrics, clusterOverviewMetrics, activeTheme }: Dependencies) => (
-    <div className="flex">
-      {renderContent(
-        activeTheme.get().colors.pieChartDefaultColor,
-        selectedNodeRoleForMetrics.nodes.get(),
-        clusterOverviewMetrics.value.get(),
-      )}
-    </div>
-  ),
+  ({ selectedNodeRoleForMetrics, clusterOverviewMetrics, activeTheme, selectedMetricsTimeRange }: Dependencies) => {
+    const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
+    const lastResolvedRangeKeyRef = useRef<string | undefined>(undefined);
+    const isPending = clusterOverviewMetrics.pending.get();
+
+    if (!isPending) {
+      lastResolvedRangeKeyRef.current = currentRangeKey;
+    }
+
+    const visibleMetrics =
+      isPending && currentRangeKey !== lastResolvedRangeKeyRef.current ? undefined : clusterOverviewMetrics.value.get();
+
+    return (
+      <div className="flex">
+        {renderContent(
+          activeTheme.get().colors.pieChartDefaultColor,
+          selectedNodeRoleForMetrics.nodes.get(),
+          visibleMetrics,
+        )}
+      </div>
+    );
+  },
 );
 
 export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedClusterPieCharts, {
   getProps: (di) => ({
     activeTheme: di.inject(activeThemeInjectable),
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable, {
-      timeRangeKey: createMetricsTimeRangeKey(di.inject(selectedMetricsTimeRangeInjectable).value.get()),
-    }),
+    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
+    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });

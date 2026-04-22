@@ -7,8 +7,6 @@
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
-import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { IngressCharts } from "./ingress-charts";
 import ingressMetricsInjectable from "./metrics.injectable";
@@ -33,16 +31,11 @@ const NonInjectedIngressMetricsDetailsComponent = observer(
 export const IngressMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Ingress>>(
   NonInjectedIngressMetricsDetailsComponent,
   {
-    getProps: (di, props) => {
-      const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-      return {
-        metrics: di.inject(ingressMetricsInjectable, {
-          ingress: props.object,
-          timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
-        }),
-        ...props,
-      };
-    },
+    getProps: (di, props) => ({
+      metrics: di.inject(ingressMetricsInjectable, {
+        ingress: props.object,
+      }),
+      ...props,
+    }),
   },
 );

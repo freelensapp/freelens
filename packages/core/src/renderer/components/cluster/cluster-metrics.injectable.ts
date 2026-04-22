@@ -13,15 +13,11 @@ import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 
-interface ClusterOverviewMetricsInjectableParams {
-  timeRangeKey: string;
-}
-
 const everyMinute = 60 * 1000;
 
 const clusterOverviewMetricsInjectable = getInjectable({
   id: "cluster-overview-metrics",
-  instantiate: (di, _params: ClusterOverviewMetricsInjectableParams) => {
+  instantiate: (di) => {
     const requestClusterMetricsByNodeNames = di.inject(requestClusterMetricsByNodeNamesInjectable);
     const selectedNodeRoleForMetrics = di.inject(selectedNodeRoleForMetricsInjectable);
     const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
@@ -42,9 +38,7 @@ const clusterOverviewMetricsInjectable = getInjectable({
       betweenUpdates: "show-latest-value",
     });
   },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, { timeRangeKey }: ClusterOverviewMetricsInjectableParams) => timeRangeKey,
-  }),
+  lifecycle: lifecycleEnum.singleton,
 });
 
 export default clusterOverviewMetricsInjectable;

@@ -8,7 +8,6 @@ import type { Injectable } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import namespaceMetricsInjectable from "../namespaces/metrics.injectable";
 import { NamespaceMetricsDetailsComponent } from "../namespaces/metrics-details-component";
 import ingressMetricsInjectable from "../network-ingresses/metrics.injectable";
@@ -142,7 +141,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       namespace,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -153,7 +151,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: ["Network", "Duration"] as AtLeastOneMetricTab,
     expectedParams: {
       ingress,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -164,7 +161,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: ["CPU", "Memory", "Disk", "Pods"] as AtLeastOneMetricTab,
     expectedParams: {
       node,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -175,7 +171,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: ["Disk"] as AtLeastOneMetricTab,
     expectedParams: {
       persistentVolumeClaim,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -186,7 +181,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       daemonSet,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -197,7 +191,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       deployment,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -208,7 +201,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       job,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -219,7 +211,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       pod,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -231,7 +222,6 @@ const adapterCases: AdapterCase[] = [
     expectedParams: {
       pod,
       container,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -242,7 +232,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       replicaSet,
-      timeRangeKey: "custom-101-202",
     },
   },
   {
@@ -253,7 +242,6 @@ const adapterCases: AdapterCase[] = [
     expectedTabs: podMetricTabs,
     expectedParams: {
       statefulSet,
-      timeRangeKey: "custom-101-202",
     },
   },
 ];
@@ -281,15 +269,6 @@ describe("metrics details adapters", () => {
       };
       let capturedParams: unknown;
 
-      di.override(
-        selectedMetricsTimeRangeInjectable,
-        () =>
-          ({
-            value: {
-              get: () => ({ duration: null, customStart: 101, customEnd: 202 }),
-            },
-          }) as never,
-      );
       di.override(injectable, (_di, params) => {
         capturedParams = params;
 

@@ -12,10 +12,6 @@ import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-met
 import type { DiContainer, DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
-interface TimeRangedMetricsParams {
-  timeRangeKey: string;
-}
-
 interface RequestContext<ObjectType> {
   di: DiContainerForInjection;
   object: ObjectType;
@@ -24,20 +20,16 @@ interface RequestContext<ObjectType> {
   range: number;
 }
 
-interface TimeRangedMetricsInjectableConfig<Params extends TimeRangedMetricsParams, ObjectType, Value> {
+interface TimeRangedMetricsInjectableConfig<Params, ObjectType, Value> {
   id: string;
   getObject: (params: Params) => ObjectType;
   getObjectId: (object: ObjectType) => string;
   request: (context: RequestContext<ObjectType>) => Promise<Value>;
 }
 
-type TimeRangedMetricsInjectable<Params extends TimeRangedMetricsParams, Value> = Injectable<
-  IAsyncComputed<Value>,
-  IAsyncComputed<Value>,
-  Params
->;
+type TimeRangedMetricsInjectable<Params, Value> = Injectable<IAsyncComputed<Value>, IAsyncComputed<Value>, Params>;
 
-const getTimeRangedMetricsInjectable = getInjectable as <Params extends TimeRangedMetricsParams, Value>(options: {
+const getTimeRangedMetricsInjectable = getInjectable as <Params, Value>(options: {
   id: string;
   instantiate: (di: DiContainerForInjection, params: Params) => IAsyncComputed<Value>;
   lifecycle: {
@@ -45,7 +37,7 @@ const getTimeRangedMetricsInjectable = getInjectable as <Params extends TimeRang
   };
 }) => TimeRangedMetricsInjectable<Params, Value>;
 
-export const createTimeRangedMetricsInjectable = <Params extends TimeRangedMetricsParams, ObjectType, Value>({
+export const createTimeRangedMetricsInjectable = <Params, ObjectType, Value>({
   id,
   getObject,
   getObjectId,
@@ -74,6 +66,6 @@ export const createTimeRangedMetricsInjectable = <Params extends TimeRangedMetri
       });
     },
     lifecycle: lifecycleEnum.keyedSingleton({
-      getInstanceKey: (_di, params) => `${getObjectId(getObject(params))}-${params.timeRangeKey}`,
+      getInstanceKey: (_di, params) => getObjectId(getObject(params)),
     }),
   });

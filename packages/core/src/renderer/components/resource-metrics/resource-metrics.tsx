@@ -26,6 +26,7 @@ export interface ResourceMetricsProps<Keys extends string> {
   tabs: AtLeastOneMetricTab;
   object: KubeObject;
   className?: string;
+  metricsKey?: string;
   metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>;
   children: React.ReactChild | React.ReactChild[];
 }
@@ -46,20 +47,19 @@ export interface ResourceMetricsValue {
 export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>(null);
 
 export const ResourceMetrics = observer(
-  <Keys extends string>({ object, tabs, children, className, metrics }: ResourceMetricsProps<Keys>) => {
+  <Keys extends string>({ object, tabs, children, className, metrics, metricsKey }: ResourceMetricsProps<Keys>) => {
     const [tab, setTab] = useState<MetricsTab>(tabs[0]);
-    const previousMetricsRef = useRef(metrics);
+    const lastResolvedMetricsKeyRef = useRef<string | undefined>(undefined);
     const isAsyncMetrics = isAsyncComputedMetrics(metrics);
     const isPending = isAsyncMetrics ? metrics.pending.get() : false;
-    const hasMetricsSourceChanged = previousMetricsRef.current !== metrics;
+    const shouldHideStaleMetrics =
+      isAsyncMetrics && isPending && metricsKey !== undefined && metricsKey !== lastResolvedMetricsKeyRef.current;
 
-    previousMetricsRef.current = metrics;
+    if (!isPending) {
+      lastResolvedMetricsKeyRef.current = metricsKey;
+    }
 
-    const currentMetrics = isAsyncMetrics
-      ? isPending && hasMetricsSourceChanged
-        ? undefined
-        : metrics.value.get()
-      : metrics;
+    const currentMetrics = isAsyncMetrics ? (shouldHideStaleMetrics ? undefined : metrics.value.get()) : metrics;
 
     return (
       <div className={cssNames("ResourceMetrics flex column", className)}>

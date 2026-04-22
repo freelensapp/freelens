@@ -11,7 +11,6 @@ import type { StatefulSet } from "@freelensapp/kube-object";
 
 interface StatefulSetMetricsInjectableParams {
   statefulSet: StatefulSet;
-  timeRangeKey: string;
 }
 
 const statefulSetMetricsInjectable = createTimeRangedMetricsInjectable({

@@ -10,6 +10,7 @@ import { observer } from "mobx-react";
 import React, { useMemo, useState } from "react";
 import { Dialog } from "../dialog";
 import { Select } from "../select";
+import { formatMetricsDateTimeLocal, validateCustomMetricsTimeRange } from "./metrics-time-range";
 import styles from "./metrics-time-range-selector.module.scss";
 import selectedMetricsTimeRangeInjectable, {
   timeRangeOptions,
@@ -78,11 +79,8 @@ const NonInjectedMetricsTimeRangeSelector = observer(
       }
     };
 
-    const handleCustomRangeApply = (start: Date, end: Date) => {
-      const startSeconds = Math.floor(start.getTime() / 1000);
-      const endSeconds = Math.floor(end.getTime() / 1000);
-
-      selectedMetricsTimeRange.setCustomRange(startSeconds, endSeconds);
+    const handleCustomRangeApply = (start: number, end: number) => {
+      selectedMetricsTimeRange.setCustomRange(start, end);
       setShowCustomPicker(false);
     };
 
@@ -131,7 +129,7 @@ const NonInjectedMetricsTimeRangeSelector = observer(
 );
 
 interface CustomTimeRangePickerProps {
-  onApply: (start: Date, end: Date) => void;
+  onApply: (start: number, end: number) => void;
   onCancel: () => void;
   showErrorNotification: ShowNotification;
   initialStart: Date;
@@ -140,35 +138,22 @@ interface CustomTimeRangePickerProps {
 
 const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
   ({ onApply, onCancel, showErrorNotification, initialStart, initialEnd }) => {
-    const [startDate, setStartDate] = useState(initialStart);
-    const [endDate, setEndDate] = useState(initialEnd);
+    const [startValue, setStartValue] = useState(() => formatMetricsDateTimeLocal(initialStart));
+    const [endValue, setEndValue] = useState(() => formatMetricsDateTimeLocal(initialEnd));
 
     const handleApply = () => {
-      if (startDate >= endDate) {
-        showErrorNotification("Start date must be before end date");
+      const result = validateCustomMetricsTimeRange({
+        start: startValue,
+        end: endValue,
+        now: new Date(),
+      });
+
+      if ("error" in result) {
+        showErrorNotification(result.error);
         return;
       }
-      const now = new Date();
-      if (endDate > now) {
-        showErrorNotification("End date cannot be in the future");
-        return;
-      }
 
-      onApply(startDate, endDate);
-    };
-
-    const formatDateTimeLocal = (date: Date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-
-      return `${year}-${month}-${day}T${hours}:${minutes}`;
-    };
-
-    const parseDateTimeLocal = (value: string) => {
-      return new Date(value);
+      onApply(result.value.start, result.value.end);
     };
 
     return (
@@ -176,20 +161,11 @@ const CustomTimeRangePicker: React.FC<CustomTimeRangePickerProps> = observer(
         <h5 className={styles.header}>Custom Time Range</h5>
         <div className={styles.inputGroup}>
           <label>Start:</label>
-          <input
-            type="datetime-local"
-            value={formatDateTimeLocal(startDate)}
-            onChange={(e) => setStartDate(parseDateTimeLocal(e.target.value))}
-            autoFocus
-          />
+          <input type="datetime-local" value={startValue} onChange={(e) => setStartValue(e.target.value)} autoFocus />
         </div>
         <div className={styles.inputGroup}>
           <label>End:</label>
-          <input
-            type="datetime-local"
-            value={formatDateTimeLocal(endDate)}
-            onChange={(e) => setEndDate(parseDateTimeLocal(e.target.value))}
-          />
+          <input type="datetime-local" value={endValue} onChange={(e) => setEndValue(e.target.value)} />
         </div>
         <div className={styles.actions}>
           <button

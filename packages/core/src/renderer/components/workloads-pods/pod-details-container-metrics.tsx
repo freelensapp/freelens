@@ -7,8 +7,6 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
-import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
@@ -39,17 +37,12 @@ const NonInjectedPodDetailsContainerMetrics = observer(
 export const PodDetailsContainerMetrics = withInjectables<Dependencies, ContainerMetricsProps>(
   NonInjectedPodDetailsContainerMetrics,
   {
-    getProps: (di, props) => {
-      const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
-
-      return {
-        ...props,
-        podContainerMetrics: di.inject(podContainerMetricsInjectable, {
-          pod: props.pod,
-          container: props.container,
-          timeRangeKey: createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get()),
-        }),
-      };
-    },
+    getProps: (di, props) => ({
+      ...props,
+      podContainerMetrics: di.inject(podContainerMetricsInjectable, {
+        pod: props.pod,
+        container: props.container,
+      }),
+    }),
   },
 );

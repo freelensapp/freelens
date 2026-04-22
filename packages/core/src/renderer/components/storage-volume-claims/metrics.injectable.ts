@@ -11,7 +11,6 @@ import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 
 interface PersistentVolumeClaimMetricsInjectableParams {
   persistentVolumeClaim: PersistentVolumeClaim;
-  timeRangeKey: string;
 }
 
 const persistentVolumeClaimMetricsInjectable = createTimeRangedMetricsInjectable({

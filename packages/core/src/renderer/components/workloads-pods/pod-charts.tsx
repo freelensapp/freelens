@@ -7,12 +7,11 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { mapValues } from "lodash";
 import { observer } from "mobx-react";
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import { BarChart } from "../chart";
 import { metricTabOptions } from "../chart/options";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
-import { createMetricsTimeRangeKey } from "../cluster/overview/time-range-key";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 
@@ -32,20 +31,8 @@ interface PodChartsProps {
 }
 
 const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencies & PodChartsProps) => {
-  const { metrics, tab, object, isPending } = useContext(ResourceMetricsContext) ?? {};
+  const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
   const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
-  const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
-  const lastResolvedRangeKeyRef = useRef(currentRangeKey);
-
-  if (!isPending) {
-    lastResolvedRangeKeyRef.current = currentRangeKey;
-  }
-
-  const isRangeChangePending = Boolean(isPending) && currentRangeKey !== lastResolvedRangeKeyRef.current;
-
-  if (isRangeChangePending) {
-    return null;
-  }
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
