@@ -41,7 +41,7 @@
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && pnpm electron-rebuild",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.3.0 --dependencies --no-gitignore",
+    "knip": "pnpm dlx knip@6.7.0 --dependencies --no-gitignore",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
