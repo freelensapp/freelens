@@ -1426,7 +1426,7 @@ importers:
         specifier: ^7.7.1
         version: 7.7.1
       fast-xml-parser:
-        specifier: ^5.7.0
+        specifier: ^5.7.2
         version: 5.7.2
       node-fetch:
         specifier: ^3.3.2
