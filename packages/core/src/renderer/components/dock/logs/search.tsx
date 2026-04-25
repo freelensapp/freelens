@@ -72,14 +72,16 @@ export const LogSearch = observer(
     const [inputValue, setInputValue] = useState(searchQuery);
     const inputValueRef = useRef(inputValue);
     inputValueRef.current = inputValue;
-
-    const jumpDisabled = !inputValue || !occurrences.length;
+    const [searchPending, setSearchPending] = useState(false);
+    
+    const jumpDisabled = !inputValue || (!searchPending && !occurrences.length);
 
     const runSearch = useMemo(
       () =>
         debounce((query: string) => {
           searchStore.onSearch(logs, query);
           scrollToOverlay(searchStore.activeOverlayLine);
+          setSearchPending(false);
         }, SEARCH_DEBOUNCE_MS),
       [logs, searchStore, scrollToOverlay],
     );
@@ -95,6 +97,7 @@ export const LogSearch = observer(
       (query: string, options?: { immediate?: boolean }) => {
         setInputValue(query);
         onSearch?.(query);
+        setSearchPending(query !== "");
         runSearch(query);
         if (options?.immediate || query === "") {
           runSearch.flush();
@@ -106,11 +109,13 @@ export const LogSearch = observer(
     const onInputChange = useCallback((value: string) => setSearch(value), [setSearch]);
 
     const onPrevOverlay = () => {
+      runSearch.flush();
       setPrevOverlayActive();
       scrollToOverlay(searchStore.activeOverlayLine);
     };
 
     const onNextOverlay = () => {
+      runSearch.flush();
       setNextOverlayActive();
       scrollToOverlay(searchStore.activeOverlayLine);
     };
