@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.2.0",
-    "biome": "pnpm dlx @biomejs/biome@2.4.10",
+    "biome": "pnpm dlx @biomejs/biome@2.4.13",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",
@@ -41,13 +41,13 @@
     "dev": "turbo run dev --parallel --",
     "electron-rebuild": "cd freelens && pnpm electron-rebuild",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.3.0 --dependencies --no-gitignore",
+    "knip": "pnpm dlx knip@6.7.0 --dependencies --no-gitignore",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm trunk check",
     "lint:fix": "pnpm trunk check --fix",
-    "prettier": "pnpm dlx prettier@3.8.1",
+    "prettier": "pnpm dlx prettier@3.8.3",
     "prettier:check": "pnpm prettier --check .",
     "prettier:fix": "pnpm prettier --write .",
     "start": "cd freelens && pnpm start",
@@ -67,10 +67,10 @@
     "trunk:fix:all": "pnpm trunk check --fix --all"
   },
   "devDependencies": {
-    "pnpm": "10.33.0",
-    "turbo": "2.9.3"
+    "pnpm": "10.33.2",
+    "turbo": "2.9.6"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "engines": {
     "node": ">=22.0.0"
   }

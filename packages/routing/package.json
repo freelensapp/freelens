@@ -42,7 +42,7 @@
     "@types/webpack-env": "^1.18.8",
     "lodash": "^4.18.1",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",
