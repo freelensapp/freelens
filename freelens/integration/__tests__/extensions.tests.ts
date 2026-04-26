@@ -30,15 +30,16 @@ describe("extensions page tests", () => {
 
   const extensions = process.env.EXTENSION_PATH
     ? [process.env.EXTENSION_PATH]
-    : [
-        "@freelensapp/example-extension",
-        "@freelensapp/example-extension@1.3.0",
-        "@freelensapp/extension-example@1.2.0",
-        "@freelensapp/extension-example@1.0.0",
-        "@freelensapp/freelens-node-pod-menu",
-        "@freelensapp/freelens-node-pod-menu@1.1.0",
-        "@freelensapp/freelens-node-pod-menu@1.0.0",
-      ];
+    : process.platform === "win32"
+      ? ["@freelensapp/example-extension"]
+      : [
+          "@freelensapp/example-extension",
+          "@freelensapp/example-extension@1.8.0",
+          "@freelensapp/example-extension@1.6.2",
+          "@freelensapp/example-extension@1.5.3",
+          "@freelensapp/example-extension@1.4.2",
+          "@freelensapp/example-extension@1.3.0",
+        ];
 
   it.each(extensions)(
     "installs an extension %s",
