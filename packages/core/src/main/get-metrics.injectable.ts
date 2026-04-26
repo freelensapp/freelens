@@ -29,12 +29,10 @@ async function fetchDirectMetrics(
   cluster: Cluster,
   prometheusPrefix: string,
   directUrl: string,
-  body: URLSearchParams,
+  params: URLSearchParams,
 ): Promise<unknown> {
-  const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
-  const headers: Record<string, string> = {
-    "Content-Type": "application/x-www-form-urlencoded",
-  };
+  const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range?${params.toString()}`;
+  const headers: Record<string, string> = {};
   const bearerToken = cluster.preferences.prometheus?.bearerToken;
 
   if (bearerToken) {
@@ -42,13 +40,12 @@ async function fetchDirectMetrics(
   }
 
   const response = await proxyFetch(url, {
-    method: "POST",
+    method: "GET",
     headers,
-    body: body.toString(),
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to POST ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
+    throw new Error(`Failed to GET ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
       cause: response,
     });
   }
@@ -65,24 +62,23 @@ const getMetricsInjectable = getInjectable({
 
     return async (cluster, prometheusPath, queryParams) => {
       const prometheusPrefix = cluster.preferences.prometheus?.prefix || "";
-      const body = new URLSearchParams();
+      const params = new URLSearchParams();
 
       for (const [key, value] of object.entries(queryParams)) {
-        body.append(key, value.toString());
+        params.append(key, value.toString());
       }
 
       const directUrl = cluster.preferences.prometheus?.directUrl;
 
       if (directUrl) {
-        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, body);
+        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, params);
       }
 
-      const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
+      const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range?${params.toString()}`;
 
       return k8sRequest(cluster, metricsPath, {
         timeout: 0,
-        method: "POST",
-        body,
+        method: "GET",
       });
     };
   },

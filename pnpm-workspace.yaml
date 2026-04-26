@@ -11,11 +11,11 @@ nodeGyp: ../../../../node-gyp/bin/node-gyp.js
 
 overrides:
   '@types/http-proxy': '-'
-  brace-expansion@^2.0.1: ^2.0.2
+  brace-expansion@^2.0.1: ^2.1.0
   compression: ^1.8.1
-  form-data: ^4.0.4
-  http-proxy: npm:http-proxy-node16@^1.0.0
-  http-proxy-middleware: ^3.0.0
+  form-data: ^4.0.5
+  http-proxy: npm:http-proxy-node16@^1.0.6
+  http-proxy-middleware: ^3.0.5
   tmp@^0.2.0: ^0.2.5
 
 packages:
