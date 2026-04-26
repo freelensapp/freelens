@@ -73,7 +73,7 @@ export const LogSearch = observer(
     const inputValueRef = useRef(inputValue);
     inputValueRef.current = inputValue;
     const [searchPending, setSearchPending] = useState(false);
-    
+
     const jumpDisabled = !inputValue || (!searchPending && !occurrences.length);
 
     const runSearch = useMemo(
