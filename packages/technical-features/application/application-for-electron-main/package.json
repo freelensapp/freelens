@@ -33,7 +33,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "electron": "^39.8.6"
+    "electron": "^39.8.9"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.6.5",
@@ -48,7 +48,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",
