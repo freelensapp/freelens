@@ -107,8 +107,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       '@hapi/subtext':
-        specifier: ^8.1.1
-        version: 8.1.1
+        specifier: ^8.1.2
+        version: 8.1.2
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -170,8 +170,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(ws@8.20.0)
       joi:
-        specifier: ^18.1.1
-        version: 18.1.1
+        specifier: ^18.1.2
+        version: 18.1.2
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
@@ -702,8 +702,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       '@hapi/subtext':
-        specifier: ^8.1.1
-        version: 8.1.1
+        specifier: ^8.1.2
+        version: 8.1.2
       '@mui/lab':
         specifier: 5.0.0-alpha.142
         version: 5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -798,8 +798,8 @@ importers:
         specifier: ^11.1.4
         version: 11.1.4
       joi:
-        specifier: ^18.1.1
-        version: 18.1.1
+        specifier: ^18.1.2
+        version: 18.1.2
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
@@ -3738,8 +3738,8 @@ packages:
   '@hapi/call@9.0.1':
     resolution: {integrity: sha512-uPojQRqEL1GRZR4xXPqcLMujQGaEpyVPRyBlD8Pp5rqgIwLhtveF9PkixiKru2THXvuN8mUrLeet5fqxKAAMGg==}
 
-  '@hapi/content@6.0.0':
-    resolution: {integrity: sha512-CEhs7j+H0iQffKfe5Htdak5LBOz/Qc8TRh51cF+BFv0qnuph3Em4pjGVzJMkI2gfTDdlJKWJISGWS1rK34POGA==}
+  '@hapi/content@6.0.1':
+    resolution: {integrity: sha512-lQ2vOoFMNYxwKVnKf+3Pi3PfoviM4EJYlT9JbrBPfEc0xKMiVDqqXF8UTE1S1oKhHQliWSP5t6zTKNlmaXBGcQ==}
 
   '@hapi/file@3.0.0':
     resolution: {integrity: sha512-w+lKW+yRrLhJu620jT3y+5g2mHqnKfepreykvdOcl9/6up8GrQQn+l3FRTsjHTKbkbfQFkuksHpdv2EcpKcJ4Q==}
@@ -3754,14 +3754,14 @@ packages:
     resolution: {integrity: sha512-uv3dtYuB4IsNaha+tigWmN8mQw/O9Qzl5U26Gm4ZcJVtDdB1AVJOwX3X5wOX+A07qzpEZnOMBAm8jjSqGsU6Nw==}
     engines: {node: '>=14.0.0'}
 
-  '@hapi/pez@6.1.0':
-    resolution: {integrity: sha512-+FE3sFPYuXCpuVeHQ/Qag1b45clR2o54QoonE/gKHv9gukxQ8oJJZPR7o3/ydDTK6racnCJXxOyT1T93FCJMIg==}
+  '@hapi/pez@6.1.1':
+    resolution: {integrity: sha512-yg2OS1tC0S1sHXvhUtWsfRn6lrKl9jKtRhZ+EI0woOW/gqX5vM2PZ1459ypCvCYDRLJ9nIyueeEH5MJV1ZDqIg==}
 
   '@hapi/pinpoint@2.0.1':
     resolution: {integrity: sha512-EKQmr16tM8s16vTT3cA5L0kZZcTMU5DUOZTuvpnY738m+jyP3JIUj+Mm1xc1rsLkGBQ/gVnfKYPwOmPg1tUR4Q==}
 
-  '@hapi/subtext@8.1.1':
-    resolution: {integrity: sha512-ex1Y2s/KuJktS8Ww0k6XJ5ysSKrzNym4i5pDVuCwlSgHHviHUsT1JNzE6FYhNU9TTHSNdyfue/t2m89bpkX9Jw==}
+  '@hapi/subtext@8.1.2':
+    resolution: {integrity: sha512-2x71YJHmFpCjhIhfiNZdKp63nh3xRPp7RrwH7JoO9R4Sd0DRzzRU/VfX2fMmUR7jcoS5qNET1WyGIaqKpMu/ng==}
 
   '@hapi/tlds@1.1.2':
     resolution: {integrity: sha512-1jkwm1WY9VIb6WhdANRmWDkXQUcIRpxqZpSdS+HD9vhoVL3zwoFvP8doQNEgT6k3VST0Ewu50wZnXIceRYp5tw==}
@@ -6955,8 +6955,8 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
-  joi@18.1.1:
-    resolution: {integrity: sha512-pJkBiPtNo+o0h19LfSvUN46Y5zY+ck99AtHwch9n2HqVLNRgP0ZMyIH8FRMoP+HV8hy/+AG99dXFfwpf83iZfQ==}
+  joi@18.1.2:
+    resolution: {integrity: sha512-rF5MAmps5esSlhCA+N1b6IYHDw9j/btzGaqfgie522jS02Ju/HXBxamlXVlKEHAxoMKQL77HWI8jlqWsFuekZA==}
     engines: {node: '>= 20'}
 
   jose@6.1.3:
@@ -9757,7 +9757,7 @@ snapshots:
       '@hapi/boom': 10.0.1
       '@hapi/hoek': 11.0.7
 
-  '@hapi/content@6.0.0':
+  '@hapi/content@6.0.1':
     dependencies:
       '@hapi/boom': 10.0.1
 
@@ -9772,24 +9772,24 @@ snapshots:
       '@hapi/hoek': 11.0.7
       '@hapi/vise': 5.0.1
 
-  '@hapi/pez@6.1.0':
+  '@hapi/pez@6.1.1':
     dependencies:
       '@hapi/b64': 6.0.1
       '@hapi/boom': 10.0.1
-      '@hapi/content': 6.0.0
+      '@hapi/content': 6.0.1
       '@hapi/hoek': 11.0.7
       '@hapi/nigel': 5.0.1
 
   '@hapi/pinpoint@2.0.1': {}
 
-  '@hapi/subtext@8.1.1':
+  '@hapi/subtext@8.1.2':
     dependencies:
       '@hapi/boom': 10.0.1
       '@hapi/bourne': 3.0.0
-      '@hapi/content': 6.0.0
+      '@hapi/content': 6.0.1
       '@hapi/file': 3.0.0
       '@hapi/hoek': 11.0.7
-      '@hapi/pez': 6.1.0
+      '@hapi/pez': 6.1.1
       '@hapi/wreck': 18.1.0
 
   '@hapi/tlds@1.1.2': {}
@@ -13724,7 +13724,7 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  joi@18.1.1:
+  joi@18.1.2:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
