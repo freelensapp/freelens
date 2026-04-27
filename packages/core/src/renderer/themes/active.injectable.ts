@@ -18,6 +18,22 @@ import type { LensColorName, LensTheme } from "./lens-theme";
 /** The default accent color used by built-in themes. */
 const DEFAULT_ACCENT_COLOR = "#00a7a0";
 
+/**
+ * Color keys that represent the accent color across built-in themes.
+ * Only these keys are considered when applying a custom accent override,
+ * which avoids fragile, whole-theme hex scans that could recolor unrelated
+ * colors in third-party themes or future built-in themes.
+ */
+const ACCENT_COLOR_KEYS: readonly LensColorName[] = [
+  "blue",
+  "primary",
+  "buttonPrimaryBackground",
+  "menuActiveBackground",
+  "helmStableRepo",
+  "colorInfo",
+  "sidebarSubmenuActiveColor",
+];
+
 const activeThemeInjectable = getInjectable({
   id: "active-theme",
   instantiate: (di) => {
@@ -47,13 +63,13 @@ const activeThemeInjectable = getInjectable({
         return baseTheme;
       }
 
-      // Build theme-aware overrides: only replace colors that actually use
-      // the default accent in this specific base theme.
+      // Build theme-aware overrides: only replace known accent keys, and
+      // only when the base theme actually uses the default accent for them.
       const colorOverrides: Partial<Record<LensColorName, string>> = {};
 
-      for (const [name, value] of Object.entries(baseTheme.colors) as [LensColorName, string][]) {
-        if (value === DEFAULT_ACCENT_COLOR) {
-          colorOverrides[name] = accentColor;
+      for (const key of ACCENT_COLOR_KEYS) {
+        if (baseTheme.colors[key] === DEFAULT_ACCENT_COLOR) {
+          colorOverrides[key] = accentColor;
         }
       }
 
