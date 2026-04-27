@@ -279,6 +279,20 @@ describe("<NamespaceSelectFilter />", () => {
         it("keeps the menu open", () => {
           expect(result.baseElement.querySelector("#react-select-namespace-select-filter-listbox")).not.toBeNull();
         });
+
+        describe("when the pasted namespace is selected while the paste modifier is still held", () => {
+          beforeEach(() => {
+            const filter = result.getByTestId("namespace-select-filter");
+
+            // using Meta only as DI-based unit tests default the injected platform to macOS
+            fireEvent.keyDown(filter, { key: "Meta" });
+            result.getByText("test-5").click();
+          });
+
+          it("selects only the matching namespace in the store", () => {
+            expect(namespaceStore.contextNamespaces).toEqual(["test-5"]);
+          });
+        });
       });
 
       describe("when partial text not matching any namespace exactly is pasted into the input", () => {
