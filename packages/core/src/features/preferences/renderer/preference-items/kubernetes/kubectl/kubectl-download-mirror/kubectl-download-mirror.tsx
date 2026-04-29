@@ -54,7 +54,7 @@ const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
           onChange={(value) => (state.downloadCustomMirror = value)}
           disabled={!state.downloadKubectlBinaries}
         />
-        <div className="hint">{"Will be used as: <base-url>/v<version>/bin/<os>/<arch>/kubectl"}</div>
+        <div className="hint">{"The base URL of your mirror. Freelens fills in the version and platform path."}</div>
       </>
     )}
   </section>
