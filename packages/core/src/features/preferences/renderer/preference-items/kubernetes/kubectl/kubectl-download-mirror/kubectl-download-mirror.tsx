@@ -7,9 +7,14 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
+import { Input, InputValidators } from "../../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../../renderer/components/select";
-import { defaultPackageMirror, packageMirrors } from "../../../../../../user-preferences/common/preferences-helpers";
+import {
+  customPackageMirror,
+  defaultPackageMirror,
+  packageMirrors,
+} from "../../../../../../user-preferences/common/preferences-helpers";
 import userPreferencesStateInjectable from "../../../../../../user-preferences/common/state.injectable";
 
 import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
@@ -38,6 +43,20 @@ const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
       isDisabled={!state.downloadKubectlBinaries}
       themeName="lens"
     />
+    {state.downloadMirror === customPackageMirror && (
+      <>
+        <Input
+          theme="round-black"
+          type="url"
+          placeholder="https://artifacts.example.com/kubernetes/kubectl"
+          value={state.downloadCustomMirror}
+          validators={InputValidators.isUrl}
+          onChange={(value) => (state.downloadCustomMirror = value)}
+          disabled={!state.downloadKubectlBinaries}
+        />
+        <div className="hint">{"Will be used as: <base-url>/v<version>/bin/<os>/<arch>/kubectl"}</div>
+      </>
+    )}
   </section>
 ));
 

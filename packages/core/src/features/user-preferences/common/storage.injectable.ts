@@ -44,6 +44,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
           preferences.downloadKubectlBinaries,
         );
         state.downloadMirror = descriptors.downloadMirror.fromStore(preferences.downloadMirror);
+        state.downloadCustomMirror = descriptors.downloadCustomMirror.fromStore(preferences.downloadCustomMirror);
         state.editorConfiguration = descriptors.editorConfiguration.fromStore(preferences.editorConfiguration);
         state.extensionRegistryUrl = descriptors.extensionRegistryUrl.fromStore(preferences.extensionRegistryUrl);
         state.hiddenTableColumns = descriptors.hiddenTableColumns.fromStore(preferences.hiddenTableColumns);
@@ -69,6 +70,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
             downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
             downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),
+            downloadCustomMirror: descriptors.downloadCustomMirror.toStore(state.downloadCustomMirror),
             editorConfiguration: descriptors.editorConfiguration.toStore(state.editorConfiguration),
             extensionRegistryUrl: descriptors.extensionRegistryUrl.toStore(state.extensionRegistryUrl),
             hiddenTableColumns: descriptors.hiddenTableColumns.toStore(state.hiddenTableColumns),
