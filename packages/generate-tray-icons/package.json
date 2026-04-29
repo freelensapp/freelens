@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^29.0.2",
+    "jsdom": "^29.1.0",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
