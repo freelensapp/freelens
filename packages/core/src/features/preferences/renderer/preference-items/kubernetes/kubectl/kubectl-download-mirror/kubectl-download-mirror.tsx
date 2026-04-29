@@ -44,7 +44,8 @@ const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
       themeName="lens"
     />
     {state.downloadMirror === customPackageMirror && (
-      <>
+      <div style={{ marginTop: 16 }}>
+        <SubTitle title="Custom mirror URL" />
         <Input
           theme="round-black"
           type="url"
@@ -55,7 +56,7 @@ const NonInjectedKubectlDownloadMirror = observer(({ state }: Dependencies) => (
           disabled={!state.downloadKubectlBinaries}
         />
         <div className="hint">{"The base URL of your mirror. Freelens fills in the version and platform path."}</div>
-      </>
+      </div>
     )}
   </section>
 ));
