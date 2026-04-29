@@ -5,15 +5,16 @@
  */
 
 import { computed } from "mobx";
-import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import activeThemeInjectable from "../active.injectable";
 import customAccentColorInjectable from "../../../features/user-preferences/common/custom-accent-color.injectable";
 import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import activeThemeInjectable from "../active.injectable";
 import defaultLensThemeInjectable from "../default-theme.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
+
 import type { LensTheme } from "../lens-theme";
 
 const DEFAULT_ACCENT_COLOR = "#00a7a0";
