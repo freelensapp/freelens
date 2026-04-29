@@ -34,7 +34,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.5",
+    "@async-fn/jest": "^1.7.0",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
