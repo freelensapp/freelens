@@ -29,14 +29,15 @@ From the root of this repository:
 ```sh
 nvm install
 # or
+mise settings add idiomatic_version_file_enable_tools node
 mise install
 # or
 winget install CoreyButler.NVMforWindows
-nvm install 22.16.0
-nvm use 22.16.0
+nvm install 22.22.1
+nvm use 22.22.1
 ```
 
-Install Pnpm:
+Install Pnpm (if is not yet installed with mise-en-place):
 
 ```sh
 corepack install

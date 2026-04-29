@@ -9,6 +9,7 @@
 import { registerInjectables as registerConfigInjectables } from "./config/register-injectables";
 import { registerInjectables as registerCustomResourcesInjectables } from "./custom-resources/register-injectables";
 import { registerInjectables as registerEventsInjectables } from "./events/register-injectables";
+import { registerInjectables as registerFavoritesInjectables } from "./favorites/register-injectables";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerNamespacesInjectables } from "./namespaces/register-injectables";
 import { registerInjectables as registerNetworkInjectables } from "./network/register-injectables";
@@ -33,6 +34,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerEventsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerFavoritesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

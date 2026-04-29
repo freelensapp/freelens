@@ -8,7 +8,7 @@ import "./job-details.scss";
 
 import { Job } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { formatDuration } from "@freelensapp/utilities/dist";
+import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

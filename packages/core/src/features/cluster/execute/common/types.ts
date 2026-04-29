@@ -7,8 +7,7 @@ import type { KubeApiPatchType } from "@freelensapp/kube-api";
 
 import type { ClusterId } from "../../../../common/cluster-types";
 
-export type { KubeApiPatchType };
-export type { ClusterId };
+export type { ClusterId, KubeApiPatchType };
 
 /**
  * Resource identifier for Kubernetes API operations.
