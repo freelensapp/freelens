@@ -162,12 +162,12 @@
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.24",
-    "@types/node": "~22.19.17",
+    "@types/node": "~24.12.2",
     "@types/webpack-env": "^1.18.8",
     "circular-dependency-plugin": "^5.2.2",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^6.11.0",
-    "electron": "^39.8.9",
+    "electron": "^41.3.0",
     "electron-builder": "^26.9.0",
     "electron-builder-squirrel-windows": "26.9.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
@@ -194,7 +194,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "engines": {
-    "node": "^22.0.0"
+    "node": "^24.0.0"
   },
   "copyright": "© 2024-2026 Freelens Authors",
   "productName": "Freelens"
