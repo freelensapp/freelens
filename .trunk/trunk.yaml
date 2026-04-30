@@ -7,14 +7,14 @@ cli:
 plugins:
   sources:
     - id: trunk
-      ref: v1.7.6
+      ref: v1.8.0
       uri: https://github.com/trunk-io/plugins
 # Many linters and tools depend on runtimes - configure them here. (https://docs.trunk.io/runtimes)
 runtimes:
   enabled:
     - go@1.21.0
     - node@22.22.1! # datasource=node-version depName=node
-    - python@3.11.9
+    - python@3.14.4
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   definitions:
@@ -58,6 +58,7 @@ lint:
       files:
         - sass
   enabled:
+    - grype@0.111.1
     - taplo@0.10.0
     - actionlint@1.7.12
     - biome@2.4.13! # datasource=npm depName=@biomejs/biome
