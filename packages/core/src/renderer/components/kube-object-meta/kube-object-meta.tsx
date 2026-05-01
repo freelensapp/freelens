@@ -18,7 +18,6 @@ import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { LinkToNamespace } from "../kube-object-link";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { LocaleDate } from "../locale-date";
 import { MonacoEditor } from "../monaco-editor";
 import { WithTooltip } from "../with-tooltip";
@@ -113,7 +112,6 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
       </DrawerItem>
       <DrawerItem name="Name" hidden={isHidden("name")}>
         {object.getName()}
-        <KubeObjectStatusIcon key="icon" object={object} />
       </DrawerItem>
       <DrawerItem name="Namespace" hidden={isHidden("namespace") || !namespace}>
         <LinkToNamespace namespace={namespace} />

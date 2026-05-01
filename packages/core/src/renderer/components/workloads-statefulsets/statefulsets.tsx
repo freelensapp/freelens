@@ -12,7 +12,6 @@ import React from "react";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
@@ -69,7 +68,6 @@ const NonInjectedStatefulSets = observer((props: Dependencies) => {
             sortBy: columnId.desired,
             id: columnId.desired,
           },
-          { className: "warning", showWithColumn: columnId.ready },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(statefulSet) => [
@@ -77,7 +75,6 @@ const NonInjectedStatefulSets = observer((props: Dependencies) => {
           <NamespaceSelectBadge key="namespace" namespace={statefulSet.getNs()} />,
           statefulSet.status?.readyReplicas || 0,
           statefulSet.getReplicas(),
-          <KubeObjectStatusIcon key="icon" object={statefulSet} />,
           <KubeObjectAge key="age" object={statefulSet} />,
         ]}
       />

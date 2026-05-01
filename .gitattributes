@@ -1,0 +1,76 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Source code
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+
+# Configuration files
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.xml text eol=lf
+.editorconfig text eol=lf
+.nvmrc text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+README text eol=lf
+
+# Shell scripts (always LF, even on Windows)
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows scripts (always CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Web files
+*.html text eol=lf
+*.htm text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+*.svg text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.icns binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.node binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Archives
+*.7z binary
+*.dmg binary
+*.iso binary
+*.jar binary
+*.rar binary
+*.tar binary
+*.zip binary
+*.tgz binary

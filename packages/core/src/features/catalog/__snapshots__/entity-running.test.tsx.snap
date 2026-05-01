@@ -374,6 +374,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -395,6 +398,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -416,6 +422,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -427,6 +436,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -448,6 +460,9 @@ exports[`entity running technical tests when navigated to catalog renders 1`] = 
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1087,6 +1102,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -1108,6 +1126,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1129,6 +1150,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1140,6 +1164,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1161,6 +1188,9 @@ exports[`entity running technical tests when navigated to catalog when details p
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"

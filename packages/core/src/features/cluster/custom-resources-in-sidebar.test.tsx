@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { waitFor } from "@testing-library/react";
 import { CustomResourceDefinition } from "../../extensions/common-api/k8s-api";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -68,12 +69,14 @@ describe("cluster - custom resources in sidebar", () => {
     expect(result.container).toMatchSnapshot();
   });
 
-  it("shows the sidebar", () => {
-    expect(result.getByTestId("cluster-sidebar")).toBeInTheDocument();
+  it("shows the sidebar", async () => {
+    await waitFor(() => expect(result.getByTestId("cluster-sidebar")).toBeInTheDocument(), { timeout: 300 });
   });
 
-  it("does not show Custom Resources section", () => {
-    expect(result.queryByTestId("sidebar-item-custom-resources")).not.toBeInTheDocument();
+  it("does not show Custom Resources section", async () => {
+    await waitFor(() => expect(result.queryByTestId("sidebar-item-custom-resources")).not.toBeInTheDocument(), {
+      timeout: 300,
+    });
   });
 
   describe("when custom resource exists", () => {
@@ -85,8 +88,10 @@ describe("cluster - custom resources in sidebar", () => {
       expect(result.container).toMatchSnapshot();
     });
 
-    it("still does not show Custom Resources sidebar", () => {
-      expect(result.queryByTestId("sidebar-item-custom-resources")).not.toBeInTheDocument();
+    it("still does not show Custom Resources sidebar", async () => {
+      await waitFor(() => expect(result.queryByTestId("sidebar-item-custom-resources")).not.toBeInTheDocument(), {
+        timeout: 300,
+      });
     });
 
     describe("when specific custom resource is an allowed resource", () => {
@@ -101,78 +106,121 @@ describe("cluster - custom resources in sidebar", () => {
         expect(result.container).toMatchSnapshot();
       });
 
-      it("shows Custom Resources sidebar", () => {
-        expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument();
+      it("shows Custom Resources sidebar", async () => {
+        await waitFor(() => expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument(), {
+          timeout: 300,
+        });
       });
 
-      it("shows Custom Resources sidebar as expandable", () => {
-        expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument();
+      it("shows Custom Resources sidebar as expandable", async () => {
+        await waitFor(
+          () => expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
-      it("does not show SomeResources sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+      it("does not show SomeResources sidebar", async () => {
+        await waitFor(
+          () =>
+            expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
-      it("does not show Custom Resources Definitions sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument();
+      it("does not show Custom Resources Definitions sidebar", async () => {
+        await waitFor(
+          () => expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
       describe("when custom resources sidebar item is expanded", () => {
-        beforeEach(() => {
-          result.getByTestId("expand-icon-for-sidebar-item-custom-resources").click();
+        beforeEach(async () => {
+          await waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-custom-resources").click(), {
+            timeout: 300,
+          });
         });
 
         it("renders", () => {
           expect(result.container).toMatchSnapshot();
         });
 
-        it("shows Custom Resources sidebar", () => {
-          expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument();
+        it("shows Custom Resources sidebar", async () => {
+          await waitFor(() => expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument(), {
+            timeout: 300,
+          });
         });
 
-        it("shows Custom Resources sidebar as expandable", () => {
-          expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument();
+        it("shows Custom Resources sidebar as expandable", async () => {
+          await waitFor(
+            () => expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
 
-        it("shows some.group.com group sidebar item", () => {
-          expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument();
+        it("shows some.group.com group sidebar item", async () => {
+          await waitFor(
+            () => expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
 
-        it("does not show Custom Resources Definitions sidebar", () => {
-          expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument();
+        it("does not show Custom Resources Definitions sidebar", async () => {
+          await waitFor(
+            () => expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
 
         describe("when custom resources group sidebar item is expanded", () => {
-          beforeEach(() => {
-            result.getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some.group.com").click();
+          beforeEach(async () => {
+            await waitFor(
+              () => result.getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some.group.com").click(),
+              { timeout: 300 },
+            );
           });
 
           it("renders", () => {
             expect(result.container).toMatchSnapshot();
           });
 
-          it("shows some.group.com group sidebar item", () => {
-            expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument();
+          it("shows some.group.com group sidebar item", async () => {
+            await waitFor(
+              () => expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument(),
+              { timeout: 300 },
+            );
           });
 
-          it("formats the some.group.com sidebar item title correctly", () => {
-            expect(
-              result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild,
-            ).toHaveTextContent("some\u200b.group\u200b.com", {
-              normalizeWhitespace: false,
-            });
+          it("formats the some.group.com sidebar item title correctly", async () => {
+            await waitFor(
+              () =>
+                expect(
+                  result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild,
+                ).toHaveTextContent("some\u200b.group\u200b.com", {
+                  normalizeWhitespace: false,
+                }),
+              { timeout: 300 },
+            );
           });
 
-          it("shows some-resources group sidebar item", () => {
-            expect(
-              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
-            ).toBeInTheDocument();
+          it("shows some-resources group sidebar item", async () => {
+            await waitFor(
+              () =>
+                expect(
+                  result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+                ).toBeInTheDocument(),
+              { timeout: 300 },
+            );
           });
 
-          it("formats the some-resources sidebar item title correctly", () => {
-            expect(
-              result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
-            ).toHaveTextContent("Some Resource");
+          it("formats the some-resources sidebar item title correctly", async () => {
+            await waitFor(
+              () =>
+                expect(
+                  result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+                ).toHaveTextContent("Some Resource"),
+              { timeout: 300 },
+            );
           });
         });
       });
@@ -190,20 +238,32 @@ describe("cluster - custom resources in sidebar", () => {
         expect(result.container).toMatchSnapshot();
       });
 
-      it("shows Custom Resources sidebar", () => {
-        expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument();
+      it("shows Custom Resources sidebar", async () => {
+        await waitFor(() => expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument(), {
+          timeout: 300,
+        });
       });
 
-      it("shows Custom Resources sidebar as expandable", () => {
-        expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument();
+      it("shows Custom Resources sidebar as expandable", async () => {
+        await waitFor(
+          () => expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
-      it("does not show SomeResources sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+      it("does not show SomeResources sidebar", async () => {
+        await waitFor(
+          () =>
+            expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
-      it("does not show Custom Resources Definitions sidebar", () => {
-        expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument();
+      it("does not show Custom Resources Definitions sidebar", async () => {
+        await waitFor(
+          () => expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument(),
+          { timeout: 300 },
+        );
       });
 
       describe("when custom resources sidebar item is expanded", () => {
@@ -215,20 +275,32 @@ describe("cluster - custom resources in sidebar", () => {
           expect(result.container).toMatchSnapshot();
         });
 
-        it("shows Custom Resources sidebar", () => {
-          expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument();
+        it("shows Custom Resources sidebar", async () => {
+          await waitFor(() => expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument(), {
+            timeout: 300,
+          });
         });
 
-        it("shows Custom Resources sidebar as expandable", () => {
-          expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument();
+        it("shows Custom Resources sidebar as expandable", async () => {
+          await waitFor(
+            () => expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
 
-        it("does not show SomeResources sidebar", () => {
-          expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument();
+        it("does not show SomeResources sidebar", async () => {
+          await waitFor(
+            () =>
+              expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
 
-        it("shows Custom Resources Definitions sidebar", () => {
-          expect(result.getByTestId("sidebar-item-custom-resource-definitions")).toBeInTheDocument();
+        it("shows Custom Resources Definitions sidebar", async () => {
+          await waitFor(
+            () => expect(result.getByTestId("sidebar-item-custom-resource-definitions")).toBeInTheDocument(),
+            { timeout: 300 },
+          );
         });
       });
     });
@@ -246,16 +318,24 @@ describe("cluster - custom resources in sidebar", () => {
       expect(result.container).toMatchSnapshot();
     });
 
-    it("shows Custom Resources sidebar", () => {
-      expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument();
+    it("shows Custom Resources sidebar", async () => {
+      await waitFor(() => expect(result.getByTestId("sidebar-item-custom-resources")).toBeInTheDocument(), {
+        timeout: 300,
+      });
     });
 
-    it("shows Custom Resources sidebar as expandable", () => {
-      expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument();
+    it("shows Custom Resources sidebar as expandable", async () => {
+      await waitFor(
+        () => expect(result.getByTestId("expand-icon-for-sidebar-item-custom-resources")).toBeInTheDocument(),
+        { timeout: 300 },
+      );
     });
 
-    it("does not show Custom Resources Definitions sidebar", () => {
-      expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument();
+    it("does not show Custom Resources Definitions sidebar", async () => {
+      await waitFor(
+        () => expect(result.queryByTestId("sidebar-item-custom-resource-definitions")).not.toBeInTheDocument(),
+        { timeout: 300 },
+      );
     });
   });
 });

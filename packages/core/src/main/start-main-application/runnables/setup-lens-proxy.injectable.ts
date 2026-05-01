@@ -10,6 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
 import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
+import isProductionInjectable from "../../../common/vars/is-production.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import { buildVersionInitializationInjectable } from "../../../features/vars/build-version/main/init.injectable";
@@ -32,6 +33,7 @@ const setupLensProxyInjectable = getInjectable({
       const buildVersion = di.inject(buildVersionInitializable.stateToken);
       const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
       const fetch = di.inject(nodeFetchInjectable);
+      const isProduction = di.inject(isProductionInjectable);
 
       try {
         logger.info("🔌 Starting Freelens Proxy");
@@ -74,6 +76,44 @@ const setupLensProxyInjectable = getInjectable({
         showErrorPopup("Freelens Proxy Error", message.join("\n\n"));
 
         return forceAppExit();
+      }
+
+      // Wait for the renderer route to be ready (prevents ERR_EMPTY_RESPONSE race condition)
+      const maxAttempts = 30;
+      const retryDelayMs = 200;
+      const testPath = isProduction ? "/" : "/build/index.html";
+
+      logger.info(`🔧 Waiting for renderer route to be ready (${testPath})...`);
+
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          // Test the actual route that the window will load
+          const response = await fetch(`https://127.0.0.1:${lensProxyPort.get()}${testPath}`, {
+            method: "HEAD",
+            agent: new Agent({
+              ca: lensProxyCertificate.get()?.cert,
+            }),
+            signal: AbortSignal.timeout(2000),
+          });
+
+          if (response.ok) {
+            logger.info("⚡ Renderer route is ready");
+            break;
+          } else {
+            throw new Error(`HTTP ${response.status}`);
+          }
+        } catch (error: any) {
+          if (attempt < maxAttempts) {
+            logger.info(
+              `🔧 Renderer route not ready yet (attempt ${attempt}/${maxAttempts}): ${error.message}, retrying in ${retryDelayMs}ms...`,
+            );
+            await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+          } else {
+            logger.warn(
+              `⚠️  Renderer route did not respond after ${maxAttempts} attempts (${error.message}). Window may fail to load initially.`,
+            );
+          }
+        }
       }
     },
     runAfter: buildVersionInitializationInjectable,

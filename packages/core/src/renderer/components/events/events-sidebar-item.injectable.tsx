@@ -10,22 +10,28 @@ import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import eventsRouteInjectable from "../../../common/front-end-routing/routes/cluster/events/events-route.injectable";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
+import { SidebarMenuItem, sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";
+import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 
+let id = SidebarMenuItem.Events;
+
 const eventsSidebarItemInjectable = getInjectable({
-  id: "sidebar-item-events",
+  id: id,
 
   instantiate: (di) => {
+    const title = "Events";
     const route = di.inject(eventsRouteInjectable);
+    const getClusterPageMenuOrder = di.inject(getClusterPageMenuOrderInjectable);
 
     return {
       parentId: null,
       getIcon: () => <Icon material="access_time" />,
-      title: "Events",
+      title: title,
       onClick: di.inject(navigateToEventsInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: 80,
+      orderNumber: getClusterPageMenuOrder(id, sidebarMenuItemIds[id]),
     };
   },
 

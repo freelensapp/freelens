@@ -51,11 +51,37 @@
     align-items: center;
   }
 
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 6px;
+    cursor: col-resize;
+    z-index: 10;
+
+    &::after {
+      content: " ";
+      display: block;
+      width: 3px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      background: transparent;
+      transition: background 0.2s 0s;
+    }
+
+    &:hover::after {
+      background: var(--blue);
+      transition: background 0.2s 0.5s;
+    }
+  }
+
   .sortIcon {
     transition: 150ms opacity;
     opacity: 0;
     position: absolute;
-    right: 0;
+    right: 10px;
     background: var(--tableHeaderBackground);
 
     &.enabled {

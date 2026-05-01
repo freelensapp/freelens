@@ -471,6 +471,36 @@ exports[`preferences - navigation to terminal preferences given in preferences, 
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="sidebar-menu"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Sidebar menu order
+                     
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <span>
+                      Reset sidebar menu order to the original settings
+                    </span>
+                    <button
+                      class="Button primary"
+                      type="button"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section

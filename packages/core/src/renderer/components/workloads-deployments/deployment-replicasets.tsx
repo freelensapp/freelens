@@ -16,7 +16,6 @@ import showDetailsInjectable from "../kube-detail-params/show-details.injectable
 import { KubeObjectAge } from "../kube-object/age";
 import { LinkToNamespace, LinkToReplicaSet } from "../kube-object-link";
 import { KubeObjectMenu } from "../kube-object-menu";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
@@ -85,7 +84,6 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
             <TableCell className="name" sortBy={sortBy.name}>
               Name
             </TableCell>
-            <TableCell className="warning" />
             <TableCell className="namespace" sortBy={sortBy.namespace}>
               Namespace
             </TableCell>
@@ -108,9 +106,6 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
                 <WithTooltip>
                   <LinkToReplicaSet name={replica.getName()} namespace={replica.getNs()} />
                 </WithTooltip>
-              </TableCell>
-              <TableCell className="warning">
-                <KubeObjectStatusIcon key="icon" object={replica} />
               </TableCell>
               <TableCell className="namespace">
                 <WithTooltip>

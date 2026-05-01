@@ -18,11 +18,33 @@ import { SubTitle } from "../layout/sub-title";
 import { Select } from "../select";
 
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type {
   MetricProviderInfo,
   RequestMetricsProviders,
 } from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
 import type { SelectOption } from "../select";
+
+type PrometheusConfig = NonNullable<ClusterPrometheusPreferences["prometheus"]>;
+type PrometheusRequestMethod = NonNullable<ClusterPrometheusPreferences["prometheusRequestMethod"]>;
+
+function buildPrometheusConfig(
+  parsed: string[],
+  prefix: string,
+  https: boolean,
+  directUrl?: string,
+  bearerToken?: string,
+): PrometheusConfig {
+  return {
+    namespace: parsed[0] || "",
+    service: parsed[1] || "",
+    port: parseInt(parsed[2]) || 0,
+    prefix,
+    https,
+    directUrl: directUrl || undefined,
+    bearerToken: bearerToken || undefined,
+  };
+}
 
 export interface ClusterPrometheusSettingProps {
   cluster: Cluster;
@@ -37,12 +59,28 @@ interface Dependencies {
   requestMetricsProviders: RequestMetricsProviders;
 }
 
+const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
+  {
+    value: "POST",
+    label: "POST",
+    isSelected: true,
+  },
+  {
+    value: "GET",
+    label: "GET",
+    isSelected: false,
+  },
+];
+
 @observer
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
   @observable mountpoints = "";
   @observable path = ""; // <namespace>/<service>:<port>
   @observable customPrefix = ""; // e.g. "/prometheus"
   @observable useHttps = false; // whether to use https scheme for service proxy
+  @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
+  @observable bearerToken = ""; // bearer token for Prometheus authentication
+  @observable requestMethod: PrometheusRequestMethod = "POST";
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
@@ -76,23 +114,37 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return this.loadedOptions.get(this.selectedOption)?.isConfigurable ?? false;
   }
 
+  @computed get isOpenShift(): boolean {
+    return this.selectedOption === "openshift";
+  }
+
   componentDidMount() {
     disposeOnUnmount(
       this,
       autorun(() => {
-        const { prometheus, prometheusProvider, filesystemMountpoints } = this.props.cluster.preferences;
+        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } =
+          this.props.cluster.preferences;
 
         if (prometheus) {
           const prefix = prometheus.prefix || "";
 
-          this.path = `${prometheus.namespace}/${prometheus.service}:${prometheus.port}`;
+          this.path =
+            prometheus.namespace && prometheus.service
+              ? `${prometheus.namespace}/${prometheus.service}:${prometheus.port}`
+              : "";
           this.customPrefix = prefix;
           this.useHttps = Boolean(prometheus.https);
+          this.directUrl = prometheus.directUrl || "";
+          this.bearerToken = prometheus.bearerToken || "";
         } else {
           this.path = "";
           this.customPrefix = "";
           this.useHttps = false;
+          this.directUrl = "";
+          this.bearerToken = "";
         }
+
+        this.requestMethod = prometheusRequestMethod === "GET" ? "GET" : "POST";
 
         if (prometheusProvider) {
           this.selectedOption =
@@ -118,8 +170,21 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return prefix.startsWith("/") ? prefix : `/${prefix}`;
   }
 
-  parsePrometheusPath = () => {
-    if (!this.selectedOption || !this.path) {
+  parsePrometheusPath = (): PrometheusConfig | undefined => {
+    if (!this.selectedOption) {
+      return undefined;
+    }
+
+    const prefix = this.sanitizePrefix(this.customPrefix);
+
+    // For OpenShift, allow saving with just directUrl (no service path needed)
+    if (this.isOpenShift && this.directUrl) {
+      const parsed = this.path ? this.path.split(/\/|:/, 3) : [];
+
+      return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
+    }
+
+    if (!this.path) {
       return undefined;
     }
 
@@ -129,13 +194,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       return undefined;
     }
 
-    return {
-      namespace: parsed[0],
-      service: parsed[1],
-      port: parseInt(parsed[2]),
-      prefix: this.sanitizePrefix(this.customPrefix),
-      https: this.useHttps,
-    };
+    return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
   };
 
   onSaveProvider = () => {
@@ -149,6 +208,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   onSaveMountpoints = () => {
     this.props.cluster.preferences.filesystemMountpoints = this.mountpoints;
+  };
+
+  onSaveRequestMethod = () => {
+    this.props.cluster.preferences.prometheusRequestMethod = this.requestMethod;
   };
 
   render() {
@@ -170,7 +233,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 options={this.options}
                 themeName="lens"
               />
-              <small className="hint">What query format is used to fetch metrics from Prometheus</small>
+              <small className="hint">
+                What query format is used to fetch metrics from Prometheus. Select &quot;OpenShift&quot; for
+                OpenShift/OKD clusters where Prometheus requires bearer token authentication.
+              </small>
             </>
           )}
         </section>
@@ -187,7 +253,9 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 placeholder="<namespace>/<service>:<port>"
               />
               <small className="hint">
-                {`An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
+                {this.isOpenShift
+                  ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
+                  : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
               </small>
             </section>
             <hr />
@@ -202,7 +270,9 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 }}
               />
               <small className="hint">
-                Externally hosted Prometheus might listen using HTTPS. Usually this is not needed.
+                {this.isOpenShift
+                  ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
+                  : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
               </small>
             </section>
             <hr />
@@ -220,9 +290,68 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                 to be added to all requests.
               </small>
             </section>
+            {this.isOpenShift && (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Prometheus ingress/route" />
+                  <Input
+                    theme="round-black"
+                    value={this.directUrl}
+                    onChange={(value) => (this.directUrl = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="https://prometheus-k8s-openshift-monitoring.apps.example.com"
+                  />
+                  <small className="hint">
+                    The external URL (OpenShift Route or Ingress) to the Prometheus instance. This connects directly to
+                    Prometheus, bypassing the Kubernetes API service proxy which cannot forward authentication headers.
+                    Find the route with: oc get route prometheus-k8s -n openshift-monitoring -o
+                    jsonpath=&apos;https://&#123;.spec.host&#125;&apos;
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Bearer token" />
+                  <Input
+                    theme="round-black"
+                    type="password"
+                    value={this.bearerToken}
+                    onChange={(value) => (this.bearerToken = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="eyJhbGciOi..."
+                  />
+                  <small className="hint">
+                    Service account bearer token for authenticating to Prometheus. On OpenShift, Prometheus requires
+                    authentication via kube-rbac-proxy. Generate a long-lived token with: oc create token
+                    &lt;service-account&gt; -n openshift-monitoring --duration=8760h
+                  </small>
+                </section>
+              </>
+            )}
           </>
         )}
         <>
+          <hr />
+          <section>
+            <SubTitle title="Prometheus request method" />
+            <Select
+              id="cluster-prometheus-request-method-input"
+              value={this.requestMethod}
+              onChange={(option) => {
+                this.requestMethod = option?.value ?? "POST";
+                this.onSaveRequestMethod();
+              }}
+              options={requestMethodOptions.map((option) => ({
+                ...option,
+                isSelected: option.value === this.requestMethod,
+              }))}
+              themeName="lens"
+            />
+            <small className="hint">
+              Select how metrics queries are sent to Prometheus. Default is POST. Switch to GET only when your
+              Prometheus/proxy setup requires it.
+            </small>
+          </section>
           <hr />
           <section>
             <SubTitle title="Filesystem mountpoints" />

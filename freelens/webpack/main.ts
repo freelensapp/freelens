@@ -1,5 +1,4 @@
 import path from "path";
-import { DefinePlugin } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { iconsAndImagesWebpackRules } from "./renderer";
 import { buildDir, isDevelopment, mainDir } from "./vars";
@@ -46,12 +45,7 @@ const main: webpack.Configuration = {
       ...iconsAndImagesWebpackRules(),
     ],
   },
-  plugins: [
-    new DefinePlugin({
-      CONTEXT_MATCHER_FOR_NON_FEATURES: `/\\.injectable\\.tsx?$/`,
-      CONTEXT_MATCHER_FOR_FEATURES: `/\\/(renderer|common)\\/.+\\.injectable\\.tsx?$/`,
-    }),
-  ],
+  plugins: [],
 };
 
 export default main;

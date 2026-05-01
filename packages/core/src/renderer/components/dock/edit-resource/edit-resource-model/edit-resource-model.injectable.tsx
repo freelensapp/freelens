@@ -12,18 +12,18 @@ import assert from "assert";
 import yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import { createPatch } from "rfc6902";
+import { createPatch, type Operation } from "rfc6902";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import editResourceTabStoreInjectable from "../store.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
 
-import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
+import type { Container, KubeObject, KubeObjectMetadata, PodSpec, RawKubeObject } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
 
 import type { EditingResource, EditResourceTabStore } from "../store";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
-import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
+import type { PatchKubeResourceOptions, RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 
 const editResourceModelInjectable = getInjectable({
   id: "edit-resource-model",
@@ -61,6 +61,105 @@ interface Dependencies {
   showErrorNotification: ShowNotification;
   readonly store: EditResourceTabStore;
   readonly tabId: string;
+}
+
+type PodEditResource = RawKubeObject<KubeObjectMetadata, Record<string, unknown>, PodSpec>;
+
+interface PodResizePatchContainer {
+  name: string;
+  resources?: Container["resources"];
+}
+
+type PodResizePatchPayload = Record<string, unknown> & {
+  spec: {
+    containers?: PodResizePatchContainer[];
+    initContainers?: PodResizePatchContainer[];
+  };
+};
+
+type PatchRequest =
+  | {
+      patch: ReturnType<typeof createPatch>;
+      options: PatchKubeResourceOptions;
+    }
+  | {
+      patch: PodResizePatchPayload;
+      options: PatchKubeResourceOptions;
+    }
+  | {
+      error: string;
+    };
+
+function isPodResourcePath(path: string) {
+  return /^\/spec\/(?:containers|initContainers)\/\d+\/resources(?:\/.*)?$/.test(path);
+}
+
+function isPod(object: RawKubeObject) {
+  return object.kind === "Pod";
+}
+
+function getPodResizePatchContainer(container: Container): PodResizePatchContainer {
+  return {
+    name: container.name,
+    resources: container.resources,
+  };
+}
+
+function getPodResizePatchPayload(object: PodEditResource): PodResizePatchPayload {
+  return {
+    spec: {
+      containers: object.spec?.containers?.map(getPodResizePatchContainer),
+      initContainers: object.spec?.initContainers?.map(getPodResizePatchContainer),
+    },
+  };
+}
+
+function getPatchRequestFor(currentVersion: RawKubeObject, firstVersion: RawKubeObject): PatchRequest {
+  const patch = createPatch(firstVersion, currentVersion);
+
+  if (!isPod(currentVersion)) {
+    return {
+      patch,
+      options: {
+        strategy: "json",
+      },
+    };
+  }
+
+  const currentPodVersion = currentVersion as PodEditResource;
+
+  const hasResourceChanges = patch.some((operation: Operation) => isPodResourcePath(operation.path));
+
+  if (!hasResourceChanges) {
+    return {
+      patch,
+      options: {
+        strategy: "json",
+      },
+    };
+  }
+
+  const hasNonResourceChanges = patch.some((operation: Operation) => !isPodResourcePath(operation.path));
+
+  if (hasNonResourceChanges) {
+    return {
+      error:
+        "Pod resource updates must be saved separately from other pod changes because Kubernetes uses the resize subresource for requests and limits.",
+    };
+  }
+
+  return {
+    patch: getPodResizePatchPayload(currentPodVersion),
+    options: {
+      strategy: "strategic",
+      subResource: "resize",
+    },
+  };
+}
+
+function setEditResourceVersionAnnotation(object: RawKubeObject) {
+  object.metadata.annotations ??= {};
+  object.metadata.annotations[EditResourceAnnotationName] = object.apiVersion.split("/").pop();
 }
 
 function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
@@ -308,13 +407,26 @@ export class EditResourceModel {
   save = async () => {
     const currentValue = this.configuration.value.get();
     const currentVersion = yaml.load(currentValue) as RawKubeObject;
-    const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue);
+    const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue) as RawKubeObject;
+    let patchRequest = getPatchRequestFor(currentVersion, firstVersion);
 
-    // Make sure we save this annotation so that we can use it in the future
-    currentVersion.metadata.annotations ??= {};
-    currentVersion.metadata.annotations[EditResourceAnnotationName] = currentVersion.apiVersion.split("/").pop();
+    if ("error" in patchRequest) {
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
 
-    const patches = createPatch(firstVersion, currentVersion);
+      return null;
+    }
+
+    if (patchRequest.options.subResource !== "resize") {
+      setEditResourceVersionAnnotation(currentVersion);
+      patchRequest = getPatchRequestFor(currentVersion, firstVersion);
+    }
+
+    if ("error" in patchRequest) {
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
+
+      return null;
+    }
+
     const selfLink = getEditSelfLinkFor(currentVersion);
 
     if (!selfLink) {
@@ -325,7 +437,7 @@ export class EditResourceModel {
       return null;
     }
 
-    const result = await this.dependencies.requestPatchKubeResource(selfLink, patches);
+    const result = await this.dependencies.requestPatchKubeResource(selfLink, patchRequest.patch, patchRequest.options);
 
     if (!result.callWasSuccessful) {
       this.dependencies.showErrorNotification(<p>Failed to save resource: {result.error}</p>);

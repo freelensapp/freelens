@@ -705,6 +705,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -726,6 +729,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -747,6 +753,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -758,6 +767,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -779,6 +791,9 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1548,6 +1563,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -1569,6 +1587,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1590,6 +1611,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1601,6 +1625,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1622,6 +1649,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -2423,6 +2453,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -2444,6 +2477,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -2465,6 +2501,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -2476,6 +2515,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -2497,6 +2539,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -3298,6 +3343,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -3319,6 +3367,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -3340,6 +3391,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -3351,6 +3405,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -3372,6 +3429,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -4424,6 +4484,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -4445,6 +4508,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -4466,6 +4532,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -4477,6 +4546,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -4498,6 +4570,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -5287,6 +5362,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -5308,6 +5386,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -5329,6 +5410,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -5340,6 +5424,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -5361,6 +5448,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -6150,6 +6240,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -6171,6 +6264,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -6192,6 +6288,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -6203,6 +6302,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -6224,6 +6326,9 @@ exports[`opening catalog entity details panel when navigated to the catalog when
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"

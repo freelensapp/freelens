@@ -11,7 +11,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
@@ -54,13 +53,11 @@ class NonInjectedResourceQuotas extends React.Component<Dependencies> {
           renderHeaderTitle="Resource Quotas"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(resourceQuota) => [
             <WithTooltip>{resourceQuota.getName()}</WithTooltip>,
-            <KubeObjectStatusIcon key="icon" object={resourceQuota} />,
             <NamespaceSelectBadge key="namespace" namespace={resourceQuota.getNs()} />,
             <KubeObjectAge key="age" object={resourceQuota} />,
           ]}

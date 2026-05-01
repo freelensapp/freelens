@@ -6,6 +6,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import clusterEnumerationInjectable from "../../../../main/cluster-enumeration/cluster-enumeration.injectable";
 
+import type { ClusterId } from "../../../../extensions/common-api/cluster-types";
+
 /**
  * Handler for getClusterByIdChannel IPC requests.
  * Returns a specific cluster by ID or undefined if not found.
@@ -16,7 +18,7 @@ const getClusterByIdInjectable = getInjectable({
   instantiate: (di) => {
     const clusterEnumeration = di.inject(clusterEnumerationInjectable);
 
-    return (id: string) => clusterEnumeration.getById(id);
+    return (id: ClusterId) => clusterEnumeration.getById(id);
   },
 });
 

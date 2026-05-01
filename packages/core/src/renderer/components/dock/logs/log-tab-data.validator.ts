@@ -21,4 +21,5 @@ export const logTabDataValidator = Joi.object<LogTabData>({
   selectedContainer: Joi.string().optional(),
   showTimestamps: Joi.boolean().required(),
   showPrevious: Joi.boolean().required(),
+  showWordWrap: Joi.boolean().required(),
 });

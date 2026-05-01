@@ -19,7 +19,6 @@ import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectConditionsList } from "../kube-object-conditions";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { TabLayout } from "../layout/tab-layout-2";
 import { LineProgress } from "../line-progress";
 import { WithTooltip } from "../with-tooltip";
@@ -225,7 +224,6 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
           renderHeaderTitle="Nodes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "CPU", className: "cpu", sortBy: columnId.cpu, id: columnId.cpu },
             { title: "Memory", className: "memory", sortBy: columnId.memory, id: columnId.memory },
             { title: "Disk", className: "disk", sortBy: columnId.disk, id: columnId.disk },
@@ -248,7 +246,6 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
             return [
               <WithTooltip>{node.getName()}</WithTooltip>,
-              <KubeObjectStatusIcon key="icon" object={node} />,
               this.renderCpuUsage(node),
               this.renderMemoryUsage(node),
               this.renderDiskUsage(node),

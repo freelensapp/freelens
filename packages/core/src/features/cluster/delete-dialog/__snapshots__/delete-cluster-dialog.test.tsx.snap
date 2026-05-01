@@ -343,6 +343,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -364,6 +367,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -385,6 +391,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -396,6 +405,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -417,6 +429,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -987,6 +1002,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -1008,6 +1026,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1029,6 +1050,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1040,6 +1064,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1061,6 +1088,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1664,6 +1694,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -1685,6 +1718,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1706,6 +1742,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1717,6 +1756,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1738,6 +1780,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -2422,6 +2467,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -2443,6 +2491,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -2464,6 +2515,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -2475,6 +2529,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -2496,6 +2553,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -3180,6 +3240,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -3201,6 +3264,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -3222,6 +3288,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -3233,6 +3302,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -3254,6 +3326,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"

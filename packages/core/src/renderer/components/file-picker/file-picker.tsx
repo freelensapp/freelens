@@ -184,7 +184,8 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
 
           paths.push(destinationPath);
 
-          return fse.copyFile(file.path, destinationPath);
+          const buffer = await file.arrayBuffer();
+          return fse.writeFile(destinationPath, Buffer.from(buffer));
         });
 
         await Promise.all(promises);
