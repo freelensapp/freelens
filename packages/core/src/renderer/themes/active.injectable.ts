@@ -8,15 +8,13 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import customAccentColorInjectable from "../../features/user-preferences/common/custom-accent-color.injectable";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
+import { DEFAULT_ACCENT_COLOR } from "./accent-colors";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import lensThemesInjectable from "./themes.injectable";
 
 import type { LensColorName, LensTheme } from "./lens-theme";
-
-/** The default accent color used by built-in themes. */
-const DEFAULT_ACCENT_COLOR = "#00a7a0";
 
 /**
  * Color keys that represent the accent color across built-in themes.
@@ -63,8 +61,6 @@ const activeThemeInjectable = getInjectable({
         return baseTheme;
       }
 
-      // Build theme-aware overrides: only replace known accent keys, and
-      // only when the base theme actually uses the default accent for them.
       const colorOverrides: Partial<Record<LensColorName, string>> = {};
 
       for (const key of ACCENT_COLOR_KEYS) {
@@ -73,8 +69,11 @@ const activeThemeInjectable = getInjectable({
         }
       }
 
-      // Ensure sidebar active text contrasts with the accent background
-      colorOverrides.sidebarActiveColor = baseTheme.type === "dark" ? "#ffffff" : "#1e2124";
+      // Only adjust sidebar active text contrast when the accent background was actually changed.
+      // Skipping this for themes that don't use the default accent preserves their custom sidebarActiveColor.
+      if (Object.keys(colorOverrides).length > 0) {
+        colorOverrides.sidebarActiveColor = baseTheme.type === "dark" ? "#ffffff" : "#1e2124";
+      }
 
       return {
         ...baseTheme,

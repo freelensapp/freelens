@@ -8,6 +8,7 @@ import { computed } from "mobx";
 import customAccentColorInjectable from "../../../features/user-preferences/common/custom-accent-color.injectable";
 import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import { DEFAULT_ACCENT_COLOR } from "../accent-colors";
 import activeThemeInjectable from "../active.injectable";
 import defaultLensThemeInjectable from "../default-theme.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
@@ -16,8 +17,6 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 
 import type { LensTheme } from "../lens-theme";
-
-const DEFAULT_ACCENT_COLOR = "#00a7a0";
 
 const createMockTheme = (overrides: Partial<LensTheme> = {}): LensTheme => ({
   name: "Test Theme",
@@ -147,7 +146,7 @@ describe("active theme with custom accent color", () => {
   let mockCustomAccentColor: string | undefined;
   let mockSystemThemeType: "dark" | "light";
   let mockColorThemePreference: { useSystemTheme: boolean; lensThemeId: string };
-  let mockDarkTheme: LensTheme;
+  let mockBaseTheme: LensTheme;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -155,11 +154,11 @@ describe("active theme with custom accent color", () => {
     mockCustomAccentColor = undefined;
     mockSystemThemeType = "dark";
     mockColorThemePreference = { useSystemTheme: false, lensThemeId: "lens-dark" };
-    mockDarkTheme = createMockTheme({ name: "Dark", type: "dark" });
+    mockBaseTheme = createMockTheme({ name: "Dark", type: "dark" });
 
     di.override(customAccentColorInjectable, () => computed(() => mockCustomAccentColor));
     di.override(lensColorThemePreferenceInjectable, () => computed(() => mockColorThemePreference));
-    di.override(defaultLensThemeInjectable, () => mockDarkTheme);
+    di.override(defaultLensThemeInjectable, () => mockBaseTheme);
     di.override(systemThemeConfigurationInjectable, () => computed(() => mockSystemThemeType));
   });
 
@@ -212,8 +211,8 @@ describe("active theme with custom accent color", () => {
     });
 
     it("sets sidebar active color to dark for light themes", () => {
-      mockDarkTheme = createMockTheme({ name: "Light", type: "light" });
-      di.override(defaultLensThemeInjectable, () => mockDarkTheme);
+      mockBaseTheme = createMockTheme({ name: "Light", type: "light" });
+      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
       activeTheme = di.inject(activeThemeInjectable);
 
       const theme = activeTheme.get();
@@ -234,14 +233,14 @@ describe("active theme with custom accent color", () => {
   describe("when theme colors do not use default accent", () => {
     beforeEach(() => {
       mockCustomAccentColor = "#ff0000";
-      mockDarkTheme = createMockTheme({
+      mockBaseTheme = createMockTheme({
         colors: {
           ...createMockTheme().colors,
           blue: "#custom-blue",
           primary: "#custom-primary",
         },
       });
-      di.override(defaultLensThemeInjectable, () => mockDarkTheme);
+      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
       activeTheme = di.inject(activeThemeInjectable);
     });
 
@@ -250,6 +249,35 @@ describe("active theme with custom accent color", () => {
 
       expect(theme.colors.blue).toBe("#custom-blue");
       expect(theme.colors.primary).toBe("#custom-primary");
+    });
+  });
+
+  describe("when a third-party theme uses no default accent keys", () => {
+    const customSidebarActiveColor = "#abcdef";
+
+    beforeEach(() => {
+      mockCustomAccentColor = "#ff0000";
+      mockBaseTheme = createMockTheme({
+        colors: {
+          ...createMockTheme().colors,
+          blue: "#custom-blue",
+          primary: "#custom-primary",
+          buttonPrimaryBackground: "#custom-btn",
+          menuActiveBackground: "#custom-menu",
+          helmStableRepo: "#custom-helm",
+          colorInfo: "#custom-info",
+          sidebarSubmenuActiveColor: "#custom-submenu",
+          sidebarActiveColor: customSidebarActiveColor,
+        },
+      });
+      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
+      activeTheme = di.inject(activeThemeInjectable);
+    });
+
+    it("does not override sidebarActiveColor when no accent keys matched", () => {
+      const theme = activeTheme.get();
+
+      expect(theme.colors.sidebarActiveColor).toBe(customSidebarActiveColor);
     });
   });
 
