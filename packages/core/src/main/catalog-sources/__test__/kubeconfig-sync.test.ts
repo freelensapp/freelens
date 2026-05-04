@@ -22,11 +22,13 @@ import kubeconfigSyncsInjectable from "../../../features/user-preferences/common
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.injectable";
+import kubeconfigSyncLoggerInjectable from "../kubeconfig-sync/logger.injectable";
 import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
 import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
 import type { ReadStream, Stats } from "fs";
 
 import type { AsyncFnMock } from "@async-fn/jest";
+import type { Logger } from "@freelensapp/logger";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { CatalogEntity } from "../../../common/catalog";
@@ -493,6 +495,47 @@ describe("kubeconfig-sync.source tests", () => {
             });
           });
         });
+      });
+    });
+  });
+
+  describe("when a sync target does not exist", () => {
+    let manager: KubeconfigSyncManager;
+    let watchMock: jest.Mock;
+    let logger: jest.Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
+
+    beforeEach(() => {
+      logger = {
+        debug: jest.fn(),
+        warn: jest.fn(),
+        info: jest.fn(),
+        error: jest.fn(),
+      };
+
+      watchMock = jest.fn(() => getFakeWatchInstance());
+
+      di.override(kubeconfigSyncLoggerInjectable, () => logger as unknown as Logger);
+      di.override(statInjectable, () => async () => {
+        throw Object.assign(new Error("missing"), {
+          code: "ENOENT",
+        });
+      });
+      di.override(watchInjectable, () => watchMock);
+
+      manager = di.inject(kubeconfigSyncManagerInjectable);
+      manager.startSync();
+    });
+
+    it("skips missing paths without warning", async () => {
+      kubeconfigSyncs.set("/missing/config", {});
+
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(watchMock).not.toHaveBeenCalled();
+      expect(logger.warn).not.toHaveBeenCalled();
+      expect(logger.debug).toHaveBeenCalledWith("skipping missing file/folder", {
+        filePath: "/missing/config",
       });
     });
   });
