@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
@@ -154,7 +154,9 @@ describe("LogSearch tests", () => {
       toString: () => "hello",
     } as Selection);
 
-    window.dispatchEvent(new KeyboardEvent("keydown", eventInit));
+    await act(async () => {
+      window.dispatchEvent(new KeyboardEvent("keydown", eventInit));
+    });
 
     expect(await screen.findByPlaceholderText("Search...")).toHaveValue("hello");
     expect(scrollToOverlay).toHaveBeenCalled();
@@ -189,7 +191,9 @@ describe("LogSearch tests", () => {
       toString: () => "hello",
     } as Selection);
 
-    window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+    await act(async () => {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+    });
 
     expect(search).toHaveValue("o");
   });
@@ -222,7 +226,9 @@ describe("LogSearch tests", () => {
       toString: () => "",
     } as Selection);
 
-    window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+    await act(async () => {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "f", ctrlKey: true }));
+    });
 
     expect(search).toHaveValue("o");
   });
