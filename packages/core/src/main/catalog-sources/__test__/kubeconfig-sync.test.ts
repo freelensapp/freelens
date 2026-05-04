@@ -519,6 +519,8 @@ describe("kubeconfig-sync.source tests", () => {
 
       watchMock = jest.fn(() => getFakeWatchInstance());
 
+      localDi.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+      localDi.override(directoryForTempInjectable, () => "/some-directory-for-temp");
       localDi.override(kubeconfigSyncsInjectable, () => localKubeconfigSyncs);
       localDi.override(kubeconfigSyncLoggerInjectable, () => logger as unknown as Logger);
       localDi.override(statInjectable, () => async () => {
