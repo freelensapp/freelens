@@ -148,6 +148,79 @@ spec:
     );
   });
 
+  it("uses the resize subresource when only pod-level resources change", async () => {
+    const firstDraft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+`;
+    const draft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 150m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+`;
+    const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
+
+    await model.save();
+
+    expect(requestPatchKubeResource).toHaveBeenCalledWith(
+      selfLink,
+      {
+        spec: {
+          resources: {
+            requests: {
+              cpu: "150m",
+              memory: "128Mi",
+            },
+            limits: {
+              cpu: "300m",
+              memory: "256Mi",
+            },
+          },
+          containers: [
+            {
+              name: "main",
+              resources: undefined,
+            },
+          ],
+          initContainers: undefined,
+        },
+      },
+      {
+        strategy: "strategic",
+        subResource: "resize",
+      },
+    );
+  });
+
   it("keeps normal json patching for non-resource pod edits", async () => {
     const firstDraft = `apiVersion: v1
 kind: Pod
@@ -221,6 +294,47 @@ spec:
       resources:
         requests:
           cpu: 200m
+`;
+    const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
+
+    await model.save();
+
+    expect(requestPatchKubeResource).not.toHaveBeenCalled();
+    expect(renderToStaticMarkup(showErrorNotification.mock.calls[0][0] as React.ReactElement)).toContain(
+      "Pod resource updates must be saved separately from other pod changes",
+    );
+  });
+
+  it("rejects pod edits that mix pod-level resource resizing with other changes", async () => {
+    const firstDraft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 100m
+`;
+    const draft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.1
+  resources:
+    requests:
+      cpu: 200m
 `;
     const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
 

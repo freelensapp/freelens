@@ -72,6 +72,7 @@ interface PodResizePatchContainer {
 
 type PodResizePatchPayload = Record<string, unknown> & {
   spec: {
+    resources?: PodSpec["resources"];
     containers?: PodResizePatchContainer[];
     initContainers?: PodResizePatchContainer[];
   };
@@ -91,7 +92,7 @@ type PatchRequest =
     };
 
 function isPodResourcePath(path: string) {
-  return /^\/spec\/(?:containers|initContainers)\/\d+\/resources(?:\/.*)?$/.test(path);
+  return /^\/spec\/(?:resources(?:\/.*)?|(?:containers|initContainers)\/\d+\/resources(?:\/.*)?)$/.test(path);
 }
 
 function isPod(object: RawKubeObject) {
@@ -108,6 +109,7 @@ function getPodResizePatchContainer(container: Container): PodResizePatchContain
 function getPodResizePatchPayload(object: PodEditResource): PodResizePatchPayload {
   return {
     spec: {
+      resources: object.spec?.resources,
       containers: object.spec?.containers?.map(getPodResizePatchContainer),
       initContainers: object.spec?.initContainers?.map(getPodResizePatchContainer),
     },
