@@ -37,27 +37,6 @@ exports[`withTooltip tests when a tooltip ReactNode and id is specified renders 
 </body>
 `;
 
-exports[`withTooltip tests when a tooltip ReactNode and id is specified when hovering the component renders 1`] = `
-<body>
-  <div>
-    <div
-      data-testid="my-test-id"
-      id="bat"
-    >
-      foobar
-      <div />
-    </div>
-  </div>
-  <div
-    class="Tooltip narrow right formatter"
-    role="tooltip"
-    style="left: 10px; top: 0px;"
-  >
-    my-tooltip
-  </div>
-</body>
-`;
-
 exports[`withTooltip tests when a tooltip via props and id is specified renders 1`] = `
 <body>
   <div>
@@ -68,27 +47,6 @@ exports[`withTooltip tests when a tooltip via props and id is specified renders 
       foobar
       <div />
     </div>
-  </div>
-</body>
-`;
-
-exports[`withTooltip tests when a tooltip via props and id is specified when hovering the component renders 1`] = `
-<body>
-  <div>
-    <div
-      data-testid="my-test-id"
-      id="bat"
-    >
-      foobar
-      <div />
-    </div>
-  </div>
-  <div
-    class="Tooltip narrow right formatter"
-    role="tooltip"
-    style="left: 10px; top: 0px;"
-  >
-    my-tooltip
   </div>
 </body>
 `;

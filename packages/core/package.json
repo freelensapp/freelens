@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/core",
-  "version": "1.8.2-0",
+  "version": "1.9.0-0",
   "description": "Freelens Core",
   "keywords": [],
   "homepage": "https://freelens.app",
@@ -175,10 +175,10 @@
     "winston-transport": "^4.9.0",
     "winston-transport-browserconsole": "^1.0.5",
     "ws": "^8.20.0",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "devDependencies": {
-    "@async-fn/jest": "1.6.5",
+    "@async-fn/jest": "1.7.0",
     "@freelensapp/messaging-fake-bridge": "workspace:^",
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
