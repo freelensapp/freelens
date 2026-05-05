@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "1.9.0-0",
+  "version": "1.9.0",
   "private": false,
   "description": "A package containing runMany and runManySync",
   "homepage": "https://freelens.app",

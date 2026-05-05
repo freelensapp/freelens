@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/test-utils",
-  "version": "1.9.0-0",
+  "version": "1.9.0",
   "private": false,
   "description": "A collection of utilities for testing",
   "homepage": "https://freelens.app",

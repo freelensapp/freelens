@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/openid-client",
-  "version": "1.9.0-0",
+  "version": "1.9.0",
   "private": false,
   "description": "Open ID for Freelens",
   "homepage": "https://freelens.app",

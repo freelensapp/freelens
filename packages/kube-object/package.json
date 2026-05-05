@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kube-object",
-  "version": "1.9.0-0",
+  "version": "1.9.0",
   "private": false,
   "description": "Injection tokens for list layout",
   "homepage": "https://freelens.app",
