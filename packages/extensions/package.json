@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/extensions",
-  "version": "1.9.0",
+  "version": "1.9.1-0",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
   "homepage": "https://freelens.app",
   "bugs": {

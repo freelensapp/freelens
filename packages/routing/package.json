@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/routing",
-  "version": "1.9.0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Highly extendable routing in the Freelens.",
   "homepage": "https://freelens.app",

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/generate-tray-icons",
-  "version": "1.9.0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "CLI generating tray icons for building a lens-like application",
   "homepage": "https://freelens.app",
