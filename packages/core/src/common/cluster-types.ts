@@ -111,6 +111,8 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
  * A cluster's prometheus settings (a subset of cluster settings)
  */
 export interface ClusterPrometheusPreferences {
+  /** HTTP method for Prometheus query_range requests; defaults to POST */
+  prometheusRequestMethod?: "GET" | "POST";
   prometheus?: {
     namespace: string;
     service: string;

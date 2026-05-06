@@ -26,6 +26,7 @@ import type {
 import type { SelectOption } from "../select";
 
 type PrometheusConfig = NonNullable<ClusterPrometheusPreferences["prometheus"]>;
+type PrometheusRequestMethod = NonNullable<ClusterPrometheusPreferences["prometheusRequestMethod"]>;
 
 function buildPrometheusConfig(
   parsed: string[],
@@ -58,6 +59,19 @@ interface Dependencies {
   requestMetricsProviders: RequestMetricsProviders;
 }
 
+const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
+  {
+    value: "POST",
+    label: "POST",
+    isSelected: true,
+  },
+  {
+    value: "GET",
+    label: "GET",
+    isSelected: false,
+  },
+];
+
 @observer
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
   @observable mountpoints = "";
@@ -66,6 +80,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   @observable useHttps = false; // whether to use https scheme for service proxy
   @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
   @observable bearerToken = ""; // bearer token for Prometheus authentication
+  @observable requestMethod: PrometheusRequestMethod = "POST";
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
@@ -107,7 +122,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     disposeOnUnmount(
       this,
       autorun(() => {
-        const { prometheus, prometheusProvider, filesystemMountpoints } = this.props.cluster.preferences;
+        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } =
+          this.props.cluster.preferences;
 
         if (prometheus) {
           const prefix = prometheus.prefix || "";
@@ -127,6 +143,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
           this.directUrl = "";
           this.bearerToken = "";
         }
+
+        this.requestMethod = prometheusRequestMethod === "GET" ? "GET" : "POST";
 
         if (prometheusProvider) {
           this.selectedOption =
@@ -190,6 +208,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   onSaveMountpoints = () => {
     this.props.cluster.preferences.filesystemMountpoints = this.mountpoints;
+  };
+
+  onSaveRequestMethod = () => {
+    this.props.cluster.preferences.prometheusRequestMethod = this.requestMethod;
   };
 
   render() {
@@ -309,6 +331,27 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
           </>
         )}
         <>
+          <hr />
+          <section>
+            <SubTitle title="Prometheus request method" />
+            <Select
+              id="cluster-prometheus-request-method-input"
+              value={this.requestMethod}
+              onChange={(option) => {
+                this.requestMethod = option?.value ?? "POST";
+                this.onSaveRequestMethod();
+              }}
+              options={requestMethodOptions.map((option) => ({
+                ...option,
+                isSelected: option.value === this.requestMethod,
+              }))}
+              themeName="lens"
+            />
+            <small className="hint">
+              Select how metrics queries are sent to Prometheus. Default is POST. Switch to GET only when your
+              Prometheus/proxy setup requires it.
+            </small>
+          </section>
           <hr />
           <section>
             <SubTitle title="Filesystem mountpoints" />

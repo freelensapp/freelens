@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging-fake-bridge",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Fake implementation to bridge multiple dependency injection containers.",
   "homepage": "https://freelens.app",
@@ -29,7 +29,7 @@
     "test:unit": "jest --coverage --runInBand"
   },
   "dependencies": {
-    "@async-fn/jest": "^1.6.5",
+    "@async-fn/jest": "^1.7.0",
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "lodash": "^4.18.1"
@@ -52,7 +52,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

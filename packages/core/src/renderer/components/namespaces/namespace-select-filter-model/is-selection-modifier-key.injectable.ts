@@ -9,15 +9,15 @@ import isMacInjectable from "../../../../common/vars/is-mac.injectable";
 
 import type React from "react";
 
-export type IsMultiSelectionKey = (event: React.KeyboardEvent) => boolean;
+export type IsSelectionModifierKey = (event: React.KeyboardEvent) => boolean;
 
-const isMultiSelectionKeyInjectable = getInjectable({
-  id: "is-multi-selection-key",
-  instantiate: (di): IsMultiSelectionKey => {
+const isSelectionModifierKeyInjectable = getInjectable({
+  id: "is-selection-modifier-key",
+  instantiate: (di): IsSelectionModifierKey => {
     const isMac = di.inject(isMacInjectable);
 
     return isMac ? ({ key }) => key === "Meta" : ({ key }) => key === "Control";
   },
 });
 
-export default isMultiSelectionKeyInjectable;
+export default isSelectionModifierKeyInjectable;

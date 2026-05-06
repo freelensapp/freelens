@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/webpack",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Webpack configurations and scripts for Lens packages.",
   "homepage": "https://freelens.app",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/postcss": "^4.2.4",
     "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "fs-extra": "^11.3.4",
@@ -39,15 +39,15 @@
     "sass": "^1.99.0",
     "sass-loader": "^16.0.7",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.2.4",
     "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
-    "webpack": "^5.105.4",
+    "webpack": "^5.106.2",
     "webpack-cli": "^7.0.2",
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.5",
+    "@async-fn/jest": "^1.7.0",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/test-utils": "^17.11.1",
