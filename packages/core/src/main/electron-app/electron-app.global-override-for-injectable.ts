@@ -304,7 +304,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
         wasOpenedAsHidden: false,
         restoreState: false,
         launchItems: [],
-        status: "",
+        status: "not-found" as const,
       };
     }
   })();

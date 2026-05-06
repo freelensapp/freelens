@@ -34,11 +34,13 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
   @observable private lastNamespaceKey = "";
   @observable private lastPlaceholder = "";
+  private userTyping = false;
 
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
   readonly updateStorage = debounce((storageKey: string, val: string) => {
     this.props.persistentSearchStore.setValue(storageKey, val);
-  }, 500);
+    this.userTyping = false;
+  }, 250);
 
   private getCurrentNamespaceKey(): string {
     const { namespaceStore } = this.props;
@@ -104,7 +106,15 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           const placeholderChanged = placeholderKey !== this.lastPlaceholder;
           const contextChanged = namespaceChanged || (placeholderChanged && !isEnabled);
 
-          // When persistence is enabled, always sync to persisted value
+          // Skip overwriting inputVal while user is actively typing — the debounced
+          // storage/URL updates will eventually bring everything back in sync.
+          if (this.userTyping && !contextChanged) {
+            this.lastNamespaceKey = namespaceKey;
+            this.lastPlaceholder = placeholderKey;
+            return;
+          }
+
+          // When persistence is enabled, sync to persisted value
           if (isEnabled) {
             this.inputVal = persistedValue;
             searchUrlParam.set(persistedValue);
@@ -152,13 +162,9 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   setValue = (value: string) => {
     const storageKey = this.getStorageKey();
 
+    this.userTyping = true;
     this.inputVal = value;
     this.updateUrl(value);
-
-    // Debounce storage updates to avoid slowdown during typing
-    // Always store the value (whether persist is enabled or not)
-    // When persist is disabled, it's stored per placeholder+namespace
-    // When persist is enabled, it's stored per namespace only
     this.updateStorage(storageKey, value);
   };
 
@@ -166,6 +172,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
     this.setValue("");
     this.updateUrl.flush();
     this.updateStorage.flush();
+    this.userTyping = false;
   };
 
   onChange = (val: string, evt: React.ChangeEvent<any>) => {

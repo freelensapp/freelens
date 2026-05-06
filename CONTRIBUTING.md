@@ -46,7 +46,7 @@ Learn about the project from the
 
 - Follow the existing coding style.
 - Use [Biome](https://biomejs.dev/) to lint and format your code.
-- Verify your changes with [Trunk Check](https://docs.trunk.io/cli).
+- Verify your changes with [Trunk Check](https://docs.trunk.io/code-quality/overview/initialize-trunk#run-linters).
 
 ### Commit Messages
 

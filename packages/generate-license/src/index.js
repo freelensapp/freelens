@@ -8,6 +8,7 @@
 
 import { getDependencies, getLicenseText } from "@quantco/pnpm-licenses/dist/api.mjs";
 import fs from "fs/promises";
+import path from "path";
 import spdxLicenseList from "spdx-license-list/full.js";
 
 function parseArgs() {
@@ -21,6 +22,66 @@ function parseArgs() {
     headerFile: headerIndex !== -1 && args[headerIndex + 1] ? args[headerIndex + 1] : null,
     prod: hasProd,
   };
+}
+
+async function getDependenciesFromPnpmApi(prod) {
+  const previousStoreDir = process.env.npm_config_store_dir;
+
+  if (previousStoreDir?.trim()) {
+    process.env.npm_config_store_dir = await normalizeStoreDir(previousStoreDir.trim());
+  }
+
+  try {
+    return await getDependencies(
+      { prod },
+      {
+        stdin: false,
+        inputFile: undefined,
+        stdout: true,
+        outputFile: undefined,
+      },
+    );
+  } finally {
+    if (previousStoreDir === undefined) {
+      delete process.env.npm_config_store_dir;
+    } else {
+      process.env.npm_config_store_dir = previousStoreDir;
+    }
+  }
+}
+
+async function findProjectTopDir() {
+  let currentDir = process.cwd();
+
+  while (true) {
+    const workspaceConfigPath = path.join(currentDir, "pnpm-workspace.yaml");
+
+    try {
+      await fs.access(workspaceConfigPath);
+
+      return currentDir;
+    } catch {
+      // Keep walking up the directory tree.
+    }
+
+    const parentDir = path.dirname(currentDir);
+
+    if (parentDir === currentDir) {
+      return process.cwd();
+    }
+
+    currentDir = parentDir;
+  }
+}
+
+async function normalizeStoreDir(storeDir) {
+  if (path.isAbsolute(storeDir)) {
+    return storeDir;
+  }
+
+  const projectTopDir = await findProjectTopDir();
+
+  return path.resolve(projectTopDir, storeDir);
 }
 
 async function main() {
@@ -38,15 +99,7 @@ async function main() {
     },
   };
 
-  const npmDependencies = await getDependencies(
-    { prod },
-    {
-      stdin: false,
-      inputFile: undefined,
-      stdout: true,
-      outputFile: undefined,
-    },
-  );
+  const npmDependencies = await getDependenciesFromPnpmApi(prod);
 
   const fixedDepdencies = [];
 

@@ -10,7 +10,7 @@ import catalogEntityRegistryInjectable from "../../main/catalog/entity-registry.
 import clusterEnumerationInjectable from "../../main/cluster-enumeration/cluster-enumeration.injectable";
 
 import type { CatalogEntity } from "../../common/catalog";
-import type { ClusterInfo } from "../common-api/cluster-types";
+import type { ClusterId, ClusterInfo } from "../common-api/cluster-types";
 
 export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
 const catalogEntityRegistry = asLegacyGlobalForExtensionApi(catalogEntityRegistryInjectable);
@@ -65,6 +65,6 @@ export function getAllClusters(): ClusterInfo[] {
  * }
  * ```
  */
-export function getClusterById(id: string): ClusterInfo | undefined {
+export function getClusterById(id: ClusterId): ClusterInfo | undefined {
   return clusterEnumeration.getById(id);
 }

@@ -8,7 +8,7 @@ import { requestFromChannelInjectionToken } from "@freelensapp/messaging/dist";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { downloadJsonChannel } from "../../common/fetch/download-json-channel";
 
-import type { AsyncResult } from "@freelensapp/utilities/dist";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { DownloadJsonOptions } from "../../main/fetch/download-json.injectable";
 

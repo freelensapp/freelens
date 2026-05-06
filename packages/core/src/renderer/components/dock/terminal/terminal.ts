@@ -185,9 +185,7 @@ export class Terminal {
       // don't paste if user hasn't turned on the feature
       this.dependencies.terminalCopyOnSelect.get() &&
       // don't paste if the clipboard doesn't have text
-      clipboard
-        .availableFormats()
-        .includes("text/plain")
+      clipboard.availableFormats().includes("text/plain")
     ) {
       this.xterm.paste(clipboard.readText());
     }

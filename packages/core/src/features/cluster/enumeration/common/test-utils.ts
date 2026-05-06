@@ -5,8 +5,10 @@
 
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../../common/catalog-entities/kubernetes-cluster";
 
+import type { ClusterId } from "../../../../extensions/common-api/cluster-types";
+
 export interface TestClusterOptions {
-  id: string;
+  id: ClusterId;
   name: string;
   status?: LensKubernetesClusterStatus;
   labels?: Record<string, string>;

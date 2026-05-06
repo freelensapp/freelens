@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities/dist";
+import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { sum } from "lodash";
 import { computed, makeObservable, observable } from "mobx";
