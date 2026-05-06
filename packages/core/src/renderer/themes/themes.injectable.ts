@@ -6,13 +6,19 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
+import customThemesLoaderInjectable from "./custom-themes-loader.injectable";
 
 const lensThemesInjectable = getInjectable({
   id: "lens-themes",
   instantiate: (di) => {
-    const themes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const builtInThemes = di.injectMany(lensThemeDeclarationInjectionToken);
+    const loadCustomThemes = di.inject(customThemesLoaderInjectable);
+    const customThemes = loadCustomThemes();
 
-    return new Map(themes.map((theme) => [theme.name, theme]));
+    // Combine built-in and custom themes
+    const allThemes = [...builtInThemes, ...customThemes];
+
+    return new Map(allThemes.map((theme) => [theme.name, theme]));
   },
 });
 
