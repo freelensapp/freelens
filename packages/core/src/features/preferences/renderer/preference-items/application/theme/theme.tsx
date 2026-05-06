@@ -56,6 +56,7 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
         <Select
           className={styles.themeSelect}
           id="theme-input"
+          aria-label="Theme"
           options={themeOptions}
           value={state.colorTheme}
           onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
@@ -65,6 +66,7 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
         <Select
           className={styles.accentSelect}
           id="accent-color-select"
+          aria-label="Accent color"
           options={accentColorOptions}
           value={currentColor}
           onChange={(value) => (state.customAccentColor = value?.value)}
