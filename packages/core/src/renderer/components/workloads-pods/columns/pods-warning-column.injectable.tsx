@@ -15,6 +15,7 @@ import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { KubeEvent, Pod } from "@freelensapp/kube-object";
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { EventStore } from "../../events/store";
 
 interface WarningIconProps extends React.HTMLAttributes<HTMLDivElement> {

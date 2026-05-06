@@ -13,6 +13,7 @@ import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { Pod } from "@freelensapp/kube-object";
+
 import type { PodStore } from "../store";
 
 interface PodMemoryCellProps {

@@ -68,9 +68,7 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
   getEventsByObject(obj: KubeObject): KubeEvent[] {
     if (obj.kind == "Node") {
       // Node events are stored with involvedObject.uid equal to the node name
-      return (this.eventsByObjectId.get(obj.getName()) ?? []).filter(
-        (evt) => evt.involvedObject.kind == "Node",
-      );
+      return (this.eventsByObjectId.get(obj.getName()) ?? []).filter((evt) => evt.involvedObject.kind == "Node");
     }
 
     return this.eventsByObjectId.get(obj.getId()) ?? [];
