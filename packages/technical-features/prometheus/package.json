@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/prometheus",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Prometheus support for Freelens",
   "homepage": "https://freelens.app",
@@ -41,9 +41,9 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@types/webpack-env": "^1.18.8",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

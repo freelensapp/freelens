@@ -12,7 +12,7 @@ import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
-import { defaultThemeId } from "../vars";
+import { defaultColorThemePreference } from "../vars";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -50,7 +50,7 @@ describe("user store tests", () => {
       state.httpsProxy = "abcd://defg";
 
       expect(state.httpsProxy).toBe("abcd://defg");
-      expect(state.colorTheme).toBe(defaultThemeId);
+      expect(state.colorTheme).toBe(defaultColorThemePreference);
 
       state.colorTheme = "light";
       expect(state.colorTheme).toBe("light");
@@ -59,7 +59,7 @@ describe("user store tests", () => {
     it("correctly resets theme to default value", async () => {
       state.colorTheme = "some other theme";
       resetTheme();
-      expect(state.colorTheme).toBe(defaultThemeId);
+      expect(state.colorTheme).toBe(defaultColorThemePreference);
     });
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging-for-renderer",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Implementations for 'messaging' in Electron renderer",
   "homepage": "https://freelens.app",
@@ -33,10 +33,10 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "electron": "^39.8.5"
+    "electron": "^39.8.9"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.5",
+    "@async-fn/jest": "^1.7.0",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
@@ -44,12 +44,12 @@
     "@types/webpack-env": "^1.18.8",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mobx": "^6.15.0",
-    "ts-jest": "^29.4.6",
-    "ts-loader": "^9.5.4",
+    "ts-jest": "^29.4.9",
+    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

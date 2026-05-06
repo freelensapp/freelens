@@ -286,7 +286,7 @@ describe("Pods", () => {
 
       firstStatus.state = {
         waiting: {
-          reason: "CrashLookBackOff",
+          reason: "CrashLoopBackOff",
           message: "too much foobar",
         },
       };

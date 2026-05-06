@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/cluster-settings",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Injection token exporter for cluster settings configuration",
   "homepage": "https://freelens.app",
@@ -35,8 +35,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/react": "^17.0.91",
-    "ts-loader": "^9.5.4",
-    "webpack": "^5.105.4"
+    "ts-loader": "^9.5.7",
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

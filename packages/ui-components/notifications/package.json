@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/notifications",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "Highly extendable notifications in the Freelens.",
   "homepage": "https://freelens.app",
@@ -43,7 +43,7 @@
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
     "auto-bind": "^4.0.0",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mobx": "^6.15.0",
     "mobx-react": "^7.6.0",
     "react": "^17.0.2",
@@ -59,10 +59,10 @@
     "css-loader": "^6.11.0",
     "postcss-loader": "^8.2.1",
     "sass-loader": "^16.0.7",
-    "ts-loader": "^9.5.4",
-    "type-fest": "^5.5.0",
+    "ts-loader": "^9.5.7",
+    "type-fest": "^5.6.0",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

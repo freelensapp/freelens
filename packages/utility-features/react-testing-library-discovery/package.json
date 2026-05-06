@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/react-testing-library-discovery",
-  "version": "1.8.2-0",
+  "version": "1.9.1-0",
   "private": false,
   "description": "A way to discover HTML-elements using react-testing-library",
   "homepage": "https://freelens.app",
@@ -35,8 +35,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@testing-library/react": "^12.1.5",
-    "ts-loader": "^9.5.4",
-    "webpack": "^5.105.4"
+    "ts-loader": "^9.5.7",
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",
