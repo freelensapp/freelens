@@ -307,5 +307,12 @@ export default getGlobalOverride(electronAppInjectable, () => {
         status: "not-found" as const,
       };
     }
+
+    toastActivatorCLSID = "";
+
+    setToastActivatorCLSID(clsid: string): void {
+      void clsid;
+      throw new Error("Method not implemented.");
+    }
   })();
 });
