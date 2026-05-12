@@ -314,5 +314,10 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void clsid;
       throw new Error("Method not implemented.");
     }
+
+    configureWebAuthn(options: Electron.ConfigureWebAuthnOptions): void {
+      void options;
+      throw new Error("Method not implemented.");
+    }
   })();
 });
