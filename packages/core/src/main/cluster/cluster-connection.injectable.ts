@@ -21,15 +21,16 @@ import { formatKubeApiResource } from "../../common/rbac";
 import { replaceObservableObject } from "../../common/utils/replace-observable-object";
 import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
 import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
+import powerMonitorInjectable from "../electron-app/features/power-monitor.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
 import requestApiResourcesInjectable from "./request-api-resources.injectable";
-import powerMonitorInjectable from "../electron-app/features/power-monitor.injectable";
 
 import type { Logger } from "@freelensapp/logger";
+
 import type { PowerMonitor } from "electron";
 
 import type { Cluster } from "../../common/cluster/cluster";
