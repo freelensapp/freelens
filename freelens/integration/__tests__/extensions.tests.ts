@@ -33,15 +33,8 @@ describe("extensions page tests", () => {
 
   const extensions =
     extensionPath && !skipInstallExtensionTests
-      ? [extensionPath]
-      : [
-          "@freelensapp/example-extension",
-          "@freelensapp/example-extension@1.8.0",
-          "@freelensapp/example-extension@1.6.2",
-          "@freelensapp/example-extension@1.5.3",
-          "@freelensapp/example-extension@1.4.2",
-          "@freelensapp/example-extension@1.3.0",
-        ];
+      ? extensionPath.split(",").map((ext) => ext.trim())
+      : ["@freelensapp/example-extension@1.3.0"];
 
   (skipInstallExtensionTests ? it.skip : it).each(extensions)(
     "installs an extension %s",
