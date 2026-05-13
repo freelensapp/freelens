@@ -24,15 +24,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-22.04
+          - runs-on: ubuntu-24.04
             os: linux
             arch: x64
-          - runs-on: macos-14
+          - runs-on: ubuntu-24.04-arm
+            os: linux
+            arch: arm64
+          - runs-on: macos-15
             os: macos
             arch: arm64
-          - runs-on: windows-2022
+          - runs-on: macos-15-intel
+            os: macos
+            arch: x64
+          - runs-on: windows-2025
             os: windows
             arch: x64
+          - runs-on: windows-11-arm
+            os: windows
+            arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
@@ -194,14 +203,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: pnpx playwright install-deps
 
-      - name: Build packages (macOS x64, Linux arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: pnpm --color=always --stream build
-        env:
-          DOWNLOAD_ALL_ARCHITECTURES: "true"
-
-      - name: Build packages (macOS arm64, Linux x64, Windows)
-        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
+      - name: Build packages
         run: pnpm --color=always --stream build
 
       - name: Build extra resources
