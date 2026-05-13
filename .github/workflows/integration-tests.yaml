@@ -274,18 +274,36 @@ jobs:
         env:
           DEBUG: pw:browser
 
-      - name: Run integration tests (macOS, Windows)
-        id: integration-tests-macos-windows
-        if: runner.os != 'Linux'
+      - name: Run integration tests (macOS)
+        id: integration-tests-macos
+        if: runner.os == 'macOS'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
         continue-on-error: true
 
-      - name: Run integration tests (macOS, Windows) (retry)
-        if: runner.os != 'Linux' && steps.integration-tests-macos-windows.outcome == 'failure'
+      - name: Run integration tests (macOS) (retry)
+        if: runner.os == 'macOS' && steps.integration-tests-macos.outcome == 'failure'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
+
+      - name: Run integration tests (Windows)
+        id: integration-tests-windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: timeout 600 pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+          EXTENSTION_PATH: skip
+        continue-on-error: true
+
+      - name: Run integration tests (Windows) (retry)
+        if: runner.os == 'Windows' && steps.integration-tests-windows.outcome == 'failure'
+        shell: bash
+        run: timeout 600 pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+          EXTENSTION_PATH: skip

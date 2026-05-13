@@ -28,10 +28,12 @@ describe("extensions page tests", () => {
     10 * 60 * 1000,
   );
 
-  const extensions = process.env.EXTENSION_PATH
-    ? [process.env.EXTENSION_PATH]
-    : process.platform === "win32"
-      ? ["@freelensapp/example-extension"]
+  const extensionPath = process.env.EXTENSION_PATH;
+  const skipInstallExtensionTests = extensionPath === "skip";
+
+  const extensions =
+    extensionPath && !skipInstallExtensionTests
+      ? [extensionPath]
       : [
           "@freelensapp/example-extension",
           "@freelensapp/example-extension@1.8.0",
@@ -41,7 +43,7 @@ describe("extensions page tests", () => {
           "@freelensapp/example-extension@1.3.0",
         ];
 
-  it.each(extensions)(
+  (skipInstallExtensionTests ? it.skip : it).each(extensions)(
     "installs an extension %s",
     async (extension) => {
       // Navigate to extensions page
