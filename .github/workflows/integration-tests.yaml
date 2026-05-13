@@ -24,13 +24,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-22.04
+          # - runs-on: ubuntu-24.04
+          #   os: linux
+          #   arch: x64
+
+          - runs-on: ubuntu-24.04-arm
             os: linux
-            arch: x64
-          - runs-on: macos-14
+            arch: arm64
+
+          - runs-on: macos-15
             os: macos
             arch: arm64
-          - runs-on: windows-2022
+
+          # - runs-on: macos-15-intel
+          #   os: macos
+          #   arch: x64
+
+          # - runs-on: windows-11-arm
+          #   os: windows
+          #   arch: arm64
+
+          - runs-on: windows-2025
             os: windows
             arch: x64
 
@@ -90,7 +104,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
@@ -142,7 +156,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml', 'turbo.json') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
@@ -194,14 +208,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: pnpx playwright install-deps
 
-      - name: Build packages (macOS x64, Linux arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: pnpm --color=always --stream build
-        env:
-          DOWNLOAD_ALL_ARCHITECTURES: "true"
-
-      - name: Build packages (macOS arm64, Linux x64, Windows)
-        if: runner.os == 'macOS' && matrix.arch == 'arm64' || runner.os == 'Linux' && matrix.arch == 'x64' || runner.os == 'Windows'
+      - name: Build packages
         run: pnpm --color=always --stream build
 
       - name: Build extra resources
@@ -255,8 +262,8 @@ jobs:
         id: integration-tests-linux
         if: runner.os == 'Linux'
         run: |
-          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
-          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
           timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
@@ -266,24 +273,42 @@ jobs:
       - name: Run integration tests (Linux) (retry)
         if: runner.os == 'Linux' && steps.integration-tests-linux.outcome == 'failure'
         run: |
-          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
-          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
           timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
 
-      - name: Run integration tests (macOS, Windows)
-        id: integration-tests-macos-windows
-        if: runner.os != 'Linux'
+      - name: Run integration tests (macOS)
+        id: integration-tests-macos
+        if: runner.os == 'macOS'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
         continue-on-error: true
 
-      - name: Run integration tests (macOS, Windows) (retry)
-        if: runner.os != 'Linux' && steps.integration-tests-macos-windows.outcome == 'failure'
+      - name: Run integration tests (macOS) (retry)
+        if: runner.os == 'macOS' && steps.integration-tests-macos.outcome == 'failure'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
+
+      - name: Run integration tests (Windows)
+        id: integration-tests-windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: timeout 600 pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+          EXTENSION_PATH: skip
+        continue-on-error: true
+
+      - name: Run integration tests (Windows) (retry)
+        if: runner.os == 'Windows' && steps.integration-tests-windows.outcome == 'failure'
+        shell: bash
+        run: timeout 600 pnpm --color=always test:integration
+        env:
+          DEBUG: pw:browser
+          EXTENSION_PATH: skip

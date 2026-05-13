@@ -16,7 +16,7 @@ import * as uuid from "uuid";
 import type { ElectronApplication, Frame, Page } from "playwright";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
-  win32: "./dist/win-unpacked/Freelens.exe",
+  win32: `./dist/win${process.arch === "arm64" ? "-arm64" : ""}-unpacked/Freelens.exe`,
   linux: `./dist/linux${process.arch === "arm64" ? "-arm64" : ""}-unpacked/freelens`,
   darwin: `./dist/mac${process.arch === "arm64" ? "-arm64" : ""}/Freelens.app/Contents/MacOS/Freelens`,
 };
