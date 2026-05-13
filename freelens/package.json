@@ -50,7 +50,9 @@
     "start:linux:arm64": "./dist/linux-arm64-unpacked/freelens",
     "start:linux:x64": "./dist/linux-unpacked/freelens",
     "start:linux:x86_64": "./dist/linux-unpacked/freelens",
-    "start:win32": "dist\\win-unpacked\\Freelens.exe",
+    "start:win32:AMD64": "dist\\win-unpacked\\Freelens.exe",
+    "start:win32:ARM64": "dist\\win-arm64-unpacked\\Freelens.exe",
+    "start:win32": "echo pnpm start:linux:${npm_config_arch:-${PROCESSOR_ARCHITECTURE}}",
     "test:integration": "jest -xyz --runInBand --detectOpenHandles --forceExit"
   },
   "config": {

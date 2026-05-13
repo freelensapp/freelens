@@ -257,8 +257,8 @@ jobs:
         id: integration-tests-linux
         if: runner.os == 'Linux'
         run: |
-          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
-          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
           timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
@@ -268,8 +268,8 @@ jobs:
       - name: Run integration tests (Linux) (retry)
         if: runner.os == 'Linux' && steps.integration-tests-linux.outcome == 'failure'
         run: |
-          sudo chown root:root freelens/dist/linux-unpacked/chrome-sandbox
-          sudo chmod 4755 freelens/dist/linux-unpacked/chrome-sandbox
+          sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
+          sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
           timeout 600 xvfb-run -a pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
