@@ -297,7 +297,7 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
-          EXTENSTION_PATH: skip
+          EXTENSION_PATH: skip
         continue-on-error: true
 
       - name: Run integration tests (Windows) (retry)
@@ -306,4 +306,4 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration
         env:
           DEBUG: pw:browser
-          EXTENSTION_PATH: skip
+          EXTENSION_PATH: skip
