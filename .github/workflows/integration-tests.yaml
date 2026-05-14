@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - runs-on: ubuntu-24.04
+          # - runs-on: ubuntu-24.04-arm
           #   os: linux
           #   arch: x64
 
