@@ -21,7 +21,7 @@ jobs:
       matrix:
         include:
           - runs-on: ubuntu-24.04-arm
-            arch: x64
+            arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
