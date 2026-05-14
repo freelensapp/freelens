@@ -17,26 +17,12 @@ class PersistentSearchStore {
   @observable private searchValuesByNamespace = new Map<string, string>();
 
   constructor(private readonly userPreferencesState: UserPreferencesState) {
-    if (this.userPreferencesState.persistentSearch === undefined) {
-      this.userPreferencesState.persistentSearch = false;
-    }
-
     makeObservable(this);
-  }
-
-  private get persistentSearchPreference(): boolean {
-    const { persistentSearch } = this.userPreferencesState;
-
-    if (persistentSearch === undefined) {
-      throw new Error("persistentSearch should be initialized before use");
-    }
-
-    return persistentSearch;
   }
 
   @computed
   get isEnabled(): boolean {
-    return this.persistentSearchPreference;
+    return this.userPreferencesState.persistentSearch ?? false;
   }
 
   @action
