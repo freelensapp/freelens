@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
+import {findOptimalDefaultContainerOfPod} from "./default-container-helper";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 
 import type { DaemonSet, Deployment, Job, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
@@ -35,7 +36,7 @@ const createWorkloadLogsTab =
     const selectedPod = pods[0];
 
     return createLogsTab(`${workload.kind} ${selectedPod.getName()}`, {
-      selectedContainer: selectedPod.getAllContainers()[0].name,
+      selectedContainer: findOptimalDefaultContainerOfPod(selectedPod).name,
       selectedPodId: selectedPod.getId(),
       namespace: selectedPod.getNs(),
       owner: {
