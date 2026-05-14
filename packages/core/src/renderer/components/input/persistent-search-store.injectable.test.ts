@@ -4,7 +4,7 @@
  */
 
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
-import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -16,7 +16,6 @@ describe("persistent search store", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    di.register(persistentSearchStoreInjectable);
     persistentSearchStore = di.inject(persistentSearchStoreInjectable);
     userPreferencesState = di.inject(userPreferencesStateInjectable) as Record<string, unknown>;
   });
