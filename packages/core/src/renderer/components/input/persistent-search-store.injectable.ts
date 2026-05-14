@@ -52,10 +52,6 @@ class PersistentSearchStore {
   getValue(namespace: string): string {
     return this.searchValuesByNamespace.get(namespace) || "";
   }
-
-  getEnabled(): boolean {
-    return this.isEnabled;
-  }
 }
 
 const persistentSearchStoreInjectable = getInjectable({

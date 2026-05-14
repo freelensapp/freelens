@@ -23,7 +23,6 @@ describe("persistent search store", () => {
 
   it("defaults to disabled when no stored preference exists", () => {
     expect(persistentSearchStore.isEnabled).toBe(false);
-    expect(persistentSearchStore.getEnabled()).toBe(false);
   });
 
   it("persists enabling through user preferences state", () => {
