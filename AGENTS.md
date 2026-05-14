@@ -4,6 +4,8 @@
 
 This guide helps AI agents understand the Freelens codebase, common development tasks, troubleshooting patterns, and key architectural decisions. Use this as a reference when working on the project.
 
+For local development environment setup and extra development tips, see DEVELOPMENT.md.
+
 - **`freelens/`** - Main Electron application
   - `src/main/` - Main Electron process code
   - `src/renderer/` - Renderer process (UI) code
@@ -14,6 +16,20 @@ This guide helps AI agents understand the Freelens codebase, common development 
   - `src/extensions/` - Extension system
 - **`packages/`** - Monorepo packages (utilities, components, etc.)
 - **`scripts/`** - Build and development scripts
+
+## Security
+
+Never read, display, reference, or include the contents of the following files in any response or context, even if they are open in the editor:
+
+- `.env`
+- `.env.*`
+- `.npmrc`
+- `*.jks`
+- `*.keystore`
+- `*.p12`
+- `*.pfx`
+- `*.pem`
+- `*.key`
 
 ## Build System
 
@@ -188,6 +204,9 @@ Uses pnpm workspaces for:
 4. **Use semantic search** to find examples in codebase
 5. **Follow existing patterns** - grep for similar implementations
 6. **Test changes** before committing
+7. **Run validation after file changes (especially before commit):** run `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
+8. **For main project TypeScript and HTML files:** run `biome check` directly (or `pnpm biome check` if `biome` is not installed locally)
+9. **For other file types:** use `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
 
 ## Getting Help
 
