@@ -8,42 +8,18 @@
 
 import clearCreateResourceTabDataInjectable from "./clear-create-resource-tab-data.injectable";
 import createResourceTabInjectable from "./create-resource-tab.injectable";
+import createResourceTabStoreInjectable from "./store.injectable";
 import createResourceTemplatesInjectable from "./create-resource-templates.injectable";
 import lensCreateResourceTemplatesInjectable from "./lens-templates.injectable";
-import createResourceTabStoreInjectable from "./store.injectable";
 import userCreateResourceTemplatesInjectable from "./user-templates.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearCreateResourceTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createResourceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createResourceTabStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createResourceTemplatesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensCreateResourceTemplatesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userCreateResourceTemplatesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearCreateResourceTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createResourceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createResourceTabStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createResourceTemplatesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensCreateResourceTemplatesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userCreateResourceTemplatesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

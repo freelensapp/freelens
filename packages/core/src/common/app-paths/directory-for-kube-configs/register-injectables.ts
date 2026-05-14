@@ -11,9 +11,5 @@ import directoryForKubeConfigsInjectable from "./directory-for-kube-configs.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForKubeConfigsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForKubeConfigsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

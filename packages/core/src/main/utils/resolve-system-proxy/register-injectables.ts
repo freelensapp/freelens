@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import resolveSystemProxyInjectable from "./resolve-system-proxy.injectable";
 import resolveSystemProxyChannelResponderInjectable from "./resolve-system-proxy-channel-responder.injectable";
 import resolveSystemProxyFromElectronInjectable from "./resolve-system-proxy-from-electron.injectable";
+import resolveSystemProxyInjectable from "./resolve-system-proxy.injectable";
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(resolveSystemProxyChannelResponderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resolveSystemProxyFromElectronInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resolveSystemProxyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resolveSystemProxyWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(resolveSystemProxyChannelResponderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resolveSystemProxyFromElectronInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resolveSystemProxyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resolveSystemProxyWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

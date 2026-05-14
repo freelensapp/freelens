@@ -12,14 +12,6 @@ import stopSyncingThemeFromOperatingSystemInjectable from "./stop-syncing-theme-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(startSyncingThemeFromOperatingSystemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopSyncingThemeFromOperatingSystemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(startSyncingThemeFromOperatingSystemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopSyncingThemeFromOperatingSystemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

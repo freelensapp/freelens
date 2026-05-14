@@ -12,14 +12,6 @@ import selectHelmRepositoryInjectable from "./select-helm-repository.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(selectHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(selectHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

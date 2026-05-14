@@ -12,14 +12,6 @@ import navigateToClusterViewInjectable from "./navigate-to-cluster-view.injectab
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterViewRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToClusterViewInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterViewRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToClusterViewInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import { registerInjectables as registerRunnablesInjectables } from "./runnables
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerLensWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRunnablesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerLensWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRunnablesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

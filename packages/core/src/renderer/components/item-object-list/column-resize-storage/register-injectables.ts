@@ -11,9 +11,5 @@ import columnResizeStorageInjectable from "./storage.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(columnResizeStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(columnResizeStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

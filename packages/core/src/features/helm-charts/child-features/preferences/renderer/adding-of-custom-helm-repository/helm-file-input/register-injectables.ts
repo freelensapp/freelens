@@ -11,9 +11,5 @@ import requestFilePathsInjectable from "./get-file-paths.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestFilePathsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestFilePathsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

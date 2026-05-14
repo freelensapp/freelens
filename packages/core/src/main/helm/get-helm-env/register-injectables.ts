@@ -11,9 +11,5 @@ import getHelmEnvInjectable from "./get-helm-env.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getHelmEnvInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getHelmEnvInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

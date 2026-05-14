@@ -12,14 +12,6 @@ import podsRouteInjectable from "./pods-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToPodsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToPodsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

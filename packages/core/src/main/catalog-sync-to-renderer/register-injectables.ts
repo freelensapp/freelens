@@ -15,29 +15,9 @@ import stopCatalogSyncInjectable from "./stop-catalog-sync.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(catalogSyncBroadcasterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogSyncToRendererInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(pushCatalogToRendererInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startCatalogSyncInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopCatalogSyncInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(catalogSyncBroadcasterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogSyncToRendererInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(pushCatalogToRendererInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startCatalogSyncInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopCatalogSyncInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

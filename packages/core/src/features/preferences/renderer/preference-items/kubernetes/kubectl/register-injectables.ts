@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import kubectlGroupPreferenceItemInjectable from "./kubectl-group-preference-item.injectable";
 import { registerInjectables as registerKubectlBinaryDownloadInjectables } from "./kubectl-binary-download/register-injectables";
 import { registerInjectables as registerKubectlDirectoryForBinariesInjectables } from "./kubectl-directory-for-binaries/register-injectables";
 import { registerInjectables as registerKubectlDownloadMirrorInjectables } from "./kubectl-download-mirror/register-injectables";
-import kubectlGroupPreferenceItemInjectable from "./kubectl-group-preference-item.injectable";
 import { registerInjectables as registerKubectlPathToBinaryInjectables } from "./kubectl-path-to-binary/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubectlGroupPreferenceItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlBinaryDownloadInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlDirectoryForBinariesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlDownloadMirrorInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlPathToBinaryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubectlGroupPreferenceItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlBinaryDownloadInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlDirectoryForBinariesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlDownloadMirrorInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlPathToBinaryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

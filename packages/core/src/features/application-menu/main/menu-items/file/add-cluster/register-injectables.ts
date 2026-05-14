@@ -11,9 +11,5 @@ import addClusterMenuItemInjectable from "./add-cluster-menu-item.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addClusterMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addClusterMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import navigateToConfigMapsInjectable from "./navigate-to-config-maps.injectable
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(configMapsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToConfigMapsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(configMapsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToConfigMapsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

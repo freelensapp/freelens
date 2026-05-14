@@ -12,14 +12,6 @@ import semanticBuildVersionInjectable from "./semantic-build-version.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(releaseChannelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(semanticBuildVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(releaseChannelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(semanticBuildVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

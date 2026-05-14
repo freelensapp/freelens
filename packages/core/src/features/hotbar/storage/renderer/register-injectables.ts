@@ -11,9 +11,5 @@ import loadHotbarStorageInjectable from "./init.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(loadHotbarStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(loadHotbarStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

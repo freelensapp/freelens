@@ -13,19 +13,7 @@ import podSecurityPolicyStoreInjectable from "./store.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(podSecurityPoliciesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podSecurityPoliciesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podSecurityPolicyStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(podSecurityPoliciesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podSecurityPoliciesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podSecurityPolicyStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

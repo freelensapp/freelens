@@ -13,19 +13,7 @@ import routerInjectable from "./router.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createHandlerForRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(parseRequestInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createHandlerForRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(parseRequestInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(routerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import navigateToFavoritesOverviewInjectable from "./navigate-to-favorites-overv
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(favoritesOverviewRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToFavoritesOverviewInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(favoritesOverviewRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToFavoritesOverviewInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

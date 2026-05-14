@@ -12,62 +12,22 @@ import applyLensThemeInjectable from "./apply-lens-theme.injectable";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import lensDarkThemeInjectable from "./lens-dark.injectable";
 import lensLightThemeInjectable from "./lens-light.injectable";
+import lensThemesInjectable from "./themes.injectable";
 import setupApplyActiveThemeInjectable from "./setup-apply-active-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import xtermColorThemeInjectable from "./terminal-colors.injectable";
-import lensThemesInjectable from "./themes.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(activeThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(activeThemeTypeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applyLensThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultLensThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensDarkThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensLightThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensThemesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupApplyActiveThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(systemThemeConfigurationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(xtermColorThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(activeThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(activeThemeTypeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applyLensThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultLensThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensDarkThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensLightThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensThemesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupApplyActiveThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(systemThemeConfigurationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(xtermColorThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

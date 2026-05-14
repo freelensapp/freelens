@@ -11,9 +11,5 @@ import { getRandomIdInjectable } from "./get-random-id.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getRandomIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getRandomIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

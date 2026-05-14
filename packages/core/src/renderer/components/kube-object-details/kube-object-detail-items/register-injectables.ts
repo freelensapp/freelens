@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 import kubeObjectDetailItemRegistratorInjectable from "./kube-object-detail-item-registrator.injectable";
 import kubeObjectDetailItemsInjectable from "./kube-object-detail-items.injectable";
+import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 import { registerInjectables as registerMetricsInjectables } from "./metrics/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubeObjectDetailItemRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeObjectDetailItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerImplementationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMetricsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubeObjectDetailItemRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeObjectDetailItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerImplementationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMetricsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

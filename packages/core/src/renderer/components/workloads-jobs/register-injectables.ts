@@ -7,37 +7,17 @@
  */
 
 import getJobsByOwnerInjectable from "./get-jobs-by-owner.injectable";
-import jobsRouteComponentInjectable from "./jobs-route-component.injectable";
-import jobsSidebarItemInjectable from "./jobs-sidebar-item.injectable";
 import jobMetricsInjectable from "./metrics.injectable";
 import jobStoreInjectable from "./store.injectable";
+import jobsRouteComponentInjectable from "./jobs-route-component.injectable";
+import jobsSidebarItemInjectable from "./jobs-sidebar-item.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getJobsByOwnerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getJobsByOwnerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

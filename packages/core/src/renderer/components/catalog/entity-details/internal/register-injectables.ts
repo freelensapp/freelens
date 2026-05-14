@@ -12,14 +12,6 @@ import weblinkDetailsItemInjectable from "./weblink-details.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubernetesClusterDetailsItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinkDetailsItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubernetesClusterDetailsItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinkDetailsItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

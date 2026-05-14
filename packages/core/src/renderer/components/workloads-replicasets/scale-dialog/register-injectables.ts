@@ -7,25 +7,13 @@
  */
 
 import openReplicaSetScaleDialogInjectable from "./open.injectable";
-import replicasetScaleDialogClusterFrameChildComponentInjectable from "./replicaset-scale-dialog-cluster-frame-child-component.injectable";
 import replicaSetScaleDialogStateInjectable from "./state.injectable";
+import replicasetScaleDialogClusterFrameChildComponentInjectable from "./replicaset-scale-dialog-cluster-frame-child-component.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openReplicaSetScaleDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicaSetScaleDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicasetScaleDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openReplicaSetScaleDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicaSetScaleDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicasetScaleDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

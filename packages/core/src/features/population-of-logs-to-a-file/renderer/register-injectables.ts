@@ -13,19 +13,7 @@ import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeRendererLogFileInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ipcLogTransportInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(rendererLogFileIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeRendererLogFileInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ipcLogTransportInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(rendererLogFileIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

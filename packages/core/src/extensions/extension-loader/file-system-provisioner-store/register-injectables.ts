@@ -16,34 +16,10 @@ import { registeredExtensionsInjectable } from "./registered-extensions.injectab
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForExtensionDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ensureHashedDirectoryForExtensionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(fileSystemProvisionerStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getHashInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getPathToLegacyPackageJson);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(registeredExtensionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForExtensionDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ensureHashedDirectoryForExtensionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(fileSystemProvisionerStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getHashInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getPathToLegacyPackageJson); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(registeredExtensionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

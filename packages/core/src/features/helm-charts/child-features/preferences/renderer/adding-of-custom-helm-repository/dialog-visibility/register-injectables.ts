@@ -13,19 +13,7 @@ import showDialogForAddingCustomHelmRepositoryInjectable from "./show-dialog-for
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addingOfCustomHelmRepositoryDialogIsVisibleInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(hideDialogForAddingCustomHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showDialogForAddingCustomHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addingOfCustomHelmRepositoryDialogIsVisibleInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(hideDialogForAddingCustomHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showDialogForAddingCustomHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

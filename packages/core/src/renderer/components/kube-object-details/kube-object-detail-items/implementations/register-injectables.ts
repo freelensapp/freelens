@@ -50,204 +50,44 @@ import verticalPodAutoscalerDetailItemInjectable from "./vertical-pod-autoscaler
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterRoleBindingDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterRoleDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(configMapDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(cronJobDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customResourceDefinitionsDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonSetDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(endpointSliceDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(endpointsDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(eventsDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(horizontalPodAutoscalerDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressClassDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeEventDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(leaseDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(limitRangeDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(mutatingWebhookConfigurationDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespacesDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(networkPolicyDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodeDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeClaimDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podDisruptionBudgetDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podSecurityPolicyDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(priorityClassDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicaSetDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicationControllerDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resourceQuotaDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleBindingDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(runtimeClassDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(secretsDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(serviceAccountDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(serviceDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulSetDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storageClassDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(validatingWebhookConfigurationDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(verticalPodAutoscalerDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterRoleBindingDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterRoleDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(configMapDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(cronJobDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customResourceDefinitionsDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonSetDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(endpointSliceDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(endpointsDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(eventsDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(horizontalPodAutoscalerDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressClassDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeEventDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(leaseDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(limitRangeDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(mutatingWebhookConfigurationDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespacesDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(networkPolicyDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodeDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeClaimDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podDisruptionBudgetDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podSecurityPolicyDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(priorityClassDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicaSetDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicationControllerDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resourceQuotaDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleBindingDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(runtimeClassDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(secretsDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(serviceAccountDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(serviceDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulSetDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storageClassDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(validatingWebhookConfigurationDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(verticalPodAutoscalerDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

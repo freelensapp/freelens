@@ -6,15 +6,15 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
-import kubeAuthProxyUrlInjectable from "./auth-proxy-url.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
+import clusterManagerInjectable from "./manager.injectable";
+import clusterVisibilityHandlerInjectable from "./visibility-handler.injectable";
+import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
 import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import kubeAuthProxyUrlInjectable from "./auth-proxy-url.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
-import clusterManagerInjectable from "./manager.injectable";
-import { registerInjectables as registerPrometheusHandlerInjectables } from "./prometheus-handler/register-injectables";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
 import requestApiResourcesInjectable from "./request-api-resources.injectable";
 import requestCoreApiVersionsInjectable from "./request-core-api-versions.injectable";
@@ -23,105 +23,29 @@ import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions
 import stopAllClusterConnectionsOnQuitInjectable from "./stop-cluster-connections-on-quit.injectable";
 import updateEntityMetadataInjectable from "./update-entity-metadata.injectable";
 import updateEntitySpecInjectable from "./update-entity-spec.injectable";
-import clusterVisibilityHandlerInjectable from "./visibility-handler.injectable";
 import visibleClusterInjectable from "./visible-cluster.injectable";
+import { registerInjectables as registerPrometheusHandlerInjectables } from "./prometheus-handler/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(broadcastConnectionUpdateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterConnectionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterManagerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterVisibilityHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clustersThatAreBeingDeletedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(initializeClusterManagerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeAuthProxyServerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeAuthProxyUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadProxyKubeconfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(removeProxyKubeconfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestApiResourcesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestCoreApiVersionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestKubeApiResourcesForInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestNonCoreApiVersionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopAllClusterConnectionsOnQuitInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(updateEntityMetadataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(updateEntitySpecInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(visibleClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPrometheusHandlerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(broadcastConnectionUpdateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterConnectionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterManagerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterVisibilityHandlerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clustersThatAreBeingDeletedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(initializeClusterManagerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeAuthProxyServerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeAuthProxyUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadProxyKubeconfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(removeProxyKubeconfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestApiResourcesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestCoreApiVersionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestKubeApiResourcesForInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestNonCoreApiVersionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopAllClusterConnectionsOnQuitInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(updateEntityMetadataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(updateEntitySpecInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(visibleClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPrometheusHandlerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

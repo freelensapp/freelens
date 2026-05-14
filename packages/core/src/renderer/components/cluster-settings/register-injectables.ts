@@ -12,14 +12,6 @@ import localTerminalSettingPresenterInjectable from "./local-terminal-setting-pr
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterIconSettingsMenuClearItem);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(localTerminalSettingPresenterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterIconSettingsMenuClearItem); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(localTerminalSettingPresenterInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

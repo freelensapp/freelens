@@ -13,19 +13,7 @@ import setClusterAsDeletingChannelHandlerInjectable from "./set-as-deleteing-cha
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearClusterAsDeletingChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deleteClusterChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setClusterAsDeletingChannelHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearClusterAsDeletingChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deleteClusterChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setClusterAsDeletingChannelHandlerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

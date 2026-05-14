@@ -12,14 +12,6 @@ import servicesRouteInjectable from "./services-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToServicesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(servicesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToServicesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(servicesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

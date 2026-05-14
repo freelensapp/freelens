@@ -12,14 +12,6 @@ import resourceQuotasRouteInjectable from "./resource-quotas-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToResourceQuotasInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resourceQuotasRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToResourceQuotasInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resourceQuotasRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

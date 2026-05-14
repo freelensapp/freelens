@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import fileMenuItemInjectable from "./file-menu-item.injectable";
 import { registerInjectables as registerAddClusterInjectables } from "./add-cluster/register-injectables";
 import { registerInjectables as registerCloseWindowInjectables } from "./close-window/register-injectables";
-import fileMenuItemInjectable from "./file-menu-item.injectable";
 import { registerInjectables as registerSeparatorsInjectables } from "./separators/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(fileMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCloseWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSeparatorsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(fileMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCloseWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSeparatorsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

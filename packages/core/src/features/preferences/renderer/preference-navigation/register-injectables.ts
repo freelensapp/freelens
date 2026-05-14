@@ -11,9 +11,5 @@ import { registerInjectables as registerNavigateToPreferenceTabInjectables } fro
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerNavigateToPreferenceTabInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerNavigateToPreferenceTabInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

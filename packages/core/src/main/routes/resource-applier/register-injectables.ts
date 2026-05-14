@@ -12,14 +12,6 @@ import patchResourceRouteInjectable from "./patch-resource-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createResourceRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(patchResourceRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createResourceRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(patchResourceRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

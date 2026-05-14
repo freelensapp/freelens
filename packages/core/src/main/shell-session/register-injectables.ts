@@ -7,49 +7,21 @@
  */
 
 import openShellSessionInjectable from "./create-shell-session.injectable";
+import shellSessionEnvsInjectable from "./shell-envs.injectable";
+import shellSessionProcessesInjectable from "./processes.injectable";
+import spawnPtyInjectable from "./spawn-pty.injectable";
 import { registerInjectables as registerLocalShellSessionInjectables } from "./local-shell-session/register-injectables";
 import { registerInjectables as registerNodeShellSessionInjectables } from "./node-shell-session/register-injectables";
-import shellSessionProcessesInjectable from "./processes.injectable";
 import { registerInjectables as registerShellEnvModifierInjectables } from "./shell-env-modifier/register-injectables";
-import shellSessionEnvsInjectable from "./shell-envs.injectable";
-import spawnPtyInjectable from "./spawn-pty.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openShellSessionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(shellSessionEnvsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(shellSessionProcessesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(spawnPtyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLocalShellSessionInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNodeShellSessionInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerShellEnvModifierInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openShellSessionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(shellSessionEnvsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(shellSessionProcessesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(spawnPtyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLocalShellSessionInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNodeShellSessionInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerShellEnvModifierInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

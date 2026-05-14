@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import shouldBaseStoreDisableSyncInIpcListenerInjectable from "./disable-sync-in-ipc-listener.injectable";
 import baseStoreIpcChannelPrefixInjectable from "./ipc-channel-prefix.injectable";
 import persistStateToConfigInjectable from "./persist-state-to-config.injectable";
+import shouldBaseStoreDisableSyncInIpcListenerInjectable from "./disable-sync-in-ipc-listener.injectable";
 import storageMigrationVersionInjectable from "./storage-migration-version.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(baseStoreIpcChannelPrefixInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistStateToConfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(shouldBaseStoreDisableSyncInIpcListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storageMigrationVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(baseStoreIpcChannelPrefixInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistStateToConfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(shouldBaseStoreDisableSyncInIpcListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storageMigrationVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

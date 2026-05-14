@@ -11,9 +11,5 @@ import prometheusHandlerInjectable from "./prometheus-handler.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(prometheusHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(prometheusHandlerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

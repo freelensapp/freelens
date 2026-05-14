@@ -15,29 +15,9 @@ import { registerInjectables as registerViewInjectables } from "./view/register-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerEditInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFileInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelpInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSpecialMenuForMacApplicationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerViewInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerEditInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFileInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelpInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSpecialMenuForMacApplicationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerViewInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

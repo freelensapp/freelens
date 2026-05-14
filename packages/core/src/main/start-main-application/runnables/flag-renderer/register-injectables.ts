@@ -12,14 +12,6 @@ import flagRendererAsNotLoadedInjectable from "./flag-renderer-as-not-loaded.inj
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(flagRendererAsLoadedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(flagRendererAsNotLoadedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(flagRendererAsLoadedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(flagRendererAsNotLoadedInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

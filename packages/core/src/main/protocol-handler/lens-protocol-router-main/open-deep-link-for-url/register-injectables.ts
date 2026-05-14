@@ -11,9 +11,5 @@ import openDeepLinkInjectable from "./open-deep-link.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openDeepLinkInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openDeepLinkInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

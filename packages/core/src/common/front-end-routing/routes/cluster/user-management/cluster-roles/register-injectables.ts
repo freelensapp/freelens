@@ -12,14 +12,6 @@ import navigateToClusterRolesInjectable from "./navigate-to-cluster-roles.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterRolesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToClusterRolesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterRolesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToClusterRolesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

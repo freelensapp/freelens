@@ -11,9 +11,5 @@ import directoryForLensLocalStorageInjectable from "./directory-for-lens-local-s
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForLensLocalStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForLensLocalStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,45 +11,17 @@ import createTerminalInjectable from "./create-terminal.injectable";
 import createTerminalTabInjectable from "./create-terminal-tab.injectable";
 import getTerminalApiInjectable from "./get-terminal-api.injectable";
 import sendCommandInjectable from "./send-command.injectable";
-import terminalStoreInjectable from "./store.injectable";
 import terminalSpawningPoolInjectable from "./terminal-spawning-pool.injectable";
+import terminalStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearTerminalTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createTerminalInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createTerminalTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getTerminalApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(sendCommandInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalSpawningPoolInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearTerminalTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createTerminalInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createTerminalTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getTerminalApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(sendCommandInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalSpawningPoolInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

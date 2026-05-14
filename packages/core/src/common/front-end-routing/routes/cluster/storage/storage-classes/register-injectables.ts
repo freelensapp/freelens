@@ -12,14 +12,6 @@ import storageClassesRouteInjectable from "./storage-classes-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToStorageClassesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storageClassesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToStorageClassesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storageClassesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import kubectlBinaryDownloadPreferenceBlockInjectable from "./kubectl-binary-dow
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubectlBinaryDownloadPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubectlBinaryDownloadPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

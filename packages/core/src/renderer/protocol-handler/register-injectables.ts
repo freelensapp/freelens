@@ -12,14 +12,6 @@ import { registerInjectables as registerLensProtocolRouterRendererInjectables } 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerBindProtocolAddRouteHandlersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLensProtocolRouterRendererInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerBindProtocolAddRouteHandlersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLensProtocolRouterRendererInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

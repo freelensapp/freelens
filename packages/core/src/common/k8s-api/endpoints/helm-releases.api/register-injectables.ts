@@ -6,9 +6,9 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import requestHelmReleaseConfigurationInjectable from "./request-configuration.injectable";
 import requestCreateHelmReleaseInjectable from "./request-create.injectable";
 import requestDeleteHelmReleaseInjectable from "./request-delete.injectable";
+import requestHelmReleaseConfigurationInjectable from "./request-configuration.injectable";
 import requestHelmReleaseHistoryInjectable from "./request-history.injectable";
 import requestHelmReleaseRollbackInjectable from "./request-rollback.injectable";
 import requestHelmReleaseUpdateInjectable from "./request-update.injectable";
@@ -17,39 +17,11 @@ import requestHelmReleaseValuesInjectable from "./request-values.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestCreateHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDeleteHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmReleaseConfigurationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmReleaseHistoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmReleaseRollbackInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmReleaseUpdateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmReleaseValuesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestCreateHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDeleteHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmReleaseConfigurationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmReleaseHistoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmReleaseRollbackInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmReleaseUpdateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmReleaseValuesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

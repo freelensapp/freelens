@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import podDisruptionBudgetStoreInjectable from "./store.injectable";
 import podDisruptionBudgetsRouteComponentInjectable from "./pod-disruption-budgets-route-component.injectable";
 import podDisruptionBudgetsSidebarItemInjectable from "./pod-disruption-budgets-sidebar-item.injectable";
-import podDisruptionBudgetStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(podDisruptionBudgetStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podDisruptionBudgetsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podDisruptionBudgetsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(podDisruptionBudgetStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podDisruptionBudgetsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podDisruptionBudgetsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

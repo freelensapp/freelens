@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import kubernetesPreferencePageInjectable from "./kubernetes-preference-page.injectable";
+import kubernetesPreferenceTabInjectable from "./kubernetes-preference-tab.injectable";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerKubeconfigSyncInjectables } from "./kubeconfig-sync/register-injectables";
 import { registerInjectables as registerKubectlInjectables } from "./kubectl/register-injectables";
-import kubernetesPreferencePageInjectable from "./kubernetes-preference-page.injectable";
-import kubernetesPreferenceTabInjectable from "./kubernetes-preference-tab.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubernetesPreferencePageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubernetesPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeconfigSyncInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubernetesPreferencePageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubernetesPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeconfigSyncInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

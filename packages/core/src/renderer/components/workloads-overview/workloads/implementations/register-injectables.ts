@@ -17,39 +17,11 @@ import statefulsetsWorkloadInjectable from "./statefulsets-workload.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(cronJobsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonsetsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicasetsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulsetsWorkloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(cronJobsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonsetsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicasetsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulsetsWorkloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

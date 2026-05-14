@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import leaseStoreInjectable from "./store.injectable";
 import leasesRouteComponentInjectable from "./leases-route-component.injectable";
 import leasesSidebarItemInjectable from "./leases-sidebar-item.injectable";
-import leaseStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(leaseStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(leasesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(leasesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(leaseStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(leasesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(leasesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

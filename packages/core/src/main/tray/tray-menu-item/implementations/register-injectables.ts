@@ -14,24 +14,8 @@ import quitAppTrayItemInjectable from "./quit-app-tray-item.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(aboutAppTrayItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openAppTrayItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(quitAppSeparatorTrayItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(quitAppTrayItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(aboutAppTrayItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openAppTrayItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(quitAppSeparatorTrayItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(quitAppTrayItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

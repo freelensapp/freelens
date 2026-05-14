@@ -6,68 +6,28 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import namespaceMetricsInjectable from "./metrics.injectable";
-import { registerInjectables as registerNamespaceSelectFilterModelInjectables } from "./namespace-select-filter-model/register-injectables";
+import namespaceStoreInjectable from "./store.injectable";
 import namespacesRouteComponentInjectable from "./namespaces-route-component.injectable";
 import namespacesSidebarItemInjectable from "./namespaces-sidebar-item.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
 import requestDeleteNormalNamespaceInjectable from "./request-delete-normal-namespace.injectable";
 import requestDeleteSubNamespaceAnchorInjectable from "./request-delete-sub-namespace.injectable";
-import namespaceStoreInjectable from "./store.injectable";
+import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
+import { registerInjectables as registerNamespaceSelectFilterModelInjectables } from "./namespace-select-filter-model/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(hierarchicalNamespacesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespaceMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespaceStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespacesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespacesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDeleteNamespaceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDeleteNormalNamespaceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDeleteSubNamespaceAnchorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNamespaceSelectFilterModelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(hierarchicalNamespacesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespaceMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespaceStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespacesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespacesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDeleteNamespaceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDeleteNormalNamespaceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDeleteSubNamespaceAnchorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNamespaceSelectFilterModelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

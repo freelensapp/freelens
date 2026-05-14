@@ -14,24 +14,8 @@ import { registerInjectables as registerResourceApplierApiInjectables } from "./
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerHelmChartsApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmReleasesApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMetricsApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerResourceApplierApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerHelmChartsApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmReleasesApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMetricsApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerResourceApplierApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

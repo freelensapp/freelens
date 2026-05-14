@@ -13,19 +13,7 @@ import { registerInjectables as registerTableModelInjectables } from "./table-mo
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(orderByUrlParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(sortByUrlParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTableModelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(orderByUrlParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(sortByUrlParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTableModelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import navigateToDaemonsetsInjectable from "./navigate-to-daemonsets.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(daemonsetsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToDaemonsetsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(daemonsetsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToDaemonsetsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

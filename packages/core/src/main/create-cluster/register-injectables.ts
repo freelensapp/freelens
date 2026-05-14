@@ -11,9 +11,5 @@ import allowedResourcesInjectable from "./allowed-resources.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(allowedResourcesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(allowedResourcesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

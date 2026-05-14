@@ -11,9 +11,5 @@ import navigateToExtensionsMenuItem from "./navigate-to-extensions-menu-item.inj
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToExtensionsMenuItem);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToExtensionsMenuItem); } catch (e) { /* Ignore duplicate registration */ }
 }

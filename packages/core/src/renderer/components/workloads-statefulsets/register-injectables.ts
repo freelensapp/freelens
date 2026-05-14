@@ -7,37 +7,17 @@
  */
 
 import statefulSetMetricsInjectable from "./metrics.injectable";
-import { registerInjectables as registerScaleInjectables } from "./scale/register-injectables";
+import statefulSetStoreInjectable from "./store.injectable";
 import statefulSetsSidebarItemInjectable from "./sidebar-item.injectable";
 import statefulsetsRouteComponentInjectable from "./statefulsets-route-component.injectable";
-import statefulSetStoreInjectable from "./store.injectable";
+import { registerInjectables as registerScaleInjectables } from "./scale/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(statefulSetMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulSetStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulSetsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulsetsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerScaleInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(statefulSetMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulSetStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulSetsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulsetsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerScaleInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

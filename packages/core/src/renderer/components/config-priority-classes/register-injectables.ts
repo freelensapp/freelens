@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import priorityClassesSidebarItemInjectable from "./priority-classes-items.injectable";
-import priorityClassesRouteComponentInjectable from "./priority-classes-route-component.injectable";
 import priorityClassStoreInjectable from "./store.injectable";
+import priorityClassesRouteComponentInjectable from "./priority-classes-route-component.injectable";
+import priorityClassesSidebarItemInjectable from "./priority-classes-items.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(priorityClassStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(priorityClassesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(priorityClassesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(priorityClassStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(priorityClassesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(priorityClassesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

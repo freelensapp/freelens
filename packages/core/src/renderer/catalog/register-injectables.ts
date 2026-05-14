@@ -11,9 +11,5 @@ import normalizeCatalogEntityContextMenuInjectable from "./normalize-menu-item.i
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(normalizeCatalogEntityContextMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(normalizeCatalogEntityContextMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

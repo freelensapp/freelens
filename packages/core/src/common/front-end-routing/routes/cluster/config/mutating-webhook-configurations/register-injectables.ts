@@ -12,14 +12,6 @@ import navigateToMutatingWebhookConfigurationsInjectable from "./navigate-to-mut
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(mutatingWebhookConfigurationsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToMutatingWebhookConfigurationsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(mutatingWebhookConfigurationsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToMutatingWebhookConfigurationsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

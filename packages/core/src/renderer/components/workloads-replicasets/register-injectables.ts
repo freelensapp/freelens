@@ -7,37 +7,17 @@
  */
 
 import replicaSetMetricsInjectable from "./metrics.injectable";
+import replicaSetStoreInjectable from "./store.injectable";
+import replicaSetsSidebarItemInjectable from "./sidebar-item.injectable";
 import replicasetsRouteComponentInjectable from "./replicasets-route-component.injectable";
 import { registerInjectables as registerScaleDialogInjectables } from "./scale-dialog/register-injectables";
-import replicaSetsSidebarItemInjectable from "./sidebar-item.injectable";
-import replicaSetStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(replicaSetMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicaSetStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicaSetsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicasetsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerScaleDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(replicaSetMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicaSetStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicaSetsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicasetsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerScaleDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

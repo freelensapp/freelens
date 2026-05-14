@@ -6,25 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { buildVersionInitializationInjectable, buildVersionStateInjectable } from "./init.injectable";
 import buildVersionChannelListenerInjectable from "./request-channel.injectable";
+import { buildVersionInitializationInjectable } from "./init.injectable";
+import { buildVersionStateInjectable } from "./init.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(buildVersionChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(buildVersionInitializationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(buildVersionStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(buildVersionChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(buildVersionInitializationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(buildVersionStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

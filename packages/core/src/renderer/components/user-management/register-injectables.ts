@@ -6,44 +6,20 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import userManagementSidebarItemInjectable from "./user-management-sidebar-item.injectable";
 import { registerInjectables as registerClusterRoleBindingsInjectables } from "./cluster-role-bindings/register-injectables";
 import { registerInjectables as registerClusterRolesInjectables } from "./cluster-roles/register-injectables";
 import { registerInjectables as registerRoleBindingsInjectables } from "./role-bindings/register-injectables";
 import { registerInjectables as registerRolesInjectables } from "./roles/register-injectables";
 import { registerInjectables as registerServiceAccountsInjectables } from "./service-accounts/register-injectables";
-import userManagementSidebarItemInjectable from "./user-management-sidebar-item.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(userManagementSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterRoleBindingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterRolesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRoleBindingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRolesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerServiceAccountsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(userManagementSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterRoleBindingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterRolesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRoleBindingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRolesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerServiceAccountsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

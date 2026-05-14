@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerGoBackInjectables } from "./go-back/register-injectables";
 import navigationToBackTopBarItemInjectable from "./navigation-to-back-top-bar-item.injectable";
 import topBarPrevEnabledInjectable from "./prev-enabled.injectable";
+import { registerInjectables as registerGoBackInjectables } from "./go-back/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigationToBackTopBarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(topBarPrevEnabledInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGoBackInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigationToBackTopBarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(topBarPrevEnabledInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGoBackInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

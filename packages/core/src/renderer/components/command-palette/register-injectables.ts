@@ -14,24 +14,8 @@ import { registerInjectables as registerRegisteredCommandsInjectables } from "./
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(commandContainerClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(commandContainerRootFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(commandOverlayInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRegisteredCommandsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(commandContainerClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(commandContainerRootFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(commandOverlayInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRegisteredCommandsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

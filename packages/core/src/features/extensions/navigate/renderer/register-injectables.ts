@@ -11,9 +11,5 @@ import navigateForExtensionListenerInjectable from "./listener.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateForExtensionListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateForExtensionListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

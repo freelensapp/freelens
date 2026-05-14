@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerHandlersInjectables } from "./handlers/register-injectables";
 import kubeObjectHandlersInjectable from "./handlers.injectable";
+import { registerInjectables as registerHandlersInjectables } from "./handlers/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubeObjectHandlersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHandlersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubeObjectHandlersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHandlersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

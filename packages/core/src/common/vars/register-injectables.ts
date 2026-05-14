@@ -26,8 +26,8 @@ import isProductionInjectable from "./is-production.injectable";
 import isSnapPackageInjectable from "./is-snap-package.injectable";
 import isWindowsInjectable from "./is-windows.injectable";
 import lensResourcesDirInjectable from "./lens-resources-dir.injectable";
-import normalizedPlatformInjectable from "./normalized-platform.injectable";
 import normalizedPlatformArchitectureInjectable from "./normalized-platform-architecture.injectable";
+import normalizedPlatformInjectable from "./normalized-platform.injectable";
 import platformInjectable from "./platform.injectable";
 import processArchInjectable from "./process-arch.injectable";
 import productNameInjectable from "./product-name.injectable";
@@ -38,144 +38,32 @@ import userInfoInjectable from "./user-info.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(appNameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationCopyrightInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationDescriptionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(baseBundledBinariesDirectoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(bundledKubectlVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(bundledResourcesDirectoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(contentSecurityPolicyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentTimezoneInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultShellInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionApiVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isDebuggingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isDevelopmentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isFlatpakPackageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isIntegrationTestingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isLinuxInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isMacInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isProductionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isSnapPackageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isWindowsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensResourcesDirInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(normalizedPlatformArchitectureInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(normalizedPlatformInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(platformInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(processArchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(productNameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(staticFilesDirectoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storeMigrationVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userInfoInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(appNameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationCopyrightInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationDescriptionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(baseBundledBinariesDirectoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(bundledKubectlVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(bundledResourcesDirectoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(contentSecurityPolicyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentTimezoneInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultShellInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionApiVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isDebuggingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isDevelopmentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isFlatpakPackageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isIntegrationTestingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isLinuxInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isMacInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isProductionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isSnapPackageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isWindowsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensResourcesDirInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(normalizedPlatformArchitectureInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(normalizedPlatformInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(platformInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(processArchInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(productNameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(staticFilesDirectoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storeMigrationVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userInfoInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

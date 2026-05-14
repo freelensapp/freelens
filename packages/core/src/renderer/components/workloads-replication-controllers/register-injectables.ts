@@ -13,19 +13,7 @@ import replicationControllersRouteComponentInjectable from "./replication-contro
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(replicationControllerSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicationControllerStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicationControllersRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(replicationControllerSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicationControllerStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicationControllersRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -150,6 +150,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val,
       }),
+      customAccentColor: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
     } as const;
   },
 });

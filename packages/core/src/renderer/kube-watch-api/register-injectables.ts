@@ -12,14 +12,6 @@ import subscribeStoresInjectable from "./subscribe-stores.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubeWatchApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(subscribeStoresInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubeWatchApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(subscribeStoresInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

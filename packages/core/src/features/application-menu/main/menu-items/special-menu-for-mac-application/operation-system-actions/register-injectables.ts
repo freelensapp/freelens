@@ -6,34 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import {
-  actionForHide,
-  actionForHideOthers,
-  actionForServices,
-  actionForUnhide,
-} from "./operation-system-actions.injectable";
+import { actionForHide } from "./operation-system-actions.injectable";
+import { actionForHideOthers } from "./operation-system-actions.injectable";
+import { actionForServices } from "./operation-system-actions.injectable";
+import { actionForUnhide } from "./operation-system-actions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(actionForHide);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForHideOthers);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForServices);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForUnhide);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(actionForHide); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForHideOthers); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForServices); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForUnhide); } catch (e) { /* Ignore duplicate registration */ }
 }

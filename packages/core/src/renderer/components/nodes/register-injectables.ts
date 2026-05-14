@@ -7,31 +7,15 @@
  */
 
 import nodeMetricsInjectable from "./metrics.injectable";
+import nodeStoreInjectable from "./store.injectable";
 import nodesRouteComponentInjectable from "./nodes-route-component.injectable";
 import nodesSidebarItemInjectable from "./nodes-sidebar-item.injectable";
-import nodeStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(nodeMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodeStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(nodeMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodeStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

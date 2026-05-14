@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerExtensionInjectables } from "./extension/register-injectables";
 import extensionInstancesInjectable from "./extension-instances.injectable";
 import extensionIsEnabledForClusterInjectable from "./extension-is-enabled-for-cluster.injectable";
 import extensionLoaderInjectable from "./extension-loader.injectable";
+import { registerInjectables as registerExtensionInjectables } from "./extension/register-injectables";
 import { registerInjectables as registerFileSystemProvisionerStoreInjectables } from "./file-system-provisioner-store/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionInstancesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionIsEnabledForClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionLoaderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFileSystemProvisionerStoreInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionInstancesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionIsEnabledForClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionLoaderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFileSystemProvisionerStoreInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

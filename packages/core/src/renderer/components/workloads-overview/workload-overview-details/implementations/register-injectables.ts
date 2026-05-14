@@ -12,14 +12,6 @@ import workloadEventsInjectable from "./workload-events.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(overviewStatusesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(workloadEventsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(overviewStatusesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(workloadEventsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

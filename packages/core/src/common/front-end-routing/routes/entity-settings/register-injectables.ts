@@ -12,14 +12,6 @@ import navigateToEntitySettingsInjectable from "./navigate-to-entity-settings.in
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(entitySettingsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(entitySettingsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

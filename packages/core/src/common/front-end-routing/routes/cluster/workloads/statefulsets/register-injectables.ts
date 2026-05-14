@@ -12,14 +12,6 @@ import statefulsetsRouteInjectable from "./statefulsets-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToStatefulsetsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulsetsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToStatefulsetsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulsetsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

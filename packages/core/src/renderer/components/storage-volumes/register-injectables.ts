@@ -7,31 +7,15 @@
  */
 
 import getPersistentVolumesByStorageClassInjectable from "./get-persistent-volumes-by-storage-class.injectable";
+import persistentVolumeStoreInjectable from "./store.injectable";
 import persistentVolumesRouteComponentInjectable from "./persistent-volumes-route-component.injectable";
 import persistentVolumesSidebarItemInjectable from "./persistent-volumes-sidebar-item.injectable";
-import persistentVolumeStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getPersistentVolumesByStorageClassInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getPersistentVolumesByStorageClassInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

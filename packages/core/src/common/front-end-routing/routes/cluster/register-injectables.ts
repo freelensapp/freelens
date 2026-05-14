@@ -22,64 +22,16 @@ import { registerInjectables as registerWorkloadsInjectables } from "./workloads
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerConfigInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCustomResourcesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEventsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFavoritesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNamespacesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNodesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOverviewInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerUserManagementInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerConfigInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCustomResourcesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEventsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFavoritesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNamespacesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNodesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOverviewInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerUserManagementInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

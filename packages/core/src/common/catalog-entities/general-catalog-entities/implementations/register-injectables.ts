@@ -12,14 +12,6 @@ import welcomeCatalogEntityInjectable from "./welcome-catalog-entity.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(catalogCatalogEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(welcomeCatalogEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(catalogCatalogEntityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(welcomeCatalogEntityInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

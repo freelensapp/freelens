@@ -9,41 +9,17 @@
 import clusterNameInjectable from "./cluster-name.injectable";
 import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.injectable";
 import kubeObjectMenuItemRegistratorInjectable from "./kube-object-menu-item-registrator.injectable";
-import { registerInjectables as registerKubeObjectMenuItemsInjectables } from "./kube-object-menu-items/register-injectables";
 import kubeObjectMenuItemsInjectable from "./kube-object-menu-items.injectable";
 import onKubeObjectContextMenuOpenInjectable from "./on-context-menu-open.injectable";
+import { registerInjectables as registerKubeObjectMenuItemsInjectables } from "./kube-object-menu-items/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterNameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeObjectDeleteServiceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeObjectMenuItemRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeObjectMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(onKubeObjectContextMenuOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectMenuItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterNameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeObjectDeleteServiceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeObjectMenuItemRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeObjectMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(onKubeObjectContextMenuOpenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeObjectMenuItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -9,7 +9,6 @@
 import anonymiceProTerminalFontInjectable from "./anonymice-pro.injectable";
 import blexMonoTerminalFontInjectable from "./blex-mono.injectable";
 import firaCodeTerminalFontInjectable from "./fira-code.injectable";
-import terminalFontsInjectable from "./fonts.injectable";
 import jetbrainsMonoTerminalFontInjectable from "./jetbrains-mono.injectable";
 import loadTerminalFontInjectable from "./load-font.injectable";
 import preloadTerminalFontsInjectable from "./preload-fonts.injectable";
@@ -17,69 +16,22 @@ import redHatMonoTerminalFontInjectable from "./red-hat-mono.injectable";
 import robotoMonoTerminalFontInjectable from "./roboto-mono.injectable";
 import sauceCodeProTerminalFontInjectable from "./sauce-code-pro.injectable";
 import spaceMonoTerminalFontInjectable from "./space-mono.injectable";
+import terminalFontsInjectable from "./fonts.injectable";
 import ubuntuMonoTerminalFontInjectable from "./ubuntu-mono.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(anonymiceProTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(blexMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(firaCodeTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jetbrainsMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preloadTerminalFontsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(redHatMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(robotoMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(sauceCodeProTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(spaceMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalFontsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ubuntuMonoTerminalFontInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(anonymiceProTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(blexMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(firaCodeTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jetbrainsMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preloadTerminalFontsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(redHatMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(robotoMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(sauceCodeProTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(spaceMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalFontsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ubuntuMonoTerminalFontInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

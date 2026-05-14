@@ -9,35 +9,15 @@
 import currentKubeObjectInDetailsInjectable from "./current-kube-object-in-details.injectable";
 import customResourceDetailItemInjectable from "./custom-resource-detail-item.injectable";
 import defaultKubeObjectMetaDetailsItemInjectable from "./default-kube-meta-details-item.injectable";
-import { registerInjectables as registerKubeObjectDetailItemsInjectables } from "./kube-object-detail-items/register-injectables";
 import kubeObjectDetailsClusterFrameChildComponentInjectable from "./kube-object-details-cluster-frame-child-component.injectable";
+import { registerInjectables as registerKubeObjectDetailItemsInjectables } from "./kube-object-detail-items/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentKubeObjectInDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customResourceDetailItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultKubeObjectMetaDetailsItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeObjectDetailsClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectDetailItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(currentKubeObjectInDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customResourceDetailItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultKubeObjectMetaDetailsItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeObjectDetailsClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeObjectDetailItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

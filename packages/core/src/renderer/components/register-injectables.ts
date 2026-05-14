@@ -82,364 +82,76 @@ import { registerInjectables as registerWorkloadsStatefulsetsInjectables } from 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerAddClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerBadgeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCatalogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterManagerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterSettingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCommandPaletteInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigHorizontalPodAutoscalersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigLeasesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigLimitRangesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigMapsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigMutatingWebhookConfigurationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigPodDisruptionBudgetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigPriorityClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigResourceQuotasInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigRuntimeClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigSecretsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigValidatingWebhookConfigurationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfigVerticalPodAutoscalersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerConfirmDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCountdownInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCustomResourceDefinitionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCustomResourcesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDeleteClusterDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDockInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDrawerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEntitySettingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEventsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFavoritesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmChartsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmReleasesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInputInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerItemObjectListInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeDetailParamsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectDetailsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeconfigDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLayoutInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMonacoEditorInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNamespacesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkEndpointSlicesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkEndpointsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkIngressesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkPoliciesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkPortForwardsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkServicesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNodePodMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNodesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPodSecurityPoliciesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRenderDelayInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStatusBarInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageVolumeClaimsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageVolumesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTableInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerUserManagementInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWelcomeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsCronjobsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsDaemonsetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsDeploymentsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsJobsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsOverviewInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsPodsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsReplicasetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsReplicationControllersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsStatefulsetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerAddClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerBadgeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCatalogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterManagerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterSettingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCommandPaletteInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigHorizontalPodAutoscalersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigLeasesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigLimitRangesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigMapsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigMutatingWebhookConfigurationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigPodDisruptionBudgetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigPriorityClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigResourceQuotasInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigRuntimeClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigSecretsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigValidatingWebhookConfigurationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfigVerticalPodAutoscalersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerConfirmDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCountdownInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCustomResourceDefinitionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCustomResourcesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDeleteClusterDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDockInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDrawerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEntitySettingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEventsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFavoritesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmChartsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmReleasesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInputInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerItemObjectListInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeDetailParamsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeObjectDetailsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeObjectMenuInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeconfigDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLayoutInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMonacoEditorInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNamespacesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkEndpointSlicesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkEndpointsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkIngressesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkPoliciesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkPortForwardsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkServicesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNodePodMenuInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNodesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPodSecurityPoliciesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRenderDelayInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStatusBarInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageVolumeClaimsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageVolumesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTableInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerUserManagementInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWelcomeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsCronjobsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsDaemonsetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsDeploymentsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsJobsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsOverviewInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsPodsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsReplicasetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsReplicationControllersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsStatefulsetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

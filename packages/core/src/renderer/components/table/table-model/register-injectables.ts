@@ -11,9 +11,5 @@ import tableModelInjectable from "./table-model.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(tableModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(tableModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerCategoriesInjectables } from "./categories/register-injectables";
 import catalogCategoryRegistryInjectable from "./category-registry.injectable";
 import filteredCategoriesInjectable from "./filtered-categories.injectable";
 import hasCategoryForEntityInjectable from "./has-category-for-entity.injectable";
 import visitEntityContextMenuInjectable from "./visit-entity-context-menu.injectable";
+import { registerInjectables as registerCategoriesInjectables } from "./categories/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(catalogCategoryRegistryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(filteredCategoriesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(hasCategoryForEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(visitEntityContextMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCategoriesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(catalogCategoryRegistryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(filteredCategoriesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(hasCategoryForEntityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(visitEntityContextMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCategoriesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

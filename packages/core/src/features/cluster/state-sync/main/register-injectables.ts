@@ -13,19 +13,7 @@ import setupClusterStateBroadcastingInjectable from "./setup-sync.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(emitClusterStateUpdateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(handleInitialClusterStateSyncInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupClusterStateBroadcastingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(emitClusterStateUpdateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(handleInitialClusterStateSyncInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupClusterStateBroadcastingInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

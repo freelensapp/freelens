@@ -12,14 +12,6 @@ import handleListHelmReleasesInjectable from "./handle-list-helm-releases.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(handleGetHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(handleListHelmReleasesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(handleGetHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(handleListHelmReleasesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

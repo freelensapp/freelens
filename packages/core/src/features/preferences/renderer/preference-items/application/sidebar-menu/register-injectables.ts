@@ -11,9 +11,5 @@ import sidebarMenuPreferenceBlockInjectable from "./sidebar-menu-preference-bloc
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(sidebarMenuPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(sidebarMenuPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

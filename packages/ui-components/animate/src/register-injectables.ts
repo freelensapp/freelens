@@ -13,19 +13,7 @@ import { requestAnimationFrameInjectable } from "./request-animation-frame.injec
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(defaultEnterDurationForAnimatedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultLeaveDurationForAnimatedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestAnimationFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(defaultEnterDurationForAnimatedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultLeaveDurationForAnimatedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestAnimationFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

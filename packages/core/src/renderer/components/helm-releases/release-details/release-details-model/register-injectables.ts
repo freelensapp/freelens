@@ -13,19 +13,7 @@ import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-releas
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getResourceDetailsUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(releaseDetailsModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDetailedHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getResourceDetailsUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(releaseDetailsModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDetailedHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

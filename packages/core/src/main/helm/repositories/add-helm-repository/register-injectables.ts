@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import addHelmRepositoryInjectable from "./add-helm-repository.injectable";
 import addHelmRepositoryChannelListenerInjectable from "./add-helm-repository-channel-listener.injectable";
+import addHelmRepositoryInjectable from "./add-helm-repository.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addHelmRepositoryChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(addHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addHelmRepositoryChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(addHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

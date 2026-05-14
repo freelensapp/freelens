@@ -11,9 +11,5 @@ import allowUntrustedCertificatesPreferenceBlockInjectable from "./allow-untrust
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(allowUntrustedCertificatesPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(allowUntrustedCertificatesPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

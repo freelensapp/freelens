@@ -12,14 +12,6 @@ import roleBindingsRouteInjectable from "./role-bindings-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToRoleBindingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleBindingsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToRoleBindingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleBindingsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

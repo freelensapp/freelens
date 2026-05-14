@@ -13,19 +13,7 @@ import { logWarningInjectable } from "./scripts/log-warning.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(execInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logSuccessInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logWarningInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(execInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logSuccessInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logWarningInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

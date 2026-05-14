@@ -7,8 +7,8 @@
  */
 
 import currentPathInjectable from "./current-path.injectable";
-import currentRouteInjectable from "./current-route.injectable";
 import currentRouteComponentInjectable from "./current-route-component.injectable";
+import currentRouteInjectable from "./current-route.injectable";
 import currentlyInClusterFrameInjectable from "./currently-in-cluster-frame.injectable";
 import extensionPageParametersInjectable from "./extension-page-parameters.injectable";
 import extensionRouteRegistratorInjectable from "./extension-route-registrator.injectable";
@@ -25,79 +25,19 @@ import siblingTabsInjectable from "./sibling-tabs.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentlyInClusterFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionPageParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionRouteRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getExtensionPageParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(matchingRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(queryParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routeIsActiveInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routePathParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(siblingTabsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(currentPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentlyInClusterFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionPageParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionRouteRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getExtensionPageParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(matchingRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(queryParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(routeIsActiveInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(routePathParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(routesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(siblingTabsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

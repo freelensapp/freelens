@@ -18,44 +18,12 @@ import waitUntilBundledExtensionsAreLoadedInjectable from "./wait-until-bundled-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(applicationWindowStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createApplicationWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createElectronWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createFirstApplicationWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createLensWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getCurrentApplicationWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(sessionCertificateVerifierInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(waitUntilBundledExtensionsAreLoadedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(applicationWindowStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createApplicationWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createElectronWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createFirstApplicationWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createLensWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getCurrentApplicationWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(sessionCertificateVerifierInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(waitUntilBundledExtensionsAreLoadedInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

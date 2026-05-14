@@ -11,9 +11,5 @@ import ipcRendererInjectable from "./ipc-renderer.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(ipcRendererInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(ipcRendererInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

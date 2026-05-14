@@ -12,14 +12,6 @@ import navigateToLimitRangesInjectable from "./navigate-to-limit-ranges.injectab
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(limitRangesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToLimitRangesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(limitRangesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToLimitRangesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

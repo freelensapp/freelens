@@ -15,29 +15,9 @@ import stopIpcLoggingInjectable from "./stop-ipc-logging.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeIpcFileLoggingListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createIpcFileLoggerTransportInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ipcFileLoggerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ipcFileLoggingListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopIpcLoggingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeIpcFileLoggingListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createIpcFileLoggerTransportInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ipcFileLoggerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ipcFileLoggingListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopIpcLoggingInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

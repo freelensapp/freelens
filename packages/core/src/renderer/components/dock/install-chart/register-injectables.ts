@@ -15,29 +15,9 @@ import installChartTabStoreInjectable from "./store.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearInstallChartTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createInstallChartTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getRandomInstallChartTabIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(installChartModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(installChartTabStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearInstallChartTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createInstallChartTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getRandomInstallChartTabIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(installChartModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(installChartTabStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

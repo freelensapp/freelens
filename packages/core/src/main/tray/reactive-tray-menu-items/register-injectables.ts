@@ -13,19 +13,7 @@ import stopReactiveTrayMenuItemsInjectable from "./stop-reactive-tray-menu-items
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(reactiveTrayMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startReactiveTrayMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopReactiveTrayMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(reactiveTrayMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startReactiveTrayMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopReactiveTrayMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

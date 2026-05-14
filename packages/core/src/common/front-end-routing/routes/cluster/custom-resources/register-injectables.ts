@@ -14,24 +14,8 @@ import navigateToCustomResourcesInjectable from "./navigate-to-custom-resources.
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(customResourceDefinitionsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customResourcesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToCustomResourceDefinitionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToCustomResourcesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(customResourceDefinitionsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customResourcesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToCustomResourceDefinitionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToCustomResourcesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

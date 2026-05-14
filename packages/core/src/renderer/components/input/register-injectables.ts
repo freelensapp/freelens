@@ -13,19 +13,7 @@ import { registerInjectables as registerValidatorsInjectables } from "./validato
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(persistentSearchStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(searchUrlPageParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerValidatorsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(persistentSearchStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(searchUrlPageParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerValidatorsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

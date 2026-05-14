@@ -6,40 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import {
-  actionForResetZoom,
-  actionForToggleDevTools,
-  actionForToggleFullScreen,
-  actionForZoomIn,
-  actionForZoomOut,
-} from "./operation-system-actions.injectable";
+import { actionForResetZoom } from "./operation-system-actions.injectable";
+import { actionForToggleDevTools } from "./operation-system-actions.injectable";
+import { actionForToggleFullScreen } from "./operation-system-actions.injectable";
+import { actionForZoomIn } from "./operation-system-actions.injectable";
+import { actionForZoomOut } from "./operation-system-actions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(actionForResetZoom);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForToggleDevTools);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForToggleFullScreen);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForZoomIn);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForZoomOut);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(actionForResetZoom); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForToggleDevTools); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForToggleFullScreen); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForZoomIn); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForZoomOut); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -18,44 +18,12 @@ import { showSuccessNotificationInjectable } from "./show-success-notification.i
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(notificationsClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(notificationsRootFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(notificationsStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showCheckedErrorNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showErrorNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showInfoNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showShortInfoNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showSuccessNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(notificationsClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(notificationsRootFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(notificationsStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showCheckedErrorNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showErrorNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showInfoNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showShortInfoNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showSuccessNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

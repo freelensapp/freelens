@@ -12,14 +12,6 @@ import requestListHelmReleasesInjectable from "./request-list-helm-releases.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestListHelmReleasesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestListHelmReleasesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

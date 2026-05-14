@@ -13,19 +13,7 @@ import licensesRouteComponentInjectable from "./licenses-route-component.injecta
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeLicensesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(licenseContentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(licensesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeLicensesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(licenseContentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(licensesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

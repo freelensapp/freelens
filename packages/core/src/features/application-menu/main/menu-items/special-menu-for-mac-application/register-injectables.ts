@@ -6,9 +6,9 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import primaryMenuItemInjectable from "./primary-menu-item.injectable";
 import { registerInjectables as registerNavigateToExtensionsInjectables } from "./navigate-to-extensions/register-injectables";
 import { registerInjectables as registerOperationSystemActionsInjectables } from "./operation-system-actions/register-injectables";
-import primaryMenuItemInjectable from "./primary-menu-item.injectable";
 import { registerInjectables as registerQuitApplicationInjectables } from "./quit-application/register-injectables";
 import { registerInjectables as registerSeparatorsInjectables } from "./separators/register-injectables";
 import { registerInjectables as registerShowAboutApplicationInjectables } from "./show-about-application/register-injectables";
@@ -16,34 +16,10 @@ import { registerInjectables as registerShowAboutApplicationInjectables } from "
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(primaryMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNavigateToExtensionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOperationSystemActionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerQuitApplicationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSeparatorsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerShowAboutApplicationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(primaryMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNavigateToExtensionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOperationSystemActionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerQuitApplicationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSeparatorsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerShowAboutApplicationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

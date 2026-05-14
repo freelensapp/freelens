@@ -13,19 +13,7 @@ import requestIdleCallbackInjectable from "./request-idle-callback.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(cancelIdleCallbackInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(idleCallbackTimeoutInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestIdleCallbackInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(cancelIdleCallbackInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(idleCallbackTimeoutInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestIdleCallbackInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

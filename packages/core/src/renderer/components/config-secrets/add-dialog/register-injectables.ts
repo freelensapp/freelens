@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import addSecretDialogOpenStateInjectable from "./state.injectable";
 import closeAddSecretDialogInjectable from "./close.injectable";
 import isAddSecretDialogOpenInjectable from "./is-open.injectable";
 import openAddSecretDialogInjectable from "./open.injectable";
-import addSecretDialogOpenStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addSecretDialogOpenStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(closeAddSecretDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isAddSecretDialogOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openAddSecretDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addSecretDialogOpenStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(closeAddSecretDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isAddSecretDialogOpenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openAddSecretDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

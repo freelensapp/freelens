@@ -6,62 +6,26 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import catalogEntityDetailsComponentInjectable from "./component.injectable";
 import catalogEntityDetailItemsInjectable from "./detail-items.injectable";
-import hideEntityDetailsInjectable from "./hide.injectable";
-import { registerInjectables as registerInternalInjectables } from "./internal/register-injectables";
-import onCatalogEntityListClickInjectable from "./on-catalog-click.injectable";
 import catalogEntityDetailItemsRegistratorInjectable from "./registrator.injectable";
+import catalogEntityDetailsComponentInjectable from "./component.injectable";
+import hideEntityDetailsInjectable from "./hide.injectable";
+import onCatalogEntityListClickInjectable from "./on-catalog-click.injectable";
 import selectedCatalogEntityInjectable from "./selected-entity.injectable";
 import selectedCatalogEntityParamInjectable from "./selected-uid.injectable";
 import showEntityDetailsInjectable from "./show.injectable";
+import { registerInjectables as registerInternalInjectables } from "./internal/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(catalogEntityDetailItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogEntityDetailItemsRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogEntityDetailsComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(hideEntityDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(onCatalogEntityListClickInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(selectedCatalogEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(selectedCatalogEntityParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showEntityDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInternalInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(catalogEntityDetailItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogEntityDetailItemsRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogEntityDetailsComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(hideEntityDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(onCatalogEntityListClickInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(selectedCatalogEntityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(selectedCatalogEntityParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showEntityDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInternalInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

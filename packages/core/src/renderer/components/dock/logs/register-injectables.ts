@@ -21,119 +21,35 @@ import getRandomIdForPodLogsTabInjectable from "./get-random-id-for-pod-logs-tab
 import getTimestampSplitLogsInjectable from "./get-timestamp-split-logs.injectable";
 import isLogsTabDataValidInjectable from "./is-logs-tab-data-valid.injectable";
 import loadLogsInjectable from "./load-logs.injectable";
+import logStoreInjectable from "./store.injectable";
+import logTabStoreInjectable from "./tab-store.injectable";
 import logsViewModelInjectable from "./logs-view-model.injectable";
 import reloadLogsInjectable from "./reload-logs.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
 import stopLoadingLogsInjectable from "./stop-loading-logs.injectable";
-import logStoreInjectable from "./store.injectable";
-import logTabStoreInjectable from "./tab-store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(areLogsPresentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(callForLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clearLogTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createLogsTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createPodLogsTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createWorkloadLogsTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(downloadAllLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(downloadLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLogTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLogsWithoutTimestampsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getRandomIdForPodLogsTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getTimestampSplitLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isLogsTabDataValidInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logTabStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logsViewModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(reloadLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setLogTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopLoadingLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(areLogsPresentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(callForLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clearLogTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createLogsTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createPodLogsTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createWorkloadLogsTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(downloadAllLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(downloadLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getLogTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getLogsWithoutTimestampsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getRandomIdForPodLogsTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getTimestampSplitLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isLogsTabDataValidInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logTabStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logsViewModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(reloadLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setLogTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopLoadingLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

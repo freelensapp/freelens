@@ -13,19 +13,7 @@ import stopTrayInjectable from "./stop-tray.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(electronTrayInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startTrayInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopTrayInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(electronTrayInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startTrayInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopTrayInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

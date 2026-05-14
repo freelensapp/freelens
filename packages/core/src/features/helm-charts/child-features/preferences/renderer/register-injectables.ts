@@ -7,43 +7,19 @@
  */
 
 import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
-import { registerInjectables as registerAddingOfCustomHelmRepositoryInjectables } from "./adding-of-custom-helm-repository/register-injectables";
-import { registerInjectables as registerAddingOfPublicHelmRepositoryInjectables } from "./adding-of-public-helm-repository/register-injectables";
 import helmChartsPreferenceBlockInjectable from "./helm-charts-preference-block.injectable";
 import helmRepositoriesErrorStateInjectable from "./helm-repositories-error-state.injectable";
 import removePublicHelmRepositoryInjectable from "./remove-helm-repository.injectable";
+import { registerInjectables as registerAddingOfCustomHelmRepositoryInjectables } from "./adding-of-custom-helm-repository/register-injectables";
+import { registerInjectables as registerAddingOfPublicHelmRepositoryInjectables } from "./adding-of-public-helm-repository/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(activeHelmRepositoriesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmChartsPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmRepositoriesErrorStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(removePublicHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddingOfCustomHelmRepositoryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddingOfPublicHelmRepositoryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(activeHelmRepositoriesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmChartsPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmRepositoriesErrorStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(removePublicHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddingOfCustomHelmRepositoryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddingOfPublicHelmRepositoryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import daemonsetsRouteComponentInjectable from "./daemonsets-route-component.injectable";
 import daemonSetMetricsInjectable from "./metrics.injectable";
-import daemonSetsSidebarItemInjectable from "./sidebar-item.injectable";
 import daemonSetStoreInjectable from "./store.injectable";
+import daemonSetsSidebarItemInjectable from "./sidebar-item.injectable";
+import daemonsetsRouteComponentInjectable from "./daemonsets-route-component.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(daemonSetMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonSetStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonSetsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonsetsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(daemonSetMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonSetStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonSetsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonsetsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

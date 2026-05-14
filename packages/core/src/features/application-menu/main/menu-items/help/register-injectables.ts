@@ -15,29 +15,9 @@ import { registerInjectables as registerOpenSupportInjectables } from "./open-su
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helpMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNavigateToWelcomeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenDocumentationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenLicensesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenSupportInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helpMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNavigateToWelcomeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenDocumentationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenLicensesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenSupportInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

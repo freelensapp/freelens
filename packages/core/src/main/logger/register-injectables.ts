@@ -15,29 +15,9 @@ import logVersionOnStartInjectable from "./log-on-start.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(consoleLoggerTransportInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(fileLoggerTransportInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logLevelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logOnQuitOfBackendInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logVersionOnStartInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(consoleLoggerTransportInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(fileLoggerTransportInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logLevelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logOnQuitOfBackendInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logVersionOnStartInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

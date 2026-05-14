@@ -7,37 +7,17 @@
  */
 
 import clearEditResourceTabDataInjectable from "./clear-edit-resource-tab-data.injectable";
-import { registerInjectables as registerEditResourceModelInjectables } from "./edit-resource-model/register-injectables";
 import createEditResourceTabInjectable from "./edit-resource-tab.injectable";
-import getRandomIdForEditResourceTabInjectable from "./get-random-id-for-edit-resource-tab.injectable";
 import editResourceTabStoreInjectable from "./store.injectable";
+import getRandomIdForEditResourceTabInjectable from "./get-random-id-for-edit-resource-tab.injectable";
+import { registerInjectables as registerEditResourceModelInjectables } from "./edit-resource-model/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearEditResourceTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createEditResourceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(editResourceTabStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getRandomIdForEditResourceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEditResourceModelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearEditResourceTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createEditResourceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(editResourceTabStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getRandomIdForEditResourceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEditResourceModelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

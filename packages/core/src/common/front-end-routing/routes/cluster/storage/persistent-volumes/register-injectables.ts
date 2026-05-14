@@ -12,14 +12,6 @@ import persistentVolumesRouteInjectable from "./persistent-volumes-route.injecta
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToPersistentVolumesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToPersistentVolumesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

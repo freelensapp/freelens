@@ -19,49 +19,13 @@ import { registerInjectables as registerTimezoneInjectables } from "./timezone/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(applicationPreferencePageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionInstallRegistryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHotbarAutoHideInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMenuBarInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSidebarMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStartUpInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerThemeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTimezoneInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(applicationPreferencePageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionInstallRegistryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHotbarAutoHideInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMenuBarInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSidebarMenuInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStartUpInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerThemeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTimezoneInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

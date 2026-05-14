@@ -13,19 +13,7 @@ import namespaceSelectFilterModelInjectable from "./namespace-select-filter-mode
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(filterByNamespaceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isSelectionModifierKeyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespaceSelectFilterModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(filterByNamespaceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isSelectionModifierKeyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespaceSelectFilterModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

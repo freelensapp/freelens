@@ -11,9 +11,5 @@ import themePreferenceBlockInjectable from "./theme-preference-block.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(themePreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(themePreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

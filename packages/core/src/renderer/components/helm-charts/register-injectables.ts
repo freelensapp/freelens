@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerDetailsInjectables } from "./details/register-injectables";
-import { registerInjectables as registerHelmChartsInjectables } from "./helm-charts/register-injectables";
 import helmChartsRouteComponentInjectable from "./helm-charts-route-component.injectable";
 import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import helmChartsSidebarItemInjectable from "./sidebar-item.injectable";
+import { registerInjectables as registerDetailsInjectables } from "./details/register-injectables";
+import { registerInjectables as registerHelmChartsInjectables } from "./helm-charts/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helmChartsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmChartsRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmChartsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDetailsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmChartsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helmChartsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmChartsRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmChartsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDetailsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmChartsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

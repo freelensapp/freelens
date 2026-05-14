@@ -7,61 +7,25 @@
  */
 
 import catalogEntityStoreInjectable from "./catalog-entity-store.injectable";
-import { registerInjectables as registerCatalogPreviousActiveTabStorageInjectables } from "./catalog-previous-active-tab-storage/register-injectables";
 import catalogRouteComponentInjectable from "./catalog-route-component.injectable";
 import catalogRouteParametersInjectable from "./catalog-route-parameters.injectable";
-import { registerInjectables as registerColumnsInjectables } from "./columns/register-injectables";
 import categoryColumnsInjectable from "./custom-category-columns.injectable";
 import customCategoryViewsInjectable from "./custom-views.injectable";
-import { registerInjectables as registerEntityDetailsInjectables } from "./entity-details/register-injectables";
 import getLabelBadgesInjectable from "./get-label-badges.injectable";
+import { registerInjectables as registerCatalogPreviousActiveTabStorageInjectables } from "./catalog-previous-active-tab-storage/register-injectables";
+import { registerInjectables as registerColumnsInjectables } from "./columns/register-injectables";
+import { registerInjectables as registerEntityDetailsInjectables } from "./entity-details/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(catalogEntityStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(categoryColumnsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customCategoryViewsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLabelBadgesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCatalogPreviousActiveTabStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerColumnsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEntityDetailsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(catalogEntityStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(categoryColumnsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customCategoryViewsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getLabelBadgesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCatalogPreviousActiveTabStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerColumnsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEntityDetailsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

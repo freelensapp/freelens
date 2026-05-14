@@ -11,9 +11,5 @@ import toggleMaximizeWindowInjectable from "./toggle-maximize-window.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(toggleMaximizeWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(toggleMaximizeWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -16,34 +16,10 @@ import updateReleaseRouteInjectable from "./update-release-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(deleteReleaseRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getReleaseRouteHistoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getReleaseRouteValuesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(installChartRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(rollbackReleaseRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(updateReleaseRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(deleteReleaseRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getReleaseRouteHistoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getReleaseRouteValuesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(installChartRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(rollbackReleaseRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(updateReleaseRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerDialogInjectables } from "./dialog/register-injectables";
+import roleBindingStoreInjectable from "./store.injectable";
 import roleBindingsRouteComponentInjectable from "./role-bindings-route-component.injectable";
 import roleBindingsSidebarItemInjectable from "./role-bindings-sidebar-item.injectable";
-import roleBindingStoreInjectable from "./store.injectable";
+import { registerInjectables as registerDialogInjectables } from "./dialog/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(roleBindingStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleBindingsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleBindingsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(roleBindingStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleBindingsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleBindingsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

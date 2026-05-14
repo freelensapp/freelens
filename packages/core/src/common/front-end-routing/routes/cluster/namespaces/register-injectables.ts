@@ -12,14 +12,6 @@ import navigateToNamespacesInjectable from "./navigate-to-namespaces.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(namespacesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToNamespacesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(namespacesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToNamespacesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

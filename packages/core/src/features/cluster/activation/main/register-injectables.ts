@@ -14,24 +14,8 @@ import requestClusterDeactivationInjectable from "./request-deactivation.injecta
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(activateClusterRequestChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterDeactivationRequestChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestClusterActivationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestClusterDeactivationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(activateClusterRequestChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterDeactivationRequestChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestClusterActivationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestClusterDeactivationInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

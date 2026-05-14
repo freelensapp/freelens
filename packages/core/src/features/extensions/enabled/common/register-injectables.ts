@@ -7,37 +7,17 @@
  */
 
 import enabledExtensionsInjectable from "./enabled-extensions.injectable";
-import isExtensionEnabledInjectable from "./is-enabled.injectable";
-import enabledExtensionsStateInjectable from "./state.injectable";
 import enabledExtensionsPersistentStorageInjectable from "./storage.injectable";
+import enabledExtensionsStateInjectable from "./state.injectable";
+import isExtensionEnabledInjectable from "./is-enabled.injectable";
 import updateExtensionsStateInjectable from "./update-state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(enabledExtensionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enabledExtensionsPersistentStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enabledExtensionsStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isExtensionEnabledInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(updateExtensionsStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(enabledExtensionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enabledExtensionsPersistentStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enabledExtensionsStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isExtensionEnabledInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(updateExtensionsStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

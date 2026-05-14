@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import addRoleDialogStateInjectable from "./state.injectable";
 import closeAddRoleDialogInjectable from "./close.injectable";
 import openAddRoleDialogInjectable from "./open.injectable";
-import addRoleDialogStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addRoleDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(closeAddRoleDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openAddRoleDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addRoleDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(closeAddRoleDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openAddRoleDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

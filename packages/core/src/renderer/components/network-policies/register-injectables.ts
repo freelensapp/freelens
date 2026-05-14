@@ -13,19 +13,7 @@ import networkPolicyStoreInjectable from "./store.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(networkPoliciesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(networkPoliciesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(networkPolicyStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(networkPoliciesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(networkPoliciesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(networkPolicyStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

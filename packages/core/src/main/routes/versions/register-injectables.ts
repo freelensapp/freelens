@@ -11,9 +11,5 @@ import getVersionRouteInjectable from "./get-version-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getVersionRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getVersionRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

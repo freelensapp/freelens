@@ -11,9 +11,5 @@ import openPathPickingDialogInjectable from "./pick-paths.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openPathPickingDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openPathPickingDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

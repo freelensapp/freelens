@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerKubeconfigSyncInjectables } from "./kubeconfig-sync/register-injectables";
 import syncGeneralCatalogEntitiesInjectable from "./sync-general-catalog-entities.injectable";
+import { registerInjectables as registerKubeconfigSyncInjectables } from "./kubeconfig-sync/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(syncGeneralCatalogEntitiesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeconfigSyncInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(syncGeneralCatalogEntitiesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeconfigSyncInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

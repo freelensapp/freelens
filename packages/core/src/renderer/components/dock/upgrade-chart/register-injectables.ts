@@ -9,41 +9,17 @@
 import clearUpgradeChartTabDataInjectable from "./clear-upgrade-chart-tab-data.injectable";
 import createUpgradeChartTabInjectable from "./create-upgrade-chart-tab.injectable";
 import getRandomUpgradeChartTabIdInjectable from "./get-random-upgrade-chart-tab-id.injectable";
-import upgradeChartTabStoreInjectable from "./store.injectable";
-import upgradeChartTabDataInjectable from "./tab-data.injectable";
 import upgradeChartModelInjectable from "./upgrade-chart-model.injectable";
+import upgradeChartTabDataInjectable from "./tab-data.injectable";
+import upgradeChartTabStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clearUpgradeChartTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createUpgradeChartTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getRandomUpgradeChartTabIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(upgradeChartModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(upgradeChartTabDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(upgradeChartTabStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clearUpgradeChartTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createUpgradeChartTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getRandomUpgradeChartTabIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(upgradeChartModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(upgradeChartTabDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(upgradeChartTabStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

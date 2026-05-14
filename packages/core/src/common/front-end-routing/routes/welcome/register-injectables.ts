@@ -8,30 +8,14 @@
 
 import defaultWelcomeRouteInjectable from "./default-welcome-route.injectable";
 import navigateToWelcomeInjectable from "./navigate-to-welcome.injectable";
-import welcomeRouteInjectable from "./welcome-route.injectable";
 import welcomeRouteConfigInjectable from "./welcome-route-config.injectable";
+import welcomeRouteInjectable from "./welcome-route.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(defaultWelcomeRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToWelcomeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(welcomeRouteConfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(welcomeRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(defaultWelcomeRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToWelcomeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(welcomeRouteConfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(welcomeRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

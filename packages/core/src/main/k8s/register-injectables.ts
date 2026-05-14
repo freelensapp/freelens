@@ -12,14 +12,6 @@ import apiBaseServerAddressInjectable from "./api-base-server-address.injectable
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(apiBaseHostHeaderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(apiBaseServerAddressInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(apiBaseHostHeaderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(apiBaseServerAddressInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

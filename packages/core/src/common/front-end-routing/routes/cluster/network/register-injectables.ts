@@ -17,39 +17,11 @@ import { registerInjectables as registerServicesInjectables } from "./services/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerEndpointSlicesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEndpointsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerIngressClassInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerIngressesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNetworkPoliciesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPortForwardsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerServicesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerEndpointSlicesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEndpointsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerIngressClassInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerIngressesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNetworkPoliciesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPortForwardsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerServicesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import getActiveHelmRepositoryInjectable from "./get-active-helm-repository.injectable";
 import { registerInjectables as registerAddHelmRepositoryInjectables } from "./add-helm-repository/register-injectables";
 import { registerInjectables as registerGetActiveHelmRepositoriesInjectables } from "./get-active-helm-repositories/register-injectables";
-import getActiveHelmRepositoryInjectable from "./get-active-helm-repository.injectable";
 import { registerInjectables as registerRemoveHelmRepositoryInjectables } from "./remove-helm-repository/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getActiveHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddHelmRepositoryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGetActiveHelmRepositoriesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRemoveHelmRepositoryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getActiveHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddHelmRepositoryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGetActiveHelmRepositoriesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRemoveHelmRepositoryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

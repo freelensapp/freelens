@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import deploymentMetricsInjectable from "./metrics.injectable";
+import deploymentStoreInjectable from "./store.injectable";
 import deploymentsRouteComponentInjectable from "./deployments-route-component.injectable";
 import deploymentsSidebarItemInjectable from "./deployments-sidebar-item.injectable";
-import deploymentMetricsInjectable from "./metrics.injectable";
 import { registerInjectables as registerScaleInjectables } from "./scale/register-injectables";
-import deploymentStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(deploymentMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerScaleInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(deploymentMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerScaleInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

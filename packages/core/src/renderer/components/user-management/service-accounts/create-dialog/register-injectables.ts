@@ -7,25 +7,13 @@
  */
 
 import closeCreateServiceAccountDialogInjectable from "./close.injectable";
-import openCreateServiceAccountDialogInjectable from "./open.injectable";
 import createServiceAccountDialogStateInjectable from "./state.injectable";
+import openCreateServiceAccountDialogInjectable from "./open.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeCreateServiceAccountDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createServiceAccountDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openCreateServiceAccountDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeCreateServiceAccountDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createServiceAccountDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openCreateServiceAccountDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

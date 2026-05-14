@@ -11,9 +11,5 @@ import executeOnClusterInjectable from "./execute-on-cluster.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(executeOnClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(executeOnClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,44 +6,20 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import createStorageHelperInjectable from "./create-storage-helper.injectable";
+import openSaveFileDialogInjectable from "./save-file.injectable";
 import { registerInjectables as registerChannelInjectables } from "./channel/register-injectables";
 import { registerInjectables as registerCreateStorageInjectables } from "./create-storage/register-injectables";
-import createStorageHelperInjectable from "./create-storage-helper.injectable";
 import { registerInjectables as registerResolveProxyInjectables } from "./resolve-proxy/register-injectables";
-import openSaveFileDialogInjectable from "./save-file.injectable";
 import { registerInjectables as registerSyncBoxInjectables } from "./sync-box/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createStorageHelperInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openSaveFileDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerChannelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCreateStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerResolveProxyInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSyncBoxInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createStorageHelperInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openSaveFileDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerChannelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCreateStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerResolveProxyInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSyncBoxInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

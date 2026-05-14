@@ -8,44 +8,18 @@
 
 import listeningOfChannelsInjectable from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import startListeningOfChannelsInjectable from "./features/actual/listening-of-channels/start-listening-of-channels.injectable";
-import {
-  enlistMessageChannelListenerStubInjectable,
-  enlistRequestChannelListenerStubInjectable,
-  requestFromChannelStubInjectable,
-  sendMessageToChannelStubInjectable,
-} from "./features/unit-testing/test-doubles.injectable";
+import { enlistMessageChannelListenerStubInjectable } from "./features/unit-testing/test-doubles.injectable";
+import { enlistRequestChannelListenerStubInjectable } from "./features/unit-testing/test-doubles.injectable";
+import { requestFromChannelStubInjectable } from "./features/unit-testing/test-doubles.injectable";
+import { sendMessageToChannelStubInjectable } from "./features/unit-testing/test-doubles.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(enlistMessageChannelListenerStubInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enlistRequestChannelListenerStubInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(listeningOfChannelsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestFromChannelStubInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(sendMessageToChannelStubInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startListeningOfChannelsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(enlistMessageChannelListenerStubInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enlistRequestChannelListenerStubInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(listeningOfChannelsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestFromChannelStubInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(sendMessageToChannelStubInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startListeningOfChannelsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

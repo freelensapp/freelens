@@ -11,9 +11,5 @@ import extensionPackagesRootInjectable from "./extension-packages-root.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionPackagesRootInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionPackagesRootInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

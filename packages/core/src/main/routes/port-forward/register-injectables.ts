@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerFunctionalityInjectables } from "./functionality/register-injectables";
 import getCurrentPortForwardRouteInjectable from "./get-current-port-forward-route.injectable";
 import startPortForwardRouteInjectable from "./start-port-forward-route.injectable";
 import stopCurrentPortForwardRouteInjectable from "./stop-current-port-forward-route.injectable";
+import { registerInjectables as registerFunctionalityInjectables } from "./functionality/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getCurrentPortForwardRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startPortForwardRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopCurrentPortForwardRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFunctionalityInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getCurrentPortForwardRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startPortForwardRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopCurrentPortForwardRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFunctionalityInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

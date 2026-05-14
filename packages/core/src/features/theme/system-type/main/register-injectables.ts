@@ -13,19 +13,7 @@ import setupSystemThemeTypeUpdaterEmitterInjectable from "./setup-update-emitter
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(emitSystemThemeTypeUpdateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(initialSystemThemeTypeHandler);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupSystemThemeTypeUpdaterEmitterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(emitSystemThemeTypeUpdateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(initialSystemThemeTypeHandler); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupSystemThemeTypeUpdaterEmitterInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

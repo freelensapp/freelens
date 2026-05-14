@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerCreateDialogInjectables } from "./create-dialog/register-injectables";
+import serviceAccountStoreInjectable from "./store.injectable";
 import serviceAccountsRouteComponentInjectable from "./service-accounts-route-component.injectable";
 import serviceAccountsSidebarItemInjectable from "./service-accounts-sidebar-item.injectable";
-import serviceAccountStoreInjectable from "./store.injectable";
+import { registerInjectables as registerCreateDialogInjectables } from "./create-dialog/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(serviceAccountStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(serviceAccountsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(serviceAccountsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCreateDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(serviceAccountStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(serviceAccountsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(serviceAccountsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCreateDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,10 +6,10 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerEditorFontFamilyInjectables } from "./editor-font-family/register-injectables";
-import { registerInjectables as registerEditorFontSizeInjectables } from "./editor-font-size/register-injectables";
 import editorPreferencePageInjectable from "./editor-preference-page.injectable";
 import editorPreferenceTabInjectable from "./editor-preference-tab.injectable";
+import { registerInjectables as registerEditorFontFamilyInjectables } from "./editor-font-family/register-injectables";
+import { registerInjectables as registerEditorFontSizeInjectables } from "./editor-font-size/register-injectables";
 import { registerInjectables as registerLineNumbersInjectables } from "./line-numbers/register-injectables";
 import { registerInjectables as registerMinimapInjectables } from "./minimap/register-injectables";
 import { registerInjectables as registerTabSizeInjectables } from "./tab-size/register-injectables";
@@ -17,39 +17,11 @@ import { registerInjectables as registerTabSizeInjectables } from "./tab-size/re
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(editorPreferencePageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(editorPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEditorFontFamilyInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEditorFontSizeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLineNumbersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMinimapInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTabSizeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(editorPreferencePageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(editorPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEditorFontFamilyInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEditorFontSizeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLineNumbersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMinimapInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTabSizeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

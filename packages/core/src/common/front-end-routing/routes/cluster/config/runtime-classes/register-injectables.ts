@@ -12,14 +12,6 @@ import runtimeClassesRouteInjectable from "./runtime-classes-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToRuntimeClassesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(runtimeClassesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToRuntimeClassesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(runtimeClassesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

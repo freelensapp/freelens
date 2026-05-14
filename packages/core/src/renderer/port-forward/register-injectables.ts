@@ -16,34 +16,10 @@ import { registerInjectables as registerPortForwardStoreInjectables } from "./po
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(aboutPortForwardingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(notifyErrorPortForwardingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openPortForwardInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(portForwardDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPortForwardDialogModelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPortForwardStoreInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(aboutPortForwardingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(notifyErrorPortForwardingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openPortForwardInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(portForwardDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPortForwardDialogModelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPortForwardStoreInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import workloadsOverviewRouteInjectable from "./workloads-overview-route.injecta
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToWorkloadsOverviewInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(workloadsOverviewRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToWorkloadsOverviewInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(workloadsOverviewRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

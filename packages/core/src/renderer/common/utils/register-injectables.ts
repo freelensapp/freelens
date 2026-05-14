@@ -11,9 +11,5 @@ import getLatestVersionViaChannelInjectable from "./get-latest-version-via-chann
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getLatestVersionViaChannelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getLatestVersionViaChannelInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

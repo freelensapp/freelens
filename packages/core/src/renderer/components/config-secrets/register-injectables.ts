@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
+import secretStoreInjectable from "./store.injectable";
 import secretsRouteComponentInjectable from "./secrets-route-component.injectable";
 import secretsSidebarItemInjectable from "./secrets-sidebar-item.injectable";
-import secretStoreInjectable from "./store.injectable";
+import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(secretStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(secretsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(secretsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(secretStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(secretsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(secretsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

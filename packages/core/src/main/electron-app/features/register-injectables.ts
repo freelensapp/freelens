@@ -16,8 +16,8 @@ import getElectronThemeInjectable from "./get-electron-theme.injectable";
 import isAutoUpdatingInjectable from "./is-auto-updating.injectable";
 import nativeThemeInjectable from "./native-theme.injectable";
 import powerMonitorInjectable from "./power-monitor.injectable";
-import requestSingleInstanceLockInjectable from "./request-single-instance-lock.injectable";
 import requestQuitOfAppInjectable from "./require-quit.injectable";
+import requestSingleInstanceLockInjectable from "./request-single-instance-lock.injectable";
 import setLoginItemSettingsInjectable from "./set-login-item-settings.injectable";
 import shouldStartHiddenInjectable from "./should-start-hidden.injectable";
 import showErrorPopupInjectable from "./show-error-popup.injectable";
@@ -28,94 +28,22 @@ import syncThemeFromOperatingSystemInjectable from "./sync-theme-from-operating-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(disableHardwareAccelerationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(electronDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(focusApplicationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(forceAppExitInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getBuildVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getCommandLineSwitchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getElectronThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isAutoUpdatingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nativeThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(powerMonitorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestQuitOfAppInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestSingleInstanceLockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setLoginItemSettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(shouldStartHiddenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showErrorPopupInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showMessagePopupInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showOpenDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(syncThemeFromOperatingSystemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(disableHardwareAccelerationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(electronDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(focusApplicationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(forceAppExitInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getBuildVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getCommandLineSwitchInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getElectronThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isAutoUpdatingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nativeThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(powerMonitorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestQuitOfAppInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestSingleInstanceLockInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setLoginItemSettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(shouldStartHiddenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showErrorPopupInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showMessagePopupInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showOpenDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(syncThemeFromOperatingSystemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

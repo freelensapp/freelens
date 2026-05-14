@@ -11,9 +11,5 @@ import getElectronAppPathInjectable from "./get-electron-app-path.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getElectronAppPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getElectronAppPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

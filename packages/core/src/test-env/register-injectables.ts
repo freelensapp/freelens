@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { applicationInformationFakeInjectable } from "./application-information-fake.injectable";
 import nodeEnvForTestingEnvInjectable from "./node-env.injectable";
+import { applicationInformationFakeInjectable } from "./application-information-fake.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(applicationInformationFakeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodeEnvForTestingEnvInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(applicationInformationFakeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodeEnvForTestingEnvInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }
