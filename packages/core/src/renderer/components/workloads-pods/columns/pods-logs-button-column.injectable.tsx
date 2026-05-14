@@ -10,7 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
-import {findOptimalDefaultContainer} from "../../dock/logs/default-container-helper";
+import { findOptimalDefaultContainer } from "../../dock/logs/default-container-helper";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { Pod } from "@freelensapp/kube-object";

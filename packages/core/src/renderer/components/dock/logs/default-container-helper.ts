@@ -1,18 +1,13 @@
-import {
-  Container,
-  EphemeralContainer, Pod
-} from "@freelensapp/kube-object";
+import { Container, EphemeralContainer, Pod } from "@freelensapp/kube-object";
 
-export function findOptimalDefaultContainerOfPod(
-  pod: Pod
-) : Container | EphemeralContainer  {
-  return findOptimalDefaultContainer(pod.getAllContainers(), pod.getAnnotations(true))
+export function findOptimalDefaultContainerOfPod(pod: Pod): Container | EphemeralContainer {
+  return findOptimalDefaultContainer(pod.getAllContainers(), pod.getAnnotations(true));
 }
 
 export function findOptimalDefaultContainer(
   containers: (Container | EphemeralContainer)[],
-  annotations: string[]
-) : Container | EphemeralContainer  {
+  annotations: string[],
+): Container | EphemeralContainer {
   const defaultContainerAnnotation = "kubectl.kubernetes.io/default-container=";
   const defaultContainer = annotations
     .find((s) => s.startsWith(defaultContainerAnnotation))

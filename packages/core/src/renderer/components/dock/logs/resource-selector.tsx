@@ -9,8 +9,8 @@ import "./resource-selector.scss";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../../badge";
-import {findOptimalDefaultContainerOfPod} from "./default-container-helper";
 import { Select } from "../../select";
+import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
 
 import type { Container, Pod } from "@freelensapp/kube-object";
 

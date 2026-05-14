@@ -7,10 +7,10 @@
 import { Icon } from "@freelensapp/icon";
 import { prevDefault } from "@freelensapp/utilities";
 import React from "react";
+import { findOptimalDefaultContainer } from "../dock/logs/default-container-helper";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
 import { containerStatusClassName } from "../workloads-pods/container-status-class-name";
-import {findOptimalDefaultContainer} from "../dock/logs/default-container-helper";
 
 import type {
   Container,

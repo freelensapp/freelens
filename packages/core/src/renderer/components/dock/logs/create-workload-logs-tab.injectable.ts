@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
-import {findOptimalDefaultContainerOfPod} from "./default-container-helper";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
+import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
 
 import type { DaemonSet, Deployment, Job, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 
