@@ -10,6 +10,7 @@ import React from "react";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
 import { containerStatusClassName } from "../workloads-pods/container-status-class-name";
+import {findOptimalDefaultContainer} from "../dock/logs/default-container-helper";
 
 import type {
   Container,
@@ -35,24 +36,9 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
 
   if (!containers || !containers.length) return null;
 
-  const findOptimalDefaultContainer = () => {
-    const defaultContainerAnnotation = "kubectl.kubernetes.io/default-container=";
-    const defaultContainer = annotations
-      .find((s) => s.startsWith(defaultContainerAnnotation))
-      ?.substring(defaultContainerAnnotation.length);
-
-    if (defaultContainer) {
-      const container = containers.find((container) => container.name == defaultContainer);
-      if (container) {
-        return container;
-      }
-    }
-    return containers[0];
-  };
-
   return (
     <>
-      <MenuItem onClick={prevDefault(() => onMenuItemClick(findOptimalDefaultContainer()))}>
+      <MenuItem onClick={prevDefault(() => onMenuItemClick(findOptimalDefaultContainer(containers, annotations)))}>
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
         <Icon className="arrow" material="keyboard_arrow_right" />
