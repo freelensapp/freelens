@@ -16,7 +16,7 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 360
 
     steps:
@@ -46,23 +46,34 @@ jobs:
       matrix:
         include:
           - runs-on: ubuntu-24.04
+            os: linux
+            arch: x64
+            concurrency: linux-x64
+
+          - runs-on: ubuntu-24.04-arm
+            os: linux
             arch: arm64
             concurrency: linux-arm64
-          - runs-on: ubuntu-24.04
-            arch: x64
-            concurrency: linux-amd64
-          - runs-on: macos-14
+
+          - runs-on: macos-15
+            os: macos
             arch: arm64
-            concurrency: macos
-          - runs-on: macos-14
+            concurrency: macos-arm64
+
+          - runs-on: macos-15-intel
+            os: macos
             arch: x64
-            concurrency: macos
-          - runs-on: windows-2022
+            concurrency: macos-x64
+
+          - runs-on: windows-11-arm
+            os: windows
             arch: arm64
             concurrency: windows-arm64
-          - runs-on: windows-2022
+
+          - runs-on: windows-2025
+            os: windows
             arch: x64
-            concurrency: windows-amd64
+            concurrency: windows-x64
 
     runs-on: ${{ matrix.runs-on }}
     environment: signing
@@ -79,13 +90,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      - name: Install dependencies (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y --no-install-recommends \
-            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -186,20 +190,8 @@ jobs:
           mkdir -p $ELECTRON_HEADERS_CACHE
           curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
-      - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
-        shell: bash
-        run: |
-          echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
-
       - name: Build packages
         run: pnpm --color=always --stream build
-
-      - name: Set cross-complilation environment (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: |
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
 
       - name: Rebuild native packages for Electron
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
@@ -415,7 +407,7 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout
@@ -438,8 +430,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04
-            arch: x64
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     environment: publishing
@@ -536,7 +528,7 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     environment: apt-signing
 
     steps:
