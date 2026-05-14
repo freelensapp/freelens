@@ -20,6 +20,7 @@ import setupLensProxyInjectable from "./setup-lens-proxy.injectable";
 import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 import setupMobxInjectable from "./setup-mobx.injectable";
 import setupProxyEnvInjectable from "./setup-proxy-env.injectable";
+import setupSessionProxyBypassInjectable from "./setup-session-proxy-bypass.injectable";
 import setupSyncingOfGeneralCatalogEntitiesInjectable from "./setup-syncing-of-general-catalog-entities.injectable";
 import showInitialWindowInjectable from "./show-initial-window.injectable";
 import showLoadingInjectable from "./show-loading.injectable";
@@ -79,6 +80,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(setupProxyEnvInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(setupSessionProxyBypassInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -304,8 +304,20 @@ export default getGlobalOverride(electronAppInjectable, () => {
         wasOpenedAsHidden: false,
         restoreState: false,
         launchItems: [],
-        status: "",
+        status: "not-found" as const,
       };
+    }
+
+    toastActivatorCLSID = "";
+
+    setToastActivatorCLSID(clsid: string): void {
+      void clsid;
+      throw new Error("Method not implemented.");
+    }
+
+    configureWebAuthn(options: Electron.ConfigureWebAuthnOptions): void {
+      void options;
+      throw new Error("Method not implemented.");
     }
   })();
 });

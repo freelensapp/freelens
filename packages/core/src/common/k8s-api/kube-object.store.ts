@@ -85,11 +85,8 @@ export interface KubeObjectStoreOptions {
   bufferSize?: number;
 }
 
-export type KubeApiDataFrom<K extends KubeObject, A> = A extends KubeApi<K, infer D>
-  ? D extends KubeJsonApiDataFor<K>
-    ? D
-    : never
-  : never;
+export type KubeApiDataFrom<K extends KubeObject, A> =
+  A extends KubeApi<K, infer D> ? (D extends KubeJsonApiDataFor<K> ? D : never) : never;
 
 export type JsonPatch = Patch;
 

@@ -111,6 +111,8 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
  * A cluster's prometheus settings (a subset of cluster settings)
  */
 export interface ClusterPrometheusPreferences {
+  /** HTTP method for Prometheus query_range requests; defaults to POST */
+  prometheusRequestMethod?: "GET" | "POST";
   prometheus?: {
     namespace: string;
     service: string;
@@ -118,6 +120,10 @@ export interface ClusterPrometheusPreferences {
     prefix: string;
     /** When true, add "https:" prefix to service proxy path */
     https?: boolean;
+    /** Direct URL to Prometheus, bypasses K8s service proxy (e.g. for OpenShift) */
+    directUrl?: string;
+    /** Bearer token for authenticating to Prometheus (e.g. OpenShift service account token) */
+    bearerToken?: string;
   };
   prometheusProvider?: {
     type: string;

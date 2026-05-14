@@ -30,7 +30,7 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
   }
 
   const logs = model.timestampSplitLogs.get();
-  const { showTimestamps, showPrevious: previous } = tabData;
+  const { showTimestamps, showPrevious: previous, showWordWrap } = tabData;
   const since = logs.length ? logs[0][0] : null;
 
   const toggleTimestamps = () => {
@@ -40,6 +40,10 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
   const togglePrevious = () => {
     model.updateLogTabData({ showPrevious: !previous });
     model.reloadLogs();
+  };
+
+  const toggleWordWrap = () => {
+    model.updateLogTabData({ showWordWrap: !showWordWrap });
   };
 
   return (
@@ -58,6 +62,7 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
           onChange={toggleTimestamps}
           className="show-timestamps"
         />
+        <Checkbox label="Word wrap" value={showWordWrap} onChange={toggleWordWrap} className="show-word-wrap" />
         <Checkbox
           label="Show previous terminated container"
           value={previous}

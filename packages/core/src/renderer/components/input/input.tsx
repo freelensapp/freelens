@@ -32,8 +32,9 @@ const {
   ...InputValidators
 } = Validators;
 
-export { InputValidators, asyncInputValidator, inputValidator, isAsyncValidator, unionInputValidatorsAsync };
-export type { InputValidator, InputValidation, InputValidationResult, SyncValidationMessage };
+export { asyncInputValidator, InputValidators, inputValidator, isAsyncValidator, unionInputValidatorsAsync };
+
+export type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage };
 
 type InputElement = HTMLInputElement | HTMLTextAreaElement;
 type InputElementProps = InputHTMLAttributes<HTMLInputElement> &

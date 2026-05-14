@@ -36,6 +36,7 @@ import { registerInjectables as registerDrawerInjectables } from "./drawer/regis
 import { registerInjectables as registerEntitySettingsInjectables } from "./entity-settings/register-injectables";
 import { registerInjectables as registerEventsInjectables } from "./events/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
+import { registerInjectables as registerFavoritesInjectables } from "./favorites/register-injectables";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerHelmChartsInjectables } from "./helm-charts/register-injectables";
 import { registerInjectables as registerHelmReleasesInjectables } from "./helm-releases/register-injectables";
@@ -228,6 +229,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerExtensionsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerFavoritesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
