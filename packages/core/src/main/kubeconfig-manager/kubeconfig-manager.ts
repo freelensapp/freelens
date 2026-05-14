@@ -53,18 +53,12 @@ export class KubeconfigManager {
 
   /**
    *
-   * @returns The path to the temporary kubeconfig, or the original kubeconfig
-   * when "Bypass Freelens Internal KubeApi Proxy" is enabled.
+   * @returns The path to the temporary kubeconfig. When "Bypass Freelens Internal
+   * KubeApi Proxy" is enabled the temp file mirrors the original kubeconfig but
+   * pins `current-context` to the connected cluster so that external `kubectl`
+   * and `helm` invocations act on the right cluster.
    */
   async ensurePath(): Promise<string> {
-    if (this.dependencies.isBypassEnabled()) {
-      this.dependencies.logger.debug(
-        "[KUBECONFIG-MANAGER]: Bypass KubeApi proxy is enabled, using original kubeconfig",
-      );
-
-      return this.cluster.kubeConfigPath.get();
-    }
-
     if (this.tempFilePath === null || !(await this.dependencies.pathExists(this.tempFilePath))) {
       return await this.ensureFile();
     }
@@ -94,6 +88,14 @@ export class KubeconfigManager {
   }
 
   protected async ensureFile() {
+    if (this.dependencies.isBypassEnabled()) {
+      try {
+        return (this.tempFilePath = await this.createBypassKubeconfig());
+      } catch (error) {
+        throw new Error(`Failed to create temp kubeconfig for bypass: ${error}`);
+      }
+    }
+
     try {
       await this.dependencies.kubeAuthProxyServer.ensureRunning();
 
@@ -101,6 +103,34 @@ export class KubeconfigManager {
     } catch (error) {
       throw new Error(`Failed to create temp config for auth-proxy: ${error}`);
     }
+  }
+
+  /**
+   * Creates a temporary kubeconfig that mirrors the original kubeconfig but
+   * pins `current-context` to the cluster being opened. Used when the user
+   * has enabled "Bypass Freelens Internal KubeApi Proxy" so that kubectl/helm
+   * in this cluster's terminals do not fall back to the kubeconfig's default
+   * context (which can target the wrong cluster).
+   */
+  protected async createBypassKubeconfig(): Promise<string> {
+    const { id } = this.cluster;
+    const contextName = this.cluster.contextName.get();
+    const tempFile = this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubeconfig-${id}`);
+    const kubeConfig = await this.dependencies.loadKubeconfig();
+    const bypassConfig: PartialDeep<KubeConfig> = {
+      currentContext: contextName,
+      clusters: kubeConfig.clusters,
+      users: kubeConfig.users,
+      contexts: kubeConfig.contexts,
+    };
+    const configYaml = dumpConfigYaml(bypassConfig);
+
+    await this.dependencies.writeFile(tempFile, configYaml, { mode: 0o600 });
+    this.dependencies.logger.debug(
+      `[KUBECONFIG-MANAGER]: Created bypass kubeconfig "${contextName}" at "${tempFile}": \n${configYaml}`,
+    );
+
+    return tempFile;
   }
 
   /**

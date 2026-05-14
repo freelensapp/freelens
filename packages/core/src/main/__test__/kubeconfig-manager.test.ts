@@ -17,6 +17,7 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -318,6 +319,101 @@ describe("kubeconfig manager tests", () => {
             });
           });
         });
+      });
+    });
+  });
+
+  describe("when 'Bypass Freelens Internal KubeApi Proxy' is enabled", () => {
+    beforeEach(() => {
+      const state = di.inject(userPreferencesStateInjectable);
+
+      state.bypassKubeApiProxy = true;
+    });
+
+    describe("when ensurePath() is called", () => {
+      let getPathPromise: Promise<string>;
+
+      beforeEach(() => {
+        getPathPromise = kubeConfManager.ensurePath();
+      });
+
+      it("does not start the kube-auth-proxy server", () => {
+        expect(ensureServerMock).not.toBeCalled();
+      });
+
+      it("reads the original kubeconfig (not the proxied one)", async () => {
+        await readFileMock.resolveSpecific(
+          ["/kind-config.yml"],
+          JSON.stringify({
+            apiVersion: "v1",
+            clusters: [
+              { name: "kind-other", cluster: { server: "https://192.168.64.4:8443" } },
+              { name: "kind-kind", cluster: { server: clusterServerUrl } },
+            ],
+            contexts: [
+              { context: { cluster: "kind-other", user: "kind-other" }, name: "kind-other" },
+              { context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" },
+            ],
+            "current-context": "kind-other",
+            users: [{ name: "kind-other" }, { name: "kind-kind" }],
+            kind: "Config",
+            preferences: {},
+          }),
+        );
+
+        const [path, contents] = writeFileMock.mock.calls[0] ?? [];
+
+        // Sanity-check: the kubeconfig used a different default context, but
+        // the bypass file must pin current-context to the cluster being opened.
+        expect(path).toBe("/some-directory-for-temp/kubeconfig-foo");
+        expect(contents).toContain("current-context: kind-kind");
+        expect(contents).not.toContain("current-context: kind-other");
+      });
+
+      it("writes a bypass kubeconfig that preserves every original context", async () => {
+        await readFileMock.resolveSpecific(
+          ["/kind-config.yml"],
+          JSON.stringify({
+            apiVersion: "v1",
+            clusters: [
+              { name: "kind-other", cluster: { server: "https://192.168.64.4:8443" } },
+              { name: "kind-kind", cluster: { server: clusterServerUrl } },
+            ],
+            contexts: [
+              { context: { cluster: "kind-other", user: "kind-other" }, name: "kind-other" },
+              { context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" },
+            ],
+            "current-context": "kind-other",
+            users: [{ name: "kind-other" }, { name: "kind-kind" }],
+            kind: "Config",
+            preferences: {},
+          }),
+        );
+
+        const [, contents] = writeFileMock.mock.calls[0] ?? [];
+
+        expect(contents).toContain("name: kind-other");
+        expect(contents).toContain("name: kind-kind");
+      });
+
+      it("returns the temp kubeconfig path (not the original kubeconfig path)", async () => {
+        await readFileMock.resolveSpecific(
+          ["/kind-config.yml"],
+          JSON.stringify({
+            apiVersion: "v1",
+            clusters: [{ name: "kind-kind", cluster: { server: clusterServerUrl } }],
+            contexts: [{ context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" }],
+            users: [{ name: "kind-kind" }],
+            kind: "Config",
+            preferences: {},
+          }),
+        );
+
+        const [writePath] = writeFileMock.mock.calls[0] ?? [];
+
+        await writeFileMock.resolveSpecific([writePath as string]);
+
+        expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
       });
     });
   });
