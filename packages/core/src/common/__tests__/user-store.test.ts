@@ -54,12 +54,17 @@ describe("user store tests", () => {
 
       state.colorTheme = "light";
       expect(state.colorTheme).toBe("light");
+
+      state.customAccentColor = "#ff00aa";
+      expect(state.customAccentColor).toBe("#ff00aa");
     });
 
     it("correctly resets theme to default value", async () => {
       state.colorTheme = "some other theme";
+      state.customAccentColor = "#ff00aa";
       resetTheme();
       expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.customAccentColor).toBeUndefined();
     });
   });
 });

@@ -51,6 +51,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
       }),
+      customAccentColor: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => (isHexColor(val) ? val : undefined),
+        toStore: (val) => (isHexColor(val) ? val : undefined),
+      }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
         toStore: (val) => val || undefined,
@@ -153,5 +157,9 @@ const userPreferenceDescriptorsInjectable = getInjectable({
     } as const;
   },
 });
+
+function isHexColor(value: unknown): value is string {
+  return typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value);
+}
 
 export default userPreferenceDescriptorsInjectable;

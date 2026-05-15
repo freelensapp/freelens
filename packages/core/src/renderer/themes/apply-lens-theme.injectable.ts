@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
 import type { LensTheme } from "./lens-theme";
 
@@ -18,6 +19,7 @@ const applyLensThemeInjectable = getInjectable({
   instantiate: (di): ApplyLensTheme => {
     const logger = di.inject(loggerInjectionToken);
     const resetTheme = di.inject(resetThemeInjectable);
+    const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
     return (theme) => {
       try {
@@ -26,6 +28,8 @@ const applyLensThemeInjectable = getInjectable({
         for (const [name, value] of colors) {
           document.documentElement.style.setProperty(`--${name}`, value);
         }
+
+        applyCustomAccentColor(userPreferencesState.customAccentColor);
 
         // Adding universal theme flag which can be used in component styles
         document.body.classList.toggle("theme-light", theme.type === "light");
@@ -37,5 +41,24 @@ const applyLensThemeInjectable = getInjectable({
   },
   causesSideEffects: true,
 });
+
+const accentColorVariables = [
+  "primary",
+  "textColorAccent",
+  "buttonPrimaryBackground",
+  "colorInfo",
+  "helmStableRepo",
+  "menuActiveBackground",
+];
+
+function applyCustomAccentColor(accentColor: string | undefined) {
+  if (!accentColor) {
+    return;
+  }
+
+  for (const variableName of accentColorVariables) {
+    document.documentElement.style.setProperty(`--${variableName}`, accentColor);
+  }
+}
 
 export default applyLensThemeInjectable;

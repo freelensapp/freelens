@@ -19,6 +19,7 @@ const resetThemeInjectable = getInjectable({
 
     return action(() => {
       state.colorTheme = preferenceDescriptors.colorTheme.fromStore(undefined);
+      state.customAccentColor = preferenceDescriptors.customAccentColor.fromStore(undefined);
     });
   },
 });
