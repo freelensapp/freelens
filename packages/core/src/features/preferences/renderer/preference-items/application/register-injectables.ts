@@ -8,6 +8,7 @@
 
 import applicationPreferencePageInjectable from "./application-preference-page.injectable";
 import applicationPreferenceTabInjectable from "./application-preference-tab.injectable";
+import { registerInjectables as registerCustomThemeColorsInjectables } from "./custom-theme-colors/register-injectables";
 import { registerInjectables as registerExtensionInstallRegistryInjectables } from "./extension-install-registry/register-injectables";
 import { registerInjectables as registerHotbarAutoHideInjectables } from "./hotbar-auto-hide/register-injectables";
 import { registerInjectables as registerMenuBarInjectables } from "./menu-bar/register-injectables";
@@ -19,49 +20,14 @@ import { registerInjectables as registerTimezoneInjectables } from "./timezone/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(applicationPreferencePageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionInstallRegistryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHotbarAutoHideInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMenuBarInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSidebarMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStartUpInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerThemeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTimezoneInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(applicationPreferencePageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCustomThemeColorsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionInstallRegistryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHotbarAutoHideInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMenuBarInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSidebarMenuInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStartUpInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerThemeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTimezoneInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -154,6 +154,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val,
       }),
+      customThemeColors: getPreferenceDescriptor<Record<string, string>>({
+        fromStore: (val) => val ?? {},
+        toStore: (val) => (Object.keys(val).length === 0 ? undefined : val),
+      }),
     } as const;
   },
 });
