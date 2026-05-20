@@ -32,6 +32,9 @@ import type {
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
 
+const normalizeHexColor = (value: string | undefined) =>
+  value && /^#[0-9a-fA-F]{6}$/.test(value) ? value.toLowerCase() : undefined;
+
 const userPreferenceDescriptorsInjectable = getInjectable({
   id: "user-preference-descriptors",
   instantiate: (di) => {
@@ -50,6 +53,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      customAccentColor: getPreferenceDescriptor<string | undefined>({
+        fromStore: normalizeHexColor,
+        toStore: normalizeHexColor,
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

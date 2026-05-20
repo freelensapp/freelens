@@ -1,0 +1,24 @@
+.accentColor {
+  margin-top: 16px;
+}
+
+.accentColorRow {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.accentColorPicker {
+  background: transparent;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: 4px;
+  cursor: pointer;
+  height: 32px;
+  padding: 2px;
+  width: 48px;
+}
+
+.accentColorValue {
+  color: var(--textColorSecondary);
+  min-width: 72px;
+}
