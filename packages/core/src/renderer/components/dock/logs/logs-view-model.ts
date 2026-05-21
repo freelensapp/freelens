@@ -20,6 +20,7 @@ import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
+import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 import type { LoadLogs } from "./load-logs.injectable";
 import type { LogTabData } from "./tab-store";
 
@@ -118,7 +119,7 @@ export class LogTabViewModel {
       const fileName = pod.getName();
       const logsToDownload: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
 
-      this.dependencies.downloadLogs(`${fileName}.log`, logsToDownload);
+      this.dependencies.downloadLogs(getTimestampedLogFilename(fileName), logsToDownload);
     }
   };
 
