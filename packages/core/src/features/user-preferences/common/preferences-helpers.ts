@@ -20,6 +20,18 @@ export interface TerminalConfig {
   fontFamily: string;
 }
 
+export interface LogViewerPreferences {
+  showTimestamps: boolean;
+  showPrevious: boolean;
+  showWordWrap: boolean;
+}
+
+export const defaultLogViewerPreferences: LogViewerPreferences = {
+  showTimestamps: false,
+  showPrevious: false,
+  showWordWrap: true,
+};
+
 export const defaultTerminalConfig: TerminalConfig = {
   fontSize: defaultFontSize,
   fontFamily: defaultTerminalFontFamily,
