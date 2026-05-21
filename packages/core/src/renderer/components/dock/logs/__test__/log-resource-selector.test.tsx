@@ -13,44 +13,23 @@ import directoryForUserDataInjectable from "../../../../../common/app-paths/dire
 import fsInjectable from "../../../../../common/fs/fs.injectable";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import { SearchStore } from "../../../../search-store/search-store";
 import { renderFor } from "../../../test-utils/renderFor";
 import callForLogsInjectable from "../call-for-logs.injectable";
 import { LogTabViewModel } from "../logs-view-model";
 import { LogResourceSelector } from "../resource-selector";
 import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
+import {
+  createMockLogTabViewModel,
+  getDefaultOnePodLogTabData,
+  initializeDefaultLogViewerPreferences,
+} from "./test-utils";
 
 import type { UserEvent } from "@testing-library/user-event";
+
 import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
-
-function mockLogTabViewModel(
-  tabId: TabId,
-  userPreferencesState: UserPreferencesState,
-  deps: Partial<LogTabViewModelDependencies>,
-): LogTabViewModel {
-  return new LogTabViewModel(tabId, {
-    getLogs: jest.fn(),
-    getLogsWithoutTimestamps: jest.fn(),
-    getTimestampSplitLogs: jest.fn(),
-    getLogTabData: jest.fn(),
-    setLogTabData: jest.fn(),
-    loadLogs: jest.fn(),
-    reloadLogs: jest.fn(),
-    renameTab: jest.fn(),
-    stopLoadingLogs: jest.fn(),
-    getPodById: jest.fn(),
-    getPodsByOwnerId: jest.fn(),
-    searchStore: new SearchStore(),
-    areLogsPresent: jest.fn(),
-    downloadLogs: jest.fn(),
-    downloadAllLogs: jest.fn(),
-    userPreferencesState,
-    ...deps,
-  });
-}
 
 function getOnePodViewModel(
   tabId: TabId,
@@ -59,15 +38,8 @@ function getOnePodViewModel(
 ): LogTabViewModel {
   const selectedPod = dockerPod;
 
-  return mockLogTabViewModel(tabId, userPreferencesState, {
-    getLogTabData: () => ({
-      selectedPodId: selectedPod.getId(),
-      selectedContainer: selectedPod.getContainers()[0].name,
-      namespace: selectedPod.getNs(),
-      showPrevious: false,
-      showTimestamps: false,
-      showWordWrap: false,
-    }),
+  return createMockLogTabViewModel(tabId, userPreferencesState, {
+    getLogTabData: () => getDefaultOnePodLogTabData(),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
         return selectedPod;
@@ -87,19 +59,18 @@ const getFewPodsTabData = (
   const selectedPod = deploymentPod1;
   const anotherPod = deploymentPod2;
 
-  return mockLogTabViewModel(tabId, userPreferencesState, {
+  return createMockLogTabViewModel(tabId, userPreferencesState, {
     getLogTabData: () => ({
+      ...getDefaultOnePodLogTabData({
+        selectedPodId: selectedPod.getId(),
+        selectedContainer: selectedPod.getContainers()[0].name,
+        namespace: selectedPod.getNs(),
+      }),
       owner: {
         uid: "uuid",
         kind: "Deployment",
         name: "super-deployment",
       },
-      selectedPodId: selectedPod.getId(),
-      selectedContainer: selectedPod.getContainers()[0].name,
-      namespace: selectedPod.getNs(),
-      showPrevious: false,
-      showTimestamps: false,
-      showWordWrap: false,
     }),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
@@ -142,11 +113,7 @@ describe("<LogResourceSelector />", () => {
 
     user = userEvent.setup();
     userPreferencesState = di.inject(userPreferencesStateInjectable);
-    userPreferencesState.logViewerPreferences = {
-      showTimestamps: false,
-      showPrevious: false,
-      showWordWrap: true,
-    };
+    initializeDefaultLogViewerPreferences(userPreferencesState);
   });
 
   describe("with one pod", () => {

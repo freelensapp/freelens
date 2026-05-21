@@ -92,16 +92,12 @@ export class LogTabViewModel {
   };
 
   updateLogPreferences = (partialPreferences: Partial<LogViewerPreferences>) => {
-    const data = this.logTabData.get();
-
-    assert(data, "Can only update preferences once data is set");
-
     this.dependencies.userPreferencesState.logViewerPreferences = {
       ...this.dependencies.userPreferencesState.logViewerPreferences,
       ...partialPreferences,
     };
 
-    this.dependencies.setLogTabData(this.tabId, { ...data, ...partialPreferences });
+    this.updateLogTabData(partialPreferences);
   };
 
   loadLogs = () => this.dependencies.loadLogs(this.tabId, this.pod, this.logTabData);

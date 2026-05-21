@@ -11,6 +11,7 @@ import getLogTabDataInjectable from "../get-log-tab-data.injectable";
 import getRandomIdForPodLogsTabInjectable from "../get-random-id-for-pod-logs-tab.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+
 import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 
 describe("create logs tab", () => {

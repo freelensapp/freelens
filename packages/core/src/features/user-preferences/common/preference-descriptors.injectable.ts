@@ -12,9 +12,9 @@ import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import {
   ClusterPageMenuOrder,
-  defaultLogViewerPreferences,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
+  defaultLogViewerPreferences,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
@@ -115,9 +115,13 @@ const userPreferenceDescriptorsInjectable = getInjectable({
           ...val,
         }),
         toStore: (val) => {
-          const storedValue = Object.fromEntries(
-            Object.entries(val).filter(([key, value]) => defaultLogViewerPreferences[key as keyof LogViewerPreferences] !== value),
-          ) as Partial<LogViewerPreferences>;
+          const storedValue: Partial<LogViewerPreferences> = {};
+
+          for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
+            if (val[key] !== defaultLogViewerPreferences[key]) {
+              storedValue[key] = val[key];
+            }
+          }
 
           return Object.keys(storedValue).length > 0 ? storedValue : undefined;
         },

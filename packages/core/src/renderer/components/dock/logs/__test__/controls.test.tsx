@@ -9,63 +9,34 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import { SearchStore } from "../../../../search-store/search-store";
 import { renderFor } from "../../../test-utils/renderFor";
 import { LogControls } from "../controls";
 import { LogTabViewModel } from "../logs-view-model";
 import { dockerPod } from "./pod.mock";
+import {
+  createMockLogTabViewModel,
+  getDefaultOnePodLogTabData,
+  initializeDefaultLogViewerPreferences,
+} from "./test-utils";
 
 import type { UserEvent } from "@testing-library/user-event";
+
+import type { LogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
 
-function mockLogTabViewModel(
-  tabId: TabId,
-  userPreferencesState: UserPreferencesState,
-  deps: Partial<LogTabViewModelDependencies>,
-): LogTabViewModel {
-  return new LogTabViewModel(tabId, {
-    getLogs: jest.fn(),
-    getLogsWithoutTimestamps: jest.fn(),
-    getTimestampSplitLogs: jest.fn(() => []),
-    getLogTabData: jest.fn(),
-    setLogTabData: jest.fn(),
-    loadLogs: jest.fn(),
-    reloadLogs: jest.fn(),
-    renameTab: jest.fn(),
-    stopLoadingLogs: jest.fn(),
-    getPodById: jest.fn(),
-    getPodsByOwnerId: jest.fn(),
-    areLogsPresent: jest.fn(),
-    searchStore: new SearchStore(),
-    downloadLogs: jest.fn(),
-    downloadAllLogs: jest.fn(),
-    userPreferencesState,
-    ...deps,
-  });
-}
-
 function getOnePodViewModel(
   tabId: TabId,
   userPreferencesState: UserPreferencesState,
-  logViewerPreferences: {
-    showTimestamps: boolean;
-    showPrevious: boolean;
-    showWordWrap: boolean;
-  },
+  logViewerPreferences: LogViewerPreferences,
   deps: Partial<LogTabViewModelDependencies> = {},
 ): LogTabViewModel {
   const selectedPod = dockerPod;
 
-  return mockLogTabViewModel(tabId, userPreferencesState, {
-    getLogTabData: () => ({
-      selectedPodId: selectedPod.getId(),
-      selectedContainer: selectedPod.getContainers()[0].name,
-      namespace: selectedPod.getNs(),
-      ...logViewerPreferences,
-    }),
+  return createMockLogTabViewModel(tabId, userPreferencesState, {
+    getLogTabData: () => getDefaultOnePodLogTabData(logViewerPreferences),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
         return selectedPod;
@@ -89,11 +60,7 @@ describe("LogControls", () => {
     render = renderFor(di);
     user = userEvent.setup();
     userPreferencesState = di.inject(userPreferencesStateInjectable);
-    userPreferencesState.logViewerPreferences = {
-      showTimestamps: false,
-      showPrevious: false,
-      showWordWrap: true,
-    };
+    initializeDefaultLogViewerPreferences(userPreferencesState);
     model = getOnePodViewModel("foobar", userPreferencesState, {
       showTimestamps: false,
       showPrevious: false,
@@ -102,11 +69,7 @@ describe("LogControls", () => {
   });
 
   it("toggles timestamps through log viewer preferences", async () => {
-    const updateLogPreferencesSpy = jest.fn();
-
-    Object.assign(model as object, {
-      updateLogPreferences: updateLogPreferencesSpy,
-    });
+    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
 
     render(<LogControls model={model} />);
 
@@ -116,11 +79,7 @@ describe("LogControls", () => {
   });
 
   it("toggles word wrap through log viewer preferences", async () => {
-    const updateLogPreferencesSpy = jest.fn();
-
-    Object.assign(model as object, {
-      updateLogPreferences: updateLogPreferencesSpy,
-    });
+    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
 
     render(<LogControls model={model} />);
 
@@ -130,12 +89,8 @@ describe("LogControls", () => {
   });
 
   it("toggles previous container through log viewer preferences and reloads logs", async () => {
-    const updateLogPreferencesSpy = jest.fn();
+    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
     const reloadLogsSpy = jest.spyOn(model, "reloadLogs");
-
-    Object.assign(model as object, {
-      updateLogPreferences: updateLogPreferencesSpy,
-    });
 
     render(<LogControls model={model} />);
 

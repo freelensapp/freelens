@@ -97,7 +97,6 @@ describe("user store tests", () => {
     it("loads and stores logViewerPreferences as a global preference", async () => {
       const writeJsonSync = di.inject(writeJsonSyncInjectable);
       const readJsonSync = di.inject(readJsonSyncInjectable);
-      const userPreferencesState = state as Record<string, unknown>;
 
       writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
         preferences: {
@@ -111,13 +110,13 @@ describe("user store tests", () => {
 
       di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
 
-      expect(userPreferencesState.logViewerPreferences).toEqual({
+      expect(state.logViewerPreferences).toEqual({
         showTimestamps: true,
         showPrevious: false,
         showWordWrap: false,
       });
 
-      userPreferencesState.logViewerPreferences = {
+      state.logViewerPreferences = {
         showTimestamps: false,
         showPrevious: true,
         showWordWrap: false,
@@ -132,7 +131,7 @@ describe("user store tests", () => {
         },
       });
 
-      userPreferencesState.logViewerPreferences = {
+      state.logViewerPreferences = {
         showTimestamps: false,
         showPrevious: false,
         showWordWrap: true,

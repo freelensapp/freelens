@@ -13,9 +13,9 @@ import { TabKind } from "../dock/store";
 import getRandomIdForPodLogsTabInjectable from "./get-random-id-for-pod-logs-tab.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
 
+import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { DockTab, DockTabCreate, TabId } from "../dock/store";
 import type { LogTabData } from "./tab-store";
-import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 
 export type CreateLogsTabData = Pick<LogTabData, "owner" | "selectedPodId" | "selectedContainer" | "namespace"> &
   Omit<Partial<LogTabData>, "owner" | "selectedPodId" | "selectedContainer" | "namespace">;
