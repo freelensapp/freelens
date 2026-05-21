@@ -13,6 +13,8 @@ import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
 
 import type { IComputedValue } from "mobx";
 
+import type { LogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
@@ -40,6 +42,7 @@ export interface LogTabViewModelDependencies {
   downloadLogs: (filename: string, logs: string[]) => void;
   downloadAllLogs: (params: ResourceDescriptor, query: PodLogsQuery) => Promise<void>;
   searchStore: SearchStore;
+  userPreferencesState: UserPreferencesState;
 }
 
 export class LogTabViewModel {
@@ -86,6 +89,19 @@ export class LogTabViewModel {
     assert(data, "Can only update data once it is set");
 
     this.dependencies.setLogTabData(this.tabId, { ...data, ...partialData });
+  };
+
+  updateLogPreferences = (partialPreferences: Partial<LogViewerPreferences>) => {
+    const data = this.logTabData.get();
+
+    assert(data, "Can only update preferences once data is set");
+
+    this.dependencies.userPreferencesState.logViewerPreferences = {
+      ...this.dependencies.userPreferencesState.logViewerPreferences,
+      ...partialPreferences,
+    };
+
+    this.dependencies.setLogTabData(this.tabId, { ...data, ...partialPreferences });
   };
 
   loadLogs = () => this.dependencies.loadLogs(this.tabId, this.pod, this.logTabData);

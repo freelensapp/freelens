@@ -6,6 +6,7 @@
 
 import "@testing-library/jest-dom";
 import React from "react";
+import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { SearchStore } from "../../../../search-store/search-store";
 import { renderFor } from "../../../test-utils/renderFor";
@@ -13,6 +14,7 @@ import { LogList } from "../list";
 import { LogTabViewModel } from "../logs-view-model";
 import { dockerPod } from "./pod.mock";
 
+import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
@@ -31,7 +33,11 @@ jest.mock("../../../virtual-list", () => {
   };
 });
 
-function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependencies>): LogTabViewModel {
+function mockLogTabViewModel(
+  tabId: TabId,
+  userPreferencesState: UserPreferencesState,
+  deps: Partial<LogTabViewModelDependencies>,
+): LogTabViewModel {
   return new LogTabViewModel(tabId, {
     getLogs: jest.fn(),
     getLogsWithoutTimestamps: jest.fn(),
@@ -48,14 +54,15 @@ function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependen
     searchStore: new SearchStore(),
     downloadLogs: jest.fn(),
     downloadAllLogs: jest.fn(),
+    userPreferencesState,
     ...deps,
   });
 }
 
-function getOnePodViewModel(tabId: TabId, showWordWrap: boolean): LogTabViewModel {
+function getOnePodViewModel(tabId: TabId, userPreferencesState: UserPreferencesState, showWordWrap: boolean): LogTabViewModel {
   const selectedPod = dockerPod;
 
-  return mockLogTabViewModel(tabId, {
+  return mockLogTabViewModel(tabId, userPreferencesState, {
     getLogTabData: () => ({
       selectedPodId: selectedPod.getId(),
       selectedContainer: selectedPod.getContainers()[0].name,
@@ -77,23 +84,30 @@ function getOnePodViewModel(tabId: TabId, showWordWrap: boolean): LogTabViewMode
 
 describe("LogList", () => {
   let render: DiRender;
+  let userPreferencesState: UserPreferencesState;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
     virtualListMock.mockClear();
+    userPreferencesState = di.inject(userPreferencesStateInjectable);
+    userPreferencesState.logViewerPreferences = {
+      showTimestamps: false,
+      showPrevious: false,
+      showWordWrap: true,
+    };
   });
 
   it("does not add wordWrap class when showWordWrap is disabled", () => {
-    const model = getOnePodViewModel("foobar", false);
+    const model = getOnePodViewModel("foobar", userPreferencesState, false);
     const { container } = render(<LogList model={model} />);
 
     expect(container.querySelector(".LogRow.wordWrap")).not.toBeInTheDocument();
   });
 
   it("adds wordWrap class when showWordWrap is enabled", () => {
-    const model = getOnePodViewModel("foobar", true);
+    const model = getOnePodViewModel("foobar", userPreferencesState, true);
     const { container } = render(<LogList model={model} />);
 
     expect(container.querySelector(".LogRow.wordWrap")).toBeInTheDocument();

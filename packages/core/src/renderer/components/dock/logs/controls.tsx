@@ -34,16 +34,16 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
   const since = logs.length ? logs[0][0] : null;
 
   const toggleTimestamps = () => {
-    model.updateLogTabData({ showTimestamps: !showTimestamps });
+    model.updateLogPreferences({ showTimestamps: !showTimestamps });
   };
 
   const togglePrevious = () => {
-    model.updateLogTabData({ showPrevious: !previous });
+    model.updateLogPreferences({ showPrevious: !previous });
     model.reloadLogs();
   };
 
   const toggleWordWrap = () => {
-    model.updateLogTabData({ showWordWrap: !showWordWrap });
+    model.updateLogPreferences({ showWordWrap: !showWordWrap });
   };
 
   return (

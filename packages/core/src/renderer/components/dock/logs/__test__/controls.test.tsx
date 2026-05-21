@@ -7,6 +7,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
+import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { SearchStore } from "../../../../search-store/search-store";
 import { renderFor } from "../../../test-utils/renderFor";
@@ -15,12 +16,16 @@ import { LogTabViewModel } from "../logs-view-model";
 import { dockerPod } from "./pod.mock";
 
 import type { UserEvent } from "@testing-library/user-event";
-
+import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
 
-function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependencies>): LogTabViewModel {
+function mockLogTabViewModel(
+  tabId: TabId,
+  userPreferencesState: UserPreferencesState,
+  deps: Partial<LogTabViewModelDependencies>,
+): LogTabViewModel {
   return new LogTabViewModel(tabId, {
     getLogs: jest.fn(),
     getLogsWithoutTimestamps: jest.fn(),
@@ -37,25 +42,29 @@ function mockLogTabViewModel(tabId: TabId, deps: Partial<LogTabViewModelDependen
     searchStore: new SearchStore(),
     downloadLogs: jest.fn(),
     downloadAllLogs: jest.fn(),
+    userPreferencesState,
     ...deps,
   });
 }
 
 function getOnePodViewModel(
   tabId: TabId,
-  showWordWrap: boolean,
+  userPreferencesState: UserPreferencesState,
+  logViewerPreferences: {
+    showTimestamps: boolean;
+    showPrevious: boolean;
+    showWordWrap: boolean;
+  },
   deps: Partial<LogTabViewModelDependencies> = {},
 ): LogTabViewModel {
   const selectedPod = dockerPod;
 
-  return mockLogTabViewModel(tabId, {
+  return mockLogTabViewModel(tabId, userPreferencesState, {
     getLogTabData: () => ({
       selectedPodId: selectedPod.getId(),
       selectedContainer: selectedPod.getContainers()[0].name,
       namespace: selectedPod.getNs(),
-      showPrevious: false,
-      showTimestamps: false,
-      showWordWrap,
+      ...logViewerPreferences,
     }),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
@@ -71,33 +80,68 @@ function getOnePodViewModel(
 describe("LogControls", () => {
   let render: DiRender;
   let user: UserEvent;
+  let model: LogTabViewModel;
+  let userPreferencesState: UserPreferencesState;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     render = renderFor(di);
     user = userEvent.setup();
+    userPreferencesState = di.inject(userPreferencesStateInjectable);
+    userPreferencesState.logViewerPreferences = {
+      showTimestamps: false,
+      showPrevious: false,
+      showWordWrap: true,
+    };
+    model = getOnePodViewModel("foobar", userPreferencesState, {
+      showTimestamps: false,
+      showPrevious: false,
+      showWordWrap: true,
+    });
   });
 
-  it("enables word wrap when it is currently disabled", async () => {
-    const model = getOnePodViewModel("foobar", false);
-    const updateLogTabDataSpy = jest.spyOn(model, "updateLogTabData");
+  it("toggles timestamps through log viewer preferences", async () => {
+    const updateLogPreferencesSpy = jest.fn();
+
+    Object.assign(model as object, {
+      updateLogPreferences: updateLogPreferencesSpy,
+    });
+
+    render(<LogControls model={model} />);
+
+    await user.click(await screen.findByText("Show timestamps"));
+
+    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showTimestamps: true });
+  });
+
+  it("toggles word wrap through log viewer preferences", async () => {
+    const updateLogPreferencesSpy = jest.fn();
+
+    Object.assign(model as object, {
+      updateLogPreferences: updateLogPreferencesSpy,
+    });
 
     render(<LogControls model={model} />);
 
     await user.click(await screen.findByText("Word wrap"));
 
-    expect(updateLogTabDataSpy).toHaveBeenCalledWith({ showWordWrap: true });
+    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showWordWrap: false });
   });
 
-  it("disables word wrap when it is currently enabled", async () => {
-    const model = getOnePodViewModel("foobar", true);
-    const updateLogTabDataSpy = jest.spyOn(model, "updateLogTabData");
+  it("toggles previous container through log viewer preferences and reloads logs", async () => {
+    const updateLogPreferencesSpy = jest.fn();
+    const reloadLogsSpy = jest.spyOn(model, "reloadLogs");
+
+    Object.assign(model as object, {
+      updateLogPreferences: updateLogPreferencesSpy,
+    });
 
     render(<LogControls model={model} />);
 
-    await user.click(await screen.findByText("Word wrap"));
+    await user.click(await screen.findByText("Show previous terminated container"));
 
-    expect(updateLogTabDataSpy).toHaveBeenCalledWith({ showWordWrap: false });
+    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showPrevious: true });
+    expect(reloadLogsSpy).toHaveBeenCalled();
   });
 });
