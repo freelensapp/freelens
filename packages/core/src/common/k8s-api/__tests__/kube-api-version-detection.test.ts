@@ -8,7 +8,12 @@ import asyncFn from "@async-fn/jest";
 import { HorizontalPodAutoscalerApi } from "@freelensapp/kube-api";
 import { ingressApiInjectable, maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Ingress } from "@freelensapp/kube-object";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { flushPromises } from "@freelensapp/test-utils";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
@@ -802,6 +807,7 @@ describe("KubeApi", () => {
     beforeEach(async () => {
       horizontalPodAutoscalerApi = new HorizontalPodAutoscalerApi(
         {
+          logDebug: di.inject(logDebugInjectionToken),
           logError: di.inject(logErrorInjectionToken),
           logInfo: di.inject(logInfoInjectionToken),
           logWarn: di.inject(logWarningInjectionToken),
