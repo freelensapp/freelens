@@ -241,6 +241,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -463,6 +464,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -823,6 +825,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -955,6 +958,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -1088,6 +1092,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
