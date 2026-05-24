@@ -8,10 +8,14 @@ import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import { computed } from "mobx";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import { mergeCustomThemeColors } from "./custom-theme-colors";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import lensThemesInjectable from "./themes.injectable";
+
+import type { LensTheme } from "./lens-theme";
 
 const activeThemeInjectable = getInjectable({
   id: "active-theme",
@@ -21,6 +25,12 @@ const activeThemeInjectable = getInjectable({
     const lensColorThemePreference = di.inject(lensColorThemePreferenceInjectable);
     const systemThemeConfiguration = di.inject(systemThemeConfigurationInjectable);
     const defaultLensTheme = di.inject(defaultLensThemeInjectable);
+    const state = di.inject(userPreferencesStateInjectable);
+
+    const applyCustomColors = (theme: LensTheme): LensTheme => ({
+      ...theme,
+      colors: mergeCustomThemeColors(theme, state.customThemeColors),
+    });
 
     return computed(() => {
       const pref = lensColorThemePreference.get();
@@ -31,10 +41,10 @@ const activeThemeInjectable = getInjectable({
 
         assert(matchingTheme, `Missing theme declaration for system theme "${systemThemeType}"`);
 
-        return matchingTheme;
+        return applyCustomColors(matchingTheme);
       }
 
-      return lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
+      return applyCustomColors(lensThemes.get(pref.lensThemeId) ?? defaultLensTheme);
     });
   },
 });

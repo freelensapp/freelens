@@ -93,5 +93,45 @@ describe("user store tests", () => {
         },
       });
     });
+
+    it("loads and stores custom theme colors", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          customThemeColors: {
+            primary: "#ff00aa",
+          },
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.customThemeColors).toEqual({
+        primary: "#ff00aa",
+      });
+
+      state.customThemeColors = {
+        primary: "#112233",
+        buttonPrimaryBackground: "#445566",
+      };
+
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          customThemeColors: {
+            primary: "#112233",
+            buttonPrimaryBackground: "#445566",
+          },
+        },
+      });
+
+      state.customThemeColors = {};
+
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.customThemeColors,
+      ).toBeUndefined();
+    });
   });
 });

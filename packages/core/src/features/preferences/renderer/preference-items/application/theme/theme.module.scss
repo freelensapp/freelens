@@ -1,0 +1,22 @@
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+  margin: 16px 0;
+}
+
+.colorRow {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(96px, 1fr) 40px auto;
+}
+
+.colorRow input {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  height: 32px;
+  padding: 0;
+  width: 40px;
+}
