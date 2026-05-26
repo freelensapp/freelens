@@ -93,5 +93,53 @@ describe("user store tests", () => {
         },
       });
     });
+
+    it("loads and stores logViewerPreferences as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          logViewerPreferences: {
+            showTimestamps: true,
+            showWordWrap: false,
+          },
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.logViewerPreferences).toEqual({
+        showTimestamps: true,
+        showPrevious: false,
+        showWordWrap: false,
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: false,
+        showPrevious: true,
+        showWordWrap: false,
+      };
+
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          logViewerPreferences: {
+            showPrevious: true,
+            showWordWrap: false,
+          },
+        },
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: false,
+        showPrevious: false,
+        showWordWrap: true,
+      };
+
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.logViewerPreferences,
+      ).toBeUndefined();
+    });
   });
 });
